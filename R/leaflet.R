@@ -11,14 +11,18 @@ createLeafletMap <- function(session, outputId) {
     ))
   }
   list(
-    addMarker = function(lat, lng, markerId = NULL, options = list()) {
-      send('addMarker', lat, lng, markerId, options)
+    addMarker = function(lat, lng, layerId = NULL, options = list()) {
+      send('addMarker', lat, lng, layerId, options)
     },
     clearMarkers = function() {
       send('clearMarkers')
     },
-    fitBounds = function(lat1, lat2, lng1, lng2) {
-      send('fitBounds', lat1, lat2, lng1, lng2)
+    fitBounds = function(lat1, lng1, lat2, lng2) {
+      send('fitBounds', lat1, lng1, lat2, lng2)
+    },
+    addRectangle = function(lat1, lng1, lat2, lng2,
+                            layerId = NULL, options=list()) {
+      send('addRectangle', lat1, lng1, lat2, lng2, layerId, options)
     }
   )
 }

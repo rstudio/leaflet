@@ -96,6 +96,14 @@
         [data.args[2], data.args[3]]
       ]);
     }
+    
+    if (data.method === 'addRectangle') {
+      // TODO: Track these
+      L.rectangle([
+        [data.args[0], data.args[1]],
+        [data.args[2], data.args[3]]
+      ], data.args[5]).addTo(map);
+    }
   });
 
 })();
