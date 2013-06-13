@@ -45,13 +45,13 @@ shinyServer(function(input, output, session) {
       return()
     map$clearMarkers()
     bounds <- input$map_bounds
-    randPoint <- function() {
-      list(lat = (bounds$north - bounds$south) * runif(1) + bounds$south,
-           lng = (bounds$east - bounds$west) * runif(1) + bounds$west)
-    }
-    for (i in 1:20) {
-      point <- randPoint()
-      map$addMarker(point$lat, point$lng)
+    
+    numPoints <- 20
+    lats <- runif(numPoints, bounds$south, bounds$north)
+    lngs <- runif(numPoints, bounds$west, bounds$east)
+    
+    for (i in 1:numPoints) {
+      map$addMarker(lats[[i]], lngs[[i]])
     }
   })
   
