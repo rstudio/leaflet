@@ -2,6 +2,8 @@
   var maps = {};
   var markers = {}; // key: mapId, value: {key: markerId, value: marker}
   var markerGroups = {}; // key: mapId, value: layer-group
+  var shapeGroups = {}; // key: mapId, value: layer-group
+  var popupGroups = {}; // key: mapId, value: layer-group
   
   var leafletOutputBinding = new Shiny.OutputBinding();
   $.extend(leafletOutputBinding, {
@@ -21,6 +23,8 @@
         
         maps[id] = map;
         markerGroups[id] = L.layerGroup().addTo(map);
+        shapeGroups[id] = L.layerGroup().addTo(map);
+        popupGroups[id] = L.layerGroup().addTo(map);
         
         map.on('click', function(e) {
           Shiny.onInputChange(id + '_click', {
@@ -37,9 +41,7 @@
             south: bounds.getSouthWest().lat,
             west: bounds.getSouthWest().lng
           });
-          Shiny.onInputChange(id + '_zoom', {
-            zoom: map.getZoom()
-          });
+          Shiny.onInputChange(id + '_zoom', map.getZoom());
         }
         setTimeout(updateBounds, 1);
         
@@ -99,10 +101,48 @@
     
     if (data.method === 'addRectangle') {
       // TODO: Track these
-      L.rectangle([
+      var rect = L.rectangle([
         [data.args[0], data.args[1]],
         [data.args[2], data.args[3]]
-      ], data.args[5]).addTo(map);
+      ], data.args[5]);
+      shapeGroups[mapId].addLayer(rect);
+      rect.on('click', function(e) {
+        Shiny.onInputChange(mapId + '_shape_click', {
+          id: data.args[4],
+          lat: e.target.getLatLng().lat,
+          lng: e.target.getLatLng().lng
+        });
+      });
+    }
+    
+    if (data.method === 'addCircle') {
+      var circle = L.circle(
+        [data.args[0], data.args[1]],
+        data.args[2],
+        data.args[4]);
+      shapeGroups[mapId].addLayer(circle);
+      circle.on('click', function(e) {
+        Shiny.onInputChange(mapId + '_shape_click', {
+          id: data.args[3],
+          lat: e.target.getLatLng().lat,
+          lng: e.target.getLatLng().lng
+        });
+      });
+    }
+    
+    if (data.method === 'clearShapes') {
+      shapeGroups[mapId].clearLayers();
+    }
+    
+    if (data.method === 'showPopup') {
+      var popup = L.popup(data.args[4])
+        .setLatLng([data.args[0], data.args[1]])
+        .setContent(data.args[2]);
+      popupGroups[mapId].addLayer(popup);
+    }
+    
+    if (data.method === 'clearPopoups') {
+      popupGroups[mapId].clearLayers();
     }
   });
 

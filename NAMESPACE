@@ -1,2 +1,2 @@
 export(createLeafletMap)
-export(leafletMapOutput)
+export(leafletMap)

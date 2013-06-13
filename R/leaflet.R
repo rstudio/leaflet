@@ -17,18 +17,30 @@ createLeafletMap <- function(session, outputId) {
     clearMarkers = function() {
       send('clearMarkers')
     },
+    clearShapes = function() {
+      send('clearShapes')
+    },
     fitBounds = function(lat1, lng1, lat2, lng2) {
       send('fitBounds', lat1, lng1, lat2, lng2)
     },
     addRectangle = function(lat1, lng1, lat2, lng2,
                             layerId = NULL, options=list()) {
       send('addRectangle', lat1, lng1, lat2, lng2, layerId, options)
+    },
+    addCircle = function(lat1, lng1, radius, layerId = NULL, options=list()) {
+      send('addCircle', lat1, lng1, radius, layerId, options)
+    },
+    showPopup = function(lat1, lng1, content, layerId = NULL, options=list()) {
+      send('showPopup', lat1, lng1, content, layerId, options)
+    },
+    clearPopups = function() {
+      send('clearPopups')
     }
   )
 }
 
 #' @export
-leafletMapOutput <- function(
+leafletMap <- function(
   outputId, width, height,
   initialTileLayer = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', 
   initialTileLayerAttribution = HTML('&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'),
@@ -48,6 +60,7 @@ leafletMapOutput <- function(
 <!--[if lte IE 8]>
   <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.ie.css" />
 <![endif]-->
+<script>L_PREFER_CANVAS = true;</script>
 <script src="http://cdn.leafletjs.com/leaflet-0.5/leaflet.js"></script>'),
         tags$script(src="leaflet/binding.js")
       )
