@@ -70,19 +70,17 @@ shinyServer(function(input, output, session) {
     if (nrow(cities) == 0)
       return()
     
-    for (i in 1:nrow(cities)) {
-      map$addCircle(
-        cities$lat[[i]],
-        cities$long[[i]],
-        sqrt(cities$pop[[i]]) * radiusFactor / max(5, input$map_zoom)^2,
-        cities$name[[i]],
-        list(
-          weight=1.2,
-          fill=TRUE,
-          color='#4A9'
-        )
+    map$addCircle(
+      cities$lat,
+      cities$long,
+      sqrt(cities$pop) * radiusFactor / max(5, input$map_zoom)^2,
+      cities$name,
+      list(
+        weight=1.2,
+        fill=TRUE,
+        color='#4A9'
       )
-    }
+    )
   })
   
   handleEvent(input$map_shape_click, function() {
@@ -138,9 +136,8 @@ shinyServer(function(input, output, session) {
   }, include.rownames = FALSE)
   
   handleEvent(input$randomLocation, function() {
-    map$fitBounds(runif(1, 26.35, 51.23),
-                  runif(1, -128.14, -67.15),
-                  runif(1, 26.35, 51.23),
-                  runif(1, -128.14, -67.15))
+    map$setView(runif(1, 29.4, 47),
+                runif(1, -119, -74),
+                as.integer(runif(1, 6, 9)))
   })
 })

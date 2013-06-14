@@ -98,36 +98,64 @@
         [data.args[2], data.args[3]]
       ]);
     }
+
+    if (data.method === 'setView') {
+      map.setView([data.args[0], data.args[1]],
+        data.args[2], data.args[3]);
+    }
     
     if (data.method === 'addRectangle') {
-      // TODO: Track these
-      var rect = L.rectangle([
-        [data.args[0], data.args[1]],
-        [data.args[2], data.args[3]]
-      ], data.args[5]);
-      shapeGroups[mapId].addLayer(rect);
-      rect.on('click', function(e) {
-        Shiny.onInputChange(mapId + '_shape_click', {
-          id: data.args[4],
-          lat: e.target.getLatLng().lat,
-          lng: e.target.getLatLng().lng
-        });
-      });
+      (function() {
+        var lat1 = vectorize(data.args[0]);
+        var lng1 = vectorize(data.args[1], lat1.length);
+        var lat2 = vectorize(data.args[2], lat1.length);
+        var lng2 = vectorize(data.args[3], lat1.length);
+        var id = vectorize(data.args[4], lat1.length);
+        var options = data.args[5];
+        
+        for (var i = 0; i < lat1.length; i++) {
+          (function() {
+            var rect = L.rectangle([
+              [lat1[i], lng1[i]],
+              [lat2[i], lng2[i]]
+            ], options);
+            var thisId = id[i];
+            shapeGroups[mapId].addLayer(rect);
+            rect.on('click', function(e) {
+              Shiny.onInputChange(mapId + '_shape_click', {
+                id: thisId,
+                lat: e.target.getLatLng().lat,
+                lng: e.target.getLatLng().lng
+              });
+            });
+          })();
+        }
+      })();
     }
     
     if (data.method === 'addCircle') {
-      var circle = L.circle(
-        [data.args[0], data.args[1]],
-        data.args[2],
-        data.args[4]);
-      shapeGroups[mapId].addLayer(circle);
-      circle.on('click', function(e) {
-        Shiny.onInputChange(mapId + '_shape_click', {
-          id: data.args[3],
-          lat: e.target.getLatLng().lat,
-          lng: e.target.getLatLng().lng
-        });
-      });
+      (function() {
+        var lat = vectorize(data.args[0]);
+        var lng = vectorize(data.args[1], lat.length);
+        var radius = vectorize(data.args[2], lat.length);
+        var id = vectorize(data.args[3], lat.length);
+        var options = data.args[4];
+        
+        for (var i = 0; i < lat.length; i++) {
+          (function() {
+            var circle = L.circle([lat[i], lng[i]], radius[i], options);
+            var thisId = id[i];
+            shapeGroups[mapId].addLayer(circle);
+            circle.on('click', function(e) {
+              Shiny.onInputChange(mapId + '_shape_click', {
+                id: thisId,
+                lat: e.target.getLatLng().lat,
+                lng: e.target.getLatLng().lng
+              });
+            });
+          })();
+        }
+      })();
     }
     
     if (data.method === 'clearShapes') {
@@ -141,9 +169,19 @@
       popupGroups[mapId].addLayer(popup);
     }
     
-    if (data.method === 'clearPopoups') {
+    if (data.method === 'clearPopups') {
       popupGroups[mapId].clearLayers();
     }
   });
+  
+  function vectorize(val, minLength) {
+    if (typeof(val) !== 'object')
+      val = [val];
+    var origLength = val.length;
+    while (val.length < minLength) {
+      val.push(val[val.length % origLength]);
+    }
+    return val;
+  }
 
 })();

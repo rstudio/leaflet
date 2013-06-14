@@ -11,6 +11,9 @@ createLeafletMap <- function(session, outputId) {
     ))
   }
   list(
+    setView = function(lat, lng, zoom, forceReset = FALSE) {
+      send('setView', lat, lng, zoom, forceReset)
+    },
     addMarker = function(lat, lng, layerId = NULL, options = list()) {
       send('addMarker', lat, lng, layerId, options)
     },
@@ -60,7 +63,6 @@ leafletMap <- function(
 <!--[if lte IE 8]>
   <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.ie.css" />
 <![endif]-->
-<script>L_PREFER_CANVAS = true;</script>
 <script src="http://cdn.leafletjs.com/leaflet-0.5/leaflet.js"></script>'),
         tags$script(src="leaflet/binding.js")
       )
