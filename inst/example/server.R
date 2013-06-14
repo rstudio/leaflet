@@ -14,19 +14,25 @@ handleEvent <- function(button, handler) {
 }
 
 shinyServer(function(input, output, session) {
-  output$map <- reactive({
-    20
-  })
+  values <- reactiveValues(markers = NULL)
+  output$map <- reactive({10})
   
   map <- createLeafletMap(session, 'map')
   
   handleEvent(input$addMarker, function() {
     map$addMarker(input$lat, input$lng, NULL, list(draggable = input$draggable))
+    values$markers <- rbind(data.frame(lat=input$lat, long=input$lng),
+                            values$markers)
   })
   
-#   handleEvent(input$map_click, function() {
-#     map$addMarker(input$map_click$lat, input$map_click$lng, 'clicked')
-#   })
+  handleEvent(input$map_click, function() {
+    if (!input$addMarkerOnClick)
+      return()
+    map$addMarker(input$map_click$lat, input$map_click$lng, NULL)
+    values$markers <- rbind(data.frame(lat=input$map_click$lat,
+                                       long=input$map_click$lng),
+                            values$markers)
+  })
   
   handleEvent(input$map_marker_click, function() {
     updateNumericInput(session, 'lat', value=input$map_marker_click$lat)
@@ -35,24 +41,7 @@ shinyServer(function(input, output, session) {
   
   handleEvent(input$clearMarkers, function() {
     map$clearMarkers()
-  })
-  
-  handleEvent(input$randomMarkers, map$clearMarkers)
-
-  # Run this code if input$map_bounds OR input$randomMarkers changes
-  handleEvent({input$map_bounds; input$randomMarkers}, function() {
-    if (!input$randomMarkers)
-      return()
-    map$clearMarkers()
-    bounds <- input$map_bounds
-    
-    numPoints <- 20
-    lats <- runif(numPoints, bounds$south, bounds$north)
-    lngs <- runif(numPoints, bounds$west, bounds$east)
-    
-    for (i in 1:numPoints) {
-      map$addMarker(lats[[i]], lngs[[i]])
-    }
+    values$markers <- NULL
   })
   
   citiesInBounds <- reactive({
@@ -69,10 +58,11 @@ shinyServer(function(input, output, session) {
   
   topCitiesInBounds <- reactive({
     cities <- citiesInBounds()
-    cities <- head(cities[order(cities$pop, decreasing=TRUE),], 100)
+    cities <- head(cities[order(cities$pop, decreasing=TRUE),],
+                   as.numeric(input$maxCities))
   })
   
-  radiusFactor <- 0.03
+  radiusFactor <- 1000
   observe({
     map$clearShapes()
     cities <- topCitiesInBounds()
@@ -84,11 +74,12 @@ shinyServer(function(input, output, session) {
       map$addCircle(
         cities$lat[[i]],
         cities$long[[i]],
-        cities$pop[[i]] * radiusFactor,
+        sqrt(cities$pop[[i]]) * radiusFactor / max(5, input$map_zoom)^2,
         cities$name[[i]],
         list(
           weight=1.2,
-          fill=TRUE
+          fill=TRUE,
+          color='#4A9'
         )
       )
     }
@@ -109,12 +100,15 @@ shinyServer(function(input, output, session) {
     map$showPopup(click$lat, click$lng, content)
   })
   
-  output$mapInfo <- renderPrint({
-    str(list(bounds = input$map_bounds,
-         zoom = input$map_zoom))
-  })
-  
+  `%OR%` <- function(a, b) {
+    if (is.null(a))
+      b
+    else
+      a
+  }
   output$desc <- reactive({
+    if (is.null(input$map_bounds))
+      return(list())
     list(
       lat = mean(c(input$map_bounds$north, input$map_bounds$south)),
       lng = mean(c(input$map_bounds$east, input$map_bounds$west)),
@@ -124,10 +118,29 @@ shinyServer(function(input, output, session) {
     )
   })
   
+  output$data <- renderTable({
+    if (nrow(topCitiesInBounds()) == 0)
+      return(NULL)
+    
+    data <- data.frame(Population = topCitiesInBounds()$pop)
+    rownames(data) <- topCitiesInBounds()$name
+    return(data)
+  })
+  
+  output$markers <- renderTable({
+    if (is.null(values$markers))
+      return(NULL)
+
+    data <- values$markers
+    colnames(data) <- c('Latitude', 'Longitude')
+    return(data)
+    
+  }, include.rownames = FALSE)
+  
   handleEvent(input$randomLocation, function() {
-    map$fitBounds(runif(1, -90, 90),
-                  runif(1, -180, 180),
-                  runif(1, -90, 90),
-                  runif(1, -180, 180))
+    map$fitBounds(runif(1, 26.35, 51.23),
+                  runif(1, -128.14, -67.15),
+                  runif(1, 26.35, 51.23),
+                  runif(1, -128.14, -67.15))
   })
 })
