@@ -1,6 +1,7 @@
+library(ggplot2)
 library(maps)
 
-data(us.cities)
+data(uspop2000)
 
 handleEvent <- function(button, handler) {
   fun <- exprToFunction(button)
@@ -26,6 +27,7 @@ shinyServer(function(input, output, session) {
   })
   
   handleEvent(input$map_click, function() {
+    values$selectedCity <- NULL
     if (!input$addMarkerOnClick)
       return()
     map$addMarker(input$map_click$lat, input$map_click$lng, NULL)
@@ -44,21 +46,41 @@ shinyServer(function(input, output, session) {
     values$markers <- NULL
   })
   
+  popCol <- reactive({
+    paste('Pop', input$year, sep='')
+  })
+  
+  popSeries <- function(city) {
+    c(
+      sum(city$Pop2000),
+      sum(city$Pop2001),
+      sum(city$Pop2002),
+      sum(city$Pop2003),
+      sum(city$Pop2004),
+      sum(city$Pop2005),
+      sum(city$Pop2006),
+      sum(city$Pop2007),
+      sum(city$Pop2008),
+      sum(city$Pop2009),
+      sum(city$Pop2010)
+    )
+  }
+  
   citiesInBounds <- reactive({
     if (is.null(input$map_bounds))
-      return(us.cities[FALSE,])
+      return(uspop2000[FALSE,])
     bounds <- input$map_bounds
     latRng <- range(bounds$north, bounds$south)
     lngRng <- range(bounds$east, bounds$west)
 
-    subset(us.cities,
-           lat >= latRng[1] & lat <= latRng[2] &
-             long >= lngRng[1] & long <= lngRng[2])
+    subset(uspop2000,
+           Lat >= latRng[1] & Lat <= latRng[2] &
+             Long >= lngRng[1] & Long <= lngRng[2])
   })
   
   topCitiesInBounds <- reactive({
     cities <- citiesInBounds()
-    cities <- head(cities[order(cities$pop, decreasing=TRUE),],
+    cities <- head(cities[order(cities[[popCol()]], decreasing=TRUE),],
                    as.numeric(input$maxCities))
   })
   
@@ -71,10 +93,10 @@ shinyServer(function(input, output, session) {
       return()
     
     map$addCircle(
-      cities$lat,
-      cities$long,
-      sqrt(cities$pop) * radiusFactor / max(5, input$map_zoom)^2,
-      cities$name,
+      cities$Lat,
+      cities$Long,
+      sqrt(cities[[popCol()]]) * radiusFactor / max(5, input$map_zoom)^2,
+      row.names(cities),
       list(
         weight=1.2,
         fill=TRUE,
@@ -88,12 +110,14 @@ shinyServer(function(input, output, session) {
     map$clearPopups()
     
     cities <- topCitiesInBounds()
-    city <- as.list(cities[cities$name == click$id,])
+    city <- cities[row.names(cities) == click$id,]
+    values$selectedCity <- city
     content <- as.character(tagList(
-      tags$strong(city$name),
+      tags$strong(paste(city$City, city$State)),
       tags$br(),
-      "Population: ",
-      as.character(city$pop)
+      sprintf("Estimated population, %s:", input$year),
+      tags$br(),
+      prettyNum(city[[popCol()]], big.mark=',')
     ))
     map$showPopup(click$lat, click$lng, content)
   })
@@ -120,8 +144,8 @@ shinyServer(function(input, output, session) {
     if (nrow(topCitiesInBounds()) == 0)
       return(NULL)
     
-    data <- data.frame(Population = topCitiesInBounds()$pop)
-    rownames(data) <- topCitiesInBounds()$name
+    data <- data.frame(Population = topCitiesInBounds()[[popCol()]])
+    rownames(data) <- paste(topCitiesInBounds()$City, topCitiesInBounds()$State)
     return(data)
   })
   
@@ -140,4 +164,36 @@ shinyServer(function(input, output, session) {
                 runif(1, -119, -74),
                 as.integer(runif(1, 6, 9)))
   })
+  
+  output$cityTimeSeriesLabel <- renderText({
+    if (is.null(values$selectedCity)) {
+      'Total population of visible cities'
+    } else {
+      paste('Population of ',
+            values$selectedCity$City,
+            ', ',
+            values$selectedCity$State,
+            sep='')
+    }
+  })
+  
+  output$cityTimeSeries <- renderPlot({
+    cities <- NULL
+    if (!is.null(values$selectedCity))
+      cities <- values$selectedCity
+    else
+      cities <- topCitiesInBounds()
+
+    if (is.null(cities) || nrow(cities) == 0)
+      return()
+    
+    popData <- popSeries(cities) / 1000
+    df <- data.frame(year = c(2000:2010), pop = popData)
+    p <- ggplot(df, aes(x = year, y = pop)) + geom_line()
+    #p <- p + ylim(c(0, max(popData)))
+    p <- p + ylab('Population (thousands)')
+    p <- p + scale_x_continuous(breaks = seq(2000, 2010, 2))
+    print(p)
+  })
+  outputOptions(output, 'cityTimeSeries', suspendWhenHidden=FALSE)
 })
