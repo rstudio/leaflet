@@ -20,10 +20,12 @@ actionLink <- function(inputId, ...) {
 
 shinyUI(bootstrapPage(
   tags$head(tags$style(type="text/css", "
+                       @import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600);
                        body {overflow-y: scroll;}
-                       body, #data table td {font-family: Source Sans Pro; color: #444;}
+                       body, table.data.table-bordered td, label {font-family: Source Sans Pro; color: #444; font-weight: 300;}
+                       h2, h3, h4, .table th {font-weight: 600;}
                        #desc {font-size: 16px;}
-                       #desc span {color: #944; font-size: 110%;}
+                       #desc span {color: #944; font-weight: 400;}
                        #data table td { width: 90px; }
                        #data table td:first-child { width: 180px; }
                        ")),
