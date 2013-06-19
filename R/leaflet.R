@@ -1,5 +1,13 @@
 #' @export
 createLeafletMap <- function(session, outputId) {
+
+  # Need to provide some trivial output, just to get the binding to render
+  session$output[[outputId]] <- renderText("")
+
+  # This function is how we "dynamically" invoke code on the client. The
+  # method parameter indicates what leaflet operation we want to perform,
+  # and the other arguments will be serialized to JS objects and used as
+  # client side function args.
   send <- function(method, ...) {
     origDigits <- getOption('digits')
     options(digits=22)
@@ -30,11 +38,11 @@ createLeafletMap <- function(session, outputId) {
                             layerId = NULL, options=list()) {
       send('addRectangle', lat1, lng1, lat2, lng2, layerId, options)
     },
-    addCircle = function(lat1, lng1, radius, layerId = NULL, options=list()) {
-      send('addCircle', lat1, lng1, radius, layerId, options)
+    addCircle = function(lat, lng, radius, layerId = NULL, options=list()) {
+      send('addCircle', lat, lng, radius, layerId, options)
     },
-    showPopup = function(lat1, lng1, content, layerId = NULL, options=list()) {
-      send('showPopup', lat1, lng1, content, layerId, options)
+    showPopup = function(lat, lng, content, layerId = NULL, options=list()) {
+      send('showPopup', lat, lng, content, layerId, options)
     },
     clearPopups = function() {
       send('clearPopups')

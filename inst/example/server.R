@@ -1,3 +1,4 @@
+library(leaflet)
 library(ggplot2)
 library(maps)
 
@@ -16,7 +17,6 @@ handleEvent <- function(button, handler) {
 
 shinyServer(function(input, output, session) {
   values <- reactiveValues(markers = NULL)
-  output$map <- reactive({10})
   
   map <- createLeafletMap(session, 'map')
   
@@ -144,10 +144,10 @@ shinyServer(function(input, output, session) {
     if (nrow(topCitiesInBounds()) == 0)
       return(NULL)
     
-    data <- data.frame(Population = topCitiesInBounds()[[popCol()]])
-    rownames(data) <- paste(topCitiesInBounds()$City, topCitiesInBounds()$State)
-    return(data)
-  })
+    data.frame(
+      City = paste(topCitiesInBounds()$City, topCitiesInBounds()$State),
+      Population = topCitiesInBounds()[[popCol()]])
+  }, include.rownames = FALSE)
   
   output$markers <- renderTable({
     if (is.null(values$markers))
