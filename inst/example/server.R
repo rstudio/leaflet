@@ -4,29 +4,35 @@ library(maps)
 
 data(uspop2000)
 
-handleEvent <- function(button, handler) {
-  fun <- exprToFunction(button)
-  observe({
-    val <- fun()
-    if (is.null(val) || identical(val, 0))
-      return()
-    
-    isolate(handler())
-  })
+# From a future version of Shiny
+observeEvent <- function(eventExpr, callback, env=parent.frame(), quoted=FALSE) {
+  eventFunc <- exprToFunction(eventExpr, env, quoted)
+  
+  initialized <- FALSE
+  invisible(observe({
+    eventVal <- eventFunc()
+    if (!initialized)
+      initialized <<- TRUE
+    else
+      isolate(callback())
+  }))
 }
 
 shinyServer(function(input, output, session) {
+  # Create reactive values object to store our markers
   values <- reactiveValues(markers = NULL)
   
+  # Create the map; this is not the "real" map, but rather a proxy object that
+  # lets us control the leaflet map on the page.
   map <- createLeafletMap(session, 'map')
   
-  handleEvent(input$addMarker, function() {
+  observeEvent(input$addMarker, function() {
     map$addMarker(input$lat, input$lng, NULL, list(draggable = input$draggable))
     values$markers <- rbind(data.frame(lat=input$lat, long=input$lng),
                             values$markers)
   })
   
-  handleEvent(input$map_click, function() {
+  observeEvent(input$map_click, function() {
     values$selectedCity <- NULL
     if (!input$addMarkerOnClick)
       return()
@@ -36,12 +42,12 @@ shinyServer(function(input, output, session) {
                             values$markers)
   })
   
-  handleEvent(input$map_marker_click, function() {
+  observeEvent(input$map_marker_click, function() {
     updateNumericInput(session, 'lat', value=input$map_marker_click$lat)
     updateNumericInput(session, 'lng', value=input$map_marker_click$lng)
   })
   
-  handleEvent(input$clearMarkers, function() {
+  observeEvent(input$clearMarkers, function() {
     map$clearMarkers()
     values$markers <- NULL
   })
@@ -105,7 +111,7 @@ shinyServer(function(input, output, session) {
     )
   })
   
-  handleEvent(input$map_shape_click, function() {
+  observeEvent(input$map_shape_click, function() {
     click <- input$map_shape_click
     map$clearPopups()
     
@@ -122,12 +128,6 @@ shinyServer(function(input, output, session) {
     map$showPopup(click$lat, click$lng, content)
   })
   
-  `%OR%` <- function(a, b) {
-    if (is.null(a))
-      b
-    else
-      a
-  }
   output$desc <- reactive({
     if (is.null(input$map_bounds))
       return(list())
@@ -159,7 +159,7 @@ shinyServer(function(input, output, session) {
     
   }, include.rownames = FALSE)
   
-  handleEvent(input$randomLocation, function() {
+  observeEvent(input$randomLocation, function() {
     map$setView(runif(1, 29.4, 47),
                 runif(1, -119, -74),
                 as.integer(runif(1, 6, 9)))
