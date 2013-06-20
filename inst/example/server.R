@@ -112,11 +112,11 @@ shinyServer(function(input, output, session) {
   })
   
   observeEvent(input$map_shape_click, function() {
-    click <- input$map_shape_click
+    event <- input$map_shape_click
     map$clearPopups()
     
     cities <- topCitiesInBounds()
-    city <- cities[row.names(cities) == click$id,]
+    city <- cities[row.names(cities) == event$id,]
     values$selectedCity <- city
     content <- as.character(tagList(
       tags$strong(paste(city$City, city$State)),
@@ -125,7 +125,7 @@ shinyServer(function(input, output, session) {
       tags$br(),
       prettyNum(city[[popCol()]], big.mark=',')
     ))
-    map$showPopup(click$lat, click$lng, content)
+    map$showPopup(event$lat, event$lng, content, event$id)
   })
   
   output$desc <- reactive({

@@ -44,6 +44,9 @@ createLeafletMap <- function(session, outputId) {
     showPopup = function(lat, lng, content, layerId = NULL, options=list()) {
       send('showPopup', lat, lng, content, layerId, options)
     },
+    removePopup = function(layerId) {
+      send('removePopup', layerId)
+    },
     clearPopups = function() {
       send('clearPopups')
     }

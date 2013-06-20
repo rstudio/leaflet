@@ -1,20 +1,6 @@
 (function() {
   var maps = {};
-  var markers = {}; // key: mapId, value: {key: markerId, value: marker}
-  var markerGroups = {}; // key: mapId, value: layer-group
-  var shapeGroups = {}; // key: mapId, value: layer-group
-  var popupGroups = {}; // key: mapId, value: layer-group
 
-  // This object will be the template for the "this" object that is used
-  // in leaflet/shiny methods, down below.
-  var me = {
-    maps: maps,
-    markers: markers,
-    markerGroups: markerGroups,
-    shapeGroups: shapeGroups,
-    popupGroups: popupGroups
-  };
-  
   // We use a Shiny output binding merely to detect when a leaflet map is
   // created and needs to be initialized. We are not expecting any real data
   // to be passed to renderValue.
@@ -36,12 +22,13 @@
           $el.children('script.leaflet-options').text()
         );
         map = L.map(id, leafletOptions);
+        map.id = id;
         $el.data('leaflet-map', map);
         
         maps[id] = map;
-        markerGroups[id] = L.layerGroup().addTo(map);
-        shapeGroups[id] = L.layerGroup().addTo(map);
-        popupGroups[id] = L.layerGroup().addTo(map);
+        map.markers = new LayerStore(map);
+        map.shapes = new LayerStore(map);
+        map.popups = new LayerStore(map);
         
         // When the map is clicked, send the coordinates back to the app
         map.on('click', function(e) {
@@ -86,10 +73,7 @@
       return;
 
     if (methods[data.method]) {
-      methods[data.method].apply($.extend({
-        mapId: mapId,
-        map: map
-      }, me), data.args);
+      methods[data.method].apply(map, data.args);
     } else {
       throw new Error('Unknown method ' + data.method);
     }
@@ -108,25 +92,15 @@
   var methods = {};
 
   methods.setView = function(lat, lng, zoom, forceReset) {
-    this.map.setView([lat, lng], zoom, forceReset);
+    this.setView([lat, lng], zoom, forceReset);
   };
 
   methods.addMarker = function(lat, lng, layerId, options) {
     var marker = L.marker([lat, lng], options);
-    var markerId = layerId;
-    var mapId = this.mapId;
-
-    if (markerId) {
-      this.markers[mapId] = this.markers[mapId] || {};
-      var oldMarker = this.markers[mapId][markerId];
-      if (oldMarker)
-        this.markerGroups[mapId].removeLayer(oldMarker);
-      this.markers[mapId][markerId] = marker;
-    }
-    this.markerGroups[mapId].addLayer(marker);
+    this.markers.add(marker, layerId);
     marker.on('click', function(e) {
-      Shiny.onInputChange(mapId + '_marker_click', {
-        id: markerId,
+      Shiny.onInputChange(this.id + '_marker_click', {
+        id: layerId,
         lat: e.target.getLatLng().lat,
         lng: e.target.getLatLng().lng,
         '.nonce': Math.random()  // force reactivity
@@ -135,16 +109,15 @@
   };
 
   methods.clearMarkers = function() {
-    this.markerGroups[this.mapId].clearLayers();
-    this.markers[this.mapId] = {};
+    this.markers.clear();
   };
 
   methods.clearShapes = function() {
-    this.shapeGroups[this.mapId].clearLayers();
+    this.shapes.clear();
   };
 
   methods.fitBounds = function(lat1, lng1, lat2, lng2) {
-    this.map.fitBounds([
+    this.fitBounds([
       [lat1, lng1], [lat2, lng2]
     ]);
   };
@@ -164,9 +137,9 @@
           [lat2[i], lng2[i]]
         ], options);
         var thisId = layerId[i];
-        self.shapeGroups[self.mapId].addLayer(rect);
+        self.shapes.addLayer(rect, thisId);
         rect.on('click', function(e) {
-          Shiny.onInputChange(self.mapId + '_shape_click', {
+          Shiny.onInputChange(self.id + '_shape_click', {
             id: thisId,
             lat: e.target.getLatLng().lat,
             lng: e.target.getLatLng().lng,
@@ -177,8 +150,18 @@
     }
   };
 
+  function mouseHandler(mapId, layerId, eventName) {
+    return function(e) {
+      Shiny.onInputChange(mapId + '_' + eventName, {
+        id: layerId,
+        lat: e.target.getLatLng().lat,
+        lng: e.target.getLatLng().lng,
+        '.nonce': Math.random()  // force reactivity
+      });
+    };
+  }
+
   methods.addCircle = function(lat, lng, radius, layerId, options) {
-    var self = this;
     lat = vectorize(lat);
     lng = vectorize(lng, lat.length);
     radius = vectorize(radius, lat.length);
@@ -188,16 +171,11 @@
       (function() {
         var circle = L.circle([lat[i], lng[i]], radius[i], options);
         var thisId = layerId[i];
-        self.shapeGroups[self.mapId].addLayer(circle);
-        circle.on('click', function(e) {
-          Shiny.onInputChange(self.mapId + '_shape_click', {
-            id: thisId,
-            lat: e.target.getLatLng().lat,
-            lng: e.target.getLatLng().lng,
-            '.nonce': Math.random()  // force reactivity
-          });
-        });
-      })();
+        this.shapes.add(circle, thisId);
+        circle.on('click', mouseHandler(this.id, thisId, 'shape_click'), this);
+        circle.on('mouseover', mouseHandler(this.id, thisId, 'shape_mouseover'), this);
+        circle.on('mouseout', mouseHandler(this.id, thisId, 'shape_mouseout'), this);
+      }).call(this);
     }
   };
 
@@ -205,10 +183,59 @@
     var popup = L.popup(options)
       .setLatLng([lat, lng])
       .setContent(content);
-    this.popupGroups[this.mapId].addLayer(popup);
+    this.popups.add(popup, layerId);
+  };
+
+  methods.removePopup = function(layerId) {
+    this.popups.remove(layerId);
   };
 
   methods.clearPopups = function() {
-    this.popupGroups[this.mapId].clearLayers();
+    this.popups.clear();
   };
+
+  function LayerStore(map) {
+    this._layers = {};
+    this._group = L.layerGroup().addTo(map);
+  }
+
+  LayerStore.prototype.add = function(layer, id) {
+    if (typeof(id) !== 'undefined' && id !== null) {
+      if (this._layers[id]) {
+        this._group.removeLayer(this._layers[id]);
+      }
+      this._layers[id] = layer;
+    }
+    this._group.addLayer(layer);
+  };
+
+  LayerStore.prototype.remove = function(id) {
+    if (this._layers[id]) {
+      this._group.removeLayer(this._layers[id]);
+      delete this._layers[id];
+    }
+  };
+
+  LayerStore.prototype.get = function(id) {
+    return this._layers[id];
+  };
+
+  LayerStore.prototype.clear = function() {
+    this._layers = {};
+    this._group.clearLayers();
+  };
+
+  LayerStore.prototype.each = function(iterator) {
+    this._group.eachLayer(iterator);
+  };
+
+  LayerStore.prototype.keys = function() {
+    var keys = [];
+    for (key in this._layers) {
+      if (this._layers.hasOwnProperty(key))
+        keys.push(key);
+    }
+    return keys;
+  };
+
 })();
