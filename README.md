@@ -8,8 +8,6 @@ This R package makes it easy to integrate and control Leaflet maps from Shiny ap
 
 ----
 
-Copyright 2013 RStudio, Inc.
-
 Population data is from US Census Bureau:
 http://www.census.gov/popest/data/intercensal/cities/cities2010.html
 http://www.census.gov/popest/data/intercensal/cities/files/SUB-EST00INT.csv~/lea
@@ -21,3 +19,5 @@ http://geonames.usgs.gov/docs/stategaz/NationalFile_20130602.zip
 ### License
 
 This package is licensed to you under the terms of the [GNU General Public License](http://www.gnu.org/licenses/gpl.html) version 3 or later.
+
+Copyright 2013 RStudio, Inc.
