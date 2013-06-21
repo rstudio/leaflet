@@ -18,7 +18,6 @@ actionLink <- function(inputId, ...) {
 
 shinyUI(bootstrapPage(
   tags$head(tags$link(rel='stylesheet', type='text/css', href='styles.css')),
-  tags$script(src='jquery.sparkline.min.js'),
   leafletMap(
     "map", "100%", 400,
     initialTileLayer = "http://{s}.tiles.mapbox.com/v3/jcheng.map-5ebohr46/{z}/{x}/{y}.png",
