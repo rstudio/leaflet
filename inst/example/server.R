@@ -5,7 +5,7 @@ library(maps)
 data(uspop2000)
 
 # From a future version of Shiny
-observeEvent <- function(eventExpr, callback, env=parent.frame(), quoted=FALSE) {
+bindEvent <- function(eventExpr, callback, env=parent.frame(), quoted=FALSE) {
   eventFunc <- exprToFunction(eventExpr, env, quoted)
   
   initialized <- FALSE
@@ -19,39 +19,14 @@ observeEvent <- function(eventExpr, callback, env=parent.frame(), quoted=FALSE) 
 }
 
 shinyServer(function(input, output, session) {
-  # Create reactive values object to store our markers
+  # Create reactive values object to store our markers, so we can show 
+  # their values in a table.
   values <- reactiveValues(markers = NULL)
   
-  # Create the map; this is not the "real" map, but rather a proxy object that
-  # lets us control the leaflet map on the page.
-  map <- createLeafletMap(session, 'map')
+  # Define some reactives for accessing the data
   
-  observeEvent(input$addMarker, function() {
-    map$addMarker(input$lat, input$lng, NULL, list(draggable = input$draggable))
-    values$markers <- rbind(data.frame(lat=input$lat, long=input$lng),
-                            values$markers)
-  })
-  
-  observeEvent(input$map_click, function() {
-    values$selectedCity <- NULL
-    if (!input$addMarkerOnClick)
-      return()
-    map$addMarker(input$map_click$lat, input$map_click$lng, NULL)
-    values$markers <- rbind(data.frame(lat=input$map_click$lat,
-                                       long=input$map_click$lng),
-                            values$markers)
-  })
-  
-  observeEvent(input$map_marker_click, function() {
-    updateNumericInput(session, 'lat', value=input$map_marker_click$lat)
-    updateNumericInput(session, 'lng', value=input$map_marker_click$lng)
-  })
-  
-  observeEvent(input$clearMarkers, function() {
-    map$clearMarkers()
-    values$markers <- NULL
-  })
-  
+  # Retrieve the name of the column that contains the selected year's
+  # population
   popCol <- reactive({
     paste('Pop', input$year, sep='')
   })
@@ -72,22 +47,44 @@ shinyServer(function(input, output, session) {
     )
   }
   
+  # The cities that are within the visible bounds of the map
   citiesInBounds <- reactive({
     if (is.null(input$map_bounds))
       return(uspop2000[FALSE,])
     bounds <- input$map_bounds
     latRng <- range(bounds$north, bounds$south)
     lngRng <- range(bounds$east, bounds$west)
-
+    
     subset(uspop2000,
            Lat >= latRng[1] & Lat <= latRng[2] &
              Long >= lngRng[1] & Long <= lngRng[2])
   })
   
+  # The top N cities (by population) that are within the visible bounds
+  # of the map
   topCitiesInBounds <- reactive({
     cities <- citiesInBounds()
     cities <- head(cities[order(cities[[popCol()]], decreasing=TRUE),],
                    as.numeric(input$maxCities))
+  })
+  
+  # Create the map; this is not the "real" map, but rather a proxy
+  # object that lets us control the leaflet map on the page.
+  map <- createLeafletMap(session, 'map')
+  
+  bindEvent(input$map_click, function() {
+    values$selectedCity <- NULL
+    if (!input$addMarkerOnClick)
+      return()
+    map$addMarker(input$map_click$lat, input$map_click$lng, NULL)
+    values$markers <- rbind(data.frame(lat=input$map_click$lat,
+                                       long=input$map_click$lng),
+                            values$markers)
+  })
+  
+  bindEvent(input$clearMarkers, function() {
+    map$clearMarkers()
+    values$markers <- NULL
   })
   
   radiusFactor <- 1000
@@ -111,7 +108,7 @@ shinyServer(function(input, output, session) {
     )
   })
   
-  observeEvent(input$map_shape_click, function() {
+  bindEvent(input$map_shape_click, function() {
     event <- input$map_shape_click
     map$clearPopups()
     
@@ -159,7 +156,7 @@ shinyServer(function(input, output, session) {
     
   }, include.rownames = FALSE)
   
-  observeEvent(input$randomLocation, function() {
+  bindEvent(input$randomLocation, function() {
     map$setView(runif(1, 29.4, 47),
                 runif(1, -119, -74),
                 as.integer(runif(1, 6, 9)))
