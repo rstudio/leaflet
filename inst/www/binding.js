@@ -149,13 +149,53 @@
       })();
     }
   };
+  
+  /*
+   * @param lat Array of latitude coordinates for polygons; different
+   *   polygons are separated by null.
+   * @param lng Array of longitude coordinates for polygons; different
+   *   polygons are separated by null.
+   * @param layerId Array of layer names.
+   * @param options Array of objects that contain options, one for each
+   *   polygon (or null for default), or null if none.
+   * @param defaultOptions The default set of options that all polygons
+   *   will use.
+   */
+  methods.addPolygon = function(lat, lng, layerId, options, defaultOptions) {
+    var self = this;
+    var coordPos = -1; // index into lat/lng
+    var idPos = -1; // index into layerId
+    if (options === null || typeof(options) === 'undefined' || options.length == 0) {
+      options = [null];
+    }
+    while (++coordPos < lat.length && ++idPos < layerId.length) {
+      (function() {
+        var thisId = layerId[idPos];
+        var points = [];
+        while (coordPos < lat.length && lat[coordPos] !== null) {
+          points.push([lat[coordPos], lng[coordPos]]);
+          coordPos++;
+        }
+        points.pop();
+        var opt = $.extend(true, {}, defaultOptions,
+          options[idPos % options.length]);
+        var polygon = L.polygon(points, opt);
+        self.shapes.add(polygon, thisId);
+        polygon.on('click', mouseHandler(this.id, thisId, 'shape_click'), this);
+        polygon.on('mouseover', mouseHandler(this.id, thisId, 'shape_mouseover'), this);
+        polygon.on('mouseout', mouseHandler(this.id, thisId, 'shape_mouseout'), this);
+      })(this);
+    }
+  };
 
   function mouseHandler(mapId, layerId, eventName) {
     return function(e) {
+      var lat = e.target.getLatLng ? e.target.getLatLng().lat : null;
+      var lng = e.target.getLatLng ? e.target.getLatLng().lng : null;
       Shiny.onInputChange(mapId + '_' + eventName, {
         id: layerId,
-        lat: e.target.getLatLng().lat,
-        lng: e.target.getLatLng().lng,
+        lat: lat,
+        lng: lng,
         '.nonce': Math.random()  // force reactivity
       });
     };

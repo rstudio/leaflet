@@ -41,6 +41,9 @@ createLeafletMap <- function(session, outputId) {
     addCircle = function(lat, lng, radius, layerId = NULL, options=list()) {
       send('addCircle', lat, lng, radius, layerId, options)
     },
+    addPolygon = function(lat, lng, layerId, options, defaultOptions) {
+      send('addPolygon', lat, lng, layerId, options, defaultOptions)
+    },
     showPopup = function(lat, lng, content, layerId = NULL, options=list()) {
       send('showPopup', lat, lng, content, layerId, options)
     },
