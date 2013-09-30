@@ -184,7 +184,7 @@
         polygon.on('click', mouseHandler(this.id, thisId, 'shape_click'), this);
         polygon.on('mouseover', mouseHandler(this.id, thisId, 'shape_mouseover'), this);
         polygon.on('mouseout', mouseHandler(this.id, thisId, 'shape_mouseout'), this);
-      })(this);
+      }).call(this);
     }
   };
 
