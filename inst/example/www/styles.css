@@ -5,19 +5,29 @@ body {
   padding-bottom: 20px;
 }
 
-body,
-table.data.table-bordered td,
-label {
+body {
   font-family: Source Sans Pro;
   color: #444;
   font-weight: 300;
 }
 
-h2,
-h3,
-h4,
-.table th {
-  font-weight: 600;
+#map {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 400;
+}
+
+#data table {
+  width: 100%;
+}
+#data td+td {
+  width: 80px;
+}
+
+.container-fluid {
+  padding-top: 400px;
 }
 
 #desc { font-size: 16px; }
@@ -27,12 +37,3 @@ h4,
   font-weight: 400;
 }
 
-#data {
-  height: 350px;
-  overflow-y: auto;
-  padding: 0;
-}
-
-#data table { margin: 0 }
-#data table td { width: 90px; }
-#data table td:first-child { width: 180px; }
