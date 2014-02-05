@@ -96,10 +96,11 @@
   };
 
   methods.addMarker = function(lat, lng, layerId, options) {
+    var self = this;
     var marker = L.marker([lat, lng], options);
     this.markers.add(marker, layerId);
     marker.on('click', function(e) {
-      Shiny.onInputChange(this.id + '_marker_click', {
+      Shiny.onInputChange(self.id + '_marker_click', {
         id: layerId,
         lat: e.target.getLatLng().lat,
         lng: e.target.getLatLng().lng,
