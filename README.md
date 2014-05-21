@@ -4,7 +4,7 @@
 
 [Shiny](http://rstudio.com/shiny) is an open-source R framework for interactive webapps.
 
-This R package makes it easy to integrate and control Leaflet maps from Shiny applications. [Here's an example application](http://glimmer.rstudio.com/jcheng/leaflet-demo) (see inst/example for the source).
+This R package makes it easy to integrate and control Leaflet maps from Shiny applications. [Here's an example application](http://glimmer.rstudio.com/jcheng/leaflet-demo) (see inst/examples/population for the source).
 
 ----
 
