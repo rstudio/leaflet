@@ -231,27 +231,6 @@ var dataframe = (function() {
     }
   });
   
-  function mergeOptions(length, options, eachOptions) {
-    if (!eachOptions)
-      return function() { return options || {}; }
-
-    var keys = [];
-    $.each(eachOptions, function(key, value) {
-      eachOptions[key] = recycle(eachOptions[key], length);
-      keys.push(key);
-    });
-
-    var allOptions = [];
-    for (var i = 0; i < length; i++) {
-      console.log(i);
-      var thisOptions = {};
-      for (var j = 0; j < keys.length; j++)
-        thisOptions[keys[j]] = eachOptions[keys[j]][i];
-      allOptions.push($.extend({}, options, thisOptions));
-    }
-    return function(index) { return allOptions[index]; };
-  }
-
   var methods = {};
 
   methods.setView = function(lat, lng, zoom, forceReset) {
