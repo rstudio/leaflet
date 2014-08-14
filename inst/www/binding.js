@@ -272,7 +272,26 @@ var dataframe = (function() {
     });
   };
 
-  methods.clearMarkers = function() {
+  methods.addCircleMarker = function(lat, lng, radius, layerId, options, eachOptions) {
+    var df = dataframe.create()
+      .col('lat', lat)
+      .col('lng', lng)
+      .col('radius', radius)
+      .col('layerId', layerId)
+      .cbind(options)
+      .cbind(eachOptions);
+
+    for (var i = 0; i < df.nrow(); i++) {
+      (function() {
+        var circle = L.circleMarker([df.get(i, 'lat'), df.get(i, 'lng')], df.get(i));
+        var thisId = df.get(i, 'layerId');
+        this.markers.add(circle, thisId);
+        circle.on('click', mouseHandler(this.id, thisId, 'marker_click'), this);
+      }).call(this);
+    }
+  };
+
+methods.clearMarkers = function() {
     this.markers.clear();
   };
 
