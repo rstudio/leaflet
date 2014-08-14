@@ -258,18 +258,24 @@ var dataframe = (function() {
     this.setView([lat, lng], zoom, forceReset);
   };
 
-  methods.addMarker = function(lat, lng, layerId, options) {
-    var self = this;
-    var marker = L.marker([lat, lng], options);
-    this.markers.add(marker, layerId);
-    marker.on('click', function(e) {
-      Shiny.onInputChange(self.id + '_marker_click', {
-        id: layerId,
-        lat: e.target.getLatLng().lat,
-        lng: e.target.getLatLng().lng,
-        '.nonce': Math.random()  // force reactivity
-      });
-    });
+  methods.addMarker = function(lat, lng, layerId, options, eachOptions) {
+    var df = dataframe.create()
+      .col('lat', lat)
+      .col('lng', lng)
+      .col('layerId', layerId)
+      .cbind(options)
+      .cbind(eachOptions);
+
+    for (var i = 0; i < df.nrow(); i++) {
+      (function() {
+        var marker = L.marker([df.get(i, 'lat'), df.get(i, 'lng')], df.get(i));
+        var thisId = df.get(i, 'layerId');
+        this.markers.add(marker, thisId);
+        marker.on('click', mouseHandler(this.id, thisId, 'marker_click'), this);
+        marker.on('mouseover', mouseHandler(this.id, thisId, 'marker_mouseover'), this);
+        marker.on('mouseout', mouseHandler(this.id, thisId, 'marker_mouseout'), this);
+      }).call(this);
+    }
   };
 
   methods.addCircleMarker = function(lat, lng, radius, layerId, options, eachOptions) {
@@ -287,6 +293,8 @@ var dataframe = (function() {
         var thisId = df.get(i, 'layerId');
         this.markers.add(circle, thisId);
         circle.on('click', mouseHandler(this.id, thisId, 'marker_click'), this);
+        circle.on('mouseover', mouseHandler(this.id, thisId, 'marker_mouseover'), this);
+        circle.on('mouseout', mouseHandler(this.id, thisId, 'marker_mouseout'), this);
       }).call(this);
     }
   };
