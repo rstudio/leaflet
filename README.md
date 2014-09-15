@@ -14,14 +14,7 @@ Use the following two functions from your Shiny app to create Leaflet maps.
 
 ----
 
-<h4>
-```r
-leafletMap(outputId, width, height,
-  initialTileLayer = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-  initialTileLayerAttribution = HTML('&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'),
-  options=NULL)
-```
-</h4>
+##### leafletMap(outputId, width, height, initialTileLayer = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', initialTileLayerAttribution = HTML('&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'), options=NULL)
 
 The `leafletMap` function is called from `ui.R` (or from `renderUI`); it
 creates a `<div>` that will contain a Leaflet map. The `width` and `height`
@@ -34,7 +27,7 @@ about providing tile layer URLs.
 
 ----
 
-#### `createLeafletMap(session, outputId)`
+##### createLeafletMap(session, outputId)
 
 The `createLeafletMap` function is called from `server.R` and returns an object
 that can be used to manipulate the Leaflet map from R (see Methods, below).
@@ -65,21 +58,21 @@ This `layerId` is optional but useful for several purposes:
 
 ----
 
-#### `setView(lat, lng, zoom, forceReset = FALSE)`
+##### setView(lat, lng, zoom, forceReset = FALSE)
 
 Sets the center and zoom level of the map. `forceReset` will completely reset
 the map view, without animations.
 
 ----
 
-#### `fitBounds(lat1, lng1, lat2, lng2)`
+##### fitBounds(lat1, lng1, lat2, lng2)
 
 Modifies the center and zoom level of the map such that the specified bounds are
 visible.
 
 ----
 
-#### `addMarker(lat, lng, layerId=NULL, options=list(), eachOptions=list())`
+##### addMarker(lat, lng, layerId=NULL, options=list(), eachOptions=list())
 
 Adds markers at the designated points. The number of markers added will be the
 maximum length of `lat`, `lng`, and `layerId` (if provided); if the lengths of
@@ -96,7 +89,7 @@ Events: `input$MAPID_LAYERID_marker_click`,
 
 ----
 
-#### `addCircleMarker(lat, lng, radius, layerId = NULL, options = list(), eachOptions=list())`
+##### addCircleMarker(lat, lng, radius, layerId = NULL, options = list(), eachOptions=list())
 
 Adds circle markers. Circle markers are like circles, but their pixel radius
 remains constant as the user zooms in and out.
@@ -118,7 +111,7 @@ Events: `input$MAPID_LAYERID_marker_click`,
 
 ----
 
-#### `addCircle(lat, lng, radius, layerId = NULL, options=list(), eachOptions=list())`
+##### addCircle(lat, lng, radius, layerId = NULL, options=list(), eachOptions=list())
 
 Adds circle overlays to the map.
 
@@ -139,7 +132,7 @@ Events: `input$MAPID_LAYERID_shape_click`,
 
 ----
 
-#### `addRectangle(lat1, lng1, lat2, lng2, layerId = NULL, options=list(), eachOptions=list())`
+##### addRectangle(lat1, lng1, lat2, lng2, layerId = NULL, options=list(), eachOptions=list())
 
 Adds rectangular overlays to the map.
 
@@ -158,7 +151,7 @@ Events: `input$MAPID_LAYERID_shape_click`,
 
 ----
 
-#### `addPolygon(lat, lng, layerId, options, defaultOptions)`
+##### addPolygon(lat, lng, layerId, options, defaultOptions)
 
 Adds polygon overlays to the map. `lat` and `lng` encode successive points of
 each polygon; the end of a polygon is specified with (`NA`, `NA`). (This is the
@@ -177,7 +170,7 @@ that will be applied to the corresponding polygon.
 
 ----
 
-#### `addGeoJSON(data, layerId)`
+##### addGeoJSON(data, layerId)
 
 Adds GeoJSON to the map. `data` can be either a GeoJSON string (must be a
 **single-element** character vector) or structured GeoJSON data (in the form of
@@ -197,19 +190,19 @@ Events: `input$MAPID_LAYERID_geojson_click`,
 
 ----
 
-#### `clearMarkers()`
+##### clearMarkers()
 
 Clears all markers currently on the map.
 
 ----
 
-#### `clearShapes()`
+##### clearShapes()
 
 Clears all shapes currently on the map.
 
 ----
 
-#### `showPopup(lat, lng, content, layerId = NULL, options=list())`
+##### showPopup(lat, lng, content, layerId = NULL, options=list())
 
 Show a popup at the specified location, with the given content. The content
 string will be interpreted as HTML.
@@ -219,13 +212,13 @@ string will be interpreted as HTML.
 
 ----
 
-#### `removePopup(layerId)`
+##### removePopup(layerId)
 
 Remove the specified popup.
 
 ----
 
-#### `clearPopups()`
+##### clearPopups()
 
 Remove all popups.
 
