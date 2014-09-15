@@ -8,11 +8,11 @@ This R package makes it easy to integrate and control Leaflet maps from Shiny ap
 
 ## Documentation
 
+----
+
 ### Functions
 
 Use the following two functions from your Shiny app to create Leaflet maps.
-
-----
 
 ##### leafletMap(outputId, width, height, initialTileLayer = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', initialTileLayerAttribution = HTML('&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'), options=NULL)
 
@@ -24,8 +24,6 @@ value which will be interpreted as pixels. The `options` parameter is a list of
 
 See [TileLayer](http://leafletjs.com/reference.html#tilelayer) for information
 about providing tile layer URLs.
-
-----
 
 ##### createLeafletMap(session, outputId)
 
@@ -56,21 +54,15 @@ This `layerId` is optional but useful for several purposes:
   to remove the old layer
 * You will need a `layerId` to subscribe to events. See Events section below.
 
-----
-
 ##### setView(lat, lng, zoom, forceReset = FALSE)
 
 Sets the center and zoom level of the map. `forceReset` will completely reset
 the map view, without animations.
 
-----
-
 ##### fitBounds(lat1, lng1, lat2, lng2)
 
 Modifies the center and zoom level of the map such that the specified bounds are
 visible.
-
-----
 
 ##### addMarker(lat, lng, layerId=NULL, options=list(), eachOptions=list())
 
@@ -86,8 +78,6 @@ option value can be a vector, where each element corresponds to a single marker
 
 Events: `input$MAPID_LAYERID_marker_click`,
 `input$MAPID_LAYERID_marker_mouseover`, `input$MAPID_LAYERID_marker_mouseout`
-
-----
 
 ##### addCircleMarker(lat, lng, radius, layerId = NULL, options = list(), eachOptions=list())
 
@@ -109,8 +99,6 @@ option value can be a vector, where each element corresponds to a single marker
 Events: `input$MAPID_LAYERID_marker_click`,
 `input$MAPID_LAYERID_marker_mouseover`, `input$MAPID_LAYERID_marker_mouseout`
 
-----
-
 ##### addCircle(lat, lng, radius, layerId = NULL, options=list(), eachOptions=list())
 
 Adds circle overlays to the map.
@@ -130,8 +118,6 @@ option value can be a vector, where each element corresponds to a single circle
 Events: `input$MAPID_LAYERID_shape_click`,
 `input$MAPID_LAYERID_shape_mouseover`, `input$MAPID_LAYERID_shape_mouseout`
 
-----
-
 ##### addRectangle(lat1, lng1, lat2, lng2, layerId = NULL, options=list(), eachOptions=list())
 
 Adds rectangular overlays to the map.
@@ -149,8 +135,6 @@ rectangle (recycling will be used if necessary).
 Events: `input$MAPID_LAYERID_shape_click`,
 `input$MAPID_LAYERID_shape_mouseover`, `input$MAPID_LAYERID_shape_mouseout`
 
-----
-
 ##### addPolygon(lat, lng, layerId, options, defaultOptions)
 
 Adds polygon overlays to the map. `lat` and `lng` encode successive points of
@@ -167,8 +151,6 @@ This ought to be fixed in a future, compatibility-breaking release.
 [path options](http://leafletjs.com/reference.html#path-options) that will
 be applied to all of the polygons. `options` is a list of lists of path options
 that will be applied to the corresponding polygon.
-
-----
 
 ##### addGeoJSON(data, layerId)
 
@@ -188,19 +170,13 @@ events as a `featureId` field on the event object.
 Events: `input$MAPID_LAYERID_geojson_click`,
 `input$MAPID_LAYERID_geojson_mouseover`, `input$MAPID_LAYERID_geojson_mouseout`
 
-----
-
 ##### clearMarkers()
 
 Clears all markers currently on the map.
 
-----
-
 ##### clearShapes()
 
 Clears all shapes currently on the map.
-
-----
 
 ##### showPopup(lat, lng, content, layerId = NULL, options=list())
 
@@ -210,13 +186,9 @@ string will be interpreted as HTML.
 `options` is a list of
 [popup options](http://leafletjs.com/reference.html#popup-options).
 
-----
-
 ##### removePopup(layerId)
 
 Remove the specified popup.
-
-----
 
 ##### clearPopups()
 
