@@ -76,8 +76,8 @@ be applied to all of the markers; `eachOptions` is the same except that each
 option value can be a vector, where each element corresponds to a single marker
 (recycling will be used if necessary).
 
-Events: `input$MAPID_LAYERID_marker_click`,
-`input$MAPID_LAYERID_marker_mouseover`, `input$MAPID_LAYERID_marker_mouseout`
+Events: `input$MAPID_marker_click`, `input$MAPID_marker_mouseover`,
+`input$MAPID_marker_mouseout`
 
 ##### addCircleMarker(lat, lng, radius, layerId = NULL, options = list(), eachOptions=list())
 
@@ -96,8 +96,8 @@ be applied to all of the markers; `eachOptions` is the same except that each
 option value can be a vector, where each element corresponds to a single marker
 (recycling will be used if necessary).
 
-Events: `input$MAPID_LAYERID_marker_click`,
-`input$MAPID_LAYERID_marker_mouseover`, `input$MAPID_LAYERID_marker_mouseout`
+Events: `input$MAPID_marker_click`, `input$MAPID_marker_mouseover`,
+`input$MAPID_marker_mouseout`
 
 ##### addCircle(lat, lng, radius, layerId = NULL, options=list(), eachOptions=list())
 
@@ -115,8 +115,8 @@ be applied to all of the circles; `eachOptions` is the same except that each
 option value can be a vector, where each element corresponds to a single circle
 (recycling will be used if necessary).
 
-Events: `input$MAPID_LAYERID_shape_click`,
-`input$MAPID_LAYERID_shape_mouseover`, `input$MAPID_LAYERID_shape_mouseout`
+Events: `input$MAPID_shape_click`, `input$MAPID_shape_mouseover`,
+`input$MAPID_shape_mouseout`
 
 ##### addRectangle(lat1, lng1, lat2, lng2, layerId = NULL, options=list(), eachOptions=list())
 
@@ -132,8 +132,8 @@ be applied to all of the rectangles; `eachOptions` is the same except that each
 option value can be a vector, where each element corresponds to a single
 rectangle (recycling will be used if necessary).
 
-Events: `input$MAPID_LAYERID_shape_click`,
-`input$MAPID_LAYERID_shape_mouseover`, `input$MAPID_LAYERID_shape_mouseout`
+Events: `input$MAPID_shape_click`, `input$MAPID_shape_mouseover`,
+`input$MAPID_shape_mouseout`
 
 ##### addPolygon(lat, lng, layerId, options, defaultOptions)
 
@@ -167,8 +167,8 @@ options are available.
 If a GeoJSON feature has an `id` member, that value will be passed back during
 events as a `featureId` field on the event object.
 
-Events: `input$MAPID_LAYERID_geojson_click`,
-`input$MAPID_LAYERID_geojson_mouseover`, `input$MAPID_LAYERID_geojson_mouseout`
+Events: `input$MAPID_geojson_click`, `input$MAPID_geojson_mouseover`,
+`input$MAPID_geojson_mouseout`
 
 ##### clearMarkers()
 
