@@ -314,8 +314,9 @@ var dataframe = (function() {
     for (var i = 0; i < df.nrow(); i++) {
       (function() {
         var rect = L.rectangle([
-          [df.get(i, 'lat1'), df.get(i, 'lng1')],
-          [df.get(i, 'lat2'), df.get(i, 'lng2')],
+            [df.get(i, 'lat1'), df.get(i, 'lng1')],
+            [df.get(i, 'lat2'), df.get(i, 'lng2')]
+          ],
           df.get(i));
         var thisId = df.get(i, 'layerId');
         this.shapes.add(rect, thisId);
