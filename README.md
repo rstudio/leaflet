@@ -8,6 +8,42 @@ This R package makes it easy to integrate and control Leaflet maps from Shiny ap
 
 ## Documentation
 
+### Functions
+
+Use the following two functions from your Shiny app to create Leaflet maps.
+
+----
+
+<h4>
+```r
+leafletMap(outputId, width, height,
+  initialTileLayer = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+  initialTileLayerAttribution = HTML('&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'),
+  options=NULL)
+```
+</h4>
+
+The `leafletMap` function is called from `ui.R` (or from `renderUI`); it
+creates a `<div>` that will contain a Leaflet map. The `width` and `height`
+parameters can either take a CSS length (e.g. `"400px"` or `"50%"`) or a numeric
+value which will be interpreted as pixels. The `options` parameter is a list of
+[map options](http://leafletjs.com/reference.html#map-options).
+
+See [TileLayer](http://leafletjs.com/reference.html#tilelayer) for information
+about providing tile layer URLs.
+
+----
+
+#### `createLeafletMap(session, outputId)`
+
+The `createLeafletMap` function is called from `server.R` and returns an object
+that can be used to manipulate the Leaflet map from R (see Methods, below).
+The `session` argument should be passed through from the `shinyServer` server
+function. `outputId` is the string identifier that was passed to the
+corresponding `leafletMap`.
+
+----
+
 ### Methods
 
 The following are methods that can be called on the map object that is created
@@ -17,6 +53,15 @@ using `createLeafletMap()`. For example:
 map <- createLeafletMap(session, "myMap")
 map$setView(0, 0, 8)
 ```
+
+All of the methods that add something to the map take a `layerId` parameter.
+This `layerId` is optional but useful for several purposes:
+
+* Calling the same add function with the same `layerId` value will replace the
+  old layer instead of just adding a new one
+* You can call `removePopup`, `removeMarker`, or `removeShape` with a `layerId`
+  to remove the old layer
+* You will need a `layerId` to subscribe to events. See Events section below.
 
 ----
 
@@ -183,6 +228,12 @@ Remove the specified popup.
 #### `clearPopups()`
 
 Remove all popups.
+
+----
+
+### Events
+
+TODO
 
 ----
 

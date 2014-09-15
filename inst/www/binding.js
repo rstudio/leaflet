@@ -279,8 +279,16 @@ var dataframe = (function() {
     }
   };
 
-methods.clearMarkers = function() {
+  methods.removeMarker = function(layerId) {
+    this.markers.remove(layerId);
+  };
+
+  methods.clearMarkers = function() {
     this.markers.clear();
+  };
+
+  methods.removeShape = function(layerId) {
+    this.shapes.remove(layerId);
   };
 
   methods.clearShapes = function() {
@@ -433,7 +441,7 @@ methods.clearMarkers = function() {
   methods.clearPopups = function() {
     this.popups.clear();
   };
-
+  
   function LayerStore(map) {
     this._layers = {};
     this._group = L.layerGroup().addTo(map);
@@ -477,5 +485,11 @@ methods.clearMarkers = function() {
     }
     return keys;
   };
+  /*
+  function unflattenLatLng(lat, lng, levels) {
+    var stack = [];
+    function 
+  }
+  */
 
 })();
