@@ -62,7 +62,7 @@ createLeafletMap <- function(session, outputId) {
     structure(list(func), names = name)
   }
   
-  c(
+  structure(c(
     stub(setView(lat, lng, zoom, forceReset = FALSE)),
     stub(addMarker(lat, lng, layerId=NULL, options=list(), eachOptions=list())),
     stub(addCircleMarker(lat, lng, radius, layerId = NULL, options = list(), eachOptions=list())),
@@ -70,12 +70,13 @@ createLeafletMap <- function(session, outputId) {
     stub(clearShapes()),
     stub(fitBounds(lat1, lng1, lat2, lng2)),
     stub(addCircle(lat, lng, radius, layerId = NULL, options=list(), eachOptions=list())),
-    stub(addRectangle(lat1, lng1, lat2, lng2, layerId = NULL, options=list())),
+    stub(addRectangle(lat1, lng1, lat2, lng2, layerId = NULL, options=list(), eachOptions=list())),
     stub(addPolygon(lat, lng, layerId, options, defaultOptions)),
+    stub(addGeoJSON(data, layerId)),
     stub(showPopup(lat, lng, content, layerId = NULL, options=list())),
     stub(removePopup(layerId)),
     stub(clearPopups())
-  )
+  ), class = "leaflet_map")
 }
 
 #' @export

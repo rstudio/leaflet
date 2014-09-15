@@ -181,6 +181,7 @@ var dataframe = (function() {
         map.markers = new LayerStore(map);
         map.shapes = new LayerStore(map);
         map.popups = new LayerStore(map);
+        map.geojson = new LayerStore(map);
         
         // When the map is clicked, send the coordinates back to the app
         map.on('click', function(e) {
@@ -292,31 +293,28 @@ methods.clearMarkers = function() {
     ]);
   };
 
-  methods.addRectangle = function(lat1, lng1, lat2, lng2, layerId, options) {
-    var self = this;
-    lat1 = recycle(lat1);
-    lng1 = recycle(lng1, lat1.length);
-    lat2 = recycle(lat2, lat1.length);
-    lng2 = recycle(lng2, lat1.length);
-    layerId = recycle(layerId, lat1.length);
-    
-    for (var i = 0; i < lat1.length; i++) {
+  methods.addRectangle = function(lat1, lng1, lat2, lng2, layerId, options, eachOptions) {
+    var df = dataframe.create()
+      .col('lat1', lat)
+      .col('lng1', lng)
+      .col('lat2', lat)
+      .col('lng2', lng)
+      .col('layerId', layerId)
+      .cbind(options)
+      .cbind(eachOptions);
+
+    for (var i = 0; i < df.nrow(); i++) {
       (function() {
         var rect = L.rectangle([
-          [lat1[i], lng1[i]],
-          [lat2[i], lng2[i]]
-        ], options);
-        var thisId = layerId[i];
-        self.shapes.addLayer(rect, thisId);
-        rect.on('click', function(e) {
-          Shiny.onInputChange(self.id + '_shape_click', {
-            id: thisId,
-            lat: e.target.getLatLng().lat,
-            lng: e.target.getLatLng().lng,
-            '.nonce': Math.random()  // force reactivity
-          });
-        });
-      })();
+          [df.get(i, 'lat1'), df.get(i, 'lng1')],
+          [df.get(i, 'lat2'), df.get(i, 'lng2')],
+          df.get(i));
+        var thisId = df.get(i, 'layerId');
+        this.shapes.add(rect, thisId);
+        rect.on('click', mouseHandler(this.id, thisId, 'shape_click'), this);
+        rect.on('mouseover', mouseHandler(this.id, thisId, 'shape_mouseover'), this);
+        rect.on('mouseout', mouseHandler(this.id, thisId, 'shape_mouseout'), this);
+      }).call(this);
     }
   };
   
@@ -358,16 +356,16 @@ methods.clearMarkers = function() {
     }
   };
 
-  function mouseHandler(mapId, layerId, eventName) {
+  function mouseHandler(mapId, layerId, eventName, extraInfo) {
     return function(e) {
       var lat = e.target.getLatLng ? e.target.getLatLng().lat : null;
       var lng = e.target.getLatLng ? e.target.getLatLng().lng : null;
-      Shiny.onInputChange(mapId + '_' + eventName, {
+      Shiny.onInputChange(mapId + '_' + eventName, $.extend({
         id: layerId,
         lat: lat,
         lng: lng,
         '.nonce': Math.random()  // force reactivity
-      });
+      }, extraInfo));
     };
   }
 
@@ -390,6 +388,35 @@ methods.clearMarkers = function() {
         circle.on('mouseout', mouseHandler(this.id, thisId, 'shape_mouseout'), this);
       }).call(this);
     }
+  };
+  
+  methods.addGeoJSON = function(data, layerId) {
+    var self = this;
+    if (typeof(data) === "string") {
+      data = JSON.parse(data);
+    }
+    
+    var globalStyle = data.style || {};
+    
+    var gjlayer = L.geoJson(data, {
+      style: function(feature) {
+        if (feature.style || feature.properties.style) {
+          return $.extend({}, globalStyle, feature.style, feature.properties.style);
+        } else {
+          return globalStyle;
+        }
+      },
+      onEachFeature: function(feature, layer) {
+        var extraInfo = {
+          featureId: feature.id,
+          properties: feature.properties
+        };
+        layer.on("click", mouseHandler(self.id, layerId, "geojson_click", extraInfo), this);
+        layer.on("mouseover", mouseHandler(self.id, layerId, "geojson_mouseover", extraInfo), this);
+        layer.on("mouseout", mouseHandler(self.id, layerId, "geojson_mouseout", extraInfo), this);
+      }
+    });
+    this.geojson.add(gjlayer, layerId);
   };
 
   methods.showPopup = function(lat, lng, content, layerId, options) {
