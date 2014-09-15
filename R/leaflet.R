@@ -79,7 +79,7 @@ createLeafletMap <- function(session, outputId) {
     stub(removeShape(layerId)),
     stub(clearShapes()),
     stub(removeMarker(layerId)),
-    stub(clearMarkers()),
+    stub(clearMarkers())
   ), class = "leaflet_map")
 }
 
