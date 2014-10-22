@@ -9,10 +9,10 @@ createLeafletMap <- function(session, outputId) {
   # and the other arguments will be serialized to JS objects and used as
   # client side function args.
   send <- function(method, func, msg) {
-    
+
     msg <- msg[names(formals(func))]
     names(msg) <- NULL
-    
+
     origDigits <- getOption('digits')
     options(digits=22)
     on.exit(options(digits=origDigits))
@@ -22,11 +22,11 @@ createLeafletMap <- function(session, outputId) {
       args = msg
     ))
   }
-  
+
   baseimpl <- function() {
     send(`__name__`, sys.function(), as.list(environment()))
   }
-  
+
   # Turns a call like:
   #
   #     stub(setView(lat, lng, zoom, forceReset = FALSE))
@@ -41,27 +41,27 @@ createLeafletMap <- function(session, outputId) {
     p <- substitute(prototype)
     # The function name is the first element
     name <- as.character(p[[1]])
-    
+
     # Get textual representation of the expression; change name to "function"
     # and add a NULL function body
     txt <- paste(deparse(p), collapse = "\n")
     txt <- sub(name, "function", txt, fixed = TRUE)
     txt <- paste0(txt, "NULL")
-    
+
     # Create the function
     func <- eval(parse(text = txt))
-    
+
     # Replace the function body, using baseimpl's body as a template
     body(func) <- substituteDirect(
       body(baseimpl),
       as.environment(list("__name__"=name))
     )
     environment(func) <- environment(baseimpl)
-    
+
     # Return as list
     structure(list(func), names = name)
   }
-  
+
   structure(c(
     stub(setView(lat, lng, zoom, forceReset = FALSE)),
     stub(addMarker(lat, lng, layerId=NULL, options=list(), eachOptions=list())),
@@ -96,7 +96,7 @@ leafletMap <- function(
     width <- sprintf("%dpx", width)
   if (is.numeric(height))
     height <- sprintf("%dpx", height)
-  
+
   tagList(
     singleton(
       tags$head(
@@ -110,7 +110,7 @@ leafletMap <- function(
       style = sprintf("width: %s; height: %s", width, height),
       `data-initial-tile-layer` = initialTileLayer,
       `data-initial-tile-layer-attrib` = initialTileLayerAttribution,
-      
+
       tags$script(
         type="application/json", class="leaflet-options",
         ifelse(is.null(options), "{}", RJSONIO::toJSON(options))
