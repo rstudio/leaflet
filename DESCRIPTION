@@ -12,3 +12,6 @@ License: GPL-3
 Imports:
     shiny (>= 0.6.0),
     RJSONIO
+Suggests:
+    knitr
+VignetteBuilder: knitr
