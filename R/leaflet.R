@@ -86,10 +86,15 @@ createLeafletMap <- function(session, outputId) {
 #' @export
 leafletMap <- function(
   outputId, width, height,
-  initialTileLayer = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', 
-  initialTileLayerAttribution = HTML('&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'),
-  options=NULL) {
-  
+  initialTileLayer = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+  initialTileLayerAttribution,
+  options = NULL
+) {
+
+  if (missing(initialTileLayerAttribution) && missing(initialTileLayer)) {
+    initialTileLayerAttribution <- HTML('&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>')
+  }
+
   addResourcePath("leaflet", system.file("www", package="leaflet"))
 
   if (is.numeric(width))
