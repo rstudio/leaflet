@@ -1,3 +1,14 @@
+#' Create a Leaflet map object in R
+#'
+#' This function is called from \file{server.R} and returns an object that can
+#' be used to manipulate the Leaflet map from R.
+#' @param session The \code{session} argument passed through from the
+#'   \code{\link[shiny]{shinyServer}} server function.
+#' @param outputId The string identifier that was passed to the corresponding
+#'   \code{\link{leafletMap}()}.
+#' @return A list of methods. See the package vignette \code{vignette('intro',
+#'   'leaflet'} for details.
+#' @importFrom shiny renderText
 #' @export
 createLeafletMap <- function(session, outputId) {
 
@@ -83,6 +94,25 @@ createLeafletMap <- function(session, outputId) {
   ), class = "leaflet_map")
 }
 
+#' Create a \code{div} element for a Leaflet map
+#'
+#' This function is called from \file{ui.R} (or from
+#' \code{\link[shiny]{renderUI}()}); it creates a \code{<div>} that will contain
+#' a Leaflet map.
+#' @param outputId the id of the \samp{<div>} element
+#' @param width,height The width and height of the map. They can either take a
+#'   CSS length (e.g. \code{400px} or \code{50\%}) or a numeric value which will
+#'   be interpreted as pixels.
+#' @param initialTileLayer The URL template for the initial layer of tile images
+#'   (the OpenStreetMap tiles are used by default). See
+#'   \url{http://leafletjs.com/reference.html#tilelayer} for information about
+#'   providing tile layer URLs.
+#' @param initialTileLayerAttribution The attribution text of the map tiles.
+#'   This is a link to OpenStreetMap with the license CC-BY-SA 2.0 by default.
+#' @param options A list of map options. See
+#'   \url{http://leafletjs.com/reference.html#map-options} for a full list of
+#'   options.
+#' @return An HTML tag list.
 #' @export
 leafletMap <- function(
   outputId, width, height,
