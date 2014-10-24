@@ -2,3 +2,4 @@
 
 export(createLeafletMap)
 export(leafletMap)
+importFrom(shiny,renderText)
