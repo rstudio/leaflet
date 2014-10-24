@@ -34,22 +34,16 @@ createLeafletMap <- function(session, outputId) {
     ))
   }
 
-  baseimpl <- function() {
-    send(`__name__`, sys.function(), as.list(environment()))
-  }
-
   # Turns a call like:
   #
-  #     stub(setView(lat, lng, zoom, forceReset = FALSE))
+  #     stub(expression(setView(lat, lng, zoom, forceReset = FALSE)))
   #
   # into:
   #
   #     list(setView = function(lat, lng, zoom, forceReset = FALSE) {
   #       send("setView", sys.function(), as.list(environment()))
   #     })
-  stub <- function(prototype) {
-    # Get the un-evaluated expression
-    p <- substitute(prototype)
+  stub <- function(p) {
     # The function name is the first element
     name <- as.character(p[[1]])
 
@@ -62,36 +56,37 @@ createLeafletMap <- function(session, outputId) {
     # Create the function
     func <- eval(parse(text = txt))
 
-    # Replace the function body, using baseimpl's body as a template
+    # Replace the function body
     body(func) <- substituteDirect(
-      body(baseimpl),
-      as.environment(list("__name__"=name))
+      quote(send(name, sys.function(), as.list(environment()))),
+      list(name = name)
     )
-    environment(func) <- environment(baseimpl)
+    environment(func) <- environment(send)
 
     # Return as list
     structure(list(func), names = name)
   }
 
-  structure(c(
-    stub(setView(lat, lng, zoom, forceReset = FALSE)),
-    stub(addMarker(lat, lng, layerId=NULL, options=list(), eachOptions=list())),
-    stub(addCircleMarker(lat, lng, radius, layerId = NULL, options = list(), eachOptions=list())),
-    stub(clearMarkers()),
-    stub(clearShapes()),
-    stub(fitBounds(lat1, lng1, lat2, lng2)),
-    stub(addCircle(lat, lng, radius, layerId = NULL, options=list(), eachOptions=list())),
-    stub(addRectangle(lat1, lng1, lat2, lng2, layerId = NULL, options=list(), eachOptions=list())),
-    stub(addPolygon(lat, lng, layerId, options, defaultOptions)),
-    stub(addGeoJSON(data, layerId)),
-    stub(showPopup(lat, lng, content, layerId = NULL, options=list())),
-    stub(removePopup(layerId)),
-    stub(clearPopups()),
-    stub(removeShape(layerId)),
-    stub(clearShapes()),
-    stub(removeMarker(layerId)),
-    stub(clearMarkers())
-  ), class = "leaflet_map")
+  obj <- lapply(expression(
+    setView(lat, lng, zoom, forceReset = FALSE),
+    addMarker(lat, lng, layerId=NULL, options=list(), eachOptions=list()),
+    addCircleMarker(lat, lng, radius, layerId = NULL, options = list(), eachOptions=list()),
+    clearMarkers(),
+    clearShapes(),
+    fitBounds(lat1, lng1, lat2, lng2),
+    addCircle(lat, lng, radius, layerId = NULL, options=list(), eachOptions=list()),
+    addRectangle(lat1, lng1, lat2, lng2, layerId = NULL, options=list(), eachOptions=list()),
+    addPolygon(lat, lng, layerId, options, defaultOptions),
+    addGeoJSON(data, layerId),
+    showPopup(lat, lng, content, layerId = NULL, options=list()),
+    removePopup(layerId),
+    clearPopups(),
+    removeShape(layerId),
+    clearShapes(),
+    removeMarker(layerId),
+    clearMarkers()
+  ), stub)
+  structure(unlist(obj, recursive = FALSE), class = "leaflet_map")
 }
 
 #' Create a \code{div} element for a Leaflet map
