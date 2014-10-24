@@ -10,6 +10,7 @@ Description: Leaflet is "an open-source JavaScript library for mobile-friendly
     Shiny applications.
 License: GPL-3
 Imports:
+    htmltools,
     shiny (>= 0.6.0),
     RJSONIO
 Suggests:

@@ -113,6 +113,8 @@ createLeafletMap <- function(session, outputId) {
 #'   \url{http://leafletjs.com/reference.html#map-options} for a full list of
 #'   options.
 #' @return An HTML tag list.
+#' @importFrom shiny addResourcePath
+#' @importFrom htmltools HTML tagList singleton tags
 #' @export
 leafletMap <- function(
   outputId, width, height,

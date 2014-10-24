@@ -2,4 +2,9 @@
 
 export(createLeafletMap)
 export(leafletMap)
+importFrom(htmltools,HTML)
+importFrom(htmltools,singleton)
+importFrom(htmltools,tagList)
+importFrom(htmltools,tags)
+importFrom(shiny,addResourcePath)
 importFrom(shiny,renderText)
