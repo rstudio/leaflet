@@ -1,4 +1,5 @@
 library(leaflet)
+# install ShinyDash with devtools::install_github('trestletech/ShinyDash')
 library(ShinyDash)
 
 shinyUI(fluidPage(
