@@ -1,13 +1,16 @@
 Package: leaflet
 Type: Package
-Title: Interactive map component for Shiny, using Leaflet
-Version: 1.0
-Date: 2013-06-12
-Author: Joe Cheng <joe@rstudio.com>
+Title: R Interface to the JavaScript Interactive Maps Library Leaflet
+Version: 0.0.0
+Date: 2014-11-12
+Authors@R: as.person(c(
+    "Joe Cheng [aut, cre] <joe@rstudio.com>",
+    "Yihui Xie [aut]"
+    ))
 Maintainer: Joe Cheng <joe@rstudio.com>
 Description: Leaflet is "an open-source JavaScript library for mobile-friendly
     interactive maps". This package makes it easy to integrate Leaflet maps into
-    Shiny applications.
+    HTML applications with R (e.g. Shiny and R Markdown).
 License: GPL-3
 Imports:
     htmlwidgets,
