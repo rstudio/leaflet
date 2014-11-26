@@ -1,7 +1,7 @@
 Package: leaflet
 Type: Package
 Title: R Interface to the JavaScript Interactive Maps Library Leaflet
-Version: 0.0.0
+Version: 0.0.1
 Date: 2014-11-12
 Authors@R: as.person(c(
     "Joe Cheng [aut, cre] <joe@rstudio.com>",
