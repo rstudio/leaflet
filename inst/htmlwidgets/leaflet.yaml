@@ -1,0 +1,11 @@
+dependencies:
+  - name: jquery
+    version: 1.11.1
+    src: "lib/jquery"
+    script: jquery.min.js
+  - name: leaflet
+    version: 0.7.3
+    src: "lib/leaflet"
+    script: leaflet.js
+    stylesheet: leaflet.css
+
