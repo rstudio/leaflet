@@ -61,7 +61,7 @@ This `layerId` is optional but useful for several purposes:
 
 Below is a list of currently available methods:
 
-```{r echo=FALSE, comment=''}
+```{r echo=FALSE, comment='', eval=FALSE}
 library(leaflet)
 res <- capture.output(str(unclass(createLeafletMap(list(output = list()), 'foo'))))
 cat(gsub(':function ', '', res[-1]), sep = '\n')
