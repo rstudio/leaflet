@@ -16,7 +16,7 @@ tileLayer = function(
 }
 
 #' @export
-popup = function(
+mapPopup = function(
   map, lat, lng, content, layerId = NULL, options = list(), eachOptions = list()
 ) {
   map$x$popup = appendList(map$x$popup, list(
@@ -26,7 +26,7 @@ popup = function(
 }
 
 #' @export
-marker = function(map, lat, lng, layerId = NULL, options = list(), eachOptions = list()) {
+mapMarker = function(map, lat, lng, layerId = NULL, options = list(), eachOptions = list()) {
   map$x$marker = appendList(map$x$marker, list(
     lat, lng, layerId, options, eachOptions
   ))
@@ -34,7 +34,7 @@ marker = function(map, lat, lng, layerId = NULL, options = list(), eachOptions =
 }
 
 #' @export
-circleMarker = function(
+mapCircleMarker = function(
   map, lat, lng, radius = 10, layerId = NULL, options = list(), eachOptions = list()
 ) {
   map$x$circleMarker = appendList(map$x$circleMarker, list(
@@ -44,7 +44,7 @@ circleMarker = function(
 }
 
 #' @export
-circle = function(
+mapCircle = function(
   map, lat, lng, radius = 10, layerId = NULL, options = list(), eachOptions = list()
 ) {
   map$x$circle = appendList(map$x$circle, list(
@@ -54,7 +54,7 @@ circle = function(
 }
 
 #' @export
-polyline = function(
+mapPolyline = function(
   map, lat, lng, layerId = NULL, options = list(), eachOptions = list()
 ) {
   map$x$polyline = appendList(map$x$polyline, list(
@@ -64,7 +64,7 @@ polyline = function(
 }
 
 #' @export
-rectangle = function(
+mapRectangle = function(
   map, lat1, lng1, lat2, lng2, layerId = NULL, options = list(), eachOptions = list()
 ) {
   map$x$rectangle = appendList(map$x$rectangle, list(
@@ -74,7 +74,7 @@ rectangle = function(
 }
 
 #' @export
-polygon = function(map, lat, lng, layerId = NULL, options = list(), eachOptions = list()) {
+mapPolygon = function(map, lat, lng, layerId = NULL, options = list(), eachOptions = list()) {
   map$x$polygon = appendList(map$x$polygon, list(
     lat, lng, layerId, options, eachOptions
   ))
@@ -82,7 +82,7 @@ polygon = function(map, lat, lng, layerId = NULL, options = list(), eachOptions 
 }
 
 #' @export
-geoJSON = function(map, data, layerId = NULL, options = list()) {
+mapGeoJSON = function(map, data, layerId = NULL, options = list()) {
   map$x$geoJSON = appendList(map$x$geoJSON, list(
     data, layerId, options
   ))
