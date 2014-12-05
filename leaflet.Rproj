@@ -16,5 +16,5 @@ AutoAppendNewline: Yes
 StripTrailingWhitespace: Yes
 
 BuildType: Package
-PackageInstallArgs: --no-multiarch
-PackageRoxygenize: rd,collate,namespace
+PackageInstallArgs: -v && Rscript -e "Rd2roxygen::rab('leaflet', install=TRUE)" #
+PackageCheckArgs: --as-cran --no-manual
