@@ -1,48 +1,23 @@
-# Leaflet bindings for Shiny
+# An R Interface to Leaflet Maps
 
 [Leaflet](http://leafletjs.com) is an open-source JavaScript library for
-interactive maps. [Shiny](http://rstudio.com/shiny) is an open-source R
-framework for interactive web apps.
-
-This R package makes it easy to integrate and control Leaflet maps from Shiny
-applications. [Here's an example
-application](http://glimmer.rstudio.com/jcheng/leaflet-demo) (see
-inst/examples/population for the source).
-
-You can use the two functions `leafletMap()` and `createLeafletMap()` from your
-Shiny app to create Leaflet maps.
+interactive maps. This R package makes it easy to create Leaflet maps from R.
 
 ```r
 library(leaflet)
+m = leaflet() %>% tileLayer()
+m  # a map with the default OSM tile layer
 
-# in ui.R
-leafletMap(
-  outputId, width, height,
-  initialTileLayer = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-  initialTileLayerAttribution = HTML(
-    '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors,
-    <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
-  ),
-  options = NULL
-)
+m = m %>% setView(c(42.0285, -93.65), zoom = 17)
+m
 
-# in server.R
-createLeafletMap(session, outputId)
+m %>% mapPopup(42.0285, -93.65, 'Here is the <b>Department of Statistics</b>, ISU')
 ```
 
-The map object created using `createLeafletMap()` has a number of methods to
-manipulate the object, which can be called using the syntax `obj$method()`, e.g.
+This package is not on CRAN yet, and you can install it from Github:
 
 ```r
-map <- createLeafletMap(session, "myMap")
-map$setView(0, 0, 8)
-```
-
-You may install the package and see the package vignette for more details.
-
-```r
-devtools::install_github('jcheng5/leaflet-shiny', build_vignettes = TRUE)
-vignette('intro', 'leaflet')
+devtools::install_github('rstudio/leaflet')
 ```
 
 ## License
