@@ -17,66 +17,66 @@ tileLayer = function(
 
 #' @export
 mapPopup = function(
-  map, lat, lng, content, layerId = NULL, options = list(), eachOptions = list()
+  map, lat, lng, content, layerId = NULL, options = list()
 ) {
   map$x$popup = appendList(map$x$popup, list(
-    lat, lng, content, layerId, options, eachOptions
+    lat, lng, content, layerId, options
   ))
   map
 }
 
 #' @export
-mapMarker = function(map, lat, lng, layerId = NULL, options = list(), eachOptions = list()) {
+mapMarker = function(map, lat, lng, layerId = NULL, options = list()) {
   map$x$marker = appendList(map$x$marker, list(
-    lat, lng, layerId, options, eachOptions
+    lat, lng, layerId, options
   ))
   map
 }
 
 #' @export
 mapCircleMarker = function(
-  map, lat, lng, radius = 10, layerId = NULL, options = list(), eachOptions = list()
+  map, lat, lng, radius = 10, layerId = NULL, options = list()
 ) {
   map$x$circleMarker = appendList(map$x$circleMarker, list(
-    lat, lng, radius, layerId, options, eachOptions
+    lat, lng, radius, layerId, options
   ))
   map
 }
 
 #' @export
 mapCircle = function(
-  map, lat, lng, radius = 10, layerId = NULL, options = list(), eachOptions = list()
+  map, lat, lng, radius = 10, layerId = NULL, options = list()
 ) {
   map$x$circle = appendList(map$x$circle, list(
-    lat, lng, radius, layerId, options, eachOptions
+    lat, lng, radius, layerId, options
   ))
   map
 }
 
 #' @export
 mapPolyline = function(
-  map, lat, lng, layerId = NULL, options = list(), eachOptions = list()
+  map, lat, lng, layerId = NULL, options = list()
 ) {
   map$x$polyline = appendList(map$x$polyline, list(
-    matrix(c(lat, lng), ncol = 2), layerId, options, eachOptions
+    matrix(c(lat, lng), ncol = 2), layerId, options
   ))
   map
 }
 
 #' @export
 mapRectangle = function(
-  map, lat1, lng1, lat2, lng2, layerId = NULL, options = list(), eachOptions = list()
+  map, lat1, lng1, lat2, lng2, layerId = NULL, options = list()
 ) {
   map$x$rectangle = appendList(map$x$rectangle, list(
-    lat1, lng1, lat2, lng2, layerId, options, eachOptions
+    lat1, lng1, lat2, lng2, layerId, options
   ))
   map
 }
 
 #' @export
-mapPolygon = function(map, lat, lng, layerId = NULL, options = list(), eachOptions = list()) {
+mapPolygon = function(map, lat, lng, layerId = NULL, options = list()) {
   map$x$polygon = appendList(map$x$polygon, list(
-    lat, lng, layerId, options, eachOptions
+    lat, lng, layerId, options
   ))
   map
 }
