@@ -1,3 +1,4 @@
+% Please edit documentation in R/data.R
 \docType{data}
 \name{uspop2000}
 \alias{uspop2000}

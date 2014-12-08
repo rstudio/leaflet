@@ -1,3 +1,4 @@
+% Please edit documentation in R/shiny.R
 \name{leafletController}
 \alias{leafletController}
 \title{Create a Leaflet map controller}

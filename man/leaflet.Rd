@@ -1,3 +1,4 @@
+% Please edit documentation in R/leaflet.R
 \name{leaflet}
 \alias{leaflet}
 \title{Create a Leaflet map widget}
