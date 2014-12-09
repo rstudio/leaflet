@@ -10,3 +10,13 @@ appendList = function(x, val) {
   x[[n + 1]] = val
   x
 }
+
+#' Pipe operator
+#'
+#' @name %>%
+#' @rdname pipe
+#' @keywords internal
+#' @export
+#' @importFrom magrittr %>%
+#' @usage lhs \%>\% rhs
+NULL

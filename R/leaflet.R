@@ -9,7 +9,6 @@
 #' @param height the height of the map
 #' @param padding the padding of the map
 #' @return A HTML widget object.
-#' @example inst/examples/leaflet.R
 #' @export
 leaflet = function(id = NULL, width = NULL, height = NULL, padding = 0) {
   htmlwidgets::createWidget(
