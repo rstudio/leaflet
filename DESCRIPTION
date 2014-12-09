@@ -19,3 +19,4 @@ Suggests:
     knitr,
     shiny
 VignetteBuilder: knitr
+LazyData: true
