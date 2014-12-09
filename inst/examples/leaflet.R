@@ -40,6 +40,10 @@ m %>% addPolylines(rand_lng(50), rand_lat(50))
 
 # polygon
 m %>% addPolygons(rand_lng(), rand_lat(), layerId = 'foo')
+m %>% addPolygons(
+  rand_lng(20), c(rand_lat(5), NA, rand_lat(6), NA, rand_lat(7)),
+  color = c('red', 'blue', 'yellow')
+)
 
 # geoJSON
 seattle_geojson <- list(
