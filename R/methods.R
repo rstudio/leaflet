@@ -12,3 +12,10 @@ fitBounds = function(map, lat1, lng1, lat2, lng2) {
   map$x$fitBounds = list(lat1, lng1, lat2, lng2)
   map
 }
+
+#' @export
+clearBounds = function(map) {
+  map$x$fitBounds = NULL
+  map$x$setView = NULL
+  map
+}

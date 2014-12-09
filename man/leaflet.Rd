@@ -41,6 +41,7 @@ rand_lat = function(n = 10) rnorm(n, 42.0285, .01)
 rand_lng = function(n = 10) rnorm(n, -93.65, .01)
 
 # TODO: only one popup can be opened; need to bind all popups in a layer and show all
+m = m \%>\% resetBounds()
 m \%>\% addPopups(rand_lat(), rand_lng(), 'Random popups')
 
 # marker
@@ -140,7 +141,7 @@ leaflet() \%>\% addTiles('http://{s}.www.toolserver.org/tiles/bw-mapnik/{z}/{x}/
 # provide a data frame to leaflet()
 df = data.frame(
   lat = rand_lat(100), lng = rand_lng(100), size = runif(100, 5, 20),
-  color = rgb(runif(100), 0, 0), stringsAsFactors = FALSE
+  color = rgb(runif(100), runif(100), runif(100)), stringsAsFactors = FALSE
 )
 m = leaflet(df) \%>\% addTiles() \%>\% setView(c(42.0285, -93.65), zoom = 17)
 m \%>\% addCircleMarkers(~lat, ~lng, radius = ~size)
