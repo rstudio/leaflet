@@ -116,3 +116,4 @@ leaflet() %>% tileLayer('http://{s}.www.toolserver.org/tiles/bw-mapnik/{z}/{x}/{
 df = data.frame(lat = rand_lat(100), lng = rand_lng(100), size = runif(100, 5, 20))
 m = leaflet(df) %>% tileLayer() %>% setView(c(42.0285, -93.65), zoom = 17)
 m %>% mapCircleMarker(~lat, ~lng, radius = ~size)
+m %>% mapCircleMarker(~lat, ~lng, radius = runif(100, 4, 10), color = 'red')
