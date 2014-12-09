@@ -10,17 +10,11 @@ makeOpts <- function(matchCall, excludes = NULL, envir = parent.frame(2)) {
 }
 
 # Evaluate list members that are formulae, using the map data as the environment
-# (if provided, otherwise the parent frame)
-evalFormula <- function(list, map, envir = parent.frame(2)) {
+# (if provided, otherwise the formula environment)
+evalFormula <- function(list, map) {
   data <- map$x$data
-  enclos <- NULL
-  # note data frames are also lists
-  if (is.list(data)) {
-    enclos <- envir
-    envir <- data
-  }
   lapply(list, function(x) {
-    if (inherits(x, 'formula')) x <- eval(x[[2]], envir, enclos)
+    if (inherits(x, 'formula')) x <- eval(x[[2]], data, environment(x))
     x
   })
 }

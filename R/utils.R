@@ -4,11 +4,11 @@ filterNULL = function(x) {
   x[!unlist(lapply(x, is.null))]
 }
 
-appendMapData = function(map, component, ..., `_envir` = parent.frame()) {
+appendMapData = function(map, component, ...) {
   x = map$x[[component]]
   if (is.null(x)) x = list()
   n = length(x)
-  x[[n + 1]] = evalFormula(list(...), map, `_envir`)
+  x[[n + 1]] = evalFormula(list(...), map)
   map$x[[component]] = x
   map
 }
