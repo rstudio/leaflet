@@ -31,7 +31,7 @@ m %>% addCircleMarkers(rand_lat(100), rand_lng(100), radius = runif(100, 5, 15))
 # rectangle
 m %>% addRectangles(
   rand_lat(), rand_lng(), rand_lat(), rand_lng(),
-  options = list(color = 'red', fill = FALSE, dashArray = '5,5', weight = 3)
+  color = 'red', fill = FALSE, dashArray = '5,5', weight = 3
 )
 
 # polyline
