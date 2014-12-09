@@ -3,7 +3,7 @@
 \alias{leaflet}
 \title{Create a Leaflet map widget}
 \usage{
-leaflet(id = NULL, width = NULL, height = NULL, padding = 0)
+leaflet(data = NULL, id = NULL, width = NULL, height = NULL, padding = 0)
 }
 \arguments{
 \item{id}{a character string as the identifier of the map (you do not need to
@@ -56,7 +56,7 @@ m \%>\% addCircleMarkers(rand_lat(100), rand_lng(100), radius = runif(100, 5, 15
 # rectangle
 m \%>\% addRectangles(
   rand_lat(), rand_lng(), rand_lat(), rand_lng(),
-  options = list(color = 'red', fill = FALSE, dashArray = '5,5', weight = 3)
+  color = 'red', fill = FALSE, dashArray = '5,5', weight = 3
 )
 
 # polyline
@@ -136,4 +136,9 @@ leaflet() \%>\% tileLayer('http://{s}.www.toolserver.org/tiles/bw-mapnik/{z}/{x}
     '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
   )
 ))
+
+# provide a data frame to leaflet()
+df = data.frame(lat = rand_lat(100), lng = rand_lng(100), size = runif(100, 5, 20))
+m = leaflet(df) \%>\% tileLayer() \%>\% setView(c(42.0285, -93.65), zoom = 17)
+m \%>\% mapCircleMarker(~lat, ~lng, radius = ~size)
 }
