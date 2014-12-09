@@ -24,6 +24,28 @@ evalFormula <- function(list, map) {
   evalAll(list)
 }
 
+# Notifies the map of new latitude/longitude of items of interest on the map, so
+# that we can expand the limits (i.e. bounding box). We will use this as the initial
+# view if the user doesn't explicitly specify bounds using fitBounds.
+expandLimits <- function(map, lat, lng) {
+  if (is.null(map$x$limits))
+    map$x$limits = list()
+
+  # We remove NA's and check the lengths so we never call range()
+  # with an empty set of arguments (or all NA's), which will cause
+  # a warning.
+
+  lat = lat[!is.na(lat)]
+  lng = lng[!is.na(lng)]
+
+  if (length(lat) > 0)
+    map$x$limits$lat = range(map$x$limits$lat, lat)
+  if (length(lng) > 0)
+    map$x$limits$lng = range(map$x$limits$lng, lng)
+
+  map
+}
+
 #' @export
 addTiles = function(
   map,
@@ -75,7 +97,8 @@ addPopups = function(
   className = ""
 ) {
   options <- makeOpts(match.call(), c("map", "lat", "lng", "content", "layerId"))
-  appendMapData(map, 'popup', lat, lng, content, layerId, options)
+  appendMapData(map, 'popup', lat, lng, content, layerId, options) %>%
+    expandLimits(lat, lng)
 }
 
 #' @export
@@ -93,7 +116,8 @@ addMarkers = function(
   riseOffset = 250
 ) {
   options <- makeOpts(match.call(), c("map", "lat", "lng", "layerId"))
-  appendMapData(map, 'marker', lat, lng, layerId, options)
+  appendMapData(map, 'marker', lat, lng, layerId, options) %>%
+    expandLimits(lat, lng)
 }
 
 #' @export
@@ -114,7 +138,8 @@ addCircleMarkers = function(
   className = ""
 ) {
   options <- makeOpts(match.call(), c("map", "lat", "lng", "radius", "layerId"))
-  appendMapData(map, 'circleMarker', lat, lng, radius, layerId, options)
+  appendMapData(map, 'circleMarker', lat, lng, radius, layerId, options) %>%
+    expandLimits(lat, lng)
 }
 
 #' @export
@@ -135,9 +160,11 @@ addCircles = function(
   className = ""
 ) {
   options <- makeOpts(match.call(), c("map", "lat", "lng", "radius", "layerId"))
-  appendMapData(map, 'circle', lat, lng, radius, layerId, options)
+  appendMapData(map, 'circle', lat, lng, radius, layerId, options) %>%
+    expandLimits(lat, lng)
 }
 
+# WARNING: lat and lng are LISTS of latitude and longitude vectors
 #' @export
 addPolylines = function(
   map, lat, lng, layerId = NULL,
@@ -154,7 +181,8 @@ addPolylines = function(
   className = ""
 ) {
   options <- makeOpts(match.call(), c("map", "lat", "lng", "layerId"))
-  appendMapData(map, 'polyline', lat, lng, layerId, options)
+  appendMapData(map, 'polyline', lat, lng, layerId, options) %>%
+    expandLimits(unlist(lat), unlist(lng))
 }
 
 #' @export
@@ -173,9 +201,11 @@ addRectangles = function(
   className = ""
 ) {
   options <- makeOpts(match.call(), c("map", "lat1", "lng1", "lat2", "lng2", "layerId"))
-  appendMapData(map, 'rectangle',lat1, lng1, lat2, lng2, layerId, options)
+  appendMapData(map, 'rectangle',lat1, lng1, lat2, lng2, layerId, options) %>%
+    expandLimits(map, c(lat1, lat2), c(lng1, lng2))
 }
 
+# WARNING: lat and lng are LISTS of latitude and longitude vectors
 #' @export
 addPolygons = function(
   map, lat, lng, layerId = NULL,
@@ -192,7 +222,8 @@ addPolygons = function(
   className = ""
 ) {
   options <- makeOpts(match.call(), c("map", "lat", "lng", "layerId"))
-  appendMapData(map, 'polygon', lat, lng, layerId, options)
+  appendMapData(map, 'polygon', lat, lng, layerId, options) %>%
+    expandLimits(unlist(lat), unlist(lng))
 }
 
 #' @export
