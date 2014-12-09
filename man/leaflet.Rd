@@ -138,8 +138,12 @@ leaflet() \%>\% addTiles('http://{s}.www.toolserver.org/tiles/bw-mapnik/{z}/{x}/
 ))
 
 # provide a data frame to leaflet()
-df = data.frame(lat = rand_lat(100), lng = rand_lng(100), size = runif(100, 5, 20))
+df = data.frame(
+  lat = rand_lat(100), lng = rand_lng(100), size = runif(100, 5, 20),
+  color = rgb(runif(100), 0, 0), stringsAsFactors = FALSE
+)
 m = leaflet(df) \%>\% addTiles() \%>\% setView(c(42.0285, -93.65), zoom = 17)
 m \%>\% addCircleMarkers(~lat, ~lng, radius = ~size)
 m \%>\% addCircleMarkers(~lat, ~lng, radius = runif(100, 4, 10), color = 'red')
+m \%>\% addCircleMarkers(~lat, ~lng, radius = runif(100, 4, 10), color = ~color)
 }
