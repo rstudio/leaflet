@@ -9,6 +9,22 @@ makeOpts <- function(matchCall, excludes = NULL, envir = parent.frame(2)) {
   return(options)
 }
 
+# Evaluate list members that are formulae, using the map data as the environment
+# (if provided, otherwise the parent frame)
+evalFormula <- function(list, map, envir = parent.frame(2)) {
+  data <- map$x$data
+  enclos <- NULL
+  # note data frames are also lists
+  if (is.list(data)) {
+    enclos <- envir
+    envir <- data
+  }
+  lapply(list, function(x) {
+    if (inherits(x, 'formula')) x <- eval(x[[2]], envir, enclos)
+    x
+  })
+}
+
 #' @export
 addTiles = function(
   map,
@@ -39,10 +55,7 @@ addTiles = function(
       '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a>',
       'contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
     )
-  map$x$tileLayer =  appendList(
-    map$x$tileLayer, list(urlTemplate = urlTemplate, options = options)
-  )
-  map
+  appendMapData(map, 'tileLayer', urlTemplate = urlTemplate, options = options)
 }
 
 #' @export
@@ -63,10 +76,7 @@ addPopups = function(
   className = ""
 ) {
   options <- makeOpts(match.call(), c("map", "lat", "lng", "content", "layerId"))
-  map$x$popup = appendList(map$x$popup, list(
-    lat, lng, content, layerId, options
-  ))
-  map
+  appendMapData(map, 'popup', lat, lng, content, layerId, options)
 }
 
 #' @export
@@ -84,10 +94,7 @@ addMarkers = function(
   riseOffset = 250
 ) {
   options <- makeOpts(match.call(), c("map", "lat", "lng", "layerId"))
-  map$x$marker = appendList(map$x$marker, list(
-    lat, lng, layerId, options
-  ))
-  map
+  appendMapData(map, 'marker', lat, lng, layerId, options)
 }
 
 #' @export
@@ -107,11 +114,8 @@ addCircleMarkers = function(
   pointerEvents = NULL,
   className = ""
 ) {
-  options <- makeOpts(match.call(), c("map", "lat", "lng", "layerId"))
-  map$x$circleMarker = appendList(map$x$circleMarker, list(
-    lat, lng, radius, layerId, options
-  ))
-  map
+  options <- makeOpts(match.call(), c("map", "lat", "lng", "radius", "layerId"))
+  appendMapData(map, 'circleMarker', lat, lng, radius, layerId, options)
 }
 
 #' @export
@@ -132,10 +136,7 @@ addCircles = function(
   className = ""
 ) {
   options <- makeOpts(match.call(), c("map", "lat", "lng", "radius", "layerId"))
-  map$x$circle = appendList(map$x$circle, list(
-    lat, lng, radius, layerId, options
-  ))
-  map
+  appendMapData(map, 'circle', lat, lng, radius, layerId, options)
 }
 
 #' @export
@@ -154,10 +155,7 @@ addPolylines = function(
   className = ""
 ) {
   options <- makeOpts(match.call(), c("map", "lat", "lng", "layerId"))
-  map$x$polyline = appendList(map$x$polyline,
-    lat, lng, layerId, options
-  )
-  map
+  appendMapData(map, 'polyline', lat, lng, layerId, options)
 }
 
 #' @export
@@ -176,10 +174,7 @@ addRectangles = function(
   className = ""
 ) {
   options <- makeOpts(match.call(), c("map", "lat1", "lng1", "lat2", "lng2", "layerId"))
-  map$x$rectangle = appendList(map$x$rectangle, list(
-    lat1, lng1, lat2, lng2, layerId, options
-  ))
-  map
+  appendMapData(map, 'rectangle',lat1, lng1, lat2, lng2, layerId, options)
 }
 
 #' @export
@@ -198,16 +193,10 @@ addPolygons = function(
   className = ""
 ) {
   options <- makeOpts(match.call(), c("map", "lat", "lng", "layerId"))
-  map$x$polygon = appendList(map$x$polygon, list(
-    lat, lng, layerId, options
-  ))
-  map
+  appendMapData(map, 'polygon', lat, lng, layerId, options)
 }
 
 #' @export
 addGeoJSON = function(map, data, layerId = NULL, options = list()) {
-  map$x$geoJSON = appendList(map$x$geoJSON, list(
-    data, layerId, options
-  ))
-  map
+  appendMapData(map, 'geoJSON', data, layerId, options)
 }
