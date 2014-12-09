@@ -11,34 +11,34 @@ m = m %>% setView(c(42.0285, -93.65), zoom = 17)
 m
 
 # popup
-m %>% mapPopup(42.0285, -93.65, 'Here is the <b>Department of Statistics</b>, ISU')
+m %>% addPopups(42.0285, -93.65, 'Here is the <b>Department of Statistics</b>, ISU')
 rand_lat = function(n = 10) rnorm(n, 42.0285, .01)
 rand_lng = function(n = 10) rnorm(n, -93.65, .01)
 
 # TODO: only one popup can be opened; need to bind all popups in a layer and show all
-m %>% mapPopup(rand_lat(), rand_lng(), 'Random popups')
+m %>% addPopups(rand_lat(), rand_lng(), 'Random popups')
 
 # marker
-m %>% mapMarker(rand_lat(), rand_lng())
+m %>% addMarkers(rand_lat(), rand_lng())
 
 # circle (units in metres)
-m %>% mapCircle(rand_lat(50), rand_lng(50), radius = runif(50, 5, 15))
+m %>% addCircles(rand_lat(50), rand_lng(50), radius = runif(50, 5, 15))
 
 # circle marker (units in pixels)
-m %>% mapCircleMarker(rand_lat(50), rand_lng(50), options = list(color = '#ff0000'))
-m %>% mapCircleMarker(rand_lat(100), rand_lng(100), radius = runif(100, 5, 15))
+m %>% addCircleMarkers(rand_lat(50), rand_lng(50), color = '#ff0000')
+m %>% addCircleMarkers(rand_lat(100), rand_lng(100), radius = runif(100, 5, 15))
 
 # rectangle
-m %>% mapRectangle(
+m %>% addRectangles(
   rand_lat(), rand_lng(), rand_lat(), rand_lng(),
   options = list(color = 'red', fill = FALSE, dashArray = '5,5', weight = 3)
 )
 
 # polyline
-m %>% mapPolyline(rand_lat(50), rand_lng(50))
+m %>% addPolylines(rand_lat(50), rand_lng(50))
 
 # polygon
-m %>% mapPolygon(rand_lat(), rand_lng(), layerId = 'foo')
+m %>% addPolygons(rand_lat(), rand_lng(), layerId = 'foo')
 
 # geoJSON
 seattle_geojson <- list(
@@ -101,7 +101,7 @@ seattle_geojson <- list(
   ),
   id = "ballard"
 )
-m %>% setView(c(47.6759920119894, -122.36075812146), zoom = 13) %>% mapGeoJSON(seattle_geojson)
+m %>% setView(c(47.6759920119894, -122.36075812146), zoom = 13) %>% addGeoJSON(seattle_geojson)
 
 
 # use the OSM BW layer
