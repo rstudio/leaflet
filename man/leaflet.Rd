@@ -3,7 +3,7 @@
 \alias{leaflet}
 \title{Create a Leaflet map widget}
 \usage{
-leaflet(id = NULL, width = NULL, height = NULL, padding = 0)
+leaflet(data = NULL, id = NULL, width = NULL, height = NULL, padding = 0)
 }
 \arguments{
 \item{id}{a character string as the identifier of the map (you do not need to
@@ -25,7 +25,7 @@ other applications.
 }
 \examples{
 library(leaflet)
-m = leaflet() \%>\% tileLayer()
+m = leaflet() \%>\% addTiles()
 m  # a map with the default OSM tile layer
 
 # set bounds
@@ -56,7 +56,7 @@ m \%>\% addCircleMarkers(rand_lat(100), rand_lng(100), radius = runif(100, 5, 15
 # rectangle
 m \%>\% addRectangles(
   rand_lat(), rand_lng(), rand_lat(), rand_lng(),
-  options = list(color = 'red', fill = FALSE, dashArray = '5,5', weight = 3)
+  color = 'red', fill = FALSE, dashArray = '5,5', weight = 3
 )
 
 # polyline
@@ -130,10 +130,20 @@ m \%>\% setView(c(47.6759920119894, -122.36075812146), zoom = 13) \%>\% addGeoJS
 
 
 # use the OSM BW layer
-leaflet() \%>\% tileLayer('http://{s}.www.toolserver.org/tiles/bw-mapnik/{z}/{x}/{y}.png', list(
+leaflet() \%>\% addTiles('http://{s}.www.toolserver.org/tiles/bw-mapnik/{z}/{x}/{y}.png', list(
   attribution = paste(
     '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors,',
     '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
   )
 ))
+
+# provide a data frame to leaflet()
+df = data.frame(
+  lat = rand_lat(100), lng = rand_lng(100), size = runif(100, 5, 20),
+  color = rgb(runif(100), 0, 0), stringsAsFactors = FALSE
+)
+m = leaflet(df) \%>\% addTiles() \%>\% setView(c(42.0285, -93.65), zoom = 17)
+m \%>\% addCircleMarkers(~lat, ~lng, radius = ~size)
+m \%>\% addCircleMarkers(~lat, ~lng, radius = runif(100, 4, 10), color = 'red')
+m \%>\% addCircleMarkers(~lat, ~lng, radius = runif(100, 4, 10), color = ~color)
 }
