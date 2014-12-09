@@ -205,7 +205,7 @@ addRectangles = function(
 ) {
   options <- makeOpts(match.call(), c("map", "lat1", "lng1", "lat2", "lng2", "layerId"))
   appendMapData(map, 'rectangle',lat1, lng1, lat2, lng2, layerId, options) %>%
-    expandLimits(map, c(lat1, lat2), c(lng1, lng2))
+    expandLimits(c(lat1, lat2), c(lng1, lng2))
 }
 
 # WARNING: lat and lng are LISTS of latitude and longitude vectors
