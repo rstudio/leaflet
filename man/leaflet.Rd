@@ -48,7 +48,7 @@ m \%>\% addPopups(rand_lat(), rand_lng(), 'Random popups')
 m \%>\% addMarkers(rand_lat(), rand_lng())
 
 # circle (units in metres)
-m \%>\% addCircles(rand_lat(50), rand_lng(50), radius = runif(50, 5, 15))
+m \%>\% addCircles(rand_lat(50), rand_lng(50), radius = runif(50, 50, 150))
 
 # circle marker (units in pixels)
 m \%>\% addCircleMarkers(rand_lat(50), rand_lng(50), color = '#ff0000')
