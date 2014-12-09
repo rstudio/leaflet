@@ -10,7 +10,7 @@ makeOpts <- function(matchCall, excludes = NULL, envir = parent.frame(2)) {
 }
 
 #' @export
-tileLayer = function(
+addTiles = function(
   map,
   urlTemplate = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
   minZoom = 0,
@@ -46,7 +46,7 @@ tileLayer = function(
 }
 
 #' @export
-mapPopup = function(
+addPopups = function(
   map, lat, lng, content, layerId = NULL,
   maxWidth = 300,
   minWidth = 50,
@@ -70,7 +70,7 @@ mapPopup = function(
 }
 
 #' @export
-mapMarker = function(
+addMarkers = function(
   map, lat, lng, layerId = NULL,
   icon = NULL,
   clickable = TRUE,
@@ -91,7 +91,7 @@ mapMarker = function(
 }
 
 #' @export
-mapCircleMarker = function(
+addCircleMarkers = function(
   map, lat, lng, radius = 10, layerId = NULL,
   stroke = TRUE,
   color = "#03F",
@@ -115,7 +115,7 @@ mapCircleMarker = function(
 }
 
 #' @export
-mapCircle = function(
+addCircles = function(
   map, lat, lng, radius = 10, layerId = NULL,
   stroke = TRUE,
   color = "#03F",
@@ -139,7 +139,7 @@ mapCircle = function(
 }
 
 #' @export
-mapPolyline = function(
+addPolylines = function(
   map, lat, lng, layerId = NULL,
   smoothFactor = 1.0,
   noClip = FALSE,
@@ -161,7 +161,7 @@ mapPolyline = function(
 }
 
 #' @export
-mapRectangle = function(
+addRectangles = function(
   map, lat1, lng1, lat2, lng2, layerId = NULL,
   smoothFactor = 1.0,
   noClip = FALSE,
@@ -183,7 +183,7 @@ mapRectangle = function(
 }
 
 #' @export
-mapPolygon = function(
+addPolygons = function(
   map, lat, lng, layerId = NULL,
   smoothFactor = 1.0,
   noClip = FALSE,
@@ -205,7 +205,7 @@ mapPolygon = function(
 }
 
 #' @export
-mapGeoJSON = function(map, data, layerId = NULL, options = list()) {
+addGeoJSON = function(map, data, layerId = NULL, options = list()) {
   map$x$geoJSON = appendList(map$x$geoJSON, list(
     data, layerId, options
   ))
