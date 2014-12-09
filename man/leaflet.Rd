@@ -40,8 +40,8 @@ m \%>\% addPopups(42.0285, -93.65, 'Here is the <b>Department of Statistics</b>,
 rand_lat = function(n = 10) rnorm(n, 42.0285, .01)
 rand_lng = function(n = 10) rnorm(n, -93.65, .01)
 
+m = m \%>\% clearBounds()
 # TODO: only one popup can be opened; need to bind all popups in a layer and show all
-m = m \%>\% resetBounds()
 m \%>\% addPopups(rand_lat(), rand_lng(), 'Random popups')
 
 # marker
