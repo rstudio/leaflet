@@ -35,8 +35,8 @@ expandLimits <- function(map, lat, lng) {
   # with an empty set of arguments (or all NA's), which will cause
   # a warning.
 
-  lat = lat[!is.na(lat)]
-  lng = lng[!is.na(lng)]
+  lat = lat[is.finite(lat)]
+  lng = lng[is.finite(lng)]
 
   if (length(lat) > 0)
     map$x$limits$lat = range(map$x$limits$lat, lat)
