@@ -11,10 +11,10 @@
 #' @return A HTML widget object.
 #' @example inst/examples/leaflet.R
 #' @export
-leaflet = function(id = NULL, width = NULL, height = NULL, padding = 0) {
+leaflet = function(data = NULL, id = NULL, width = NULL, height = NULL, padding = 0) {
   htmlwidgets::createWidget(
     'leaflet',
-    list(mapId = id),
+    list(mapId = id, data = data),
     width = width, height = height,
     sizingPolicy = htmlwidgets::sizingPolicy(
       defaultWidth = 'auto',
