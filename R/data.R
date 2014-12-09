@@ -9,7 +9,8 @@
 #' @source The US Census Bureau:
 #'   \url{http://www.census.gov/popest/data/intercensal/cities/cities2010.html}
 #' @export
-#' @examples library(leaflet)
+#' @examples
+#' library(leaflet)
 #' str(uspop2000)
 #' p <- uspop2000$Pop2010
 #' p <- (p - min(p))/(max(p) - min(p))
