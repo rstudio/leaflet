@@ -16,7 +16,10 @@ evalFormula <- function(list, map) {
   evalAll <- function(list) {
     lapply(list, function(x) {
       if (is.list(x)) return(lapply(x, evalAll))
-      if (inherits(x, 'formula')) x <- eval(x[[2]], data, environment(x))
+      if (inherits(x, 'formula')) {
+        if (length(x) != 2L) stop('The formula must be one-sided: ', deparse(x))
+        x <- eval(x[[2]], data, environment(x))
+      }
       x
     })
   }
