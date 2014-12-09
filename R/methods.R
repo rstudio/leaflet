@@ -8,7 +8,7 @@ setView = function(map, center = NULL, zoom = NULL, options = list()) {
 }
 
 #' @export
-fitMapBounds = function(map, lat1, lng1, lat2, lng2) {
+fitBounds = function(map, lat1, lng1, lat2, lng2) {
   map$x$fitBounds = list(lat1, lng1, lat2, lng2)
   map
 }
