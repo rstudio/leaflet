@@ -111,3 +111,8 @@ leaflet() %>% tileLayer('http://{s}.www.toolserver.org/tiles/bw-mapnik/{z}/{x}/{
     '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
   )
 ))
+
+# provide a data frame to leaflet()
+df = data.frame(lat = rand_lat(100), lng = rand_lng(100), size = runif(100, 5, 20))
+m = leaflet(df) %>% tileLayer() %>% setView(c(42.0285, -93.65), zoom = 17)
+m %>% mapCircleMarker(~lat, ~lng, radius = ~size)
