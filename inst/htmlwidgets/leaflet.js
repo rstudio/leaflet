@@ -460,20 +460,29 @@ var dataframe = (function() {
           L.tileLayer(layer.urlTemplate, layer.options).addTo(map);
         });
       }
+
+      var explicitView = false;
       if (data.setView) {
+        explicitView = true;
         map.setView.apply(map, data.setView);
       }
       if (data.fitBounds) {
+        explicitView = true;
         methods.fitBounds.apply(map, data.fitBounds);
-      } else if (data.limits) {
-        // Use the natural limits of what's being drawn on the map
-        map.fitBounds([
-          [ data.limits.lat[0], data.limits.lng[0] ],
-          [ data.limits.lat[1], data.limits.lng[1] ]
-        ]);
-      } else {
-        map.fitWorld();
       }
+
+      if (!explicitView) {
+        if (data.limits) {
+          // Use the natural limits of what's being drawn on the map
+          map.fitBounds([
+            [ data.limits.lat[0], data.limits.lng[0] ],
+            [ data.limits.lat[1], data.limits.lng[1] ]
+          ]);
+        } else {
+          map.fitWorld();
+        }
+      }
+
       if (data.popup instanceof Array) {
         data.popup.map(function(params) {
           methods.popup.apply(map, params);
