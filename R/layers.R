@@ -4,8 +4,8 @@
 # to prevent arguments from being represented in the list.
 makeOpts <- function(matchCall, excludes = NULL, envir = parent.frame(2)) {
   args <- tail(as.list(matchCall), -1)
+  args[excludes] <- NULL
   options <- lapply(args, eval, envir = envir)
-  options[excludes] <- NULL
   return(options)
 }
 
