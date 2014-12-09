@@ -13,10 +13,14 @@ makeOpts <- function(matchCall, excludes = NULL, envir = parent.frame(2)) {
 # (if provided, otherwise the formula environment)
 evalFormula <- function(list, map) {
   data <- map$x$data
-  lapply(list, function(x) {
-    if (inherits(x, 'formula')) x <- eval(x[[2]], data, environment(x))
-    x
-  })
+  evalAll <- function(list) {
+    lapply(list, function(x) {
+      if (is.list(x)) return(lapply(x, evalAll))
+      if (inherits(x, 'formula')) x <- eval(x[[2]], data, environment(x))
+      x
+    })
+  }
+  evalAll(list)
 }
 
 #' @export
