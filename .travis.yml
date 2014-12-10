@@ -8,7 +8,7 @@ install:
   - sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
   - sudo apt-add-repository -y ppa:marutter/c2d4u
   - sudo apt-get update
-  - sudo apt-get install r-base-dev r-cran-devtools r-cran-knitr
+  - sudo apt-get install r-base-core r-cran-devtools r-cran-knitr r-cran-shiny
   - "wget -q -O - http://yihui.name/xran/r-config | bash"
   - Rscript -e "devtools::install_deps(dep = TRUE)"
   - Rscript -e "if (!require('htmlwidgets')) devtools::install_github('ramnathv/htmlwidgets')"
