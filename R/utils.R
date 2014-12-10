@@ -8,7 +8,7 @@ appendMapData = function(map, component, ...) {
   x = map$x[[component]]
   if (is.null(x)) x = list()
   n = length(x)
-  x[[n + 1]] = evalFormula(list(...), map)
+  x[[n + 1]] = evalFormula(list(...), getMapData(map))
   map$x[[component]] = x
   map
 }

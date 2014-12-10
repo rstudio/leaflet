@@ -11,15 +11,10 @@ makeOpts <- function(matchCall, excludes = NULL, envir = parent.frame(2)) {
 
 # Evaluate list members that are formulae, using the map data as the environment
 # (if provided, otherwise the formula environment)
-evalFormula <- function(list, map) {
-  data <- map$x$data
+evalFormula <- function(list, data) {
   evalAll <- function(x) {
     if (is.list(x)) return(lapply(x, evalAll))
-    if (inherits(x, 'formula')) {
-      if (length(x) != 2L) stop('The formula must be one-sided: ', deparse(x))
-      x <- eval(x[[2]], data, environment(x))
-    }
-    x
+    return(resolveFormula(x, data))
   }
   evalAll(list)
 }
