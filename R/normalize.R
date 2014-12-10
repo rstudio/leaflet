@@ -4,13 +4,13 @@
 guessLatLongCols = function(names, stopOnFailure = TRUE,
   shouldPrint = length(names) > 2) {
 
-  lats = names[grepl("^(lat|latitude)$", names, ignore.case = TRUE)]
-  lngs = names[grepl("^(lng|long|longitude)$", names, ignore.case = TRUE)]
+  lats = names[grep("^(lat|latitude)$", names, ignore.case = TRUE)]
+  lngs = names[grep("^(lng|long|longitude)$", names, ignore.case = TRUE)]
 
   if (length(lats) == 1 && length(lngs) == 1) {
     if (length(names) > 2) {
-      message("Assuming \"", lngs, "\" and \"", lats,
-        "\" are longitude and latitude, respectively")
+      message("Assuming '", lngs, "' and '", lats,
+        "' are longitude and latitude, respectively")
     }
     return(list(lng=lngs, lat=lats))
   }
