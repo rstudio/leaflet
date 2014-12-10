@@ -27,3 +27,10 @@ leaflet() %>% addCircles(data = data)
 leaflet(data) %>% addCircles(~Longitude, ~Latitude)
 leaflet(dataWeird) %>% addCircles(~LngCol, ~LatCol)
 leaflet() %>% addCircles(~LngCol, ~LatCol, data = dataWeird)
+
+
+# Some polygon data
+plng <- list(runif(3) + 1, runif(3) + 2, runif(3) + 3)
+plat <- list(runif(3), runif(3), runif(3))
+pdata <- data.frame(Latitude=I(plat), Longitude=I(plng))
+leaflet(pdata) %>% addTiles() %>% addPolygons(~Longitude, ~Latitude)

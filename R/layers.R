@@ -185,7 +185,8 @@ addPolylines = function(
   data = getMapData(map)
 ) {
   options <- makeOpts(match.call(), c("map", "lng", "lat", "layerId", "data"))
-  # TODO: expandLimits doesn't work here if lat/lng are formulae
+  lng <- resolveFormula(lng, data)
+  lat <- resolveFormula(lat, data)
   appendMapData(map, data, 'polyline', lat, lng, layerId, options) %>%
     expandLimits(unlist(lat), unlist(lng))
 }
@@ -210,7 +211,10 @@ addRectangles = function(
   data = getMapData(map)
 ) {
   options <- makeOpts(match.call(), c("map", "lat1", "lng1", "lat2", "lng2", "layerId", "data"))
-  # TODO: expandLimits doesn't work here if lat/lng are formulae
+  lng1 <- resolveFormula(lng1, data)
+  lat1 <- resolveFormula(lat1, data)
+  lng2 <- resolveFormula(lng2, data)
+  lat2 <- resolveFormula(lat2, data)
   appendMapData(map, data, 'rectangle',lat1, lng1, lat2, lng2, layerId, options) %>%
     expandLimits(c(lat1, lat2), c(lng1, lng2))
 }
@@ -218,7 +222,7 @@ addRectangles = function(
 # WARNING: lat and lng are LISTS of latitude and longitude vectors
 #' @export
 addPolygons = function(
-  map, lat, lng, layerId = NULL,
+  map, lng, lat, layerId = NULL,
   smoothFactor = 1.0,
   noClip = FALSE,
   color = "#03F",
@@ -236,7 +240,8 @@ addPolygons = function(
   data = getMapData(map)
 ) {
   options <- makeOpts(match.call(), c("map", "lng", "lat", "layerId", "data"))
-  # TODO: expandLimits doesn't work here if lat/lng are formulae
+  lng <- resolveFormula(lng, data)
+  lat <- resolveFormula(lat, data)
   appendMapData(map, data, 'polygon', lat, lng, layerId, options) %>%
     expandLimits(unlist(lat), unlist(lng))
 }
