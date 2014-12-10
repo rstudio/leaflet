@@ -193,7 +193,7 @@ addPolylines = function(
 
 #' @export
 addRectangles = function(
-  map, lng1 = NULL, lat1 = NULL, lng2 = NULL, lat2 = NULL, layerId = NULL,
+  map, lng1, lat1, lng2, lat2, layerId = NULL,
   smoothFactor = 1.0,
   noClip = FALSE,
   color = "#03F",
