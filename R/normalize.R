@@ -58,7 +58,7 @@ derivePoints <- function(data, lng, lat, missingLng, missingLat, funcName) {
     stop(funcName, " requires non-NULL latitude values")
   }
 
-  return(data.frame(lng=lng, lat=lat))
+  data.frame(lng=lng, lat=lat)
 }
 
 # TODO: Add tests
@@ -75,10 +75,10 @@ pointData.default <- function(obj) {
 #' @export
 pointData.data.frame <- function(obj) {
   cols <- guessLatLongCols(names(obj))
-  return(data.frame(
+  data.frame(
     lng = obj[[cols$lng]],
     lat = obj[[cols$lat]]
-  ))
+  )
 }
 
 #' @export
