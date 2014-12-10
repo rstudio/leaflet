@@ -1,0 +1,20 @@
+language: c
+
+env:
+  - R_PKG="$(basename $TRAVIS_REPO_SLUG)"
+
+install:
+  - sudo apt-add-repository -y "deb http://cran.rstudio.com/bin/linux/ubuntu `lsb_release -cs`/"
+  - sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
+  - sudo apt-add-repository -y ppa:marutter/c2d4u
+  - sudo apt-get update
+  - sudo apt-get install r-base-dev r-cran-devtools r-cran-knitr
+  - "wget -q -O - http://yihui.name/xran/r-config | bash"
+  - Rscript -e "devtools::install_deps(dep = TRUE)"
+  - Rscript -e "if (!require('htmlwidgets')) devtools::install_github('ramnathv/htmlwidgets')"
+
+script:
+  - cd ..; rm -f *.tar.gz; R CMD build $R_PKG
+  - R CMD check $R_PKG*.tar.gz --no-manual
+  - cd $R_PKG
+
