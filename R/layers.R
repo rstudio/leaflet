@@ -11,15 +11,10 @@ makeOpts <- function(matchCall, excludes = NULL, envir = parent.frame(2)) {
 
 # Evaluate list members that are formulae, using the map data as the environment
 # (if provided, otherwise the formula environment)
-evalFormula <- function(list, map) {
-  data <- map$x$data
+evalFormula <- function(list, data) {
   evalAll <- function(x) {
     if (is.list(x)) return(lapply(x, evalAll))
-    if (inherits(x, 'formula')) {
-      if (length(x) != 2L) stop('The formula must be one-sided: ', deparse(x))
-      x <- eval(x[[2]], data, environment(x))
-    }
-    x
+    return(resolveFormula(x, data))
   }
   evalAll(list)
 }
@@ -76,12 +71,12 @@ addTiles = function(
       '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a>',
       'contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
     )
-  appendMapData(map, 'tileLayer', urlTemplate = urlTemplate, options = options)
+  appendMapData(map, getMapData(map), 'tileLayer', urlTemplate = urlTemplate, options = options)
 }
 
 #' @export
 addPopups = function(
-  map, lat, lng, content, layerId = NULL,
+  map, lng = NULL, lat = NULL, content, layerId = NULL,
   maxWidth = 300,
   minWidth = 50,
   maxHeight = NULL,
@@ -94,16 +89,18 @@ addPopups = function(
   # autoPanPadding = TODO,
   zoomAnimation = TRUE,
   closeOnClick = NULL,
-  className = ""
+  className = "",
+  data = getMapData(map)
 ) {
-  options <- makeOpts(match.call(), c("map", "lat", "lng", "content", "layerId"))
-  appendMapData(map, 'popup', lat, lng, content, layerId, options) %>%
-    expandLimits(lat, lng)
+  options <- makeOpts(match.call(), c("map", "lng", "lat", "content", "layerId", "data"))
+  pts <- derivePoints(data, lng, lat, missing(lng), missing(lat), "addPopups")
+  appendMapData(map, data, 'popup', pts$lat, pts$lng, content, layerId, options) %>%
+    expandLimits(pts$lat, pts$lng)
 }
 
 #' @export
 addMarkers = function(
-  map, lat, lng, layerId = NULL,
+  map, lng = NULL, lat = NULL, layerId = NULL,
   icon = NULL,
   clickable = TRUE,
   draggable = FALSE,
@@ -113,16 +110,18 @@ addMarkers = function(
   zIndexOffset = 0,
   opacity = 1.0,
   riseOnHover = FALSE,
-  riseOffset = 250
+  riseOffset = 250,
+  data = getMapData(map)
 ) {
-  options <- makeOpts(match.call(), c("map", "lat", "lng", "layerId"))
-  appendMapData(map, 'marker', lat, lng, layerId, options) %>%
-    expandLimits(lat, lng)
+  options <- makeOpts(match.call(), c("map", "lng", "lat", "layerId", "data"))
+  pts <- derivePoints(data, lng, lat, missing(lng), missing(lat), "addMarkers")
+  appendMapData(map, data, 'marker', pts$lat, pts$lng, layerId, options) %>%
+    expandLimits(pts$lat, pts$lng)
 }
 
 #' @export
 addCircleMarkers = function(
-  map, lat, lng, radius = 10, layerId = NULL,
+  map, lng = NULL, lat = NULL, radius = 10, layerId = NULL,
   stroke = TRUE,
   color = "#03F",
   weight = 5,
@@ -135,16 +134,18 @@ addCircleMarkers = function(
   lineJoin = NULL,
   clickable = TRUE,
   pointerEvents = NULL,
-  className = ""
+  className = "",
+  data = getMapData(map)
 ) {
-  options <- makeOpts(match.call(), c("map", "lat", "lng", "radius", "layerId"))
-  appendMapData(map, 'circleMarker', lat, lng, radius, layerId, options) %>%
-    expandLimits(lat, lng)
+  options <- makeOpts(match.call(), c("map", "lng", "lat", "radius", "layerId", "data"))
+  pts <- derivePoints(data, lng, lat, missing(lng), missing(lat), "addCircleMarkers")
+  appendMapData(map, data, 'circleMarker', pts$lat, pts$lng, radius, layerId, options) %>%
+    expandLimits(pts$lat, pts$lng)
 }
 
 #' @export
 addCircles = function(
-  map, lat, lng, radius = 10, layerId = NULL,
+  map, lng = NULL, lat = NULL, radius = 10, layerId = NULL,
   stroke = TRUE,
   color = "#03F",
   weight = 5,
@@ -157,17 +158,19 @@ addCircles = function(
   lineJoin = NULL,
   clickable = TRUE,
   pointerEvents = NULL,
-  className = ""
+  className = "",
+  data = getMapData(map)
 ) {
-  options <- makeOpts(match.call(), c("map", "lat", "lng", "radius", "layerId"))
-  appendMapData(map, 'circle', lat, lng, radius, layerId, options) %>%
-    expandLimits(lat, lng)
+  options <- makeOpts(match.call(), c("map", "lng", "lat", "radius", "layerId", "data"))
+  pts <- derivePoints(data, lng, lat, missing(lng), missing(lat), "addCircles")
+  appendMapData(map, data, 'circle', pts$lat, pts$lng, radius, layerId, options) %>%
+    expandLimits(pts$lat, pts$lng)
 }
 
 # WARNING: lat and lng are LISTS of latitude and longitude vectors
 #' @export
 addPolylines = function(
-  map, lat, lng, layerId = NULL,
+  map, lng = NULL, lat = NULL, layerId = NULL,
   smoothFactor = 1.0,
   noClip = FALSE,
   color = "#03F",
@@ -178,16 +181,19 @@ addPolylines = function(
   lineJoin = NULL,
   clickable = TRUE,
   pointerEvents = NULL,
-  className = ""
+  className = "",
+  data = getMapData(map)
 ) {
-  options <- makeOpts(match.call(), c("map", "lat", "lng", "layerId"))
-  appendMapData(map, 'polyline', lat, lng, layerId, options) %>%
+  options <- makeOpts(match.call(), c("map", "lng", "lat", "layerId", "data"))
+  lng <- resolveFormula(lng, data)
+  lat <- resolveFormula(lat, data)
+  appendMapData(map, data, 'polyline', lat, lng, layerId, options) %>%
     expandLimits(unlist(lat), unlist(lng))
 }
 
 #' @export
 addRectangles = function(
-  map, lat1, lng1, lat2, lng2, layerId = NULL,
+  map, lng1, lat1, lng2, lat2, layerId = NULL,
   smoothFactor = 1.0,
   noClip = FALSE,
   color = "#03F",
@@ -201,17 +207,22 @@ addRectangles = function(
   lineJoin = NULL,
   clickable = TRUE,
   pointerEvents = NULL,
-  className = ""
+  className = "",
+  data = getMapData(map)
 ) {
-  options <- makeOpts(match.call(), c("map", "lat1", "lng1", "lat2", "lng2", "layerId"))
-  appendMapData(map, 'rectangle',lat1, lng1, lat2, lng2, layerId, options) %>%
+  options <- makeOpts(match.call(), c("map", "lat1", "lng1", "lat2", "lng2", "layerId", "data"))
+  lng1 <- resolveFormula(lng1, data)
+  lat1 <- resolveFormula(lat1, data)
+  lng2 <- resolveFormula(lng2, data)
+  lat2 <- resolveFormula(lat2, data)
+  appendMapData(map, data, 'rectangle',lat1, lng1, lat2, lng2, layerId, options) %>%
     expandLimits(c(lat1, lat2), c(lng1, lng2))
 }
 
 # WARNING: lat and lng are LISTS of latitude and longitude vectors
 #' @export
 addPolygons = function(
-  map, lat, lng, layerId = NULL,
+  map, lng = NULL, lat = NULL, layerId = NULL,
   smoothFactor = 1.0,
   noClip = FALSE,
   color = "#03F",
@@ -225,14 +236,17 @@ addPolygons = function(
   lineJoin = NULL,
   clickable = TRUE,
   pointerEvents = NULL,
-  className = ""
+  className = "",
+  data = getMapData(map)
 ) {
-  options <- makeOpts(match.call(), c("map", "lat", "lng", "layerId"))
-  appendMapData(map, 'polygon', lat, lng, layerId, options) %>%
+  options <- makeOpts(match.call(), c("map", "lng", "lat", "layerId", "data"))
+  lng <- resolveFormula(lng, data)
+  lat <- resolveFormula(lat, data)
+  appendMapData(map, data, 'polygon', lat, lng, layerId, options) %>%
     expandLimits(unlist(lat), unlist(lng))
 }
 
 #' @export
-addGeoJSON = function(map, data, layerId = NULL, options = list()) {
-  appendMapData(map, 'geoJSON', data, layerId, options)
+addGeoJSON = function(map, geojson, layerId = NULL, options = list()) {
+  appendMapData(map, getMapData(map), 'geoJSON', geojson, layerId, options)
 }

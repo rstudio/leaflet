@@ -23,23 +23,66 @@ guessLatLongCols <- function(names, stopOnFailure = TRUE,
   return(list(lng=NA, lat=NA))
 }
 
+resolveFormula <- function(f, data) {
+  if (!inherits(f, 'formula'))
+    return(f)
+  if (length(f) != 2L)
+    stop("Unexpected two-sided formula: ", deparse(f))
+  eval(f[[2]], data, environment(f))
+}
+
+# Given a data object and lng/lat arguments (which may be NULL [meaning infer
+# from data], formula [which should be evaluated with respect to the data], or
+# vector data [which should be used as-is]) return a lng/lat data frame.
+derivePoints <- function(data, lng, lat, missingLng, missingLat, funcName) {
+  if (missingLng || missingLat) {
+    if (is.null(data)) {
+      stop("Point data not found; please provide ", funcName,
+        " with data and/or lng/lat arguments")
+    }
+    pts <- pointData(data)
+    if (is.null(lng))
+      lng <- pts$lng
+    if (is.null(lat))
+      lat <- pts$lat
+  }
+
+  lng <- resolveFormula(lng, data)
+  lat <- resolveFormula(lat, data)
+
+  if (is.null(lng) && is.null(lat)) {
+    stop(funcName, " requires non-NULL longitude/latitude values")
+  } else if (is.null(lng)) {
+    stop(funcName, " requires non-NULL longitude values")
+  } else if (is.null(lat)) {
+    stop(funcName, " requires non-NULL latitude values")
+  }
+
+  data.frame(lng=lng, lat=lat)
+}
+
 # TODO: Add tests
+#' @export
 pointData <- function(obj) {
   UseMethod("pointData")
 }
 
+#' @export
 pointData.default <- function(obj) {
-  stop("Don't know how to get location data from object of class ", class(obj))
+  stop("Don't know how to get location data from object of class ",
+    class(obj)[[1]])
 }
 
+#' @export
 pointData.data.frame <- function(obj) {
   cols <- guessLatLongCols(names(obj))
-  return(data.frame(
-    lng = obj[cols$lng],
-    lat = obj[cols$lat]
-  ))
+  data.frame(
+    lng = obj[[cols$lng]],
+    lat = obj[[cols$lat]]
+  )
 }
 
+#' @export
 pointData.matrix <- function(obj) {
   dims <- dim(obj)
   if (length(dims) != 2) {
@@ -52,6 +95,7 @@ pointData.matrix <- function(obj) {
   data.frame(lng = obj[,1], lat = obj[,2])
 }
 
+#' @export
 pointData.SpatialPoints <- function(obj) {
   structure(
     as.data.frame(sp::coordinates(obj)),
@@ -59,6 +103,7 @@ pointData.SpatialPoints <- function(obj) {
   )
 }
 
+#' @export
 pointData.SpatialPointsDataFrame <- function(obj) {
   structure(
     as.data.frame(sp::coordinates(obj)),
