@@ -75,6 +75,33 @@ derivePoints = function(data, lng, lat, missingLng, missingLat, funcName) {
   data.frame(lng=lng, lat=lat)
 }
 
+derivePolygons = function(data, lng, lat, missingLng, missingLat, funcName) {
+  if (missingLng || missingLat) {
+    if (is.null(data)) {
+      stop("Polygon data not found; please provide ", funcName,
+        " with data and/or lng/lat arguments")
+    }
+    pts = polygonData(data)
+    if (is.null(lng))
+      lng = pts$lng
+    if (is.null(lat))
+      lat = pts$lat
+  }
+
+  lng = resolveFormula(lng, data)
+  lat = resolveFormula(lat, data)
+
+  if (is.null(lng) && is.null(lat)) {
+    stop(funcName, " requires non-NULL longitude/latitude values")
+  } else if (is.null(lng)) {
+    stop(funcName, " requires non-NULL longitude values")
+  } else if (is.null(lat)) {
+    stop(funcName, " requires non-NULL latitude values")
+  }
+
+  data.frame(lng=lng, lat=lat)
+}
+
 # TODO: Add tests
 #' @export
 pointData = function(obj) {

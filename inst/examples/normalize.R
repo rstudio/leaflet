@@ -49,4 +49,13 @@ leaflet(data) %>% addCircles(1, nolat)
 plng <- list(runif(3) + 1, runif(3) + 2, runif(3) + 3)
 plat <- list(runif(3), runif(3), runif(3))
 pdata <- data.frame(Latitude=I(plat), Longitude=I(plng))
+pgonList <- mapply(plng, plat, FUN = function(lng, lat) {
+  Polygon(cbind(lng, lat))
+})
+pgons <- Polygons(pgonList, "A")
+spgons <- SpatialPolygons(list(pgons))
+
 leaflet(pdata) %>% addTiles() %>% addPolygons(~Longitude, ~Latitude)
+leaflet(pgonList) %>% addTiles() %>% addPolygons()
+leaflet(pgons) %>% addTiles() %>% addPolygons()
+leaflet(spgons) %>% addTiles() %>% addPolygons()

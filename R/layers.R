@@ -185,10 +185,9 @@ addPolylines = function(
   data = getMapData(map)
 ) {
   options = makeOpts(match.call(), c("map", "lng", "lat", "layerId", "data"))
-  lng = resolveFormula(lng, data)
-  lat = resolveFormula(lat, data)
-  appendMapData(map, data, 'polyline', lat, lng, layerId, options) %>%
-    expandLimits(unlist(lat), unlist(lng))
+  pgs = derivePolygons(data, lng, lat, missing(lng), missing(lat), "addPolylines")
+  appendMapData(map, data, 'polyline', pgs$lat, pgs$lng, layerId, options) %>%
+    expandLimits(unlist(pgs$lat), unlist(pgs$lng))
 }
 
 #' @export
@@ -240,10 +239,9 @@ addPolygons = function(
   data = getMapData(map)
 ) {
   options = makeOpts(match.call(), c("map", "lng", "lat", "layerId", "data"))
-  lng = resolveFormula(lng, data)
-  lat = resolveFormula(lat, data)
-  appendMapData(map, data, 'polygon', lat, lng, layerId, options) %>%
-    expandLimits(unlist(lat), unlist(lng))
+  pgs = derivePolygons(data, lng, lat, missing(lng), missing(lat), "addPolygons")
+  appendMapData(map, data, 'polygon', pgs$lat, pgs$lng, layerId, options) %>%
+    expandLimits(unlist(pgs$lat), unlist(pgs$lng))
 }
 
 #' @export
