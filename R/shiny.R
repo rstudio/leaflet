@@ -19,6 +19,7 @@ renderLeaflet = function(expr, env = parent.frame(), quoted = FALSE) {
 #'   \code{\link{leaflet}()}.
 #' @return A list of methods. See the package vignette \code{vignette('intro',
 #'   'leaflet'} for details.
+#' @keywords internal
 leafletController = function(session, id) {
 
   # This function is how we "dynamically" invoke code on the client. The

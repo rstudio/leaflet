@@ -20,3 +20,4 @@ A list of methods. See the package vignette \code{vignette('intro',
 This function is called from \file{server.R} and returns an object that can
 be used to manipulate the Leaflet map from R.
 }
+\keyword{internal}
