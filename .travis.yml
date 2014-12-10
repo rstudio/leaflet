@@ -11,7 +11,6 @@ install:
   - sudo apt-get install r-base-core r-cran-devtools r-cran-knitr r-cran-shiny
   - "wget -q -O - http://yihui.name/xran/r-config | bash"
   - Rscript -e "devtools::install_deps(dep = TRUE)"
-  - Rscript -e "if (!require('htmlwidgets')) devtools::install_github('ramnathv/htmlwidgets')"
 
 script:
   - cd ..; rm -f *.tar.gz; R CMD build $R_PKG
