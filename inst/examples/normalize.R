@@ -15,6 +15,9 @@ ptsdf <- sp::SpatialPointsDataFrame(pts, data.frame(Color = topo.colors(20, NULL
 data <- data.frame(Longitude=lng, Latitude=lat, X=1:20)
 # Data frame with weird col names
 dataWeird <- data.frame(LngCol = lng, LatCol = lat, X=1:20)
+# SpatialDataFrame with weird col names turned to coords
+datacoord <- dataWeird
+coordinates(datacoord) <- ~LngCol+LatCol
 
 # Make some circles, without formulas
 leaflet() %>% addCircles(lng, lat)
@@ -23,6 +26,7 @@ leaflet() %>% addCircles(data = ptsdf)
 leaflet() %>% addCircles(data = ptsdf, radius = 4000, fillColor = ~Color)
 leaflet(data) %>% addCircles()
 leaflet() %>% addCircles(data = data)
+leaflet(datacoord) %>% addCircles()
 
 # Make some circles, with formulas
 leaflet(data) %>% addCircles(~Longitude, ~Latitude)
@@ -50,3 +54,4 @@ plng <- list(runif(3) + 1, runif(3) + 2, runif(3) + 3)
 plat <- list(runif(3), runif(3), runif(3))
 pdata <- data.frame(Latitude=I(plat), Longitude=I(plng))
 leaflet(pdata) %>% addTiles() %>% addPolygons(~Longitude, ~Latitude)
+leaflet(pdata) %>% addTiles() %>% addPolygons(lng=plng, lat=plat)
