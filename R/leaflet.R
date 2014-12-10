@@ -28,6 +28,6 @@ leaflet = function(data = NULL, id = NULL, width = NULL, height = NULL, padding 
   )
 }
 
-getMapData <- function(map) {
+getMapData = function(map) {
   attr(map$x, "leafletData", exact = TRUE)
 }
