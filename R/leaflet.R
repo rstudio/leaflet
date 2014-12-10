@@ -3,12 +3,22 @@
 #' This function creates a Leaflet map widget using \pkg{htmlwidgets}. The
 #' widget can be rendered on HTML pages generated from R Markdown, Shiny, or
 #' other applications.
+#'
+#' The \code{data} argument is only needed if you are going to reference
+#' variables in this object later in map layers. For example, \code{data} can be
+#' a data frame containing columns \code{latitude} and \code{longtitude}, then
+#' we may add a circle layer to the map by \code{leaflet(data) \%>\%
+#' addCircles(lat = ~latitude, lng = ~longtitude)}, where the variables in the
+#' formulae will be evaluated in the \code{data}.
+#' @param data a data object (e.g. a numeric matrix, data frame, or spatial data
+#'   created from the \pkg{sp} package)
 #' @param id a character string as the identifier of the map (you do not need to
 #'   provide it unless you want to manipulate the map later in Shiny)
 #' @param width the width of the map
 #' @param height the height of the map
 #' @param padding the padding of the map
-#' @return A HTML widget object.
+#' @return A HTML widget object, on which we can add graphics layers using
+#'   \code{\%>\%} (see examples).
 #' @example inst/examples/leaflet.R
 #' @export
 leaflet = function(data = NULL, id = NULL, width = NULL, height = NULL, padding = 0) {
