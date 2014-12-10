@@ -11,12 +11,12 @@
 #' @export
 #' @examples library(leaflet)
 #' str(uspop2000)
-#' p <- uspop2000$Pop2010
-#' p <- (p - min(p))/(max(p) - min(p))
+#' p = uspop2000$Pop2010
+#' p = (p - min(p))/(max(p) - min(p))
 #' plot(Lat ~ Long, data = uspop2000, cex = sqrt(p), asp = 1, col = rgb(1, 0, 0, .3))
-uspop2000 <- NULL
+uspop2000 = NULL
 if (file.exists('inst/csv/uspop2000.csv')) {
-  uspop2000 <- read.csv(
+  uspop2000 = read.csv(
     text = readLines('inst/csv/uspop2000.csv', encoding = 'UTF-8'),
     stringsAsFactors = FALSE
   )

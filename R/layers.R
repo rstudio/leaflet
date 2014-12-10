@@ -13,22 +13,19 @@ makeOpts = function(matchCall, excludes = NULL, envir = parent.frame(2)) {
 # (if provided, otherwise the formula environment)
 evalFormula = function(list, data) {
   evalAll = function(x) {
-    if (is.list(x)) return(lapply(x, evalAll))
-    return(resolveFormula(x, data))
+    if (is.list(x)) lapply(x, evalAll) else resolveFormula(x, data)
   }
   evalAll(list)
 }
 
 # Notifies the map of new latitude/longitude of items of interest on the map, so
-# that we can expand the limits (i.e. bounding box). We will use this as the initial
-# view if the user doesn't explicitly specify bounds using fitBounds.
+# that we can expand the limits (i.e. bounding box). We will use this as the
+# initial view if the user doesn't explicitly specify bounds using fitBounds.
 expandLimits = function(map, lat, lng) {
-  if (is.null(map$x$limits))
-    map$x$limits = list()
+  if (is.null(map$x$limits)) map$x$limits = list()
 
-  # We remove NA's and check the lengths so we never call range()
-  # with an empty set of arguments (or all NA's), which will cause
-  # a warning.
+  # We remove NA's and check the lengths so we never call range() with an empty
+  # set of arguments (or all NA's), which will cause a warning.
 
   lat = lat[is.finite(lat)]
   lng = lng[is.finite(lng)]
