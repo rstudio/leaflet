@@ -10,7 +10,7 @@ lat <- runif(20)
 mtx <- cbind(lng, lat)
 # Spatial
 pts <- sp::SpatialPoints(mtx)
-ptsdf <- sp::SpatialPointsDataFrame(pts, data.frame(1:20))
+ptsdf <- sp::SpatialPointsDataFrame(pts, data.frame(Color = topo.colors(20, NULL)))
 # Data frame with standard col names
 data <- data.frame(Longitude=lng, Latitude=lat, X=1:20)
 # Data frame with weird col names
@@ -20,6 +20,7 @@ dataWeird <- data.frame(LngCol = lng, LatCol = lat, X=1:20)
 leaflet() %>% addCircles(lng, lat)
 leaflet() %>% addCircles(data = pts)
 leaflet() %>% addCircles(data = ptsdf)
+leaflet() %>% addCircles(data = ptsdf, radius = 4000, fillColor = ~Color)
 leaflet(data) %>% addCircles()
 leaflet() %>% addCircles(data = data)
 

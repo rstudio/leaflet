@@ -28,7 +28,21 @@ resolveFormula <- function(f, data) {
     return(f)
   if (length(f) != 2L)
     stop("Unexpected two-sided formula: ", deparse(f))
+
+  doResolveFormula(data, f)
+}
+
+doResolveFormula <- function(data, f) {
+  UseMethod("doResolveFormula")
+}
+
+doResolveFormula.data.frame <- function(data, f) {
   eval(f[[2]], data, environment(f))
+}
+
+doResolveFormula.SpatialPolygonsDataFrame <-
+doResolveFormula.SpatialPointsDataFrame <- function(data, f) {
+  doResolveFormula(data@data, f)
 }
 
 # Given a data object and lng/lat arguments (which may be NULL [meaning infer
