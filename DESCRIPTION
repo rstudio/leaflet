@@ -20,5 +20,6 @@ Imports:
     magrittr
 Suggests:
     knitr,
-    shiny
+    shiny,
+    sp
 VignetteBuilder: knitr
