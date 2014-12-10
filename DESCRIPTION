@@ -21,5 +21,6 @@ Imports:
 Suggests:
     knitr,
     shiny,
-    sp
+    sp,
+    testit
 VignetteBuilder: knitr
