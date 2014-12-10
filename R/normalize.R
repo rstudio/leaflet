@@ -69,7 +69,8 @@ pointData <- function(obj) {
 
 #' @export
 pointData.default <- function(obj) {
-  stop("Don't know how to get location data from object of class ", class(obj))
+  stop("Don't know how to get location data from object of class ",
+    class(obj)[[1]])
 }
 
 #' @export
