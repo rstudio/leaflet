@@ -1,9 +1,17 @@
-
+#' Wrapper functions for using \pkg{leaflet} in \pkg{shiny}
+#'
+#' Use \code{leafletOutput()} to create a UI element, and \code{renderLeaflet()}
+#' to render the map widget.
+#' @inheritParams htmlwidgets::shinyWidgetOutput
+#' @param width,height the width and height of the map (see
+#'   \code{\link[htmlwidgets]{shinyWidgetOutput}})
+#' @rdname leaflet-shiny
 #' @export
 leafletOutput = function(outputId, width = "100%", height = 400) {
   htmlwidgets::shinyWidgetOutput(outputId, "leaflet", width, height, "leaflet")
 }
 
+#' @rdname leaflet-shiny
 #' @export
 renderLeaflet = function(expr, env = parent.frame(), quoted = FALSE) {
   htmlwidgets::shinyRenderWidget(expr, leafletOutput, env, quoted = TRUE)
