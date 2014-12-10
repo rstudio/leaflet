@@ -131,12 +131,12 @@ m \%>\% setView(c(47.6759920119894, -122.36075812146), zoom = 13) \%>\% addGeoJS
 
 
 # use the OSM BW layer
-leaflet() \%>\% addTiles('http://{s}.www.toolserver.org/tiles/bw-mapnik/{z}/{x}/{y}.png', list(
+leaflet() \%>\% addTiles('http://{s}.www.toolserver.org/tiles/bw-mapnik/{z}/{x}/{y}.png',
   attribution = paste(
     '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors,',
     '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
   )
-))
+)
 
 # provide a data frame to leaflet()
 df = data.frame(

@@ -34,8 +34,12 @@ resolveFormula <- function(f, data) {
 # Given a data object and lng/lat arguments (which may be NULL [meaning infer
 # from data], formula [which should be evaluated with respect to the data], or
 # vector data [which should be used as-is]) return a lng/lat data frame.
-derivePoints <- function(data, lng, lat) {
-  if (is.null(lng) || is.null(lat)) {
+derivePoints <- function(data, lng, lat, missingLng, missingLat, funcName) {
+  if (missingLng || missingLat) {
+    if (is.null(data)) {
+      stop("Point data not found; please provide ", funcName,
+        " with data and/or lng/lat arguments")
+    }
     pts <- pointData(data)
     if (is.null(lng))
       lng <- pts$lng
@@ -45,6 +49,15 @@ derivePoints <- function(data, lng, lat) {
 
   lng <- resolveFormula(lng, data)
   lat <- resolveFormula(lat, data)
+
+  if (is.null(lng) && is.null(lat)) {
+    stop(funcName, " requires non-NULL longitude/latitude values")
+  } else if (is.null(lng)) {
+    stop(funcName, " requires non-NULL longitude values")
+  } else if (is.null(lat)) {
+    stop(funcName, " requires non-NULL latitude values")
+  }
+
   return(data.frame(lng=lng, lat=lat))
 }
 

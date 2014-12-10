@@ -28,6 +28,21 @@ leaflet(data) %>% addCircles(~Longitude, ~Latitude)
 leaflet(dataWeird) %>% addCircles(~LngCol, ~LatCol)
 leaflet() %>% addCircles(~LngCol, ~LatCol, data = dataWeird)
 
+# Recycling of lng/lat is valid (should it be??)
+leaflet() %>% addTiles() %>% addCircles(c(1,2), sort(runif(20) + 10))
+# Plotting of empty data is OK
+leaflet(data.frame(Latitude=numeric(0), Longitude=numeric(0))) %>% addCircles()
+leaflet() %>% addCircles(numeric(0), numeric(0))
+
+# Error cases
+leaflet() %>% addCircles()    # No data at all
+leaflet() %>% addCircles(NULL, NULL) # Explicit NULL
+leaflet() %>% addCircles(NULL, 1) # Explicit NULL longitude
+leaflet() %>% addCircles(1, NULL) # Explicit NULL latitude
+nolat <- NULL
+# Indirect NULL. It'd be OK for lat to be missing, but not for it to be present
+# and NULL.
+leaflet(data) %>% addCircles(1, nolat)
 
 # Some polygon data
 plng <- list(runif(3) + 1, runif(3) + 2, runif(3) + 3)

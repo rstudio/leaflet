@@ -76,7 +76,7 @@ addTiles = function(
 
 #' @export
 addPopups = function(
-  map, lng, lat, content, layerId = NULL,
+  map, lng = NULL, lat = NULL, content, layerId = NULL,
   maxWidth = 300,
   minWidth = 50,
   maxHeight = NULL,
@@ -93,14 +93,14 @@ addPopups = function(
   data = getMapData(map)
 ) {
   options <- makeOpts(match.call(), c("map", "lng", "lat", "content", "layerId", "data"))
-  pts <- derivePoints(data, lng, lat)
+  pts <- derivePoints(data, lng, lat, missing(lng), missing(lat), "addPopups")
   appendMapData(map, data, 'popup', pts$lat, pts$lng, content, layerId, options) %>%
     expandLimits(pts$lat, pts$lng)
 }
 
 #' @export
 addMarkers = function(
-  map, lng, lat, layerId = NULL,
+  map, lng = NULL, lat = NULL, layerId = NULL,
   icon = NULL,
   clickable = TRUE,
   draggable = FALSE,
@@ -114,7 +114,7 @@ addMarkers = function(
   data = getMapData(map)
 ) {
   options <- makeOpts(match.call(), c("map", "lng", "lat", "layerId", "data"))
-  pts <- derivePoints(data, lng, lat)
+  pts <- derivePoints(data, lng, lat, missing(lng), missing(lat), "addMarkers")
   appendMapData(map, data, 'marker', pts$lat, pts$lng, layerId, options) %>%
     expandLimits(pts$lat, pts$lng)
 }
@@ -138,7 +138,7 @@ addCircleMarkers = function(
   data = getMapData(map)
 ) {
   options <- makeOpts(match.call(), c("map", "lng", "lat", "radius", "layerId", "data"))
-  pts <- derivePoints(data, lng, lat)
+  pts <- derivePoints(data, lng, lat, missing(lng), missing(lat), "addCircleMarkers")
   appendMapData(map, data, 'circleMarker', pts$lat, pts$lng, radius, layerId, options) %>%
     expandLimits(pts$lat, pts$lng)
 }
@@ -162,7 +162,7 @@ addCircles = function(
   data = getMapData(map)
 ) {
   options <- makeOpts(match.call(), c("map", "lng", "lat", "radius", "layerId", "data"))
-  pts <- derivePoints(data, lng, lat)
+  pts <- derivePoints(data, lng, lat, missing(lng), missing(lat), "addCircles")
   appendMapData(map, data, 'circle', pts$lat, pts$lng, radius, layerId, options) %>%
     expandLimits(pts$lat, pts$lng)
 }
@@ -170,7 +170,7 @@ addCircles = function(
 # WARNING: lat and lng are LISTS of latitude and longitude vectors
 #' @export
 addPolylines = function(
-  map, lng, lat, layerId = NULL,
+  map, lng = NULL, lat = NULL, layerId = NULL,
   smoothFactor = 1.0,
   noClip = FALSE,
   color = "#03F",
@@ -222,7 +222,7 @@ addRectangles = function(
 # WARNING: lat and lng are LISTS of latitude and longitude vectors
 #' @export
 addPolygons = function(
-  map, lng, lat, layerId = NULL,
+  map, lng = NULL, lat = NULL, layerId = NULL,
   smoothFactor = 1.0,
   noClip = FALSE,
   color = "#03F",
@@ -247,6 +247,6 @@ addPolygons = function(
 }
 
 #' @export
-addGeoJSON = function(map, data, layerId = NULL, options = list()) {
-  appendMapData(map, getMapData(map), 'geoJSON', data, layerId, options)
+addGeoJSON = function(map, geojson, layerId = NULL, options = list()) {
+  appendMapData(map, getMapData(map), 'geoJSON', geojson, layerId, options)
 }
