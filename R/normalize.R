@@ -130,7 +130,7 @@ polygonData = function(obj) {
 }
 
 polygonData.default = function(obj) {
-  stop("Don't know how to get path data from object of class ", class(obj))
+  stop("Don't know how to get path data from object of class ", class(obj)[[1]])
 }
 polygonData.data.frame = function(obj) {
   stop("Not implemented")
