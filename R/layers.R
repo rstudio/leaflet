@@ -144,7 +144,7 @@ addCircleMarkers = function(
 
 #' @export
 addCircles = function(
-  map, lat, lng, radius = 10, layerId = NULL,
+  map, centers = data, radius = 10, layerId = NULL,
   stroke = TRUE,
   color = "#03F",
   weight = 5,
@@ -157,9 +157,13 @@ addCircles = function(
   lineJoin = NULL,
   clickable = TRUE,
   pointerEvents = NULL,
-  className = ""
+  className = "",
+  data = map$x$data
 ) {
-  options <- makeOpts(match.call(), c("map", "lat", "lng", "radius", "layerId"))
+  options <- makeOpts(match.call(), c("map", "centers", "radius", "layerId", "data"))
+  points <- pointData(centers, data)
+  lat <- points$lat
+  lng <- points$lng
   appendMapData(map, 'circle', lat, lng, radius, layerId, options) %>%
     expandLimits(lat, lng)
 }

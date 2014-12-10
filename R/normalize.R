@@ -24,23 +24,47 @@ guessLatLongCols <- function(names, stopOnFailure = TRUE,
 }
 
 # TODO: Add tests
-pointData <- function(obj) {
+pointData <- function(obj, dataContext) {
   UseMethod("pointData")
 }
 
-pointData.default <- function(obj) {
+pointData.default <- function(obj, dataContext) {
   stop("Don't know how to get location data from object of class ", class(obj))
 }
 
-pointData.data.frame <- function(obj) {
+pointData.data.frame <- function(obj, dataContext) {
   cols <- guessLatLongCols(names(obj))
   return(data.frame(
-    lng = obj[cols$lng],
-    lat = obj[cols$lat]
+    lng = obj[[cols$lng]],
+    lat = obj[[cols$lat]]
   ))
 }
 
-pointData.matrix <- function(obj) {
+pointData.formula <- function(obj, dataContext) {
+  if (length(obj) == 3) {
+    # binary formula
+    lng <- eval(obj[[2]], dataContext, environment(obj))
+    lat <- eval(obj[[3]], dataContext, environment(obj))
+    return(pointData(cbind(lng, lat), dataContext))
+  } else if (length(obj) == 2) {
+    # unary formula
+    return(pointData(eval(obj[[2]], dataContext, environment(obj))))
+  }
+}
+
+pointData.character <- function(obj, dataContext) {
+  if (length(obj) != 2) {
+    # TODO: Better error message
+    stop("Point data character indices should be length 2")
+  }
+
+  return(structure(
+    dataContext[, obj],
+    names = c("lng", "lat")
+  ))
+}
+
+pointData.matrix <- function(obj, dataContext) {
   dims <- dim(obj)
   if (length(dims) != 2) {
     stop("Point data must be two dimensional")
@@ -52,14 +76,14 @@ pointData.matrix <- function(obj) {
   data.frame(lng = obj[,1], lat = obj[,2])
 }
 
-pointData.SpatialPoints <- function(obj) {
+pointData.SpatialPoints <- function(obj, dataContext) {
   structure(
     as.data.frame(sp::coordinates(obj)),
     names = c("lng", "lat")
   )
 }
 
-pointData.SpatialPointsDataFrame <- function(obj) {
+pointData.SpatialPointsDataFrame <- function(obj, dataContext) {
   structure(
     as.data.frame(sp::coordinates(obj)),
     names = c("lng", "lat")
