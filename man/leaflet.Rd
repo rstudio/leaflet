@@ -36,35 +36,35 @@ m = m \%>\% setView(c(42.0285, -93.65), zoom = 17)
 m
 
 # popup
-m \%>\% addPopups(42.0285, -93.65, 'Here is the <b>Department of Statistics</b>, ISU')
-rand_lat = function(n = 10) rnorm(n, 42.0285, .01)
+m \%>\% addPopups(-93.65, 42.0285, 'Here is the <b>Department of Statistics</b>, ISU')
 rand_lng = function(n = 10) rnorm(n, -93.65, .01)
+rand_lat = function(n = 10) rnorm(n, 42.0285, .01)
 
 m = m \%>\% clearBounds()
 # TODO: only one popup can be opened; need to bind all popups in a layer and show all
-m \%>\% addPopups(rand_lat(), rand_lng(), 'Random popups')
+m \%>\% addPopups(rand_lng(), rand_lat(), 'Random popups')
 
 # marker
-m \%>\% addMarkers(rand_lat(), rand_lng())
+m \%>\% addMarkers(rand_lng(), rand_lat())
 
 # circle (units in metres)
-m \%>\% addCircles(rand_lat(50), rand_lng(50), radius = runif(50, 50, 150))
+m \%>\% addCircles(rand_lng(50), rand_lat(50), radius = runif(50, 50, 150))
 
 # circle marker (units in pixels)
-m \%>\% addCircleMarkers(rand_lat(50), rand_lng(50), color = '#ff0000')
-m \%>\% addCircleMarkers(rand_lat(100), rand_lng(100), radius = runif(100, 5, 15))
+m \%>\% addCircleMarkers(rand_lng(50), rand_lat(50), color = '#ff0000')
+m \%>\% addCircleMarkers(rand_lng(100), rand_lat(100), radius = runif(100, 5, 15))
 
 # rectangle
 m \%>\% addRectangles(
-  rand_lat(), rand_lng(), rand_lat(), rand_lng(),
+  rand_lng(), rand_lat(), rand_lng(), rand_lat(),
   color = 'red', fill = FALSE, dashArray = '5,5', weight = 3
 )
 
 # polyline
-m \%>\% addPolylines(rand_lat(50), rand_lng(50))
+m \%>\% addPolylines(rand_lng(50), rand_lat(50))
 
 # polygon
-m \%>\% addPolygons(rand_lat(), rand_lng(), layerId = 'foo')
+m \%>\% addPolygons(rand_lng(), rand_lat(), layerId = 'foo')
 
 # geoJSON
 seattle_geojson <- list(
@@ -143,8 +143,8 @@ df = data.frame(
   lat = rand_lat(100), lng = rand_lng(100), size = runif(100, 5, 20),
   color = rgb(runif(100), runif(100), runif(100)), stringsAsFactors = FALSE
 )
-m = leaflet(df) \%>\% addTiles() \%>\% setView(c(42.0285, -93.65), zoom = 17)
-m \%>\% addCircleMarkers(~lat, ~lng, radius = ~size)
-m \%>\% addCircleMarkers(~lat, ~lng, radius = runif(100, 4, 10), color = 'red')
-m \%>\% addCircleMarkers(~lat, ~lng, radius = runif(100, 4, 10), color = ~color)
+m = leaflet(df) \%>\% addTiles()
+m \%>\% addCircleMarkers(~lng, ~lat, radius = ~size)
+m \%>\% addCircleMarkers(~lng, ~lat, radius = runif(100, 4, 10), color = 'red')
+m \%>\% addCircleMarkers(~lng, ~lat, radius = runif(100, 4, 10), color = ~color)
 }

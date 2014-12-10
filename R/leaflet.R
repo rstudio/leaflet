@@ -14,7 +14,10 @@
 leaflet = function(data = NULL, id = NULL, width = NULL, height = NULL, padding = 0) {
   htmlwidgets::createWidget(
     'leaflet',
-    list(mapId = id, data = data),
+    structure(
+      list(mapId = id),
+      leafletData = data
+    ),
     width = width, height = height,
     sizingPolicy = htmlwidgets::sizingPolicy(
       defaultWidth = 'auto',
@@ -23,4 +26,8 @@ leaflet = function(data = NULL, id = NULL, width = NULL, height = NULL, padding 
       browser.fill = TRUE
     )
   )
+}
+
+getMapData <- function(map) {
+  attr(map$x, "leafletData", exact = TRUE)
 }
