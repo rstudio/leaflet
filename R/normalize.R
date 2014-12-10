@@ -1,8 +1,7 @@
 # Given the names of a data frame, list, matrix, etc., take a guess at
 # which columns represent latitude and longitude.
 # TODO: Add tests
-guessLatLongCols = function(names, stopOnFailure = TRUE,
-  shouldPrint = length(names) > 2) {
+guessLatLongCols = function(names, stopOnFailure = TRUE) {
 
   lats = names[grep("^(lat|latitude)$", names, ignore.case = TRUE)]
   lngs = names[grep("^(lng|long|longitude)$", names, ignore.case = TRUE)]
