@@ -467,6 +467,16 @@ var dataframe = (function() {
       if (!explicitView) {
         if (data.limits) {
           // Use the natural limits of what's being drawn on the map
+          // If the size of the bounding box is 0, leaflet gets all weird
+          var pad = 0.006;
+          if (data.limits.lat[0] === data.limits.lat[1]) {
+            data.limits.lat[0] = data.limits.lat[0] - pad;
+            data.limits.lat[1] = data.limits.lat[1] + pad;
+          }
+          if (data.limits.lng[0] === data.limits.lng[1]) {
+            data.limits.lng[0] = data.limits.lng[0] - pad;
+            data.limits.lng[1] = data.limits.lng[1] + pad;
+          }
           map.fitBounds([
             [ data.limits.lat[0], data.limits.lng[0] ],
             [ data.limits.lat[1], data.limits.lng[1] ]
