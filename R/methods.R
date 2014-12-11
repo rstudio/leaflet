@@ -14,7 +14,7 @@
 #' @examples library(leaflet)
 #' m = leaflet() %>% addTiles() %>% setView(-71.0382679, 42.3489054, zoom = 18)
 #' m  # the RStudio 'headquarter'
-#' m %>% fitBounds(40, -72, 43, -70)
+#' m %>% fitBounds(-72, 40, -70, 43)
 #' m %>% clearBounds()  # world view
 setView = function(map, lng, lat, zoom, options = list()) {
   map$x$setView = list(c(lat, lng), zoom, options)
@@ -23,9 +23,9 @@ setView = function(map, lng, lat, zoom, options = list()) {
 }
 
 #' @describeIn map-methods Set the bounds of a map
-#' @param lat1,lng1,lat2,lng2 the coordinates of the map bounds
+#' @param lng1,lat1,lng2,lat2 the coordinates of the map bounds
 #' @export
-fitBounds = function(map, lat1, lng1, lat2, lng2) {
+fitBounds = function(map, lng1, lat1, lng2, lat2) {
   map$x$fitBounds = list(lat1, lng1, lat2, lng2)
   map$x$setView = NULL
   map

@@ -41,7 +41,7 @@ m = leaflet() \%>\% addTiles()
 m  # a map with the default OSM tile layer
 
 # set bounds
-m \%>\% fitBounds(40, 0, 50, 10)
+m \%>\% fitBounds(0, 40, 10, 50)
 
 # move the center to Snedecor Hall
 m = m \%>\% setView(-93.65, 42.0285, zoom = 17)

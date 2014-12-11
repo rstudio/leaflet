@@ -7,7 +7,7 @@
 \usage{
 setView(map, lng, lat, zoom, options = list())
 
-fitBounds(map, lat1, lng1, lat2, lng2)
+fitBounds(map, lng1, lat1, lng2, lat2)
 
 clearBounds(map)
 }
@@ -23,7 +23,7 @@ clearBounds(map)
 \item{options}{a list of zoom/pan options (see
 \url{http://leafletjs.com/reference.html#map-zoompanoptions})}
 
-\item{lat1, lng1, lat2, lng2}{the coordinates of the map bounds}
+\item{lng1, lat1, lng2, lat2}{the coordinates of the map bounds}
 }
 \value{
 The modified map widget.
@@ -45,7 +45,7 @@ if available (otherwise the full world view is used)
 library(leaflet)
 m = leaflet() \%>\% addTiles() \%>\% setView(-71.0382679, 42.3489054, zoom = 18)
 m  # the RStudio 'headquarter'
-m \%>\% fitBounds(40, -72, 43, -70)
+m \%>\% fitBounds(-72, 40, -70, 43)
 m \%>\% clearBounds()  # world view
 }
 \references{
