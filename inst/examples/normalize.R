@@ -1,5 +1,6 @@
 library(leaflet)
 library(sp)
+library(maps)
 
 ## Create different forms of point data ==========
 
