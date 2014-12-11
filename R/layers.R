@@ -192,7 +192,6 @@ addCircles = function(
     expandLimits(pts$lat, pts$lng)
 }
 
-# WARNING: lat and lng are LISTS of latitude and longitude vectors
 #' @export
 addPolylines = function(
   map, lng = NULL, lat = NULL, layerId = NULL,
@@ -244,7 +243,6 @@ addRectangles = function(
     expandLimits(c(lat1, lat2), c(lng1, lng2))
 }
 
-# WARNING: lat and lng are LISTS of latitude and longitude vectors
 #' @export
 addPolygons = function(
   map, lng = NULL, lat = NULL, layerId = NULL,
