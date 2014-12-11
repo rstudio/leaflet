@@ -107,7 +107,6 @@ derivePolygons = function(data, lng, lat, missingLng, missingLat, funcName) {
 }
 
 # TODO: Add tests
-#' @export
 pointData = function(obj) {
   UseMethod("pointData")
 }
