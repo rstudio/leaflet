@@ -18,7 +18,7 @@ Intercensal estimates of the resident population for Incorporated Places and
 Minor Civil Divisions: April 1, 2000 to July 1, 2010.
 }
 \examples{
-library(leaflet)
+library(leafletjs)
 str(uspop2000)
 p = uspop2000$Pop2010
 p = (p - min(p))/(max(p) - min(p))
