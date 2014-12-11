@@ -1,7 +1,7 @@
 Package: leafletjs
 Type: Package
 Title: Create Interactive Web Maps with the JavaScript LeafLet Library
-Version: 0.0.2
+Version: 0.0.3
 Date: 2014-11-12
 Authors@R: as.person(c(
     "Joe Cheng [aut, cre] <joe@rstudio.com>",
