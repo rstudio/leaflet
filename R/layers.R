@@ -272,6 +272,6 @@ addPolygons = function(
 }
 
 #' @export
-addGeoJSON = function(map, geojson, layerId = NULL, options = list()) {
-  appendMapData(map, getMapData(map), 'geoJSON', geojson, layerId, options)
+addGeoJSON = function(map, geojson, layerId = NULL) {
+  appendMapData(map, getMapData(map), 'geoJSON', geojson, layerId)
 }
