@@ -11,7 +11,7 @@ renderLeaflet(expr, env = parent.frame(), quoted = FALSE)
 \arguments{
 \item{outputId}{output variable to read from}
 
-\item{width,height}{the width and height of the map (see
+\item{width, height}{the width and height of the map (see
 \code{\link[htmlwidgets]{shinyWidgetOutput}})}
 
 \item{expr}{An expression that generates an HTML widget}

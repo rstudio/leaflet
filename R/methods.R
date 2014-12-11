@@ -9,7 +9,7 @@
 #'   \url{http://leafletjs.com/reference.html#map-zoompanoptions})
 #' @references \url{http://leafletjs.com/reference.html#map-set-methods}
 #' @return The modified map widget.
-#' @describeIn map-methods Sets the view of the map (center and zoom level)
+#' @describeIn map-methods Set the view of the map (center and zoom level)
 #' @export
 #' @examples library(leaflet)
 #' m = leaflet() %>% addTiles() %>% setView(-71.0382679, 42.3489054, zoom = 18)
@@ -22,7 +22,7 @@ setView = function(map, lng, lat, zoom, options = list()) {
   map
 }
 
-#' @describeIn map-methods Sets the bounds of a map
+#' @describeIn map-methods Set the bounds of a map
 #' @param lat1,lng1,lat2,lng2 the coordinates of the map bounds
 #' @export
 fitBounds = function(map, lat1, lng1, lat2, lng2) {

@@ -23,7 +23,7 @@ clearBounds(map)
 \item{options}{a list of zoom/pan options (see
 \url{http://leafletjs.com/reference.html#map-zoompanoptions})}
 
-\item{lat1,lng1,lat2,lng2}{the coordinates of the map bounds}
+\item{lat1, lng1, lat2, lng2}{the coordinates of the map bounds}
 }
 \value{
 The modified map widget.
@@ -33,9 +33,9 @@ A series of methods to manipulate the map.
 }
 \section{Functions}{
 \itemize{
-\item \code{setView}: Sets the view of the map (center and zoom level)
+\item \code{setView}: Set the view of the map (center and zoom level)
 
-\item \code{fitBounds}: Sets the bounds of a map
+\item \code{fitBounds}: Set the bounds of a map
 
 \item \code{clearBounds}: Clear the bounds of a map, and the bounds will be
 automatically determined from latitudes and longitudes of the map elements
