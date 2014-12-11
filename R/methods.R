@@ -12,7 +12,7 @@
 #' @describeIn map-methods Sets the view of the map (center and zoom level)
 #' @export
 #' @examples library(leaflet)
-#' m = leaflet() %>% addTiles() %>% setView(c(42.3489054,-71.0382679), zoom = 18)
+#' m = leaflet() %>% addTiles() %>% setView(-71.0382679, 42.3489054, zoom = 18)
 #' m  # the RStudio 'headquarter'
 #' m %>% fitBounds(40, -72, 43, -70)
 #' m %>% clearBounds()  # world view

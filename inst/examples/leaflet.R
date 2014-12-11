@@ -7,7 +7,7 @@ m  # a map with the default OSM tile layer
 m %>% fitBounds(40, 0, 50, 10)
 
 # move the center to Snedecor Hall
-m = m %>% setView(c(42.0285, -93.65), zoom = 17)
+m = m %>% setView(-93.65, 42.0285, zoom = 17)
 m
 
 # popup
@@ -102,7 +102,7 @@ seattle_geojson <- list(
   ),
   id = "ballard"
 )
-m %>% setView(c(47.6759920119894, -122.36075812146), zoom = 13) %>% addGeoJSON(seattle_geojson)
+m %>% setView(-122.36075812146, 47.6759920119894, zoom = 13) %>% addGeoJSON(seattle_geojson)
 
 
 # use the OSM BW layer
