@@ -78,12 +78,18 @@ SpP = SpatialPolygons(list(Srs1,Srs2,Srs3), 1:3)
 leaflet(pdata) %>% addTiles() %>% addPolygons(~Longitude, ~Latitude)
 leaflet(pdata) %>% addTiles() %>% addPolygons(lng=plng, lat=plat)
 leaflet(pdata) %>% addTiles() %>% addPolygons(data = cbind(plng, plat))
+# Single Polygon
+leaflet() %>% addPolygons(data = pgons[[2]]@Polygons[[1]])
+# Single Polygons
+leaflet() %>% addPolygons(data = pgons[[1]])
+# SpatialPolygons
 leaflet() %>% addTiles() %>% addPolygons(data = spgons)
+# SpatialPolygonsDataFrame
 leaflet() %>% addPolygons(data = spgonsdf)
 leaflet() %>% addPolygons(data = SpP)
 leaflet() %>% addPolygons(data = SpP, color = topo.colors(3, NULL), stroke = FALSE) %>%
   addPolygons(data = spgonsdf, color = 'blue', stroke = FALSE, fillOpacity = 0.5)
 leaflet() %>% addPolylines(data = SpP)
 
-leaflet(data = maps::map("state", fill=TRUE, plot=FALSE)) %>% addTiles() %>%
+leaflet(data = map("state", fill=TRUE, plot=FALSE)) %>% addTiles() %>%
   addPolygons(fillColor = topo.colors(10, alpha = NULL), stroke = FALSE)
