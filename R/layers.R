@@ -66,6 +66,18 @@ bboxAdd = function(a, b) {
   )
 }
 
+#' Graphics elements and layers
+#'
+#' Add graphics elements and layers to the map widget.
+#' @inheritParams setView
+#' @param urlTemplate a character string as the URL template
+#' @param
+#' minZoom,maxZoom,maxNativeZoom,tileSize,subdomains,errorTileUrl,attribution,tms,continuousWorld,noWrap,zoomOffset,zoomReverse,zIndex,unloadInvisibleTiles,updateWhenIdle,detectRetina,reuseTiles
+#' the tile layer options; see
+#' \url{http://leafletjs.com/reference.html#tilelayer}
+#' @references The Leaflet API documentation:
+#'   \url{http://leafletjs.com/reference.html}
+#' @describeIn map-layers Add a tile layer to the map
 #' @export
 addTiles = function(
   map,
@@ -99,6 +111,29 @@ addTiles = function(
   appendMapData(map, getMapData(map), 'tileLayer', urlTemplate, options)
 }
 
+#' @param lng a numeric vector of longitudes, or a one-sided formula of the form
+#'   \code{~x} where \code{x} is a variable in \code{data}; by default (if not
+#'   explicitly provided), it will be automatically inferred from \code{data} by
+#'   looking for a column named \code{lng}, \code{long}, or \code{longitude}
+#'   (case-insensitively)
+#' @param lat a vector of latitudes or a formula (similar to the \code{lng}
+#'   argument; the names \code{lat} and \code{latitude} are used when guessing
+#'   the latitude column from \code{data})
+#' @param content the HTML content of the popups
+#' @param layerId the layer id
+#' @param className a CSS class name set on an element
+#' @param
+#' maxWidth,minWidth,maxHeight,autoPan,keepInView,closeButton,zoomAnimation,closeOnClick
+#' popup options; see \url{http://leafletjs.com/reference.html#popup}
+#' @param data the data object from which the argument values are derived; by
+#'   default, it is the \code{data} object provided to \code{leaflet()}
+#'   initially, but can be overridden (currently supported objects are matrices,
+#'   data frames, and spatial objects from the \pkg{sp} package of classes
+#'   \code{SpatialPoints}, \code{SpatialPointsDataFrame}, \code{Polygon},
+#'   \code{Polygons}, \code{SpatialPolygons}, \code{SpatialPolygonsDataFrame},
+#'   \code{Line}, \code{Lines}, \code{SpatialLines}, and
+#'   \code{SpatialLinesDataFrame})
+#' @describeIn map-layers Add popups to the map
 #' @export
 addPopups = function(
   map, lng = NULL, lat = NULL, content, layerId = NULL,
@@ -123,6 +158,14 @@ addPopups = function(
     expandLimits(pts$lat, pts$lng)
 }
 
+#' @param icon the icon for markers; if you want to create a new icon using
+#'   JavaScript, please remember to use \code{\link[htmlwidgets]{JS}()} on the
+#'   JavaScript string; see \url{http://leafletjs.com/reference.html#icon}
+#' @param clickable whether the element emits mouse events
+#' @param
+#'   draggable,keyboard,title,alt,zIndexOffset,opacity,riseOnHover,riseOffset
+#'   marker options; see \url{http://leafletjs.com/reference.html#marker}
+#' @describeIn map-layers Add markders to the map
 #' @export
 addMarkers = function(
   map, lng = NULL, lat = NULL, layerId = NULL,
@@ -144,6 +187,30 @@ addMarkers = function(
     expandLimits(pts$lat, pts$lng)
 }
 
+#' @param radius a numeric vector of radii for the circles; it can also be a
+#'   one-sided formula, in which case the radius values are derived from the
+#'   \code{data} (units in meters for circles, and pixels for circle markers)
+#' @param stroke whether to draw stroke along the path (e.g. the borders of
+#'   polygons or circles)
+#' @param color stroke color
+#' @param weight stroke width in pixels
+#' @param opacity stroke opacity (or layer opacity for tile layers)
+#' @param fill whether to fill the path with color (e.g. filling on polygons or
+#'   circles)
+#' @param fillColor fill color
+#' @param fillOpacity fill opacity
+#' @param dashArray a string that defines the stroke
+#'   \href{https://developer.mozilla.org/en/SVG/Attribute/stroke-dasharray}{dash
+#'   pattern}
+#' @param lineCap a string that defines
+#'   \href{https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linecap}{shape
+#'   to be used at the end} of the stroke
+#' @param lineJoin a string that defines
+#'   \href{https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linejoin}{shape
+#'   to be used at the corners} of the stroke
+#' @param pointerEvents sets the \code{pointer-events} attribute on the path if
+#'   SVG backend is used
+#' @describeIn map-layers Add circle markers to the map
 #' @export
 addCircleMarkers = function(
   map, lng = NULL, lat = NULL, radius = 10, layerId = NULL,
@@ -168,6 +235,7 @@ addCircleMarkers = function(
     expandLimits(pts$lat, pts$lng)
 }
 
+#' @describeIn map-layers Add circles to the map
 #' @export
 addCircles = function(
   map, lng = NULL, lat = NULL, radius = 10, layerId = NULL,
@@ -192,6 +260,10 @@ addCircles = function(
     expandLimits(pts$lat, pts$lng)
 }
 
+#' @param smoothFactor how much to simplify the polyline on each zoom level
+#'   (more means better performance and less accurate representation)
+#' @param noClip whether to disable polyline clipping
+#' @describeIn map-layers Add polylines to the map
 #' @export
 addPolylines = function(
   map, lng = NULL, lat = NULL, layerId = NULL,
@@ -215,6 +287,9 @@ addPolylines = function(
     expandLimitsBbox(pgons)
 }
 
+#' @param lng1,lat1,lng2,lat2 latitudes and longitudes of the south-west and
+#'   north-east corners of rectangles
+#' @describeIn map-layers Add rectangles to the map
 #' @export
 addRectangles = function(
   map, lng1, lat1, lng2, lat2, layerId = NULL,
@@ -243,6 +318,7 @@ addRectangles = function(
     expandLimits(c(lat1, lat2), c(lng1, lng2))
 }
 
+#' @describeIn map-layers Add polygons to the map
 #' @export
 addPolygons = function(
   map, lng = NULL, lat = NULL, layerId = NULL,
@@ -269,6 +345,8 @@ addPolygons = function(
     expandLimitsBbox(pgons)
 }
 
+#' @param geojson a GeoJSON list
+#' @describeIn map-layers Add GeoJSON layers to the map
 #' @export
 addGeoJSON = function(map, geojson, layerId = NULL) {
   appendMapData(map, getMapData(map), 'geoJSON', geojson, layerId)
