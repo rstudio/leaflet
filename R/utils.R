@@ -5,10 +5,13 @@ filterNULL = function(x) {
 }
 
 appendMapData = function(map, data, component, ...) {
-  x = map$x[[component]]
+  x = map$x$calls
   if (is.null(x)) x = list()
   n = length(x)
-  x[[n + 1]] = evalFormula(list(...), data)
-  map$x[[component]] = x
+  x[[n + 1]] = list(
+    method = component,
+    args = evalFormula(list(...), data)
+  )
+  map$x$calls = x
   map
 }
