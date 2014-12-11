@@ -14,7 +14,7 @@ renderLeaflet(expr, env = parent.frame(), quoted = FALSE)
 \item{width,height}{the width and height of the map (see
 \code{\link[htmlwidgets]{shinyWidgetOutput}})}
 
-\item{expr}{An expression that generates a networkD3 graph}
+\item{expr}{An expression that generates an HTML widget}
 
 \item{env}{The environment in which to evaluate \code{expr}.}
 
