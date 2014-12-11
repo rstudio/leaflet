@@ -23,7 +23,7 @@
 #' @export
 leaflet = function(data = NULL, id = NULL, width = NULL, height = NULL, padding = 0) {
   htmlwidgets::createWidget(
-    'leaflet',
+    'leafletjs',
     structure(
       list(mapId = id),
       leafletData = data
