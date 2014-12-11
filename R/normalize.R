@@ -195,6 +195,28 @@ polygonData.map = function(obj) {
   polygonData(cbind(obj$x, obj$y))
 }
 
+polygonData.Line = function(obj) {
+  coords = line2coords(obj)
+  structure(
+    list(list(coords)),
+    bbox = attr(coords, "bbox", exact = TRUE)
+  )
+}
+polygonData.Lines = function(obj) {
+  coords = lines2coords(obj)
+  structure(
+    list(structure(coords, bbox = NULL)),
+    bbox = attr(coords, "bbox", exact = TRUE)
+  )
+}
+polygonData.SpatialLines = function(obj) {
+  lapply(obj@lines, lines2coords, bbox = FALSE) %>%
+    structure(bbox = obj@bbox)
+}
+polygonData.SpatialLinesDataFrame = function(obj) {
+  polygonData(SpatialLines(obj@lines))
+}
+
 dfbbox = function(df) {
   suppressWarnings(rbind(
     lng = range(df$lng, na.rm = TRUE),
@@ -219,13 +241,22 @@ polygon2coords = function(pgon, bbox = TRUE) {
     bbox = if (bbox) dfbbox(df)
   )
 }
+line2coords = polygon2coords
 
-polygons2coords = function(pgon, bbox = TRUE) {
+plural2coords = function(stuff, bbox) {
   outbbox = bboxNull
-  lapply(pgon@Polygons, function(pgon) {
+  lapply(stuff, function(pgon) {
     coords = polygon2coords(pgon)
     if (bbox)
       outbbox <<- bboxAdd(outbbox, attr(coords, "bbox", exact = TRUE))
     structure(coords, bbox = NULL)
   }) %>% structure(bbox = if (bbox) outbbox)
+}
+
+polygons2coords = function(pgon, bbox = TRUE) {
+  plural2coords(pgon@Polygons, bbox)
+}
+
+lines2coords = function(lines, bbox = TRUE) {
+  plural2coords(lines@Lines, bbox)
 }
