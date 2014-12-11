@@ -36,7 +36,7 @@ addCircles(lat = ~latitude, lng = ~longtitude)}, where the variables in the
 formulae will be evaluated in the \code{data}.
 }
 \examples{
-library(leaflet)
+library(leafletjs)
 m = leaflet() \%>\% addTiles()
 m  # a map with the default OSM tile layer
 

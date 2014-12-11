@@ -1,4 +1,4 @@
-Package: leaflet
+Package: leafletjs
 Type: Package
 Title: Create Intearctive Web Maps with the JavaScript LeafLet Library
 Version: 0.0.2
@@ -13,8 +13,8 @@ Description: Leaflet is "an open-source JavaScript library for mobile-friendly
     interactive maps". This package makes it easy to integrate Leaflet maps into
     HTML applications with R (e.g. Shiny and R Markdown).
 License: GPL-3
-URL: https://github.com/rstudio/leaflet
-BugReports: https://github.com/rstudio/leaflet/issues
+URL: https://github.com/rstudio/leafletjs
+BugReports: https://github.com/rstudio/leafletjs/issues
 Imports:
     htmlwidgets,
     magrittr

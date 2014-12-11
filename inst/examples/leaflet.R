@@ -1,5 +1,5 @@
 # !formatR
-library(leaflet)
+library(leafletjs)
 m = leaflet() %>% addTiles()
 m  # a map with the default OSM tile layer
 

@@ -1,12 +1,12 @@
 # An R Interface to Leaflet Maps
 
-[![Build Status](https://travis-ci.org/rstudio/leaflet.svg)](https://travis-ci.org/rstudio/leaflet)
+[![Build Status](https://travis-ci.org/rstudio/leafletjs.svg)](https://travis-ci.org/rstudio/leafletjs)
 
 [Leaflet](http://leafletjs.com) is an open-source JavaScript library for
 interactive maps. This R package makes it easy to create Leaflet maps from R.
 
 ```r
-library(leaflet)
+library(leafletjs)
 m = leaflet() %>% tileLayer()
 m  # a map with the default OSM tile layer
 
@@ -19,7 +19,7 @@ m %>% mapPopup(42.0285, -93.65, 'Here is the <b>Department of Statistics</b>, IS
 This package is not on CRAN yet, and you can install it from Github:
 
 ```r
-devtools::install_github('rstudio/leaflet')
+devtools::install_github('rstudio/leafletjs')
 ```
 
 ## License

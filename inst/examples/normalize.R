@@ -1,4 +1,4 @@
-library(leaflet)
+library(leafletjs)
 library(sp)
 library(maps)
 
