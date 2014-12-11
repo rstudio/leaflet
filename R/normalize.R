@@ -254,7 +254,7 @@ plural2coords = function(stuff, bbox) {
 }
 
 polygons2coords = function(pgon, bbox = TRUE) {
-  plural2coords(pgon@Polygons, bbox)
+  plural2coords(pgon@Polygons[pgon@plotOrder], bbox)
 }
 
 lines2coords = function(lines, bbox = TRUE) {
