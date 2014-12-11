@@ -164,7 +164,6 @@ addCircles = function(
     expandLimits(pts$lat, pts$lng)
 }
 
-# WARNING: lat and lng are LISTS of latitude and longitude vectors
 #' @export
 addPolylines = function(
   map, lng = NULL, lat = NULL, layerId = NULL,
@@ -184,6 +183,9 @@ addPolylines = function(
   options = makeOpts(match.call(), c("map", "lng", "lat", "layerId", "data"))
   lng = resolveFormula(lng, data)
   lat = resolveFormula(lat, data)
+  latlng = makePolyList(lat, lng)
+  lat = latlng$lat
+  lng = latlng$lng
   appendMapData(map, data, 'polyline', lat, lng, layerId, options) %>%
     expandLimits(unlist(lat), unlist(lng))
 }
@@ -216,7 +218,6 @@ addRectangles = function(
     expandLimits(c(lat1, lat2), c(lng1, lng2))
 }
 
-# WARNING: lat and lng are LISTS of latitude and longitude vectors
 #' @export
 addPolygons = function(
   map, lng = NULL, lat = NULL, layerId = NULL,
@@ -239,6 +240,9 @@ addPolygons = function(
   options = makeOpts(match.call(), c("map", "lng", "lat", "layerId", "data"))
   lng = resolveFormula(lng, data)
   lat = resolveFormula(lat, data)
+  latlng = makePolyList(lat, lng)
+  lat = latlng$lat
+  lng = latlng$lng
   appendMapData(map, data, 'polygon', lat, lng, layerId, options) %>%
     expandLimits(unlist(lat), unlist(lng))
 }
