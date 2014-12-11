@@ -142,13 +142,13 @@ seattle_geojson <- list(
 m \%>\% setView(-122.36075812146, 47.6759920119894, zoom = 13) \%>\% addGeoJSON(seattle_geojson)
 
 
-# use the OSM BW layer
-leaflet() \%>\% addTiles('http://{s}.www.toolserver.org/tiles/bw-mapnik/{z}/{x}/{y}.png',
+# use the Dark Matter layer from CartoDB
+leaflet() \%>\% addTiles('http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
   attribution = paste(
-    '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors,',
-    '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
+    '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
+    '&copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
   )
-)
+) \%>\% setView(-122.36, 47.67, zoom = 10)
 
 # provide a data frame to leaflet()
 df = data.frame(
