@@ -254,6 +254,10 @@ var dataframe = (function() {
     this.popups.clear();
   };
 
+  methods.tileLayer = function(urlTemplate, options) {
+    L.tileLayer(urlTemplate, options).addTo(this);
+  };
+
   methods.marker = function(lat, lng, layerId, options) {
     var df = dataframe.create()
       .col('lat', lat)
@@ -451,12 +455,6 @@ var dataframe = (function() {
       map.popups = new LayerStore(map);
       map.geojson = new LayerStore(map);
 
-      if (data.tileLayer instanceof Array) {
-        data.tileLayer.map(function(layer) {
-          L.tileLayer(layer.urlTemplate, layer.options).addTo(map);
-        });
-      }
-
       var explicitView = false;
       if (data.setView) {
         explicitView = true;
@@ -466,7 +464,6 @@ var dataframe = (function() {
         explicitView = true;
         methods.fitBounds.apply(map, data.fitBounds);
       }
-
       if (!explicitView) {
         if (data.limits) {
           // Use the natural limits of what's being drawn on the map
@@ -479,45 +476,10 @@ var dataframe = (function() {
         }
       }
 
-      if (data.popup instanceof Array) {
-        data.popup.map(function(params) {
-          methods.popup.apply(map, params);
-        });
-      }
-      if (data.marker instanceof Array) {
-        data.marker.map(function(params) {
-          methods.marker.apply(map, params);
-        });
-      }
-      if (data.circle instanceof Array) {
-        data.circle.map(function(params) {
-          methods.circle.apply(map, params);
-        });
-      }
-      if (data.circleMarker instanceof Array) {
-        data.circleMarker.map(function(params) {
-          methods.circleMarker.apply(map, params);
-        });
-      }
-      if (data.polyline instanceof Array) {
-        data.polyline.map(function(params) {
-          methods.polyline.apply(map, params);
-        });
-      }
-      if (data.rectangle instanceof Array) {
-        data.rectangle.map(function(params) {
-          methods.rectangle.apply(map, params);
-        });
-      }
-      if (data.polygon instanceof Array) {
-        data.polygon.map(function(params) {
-          methods.polygon.apply(map, params);
-        });
-      }
-      if (data.geoJSON instanceof Array) {
-        data.geoJSON.map(function(params) {
-          methods.geoJSON.apply(map, params);
-        });
+      for (var i = 0; data.calls && i < data.calls.length; i++) {
+        var call = data.calls[i];
+        if (methods[call.method])
+          methods[call.method].apply(map, call.args);
       }
 
       var id = data.mapId;

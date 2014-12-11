@@ -5,7 +5,7 @@
 \alias{setView}
 \title{Methods to manipulate the map widget}
 \usage{
-setView(map, center = NULL, zoom = NULL, options = list())
+setView(map, lng, lat, zoom, options = list())
 
 fitBounds(map, lat1, lng1, lat2, lng2)
 
@@ -14,8 +14,9 @@ clearBounds(map)
 \arguments{
 \item{map}{a map widget object created from \code{\link{leaflet}()}}
 
-\item{center}{the coordinate of the map center as a numeric vector of the
-form \code{c(lat, lng)}}
+\item{lng}{The longitude of the map center}
+
+\item{lat}{The latitude of the map center}
 
 \item{zoom}{the zoom level}
 

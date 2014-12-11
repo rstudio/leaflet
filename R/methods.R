@@ -2,8 +2,8 @@
 #'
 #' A series of methods to manipulate the map.
 #' @param map a map widget object created from \code{\link{leaflet}()}
-#' @param center the coordinate of the map center as a numeric vector of the
-#'   form \code{c(lat, lng)}
+#' @param lng The longitude of the map center
+#' @param lat The latitude of the map center
 #' @param zoom the zoom level
 #' @param options a list of zoom/pan options (see
 #'   \url{http://leafletjs.com/reference.html#map-zoompanoptions})
@@ -16,11 +16,9 @@
 #' m  # the RStudio 'headquarter'
 #' m %>% fitBounds(40, -72, 43, -70)
 #' m %>% clearBounds()  # world view
-setView = function(map, center = NULL, zoom = NULL, options = list()) {
-  if (!missing(center) && length(center) != 2)
-    stop("'center' must be a numeric vector of the form c(lat, lng)")
-  if (length(options) == 0) options = setNames(list(), character(0))
-  map$x$setView = list(center, zoom, options)
+setView = function(map, lng, lat, zoom, options = list()) {
+  map$x$setView = list(c(lat, lng), zoom, options)
+  map$x$fitBounds = NULL
   map
 }
 
@@ -29,6 +27,7 @@ setView = function(map, center = NULL, zoom = NULL, options = list()) {
 #' @export
 fitBounds = function(map, lat1, lng1, lat2, lng2) {
   map$x$fitBounds = list(lat1, lng1, lat2, lng2)
+  map$x$setView = NULL
   map
 }
 
