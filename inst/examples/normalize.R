@@ -50,8 +50,39 @@ nolat <- NULL
 leaflet(data) %>% addCircles(1, nolat)
 
 # Some polygon data
-plng <- list(runif(3) + 1, runif(3) + 2, runif(3) + 3)
-plat <- list(runif(3), runif(3), runif(3))
+rawpolys <- list(
+  lng = list(runif(3) + 1, runif(3) + 2, runif(3) + 3),
+  lat = list(runif(3) + 12, runif(3) + 12, runif(3) + 12)
+)
+plng <- c(rawpolys$lng[[1]], NA, rawpolys$lng[[2]], NA, rawpolys$lng[[3]])
+plat <- c(rawpolys$lat[[1]], NA, rawpolys$lat[[2]], NA, rawpolys$lat[[3]])
 pdata <- data.frame(Latitude=I(plat), Longitude=I(plng))
+pgons <- list(
+  Polygons(list(Polygon(cbind(rawpolys$lng[[1]], rawpolys$lat[[1]]))), ID="A"),
+  Polygons(list(Polygon(cbind(rawpolys$lng[[2]], rawpolys$lat[[2]]))), ID="B"),
+  Polygons(list(Polygon(cbind(rawpolys$lng[[3]], rawpolys$lat[[3]]))), ID="C")
+)
+spgons <- SpatialPolygons(pgons)
+spgonsdf <- SpatialPolygonsDataFrame(spgons, data.frame(Category = as.factor(1:3)), FALSE)
+
+Sr1 = Polygon(cbind(c(2,4,4,1,2),c(2,3,5,4,2)))
+Sr2 = Polygon(cbind(c(5,4,2,5),c(2,3,2,2)))
+Sr3 = Polygon(cbind(c(4,4,5,10,4),c(5,3,2,5,5)))
+Sr4 = Polygon(cbind(c(5,6,6,5,5),c(4,4,3,3,4)), hole = TRUE)
+Srs1 = Polygons(list(Sr1), "s1")
+Srs2 = Polygons(list(Sr2), "s2")
+Srs3 = Polygons(list(Sr3, Sr4), "s3/4")
+SpP = SpatialPolygons(list(Srs1,Srs2,Srs3), 1:3)
+
 leaflet(pdata) %>% addTiles() %>% addPolygons(~Longitude, ~Latitude)
 leaflet(pdata) %>% addTiles() %>% addPolygons(lng=plng, lat=plat)
+leaflet(pdata) %>% addTiles() %>% addPolygons(data = cbind(plng, plat))
+leaflet() %>% addTiles() %>% addPolygons(data = spgons)
+leaflet() %>% addPolygons(data = spgonsdf)
+leaflet() %>% addPolygons(data = SpP)
+leaflet() %>% addPolygons(data = SpP, color = topo.colors(3, NULL), stroke = FALSE) %>%
+  addPolygons(data = spgonsdf, color = 'blue', stroke = FALSE, fillOpacity = 0.5)
+leaflet() %>% addPolylines(data = SpP)
+
+leaflet(data = maps::map("state", fill=TRUE, plot=FALSE)) %>% addTiles() %>%
+  addPolygons(fillColor = topo.colors(10, alpha = NULL), stroke = FALSE)

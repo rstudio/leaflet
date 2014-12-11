@@ -18,6 +18,12 @@ evalFormula = function(list, data) {
   evalAll(list)
 }
 
+# jcheng 12/10/2014: The limits/bbox handling was pretty rushed, unfortunately
+# we have ended up with too many concepts. expandLimits just takes random
+# lat/lng vectors, the sp package's Spatial objects can use `bbox()`, and our
+# polygon lists (returned from polygonData()) use `attr(x, "bbox")` (though at
+# least they are the same shape as the Spatial bounding boxes).
+
 # Notifies the map of new latitude/longitude of items of interest on the map, so
 # that we can expand the limits (i.e. bounding box). We will use this as the
 # initial view if the user doesn't explicitly specify bounds using fitBounds.
@@ -36,6 +42,28 @@ expandLimits = function(map, lat, lng) {
     map$x$limits$lng = range(map$x$limits$lng, lng)
 
   map
+}
+
+# Same as expandLimits, but takes a polygon (that presumably has a bbox attr)
+# rather than lat/lng.
+expandLimitsBbox = function(map, poly) {
+  bbox = attr(poly, "bbox", exact = TRUE)
+  if (is.null(bbox))
+    stop("Polygon data had no bbox")
+  expandLimits(map, bbox[2,], bbox[1,])
+}
+
+# Represents an initial bbox; if combined with any other bbox value using
+# bboxAdd, the other bbox will be the result.
+bboxNull = cbind(min=c(x=Inf, y=Inf), max=c(x=-Inf, y=-Inf))
+
+# Combine two bboxes; the result will use the mins of the mins and the maxes of
+# the maxes.
+bboxAdd = function(a, b) {
+  cbind(
+    min = pmin(a[,1], b[,1]),
+    max = pmax(a[,2], b[,2])
+  )
 }
 
 #' @export
@@ -170,6 +198,7 @@ addPolylines = function(
   map, lng = NULL, lat = NULL, layerId = NULL,
   smoothFactor = 1.0,
   noClip = FALSE,
+  stroke = TRUE,
   color = "#03F",
   weight = 5,
   opacity = 0.5,
@@ -182,10 +211,9 @@ addPolylines = function(
   data = getMapData(map)
 ) {
   options = makeOpts(match.call(), c("map", "lng", "lat", "layerId", "data"))
-  lng = resolveFormula(lng, data)
-  lat = resolveFormula(lat, data)
-  appendMapData(map, data, 'polyline', lat, lng, layerId, options) %>%
-    expandLimits(unlist(lat), unlist(lng))
+  pgons = derivePolygons(data, lng, lat, missing(lng), missing(lat), "addPolylines")
+  appendMapData(map, data, 'polyline', pgons, layerId, options) %>%
+    expandLimitsBbox(pgons)
 }
 
 #' @export
@@ -222,6 +250,7 @@ addPolygons = function(
   map, lng = NULL, lat = NULL, layerId = NULL,
   smoothFactor = 1.0,
   noClip = FALSE,
+  stroke = TRUE,
   color = "#03F",
   weight = 5,
   opacity = 0.5,
@@ -237,10 +266,9 @@ addPolygons = function(
   data = getMapData(map)
 ) {
   options = makeOpts(match.call(), c("map", "lng", "lat", "layerId", "data"))
-  lng = resolveFormula(lng, data)
-  lat = resolveFormula(lat, data)
-  appendMapData(map, data, 'polygon', lat, lng, layerId, options) %>%
-    expandLimits(unlist(lat), unlist(lng))
+  pgons = derivePolygons(data, lng, lat, missing(lng), missing(lat), "addPolygons")
+  appendMapData(map, data, 'polygon', pgons, layerId, options) %>%
+    expandLimitsBbox(pgons)
 }
 
 #' @export

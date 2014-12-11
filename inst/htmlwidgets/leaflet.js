@@ -317,20 +317,17 @@ var dataframe = (function() {
    * @param lat Array of arrays of latitude coordinates for polylines
    * @param lng Array of arrays of longitude coordinates for polylines
    */
-  methods.polyline = function(lat, lng, layerId, options) {
+  methods.polyline = function(polygons, layerId, options) {
     var df = dataframe.create()
-      .col('lat', lat)
-      .col('lng', lng)
+      .col('shapes', polygons)
       .col('layerId', layerId)
       .cbind(options);
 
     for (var i = 0; i < df.nrow(); i++) {
       (function() {
-        var geometry = HTMLWidgets.dataframeToD3({
-          lat: asArray(df.get(i, 'lat')),
-          lng: asArray(df.get(i, 'lng'))
-        });
-        var polyline = L.polyline(geometry, df.get(i));
+        var shape = df.get(i, 'shapes')[0];
+        shape = HTMLWidgets.dataframeToD3(shape);
+        var polyline = L.polyline(shape, df.get(i));
         var thisId = df.get(i, 'layerId');
         this.shapes.add(polyline, thisId);
         polyline.on('click', mouseHandler(this.id, thisId, 'shape_click'), this);
@@ -385,20 +382,19 @@ var dataframe = (function() {
    * @param lat Array of arrays of latitude coordinates for polygons
    * @param lng Array of arrays of longitude coordinates for polygons
    */
-  methods.polygon = function(lat, lng, layerId, options) {
+  methods.polygon = function(polygons, layerId, options) {
     var df = dataframe.create()
-      .col('lat', lat)
-      .col('lng', lng)
+      .col('shapes', polygons)
       .col('layerId', layerId)
       .cbind(options);
 
     for (var i = 0; i < df.nrow(); i++) {
       (function() {
-        var geometry = HTMLWidgets.dataframeToD3({
-          lat: asArray(df.get(i, 'lat')),
-          lng: asArray(df.get(i, 'lng'))
-        });
-        var polygon = L.polygon(geometry, df.get(i));
+        var shapes = df.get(i, 'shapes');
+        for (var j = 0; j < shapes.length; j++) {
+          shapes[j] = HTMLWidgets.dataframeToD3(shapes[j]);
+        }
+        var polygon = L.polygon(shapes, df.get(i));
         var thisId = df.get(i, 'layerId');
         this.shapes.add(polygon, thisId);
         polygon.on('click', mouseHandler(this.id, thisId, 'shape_click'), this);

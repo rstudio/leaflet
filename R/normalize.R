@@ -73,6 +73,39 @@ derivePoints = function(data, lng, lat, missingLng, missingLat, funcName) {
   data.frame(lng=lng, lat=lat)
 }
 
+derivePolygons = function(data, lng, lat, missingLng, missingLat, funcName) {
+  if (missingLng != missingLat) {
+    stop(funcName, " must be called with both lng and lat, or with neither.")
+  }
+  if (missingLng) {
+    if (is.null(data)) {
+      stop("Polygon data not found; please provide ", funcName,
+        " with data and/or lng/lat arguments")
+    }
+    return(polygonData(data))
+  } else {
+    lng = resolveFormula(lng, data)
+    lat = resolveFormula(lat, data)
+
+    if (is.null(lng) && is.null(lat)) {
+      stop(funcName, " requires non-NULL longitude/latitude values")
+    } else if (is.null(lng)) {
+      stop(funcName, " requires non-NULL longitude values")
+    } else if (is.null(lat)) {
+      stop(funcName, " requires non-NULL latitude values")
+    }
+
+    if (!is.numeric(lng) && !is.numeric(lat)) {
+      stop(funcName, " requires numeric longitude/latitude values")
+    } else if (!is.numeric(lng)) {
+      stop(funcName, " requires numeric longitude values")
+    } else if (!is.numeric(lat)) {
+      stop(funcName, " requires numeric latitude values")
+    }
+    return(polygonData(cbind(lng, lat)))
+  }
+}
+
 # TODO: Add tests
 #' @export
 pointData = function(obj) {
@@ -123,7 +156,10 @@ pointData.SpatialPointsDataFrame = function(obj) {
   )
 }
 
-# TODO: Add tests
+# A simple polygon is a list(lng=numeric(), lat=numeric()). A compound polygon
+# is a list of simple polygons. This function returns a list of compound
+# polygons, so list(list(list(lng=..., lat=...))). There is also a bbox
+# attribute attached that gives the bounding box, same as sp::bbox().
 polygonData = function(obj) {
   UseMethod("polygonData")
 }
@@ -131,21 +167,65 @@ polygonData = function(obj) {
 polygonData.default = function(obj) {
   stop("Don't know how to get path data from object of class ", class(obj)[[1]])
 }
-polygonData.data.frame = function(obj) {
-  stop("Not implemented")
-}
 polygonData.matrix = function(obj) {
-  stop("Not implemented")
+  makePolyList(pointData.matrix(obj))
 }
 polygonData.Polygon = function(obj) {
-  stop("Not implemented")
+  coords = polygon2coords(obj)
+  structure(
+    list(list(coords)),
+    bbox = attr(coords, "bbox", exact = TRUE)
+  )
 }
 polygonData.Polygons = function(obj) {
-  stop("Not implemented")
+  coords = polygons2coords(obj)
+  structure(
+    list(structure(coords, bbox = NULL)),
+    bbox = attr(coords, "bbox", exact = TRUE)
+  )
 }
 polygonData.SpatialPolygons = function(obj) {
-  stop("Not implemented")
+  lapply(obj@polygons, polygons2coords, bbox = FALSE) %>%
+    structure(bbox = obj@bbox)
 }
 polygonData.SpatialPolygonsDataFrame = function(obj) {
-  stop("Not implemented")
+  polygonData(sp::polygons(obj))
+}
+polygonData.map = function(obj) {
+  polygonData(cbind(obj$x, obj$y))
+}
+
+dfbbox = function(df) {
+  suppressWarnings(rbind(
+    lng = range(df$lng, na.rm = TRUE),
+    lat = range(df$lat, na.rm = TRUE)
+  ))
+}
+makePolyList = function(df) {
+  lng = df$lng
+  lat = df$lat
+  i = is.na(lat)
+  chunks = cumsum(i)[!i]
+  unname(split(data.frame(lng=lng[!i], lat=lat[!i]), chunks)) %>%
+    lapply(as.list) %>%
+    lapply(list) %>%
+    structure(bbox = dfbbox(df))
+}
+
+polygon2coords = function(pgon, bbox = TRUE) {
+  df = pointData(coordinates(pgon))
+  structure(
+    as.list(df),
+    bbox = if (bbox) dfbbox(df)
+  )
+}
+
+polygons2coords = function(pgon, bbox = TRUE) {
+  outbbox = bboxNull
+  lapply(pgon@Polygons, function(pgon) {
+    coords = polygon2coords(pgon)
+    if (bbox)
+      outbbox <<- bboxAdd(outbbox, attr(coords, "bbox", exact = TRUE))
+    structure(coords, bbox = NULL)
+  }) %>% structure(bbox = if (bbox) outbbox)
 }
