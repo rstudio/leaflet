@@ -214,7 +214,7 @@ polygonData.SpatialLines = function(obj) {
     structure(bbox = obj@bbox)
 }
 polygonData.SpatialLinesDataFrame = function(obj) {
-  polygonData(SpatialLines(obj@lines))
+  polygonData(sp::SpatialLines(obj@lines))
 }
 
 dfbbox = function(df) {
@@ -235,7 +235,7 @@ makePolyList = function(df) {
 }
 
 polygon2coords = function(pgon, bbox = TRUE) {
-  df = pointData(coordinates(pgon))
+  df = pointData(sp::coordinates(pgon))
   structure(
     as.list(df),
     bbox = if (bbox) dfbbox(df)
