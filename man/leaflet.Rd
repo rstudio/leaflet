@@ -171,7 +171,7 @@ m \%>\% addCircleMarkers(~lng, ~lat, radius = ~size,
   color = ~RdYlBu(category), fillOpacity = 0.5)
 
 # Continuous colors using the "Greens" colorbrewer palette, mapped to value
-greens <- colorNumeric("Greens", domain = -3:3)
+greens <- colorNumeric("Greens", domain = NULL)
 m \%>\% addCircleMarkers(~lng, ~lat, radius = ~size,
   color = ~greens(value), fillOpacity = 0.5)
 }

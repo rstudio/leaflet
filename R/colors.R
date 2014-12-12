@@ -30,7 +30,7 @@ colorNumeric <- function(palette, domain) {
     }
   }
 
-  pf <- toPaletteFunc(palette)
+  pf <- safePaletteFunc(palette)
 
   function(x) {
     if (length(x) == 0 || all(is.na(x))) {
@@ -172,7 +172,7 @@ colorFactor <- function(palette, domain, levels = NULL, ordered = FALSE) {
     levels <- unique(levels)
   }
   lvls <- getLevels(domain, NULL, levels, ordered)
-  pf <- toPaletteFunc(palette)
+  pf <- safePaletteFunc(palette)
 
   function(x) {
     if (length(x) == 0 || all(is.na(x))) {
@@ -187,17 +187,6 @@ colorFactor <- function(palette, domain, levels = NULL, ordered = FALSE) {
 
     scaled <- scales::rescale(as.integer(x), from = c(1, length(lvls)))
     pf(scaled)
-  }
-}
-
-# Like grDevices::colorRamp, but returns colors in #RRGGBB instead of matrix
-rgbColorRamp <- function(colors, bias = 1, space = c("rgb", "Lab"),
-  interpolate = c("linear", "spline"), alpha = FALSE) {
-
-  f <- grDevices::colorRamp(colors=colors, bias=bias, space=space,
-    interpolate=interpolate, alpha=alpha)
-  function(x) {
-    rgb(f(x), maxColorValue = 255)
   }
 }
 
@@ -228,6 +217,11 @@ rgbColorRamp <- function(colors, bias = 1, space = c("rgb", "Lab"),
 #' @name palette
 NULL
 
+
+safePaletteFunc <- function(pal) {
+  toPaletteFunc(pal) %>% filterRGB() %>% filterNA() %>% filterRange()
+}
+
 toPaletteFunc <- function(pal) {
   UseMethod("toPaletteFunc")
 }
@@ -236,12 +230,12 @@ toPaletteFunc <- function(pal) {
 # of an RColorBrewer palette
 toPaletteFunc.character <- function(pal) {
   if (length(pal) == 1 && pal %in% row.names(RColorBrewer::brewer.pal.info)) {
-    return(rgbColorRamp(
+    return(grDevices::colorRamp(
       RColorBrewer::brewer.pal(RColorBrewer::brewer.pal.info[pal, 'maxcolors'], pal)
     ))
   }
 
-  return(rgbColorRamp(pal))
+  return(grDevices::colorRamp(pal))
 }
 
 # Accept colorRamp style matrix
@@ -286,4 +280,39 @@ previewColors <- function(pal, values) {
       )
     ))
   )
+}
+
+# Wraps an underlying non-NA-safe function (like colorRamp).
+filterNA <- function(f) {
+  force(f)
+  function(x) {
+    results <- character(length(x))
+    nas <- is.na(x)
+    results[nas] <- NA
+    results[!nas] <- f(x[!nas])
+    results
+  }
+}
+
+# Wraps a function that may return RGB color matrix instead of rgb string.
+filterRGB <- function(f) {
+  force(f)
+  function(x) {
+    results <- f(x)
+    if (is.character(results)) {
+      results
+    } else if (is.matrix(results)) {
+      rgb(results, maxColorValue = 255)
+    } else {
+      stop("Unexpected result type ", class(x)[[1]])
+    }
+  }
+}
+
+filterRange <- function(f) {
+  force(f)
+  function(x) {
+    x[x < 0 | x > 1] <- NA
+    f(x)
+  }
 }

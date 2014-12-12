@@ -4,13 +4,18 @@ bw <- c("black", "white")
 
 # These currently error, but shouldn't.
 assert(
-  has_error(colorNumeric(bw, c(0, 1))(-1)),    # Warn and return closest?
-  has_error(colorNumeric(bw, c(0, 1))(2)),     # Warn and return closest?
-  has_error(colorFactor(bw, letters)("foo")),  # Return NA?
   has_error(colorBin(bw, NULL)(1)),            # Return "#000000"?
   has_error(colorBin(bw, 1)(1)),               # Return "#000000"?
-  has_error(colorQuantile(bw, 0:1)(-1)),       # Warn and return closest?
-  has_error(colorQuantile(bw, 0:1)(2)),        # Warn and return closest?
+  TRUE
+)
+
+# Outside of domain? Return NA
+assert(
+  is.na(colorFactor(bw, letters)("foo")),
+  is.na(colorQuantile(bw, 0:1)(-1)),           # Open issue
+  is.na(colorQuantile(bw, 0:1)(2)),            # Open issue
+  is.na(colorNumeric(bw, c(0, 1))(-1)),        # Warn and return closest?
+  is.na(colorNumeric(bw, c(0, 1))(2)),         # Warn and return closest?
   TRUE
 )
 
