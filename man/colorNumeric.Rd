@@ -28,8 +28,8 @@ colorFactor(palette, domain = NULL, levels = NULL, ordered = FALSE)
   consistent.}
 
 \item{bins}{Either a numeric vector of two or more unique cut points or a
-single number (greater than or equal to 2) giving the number of intervals
-into which the domain values are to be cut.}
+  single number (greater than or equal to 2) giving the number of intervals
+  into which the domain values are to be cut.}
 
 \item{probs, type, ...}{See \code{\link[stats]{quantile}}}
 
@@ -68,4 +68,22 @@ The \code{palette} argument can be any of the following:
   \item{The name of an RColorBrewer palette, prefixed with \code{"brewer:"}, e.g. \code{"brewer:BuPu"}.}
   \item{A function that receives a single value between 0 and 1 and returns a color. Examples: \code{colorRamp(c("#000000", "#FFFFFF"), interpolate="spline")}.}
 }
+}
+\examples{
+pal <- colorBin("brewer:Greens", domain = 0:100)
+pal(runif(10, 60, 100))
+
+# Exponential distribution, mapped continuously
+previewColors(colorNumeric("brewer:Blues"), sort(rexp(16)))
+# Exponential distribution, mapped by interval
+previewColors(colorBin("brewer:Blues", bins = 4), sort(rexp(16)))
+# Exponential distribution, mapped by quantile
+previewColors(colorQuantile("brewer:Blues"), sort(rexp(16)))
+
+# Categorical data; by default, the values being colored span the gamut...
+previewColors(colorFactor("brewer:RdYlBu"), LETTERS[1:5])
+# ...unless the data is a factor, without droplevels...
+previewColors(colorFactor("brewer:RdYlBu"), factor(LETTERS[1:5], levels = LETTERS))
+# ...or the domain is stated explicitly.
+previewColors(colorFactor("brewer:RdYlBu", domain = LETTERS), LETTERS[1:5])
 }

@@ -77,6 +77,7 @@ getBins <- function(domain, x, bins) {
 #' @param bins Either a numeric vector of two or more unique cut points or a
 #'   single number (greater than or equal to 2) giving the number of intervals
 #'   into which the domain values are to be cut.
+#'
 #' @rdname colorNumeric
 #' @export
 colorBin <- function(palette, domain = NULL, bins = 7) {
@@ -197,6 +198,23 @@ rgbColorRamp <- function(colors, bias = 1, space = c("rgb", "Lab"),
 #'   \item{The name of an RColorBrewer palette, prefixed with \code{"brewer:"}, e.g. \code{"brewer:BuPu"}.}
 #'   \item{A function that receives a single value between 0 and 1 and returns a color. Examples: \code{colorRamp(c("#000000", "#FFFFFF"), interpolate="spline")}.}
 #' }
+#' @examples
+#' pal <- colorBin("brewer:Greens", domain = 0:100)
+#' pal(runif(10, 60, 100))
+#'
+#' # Exponential distribution, mapped continuously
+#' previewColors(colorNumeric("brewer:Blues"), sort(rexp(16)))
+#' # Exponential distribution, mapped by interval
+#' previewColors(colorBin("brewer:Blues", bins = 4), sort(rexp(16)))
+#' # Exponential distribution, mapped by quantile
+#' previewColors(colorQuantile("brewer:Blues"), sort(rexp(16)))
+#'
+#' # Categorical data; by default, the values being colored span the gamut...
+#' previewColors(colorFactor("brewer:RdYlBu"), LETTERS[1:5])
+#' # ...unless the data is a factor, without droplevels...
+#' previewColors(colorFactor("brewer:RdYlBu"), factor(LETTERS[1:5], levels=LETTERS))
+#' # ...or the domain is stated explicitly.
+#' previewColors(colorFactor("brewer:RdYlBu", domain = LETTERS), LETTERS[1:5])
 #' @rdname colorNumeric
 #' @name palette
 NULL
@@ -212,8 +230,9 @@ toPaletteFunc.character <- function(pal) {
     if (!nzchar(system.file(package="RColorBrewer"))) {
       stop("RColorBrewer package is required for brewer palettes")
     }
+    brewerPal <- substring(pal, nchar("brewer:")+1)
     return(rgbColorRamp(
-      RColorBrewer::brewer.pal(9, substring(pal, nchar("brewer:")+1))
+      RColorBrewer::brewer.pal(RColorBrewer::brewer.pal.info[brewerPal, 'maxcolors'], brewerPal)
     ))
   }
 
@@ -228,4 +247,38 @@ toPaletteFunc.matrix <- function(pal) {
 # If a function, just assume it's already a function over [0-1]
 toPaletteFunc.function <- function(pal) {
   pal
+}
+
+#' Color previewing utility
+#'
+#' @param pal A color mapping function, like those returned from \code{\link{colorNumeric}}, et al
+#' @param values A set of values to preview colors for
+#' @return An HTML-based list of the colors and values
+#' @export
+previewColors <- function(pal, values) {
+  heading <- htmltools::tags$code(deparse(substitute(pal)))
+  subheading <- htmltools::tags$code(deparse(substitute(values)))
+
+  htmltools::browsable(
+    htmltools::withTags(htmltools::tagList(
+      head(
+        style(type = "text/css",
+          "table { border-spacing: 1px; }",
+          "body { font-family: Helvetica; font-size: 13px; color: #444; }",
+          ".swatch { width: 24px; height: 18px; }",
+          ".value { padding-left: 6px; }",
+          "h3 code { font-weight: normal; }"
+        )
+      ),
+      h3("Colors:", heading, br(), "Values:", class = "subhead", subheading),
+      table(
+        mapply(pal(values), values, FUN = function(color, x) {
+          htmltools::tagList(tr(
+            td(class = "swatch", style = paste0("background-color:", color)),
+            td(class = "value", format(x, digits = 5))
+          ))
+        })
+      )
+    ))
+  )
 }
