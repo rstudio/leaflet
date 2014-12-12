@@ -7,21 +7,26 @@
 #' to an interpolated palette.
 #'
 #' @param palette The colors or color function that values will be mapped to
-#' @param domain The possible values that can be mapped. For \code{colorNumeric}
-#'   and \code{colorBin}, this can be a simple numeric range (e.g. \code{c(0,
-#'   100)}); \code{colorQuantile} needs representative numeric data; and
-#'   \code{colorFactor} needs categorical data. If \code{NULL}, then whenever
-#'   the resulting color function is called, the \code{x} value will represent
-#'   the domain; note that if the domain is \code{NULL} and the function is
-#'   invoked multiple times, the encoding between values and colors may not be
-#'   consistent.
+#' @param domain The possible values that can be mapped.
+#'
+#'   For \code{colorNumeric} and \code{colorBin}, this can be a simple numeric
+#'   range (e.g. \code{c(0, 100)}); \code{colorQuantile} needs representative
+#'   numeric data; and \code{colorFactor} needs categorical data.
+#'
+#'   If \code{NULL}, then whenever the resulting color function is called, the
+#'   \code{x} value will represent the domain. This implies that if the function
+#'   is invoked multiple times, the encoding between values and colors may not
+#'   be consistent; if consistency is needed, you must provide a non-\code{NULL}
+#'   domain.
+#' @param na.color The color to return for \code{NA} values. Note that
+#'   \code{na.color=NA} is valid.
 #'
 #' @return A function that takes a single parameter \code{x}; when called with a
 #'   vector of numbers (except for \code{colorFactor}, which expects
 #'   factors/characters), #RRGGBB color strings are returned.
 #'
 #' @export
-colorNumeric <- function(palette, domain) {
+colorNumeric <- function(palette, domain, na.color = "#808080") {
   rng <- NULL
   if (length(domain) > 0) {
     rng <- range(domain, na.rm = TRUE)
@@ -30,7 +35,7 @@ colorNumeric <- function(palette, domain) {
     }
   }
 
-  pf <- safePaletteFunc(palette)
+  pf <- safePaletteFunc(palette, na.color)
 
   function(x) {
     if (length(x) == 0 || all(is.na(x))) {
@@ -42,11 +47,10 @@ colorNumeric <- function(palette, domain) {
     } else {
       range(x, na.rm = TRUE)
     }
-    color <- scales::rescale(x, from = r) %>% pf()
-    if (is.matrix(color)) {
-      color <- rgb(color, maxColorValue = 255)
-    }
-    color
+    rescaled <- scales::rescale(x, from = r)
+    if (any(rescaled < 0 || rescaled > 1, na.rm = TRUE))
+      warning("Some values were outside the color scale and will be treated as NA")
+    pf(rescaled)
   }
 }
 
@@ -79,7 +83,7 @@ getBins <- function(domain, x, bins) {
 #'
 #' @rdname colorNumeric
 #' @export
-colorBin <- function(palette, domain, bins = 7) {
+colorBin <- function(palette, domain, bins = 7, na.color = "#808080") {
   # domain usually needs to be explicitly provided (even if NULL) but not if
   # breaks are specified
   if (missing(domain) && length(bins) > 1) {
@@ -88,7 +92,7 @@ colorBin <- function(palette, domain, bins = 7) {
   if (!is.null(domain))
     bins <- getBins(domain, NULL, bins)
   numColors <- if (length(bins) == 1) bins else length(bins)-1
-  colorFunc <- colorFactor(palette, domain = 1:numColors)
+  colorFunc <- colorFactor(palette, domain = 1:numColors, na.color = na.color)
 
   function(x) {
     if (length(x) == 0 || all(is.na(x))) {
@@ -96,28 +100,37 @@ colorBin <- function(palette, domain, bins = 7) {
     }
     binsToUse <- getBins(domain, x, bins)
     ints <- cut(x, binsToUse, labels = FALSE, include.lowest = TRUE, right = FALSE)
+    if (any(is.na(x) != is.na(ints)))
+      warning("Some values were outside the color scale and will be treated as NA")
     colorFunc(ints)
   }
 }
 
 #' @details \code{colorQuantile} similarly bins numeric data, but via the
 #'   \code{\link[stats]{quantile}} function.
-#' @param probs See \code{\link[stats]{quantile}}
+#' @param n Number of equal-size quantiles desired. For more precise control,
+#'   use the \code{probs} argument instead.
+#' @param probs See \code{\link[stats]{quantile}}. If provided, the \code{n}
+#'   argument is ignored.
 #' @rdname colorNumeric
 #' @export
-colorQuantile <- function(palette, domain, probs = seq(0, 1, 0.25)) {
+colorQuantile <- function(palette, domain, n = 4,
+  probs = seq(0, 1, length.out = n+1), na.color = "#808080") {
+
   if (!is.null(domain)) {
     bins <- quantile(domain, probs, na.rm = TRUE, names = FALSE)
-    return(colorBin(palette, domain = NULL, bins = bins))
+    return(colorBin(palette, domain = NULL, bins = bins, na.color = na.color))
   }
 
   # I don't have a precise understanding of how quantiles are meant to map to colors.
   # If you say probs = seq(0, 1, 0.25), which has length 5, does that map to 4 colors
   # or 5? 4, right?
-  colorFunc <- colorFactor(palette, domain = 1:(length(probs)-1))
+  colorFunc <- colorFactor(palette, domain = 1:(length(probs)-1), na.color = na.color)
   function(x) {
     binsToUse <- quantile(x, probs, na.rm = TRUE, names = FALSE)
     ints <- cut(x, binsToUse, labels = FALSE, include.lowest = TRUE, right = FALSE)
+    if (any(is.na(x) != is.na(ints)))
+      warning("Some values were outside the color scale and will be treated as NA")
     colorFunc(ints)
   }
 }
@@ -160,7 +173,9 @@ getLevels <- function(domain, x, lvls, ordered) {
 #'   factor, treat it as already in the correct order
 #' @rdname colorNumeric
 #' @export
-colorFactor <- function(palette, domain, levels = NULL, ordered = FALSE) {
+colorFactor <- function(palette, domain, levels = NULL, ordered = FALSE,
+  na.color = "#808080") {
+
   # domain usually needs to be explicitly provided (even if NULL) but not if
   # levels are specified
   if (missing(domain) && !is.null(levels)) {
@@ -172,7 +187,8 @@ colorFactor <- function(palette, domain, levels = NULL, ordered = FALSE) {
     levels <- unique(levels)
   }
   lvls <- getLevels(domain, NULL, levels, ordered)
-  pf <- safePaletteFunc(palette)
+  hasFixedLevels <- is.null(lvls)
+  pf <- safePaletteFunc(palette, na.color)
 
   function(x) {
     if (length(x) == 0 || all(is.na(x))) {
@@ -181,11 +197,21 @@ colorFactor <- function(palette, domain, levels = NULL, ordered = FALSE) {
 
     lvls <- getLevels(domain, x, lvls, ordered)
 
-    if (!is.factor(x)) {
+    if (!is.factor(x) || hasFixedLevels) {
+      origNa <- is.na(x)
+      # Seems like we need to re-factor if hasFixedLevels, in case the x value
+      # has a different set of levels (like if droplevels was called in between
+      # when the domain was given and now)
       x <- factor(x, lvls)
+      if (any(is.na(x) != origNa)) {
+        warning("Some values were outside the color scale and will be treated as NA")
+      }
     }
 
     scaled <- scales::rescale(as.integer(x), from = c(1, length(lvls)))
+    if (any(scaled < 0 || scaled > 1)) {
+      warning("Some values were outside the color scale and will be treated as NA")
+    }
     pf(scaled)
   }
 }
@@ -218,8 +244,8 @@ colorFactor <- function(palette, domain, levels = NULL, ordered = FALSE) {
 NULL
 
 
-safePaletteFunc <- function(pal) {
-  toPaletteFunc(pal) %>% filterRGB() %>% filterNA() %>% filterRange()
+safePaletteFunc <- function(pal, na.color) {
+  toPaletteFunc(pal) %>% filterRGB() %>% filterNA(na.color) %>% filterRange()
 }
 
 toPaletteFunc <- function(pal) {
@@ -283,12 +309,12 @@ previewColors <- function(pal, values) {
 }
 
 # Wraps an underlying non-NA-safe function (like colorRamp).
-filterNA <- function(f) {
+filterNA <- function(f, na.color) {
   force(f)
   function(x) {
     results <- character(length(x))
     nas <- is.na(x)
-    results[nas] <- NA
+    results[nas] <- na.color
     results[!nas] <- f(x[!nas])
     results
   }

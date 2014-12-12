@@ -7,31 +7,42 @@
 \alias{palette}
 \title{Color mapping}
 \usage{
-colorNumeric(palette, domain)
+colorNumeric(palette, domain, na.color = "#808080")
 
-colorBin(palette, domain, bins = 7)
+colorBin(palette, domain, bins = 7, na.color = "#808080")
 
-colorQuantile(palette, domain, probs = seq(0, 1, 0.25))
+colorQuantile(palette, domain, n = 4, probs = seq(0, 1, length.out = n + 1), 
+    na.color = "#808080")
 
-colorFactor(palette, domain, levels = NULL, ordered = FALSE)
+colorFactor(palette, domain, levels = NULL, ordered = FALSE, na.color = "#808080")
 }
 \arguments{
 \item{palette}{The colors or color function that values will be mapped to}
 
-\item{domain}{The possible values that can be mapped. For \code{colorNumeric}
-  and \code{colorBin}, this can be a simple numeric range (e.g. \code{c(0,
-  100)}); \code{colorQuantile} needs representative numeric data; and
-  \code{colorFactor} needs categorical data. If \code{NULL}, then whenever
-  the resulting color function is called, the \code{x} value will represent
-  the domain; note that if the domain is \code{NULL} and the function is
-  invoked multiple times, the encoding between values and colors may not be
-  consistent.}
+\item{domain}{The possible values that can be mapped.
+
+  For \code{colorNumeric} and \code{colorBin}, this can be a simple numeric
+  range (e.g. \code{c(0, 100)}); \code{colorQuantile} needs representative
+  numeric data; and \code{colorFactor} needs categorical data.
+
+  If \code{NULL}, then whenever the resulting color function is called, the
+  \code{x} value will represent the domain. This implies that if the function
+  is invoked multiple times, the encoding between values and colors may not
+  be consistent; if consistency is needed, you must provide a non-\code{NULL}
+  domain.}
+
+\item{na.color}{The color to return for \code{NA} values. Note that
+  \code{na.color=NA} is valid.}
 
 \item{bins}{Either a numeric vector of two or more unique cut points or a
   single number (greater than or equal to 2) giving the number of intervals
   into which the domain values are to be cut.}
 
-\item{probs}{See \code{\link[stats]{quantile}}}
+\item{n}{Number of equal-size quantiles desired. For more precise control,
+use the \code{probs} argument instead.}
+
+\item{probs}{See \code{\link[stats]{quantile}}. If provided, the \code{n}
+argument is ignored.}
 
 \item{levels}{An alternate way of specifying levels; if specified, domain is
 ignored}

@@ -2,20 +2,25 @@ library(testit)
 
 bw <- c("black", "white")
 
-# These currently error, but shouldn't.
+# These currently error, but maybe shouldn't...?
 assert(
   has_error(colorBin(bw, NULL)(1)),            # Return "#000000"?
   has_error(colorBin(bw, 1)(1)),               # Return "#000000"?
   TRUE
 )
 
-# Outside of domain? Return NA
+# Outside of domain? Return na.color
 assert(
-  is.na(colorFactor(bw, letters)("foo")),
-  is.na(colorQuantile(bw, 0:1)(-1)),           # Open issue
-  is.na(colorQuantile(bw, 0:1)(2)),            # Open issue
-  is.na(colorNumeric(bw, c(0, 1))(-1)),        # Warn and return closest?
-  is.na(colorNumeric(bw, c(0, 1))(2)),         # Warn and return closest?
+  identical("#808080", colorFactor(bw, letters)("foo")),
+  identical("#808080", colorQuantile(bw, 0:1)(-1)),           # Open issue
+  identical("#808080", colorQuantile(bw, 0:1)(2)),            # Open issue
+  identical("#808080", colorNumeric(bw, c(0, 1))(-1)),        # Warn and return closest?
+  identical("#808080", colorNumeric(bw, c(0, 1))(2)),         # Warn and return closest?
+  is.na(colorFactor(bw, letters, na.color = NA)("foo")),
+  is.na(colorQuantile(bw, 0:1, na.color = NA)(-1)),           # Open issue
+  is.na(colorQuantile(bw, 0:1, na.color = NA)(2)),            # Open issue
+  is.na(colorNumeric(bw, c(0, 1), na.color = NA)(-1)),        # Warn and return closest?
+  is.na(colorNumeric(bw, c(0, 1), na.color = NA)(2)),         # Warn and return closest?
   TRUE
 )
 
