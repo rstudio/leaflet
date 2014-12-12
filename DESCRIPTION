@@ -20,6 +20,7 @@ Imports:
     magrittr
 Suggests:
     knitr,
+    maps,
     shiny,
     sp,
     testit
