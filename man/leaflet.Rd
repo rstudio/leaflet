@@ -163,16 +163,15 @@ df = data.frame(
 )
 m = leaflet(df) \%>\% addTiles()
 m \%>\% addCircleMarkers(~lng, ~lat, radius = ~size)
-m \%>\% addCircleMarkers(~lng, ~lat, radius = runif(100, 4, 10),
-  color = c('red', 'blue'))
+m \%>\% addCircleMarkers(~lng, ~lat, radius = runif(100, 4, 10), color = c('red'))
 
 # Discrete colors using the "RdYlBu" colorbrewer palette, mapped to categories
-RdYlBu <- colorFactor("brewer:RdYlBu", domain = categories)
+RdYlBu <- colorFactor("RdYlBu", domain = categories)
 m \%>\% addCircleMarkers(~lng, ~lat, radius = ~size,
   color = ~RdYlBu(category), fillOpacity = 0.5)
 
 # Continuous colors using the "Greens" colorbrewer palette, mapped to value
-greens <- colorNumeric("brewer:Greens")
+greens <- colorNumeric("Greens", domain = -3:3)
 m \%>\% addCircleMarkers(~lng, ~lat, radius = ~size,
   color = ~greens(value), fillOpacity = 0.5)
 }

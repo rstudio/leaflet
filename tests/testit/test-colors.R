@@ -1,16 +1,13 @@
 library(testit)
 
 bw <- c("black", "white")
-x <- sort(rnorm(1000))
-table(colorBin(bw, bins = 5)(x))
-table(colorQuantile(bw, probs = seq(0, 1, 0.2))(x))
 
 # These currently error, but shouldn't.
 assert(
   has_error(colorNumeric(bw, c(0, 1))(-1)),    # Warn and return closest?
   has_error(colorNumeric(bw, c(0, 1))(2)),     # Warn and return closest?
   has_error(colorFactor(bw, letters)("foo")),  # Return NA?
-  has_error(colorBin(bw)(1)),                  # Return "#000000"?
+  has_error(colorBin(bw, NULL)(1)),            # Return "#000000"?
   has_error(colorBin(bw, 1)(1)),               # Return "#000000"?
   has_error(colorQuantile(bw, 0:1)(-1)),       # Warn and return closest?
   has_error(colorQuantile(bw, 0:1)(2)),        # Warn and return closest?
@@ -20,14 +17,14 @@ assert(
 assert(
   identical(
     c("#000000", "#7F7F7F", "#FFFFFF"),
-    colorNumeric(colorRamp(bw))(c(0, 0.5, 1))
+    colorNumeric(colorRamp(bw), NULL)(c(0, 0.5, 1))
   )
 )
 
 assert(
   identical(
     c("#000000", "#FFFFFF"),
-    colorBin(bw)(c(1,2))
+    colorBin(bw, NULL)(c(1,2))
   ),
 
   identical(
@@ -42,7 +39,7 @@ assert(
 
   identical(
     c("#000000", "#FFFFFF"),
-    colorBin(bw, bins=c(1,1.5,2))(c(1,2))
+    colorBin(bw, NULL, bins=c(1,1.5,2))(c(1,2))
   ),
 
   identical(
@@ -56,7 +53,7 @@ assert(
 assert(
   identical(
     c("#000000", "#7F7F7F", "#FFFFFF"),
-    colorNumeric(bw)(1:3)
+    colorNumeric(bw, NULL)(1:3)
   ),
 
   identical(
@@ -89,7 +86,7 @@ assert(
   # no domain
   identical(
     c("#000000", "#7F7F7F", "#FFFFFF"),
-    colorFactor(bw)(LETTERS[1:3])
+    colorFactor(bw, NULL)(LETTERS[1:3])
   ),
 
   # Non-factor domains are sorted unless instructed otherwise

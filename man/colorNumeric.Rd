@@ -7,13 +7,13 @@
 \alias{palette}
 \title{Color mapping}
 \usage{
-colorNumeric(palette, domain = NULL)
+colorNumeric(palette, domain)
 
-colorBin(palette, domain = NULL, bins = 7)
+colorBin(palette, domain, bins = 7)
 
-colorQuantile(palette, domain = NULL, probs = seq(0, 1, 0.25), type = 7, ...)
+colorQuantile(palette, domain, probs = seq(0, 1, 0.25))
 
-colorFactor(palette, domain = NULL, levels = NULL, ordered = FALSE)
+colorFactor(palette, domain, levels = NULL, ordered = FALSE)
 }
 \arguments{
 \item{palette}{The colors or color function that values will be mapped to}
@@ -31,7 +31,7 @@ colorFactor(palette, domain = NULL, levels = NULL, ordered = FALSE)
   single number (greater than or equal to 2) giving the number of intervals
   into which the domain values are to be cut.}
 
-\item{probs, type, ...}{See \code{\link[stats]{quantile}}}
+\item{probs}{See \code{\link[stats]{quantile}}}
 
 \item{levels}{An alternate way of specifying levels; if specified, domain is
 ignored}
@@ -65,25 +65,27 @@ to an interpolated palette.
 The \code{palette} argument can be any of the following:
 \enumerate{
   \item{A character vector of RGB or named colors. Examples: \code{palette()}, \code{c("#000000", "#0000FF", "#FFFFFF")}, \code{topo.colors(10)}}
-  \item{The name of an RColorBrewer palette, prefixed with \code{"brewer:"}, e.g. \code{"brewer:BuPu"}.}
+  \item{The name of an RColorBrewer palette, e.g. \code{"BuPu"} or \code{"Greens"}.}
   \item{A function that receives a single value between 0 and 1 and returns a color. Examples: \code{colorRamp(c("#000000", "#FFFFFF"), interpolate="spline")}.}
 }
 }
 \examples{
-pal <- colorBin("brewer:Greens", domain = 0:100)
+pal <- colorBin("Greens", domain = 0:100)
 pal(runif(10, 60, 100))
 
 # Exponential distribution, mapped continuously
-previewColors(colorNumeric("brewer:Blues"), sort(rexp(16)))
+previewColors(colorNumeric("Blues", domain = NULL), sort(rexp(16)))
 # Exponential distribution, mapped by interval
-previewColors(colorBin("brewer:Blues", bins = 4), sort(rexp(16)))
+previewColors(colorBin("Blues", domain = NULL, bins = 4), sort(rexp(16)))
 # Exponential distribution, mapped by quantile
-previewColors(colorQuantile("brewer:Blues"), sort(rexp(16)))
+previewColors(colorQuantile("Blues", domain = NULL), sort(rexp(16)))
 
-# Categorical data; by default, the values being colored span the gamut...
-previewColors(colorFactor("brewer:RdYlBu"), LETTERS[1:5])
+# Categorical data; by default, the values being colored span the
+# gamut...
+previewColors(colorFactor("RdYlBu", domain = NULL), LETTERS[1:5])
 # ...unless the data is a factor, without droplevels...
-previewColors(colorFactor("brewer:RdYlBu"), factor(LETTERS[1:5], levels = LETTERS))
+previewColors(colorFactor("RdYlBu", domain = NULL), factor(LETTERS[1:5], 
+    levels = LETTERS))
 # ...or the domain is stated explicitly.
-previewColors(colorFactor("brewer:RdYlBu", domain = LETTERS), LETTERS[1:5])
+previewColors(colorFactor("RdYlBu", levels = LETTERS), LETTERS[1:5])
 }

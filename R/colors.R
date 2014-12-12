@@ -21,7 +21,7 @@
 #'   factors/characters), #RRGGBB color strings are returned.
 #'
 #' @export
-colorNumeric <- function(palette, domain = NULL) {
+colorNumeric <- function(palette, domain) {
   rng <- NULL
   if (length(domain) > 0) {
     rng <- range(domain, na.rm = TRUE)
@@ -54,6 +54,10 @@ colorNumeric <- function(palette, domain = NULL) {
 # Iff domain is non-NULL, x may be NULL.
 # bins is non-NULL. It may be a scalar value (# of breaks) or a set of breaks.
 getBins <- function(domain, x, bins) {
+  if (is.null(domain) && is.null(x)) {
+    stop("Assertion failed: domain and x can't both be NULL")
+  }
+
   # Hard-coded bins
   if (length(bins) > 1) {
     return(bins)
@@ -63,12 +67,7 @@ getBins <- function(domain, x, bins) {
     stop("Invalid bins value of ", bins, "; bin count must be at least 2")
   }
 
-  if (!is.null(domain)) {
-    rng <- range(domain)
-    return(seq(rng[1], rng[2], length.out = bins+1))
-  }
-
-  rng <- range(x)
+  rng <- range(domain %||% x, na.rm = TRUE)
   return(seq(rng[1], rng[2], length.out = bins+1))
 }
 
@@ -80,7 +79,12 @@ getBins <- function(domain, x, bins) {
 #'
 #' @rdname colorNumeric
 #' @export
-colorBin <- function(palette, domain = NULL, bins = 7) {
+colorBin <- function(palette, domain, bins = 7) {
+  # domain usually needs to be explicitly provided (even if NULL) but not if
+  # breaks are specified
+  if (missing(domain) && length(bins) > 1) {
+    domain <- NULL
+  }
   if (!is.null(domain))
     bins <- getBins(domain, NULL, bins)
   numColors <- if (length(bins) == 1) bins else length(bins)-1
@@ -98,12 +102,12 @@ colorBin <- function(palette, domain = NULL, bins = 7) {
 
 #' @details \code{colorQuantile} similarly bins numeric data, but via the
 #'   \code{\link[stats]{quantile}} function.
-#' @param probs,type,... See \code{\link[stats]{quantile}}
+#' @param probs See \code{\link[stats]{quantile}}
 #' @rdname colorNumeric
 #' @export
-colorQuantile <- function(palette, domain = NULL, probs = seq(0, 1, 0.25), type = 7, ...) {
+colorQuantile <- function(palette, domain, probs = seq(0, 1, 0.25)) {
   if (!is.null(domain)) {
-    bins <- quantile(domain, probs, na.rm = TRUE, names = FALSE, type = type, ...)
+    bins <- quantile(domain, probs, na.rm = TRUE, names = FALSE)
     return(colorBin(palette, domain = NULL, bins = bins))
   }
 
@@ -112,7 +116,7 @@ colorQuantile <- function(palette, domain = NULL, probs = seq(0, 1, 0.25), type 
   # or 5? 4, right?
   colorFunc <- colorFactor(palette, domain = 1:(length(probs)-1))
   function(x) {
-    binsToUse <- quantile(x, probs, na.rm = TRUE, names = FALSE, type = type, ...)
+    binsToUse <- quantile(x, probs, na.rm = TRUE, names = FALSE)
     ints <- cut(x, binsToUse, labels = FALSE, include.lowest = TRUE, right = FALSE)
     colorFunc(ints)
   }
@@ -122,15 +126,14 @@ colorQuantile <- function(palette, domain = NULL, probs = seq(0, 1, 0.25), type 
 # return the levels.
 calcLevels <- function(x, ordered) {
   if (is.null(x)) {
-    lvls <- NULL
+    NULL
   } else if (is.factor(x)) {
-    lvls <- levels(x)
+    levels(x)
   } else if (ordered) {
-    lvls <- unique(x)
+    unique(x)
   } else {
-    lvls <- levels(factor(x))
+    sort(unique(x))
   }
-  lvls
 }
 
 getLevels <- function(domain, x, lvls, ordered) {
@@ -157,7 +160,13 @@ getLevels <- function(domain, x, lvls, ordered) {
 #'   factor, treat it as already in the correct order
 #' @rdname colorNumeric
 #' @export
-colorFactor <- function(palette, domain = NULL, levels = NULL, ordered = FALSE) {
+colorFactor <- function(palette, domain, levels = NULL, ordered = FALSE) {
+  # domain usually needs to be explicitly provided (even if NULL) but not if
+  # levels are specified
+  if (missing(domain) && !is.null(levels)) {
+    domain <- NULL
+  }
+
   if (!is.null(levels) && anyDuplicated(levels)) {
     warning("Duplicate levels detected")
     levels <- unique(levels)
@@ -195,26 +204,26 @@ rgbColorRamp <- function(colors, bias = 1, space = c("rgb", "Lab"),
 #' @details The \code{palette} argument can be any of the following:
 #' \enumerate{
 #'   \item{A character vector of RGB or named colors. Examples: \code{palette()}, \code{c("#000000", "#0000FF", "#FFFFFF")}, \code{topo.colors(10)}}
-#'   \item{The name of an RColorBrewer palette, prefixed with \code{"brewer:"}, e.g. \code{"brewer:BuPu"}.}
+#'   \item{The name of an RColorBrewer palette, e.g. \code{"BuPu"} or \code{"Greens"}.}
 #'   \item{A function that receives a single value between 0 and 1 and returns a color. Examples: \code{colorRamp(c("#000000", "#FFFFFF"), interpolate="spline")}.}
 #' }
 #' @examples
-#' pal <- colorBin("brewer:Greens", domain = 0:100)
+#' pal <- colorBin("Greens", domain = 0:100)
 #' pal(runif(10, 60, 100))
 #'
 #' # Exponential distribution, mapped continuously
-#' previewColors(colorNumeric("brewer:Blues"), sort(rexp(16)))
+#' previewColors(colorNumeric("Blues", domain = NULL), sort(rexp(16)))
 #' # Exponential distribution, mapped by interval
-#' previewColors(colorBin("brewer:Blues", bins = 4), sort(rexp(16)))
+#' previewColors(colorBin("Blues", domain = NULL, bins = 4), sort(rexp(16)))
 #' # Exponential distribution, mapped by quantile
-#' previewColors(colorQuantile("brewer:Blues"), sort(rexp(16)))
+#' previewColors(colorQuantile("Blues", domain = NULL), sort(rexp(16)))
 #'
 #' # Categorical data; by default, the values being colored span the gamut...
-#' previewColors(colorFactor("brewer:RdYlBu"), LETTERS[1:5])
+#' previewColors(colorFactor("RdYlBu", domain = NULL), LETTERS[1:5])
 #' # ...unless the data is a factor, without droplevels...
-#' previewColors(colorFactor("brewer:RdYlBu"), factor(LETTERS[1:5], levels=LETTERS))
+#' previewColors(colorFactor("RdYlBu", domain = NULL), factor(LETTERS[1:5], levels=LETTERS))
 #' # ...or the domain is stated explicitly.
-#' previewColors(colorFactor("brewer:RdYlBu", domain = LETTERS), LETTERS[1:5])
+#' previewColors(colorFactor("RdYlBu", levels = LETTERS), LETTERS[1:5])
 #' @rdname colorNumeric
 #' @name palette
 NULL
@@ -223,16 +232,12 @@ toPaletteFunc <- function(pal) {
   UseMethod("toPaletteFunc")
 }
 
-# Strings are interpreted as color names, unless length is 1 and "brewer:"
-# prefix is present, then it's an RColorBrewer palette
+# Strings are interpreted as color names, unless length is 1 and it's the name
+# of an RColorBrewer palette
 toPaletteFunc.character <- function(pal) {
-  if (length(pal) == 1 && grepl("^brewer:", pal)) {
-    if (!nzchar(system.file(package="RColorBrewer"))) {
-      stop("RColorBrewer package is required for brewer palettes")
-    }
-    brewerPal <- substring(pal, nchar("brewer:")+1)
+  if (length(pal) == 1 && pal %in% row.names(RColorBrewer::brewer.pal.info)) {
     return(rgbColorRamp(
-      RColorBrewer::brewer.pal(RColorBrewer::brewer.pal.info[brewerPal, 'maxcolors'], brewerPal)
+      RColorBrewer::brewer.pal(RColorBrewer::brewer.pal.info[pal, 'maxcolors'], pal)
     ))
   }
 
