@@ -116,9 +116,19 @@ leaflet() %>% addTiles('http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.pn
 # provide a data frame to leaflet()
 df = data.frame(
   lat = rand_lat(100), lng = rand_lng(100), size = runif(100, 5, 20),
-  color = rgb(runif(100), runif(100), runif(100)), stringsAsFactors = FALSE
+  category = factor(sample(LETTERS, 100, replace = TRUE), levels = LETTERS),
+  value = rnorm(100)
 )
 m = leaflet(df) %>% addTiles()
 m %>% addCircleMarkers(~lng, ~lat, radius = ~size)
 m %>% addCircleMarkers(~lng, ~lat, radius = runif(100, 4, 10), color = 'red')
-m %>% addCircleMarkers(~lng, ~lat, radius = runif(100, 4, 10), color = ~color)
+
+# Discrete colors using the "RdYlBu" colorbrewer palette, mapped to LETTERS
+RdYlBu <- colorFactor("brewer:RdYlBu", domain = LETTERS)
+m %>% addCircleMarkers(~lng, ~lat, radius = runif(100, 4, 10),
+  color = ~RdYlBu(category), fillOpacity = 0.5)
+
+# Continuous colors using the "Greens" colorbrewer palette, mapped to value
+greens <- colorNumeric("brewer:Greens")
+m %>% addCircleMarkers(~lng, ~lat, radius = runif(100, 4, 10),
+  color = ~greens(value), fillOpacity = 0.5)
