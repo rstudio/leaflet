@@ -12,15 +12,20 @@ assert(
 # Outside of domain? Return na.color
 assert(
   identical("#808080", colorFactor(bw, letters)("foo")),
-  identical("#808080", colorQuantile(bw, 0:1)(-1)),           # Open issue
-  identical("#808080", colorQuantile(bw, 0:1)(2)),            # Open issue
-  identical("#808080", colorNumeric(bw, c(0, 1))(-1)),        # Warn and return closest?
-  identical("#808080", colorNumeric(bw, c(0, 1))(2)),         # Warn and return closest?
+  identical("#808080", colorQuantile(bw, 0:1)(-1)),
+  identical("#808080", colorQuantile(bw, 0:1)(2)),
+  identical("#808080", colorNumeric(bw, c(0, 1))(-1)),
+  identical("#808080", colorNumeric(bw, c(0, 1))(2)),
   is.na(colorFactor(bw, letters, na.color = NA)("foo")),
-  is.na(colorQuantile(bw, 0:1, na.color = NA)(-1)),           # Open issue
-  is.na(colorQuantile(bw, 0:1, na.color = NA)(2)),            # Open issue
-  is.na(colorNumeric(bw, c(0, 1), na.color = NA)(-1)),        # Warn and return closest?
-  is.na(colorNumeric(bw, c(0, 1), na.color = NA)(2)),         # Warn and return closest?
+  is.na(colorQuantile(bw, 0:1, na.color = NA)(-1)),
+  is.na(colorQuantile(bw, 0:1, na.color = NA)(2)),
+  is.na(colorNumeric(bw, c(0, 1), na.color = NA)(-1)),
+  is.na(colorNumeric(bw, c(0, 1), na.color = NA)(2)),
+  has_warning(colorFactor(bw, letters, na.color = NA)("foo")),
+  has_warning(colorQuantile(bw, 0:1, na.color = NA)(-1)),
+  has_warning(colorQuantile(bw, 0:1, na.color = NA)(2)),
+  has_warning(colorNumeric(bw, c(0, 1), na.color = NA)(-1)),
+  has_warning(colorNumeric(bw, c(0, 1), na.color = NA)(2)),
   TRUE
 )
 

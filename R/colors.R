@@ -48,7 +48,7 @@ colorNumeric <- function(palette, domain, na.color = "#808080") {
       range(x, na.rm = TRUE)
     }
     rescaled <- scales::rescale(x, from = r)
-    if (any(rescaled < 0 || rescaled > 1, na.rm = TRUE))
+    if (any(rescaled < 0 | rescaled > 1, na.rm = TRUE))
       warning("Some values were outside the color scale and will be treated as NA")
     pf(rescaled)
   }
@@ -209,7 +209,7 @@ colorFactor <- function(palette, domain, levels = NULL, ordered = FALSE,
     }
 
     scaled <- scales::rescale(as.integer(x), from = c(1, length(lvls)))
-    if (any(scaled < 0 || scaled > 1)) {
+    if (any(scaled < 0 | scaled > 1, na.rm = TRUE)) {
       warning("Some values were outside the color scale and will be treated as NA")
     }
     pf(scaled)
