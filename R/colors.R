@@ -16,6 +16,10 @@
 #'   invoked multiple times, the encoding between values and colors may not be
 #'   consistent.
 #'
+#' @return A function that takes a single parameter \code{x}; when called with a
+#'   vector of numbers (except for \code{colorFactor}, which expects
+#'   factors/characters), #RRGGBB color strings are returned.
+#'
 #' @export
 colorNumeric <- function(palette, domain = NULL) {
   rng <- NULL

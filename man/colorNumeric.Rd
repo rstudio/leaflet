@@ -39,6 +39,11 @@ ignored}
 \item{ordered}{If \code{TRUE} and \code{domain} needs to be coerced to a
 factor, treat it as already in the correct order}
 }
+\value{
+A function that takes a single parameter \code{x}; when called with a
+  vector of numbers (except for \code{colorFactor}, which expects
+  factors/characters), #RRGGBB color strings are returned.
+}
 \description{
 Conveniently maps data values (numeric or factor/character) to colors
 according to a given palette, which can be provided in a variety of formats.
