@@ -10,8 +10,12 @@
 #' we may add a circle layer to the map by \code{leaflet(data) \%>\%
 #' addCircles(lat = ~latitude, lng = ~longtitude)}, where the variables in the
 #' formulae will be evaluated in the \code{data}.
-#' @param data a data object (e.g. a numeric matrix, data frame, or spatial data
-#'   created from the \pkg{sp} package)
+#' @param data a data object (currently supported objects are matrices, data
+#'   frames, and spatial objects from the \pkg{sp} package of classes
+#'   \code{SpatialPoints}, \code{SpatialPointsDataFrame}, \code{Polygon},
+#'   \code{Polygons}, \code{SpatialPolygons}, \code{SpatialPolygonsDataFrame},
+#'   \code{Line}, \code{Lines}, \code{SpatialLines}, and
+#'   \code{SpatialLinesDataFrame})
 #' @param id a character string as the identifier of the map (you do not need to
 #'   provide it unless you want to manipulate the map later in Shiny)
 #' @param width the width of the map

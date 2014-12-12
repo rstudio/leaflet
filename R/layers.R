@@ -134,12 +134,7 @@ tileOptions = function(
 #' @param layerId the layer id
 #' @param data the data object from which the argument values are derived; by
 #'   default, it is the \code{data} object provided to \code{leaflet()}
-#'   initially, but can be overridden (currently supported objects are matrices,
-#'   data frames, and spatial objects from the \pkg{sp} package of classes
-#'   \code{SpatialPoints}, \code{SpatialPointsDataFrame}, \code{Polygon},
-#'   \code{Polygons}, \code{SpatialPolygons}, \code{SpatialPolygonsDataFrame},
-#'   \code{Line}, \code{Lines}, \code{SpatialLines}, and
-#'   \code{SpatialLinesDataFrame})
+#'   initially, but can be overridden
 #' @describeIn map-layers Add popups to the map
 #' @export
 addPopups = function(
