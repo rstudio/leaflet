@@ -5,13 +5,13 @@
 #' @inheritParams htmlwidgets::shinyWidgetOutput
 #' @param width,height the width and height of the map (see
 #'   \code{\link[htmlwidgets]{shinyWidgetOutput}})
-#' @rdname leaflet-shiny
+#' @rdname map-shiny
 #' @export
 leafletOutput = function(outputId, width = "100%", height = 400) {
   htmlwidgets::shinyWidgetOutput(outputId, "leaflet", width, height, "leaflet")
 }
 
-#' @rdname leaflet-shiny
+#' @rdname map-shiny
 #' @export
 renderLeaflet = function(expr, env = parent.frame(), quoted = FALSE) {
   htmlwidgets::shinyRenderWidget(expr, leafletOutput, env, quoted = TRUE)
