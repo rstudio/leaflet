@@ -6,8 +6,12 @@
 leaflet(data = NULL, id = NULL, width = NULL, height = NULL, padding = 0)
 }
 \arguments{
-\item{data}{a data object (e.g. a numeric matrix, data frame, or spatial data
-created from the \pkg{sp} package)}
+\item{data}{a data object (currently supported objects are matrices, data
+frames, and spatial objects from the \pkg{sp} package of classes
+\code{SpatialPoints}, \code{SpatialPointsDataFrame}, \code{Polygon},
+\code{Polygons}, \code{SpatialPolygons}, \code{SpatialPolygonsDataFrame},
+\code{Line}, \code{Lines}, \code{SpatialLines}, and
+\code{SpatialLinesDataFrame})}
 
 \item{id}{a character string as the identifier of the map (you do not need to
 provide it unless you want to manipulate the map later in Shiny)}

@@ -12,48 +12,38 @@
 \title{Graphics elements and layers}
 \usage{
 addTiles(map, urlTemplate = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", 
-    minZoom = 0, maxZoom = 18, maxNativeZoom = NULL, tileSize = 256, subdomains = "abc", 
-    errorTileUrl = "", attribution = "", tms = FALSE, continuousWorld = FALSE, 
-    noWrap = FALSE, zoomOffset = 0, zoomReverse = FALSE, opacity = 1, zIndex = NULL, 
-    unloadInvisibleTiles = NULL, updateWhenIdle = NULL, detectRetina = FALSE, 
-    reuseTiles = FALSE)
+    attribution = NULL, options = tileOptions())
 
-addPopups(map, lng = NULL, lat = NULL, content, layerId = NULL, maxWidth = 300, 
-    minWidth = 50, maxHeight = NULL, autoPan = TRUE, keepInView = FALSE, 
-    closeButton = TRUE, zoomAnimation = TRUE, closeOnClick = NULL, className = "", 
-    data = getMapData(map))
+addPopups(map, lng = NULL, lat = NULL, content, layerId = NULL, 
+    options = popupOptions(), data = getMapData(map))
 
-addMarkers(map, lng = NULL, lat = NULL, layerId = NULL, icon = NULL, clickable = TRUE, 
-    draggable = FALSE, keyboard = TRUE, title = "", alt = "", zIndexOffset = 0, 
-    opacity = 1, riseOnHover = FALSE, riseOffset = 250, data = getMapData(map))
+addMarkers(map, lng = NULL, lat = NULL, layerId = NULL, icon = NULL, 
+    options = markerOptions(), data = getMapData(map))
 
 addCircleMarkers(map, lng = NULL, lat = NULL, radius = 10, layerId = NULL, 
     stroke = TRUE, color = "#03F", weight = 5, opacity = 0.5, fill = TRUE, 
-    fillColor = color, fillOpacity = 0.2, dashArray = NULL, lineCap = NULL, 
-    lineJoin = NULL, clickable = TRUE, pointerEvents = NULL, className = "", 
+    fillColor = color, fillOpacity = 0.2, dashArray = NULL, options = pathOptions(), 
     data = getMapData(map))
 
-addCircles(map, lng = NULL, lat = NULL, radius = 10, layerId = NULL, stroke = TRUE, 
+addCircles(map, lng = NULL, lat = NULL, radius = 10, layerId = NULL, 
+    stroke = TRUE, color = "#03F", weight = 5, opacity = 0.5, fill = TRUE, 
+    fillColor = color, fillOpacity = 0.2, dashArray = NULL, options = pathOptions(), 
+    data = getMapData(map))
+
+addPolylines(map, lng = NULL, lat = NULL, layerId = NULL, stroke = TRUE, 
     color = "#03F", weight = 5, opacity = 0.5, fill = TRUE, fillColor = color, 
-    fillOpacity = 0.2, dashArray = NULL, lineCap = NULL, lineJoin = NULL, 
-    clickable = TRUE, pointerEvents = NULL, className = "", data = getMapData(map))
+    fillOpacity = 0.2, dashArray = NULL, smoothFactor = 1, noClip = FALSE, 
+    options = pathOptions(), data = getMapData(map))
 
-addPolylines(map, lng = NULL, lat = NULL, layerId = NULL, smoothFactor = 1, 
-    noClip = FALSE, stroke = TRUE, color = "#03F", weight = 5, opacity = 0.5, 
-    dashArray = NULL, lineCap = NULL, lineJoin = NULL, clickable = TRUE, 
-    pointerEvents = NULL, className = "", data = getMapData(map))
+addRectangles(map, lng1, lat1, lng2, lat2, layerId = NULL, stroke = TRUE, 
+    color = "#03F", weight = 5, opacity = 0.5, fill = TRUE, fillColor = color, 
+    fillOpacity = 0.2, dashArray = NULL, smoothFactor = 1, noClip = FALSE, 
+    options = pathOptions(), data = getMapData(map))
 
-addRectangles(map, lng1, lat1, lng2, lat2, layerId = NULL, smoothFactor = 1, 
-    noClip = FALSE, color = "#03F", weight = 5, opacity = 0.5, fill = TRUE, 
-    fillColor = color, fillOpacity = 0.2, dashArray = NULL, lineCap = NULL, 
-    lineJoin = NULL, clickable = TRUE, pointerEvents = NULL, className = "", 
-    data = getMapData(map))
-
-addPolygons(map, lng = NULL, lat = NULL, layerId = NULL, smoothFactor = 1, 
-    noClip = FALSE, stroke = TRUE, color = "#03F", weight = 5, opacity = 0.5, 
-    fill = TRUE, fillColor = color, fillOpacity = 0.2, dashArray = NULL, 
-    lineCap = NULL, lineJoin = NULL, clickable = TRUE, pointerEvents = NULL, 
-    className = "", data = getMapData(map))
+addPolygons(map, lng = NULL, lat = NULL, layerId = NULL, stroke = TRUE, 
+    color = "#03F", weight = 5, opacity = 0.5, fill = TRUE, fillColor = color, 
+    fillOpacity = 0.2, dashArray = NULL, smoothFactor = 1, noClip = FALSE, 
+    options = pathOptions(), data = getMapData(map))
 
 addGeoJSON(map, geojson, layerId = NULL)
 }
@@ -62,10 +52,10 @@ addGeoJSON(map, geojson, layerId = NULL)
 
 \item{urlTemplate}{a character string as the URL template}
 
-\item{minZoom, maxZoom, maxNativeZoom, tileSize, subdomains, errorTileUrl, attribution, tms, continuousWorld, noWrap, zoomOffset, zoomReverse, zIndex, unloadInvisibleTiles, updateWhenIdle, detectRetina, reuseTiles}{the tile layer options; see
-\url{http://leafletjs.com/reference.html#tilelayer}}
+\item{attribution}{the attribution text of the tile layer (HTML)}
 
-\item{opacity}{stroke opacity (or layer opacity for tile layers)}
+\item{options}{a list of extra options for tile layers, popups, paths
+(circles, rectangles, polygons, ...), or other map elements}
 
 \item{lng}{a numeric vector of longitudes, or a one-sided formula of the form
 \code{~x} where \code{x} is a variable in \code{data}; by default (if not
@@ -81,26 +71,13 @@ the latitude column from \code{data})}
 
 \item{layerId}{the layer id}
 
-\item{maxWidth, minWidth, maxHeight, autoPan, keepInView, closeButton, zoomAnimation, closeOnClick}{popup options; see \url{http://leafletjs.com/reference.html#popup}}
-
-\item{className}{a CSS class name set on an element}
-
 \item{data}{the data object from which the argument values are derived; by
 default, it is the \code{data} object provided to \code{leaflet()}
-initially, but can be overridden (currently supported objects are matrices,
-data frames, and spatial objects from the \pkg{sp} package of classes
-\code{SpatialPoints}, \code{SpatialPointsDataFrame}, \code{Polygon},
-\code{Polygons}, \code{SpatialPolygons}, \code{SpatialPolygonsDataFrame},
-\code{Line}, \code{Lines}, \code{SpatialLines}, and
-\code{SpatialLinesDataFrame})}
+initially, but can be overridden}
 
 \item{icon}{the icon for markers; if you want to create a new icon using
 JavaScript, please remember to use \code{\link[htmlwidgets]{JS}()} on the
 JavaScript string; see \url{http://leafletjs.com/reference.html#icon}}
-
-\item{clickable}{whether the element emits mouse events}
-
-\item{draggable, keyboard, title, alt, zIndexOffset, opacity, riseOnHover, riseOffset}{marker options; see \url{http://leafletjs.com/reference.html#marker}}
 
 \item{radius}{a numeric vector of radii for the circles; it can also be a
 one-sided formula, in which case the radius values are derived from the
@@ -113,6 +90,8 @@ polygons or circles)}
 
 \item{weight}{stroke width in pixels}
 
+\item{opacity}{stroke opacity (or layer opacity for tile layers)}
+
 \item{fill}{whether to fill the path with color (e.g. filling on polygons or
 circles)}
 
@@ -123,17 +102,6 @@ circles)}
 \item{dashArray}{a string that defines the stroke
 \href{https://developer.mozilla.org/en/SVG/Attribute/stroke-dasharray}{dash
 pattern}}
-
-\item{lineCap}{a string that defines
-\href{https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linecap}{shape
-to be used at the end} of the stroke}
-
-\item{lineJoin}{a string that defines
-\href{https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linejoin}{shape
-to be used at the corners} of the stroke}
-
-\item{pointerEvents}{sets the \code{pointer-events} attribute on the path if
-SVG backend is used}
 
 \item{smoothFactor}{how much to simplify the polyline on each zoom level
 (more means better performance and less accurate representation)}
@@ -171,4 +139,8 @@ Add graphics elements and layers to the map widget.
 \references{
 The Leaflet API documentation:
   \url{http://leafletjs.com/reference.html}
+}
+\seealso{
+\code{\link{tileOptions}}, \code{\link{popupOptions}},
+  \code{\link{markerOptions}}, \code{\link{pathOptions}}
 }
