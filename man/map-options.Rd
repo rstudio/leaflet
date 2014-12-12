@@ -23,7 +23,7 @@ pathOptions(lineCap = NULL, lineJoin = NULL, clickable = TRUE, pointerEvents = N
     className = "")
 }
 \arguments{
-\item{minZoom, maxZoom, maxNativeZoom, tileSize, subdomains, errorTileUrl, attribution, tms, continuousWorld, noWrap, zoomOffset, zoomReverse, zIndex, unloadInvisibleTiles, updateWhenIdle, detectRetina, reuseTiles}{the tile layer options; see
+\item{minZoom, maxZoom, maxNativeZoom, tileSize, subdomains, errorTileUrl, tms, continuousWorld, noWrap, zoomOffset, zoomReverse, zIndex, unloadInvisibleTiles, updateWhenIdle, detectRetina, reuseTiles}{the tile layer options; see
 \url{http://leafletjs.com/reference.html#tilelayer}}
 
 \item{maxWidth, minWidth, maxHeight, autoPan, keepInView, closeButton, zoomAnimation, closeOnClick}{popup options; see \url{http://leafletjs.com/reference.html#popup}}

@@ -86,7 +86,7 @@ addTiles = function(
 #' The rest of all possible options for map elements and layers that are not
 #' listed in the layer functions.
 #' @param
-#' minZoom,maxZoom,maxNativeZoom,tileSize,subdomains,errorTileUrl,attribution,tms,continuousWorld,noWrap,zoomOffset,zoomReverse,zIndex,unloadInvisibleTiles,updateWhenIdle,detectRetina,reuseTiles
+#' minZoom,maxZoom,maxNativeZoom,tileSize,subdomains,errorTileUrl,tms,continuousWorld,noWrap,zoomOffset,zoomReverse,zIndex,unloadInvisibleTiles,updateWhenIdle,detectRetina,reuseTiles
 #' the tile layer options; see
 #' \url{http://leafletjs.com/reference.html#tilelayer}
 #' @describeIn map-options Options for tile layers
