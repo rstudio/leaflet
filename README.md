@@ -7,18 +7,19 @@ interactive maps. This R package makes it easy to create Leaflet maps from R.
 
 ```r
 library(leafletjs)
-m = leaflet() %>% tileLayer()
+m = leaflet() %>% addTiles()
 m  # a map with the default OSM tile layer
 
-m = m %>% setView(c(42.0285, -93.65), zoom = 17)
+m = m %>% setView(-93.65, 42.0285, zoom = 17)
 m
 
-m %>% mapPopup(42.0285, -93.65, 'Here is the <b>Department of Statistics</b>, ISU')
+m %>% addPopups(-93.65, 42.0285, 'Here is the <b>Department of Statistics</b>, ISU')
 ```
 
 This package is not on CRAN yet, and you can install it from Github:
 
 ```r
+if (!require('devtools')) install.packages('devtools')
 devtools::install_github('rstudio/leafletjs')
 ```
 
