@@ -25,10 +25,8 @@ expandLimits = function(map, lat, lng) {
   lat = lat[is.finite(lat)]
   lng = lng[is.finite(lng)]
 
-  if (length(lat) > 0)
-    map$x$limits$lat = range(map$x$limits$lat, lat)
-  if (length(lng) > 0)
-    map$x$limits$lng = range(map$x$limits$lng, lng)
+  if (length(lat) > 0) map$x$limits$lat = range(map$x$limits$lat, lat)
+  if (length(lng) > 0) map$x$limits$lng = range(map$x$limits$lng, lng)
 
   map
 }
@@ -37,21 +35,20 @@ expandLimits = function(map, lat, lng) {
 # rather than lat/lng.
 expandLimitsBbox = function(map, poly) {
   bbox = attr(poly, "bbox", exact = TRUE)
-  if (is.null(bbox))
-    stop("Polygon data had no bbox")
-  expandLimits(map, bbox[2,], bbox[1,])
+  if (is.null(bbox)) stop("Polygon data had no bbox")
+  expandLimits(map, bbox[2, ], bbox[1, ])
 }
 
 # Represents an initial bbox; if combined with any other bbox value using
 # bboxAdd, the other bbox will be the result.
-bboxNull = cbind(min=c(x=Inf, y=Inf), max=c(x=-Inf, y=-Inf))
+bboxNull = cbind(min = c(x = Inf, y = Inf), max = c(x = -Inf, y = -Inf))
 
 # Combine two bboxes; the result will use the mins of the mins and the maxes of
 # the maxes.
 bboxAdd = function(a, b) {
   cbind(
-    min = pmin(a[,1], b[,1]),
-    max = pmax(a[,2], b[,2])
+    min = pmin(a[, 1], b[, 1]),
+    max = pmax(a[, 2], b[, 2])
   )
 }
 

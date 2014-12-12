@@ -10,7 +10,7 @@ guessLatLongCols = function(names, stopOnFailure = TRUE) {
       message("Assuming '", lngs, "' and '", lats,
         "' are longitude and latitude, respectively")
     }
-    return(list(lng=lngs, lat=lats))
+    return(list(lng = lngs, lat = lats))
   }
 
   # TODO: More helpful error message with appropriate next steps
@@ -18,14 +18,12 @@ guessLatLongCols = function(names, stopOnFailure = TRUE) {
     stop("Couldn't infer longitude/latitude columns")
   }
 
-  return(list(lng=NA, lat=NA))
+  list(lng = NA, lat = NA)
 }
 
 resolveFormula = function(f, data) {
-  if (!inherits(f, 'formula'))
-    return(f)
-  if (length(f) != 2L)
-    stop("Unexpected two-sided formula: ", deparse(f))
+  if (!inherits(f, 'formula')) return(f)
+  if (length(f) != 2L) stop("Unexpected two-sided formula: ", deparse(f))
 
   doResolveFormula(data, f)
 }
@@ -53,10 +51,8 @@ derivePoints = function(data, lng, lat, missingLng, missingLat, funcName) {
         " with data and/or lng/lat arguments")
     }
     pts = pointData(data)
-    if (is.null(lng))
-      lng = pts$lng
-    if (is.null(lat))
-      lat = pts$lat
+    if (is.null(lng)) lng = pts$lng
+    if (is.null(lat)) lat = pts$lat
   }
 
   lng = resolveFormula(lng, data)
@@ -70,7 +66,7 @@ derivePoints = function(data, lng, lat, missingLng, missingLat, funcName) {
     stop(funcName, " requires non-NULL latitude values")
   }
 
-  data.frame(lng=lng, lat=lat)
+  data.frame(lng = lng, lat = lat)
 }
 
 derivePolygons = function(data, lng, lat, missingLng, missingLat, funcName) {
@@ -83,27 +79,27 @@ derivePolygons = function(data, lng, lat, missingLng, missingLat, funcName) {
         " with data and/or lng/lat arguments")
     }
     return(polygonData(data))
-  } else {
-    lng = resolveFormula(lng, data)
-    lat = resolveFormula(lat, data)
-
-    if (is.null(lng) && is.null(lat)) {
-      stop(funcName, " requires non-NULL longitude/latitude values")
-    } else if (is.null(lng)) {
-      stop(funcName, " requires non-NULL longitude values")
-    } else if (is.null(lat)) {
-      stop(funcName, " requires non-NULL latitude values")
-    }
-
-    if (!is.numeric(lng) && !is.numeric(lat)) {
-      stop(funcName, " requires numeric longitude/latitude values")
-    } else if (!is.numeric(lng)) {
-      stop(funcName, " requires numeric longitude values")
-    } else if (!is.numeric(lat)) {
-      stop(funcName, " requires numeric latitude values")
-    }
-    return(polygonData(cbind(lng, lat)))
   }
+  lng = resolveFormula(lng, data)
+  lat = resolveFormula(lat, data)
+
+  if (is.null(lng) && is.null(lat)) {
+    stop(funcName, " requires non-NULL longitude/latitude values")
+  } else if (is.null(lng)) {
+    stop(funcName, " requires non-NULL longitude values")
+  } else if (is.null(lat)) {
+    stop(funcName, " requires non-NULL latitude values")
+  }
+
+  if (!is.numeric(lng) && !is.numeric(lat)) {
+    stop(funcName, " requires numeric longitude/latitude values")
+  } else if (!is.numeric(lng)) {
+    stop(funcName, " requires numeric longitude values")
+  } else if (!is.numeric(lat)) {
+    stop(funcName, " requires numeric latitude values")
+  }
+
+  polygonData(cbind(lng, lat))
 }
 
 # TODO: Add tests
@@ -136,7 +132,7 @@ pointData.matrix = function(obj) {
     stop("Point data must have exactly two columns")
   }
 
-  data.frame(lng = obj[,1], lat = obj[,2])
+  data.frame(lng = obj[, 1], lat = obj[, 2])
 }
 
 #' @export
