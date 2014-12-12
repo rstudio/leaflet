@@ -15,3 +15,11 @@ appendMapData = function(map, data, component, ...) {
   map$x$calls = x
   map
 }
+
+# A helper function to generate the body of function(x, y) list(x = x, y = y),
+# to save some typing efforts in writing tileOptions(), markerOptions(), ...
+makeListFun = function(list) {
+  if (is.function(list)) list = formals(list)
+  nms = names(list)
+  cat(sprintf('list(%s)\n', paste(nms, nms, sep = ' = ', collapse = ', ')))
+}

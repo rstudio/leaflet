@@ -1,14 +1,3 @@
-# Given a match.call() result, returns a named list of the arguments that were
-# specified. (If the match.call is not from the immediate parent, then envir
-# must be specified.) You can pass a vector of indices or names as `excludes`
-# to prevent arguments from being represented in the list.
-makeOpts = function(matchCall, excludes = NULL, envir = parent.frame(2)) {
-  args = tail(as.list(matchCall), -1)
-  args[excludes] = NULL
-  options = lapply(args, eval, envir = envir)
-  return(options)
-}
-
 # Evaluate list members that are formulae, using the map data as the environment
 # (if provided, otherwise the formula environment)
 evalFormula = function(list, data) {
@@ -71,10 +60,11 @@ bboxAdd = function(a, b) {
 #' Add graphics elements and layers to the map widget.
 #' @inheritParams setView
 #' @param urlTemplate a character string as the URL template
-#' @param
-#' minZoom,maxZoom,maxNativeZoom,tileSize,subdomains,errorTileUrl,attribution,tms,continuousWorld,noWrap,zoomOffset,zoomReverse,zIndex,unloadInvisibleTiles,updateWhenIdle,detectRetina,reuseTiles
-#' the tile layer options; see
-#' \url{http://leafletjs.com/reference.html#tilelayer}
+#' @param attribution the attribution text of the tile layer (HTML)
+#' @param options a list of extra options for tile layers, popups, paths
+#'   (circles, rectangles, polygons, ...), or other map elements
+#' @seealso \code{\link{tileOptions}}, \code{\link{popupOptions}},
+#'   \code{\link{markerOptions}}, \code{\link{pathOptions}}
 #' @references The Leaflet API documentation:
 #'   \url{http://leafletjs.com/reference.html}
 #' @describeIn map-layers Add a tile layer to the map
@@ -82,13 +72,35 @@ bboxAdd = function(a, b) {
 addTiles = function(
   map,
   urlTemplate = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+  attribution = NULL,
+  options = tileOptions()
+) {
+  options$attribution = attribution
+  if (missing(urlTemplate) && is.null(options$attribution))
+    options$attribution = paste(
+      '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a>',
+      'contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
+    )
+  appendMapData(map, getMapData(map), 'tileLayer', urlTemplate, options)
+}
+
+#' Extra options for map elements and layers
+#'
+#' The rest of all possible options for map elements and layers that are not
+#' listed in the layer functions.
+#' @param
+#' minZoom,maxZoom,maxNativeZoom,tileSize,subdomains,errorTileUrl,attribution,tms,continuousWorld,noWrap,zoomOffset,zoomReverse,zIndex,unloadInvisibleTiles,updateWhenIdle,detectRetina,reuseTiles
+#' the tile layer options; see
+#' \url{http://leafletjs.com/reference.html#tilelayer}
+#' @describeIn map-options Options for tile layers
+#' @export
+tileOptions = function(
   minZoom = 0,
   maxZoom = 18,
   maxNativeZoom = NULL,
   tileSize = 256,
   subdomains = 'abc',
   errorTileUrl = '',
-  attribution = '',
   tms = FALSE,
   continuousWorld = FALSE,
   noWrap = FALSE,
@@ -102,13 +114,15 @@ addTiles = function(
   reuseTiles = FALSE
   # bounds = TODO
 ) {
-  options = makeOpts(match.call(), c("map", "urlTemplate"))
-  if (missing(urlTemplate) && is.null(options$attribution))
-    options$attribution = paste(
-      '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a>',
-      'contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
-    )
-  appendMapData(map, getMapData(map), 'tileLayer', urlTemplate, options)
+  list(
+    minZoom = minZoom, maxZoom = maxZoom, maxNativeZoom = maxNativeZoom,
+    tileSize = tileSize, subdomains = subdomains, errorTileUrl = errorTileUrl,
+    tms = tms, continuousWorld = continuousWorld, noWrap = noWrap,
+    zoomOffset = zoomOffset, zoomReverse = zoomReverse, opacity = opacity,
+    zIndex = zIndex, unloadInvisibleTiles = unloadInvisibleTiles,
+    updateWhenIdle = updateWhenIdle, detectRetina = detectRetina,
+    reuseTiles = reuseTiles
+  )
 }
 
 #' @param lng a numeric vector of longitudes, or a one-sided formula of the form
@@ -121,10 +135,6 @@ addTiles = function(
 #'   the latitude column from \code{data})
 #' @param content the HTML content of the popups
 #' @param layerId the layer id
-#' @param className a CSS class name set on an element
-#' @param
-#' maxWidth,minWidth,maxHeight,autoPan,keepInView,closeButton,zoomAnimation,closeOnClick
-#' popup options; see \url{http://leafletjs.com/reference.html#popup}
 #' @param data the data object from which the argument values are derived; by
 #'   default, it is the \code{data} object provided to \code{leaflet()}
 #'   initially, but can be overridden (currently supported objects are matrices,
@@ -137,6 +147,21 @@ addTiles = function(
 #' @export
 addPopups = function(
   map, lng = NULL, lat = NULL, content, layerId = NULL,
+  options = popupOptions(),
+  data = getMapData(map)
+) {
+  pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addPopups")
+  appendMapData(map, data, 'popup', pts$lat, pts$lng, content, layerId, options) %>%
+    expandLimits(pts$lat, pts$lng)
+}
+
+#' @param className a CSS class name set on an element
+#' @param
+#' maxWidth,minWidth,maxHeight,autoPan,keepInView,closeButton,zoomAnimation,closeOnClick
+#' popup options; see \url{http://leafletjs.com/reference.html#popup}
+#' @describeIn map-options Options for popups
+#' @export
+popupOptions = function(
   maxWidth = 300,
   minWidth = 50,
   maxHeight = NULL,
@@ -149,27 +174,39 @@ addPopups = function(
   # autoPanPadding = TODO,
   zoomAnimation = TRUE,
   closeOnClick = NULL,
-  className = "",
-  data = getMapData(map)
+  className = ""
 ) {
-  options = makeOpts(match.call(), c("map", "lng", "lat", "content", "layerId", "data"))
-  pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addPopups")
-  appendMapData(map, data, 'popup', pts$lat, pts$lng, content, layerId, options) %>%
-    expandLimits(pts$lat, pts$lng)
+  list(
+    maxWidth = maxWidth, minWidth = minWidth, maxHeight = maxHeight,
+    autoPan = autoPan, keepInView = keepInView, closeButton = closeButton,
+    zoomAnimation = zoomAnimation, closeOnClick = closeOnClick, className = className
+  )
 }
 
 #' @param icon the icon for markers; if you want to create a new icon using
 #'   JavaScript, please remember to use \code{\link[htmlwidgets]{JS}()} on the
 #'   JavaScript string; see \url{http://leafletjs.com/reference.html#icon}
-#' @param clickable whether the element emits mouse events
-#' @param
-#'   draggable,keyboard,title,alt,zIndexOffset,opacity,riseOnHover,riseOffset
-#'   marker options; see \url{http://leafletjs.com/reference.html#marker}
 #' @describeIn map-layers Add markders to the map
 #' @export
 addMarkers = function(
   map, lng = NULL, lat = NULL, layerId = NULL,
   icon = NULL,
+  options = markerOptions(),
+  data = getMapData(map)
+) {
+  options$icon = icon
+  pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addMarkers")
+  appendMapData(map, data, 'marker', pts$lat, pts$lng, layerId, options) %>%
+    expandLimits(pts$lat, pts$lng)
+}
+
+#' @param clickable whether the element emits mouse events
+#' @param
+#'   draggable,keyboard,title,alt,zIndexOffset,opacity,riseOnHover,riseOffset
+#'   marker options; see \url{http://leafletjs.com/reference.html#marker}
+#' @describeIn map-options Options for markers
+#' @export
+markerOptions = function(
   clickable = TRUE,
   draggable = FALSE,
   keyboard = TRUE,
@@ -178,13 +215,13 @@ addMarkers = function(
   zIndexOffset = 0,
   opacity = 1.0,
   riseOnHover = FALSE,
-  riseOffset = 250,
-  data = getMapData(map)
+  riseOffset = 250
 ) {
-  options = makeOpts(match.call(), c("map", "lng", "lat", "layerId", "data"))
-  pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addMarkers")
-  appendMapData(map, data, 'marker', pts$lat, pts$lng, layerId, options) %>%
-    expandLimits(pts$lat, pts$lng)
+  list(
+    clickable = clickable, draggable = draggable, keyboard = keyboard,
+    title = title, alt = alt, zIndexOffset = zIndexOffset, opacity = opacity,
+    riseOnHover = riseOnHover, riseOffset = riseOffset
+  )
 }
 
 #' @param radius a numeric vector of radii for the circles; it can also be a
@@ -202,14 +239,6 @@ addMarkers = function(
 #' @param dashArray a string that defines the stroke
 #'   \href{https://developer.mozilla.org/en/SVG/Attribute/stroke-dasharray}{dash
 #'   pattern}
-#' @param lineCap a string that defines
-#'   \href{https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linecap}{shape
-#'   to be used at the end} of the stroke
-#' @param lineJoin a string that defines
-#'   \href{https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linejoin}{shape
-#'   to be used at the corners} of the stroke
-#' @param pointerEvents sets the \code{pointer-events} attribute on the path if
-#'   SVG backend is used
 #' @describeIn map-layers Add circle markers to the map
 #' @export
 addCircleMarkers = function(
@@ -222,17 +251,41 @@ addCircleMarkers = function(
   fillColor = color,
   fillOpacity = 0.2,
   dashArray = NULL,
+  options = pathOptions(),
+  data = getMapData(map)
+) {
+  options = c(options, list(
+    stroke = stroke, color = color, weight = weight, opacity = opacity,
+    fill = fill, fillColor = fillColor, fillOpacity = fillOpacity,
+    dashArray = dashArray
+  ))
+  pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addCircleMarkers")
+  appendMapData(map, data, 'circleMarker', pts$lat, pts$lng, radius, layerId, options) %>%
+    expandLimits(pts$lat, pts$lng)
+}
+
+#' @param lineCap a string that defines
+#'   \href{https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linecap}{shape
+#'    to be used at the end} of the stroke
+#' @param lineJoin a string that defines
+#'   \href{https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linejoin}{shape
+#'    to be used at the corners} of the stroke
+#' @param pointerEvents sets the \code{pointer-events} attribute on the path if
+#'   SVG backend is used
+#' @describeIn map-options Options for vector layers (polylines, polygons,
+#'   rectangles, and circles, etc)
+#' @export
+pathOptions = function(
   lineCap = NULL,
   lineJoin = NULL,
   clickable = TRUE,
   pointerEvents = NULL,
-  className = "",
-  data = getMapData(map)
+  className = ""
 ) {
-  options = makeOpts(match.call(), c("map", "lng", "lat", "radius", "layerId", "data"))
-  pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addCircleMarkers")
-  appendMapData(map, data, 'circleMarker', pts$lat, pts$lng, radius, layerId, options) %>%
-    expandLimits(pts$lat, pts$lng)
+  list(
+    lineCap = lineCap, lineJoin = lineJoin, clickable = clickable,
+    pointerEvents = pointerEvents, className = className
+  )
 }
 
 #' @describeIn map-layers Add circles to the map
@@ -247,14 +300,14 @@ addCircles = function(
   fillColor = color,
   fillOpacity = 0.2,
   dashArray = NULL,
-  lineCap = NULL,
-  lineJoin = NULL,
-  clickable = TRUE,
-  pointerEvents = NULL,
-  className = "",
+  options = pathOptions(),
   data = getMapData(map)
 ) {
-  options = makeOpts(match.call(), c("map", "lng", "lat", "radius", "layerId", "data"))
+  options = c(options, list(
+    stroke = stroke, color = color, weight = weight, opacity = opacity,
+    fill = fill, fillColor = fillColor, fillOpacity = fillOpacity,
+    dashArray = dashArray
+  ))
   pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addCircles")
   appendMapData(map, data, 'circle', pts$lat, pts$lng, radius, layerId, options) %>%
     expandLimits(pts$lat, pts$lng)
@@ -267,21 +320,24 @@ addCircles = function(
 #' @export
 addPolylines = function(
   map, lng = NULL, lat = NULL, layerId = NULL,
-  smoothFactor = 1.0,
-  noClip = FALSE,
   stroke = TRUE,
   color = "#03F",
   weight = 5,
   opacity = 0.5,
+  fill = TRUE,
+  fillColor = color,
+  fillOpacity = 0.2,
   dashArray = NULL,
-  lineCap = NULL,
-  lineJoin = NULL,
-  clickable = TRUE,
-  pointerEvents = NULL,
-  className = "",
+  smoothFactor = 1.0,
+  noClip = FALSE,
+  options = pathOptions(),
   data = getMapData(map)
 ) {
-  options = makeOpts(match.call(), c("map", "lng", "lat", "layerId", "data"))
+  options = c(options, list(
+    stroke = stroke, color = color, weight = weight, opacity = opacity,
+    fill = fill, fillColor = fillColor, fillOpacity = fillOpacity,
+    dashArray = dashArray, smoothFactor = smoothFactor, noClip = noClip
+  ))
   pgons = derivePolygons(data, lng, lat, missing(lng), missing(lat), "addPolylines")
   appendMapData(map, data, 'polyline', pgons, layerId, options) %>%
     expandLimitsBbox(pgons)
@@ -293,8 +349,7 @@ addPolylines = function(
 #' @export
 addRectangles = function(
   map, lng1, lat1, lng2, lat2, layerId = NULL,
-  smoothFactor = 1.0,
-  noClip = FALSE,
+  stroke = TRUE,
   color = "#03F",
   weight = 5,
   opacity = 0.5,
@@ -302,14 +357,16 @@ addRectangles = function(
   fillColor = color,
   fillOpacity = 0.2,
   dashArray = NULL,
-  lineCap = NULL,
-  lineJoin = NULL,
-  clickable = TRUE,
-  pointerEvents = NULL,
-  className = "",
+  smoothFactor = 1.0,
+  noClip = FALSE,
+  options = pathOptions(),
   data = getMapData(map)
 ) {
-  options = makeOpts(match.call(), c("map", "lat1", "lng1", "lat2", "lng2", "layerId", "data"))
+  options = c(options, list(
+    stroke = stroke, color = color, weight = weight, opacity = opacity,
+    fill = fill, fillColor = fillColor, fillOpacity = fillOpacity,
+    dashArray = dashArray, smoothFactor = smoothFactor, noClip = noClip
+  ))
   lng1 = resolveFormula(lng1, data)
   lat1 = resolveFormula(lat1, data)
   lng2 = resolveFormula(lng2, data)
@@ -322,8 +379,6 @@ addRectangles = function(
 #' @export
 addPolygons = function(
   map, lng = NULL, lat = NULL, layerId = NULL,
-  smoothFactor = 1.0,
-  noClip = FALSE,
   stroke = TRUE,
   color = "#03F",
   weight = 5,
@@ -332,14 +387,16 @@ addPolygons = function(
   fillColor = color,
   fillOpacity = 0.2,
   dashArray = NULL,
-  lineCap = NULL,
-  lineJoin = NULL,
-  clickable = TRUE,
-  pointerEvents = NULL,
-  className = "",
+  smoothFactor = 1.0,
+  noClip = FALSE,
+  options = pathOptions(),
   data = getMapData(map)
 ) {
-  options = makeOpts(match.call(), c("map", "lng", "lat", "layerId", "data"))
+  options = c(options, list(
+    stroke = stroke, color = color, weight = weight, opacity = opacity,
+    fill = fill, fillColor = fillColor, fillOpacity = fillOpacity,
+    dashArray = dashArray, smoothFactor = smoothFactor, noClip = noClip
+  ))
   pgons = derivePolygons(data, lng, lat, missing(lng), missing(lat), "addPolygons")
   appendMapData(map, data, 'polygon', pgons, layerId, options) %>%
     expandLimitsBbox(pgons)
