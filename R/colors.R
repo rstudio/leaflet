@@ -259,7 +259,7 @@ previewColors <- function(pal, values) {
   subheading <- htmltools::tags$code(deparse(substitute(values)))
 
   htmltools::browsable(
-    htmltools::withTags(htmltools::tagList(
+    with(htmltools::tags, htmltools::tagList(
       head(
         style(type = "text/css",
           "table { border-spacing: 1px; }",
