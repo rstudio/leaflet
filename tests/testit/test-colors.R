@@ -1,0 +1,106 @@
+library(testit)
+
+bw <- c("black", "white")
+x <- sort(rnorm(1000))
+table(colorBin(bw, bins = 5)(x))
+table(colorQuantile(bw, probs = seq(0, 1, 0.2))(x))
+
+# These currently error, but shouldn't.
+assert(
+  has_error(colorNumeric(bw, c(0, 1))(-1)),    # Warn and return closest?
+  has_error(colorNumeric(bw, c(0, 1))(2)),     # Warn and return closest?
+  has_error(colorFactor(bw, letters)("foo")),  # Return NA?
+  has_error(colorBin(bw)(1)),                  # Return "#000000"?
+  has_error(colorBin(bw, 1)(1)),               # Return "#000000"?
+  has_error(colorQuantile(bw, 0:1)(-1)),       # Warn and return closest?
+  has_error(colorQuantile(bw, 0:1)(2)),        # Warn and return closest?
+  TRUE
+)
+
+assert(
+  identical(
+    c("#000000", "#7F7F7F", "#FFFFFF"),
+    colorNumeric(colorRamp(bw))(c(0, 0.5, 1))
+  )
+)
+
+assert(
+  identical(
+    c("#000000", "#FFFFFF"),
+    colorBin(bw)(c(1,2))
+  ),
+
+  identical(
+    c("#000000", "#FFFFFF"),
+    colorBin(bw, c(1,2))(c(1,2))
+  ),
+
+  identical(
+    c("#000000", "#FFFFFF"),
+    colorBin(bw, c(1,2), 2)(c(1,2))
+  ),
+
+  identical(
+    c("#000000", "#FFFFFF"),
+    colorBin(bw, bins=c(1,1.5,2))(c(1,2))
+  ),
+
+  identical(
+    c("#000000", "#FFFFFF"),
+    colorBin(bw, c(1,2), bins=c(1,1.5,2))(c(1,2))
+  ),
+
+  TRUE
+)
+
+assert(
+  identical(
+    c("#000000", "#7F7F7F", "#FFFFFF"),
+    colorNumeric(bw)(1:3)
+  ),
+
+  identical(
+    c("#000000", "#7F7F7F", "#FFFFFF"),
+    colorNumeric(bw, c(1:3))(1:3)
+  ),
+
+  identical(
+    rev(c("#000000", "#7F7F7F", "#FFFFFF")),
+    colorNumeric(rev(bw), c(1:3))(1:3)
+  ),
+
+  TRUE
+)
+
+assert(
+
+  # domain != unique(x)
+  identical(
+    c("#000000", "#0A0A0A", "#141414"),
+    colorFactor(bw, LETTERS)(LETTERS[1:3])
+  ),
+
+  # domain == unique(x)
+  identical(
+    c("#000000", "#7F7F7F", "#FFFFFF"),
+    colorFactor(bw, LETTERS[1:3])(LETTERS[1:3])
+  ),
+
+  # no domain
+  identical(
+    c("#000000", "#7F7F7F", "#FFFFFF"),
+    colorFactor(bw)(LETTERS[1:3])
+  ),
+
+  # Non-factor domains are sorted unless instructed otherwise
+  identical(
+    c("#000000", "#7F7F7F", "#FFFFFF"),
+    colorFactor(bw, rev(LETTERS[1:3]))(LETTERS[1:3])
+  ),
+  identical(
+    rev(c("#000000", "#7F7F7F", "#FFFFFF")),
+    colorFactor(bw, rev(LETTERS[1:3]), ordered = TRUE)(LETTERS[1:3])
+  ),
+
+  TRUE
+)

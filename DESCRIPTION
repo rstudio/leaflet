@@ -6,6 +6,7 @@ Date: 2014-11-12
 Authors@R: as.person(c(
     "Joe Cheng [aut, cre] <joe@rstudio.com>",
     "Yihui Xie [aut]",
+    "Hadley Wickham [ctb]",
     "RStudio [cph]"
     ))
 Maintainer: Joe Cheng <joe@rstudio.com>
@@ -17,7 +18,10 @@ URL: https://github.com/rstudio/leaflet
 BugReports: https://github.com/rstudio/leaflet/issues
 Imports:
     htmlwidgets,
-    magrittr
+    magrittr,
+    RColorBrewer,
+    grDevices,
+    scales
 Suggests:
     knitr,
     maps,
