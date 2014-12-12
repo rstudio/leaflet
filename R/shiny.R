@@ -1,4 +1,4 @@
-#' Wrapper functions for using \pkg{leafletjs} in \pkg{shiny}
+#' Wrapper functions for using \pkg{leaflet} in \pkg{shiny}
 #'
 #' Use \code{leafletOutput()} to create a UI element, and \code{renderLeaflet()}
 #' to render the map widget.

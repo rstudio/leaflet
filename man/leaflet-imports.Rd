@@ -1,4 +1,4 @@
-\name{leafletjs-imports}
+\name{leaflet-imports}
 \alias{\%>\%}
 \docType{import}
 \title{Objects imported from other packages}

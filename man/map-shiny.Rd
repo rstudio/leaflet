@@ -2,7 +2,7 @@
 \name{leafletOutput}
 \alias{leafletOutput}
 \alias{renderLeaflet}
-\title{Wrapper functions for using \pkg{leafletjs} in \pkg{shiny}}
+\title{Wrapper functions for using \pkg{leaflet} in \pkg{shiny}}
 \usage{
 leafletOutput(outputId, width = "100\%", height = 400)
 

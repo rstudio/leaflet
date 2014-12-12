@@ -438,7 +438,7 @@ var dataframe = (function() {
   };
 
   HTMLWidgets.widget({
-    name: "leafletjs",
+    name: "leaflet",
     type: "output",
     initialize: function(el, width, height) {
       // hard-coding center/zoom here for a non-empty initial view, since there

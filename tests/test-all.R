@@ -1,2 +1,2 @@
 library(testit)
-test_pkg('leafletjs')
+test_pkg('leaflet')
