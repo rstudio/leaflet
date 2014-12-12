@@ -5,12 +5,15 @@ date: "`r Sys.Date()`"
 output:
   knitr:::html_vignette:
     toc: yes
+    number_sections: yes
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteIndexEntry{An Introduction to the leaflet Package}
 ---
 
 [Leaflet](http://leafletjs.com) is an open-source JavaScript library for interactive maps. This R package makes it easy to integrate and control Leaflet maps in R.
+
+To create a Leaflet map, first you call the function `leaflet()`, then you can add more layers on the map, and manipulate the view. For example,
 
 ```{r}
 library(leaflet)
@@ -22,3 +25,20 @@ m
 
 m %>% addPopups(-93.65, 42.0285, 'Here is the <b>Department of Statistics</b>, ISU')
 ```
+
+# The Map Widget
+
+## Map Methods
+
+## The Data Object
+
+## Shiny
+
+# UI Layers
+
+# Raster Layers
+
+# Vector Layers
+
+# Other Layers
+
