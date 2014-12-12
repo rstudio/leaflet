@@ -5,20 +5,20 @@ library(maps)
 ## Create different forms of point data ==========
 
 # Individual lng/lat vectors
-lng <- runif(20)
-lat <- runif(20)
+lng = runif(20)
+lat = runif(20)
 # Simple matrix
-mtx <- cbind(lng, lat)
+mtx = cbind(lng, lat)
 # Spatial
-pts <- sp::SpatialPoints(mtx)
-ptsdf <- sp::SpatialPointsDataFrame(pts, data.frame(Color = topo.colors(20, NULL)))
+pts = sp::SpatialPoints(mtx)
+ptsdf = sp::SpatialPointsDataFrame(pts, data.frame(Color = topo.colors(20, NULL)))
 # Data frame with standard col names
-data <- data.frame(Longitude=lng, Latitude=lat, X=1:20)
+data = data.frame(Longitude=lng, Latitude=lat, X=1:20)
 # Data frame with weird col names
-dataWeird <- data.frame(LngCol = lng, LatCol = lat, X=1:20)
+dataWeird = data.frame(LngCol = lng, LatCol = lat, X=1:20)
 # SpatialDataFrame with weird col names turned to coords
-datacoord <- dataWeird
-coordinates(datacoord) <- ~LngCol+LatCol
+datacoord = dataWeird
+coordinates(datacoord) = ~LngCol+LatCol
 
 # Make some circles, without formulas
 leaflet() %>% addCircles(lng, lat)
@@ -45,26 +45,26 @@ leaflet() %>% addCircles()    # No data at all
 leaflet() %>% addCircles(NULL, NULL) # Explicit NULL
 leaflet() %>% addCircles(NULL, 1) # Explicit NULL longitude
 leaflet() %>% addCircles(1, NULL) # Explicit NULL latitude
-nolat <- NULL
+nolat = NULL
 # Indirect NULL. It'd be OK for lat to be missing, but not for it to be present
 # and NULL.
 leaflet(data) %>% addCircles(1, nolat)
 
 # Some polygon data
-rawpolys <- list(
+rawpolys = list(
   lng = list(runif(3) + 1, runif(3) + 2, runif(3) + 3),
   lat = list(runif(3) + 12, runif(3) + 12, runif(3) + 12)
 )
-plng <- c(rawpolys$lng[[1]], NA, rawpolys$lng[[2]], NA, rawpolys$lng[[3]])
-plat <- c(rawpolys$lat[[1]], NA, rawpolys$lat[[2]], NA, rawpolys$lat[[3]])
-pdata <- data.frame(Latitude=I(plat), Longitude=I(plng))
-pgons <- list(
+plng = c(rawpolys$lng[[1]], NA, rawpolys$lng[[2]], NA, rawpolys$lng[[3]])
+plat = c(rawpolys$lat[[1]], NA, rawpolys$lat[[2]], NA, rawpolys$lat[[3]])
+pdata = data.frame(Latitude=I(plat), Longitude=I(plng))
+pgons = list(
   Polygons(list(Polygon(cbind(rawpolys$lng[[1]], rawpolys$lat[[1]]))), ID="A"),
   Polygons(list(Polygon(cbind(rawpolys$lng[[2]], rawpolys$lat[[2]]))), ID="B"),
   Polygons(list(Polygon(cbind(rawpolys$lng[[3]], rawpolys$lat[[3]]))), ID="C")
 )
-spgons <- SpatialPolygons(pgons)
-spgonsdf <- SpatialPolygonsDataFrame(spgons, data.frame(Category = as.factor(1:3)), FALSE)
+spgons = SpatialPolygons(pgons)
+spgonsdf = SpatialPolygonsDataFrame(spgons, data.frame(Category = as.factor(1:3)), FALSE)
 
 Sr1 = Polygon(cbind(c(2,4,4,1,2),c(2,3,5,4,2)))
 Sr2 = Polygon(cbind(c(5,4,2,5),c(2,3,2,2)))
