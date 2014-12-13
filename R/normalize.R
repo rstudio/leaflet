@@ -3,7 +3,7 @@
 guessLatLongCols = function(names, stopOnFailure = TRUE) {
 
   lats = names[grep("^(lat|latitude)$", names, ignore.case = TRUE)]
-  lngs = names[grep("^(lng|long|longitude)$", names, ignore.case = TRUE)]
+  lngs = names[grep("^(lon|lng|long|longitude)$", names, ignore.case = TRUE)]
 
   if (length(lats) == 1 && length(lngs) == 1) {
     if (length(names) > 2) {
