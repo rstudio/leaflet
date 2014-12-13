@@ -23,3 +23,7 @@ makeListFun = function(list) {
   nms = names(list)
   cat(sprintf('list(%s)\n', paste(nms, nms, sep = ' = ', collapse = ', ')))
 }
+
+"%||%" <- function(a, b) {
+  if (!is.null(a)) a else b
+}

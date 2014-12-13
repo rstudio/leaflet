@@ -1,0 +1,18 @@
+% Please edit documentation in R/colors.R
+\name{previewColors}
+\alias{previewColors}
+\title{Color previewing utility}
+\usage{
+previewColors(pal, values)
+}
+\arguments{
+\item{pal}{A color mapping function, like those returned from \code{\link{colorNumeric}}, et al}
+
+\item{values}{A set of values to preview colors for}
+}
+\value{
+An HTML-based list of the colors and values
+}
+\description{
+Color previewing utility
+}

@@ -235,13 +235,12 @@ var dataframe = (function() {
       (function() {
         var popup = L.popup(df.get(i))
                      .setLatLng([df.get(i, 'lat'), df.get(i, 'lng')])
-                     .setContent(df.get(i, 'content'))
-                     .openOn(this);
+                     .setContent(df.get(i, 'content'));
         var thisId = df.get(i, 'layerId');
         this.popups.add(popup, thisId);
-        marker.on('click', mouseHandler(this.id, thisId, 'marker_click'), this);
-        marker.on('mouseover', mouseHandler(this.id, thisId, 'marker_mouseover'), this);
-        marker.on('mouseout', mouseHandler(this.id, thisId, 'marker_mouseout'), this);
+        popup.on('click', mouseHandler(this.id, thisId, 'popup_click'), this);
+        popup.on('mouseover', mouseHandler(this.id, thisId, 'popup_mouseover'), this);
+        popup.on('mouseout', mouseHandler(this.id, thisId, 'popup_mouseout'), this);
       }).call(this);
     }
   };

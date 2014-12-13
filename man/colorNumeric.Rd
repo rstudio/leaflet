@@ -1,0 +1,102 @@
+% Please edit documentation in R/colors.R
+\name{colorNumeric}
+\alias{colorBin}
+\alias{colorFactor}
+\alias{colorNumeric}
+\alias{colorQuantile}
+\alias{palette}
+\title{Color mapping}
+\usage{
+colorNumeric(palette, domain, na.color = "#808080")
+
+colorBin(palette, domain, bins = 7, na.color = "#808080")
+
+colorQuantile(palette, domain, n = 4, probs = seq(0, 1, length.out = n + 1), 
+    na.color = "#808080")
+
+colorFactor(palette, domain, levels = NULL, ordered = FALSE, na.color = "#808080")
+}
+\arguments{
+\item{palette}{The colors or color function that values will be mapped to}
+
+\item{domain}{The possible values that can be mapped.
+
+  For \code{colorNumeric} and \code{colorBin}, this can be a simple numeric
+  range (e.g. \code{c(0, 100)}); \code{colorQuantile} needs representative
+  numeric data; and \code{colorFactor} needs categorical data.
+
+  If \code{NULL}, then whenever the resulting color function is called, the
+  \code{x} value will represent the domain. This implies that if the function
+  is invoked multiple times, the encoding between values and colors may not
+  be consistent; if consistency is needed, you must provide a non-\code{NULL}
+  domain.}
+
+\item{na.color}{The color to return for \code{NA} values. Note that
+  \code{na.color=NA} is valid.}
+
+\item{bins}{Either a numeric vector of two or more unique cut points or a
+  single number (greater than or equal to 2) giving the number of intervals
+  into which the domain values are to be cut.}
+
+\item{n}{Number of equal-size quantiles desired. For more precise control,
+use the \code{probs} argument instead.}
+
+\item{probs}{See \code{\link[stats]{quantile}}. If provided, the \code{n}
+argument is ignored.}
+
+\item{levels}{An alternate way of specifying levels; if specified, domain is
+ignored}
+
+\item{ordered}{If \code{TRUE} and \code{domain} needs to be coerced to a
+factor, treat it as already in the correct order}
+}
+\value{
+A function that takes a single parameter \code{x}; when called with a
+  vector of numbers (except for \code{colorFactor}, which expects
+  factors/characters), #RRGGBB color strings are returned.
+}
+\description{
+Conveniently maps data values (numeric or factor/character) to colors
+according to a given palette, which can be provided in a variety of formats.
+}
+\details{
+\code{colorNumeric} is a simple linear mapping from continuous numeric data
+to an interpolated palette.
+
+\code{colorBin} also maps continuous numeric data, but performs
+  binning based on value (see the \code{\link[base]{cut}} function).
+
+\code{colorQuantile} similarly bins numeric data, but via the
+  \code{\link[stats]{quantile}} function.
+
+\code{colorFactor} maps factors to colors. If the palette is
+  discrete and has a different number of colors than the number of factors,
+  interpolation is used.
+
+The \code{palette} argument can be any of the following:
+\enumerate{
+  \item{A character vector of RGB or named colors. Examples: \code{palette()}, \code{c("#000000", "#0000FF", "#FFFFFF")}, \code{topo.colors(10)}}
+  \item{The name of an RColorBrewer palette, e.g. \code{"BuPu"} or \code{"Greens"}.}
+  \item{A function that receives a single value between 0 and 1 and returns a color. Examples: \code{colorRamp(c("#000000", "#FFFFFF"), interpolate="spline")}.}
+}
+}
+\examples{
+pal <- colorBin("Greens", domain = 0:100)
+pal(runif(10, 60, 100))
+
+# Exponential distribution, mapped continuously
+previewColors(colorNumeric("Blues", domain = NULL), sort(rexp(16)))
+# Exponential distribution, mapped by interval
+previewColors(colorBin("Blues", domain = NULL, bins = 4), sort(rexp(16)))
+# Exponential distribution, mapped by quantile
+previewColors(colorQuantile("Blues", domain = NULL), sort(rexp(16)))
+
+# Categorical data; by default, the values being colored span the
+# gamut...
+previewColors(colorFactor("RdYlBu", domain = NULL), LETTERS[1:5])
+# ...unless the data is a factor, without droplevels...
+previewColors(colorFactor("RdYlBu", domain = NULL), factor(LETTERS[1:5], 
+    levels = LETTERS))
+# ...or the domain is stated explicitly.
+previewColors(colorFactor("RdYlBu", levels = LETTERS), LETTERS[1:5])
+}
