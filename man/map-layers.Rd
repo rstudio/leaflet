@@ -41,9 +41,10 @@ addRectangles(map, lng1, lat1, lng2, lat2, layerId = NULL, stroke = TRUE,
     options = pathOptions(), data = getMapData(map))
 
 addPolygons(map, lng = NULL, lat = NULL, layerId = NULL, stroke = TRUE, 
-    color = "#444", weight = 1.2, opacity = 0.8, fill = TRUE, fillColor = color, 
-    fillOpacity = 0.2, dashArray = NULL, smoothFactor = 0.6, noClip = FALSE, 
-    options = pathOptions(), data = getMapData(map))
+    color = "#FFFFFF", weight = 1.2, opacity = 0.8, fill = TRUE, 
+    fillColor = "#444444", fillOpacity = 0.5, dashArray = NULL, 
+    smoothFactor = 0.6, noClip = FALSE, options = pathOptions(), 
+    data = getMapData(map))
 
 addGeoJSON(map, geojson, layerId = NULL)
 }
