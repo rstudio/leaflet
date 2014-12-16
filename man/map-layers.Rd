@@ -31,7 +31,7 @@ addCircles(map, lng = NULL, lat = NULL, radius = 10, layerId = NULL,
     data = getMapData(map))
 
 addPolylines(map, lng = NULL, lat = NULL, layerId = NULL, stroke = TRUE, 
-    color = "#03F", weight = 5, opacity = 0.5, fill = TRUE, fillColor = color, 
+    color = "#03F", weight = 5, opacity = 0.5, fill = FALSE, fillColor = color, 
     fillOpacity = 0.2, dashArray = NULL, smoothFactor = 1, noClip = FALSE, 
     options = pathOptions(), data = getMapData(map))
 
