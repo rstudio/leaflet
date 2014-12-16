@@ -240,7 +240,7 @@ colorFactor <- function(palette, domain, levels = NULL, ordered = FALSE,
 #' # ...or the domain is stated explicitly.
 #' previewColors(colorFactor("RdYlBu", levels = LETTERS), LETTERS[1:5])
 #' @rdname colorNumeric
-#' @name palette
+#' @name colorNumeric
 NULL
 
 

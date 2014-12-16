@@ -4,7 +4,6 @@
 \alias{colorFactor}
 \alias{colorNumeric}
 \alias{colorQuantile}
-\alias{palette}
 \title{Color mapping}
 \usage{
 colorNumeric(palette, domain, na.color = "#808080")
