@@ -23,6 +23,9 @@ m %>% addPopups(rand_lng(), rand_lat(), 'Random popups')
 
 # marker
 m %>% addMarkers(rand_lng(), rand_lat())
+m %>% addMarkers(
+  rand_lng(), rand_lat(), popup = paste('A random letter', sample(LETTERS, 10))
+)
 
 # circle (units in metres)
 m %>% addCircles(rand_lng(50), rand_lat(50), radius = runif(50, 50, 150))
