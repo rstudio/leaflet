@@ -254,7 +254,7 @@ var dataframe = (function() {
   };
 
   methods.tileLayer = function(urlTemplate, options) {
-    L.tileLayer(urlTemplate, options).addTo(this);
+    this.tiles.add(L.tileLayer(urlTemplate, options));
   };
 
   methods.marker = function(lat, lng, layerId, options) {
@@ -449,10 +449,19 @@ var dataframe = (function() {
     },
     renderValue: function(el, data, map) {
 
-      map.markers = new LayerStore(map);
-      map.shapes = new LayerStore(map);
-      map.popups = new LayerStore(map);
-      map.geojson = new LayerStore(map);
+      if (!map.markers) {
+        map.markers = new LayerStore(map);
+        map.shapes = new LayerStore(map);
+        map.popups = new LayerStore(map);
+        map.geojson = new LayerStore(map);
+        map.tiles = new LayerStore(map);
+      } else {
+        map.markers.clear();
+        map.shapes.clear();
+        map.popups.clear();
+        map.geojson.clear();
+        map.tiles.clear();
+      }
 
       var explicitView = false;
       if (data.setView) {
