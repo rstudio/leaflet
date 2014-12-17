@@ -222,20 +222,19 @@ var dataframe = (function() {
     ]);
   };
 
-  methods.popup = function(lat, lng, content, layerId, options) {
+  methods.popup = function(lat, lng, popup, layerId, options) {
     var df = dataframe.create()
       .col('lat', lat)
       .col('lng', lng)
-      .col('content', content)
+      .col('popup', popup)
       .col('layerId', layerId)
       .cbind(options);
 
-    // only one popup
     for (var i = 0; i < df.nrow(); i++) {
       (function() {
         var popup = L.popup(df.get(i))
                      .setLatLng([df.get(i, 'lat'), df.get(i, 'lng')])
-                     .setContent(df.get(i, 'content'));
+                     .setContent(df.get(i, 'popup'));
         var thisId = df.get(i, 'layerId');
         this.popups.add(popup, thisId);
         popup.on('click', mouseHandler(this.id, thisId, 'popup_click'), this);
