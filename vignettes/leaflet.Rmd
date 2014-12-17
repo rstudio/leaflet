@@ -221,4 +221,36 @@ MPoint = list(
 
 You can pass this list to `addGeoJSON()` to draw two points on the map.
 
+For a GeoJSON feature layer, you can use the `style` element in the `properties` list to define its style, and the `popup` element in `properties` to define the popup text. Here is an example:
+
+```{r}
+m = leaflet() %>% addCircles(lat = 1:26, lng = 1:26, popup = LETTERS)
+shapes = list(
+  list(
+    type = 'Feature',
+    properties = list(
+      popup = 'Here are some markers!'
+    ),
+    geometry = list(
+      type = 'MultiPoint',
+      coordinates = cbind(10:1, 1:10)
+    )
+  ),
+  list(
+    type = 'Feature',
+    properties = list(
+      style = list(color = 'red', fillColor = 'yellow'),
+      popup = 'Here is a polygon, or perhaps a flower...'
+    ),
+    geometry = list(
+      type = 'Polygon',
+      coordinates = list(26 + 10 * t(sapply(seq(0, 2 * pi, length = 10), function(x) {
+        c(cos(x), sin(x))
+      })))
+    )
+  )
+)
+m %>% addGeoJSON(shapes)
+```
+
 <!--html_preserve--></div><!--/html_preserve-->
