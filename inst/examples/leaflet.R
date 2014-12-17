@@ -15,8 +15,10 @@ m %>% addPopups(-93.65, 42.0285, 'Here is the <b>Department of Statistics</b>, I
 rand_lng = function(n = 10) rnorm(n, -93.65, .01)
 rand_lat = function(n = 10) rnorm(n, 42.0285, .01)
 
+# use automatic bounds derived from lng/lat data
 m = m %>% clearBounds()
-# TODO: only one popup can be opened; need to bind all popups in a layer and show all
+
+# popup
 m %>% addPopups(rand_lng(), rand_lat(), 'Random popups')
 
 # marker
