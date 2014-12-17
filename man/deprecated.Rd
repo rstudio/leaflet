@@ -1,0 +1,22 @@
+% Please edit documentation in R/legacy.R
+\name{createLeafletMap}
+\alias{createLeafletMap}
+\alias{leafletMap}
+\title{Legacy functions}
+\usage{
+createLeafletMap(session, outputId)
+
+leafletMap(outputId, width, height,
+  initialTileLayer = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+  initialTileLayerAttribution = NULL, options = NULL)
+}
+\arguments{
+\item{session, outputId}{Deprecated}
+
+\item{width, height, initialTileLayer, initialTileLayerAttribution, options}{Deprecated}
+}
+\description{
+These functions are provided for backwards compatibility with the first
+iteration of the leaflet bindings
+(\url{https://github.com/jcheng5/leaflet-shiny}).
+}

@@ -21,6 +21,7 @@ Imports:
     htmltools,
     magrittr,
     RColorBrewer,
+    RJSONIO,
     grDevices,
     scales
 Suggests:
