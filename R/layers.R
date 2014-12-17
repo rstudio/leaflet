@@ -185,12 +185,13 @@ popupOptions = function(
 addMarkers = function(
   map, lng = NULL, lat = NULL, layerId = NULL,
   icon = NULL,
+  popup = NULL,
   options = markerOptions(),
   data = getMapData(map)
 ) {
   options$icon = icon
   pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addMarkers")
-  appendMapData(map, data, 'marker', pts$lat, pts$lng, layerId, options) %>%
+  appendMapData(map, data, 'marker', pts$lat, pts$lng, layerId, options, popup) %>%
     expandLimits(pts$lat, pts$lng)
 }
 
@@ -245,6 +246,7 @@ addCircleMarkers = function(
   fillColor = color,
   fillOpacity = 0.2,
   dashArray = NULL,
+  popup = NULL,
   options = pathOptions(),
   data = getMapData(map)
 ) {
@@ -254,7 +256,7 @@ addCircleMarkers = function(
     dashArray = dashArray
   ))
   pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addCircleMarkers")
-  appendMapData(map, data, 'circleMarker', pts$lat, pts$lng, radius, layerId, options) %>%
+  appendMapData(map, data, 'circleMarker', pts$lat, pts$lng, radius, layerId, options, popup) %>%
     expandLimits(pts$lat, pts$lng)
 }
 
@@ -294,6 +296,7 @@ addCircles = function(
   fillColor = color,
   fillOpacity = 0.2,
   dashArray = NULL,
+  popup = NULL,
   options = pathOptions(),
   data = getMapData(map)
 ) {
@@ -303,7 +306,7 @@ addCircles = function(
     dashArray = dashArray
   ))
   pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addCircles")
-  appendMapData(map, data, 'circle', pts$lat, pts$lng, radius, layerId, options) %>%
+  appendMapData(map, data, 'circle', pts$lat, pts$lng, radius, layerId, options, popup) %>%
     expandLimits(pts$lat, pts$lng)
 }
 
@@ -324,6 +327,7 @@ addPolylines = function(
   dashArray = NULL,
   smoothFactor = 1.0,
   noClip = FALSE,
+  popup = NULL,
   options = pathOptions(),
   data = getMapData(map)
 ) {
@@ -333,7 +337,7 @@ addPolylines = function(
     dashArray = dashArray, smoothFactor = smoothFactor, noClip = noClip
   ))
   pgons = derivePolygons(data, lng, lat, missing(lng), missing(lat), "addPolylines")
-  appendMapData(map, data, 'polyline', pgons, layerId, options) %>%
+  appendMapData(map, data, 'polyline', pgons, layerId, options, popup) %>%
     expandLimitsBbox(pgons)
 }
 
@@ -353,6 +357,7 @@ addRectangles = function(
   dashArray = NULL,
   smoothFactor = 1.0,
   noClip = FALSE,
+  popup = NULL,
   options = pathOptions(),
   data = getMapData(map)
 ) {
@@ -365,7 +370,7 @@ addRectangles = function(
   lat1 = resolveFormula(lat1, data)
   lng2 = resolveFormula(lng2, data)
   lat2 = resolveFormula(lat2, data)
-  appendMapData(map, data, 'rectangle',lat1, lng1, lat2, lng2, layerId, options) %>%
+  appendMapData(map, data, 'rectangle',lat1, lng1, lat2, lng2, layerId, options, popup) %>%
     expandLimits(c(lat1, lat2), c(lng1, lng2))
 }
 
@@ -383,6 +388,7 @@ addPolygons = function(
   dashArray = NULL,
   smoothFactor = 1.0,
   noClip = FALSE,
+  popup = NULL,
   options = pathOptions(),
   data = getMapData(map)
 ) {
@@ -392,7 +398,7 @@ addPolygons = function(
     dashArray = dashArray, smoothFactor = smoothFactor, noClip = noClip
   ))
   pgons = derivePolygons(data, lng, lat, missing(lng), missing(lat), "addPolygons")
-  appendMapData(map, data, 'polygon', pgons, layerId, options) %>%
+  appendMapData(map, data, 'polygon', pgons, layerId, options, popup) %>%
     expandLimitsBbox(pgons)
 }
 

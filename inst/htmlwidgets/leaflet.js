@@ -256,11 +256,12 @@ var dataframe = (function() {
     L.tileLayer(urlTemplate, options).addTo(this);
   };
 
-  methods.marker = function(lat, lng, layerId, options) {
+  methods.marker = function(lat, lng, layerId, options, popup) {
     var df = dataframe.create()
       .col('lat', lat)
       .col('lng', lng)
       .col('layerId', layerId)
+      .col('popup', popup)
       .cbind(options);
 
     for (var i = 0; i < df.nrow(); i++) {
@@ -268,6 +269,8 @@ var dataframe = (function() {
         var marker = L.marker([df.get(i, 'lat'), df.get(i, 'lng')], df.get(i));
         var thisId = df.get(i, 'layerId');
         this.markers.add(marker, thisId);
+        var popup = df.get(i, 'popup');
+        if (popup !== null) marker.bindPopup(popup);
         marker.on('click', mouseHandler(this.id, thisId, 'marker_click'), this);
         marker.on('mouseover', mouseHandler(this.id, thisId, 'marker_mouseover'), this);
         marker.on('mouseout', mouseHandler(this.id, thisId, 'marker_mouseout'), this);
@@ -275,12 +278,13 @@ var dataframe = (function() {
     }
   };
 
-  methods.circle = function(lat, lng, radius, layerId, options) {
+  methods.circle = function(lat, lng, radius, layerId, options, popup) {
     var df = dataframe.create()
       .col('lat', lat)
       .col('lng', lng)
       .col('radius', radius)
       .col('layerId', layerId)
+      .col('popup', popup)
       .cbind(options);
 
     for (var i = 0; i < df.nrow(); i++) {
@@ -288,6 +292,8 @@ var dataframe = (function() {
         var circle = L.circle([df.get(i, 'lat'), df.get(i, 'lng')], df.get(i, 'radius'), df.get(i));
         var thisId = df.get(i, 'layerId');
         this.shapes.add(circle, thisId);
+        var popup = df.get(i, 'popup');
+        if (popup !== null) circle.bindPopup(popup);
         circle.on('click', mouseHandler(this.id, thisId, 'shape_click'), this);
         circle.on('mouseover', mouseHandler(this.id, thisId, 'shape_mouseover'), this);
         circle.on('mouseout', mouseHandler(this.id, thisId, 'shape_mouseout'), this);
@@ -295,12 +301,13 @@ var dataframe = (function() {
     }
   };
 
-  methods.circleMarker = function(lat, lng, radius, layerId, options) {
+  methods.circleMarker = function(lat, lng, radius, layerId, options, popup) {
     var df = dataframe.create()
       .col('lat', lat)
       .col('lng', lng)
       .col('radius', radius)
       .col('layerId', layerId)
+      .col('popup', popup)
       .cbind(options);
 
     for (var i = 0; i < df.nrow(); i++) {
@@ -308,6 +315,8 @@ var dataframe = (function() {
         var circle = L.circleMarker([df.get(i, 'lat'), df.get(i, 'lng')], df.get(i));
         var thisId = df.get(i, 'layerId');
         this.markers.add(circle, thisId);
+        var popup = df.get(i, 'popup');
+        if (popup !== null) circle.bindPopup(popup);
         circle.on('click', mouseHandler(this.id, thisId, 'marker_click'), this);
         circle.on('mouseover', mouseHandler(this.id, thisId, 'marker_mouseover'), this);
         circle.on('mouseout', mouseHandler(this.id, thisId, 'marker_mouseout'), this);
@@ -319,10 +328,11 @@ var dataframe = (function() {
    * @param lat Array of arrays of latitude coordinates for polylines
    * @param lng Array of arrays of longitude coordinates for polylines
    */
-  methods.polyline = function(polygons, layerId, options) {
+  methods.polyline = function(polygons, layerId, options, popup) {
     var df = dataframe.create()
       .col('shapes', polygons)
       .col('layerId', layerId)
+      .col('popup', popup)
       .cbind(options);
 
     for (var i = 0; i < df.nrow(); i++) {
@@ -332,6 +342,8 @@ var dataframe = (function() {
         var polyline = L.polyline(shape, df.get(i));
         var thisId = df.get(i, 'layerId');
         this.shapes.add(polyline, thisId);
+        var popup = df.get(i, 'popup');
+        if (popup !== null) polyline.bindPopup(popup);
         polyline.on('click', mouseHandler(this.id, thisId, 'shape_click'), this);
         polyline.on('mouseover', mouseHandler(this.id, thisId, 'shape_mouseover'), this);
         polyline.on('mouseout', mouseHandler(this.id, thisId, 'shape_mouseout'), this);
@@ -355,13 +367,14 @@ var dataframe = (function() {
     this.shapes.clear();
   };
 
-  methods.rectangle = function(lat1, lng1, lat2, lng2, layerId, options) {
+  methods.rectangle = function(lat1, lng1, lat2, lng2, layerId, options, popup) {
     var df = dataframe.create()
       .col('lat1', lat1)
       .col('lng1', lng1)
       .col('lat2', lat2)
       .col('lng2', lng2)
       .col('layerId', layerId)
+      .col('popup', popup)
       .cbind(options);
 
     for (var i = 0; i < df.nrow(); i++) {
@@ -373,6 +386,8 @@ var dataframe = (function() {
           df.get(i));
         var thisId = df.get(i, 'layerId');
         this.shapes.add(rect, thisId);
+        var popup = df.get(i, 'popup');
+        if (popup !== null) rect.bindPopup(popup);
         rect.on('click', mouseHandler(this.id, thisId, 'shape_click'), this);
         rect.on('mouseover', mouseHandler(this.id, thisId, 'shape_mouseover'), this);
         rect.on('mouseout', mouseHandler(this.id, thisId, 'shape_mouseout'), this);
@@ -384,10 +399,11 @@ var dataframe = (function() {
    * @param lat Array of arrays of latitude coordinates for polygons
    * @param lng Array of arrays of longitude coordinates for polygons
    */
-  methods.polygon = function(polygons, layerId, options) {
+  methods.polygon = function(polygons, layerId, options, popup) {
     var df = dataframe.create()
       .col('shapes', polygons)
       .col('layerId', layerId)
+      .col('popup', popup)
       .cbind(options);
 
     for (var i = 0; i < df.nrow(); i++) {
@@ -399,6 +415,8 @@ var dataframe = (function() {
         var polygon = L.polygon(shapes, df.get(i));
         var thisId = df.get(i, 'layerId');
         this.shapes.add(polygon, thisId);
+        var popup = df.get(i, 'popup');
+        if (popup !== null) polygon.bindPopup(popup);
         polygon.on('click', mouseHandler(this.id, thisId, 'shape_click'), this);
         polygon.on('mouseover', mouseHandler(this.id, thisId, 'shape_mouseover'), this);
         polygon.on('mouseout', mouseHandler(this.id, thisId, 'shape_mouseout'), this);
@@ -427,6 +445,8 @@ var dataframe = (function() {
           featureId: feature.id,
           properties: feature.properties
         };
+        var popup = feature.properties.popup;
+        if (typeof popup !== 'undefined' && popup !== null) layer.bindPopup(popup);
         layer.on("click", mouseHandler(self.id, layerId, "geojson_click", extraInfo), this);
         layer.on("mouseover", mouseHandler(self.id, layerId, "geojson_mouseover", extraInfo), this);
         layer.on("mouseout", mouseHandler(self.id, layerId, "geojson_mouseout", extraInfo), this);
