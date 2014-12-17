@@ -14,36 +14,36 @@
 addTiles(map, urlTemplate = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", 
     attribution = NULL, options = tileOptions())
 
-addPopups(map, lng = NULL, lat = NULL, content, layerId = NULL, 
-    options = popupOptions(), data = getMapData(map))
+addPopups(map, lng = NULL, lat = NULL, popup, layerId = NULL, options = popupOptions(), 
+    data = getMapData(map))
 
-addMarkers(map, lng = NULL, lat = NULL, layerId = NULL, icon = NULL, 
+addMarkers(map, lng = NULL, lat = NULL, layerId = NULL, icon = NULL, popup = NULL, 
     options = markerOptions(), data = getMapData(map))
 
 addCircleMarkers(map, lng = NULL, lat = NULL, radius = 10, layerId = NULL, 
     stroke = TRUE, color = "#03F", weight = 5, opacity = 0.5, fill = TRUE, 
-    fillColor = color, fillOpacity = 0.2, dashArray = NULL, options = pathOptions(), 
-    data = getMapData(map))
+    fillColor = color, fillOpacity = 0.2, dashArray = NULL, popup = NULL, 
+    options = pathOptions(), data = getMapData(map))
 
-addCircles(map, lng = NULL, lat = NULL, radius = 10, layerId = NULL, 
-    stroke = TRUE, color = "#03F", weight = 5, opacity = 0.5, fill = TRUE, 
-    fillColor = color, fillOpacity = 0.2, dashArray = NULL, options = pathOptions(), 
+addCircles(map, lng = NULL, lat = NULL, radius = 10, layerId = NULL, stroke = TRUE, 
+    color = "#03F", weight = 5, opacity = 0.5, fill = TRUE, fillColor = color, 
+    fillOpacity = 0.2, dashArray = NULL, popup = NULL, options = pathOptions(), 
     data = getMapData(map))
 
 addPolylines(map, lng = NULL, lat = NULL, layerId = NULL, stroke = TRUE, 
     color = "#03F", weight = 5, opacity = 0.5, fill = FALSE, fillColor = color, 
     fillOpacity = 0.2, dashArray = NULL, smoothFactor = 1, noClip = FALSE, 
-    options = pathOptions(), data = getMapData(map))
+    popup = NULL, options = pathOptions(), data = getMapData(map))
 
 addRectangles(map, lng1, lat1, lng2, lat2, layerId = NULL, stroke = TRUE, 
     color = "#03F", weight = 5, opacity = 0.5, fill = TRUE, fillColor = color, 
     fillOpacity = 0.2, dashArray = NULL, smoothFactor = 1, noClip = FALSE, 
-    options = pathOptions(), data = getMapData(map))
+    popup = NULL, options = pathOptions(), data = getMapData(map))
 
 addPolygons(map, lng = NULL, lat = NULL, layerId = NULL, stroke = TRUE, 
     color = "#03F", weight = 5, opacity = 0.5, fill = TRUE, fillColor = color, 
     fillOpacity = 0.2, dashArray = NULL, smoothFactor = 1, noClip = FALSE, 
-    options = pathOptions(), data = getMapData(map))
+    popup = NULL, options = pathOptions(), data = getMapData(map))
 
 addGeoJSON(map, geojson, layerId = NULL)
 }
@@ -67,7 +67,9 @@ looking for a column named \code{lng}, \code{long}, or \code{longitude}
 argument; the names \code{lat} and \code{latitude} are used when guessing
 the latitude column from \code{data})}
 
-\item{content}{the HTML content of the popups}
+\item{popup}{a character vector of the HTML content for the popups (you are
+recommended to escape the text using \code{\link[htmltools]{htmlEscape}()}
+for security reasons)}
 
 \item{layerId}{the layer id}
 
