@@ -11,6 +11,7 @@ output:
     number_sections: yes
     theme: cosmo
     css: styles.css
+    self_contained: no
     includes:
       before_body: before_body.html
       after_body: after_body.html
