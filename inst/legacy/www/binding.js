@@ -295,6 +295,10 @@ var dataframe = (function() {
     this.shapes.clear();
   };
 
+  methods.clearGeoJSON = function() {
+    this.geojson.clear();
+  };
+
   methods.fitBounds = function(lat1, lng1, lat2, lng2) {
     this.fitBounds([
       [lat1, lng1], [lat2, lng2]
