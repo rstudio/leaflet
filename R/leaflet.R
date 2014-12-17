@@ -34,8 +34,8 @@ leaflet = function(data = NULL, id = NULL, width = NULL, height = NULL, padding 
     ),
     width = width, height = height,
     sizingPolicy = htmlwidgets::sizingPolicy(
-      defaultWidth = 'auto',
-      defaultHeight = 'auto',
+      defaultWidth = '100%',
+      defaultHeight = 400,
       padding = padding,
       browser.fill = TRUE
     )
