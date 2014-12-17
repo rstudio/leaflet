@@ -14,6 +14,7 @@ leafletOutput = function(outputId, width = "100%", height = 400) {
 #' @rdname map-shiny
 #' @export
 renderLeaflet = function(expr, env = parent.frame(), quoted = FALSE) {
+  if (!quoted) expr = substitute(expr)  # force quoted
   htmlwidgets::shinyRenderWidget(expr, leafletOutput, env, quoted = TRUE)
 }
 
