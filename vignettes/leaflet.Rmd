@@ -6,16 +6,35 @@ output:
   knitr:::html_vignette:
     toc: yes
     number_sections: yes
+  html_document:
+    toc: yes
+    number_sections: yes
+    theme: cosmo
+    css: styles.css
+    includes:
+      before_body: before_body.html
+      after_body: after_body.html
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteIndexEntry{An Introduction to the leaflet Package}
 ---
+<div class="leaf-separator hide"><span class="glyphicon glyphicon-leaf"></span></div>
+<div class="mainbody">
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(tidy = FALSE)
 ```
-
 [Leaflet](http://leafletjs.com) is an open-source JavaScript library for interactive maps. This R package makes it easy to integrate and control Leaflet maps in R.
+
+# Installation and Use
+
+To install this R package, run this command at your R prompt:
+
+```{r eval=FALSE}
+devtools::install_github("rstudio/leaflet")
+```
+
+Once installed, you can use this package at the R console, within [R Markdown](http://rmarkdown.rstudio.com/) documents, and within [Shiny](http://shiny.rstudio.com/) applications.
 
 To create a Leaflet map, first you call the function `leaflet()`, then you can add more layers on the map, and manipulate the view. For example,
 
@@ -200,3 +219,5 @@ MPoint = list(
 ```
 
 You can pass this list to `addGeoJSON()` to draw two points on the map.
+
+<!--html_preserve--></div><!--/html_preserve-->
