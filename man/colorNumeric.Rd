@@ -80,7 +80,7 @@ The \code{palette} argument can be any of the following:
 }
 }
 \examples{
-pal <- colorBin("Greens", domain = 0:100)
+pal = colorBin("Greens", domain = 0:100)
 pal(runif(10, 60, 100))
 
 # Exponential distribution, mapped continuously

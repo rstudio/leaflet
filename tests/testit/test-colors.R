@@ -1,6 +1,6 @@
 library(testit)
 
-bw <- c("black", "white")
+bw = c("black", "white")
 
 # These currently error, but maybe shouldn't...?
 assert(

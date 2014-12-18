@@ -24,6 +24,6 @@ makeListFun = function(list) {
   cat(sprintf('list(%s)\n', paste(nms, nms, sep = ' = ', collapse = ', ')))
 }
 
-"%||%" <- function(a, b) {
+"%||%" = function(a, b) {
   if (!is.null(a)) a else b
 }
