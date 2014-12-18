@@ -158,8 +158,6 @@ leaflet() %>% addTiles() %>%
   addPopups(174.7690922, -36.8523071, 'R was born here!')
 ```
 
-<!-- it will be nicer if we can just bind the popup to the marker -->
-
 # Raster Layers
 
 Currently tile layers are supported via `addTiles()`. By default, the OpenStreetMap tiles are used, and you can certainly use other tiles of your choice.
