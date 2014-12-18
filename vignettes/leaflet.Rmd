@@ -150,7 +150,6 @@ Compared to the **leaflet** package at <https://github.com/jcheng5/leaflet-shiny
 The UI elements markers and popups are supported via `addMarkers()` and `addPopups()`, respectively. In the example below, we add a marker with a custom icon, and a popup:
 
 ```{r}
-library(htmlwidgets)
 leaflet() %>% addTiles() %>%
   addMarkers(174.7690922, -36.8523071, icon = JS("L.icon({
     iconUrl: 'http://cran.rstudio.com/Rlogo.jpg',
