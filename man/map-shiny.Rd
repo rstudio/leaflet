@@ -25,3 +25,16 @@ renderLeaflet(expr, env = parent.frame(), quoted = FALSE)
 Use \code{leafletOutput()} to create a UI element, and \code{renderLeaflet()}
 to render the map widget.
 }
+\examples{
+\donttest{library(leaflet)
+library(shiny)
+app = shinyApp(
+  ui = fluidPage(leafletOutput('myMap')),
+  server = function(input, output) {
+    map = leaflet() \%>\% addTiles() \%>\% setView(-93.65, 42.0285, zoom = 17)
+    output$myMap = renderLeaflet(map)
+  }
+)
+
+if (interactive()) print(app)}
+}

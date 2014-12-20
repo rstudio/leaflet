@@ -7,6 +7,18 @@
 #'   \code{\link[htmlwidgets]{shinyWidgetOutput}})
 #' @rdname map-shiny
 #' @export
+#' @examples # !formatR
+#' \donttest{library(leaflet)
+#' library(shiny)
+#' app = shinyApp(
+#'   ui = fluidPage(leafletOutput('myMap')),
+#'   server = function(input, output) {
+#'     map = leaflet() %>% addTiles() %>% setView(-93.65, 42.0285, zoom = 17)
+#'     output$myMap = renderLeaflet(map)
+#'   }
+#' )
+#'
+#' if (interactive()) print(app)}
 leafletOutput = function(outputId, width = "100%", height = 400) {
   htmlwidgets::shinyWidgetOutput(outputId, "leaflet", width, height, "leaflet")
 }
