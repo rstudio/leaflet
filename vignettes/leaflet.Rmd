@@ -162,6 +162,16 @@ leaflet() %>% addTiles() %>%
 
 Currently tile layers are supported via `addTiles()`. By default, the OpenStreetMap tiles are used, and you can certainly use other tiles of your choice.
 
+A live demo of many tile sets is available [here](http://leaflet-extras.github.io/leaflet-providers/preview/index.html). Note that some tile set providers require you to register. See the [project page](https://github.com/leaflet-extras/leaflet-providers) for more information.
+
+```{r}
+leaflet() %>%
+  addTiles(
+    'http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
+    attribution = 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community') %>%
+  setView(-93.65, 42.0285, zoom = 17)
+```
+
 # Vector Layers
 
 Vector layers contain elements of vector graphics, such as circles, rectangles, and polylines, etc. All vector layer functions have the arguments `lng` and `lat`, with additional arguments specifying the attributes of the graphical elements. Note the terminology is slightly different with R graphics. For example, the border of elements is controlled by the argument `stroke` (e.g., `leaflet::addRectangles(stroke = FALSE)` is like `graphics::rect(border = NA)`), the `color` argument only specifies the color of the border (in base R, `col`/`color` often means the _fill_ color), and the `weight` argument is like `lwd` in base R graphics.
