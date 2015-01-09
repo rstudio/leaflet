@@ -189,7 +189,7 @@ var dataframe = (function() {
 
   LayerStore.prototype.keys = function() {
     var keys = [];
-    for (key in this._layers) {
+    for (var key in this._layers) {
       if (this._layers.hasOwnProperty(key))
         keys.push(key);
     }
