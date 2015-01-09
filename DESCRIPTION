@@ -7,6 +7,8 @@ Authors@R: as.person(c(
     "Joe Cheng [aut, cre] <joe@rstudio.com>",
     "Yihui Xie [aut]",
     "Hadley Wickham [ctb]",
+    "jQuery contributors [ctb, cph] (the jQuery library in htmlwidgets/lib)",
+    "Leaflet contributors [ctb, cph] (the Leaflet library in htmlwidgets/lib)",
     "RStudio [cph]"
     ))
 Maintainer: Joe Cheng <joe@rstudio.com>
