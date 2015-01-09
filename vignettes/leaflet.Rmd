@@ -24,6 +24,7 @@ vignette: >
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(tidy = FALSE)
+set.seed(109)
 ```
 [Leaflet](http://leafletjs.com) is an open-source JavaScript library for interactive maps. This R package makes it easy to integrate and control Leaflet maps in R.
 
