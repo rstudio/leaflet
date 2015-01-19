@@ -210,6 +210,21 @@ var dataframe = (function() {
     };
   }
 
+  // Send updated bounds back to app. Takes a leaflet event object as input.
+  function updateBounds(e) {
+    var map = e.target;
+    var id = map.getContainer().id;
+    var bounds = map.getBounds();
+
+    Shiny.onInputChange(id + '_bounds', {
+      north: bounds.getNorthEast().lat,
+      east: bounds.getNorthEast().lng,
+      south: bounds.getSouthWest().lat,
+      west: bounds.getSouthWest().lng
+    });
+    Shiny.onInputChange(id + '_zoom', map.getZoom());
+  }
+
   var methods = {};
 
   methods.setView = function(center, zoom, options) {
@@ -461,10 +476,27 @@ var dataframe = (function() {
     initialize: function(el, width, height) {
       // hard-coding center/zoom here for a non-empty initial view, since there
       // is no way for htmlwidgets to pass initial params to initialize()
-      return L.map(el, {
+      var map = L.map(el, {
         center: [51.505, -0.09],
         zoom: 13
       });
+
+      if (!HTMLWidgets.shinyMode) return map;
+
+      // When the map is clicked, send the coordinates back to the app
+      map.on('click', function(e) {
+        var id = e.target.getContainer().id;
+
+        Shiny.onInputChange(id + '_click', {
+          lat: e.latlng.lat,
+          lng: e.latlng.lng,
+          '.nonce': Math.random() // Force reactivity if lat/lng hasn't changed
+        });
+      });
+
+      map.on('moveend', updateBounds);
+
+      return map;
     },
     renderValue: function(el, data, map) {
 
@@ -524,30 +556,7 @@ var dataframe = (function() {
 
       if (!HTMLWidgets.shinyMode) return;
 
-      // When the map is clicked, send the coordinates back to the app
-      map.on('click', function(e) {
-        Shiny.onInputChange(id + '_click', {
-          lat: e.latlng.lat,
-          lng: e.latlng.lng,
-          '.nonce': Math.random() // Force reactivity if lat/lng hasn't changed
-        });
-      });
-
-      // Send bounds info back to the app
-      function updateBounds() {
-        var bounds = map.getBounds();
-        Shiny.onInputChange(id + '_bounds', {
-          north: bounds.getNorthEast().lat,
-          east: bounds.getNorthEast().lng,
-          south: bounds.getSouthWest().lat,
-          west: bounds.getSouthWest().lng
-        });
-        Shiny.onInputChange(id + '_zoom', map.getZoom());
-      }
       setTimeout(updateBounds, 1);
-
-      map.on('moveend', updateBounds);
-
     },
     resize: function(el, width, height, data) {
 
