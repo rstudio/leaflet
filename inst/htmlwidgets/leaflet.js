@@ -519,8 +519,7 @@ var dataframe = (function() {
           methods[call.method].apply(map, call.args);
       }
 
-      var id = data.mapId;
-      if (id === null) return;
+      var id = this.getId(el);
       maps[id] = map;
 
       if (!HTMLWidgets.shinyMode) return;
