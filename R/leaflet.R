@@ -49,11 +49,10 @@ getMapData = function(map) {
 #' @param map A map widget object created from \code{\link{leaflet}()}
 #' @param zoomToLimits Controls whether the map is zooms to the limits of the
 #'   elements on the map. This is useful for interactive applications where the
-#'   map data is updated. If \code{"always"}, the map always re-zooms when new
-#'   data is received; if \code{"first"}, it zooms to the elements on the first
-#'   rendering, but does not re-zoom for subsequent data; if \code{"never"}, it
-#'   never re-zooms, not even for the first rendering. If unset, the default
-#'   behavior is \code{"always"}.
+#'   map data is updated. If \code{"always"} (the default), the map always
+#'   re-zooms when new data is received; if \code{"first"}, it zooms to the
+#'   elements on the first rendering, but does not re-zoom for subsequent data;
+#'   if \code{"never"}, it never re-zooms, not even for the first rendering.
 #'
 #' @examples
 #' # Don't auto-zoom to the objects (can be useful in interactive applications)
@@ -62,14 +61,12 @@ getMapData = function(map) {
 #'   addPopups(174.7690922, -36.8523071, 'R was born here!') %>%
 #'   mapOptions(zoomToLimits = "first")
 #' @export
-mapOptions <- function(map, zoomToLimits = NULL) {
+mapOptions <- function(map, zoomToLimits = c("always", "first", "never")) {
   if (is.null(map$x$options))
     map$x$options <- list()
 
-  if (!is.null(zoomToLimits)) {
-    match.arg(zoomToLimits, c("always", "first", "never"))
-    map$x$options$zoomToLimits <- zoomToLimits
-  }
+  zoomToLimits <- match.arg(zoomToLimits)
+  map$x$options$zoomToLimits <- zoomToLimits
 
   map
 }

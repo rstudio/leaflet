@@ -3,18 +3,17 @@
 \alias{mapOptions}
 \title{Set options on a leaflet map object}
 \usage{
-mapOptions(map, zoomToLimits = NULL)
+mapOptions(map, zoomToLimits = c("always", "first", "never"))
 }
 \arguments{
 \item{map}{A map widget object created from \code{\link{leaflet}()}}
 
 \item{zoomToLimits}{Controls whether the map is zooms to the limits of the
   elements on the map. This is useful for interactive applications where the
-  map data is updated. If \code{"always"}, the map always re-zooms when new
-  data is received; if \code{"first"}, it zooms to the elements on the first
-  rendering, but does not re-zoom for subsequent data; if \code{"never"}, it
-  never re-zooms, not even for the first rendering. If unset, the default
-  behavior is \code{"always"}.}
+  map data is updated. If \code{"always"} (the default), the map always
+  re-zooms when new data is received; if \code{"first"}, it zooms to the
+  elements on the first rendering, but does not re-zoom for subsequent data;
+  if \code{"never"}, it never re-zooms, not even for the first rendering.}
 }
 \description{
 Set options on a leaflet map object
