@@ -16,8 +16,6 @@
 #'   \code{Polygons}, \code{SpatialPolygons}, \code{SpatialPolygonsDataFrame},
 #'   \code{Line}, \code{Lines}, \code{SpatialLines}, and
 #'   \code{SpatialLinesDataFrame})
-#' @param id a character string as the identifier of the map (you do not need to
-#'   provide it unless you want to manipulate the map later in Shiny)
 #' @param width the width of the map
 #' @param height the height of the map
 #' @param padding the padding of the map
@@ -25,11 +23,11 @@
 #'   \code{\%>\%} (see examples).
 #' @example inst/examples/leaflet.R
 #' @export
-leaflet = function(data = NULL, id = NULL, width = NULL, height = NULL, padding = 0) {
+leaflet = function(data = NULL, width = NULL, height = NULL, padding = 0) {
   htmlwidgets::createWidget(
     'leaflet',
     structure(
-      list(mapId = id),
+      list(),
       leafletData = data
     ),
     width = width, height = height,
