@@ -43,3 +43,32 @@ leaflet = function(data = NULL, width = NULL, height = NULL, padding = 0) {
 getMapData = function(map) {
   attr(map$x, "leafletData", exact = TRUE)
 }
+
+#' Set options on a leaflet map object
+#'
+#' @param zoomToLimits Controls whether the map is zooms to the limits of the
+#'   elements on the map. This is useful for interactive applications where the
+#'   map data is updated. If \code{"always"}, the map always re-zooms when new
+#'   data is received; if \code{"first"}, it zooms to the elements on the first
+#'   rendering, but does not re-zoom for subsequent data; if \code{"never"}, it
+#'   never re-zooms, not even for the first rendering. If unset, the default
+#'   behavior is \code{"always"}.
+#'
+#' @examples
+#' # Don't auto-zoom to the objects (can be useful in interactive applications)
+#' leaflet() %>%
+#'   addTiles() %>%
+#'   addPopups(174.7690922, -36.8523071, 'R was born here!') %>%
+#'   mapOptions(zoomToLimits = FALSE)
+#' @export
+mapOptions <- function(map, zoomToLimits = NULL) {
+  if (is.null(map$x$options))
+    map$x$options <- list()
+
+  if (!is.null(zoomToLimits)) {
+    match.arg(zoomToLimits, c("always", "first", "never"))
+    map$x$options$zoomToLimits <- zoomToLimits
+  }
+
+  map
+}

@@ -480,6 +480,12 @@ var dataframe = (function() {
         zoom: 13
       });
 
+      // Create storage for options/state in map object, with defaults
+      map.leafletr = {
+        hasRendered: false,
+        zoomToLimits: "always"
+      };
+
       if (!HTMLWidgets.shinyMode) return map;
 
       // When the map is clicked, send the coordinates back to the app
@@ -498,6 +504,9 @@ var dataframe = (function() {
       return map;
     },
     renderValue: function(el, data, map) {
+      // Update any options provided in data
+      if (data.options)
+        map.leafletr = $.extend(map.leafletr, data.options);
 
       if (!map.markers) {
         map.markers = new LayerStore(map);
@@ -522,7 +531,16 @@ var dataframe = (function() {
         explicitView = true;
         methods.fitBounds.apply(map, data.fitBounds);
       }
-      if (!explicitView) {
+
+      // Returns true if the zoomToLimits option says that the map should be
+      // zoomed to map elements.
+      function needsZoom(map) {
+        var opts = map.leafletr;
+        return opts.zoomToLimits === "always" ||
+               (opts.zoomToLimits === "first" && !opts.hasRendered)
+      }
+
+      if (!explicitView && needsZoom(map)) {
         if (data.limits) {
           // Use the natural limits of what's being drawn on the map
           // If the size of the bounding box is 0, leaflet gets all weird
@@ -549,6 +567,8 @@ var dataframe = (function() {
         if (methods[call.method])
           methods[call.method].apply(map, call.args);
       }
+
+      map.leafletr.hasRendered = true;
 
       var id = this.getId(el);
       maps[id] = map;
