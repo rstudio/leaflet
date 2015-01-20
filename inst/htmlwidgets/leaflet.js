@@ -211,8 +211,7 @@ var dataframe = (function() {
   }
 
   // Send updated bounds back to app. Takes a leaflet event object as input.
-  function updateBounds(e) {
-    var map = e.target;
+  function updateBounds(map) {
     var id = map.getContainer().id;
     var bounds = map.getBounds();
 
@@ -494,7 +493,7 @@ var dataframe = (function() {
         });
       });
 
-      map.on('moveend', updateBounds);
+      map.on('moveend', function(e) { updateBounds(e.target); });
 
       return map;
     },
@@ -556,7 +555,7 @@ var dataframe = (function() {
 
       if (!HTMLWidgets.shinyMode) return;
 
-      setTimeout(updateBounds, 1);
+      setTimeout(function() { updateBounds(map); }, 1);
     },
     resize: function(el, width, height, data) {
 
