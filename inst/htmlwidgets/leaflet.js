@@ -480,10 +480,9 @@ var dataframe = (function() {
         zoom: 13
       });
 
-      // Create storage for options/state in map object, with defaults
+      // Store some state in the map object
       map.leafletr = {
-        hasRendered: false,
-        zoomToLimits: "always"
+        hasRendered: false
       };
 
       if (!HTMLWidgets.shinyMode) return map;
@@ -504,9 +503,8 @@ var dataframe = (function() {
       return map;
     },
     renderValue: function(el, data, map) {
-      // Update any options provided in data
-      if (data.options)
-        map.leafletr = $.extend(map.leafletr, data.options);
+      // Merge data options into defaults
+      var options = $.extend({ zoomToLimits: false }, data.options);
 
       if (!map.markers) {
         map.markers = new LayerStore(map);
@@ -534,13 +532,12 @@ var dataframe = (function() {
 
       // Returns true if the zoomToLimits option says that the map should be
       // zoomed to map elements.
-      function needsZoom(map) {
-        var opts = map.leafletr;
-        return opts.zoomToLimits === "always" ||
-               (opts.zoomToLimits === "first" && !opts.hasRendered)
+      function needsZoom() {
+        return options.zoomToLimits === "always" ||
+               (options.zoomToLimits === "first" && !map.leafletr.hasRendered);
       }
 
-      if (!explicitView && needsZoom(map)) {
+      if (!explicitView && needsZoom()) {
         if (data.limits) {
           // Use the natural limits of what's being drawn on the map
           // If the size of the bounding box is 0, leaflet gets all weird
