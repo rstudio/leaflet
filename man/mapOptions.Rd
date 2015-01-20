@@ -6,6 +6,8 @@
 mapOptions(map, zoomToLimits = NULL)
 }
 \arguments{
+\item{map}{A map widget object created from \code{\link{leaflet}()}}
+
 \item{zoomToLimits}{Controls whether the map is zooms to the limits of the
   elements on the map. This is useful for interactive applications where the
   map data is updated. If \code{"always"}, the map always re-zooms when new
@@ -20,5 +22,5 @@ Set options on a leaflet map object
 \examples{
 # Don't auto-zoom to the objects (can be useful in interactive applications)
 leaflet() \%>\% addTiles() \%>\% addPopups(174.7690922, -36.8523071, "R was born here!") \%>\% 
-    mapOptions(zoomToLimits = FALSE)
+    mapOptions(zoomToLimits = "first")
 }

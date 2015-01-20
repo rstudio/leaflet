@@ -46,6 +46,7 @@ getMapData = function(map) {
 
 #' Set options on a leaflet map object
 #'
+#' @param map A map widget object created from \code{\link{leaflet}()}
 #' @param zoomToLimits Controls whether the map is zooms to the limits of the
 #'   elements on the map. This is useful for interactive applications where the
 #'   map data is updated. If \code{"always"}, the map always re-zooms when new
@@ -59,7 +60,7 @@ getMapData = function(map) {
 #' leaflet() %>%
 #'   addTiles() %>%
 #'   addPopups(174.7690922, -36.8523071, 'R was born here!') %>%
-#'   mapOptions(zoomToLimits = FALSE)
+#'   mapOptions(zoomToLimits = "first")
 #' @export
 mapOptions <- function(map, zoomToLimits = NULL) {
   if (is.null(map$x$options))
