@@ -504,7 +504,7 @@ var dataframe = (function() {
     },
     renderValue: function(el, data, map) {
       // Merge data options into defaults
-      var options = $.extend({ zoomToLimits: false }, data.options);
+      var options = $.extend({ zoomToLimits: "always" }, data.options);
 
       if (!map.markers) {
         map.markers = new LayerStore(map);
@@ -567,10 +567,10 @@ var dataframe = (function() {
 
       map.leafletr.hasRendered = true;
 
+      if (!HTMLWidgets.shinyMode) return;
+
       var id = this.getId(el);
       maps[id] = map;
-
-      if (!HTMLWidgets.shinyMode) return;
 
       setTimeout(function() { updateBounds(map); }, 1);
     },
