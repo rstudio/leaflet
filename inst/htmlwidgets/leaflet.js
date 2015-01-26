@@ -440,6 +440,7 @@ var dataframe = (function() {
 
   methods.geoJSON = function(data, layerId) {
     var self = this;
+    self.id = self.getContainer().id; # Quickfix for issue #35
     if (typeof(data) === "string") {
       data = JSON.parse(data);
     }
