@@ -530,6 +530,11 @@ var dataframe = (function() {
         methods.fitBounds.apply(map, data.fitBounds);
       }
 
+      // set event
+      for (var i = 0; data.addEventListener && i < data.addEventListener.length; i++) {
+        map.on(data.addEventListener[i].method, data.addEventListener[i].event);
+      }
+
       // Returns true if the zoomToLimits option says that the map should be
       // zoomed to map elements.
       function needsZoom() {
