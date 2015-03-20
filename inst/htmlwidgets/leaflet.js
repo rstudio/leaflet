@@ -150,8 +150,6 @@ var dataframe = (function() {
 })();
 
 (function() {
-  var maps = {};
-
   function LayerStore(map) {
     this._layers = {};
     this._group = L.layerGroup().addTo(map);
@@ -487,11 +485,11 @@ var dataframe = (function() {
 
       if (!HTMLWidgets.shinyMode) return map;
 
+      map.id = this.getId(el);
+
       // When the map is clicked, send the coordinates back to the app
       map.on('click', function(e) {
-        var id = e.target.getContainer().id;
-
-        Shiny.onInputChange(id + '_click', {
+        Shiny.onInputChange(map.id + '_click', {
           lat: e.latlng.lat,
           lng: e.latlng.lng,
           '.nonce': Math.random() // Force reactivity if lat/lng hasn't changed
@@ -569,9 +567,6 @@ var dataframe = (function() {
 
       if (!HTMLWidgets.shinyMode) return;
 
-      var id = this.getId(el);
-      maps[id] = map;
-
       setTimeout(function() { updateBounds(map); }, 1);
     },
     resize: function(el, width, height, data) {
@@ -584,7 +579,7 @@ var dataframe = (function() {
   // Shiny support via the Leaflet map controller
   Shiny.addCustomMessageHandler('leaflet', function(data) {
     var mapId = data.mapId;
-    var map = maps[mapId];
+    var map = document.getElementById(mapId);
     if (!map)
       return;
 
