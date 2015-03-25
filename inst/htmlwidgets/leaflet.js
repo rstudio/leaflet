@@ -288,6 +288,10 @@ var dataframe = (function() {
   };
 
   methods.addMarkers = function(lat, lng, layerId, options, popup) {
+    // create the icon if it was not created by JS('L.icon()')
+    if (options.icon && !(options.icon instanceof L.Icon)) {
+      options.icon = L.icon(options.icon);
+    }
     var df = dataframe.create()
       .col('lat', lat)
       .col('lng', lng)
