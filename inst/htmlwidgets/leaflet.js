@@ -57,7 +57,7 @@ var dataframe = (function() {
     if (typeof(index) === 'undefined')
       return -1;
     return index;
-  }
+  };
 
   DataFrame.prototype.col = function(name, values, strict) {
     if (typeof(name) !== 'string')
@@ -84,7 +84,7 @@ var dataframe = (function() {
     this._updateCachedProperties();
 
     return this;
-  }
+  };
 
   DataFrame.prototype.cbind = function(obj, strict) {
     var self = this, name;
@@ -116,11 +116,11 @@ var dataframe = (function() {
       throw new Error('Unknown column index: ' + col);
 
     return this.columns[colIndex][row % this.columns[colIndex].length];
-  }
+  };
 
   DataFrame.prototype.nrow = function() {
     return this.effectiveLength;
-  }
+  };
 
   function test() {
     var df = new DataFrame();
