@@ -81,6 +81,106 @@ addTiles = function(
   appendMapData(map, getMapData(map), 'tileLayer', urlTemplate, options)
 }
 
+num2deg <- function(x, y, zoom) {
+  n <- 2^zoom
+  lng <- x / n * 360 - 180
+  lat_rad <- (pi * (1 - 2 * y / n)) %>% sinh() %>% atan()
+  lat_deg <- 180 * lat_rad / pi
+  list(lat = lat_deg, lng = lng)
+}
+
+num2frac <- function(x, y, zoom) {
+  n <- 2^zoom
+  list(x = x / n, y = y / n)
+}
+
+scaleBy <- function(min, max, frac) {
+  (frac * (max-min)) + min
+}
+
+extentForTileNum <- function(ext, x, y, zoom) {
+  y <- 2^zoom - y - 1
+  frac <- num2frac(x, y, zoom)
+  xmin <- scaleBy(ext@xmin, ext@xmax, frac$x)
+  ymin <- scaleBy(ext@ymin, ext@ymax, frac$y)
+
+  frac2 <- num2frac(x+1, y+1, zoom)
+  xmax <- scaleBy(ext@xmin, ext@xmax, frac2$x)
+  ymax <- scaleBy(ext@ymin, ext@ymax, frac2$y)
+
+  extent(xmin, xmax, ymin, ymax)
+}
+
+#' @export
+addRaster = function(
+  map,
+  rasterId,
+  x,
+  attribution = NULL,
+  palette = "Greens",
+  options = tileOptions()
+) {
+  if (!grepl("\\+init=epsg:3857", x@crs@projargs)) {
+    warning("Raster must be projected to epsg:3857 before calling addRaster")
+  }
+
+  pal <- colorNumeric(palette, domain = c(0,1))
+
+  options$attribution = attribution
+  session <- shiny::getDefaultReactiveDomain()
+  if (is.null(session)) {
+    stop("leaflet::addRaster only works in a live Shiny session")
+  }
+  url <- session$registerDataObj(rasterId, x, function(data, req) {
+
+    tile <- shiny::parseQueryString(req$QUERY_STRING) %>% lapply(as.numeric)
+
+#     nw <- num2deg(x = tile$x, y = tile$y, zoom = tile$z)
+#     se <- num2deg(x = tile$x + 1, y = tile$y + 1, zoom = tile$z)
+#    cat("---\n")
+#    cat(sprintf("x: %d, y: %d, z: %d\n", tile$x, tile$y, tile$z))
+
+    cropTo <- extentForTileNum(extent(data), tile$x, tile$y, tile$z)
+#    print(cropTo)
+    tileImage <- raster::crop(data, cropTo)
+
+#     ex_gps <- extent(nw$lng, se$lng, se$lat, nw$lat)
+#
+#     tileImage <- raster::crop(data, ex_gps)
+#     tileImage <- projectRaster(tileImage, crs = CRS("+init=epsg:3857"), method = "ngb")
+
+#    ex_crm <- projectExtent(ex_gps, crs = CRS("+init=epsg:3857"))
+#    tileImage <- projectRaster(data, crs = CRS("+init=epsg:3857"), method = "ngb")
+#    tileImage <- raster::crop(tileImage, ex_crm)
+#     tileImage <- resample(tileImage,
+#       raster(nrows = 256, ncols = 256,
+#         xmn = tileImage@extent@xmin, xmx = tileImage@extent@xmax,
+#         ymn = tileImage@extent@ymin, ymx = tileImage@extent@ymax
+#       )
+#     )
+    filename <- tempfile(fileext = ".png")
+    on.exit(file.remove(filename), add = TRUE)
+
+    png(filename, width = 256, height = 256, units = "px")
+    tryCatch(
+      {
+        par(mar = c(0,0,0,0), bg = "transparent", xaxs = "i", yaxs = "i")
+        plot.new()
+        plot.window(c(0,1), c(0,1))
+        rasterImage(as.raster(tileImage, col = pal(seq(from=tileImage@data@min, to=tileImage@data@max, length.out=255))), 0, 0, 1, 1, interpolate = FALSE)
+      },
+      finally = dev.off()
+    )
+    bytes <- readBin(filename, raw(), file.info(filename)$size)
+
+    return(list(status = 200L,
+      headers = list("Content-Type" = "image/png"),
+      body = bytes))
+  })
+  urlTemplate <- paste0(url, "&z={z}&x={x}&y={y}")
+  appendMapData(map, getMapData(map), 'tileLayer', urlTemplate, options)
+}
+
 #' Extra options for map elements and layers
 #'
 #' The rest of all possible options for map elements and layers that are not
