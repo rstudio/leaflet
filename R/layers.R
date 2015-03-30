@@ -113,13 +113,13 @@ extentForTileNum <- function(ext, x, y, zoom) {
 
 #' Raster layers (experimental)
 #'
-#' Add a raster object (from the \code{raster} package) as a tile
-#' layer. The raster object must be in epsg:3857 (Spherical Mercator).
-#' Note that this function currently ONLY works in Shiny contexts, as
-#' it generates mapping tiles from the raster on-demand.
+#' Add a raster object (from the \code{raster} package) as a tile layer. The
+#' raster object must be in WGS84. Note that this function currently ONLY works
+#' in Shiny contexts, as it generates mapping tiles from the raster on-demand.
 #'
 #' @inheritParams setView
 #' @param attribution the attribution text of the tile layer (HTML)
+#' @param colorFunc The function to use to map values to colors.
 #' @param options a list of extra options; see \code{\link{tileOptions}}
 #'
 #' @export
@@ -134,16 +134,10 @@ addRaster = function(
 
   options$attribution = attribution
 
-  # Verify that the projection is indeed epsg:3857. Ideally we would do the
-  # reprojection on the fly, but projectRaster performance is currently too
-  # slow.
-  if (!grepl("\\+init=epsg:3857", projection(x))) {
-    warning("Raster must be projected to epsg:3857 before calling addRaster")
-  }
-
   if (!x@data@haveminmax) {
     x <- setMinMax(x)
   }
+  force(colorFunc)
 
   # Fortunately Shiny lets us grab the active session without it being passed
   # explicitly to us.
@@ -164,12 +158,10 @@ addRaster = function(
     x, # The object itself
     function(data, req) {
       tile <- shiny::parseQueryString(req$QUERY_STRING) %>% lapply(as.numeric)
-      cropTo <- extentForTileNum(extent(data), tile$x, tile$y, tile$z)
-      tileImage <- raster::crop(data, cropTo)
       filename <- tempfile(fileext = ".png")
       on.exit(file.remove(filename), add = TRUE)
 
-      #tileImage <- rasterfaster::resampleLayer(tileImage, raster(nrows=256, ncols=256))
+      tileImage <- rasterfaster::createMapTile(data, 256, 256, tile$x, tile$y, tile$z)
 
       png(filename, width = 256, height = 256, units = "px")
       tryCatch(
@@ -177,12 +169,10 @@ addRaster = function(
           par(mar = c(0,0,0,0), bg = "transparent", xaxs = "i", yaxs = "i")
           plot.new()
           plot.window(c(0,1), c(0,1))
-          rawRaster <- as.raster(tileImage,
-            col = colorFunc(
-              # Rescale the colors to match the potentially reduced dynamic range
-              # of this tile
-              seq(from=minValue(tileImage), to=maxValue(tileImage), length.out=255)
-            )
+          rawRaster <- structure(
+            colorFunc(values(tileImage)),
+            dim = c(256, 256),
+            class = "raster"
           )
           rasterImage(rawRaster, 0, 0, 1, 1, interpolate = FALSE)
         },

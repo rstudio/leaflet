@@ -25,6 +25,8 @@ Imports:
     RColorBrewer,
     RJSONIO,
     grDevices,
+    raster,
+    rasterfaster,
     scales
 Suggests:
     knitr,
