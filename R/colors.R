@@ -93,10 +93,13 @@ colorBin = function(palette, domain, bins = 7, na.color = "#808080") {
 
   function(x) {
     if (length(x) == 0 || all(is.na(x))) {
-      return(pf(x))
+      return(colorFunc(x))
     }
     binsToUse = getBins(domain, x, bins)
-    ints = cut(x, binsToUse, labels = FALSE, include.lowest = TRUE, right = FALSE)
+    ints = structure(
+      cut(x, binsToUse, labels = FALSE, include.lowest = TRUE, right = FALSE),
+      dim = dim(x)
+    )
     if (any(is.na(x) != is.na(ints)))
       warning("Some values were outside the color scale and will be treated as NA")
     colorFunc(ints)
@@ -125,7 +128,10 @@ colorQuantile = function(palette, domain, n = 4,
   colorFunc = colorFactor(palette, domain = 1:(length(probs) - 1), na.color = na.color)
   function(x) {
     binsToUse = quantile(x, probs, na.rm = TRUE, names = FALSE)
-    ints = cut(x, binsToUse, labels = FALSE, include.lowest = TRUE, right = FALSE)
+    ints = structure(
+      cut(x, binsToUse, labels = FALSE, include.lowest = TRUE, right = FALSE),
+      dim = dim(x)
+    )
     if (any(is.na(x) != is.na(ints)))
       warning("Some values were outside the color scale and will be treated as NA")
     colorFunc(ints)
@@ -197,13 +203,16 @@ colorFactor = function(palette, domain, levels = NULL, ordered = FALSE,
       # Seems like we need to re-factor if hasFixedLevels, in case the x value
       # has a different set of levels (like if droplevels was called in between
       # when the domain was given and now)
-      x = factor(x, lvls)
+      x = structure(factor(x, lvls), dim = dim(x))
       if (any(is.na(x) != origNa)) {
         warning("Some values were outside the color scale and will be treated as NA")
       }
     }
 
-    scaled = scales::rescale(as.integer(x), from = c(1, length(lvls)))
+    scaled = structure(
+      scales::rescale(as.integer(x), from = c(1, length(lvls))),
+      dim = dim(x)
+    )
     if (any(scaled < 0 | scaled > 1, na.rm = TRUE)) {
       warning("Some values were outside the color scale and will be treated as NA")
     }
@@ -240,7 +249,8 @@ NULL
 
 
 safePaletteFunc = function(pal, na.color) {
-  toPaletteFunc(pal) %>% filterRGB() %>% filterNA(na.color) %>% filterRange()
+  toPaletteFunc(pal) %>% filterRGB() %>% filterNA(na.color) %>%
+    filterRange() %>% filterPreserveDim()
 }
 
 toPaletteFunc = function(pal) {
@@ -335,5 +345,12 @@ filterRange = function(f) {
   function(x) {
     x[x < 0 | x > 1] = NA
     f(x)
+  }
+}
+
+filterPreserveDim = function(f) {
+  force(f)
+  function(x) {
+    structure(f(x), dim = dim(x))
   }
 }
