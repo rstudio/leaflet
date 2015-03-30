@@ -157,32 +157,18 @@ addRaster = function(
     layerId,
     x, # The object itself
     function(data, req) {
-      tile <- shiny::parseQueryString(req$QUERY_STRING) %>% lapply(as.numeric)
-      filename <- tempfile(fileext = ".png")
-      on.exit(file.remove(filename), add = TRUE)
+      tile <- shiny::parseQueryString(req$QUERY_STRING) %>% lapply(as.integer)
 
       tileImage <- rasterfaster::createMapTile(data, 256, 256, tile$x, tile$y, tile$z)
 
-      png(filename, width = 256, height = 256, units = "px")
-      tryCatch(
-        {
-          par(mar = c(0,0,0,0), bg = "transparent", xaxs = "i", yaxs = "i")
-          plot.new()
-          plot.window(c(0,1), c(0,1))
-          rawRaster <- structure(
-            colorFunc(values(tileImage)),
-            dim = c(256, 256),
-            class = "raster"
-          )
-          rasterImage(rawRaster, 0, 0, 1, 1, interpolate = FALSE)
-        },
-        finally = dev.off()
-      )
-      bytes <- readBin(filename, raw(), file.info(filename)$size)
-
-      return(list(status = 200L,
+      tileData <- values(tileImage) %>% colorFunc() %>% col2rgb(alpha = TRUE) %>% as.raw()
+      dim(tileData) <- c(4, 256, 256)
+      pngData <- png::writePNG(tileData)
+      return(list(
+        status = 200L,
         headers = list("Content-Type" = "image/png"),
-        body = bytes))
+        body = pngData
+      ))
     }
   )
 
