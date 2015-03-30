@@ -111,73 +111,93 @@ extentForTileNum <- function(ext, x, y, zoom) {
   extent(xmin, xmax, ymin, ymax)
 }
 
+#' Raster layers (experimental)
+#'
+#' Add a raster object (from the \code{raster} package) as a tile
+#' layer. The raster object must be in epsg:3857 (Spherical Mercator).
+#' Note that this function currently ONLY works in Shiny contexts, as
+#' it generates mapping tiles from the raster on-demand.
+#'
+#' @inheritParams setView
+#' @param attribution the attribution text of the tile layer (HTML)
+#' @param options a list of extra options; see \code{\link{tileOptions}}
+#'
 #' @export
 addRaster = function(
   map,
-  rasterId,
   x,
+  layerId = paste0("leafletRaster", sample.int(9999999, 1)),
   attribution = NULL,
-  palette = "Greens",
+  colorFunc = colorNumeric("RdBu", domain = c(minValue(x), maxValue(x))),
   options = tileOptions()
 ) {
-  if (!grepl("\\+init=epsg:3857", x@crs@projargs)) {
+
+  options$attribution = attribution
+
+  # Verify that the projection is indeed epsg:3857. Ideally we would do the
+  # reprojection on the fly, but projectRaster performance is currently too
+  # slow.
+  if (!grepl("\\+init=epsg:3857", projection(x))) {
     warning("Raster must be projected to epsg:3857 before calling addRaster")
   }
 
-  pal <- colorNumeric(palette, domain = c(0,1))
+  if (!x@data@haveminmax) {
+    x <- setMinMax(x)
+  }
 
-  options$attribution = attribution
+  # Fortunately Shiny lets us grab the active session without it being passed
+  # explicitly to us.
   session <- shiny::getDefaultReactiveDomain()
   if (is.null(session)) {
     stop("leaflet::addRaster only works in a live Shiny session")
   }
-  url <- session$registerDataObj(rasterId, x, function(data, req) {
 
-    tile <- shiny::parseQueryString(req$QUERY_STRING) %>% lapply(as.numeric)
+  # We can use registerDataObj to add a new HTTP handler at a URL of Shiny's
+  # choosing. In this case we expect requests for Slippy tiles, with URL
+  # params z, x, and y; our job is to return image/png data.
+  url <- session$registerDataObj(
+    # The layer ID indicates the "slot" in the current Shiny session that our
+    # data object will occupy. This can be any simple identifier and has not
+    # much consequence except to garbage collect the previous value of layerId
+    # each time a new one is registered.
+    layerId,
+    x, # The object itself
+    function(data, req) {
+      tile <- shiny::parseQueryString(req$QUERY_STRING) %>% lapply(as.numeric)
+      cropTo <- extentForTileNum(extent(data), tile$x, tile$y, tile$z)
+      tileImage <- raster::crop(data, cropTo)
+      filename <- tempfile(fileext = ".png")
+      on.exit(file.remove(filename), add = TRUE)
 
-#     nw <- num2deg(x = tile$x, y = tile$y, zoom = tile$z)
-#     se <- num2deg(x = tile$x + 1, y = tile$y + 1, zoom = tile$z)
-#    cat("---\n")
-#    cat(sprintf("x: %d, y: %d, z: %d\n", tile$x, tile$y, tile$z))
+      #tileImage <- rasterfaster::resampleLayer(tileImage, raster(nrows=256, ncols=256))
 
-    cropTo <- extentForTileNum(extent(data), tile$x, tile$y, tile$z)
-#    print(cropTo)
-    tileImage <- raster::crop(data, cropTo)
+      png(filename, width = 256, height = 256, units = "px")
+      tryCatch(
+        {
+          par(mar = c(0,0,0,0), bg = "transparent", xaxs = "i", yaxs = "i")
+          plot.new()
+          plot.window(c(0,1), c(0,1))
+          rawRaster <- as.raster(tileImage,
+            col = colorFunc(
+              # Rescale the colors to match the potentially reduced dynamic range
+              # of this tile
+              seq(from=minValue(tileImage), to=maxValue(tileImage), length.out=255)
+            )
+          )
+          rasterImage(rawRaster, 0, 0, 1, 1, interpolate = FALSE)
+        },
+        finally = dev.off()
+      )
+      bytes <- readBin(filename, raw(), file.info(filename)$size)
 
-#     ex_gps <- extent(nw$lng, se$lng, se$lat, nw$lat)
-#
-#     tileImage <- raster::crop(data, ex_gps)
-#     tileImage <- projectRaster(tileImage, crs = CRS("+init=epsg:3857"), method = "ngb")
+      return(list(status = 200L,
+        headers = list("Content-Type" = "image/png"),
+        body = bytes))
+    }
+  )
 
-#    ex_crm <- projectExtent(ex_gps, crs = CRS("+init=epsg:3857"))
-#    tileImage <- projectRaster(data, crs = CRS("+init=epsg:3857"), method = "ngb")
-#    tileImage <- raster::crop(tileImage, ex_crm)
-#     tileImage <- resample(tileImage,
-#       raster(nrows = 256, ncols = 256,
-#         xmn = tileImage@extent@xmin, xmx = tileImage@extent@xmax,
-#         ymn = tileImage@extent@ymin, ymx = tileImage@extent@ymax
-#       )
-#     )
-    filename <- tempfile(fileext = ".png")
-    on.exit(file.remove(filename), add = TRUE)
-
-    png(filename, width = 256, height = 256, units = "px")
-    tryCatch(
-      {
-        par(mar = c(0,0,0,0), bg = "transparent", xaxs = "i", yaxs = "i")
-        plot.new()
-        plot.window(c(0,1), c(0,1))
-        rasterImage(as.raster(tileImage, col = pal(seq(from=tileImage@data@min, to=tileImage@data@max, length.out=255))), 0, 0, 1, 1, interpolate = FALSE)
-      },
-      finally = dev.off()
-    )
-    bytes <- readBin(filename, raw(), file.info(filename)$size)
-
-    return(list(status = 200L,
-      headers = list("Content-Type" = "image/png"),
-      body = bytes))
-  })
   urlTemplate <- paste0(url, "&z={z}&x={x}&y={y}")
+
   appendMapData(map, getMapData(map), 'tileLayer', urlTemplate, options)
 }
 
