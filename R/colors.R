@@ -37,7 +37,7 @@ colorNumeric = function(palette, domain, na.color = "#808080") {
 
   pf = safePaletteFunc(palette, na.color)
 
-  function(x) {
+  withColorAttr('numeric', list(na.color = na.color), function(x) {
     if (length(x) == 0 || all(is.na(x))) {
       return(pf(x))
     }
@@ -48,7 +48,13 @@ colorNumeric = function(palette, domain, na.color = "#808080") {
     if (any(rescaled < 0 | rescaled > 1, na.rm = TRUE))
       warning("Some values were outside the color scale and will be treated as NA")
     pf(rescaled)
-  }
+  })
+}
+
+# Attach an attribute colorType to a color function f so we can derive legend
+# items from it
+withColorAttr = function(type, args = list(), fun) {
+  structure(fun, colorType = type, colorArgs = args)
 }
 
 # domain may or may not be NULL.
@@ -91,7 +97,7 @@ colorBin = function(palette, domain, bins = 7, na.color = "#808080") {
   numColors = if (length(bins) == 1) bins else length(bins) - 1
   colorFunc = colorFactor(palette, domain = 1:numColors, na.color = na.color)
 
-  function(x) {
+  withColorAttr('bin', list(bins = bins, na.color = na.color), function(x) {
     if (length(x) == 0 || all(is.na(x))) {
       return(pf(x))
     }
@@ -100,7 +106,7 @@ colorBin = function(palette, domain, bins = 7, na.color = "#808080") {
     if (any(is.na(x) != is.na(ints)))
       warning("Some values were outside the color scale and will be treated as NA")
     colorFunc(ints)
-  }
+  })
 }
 
 #' @details \code{colorQuantile} similarly bins numeric data, but via the
@@ -116,20 +122,23 @@ colorQuantile = function(palette, domain, n = 4,
 
   if (!is.null(domain)) {
     bins = quantile(domain, probs, na.rm = TRUE, names = FALSE)
-    return(colorBin(palette, domain = NULL, bins = bins, na.color = na.color))
+    return(withColorAttr(
+      'quantile', list(probs = probs, na.color = na.color),
+      colorBin(palette, domain = NULL, bins = bins, na.color = na.color)
+    ))
   }
 
   # I don't have a precise understanding of how quantiles are meant to map to colors.
   # If you say probs = seq(0, 1, 0.25), which has length 5, does that map to 4 colors
   # or 5? 4, right?
   colorFunc = colorFactor(palette, domain = 1:(length(probs) - 1), na.color = na.color)
-  function(x) {
+  withColorAttr('quantile', list(probs = probs, na.color = na.color), function(x) {
     binsToUse = quantile(x, probs, na.rm = TRUE, names = FALSE)
     ints = cut(x, binsToUse, labels = FALSE, include.lowest = TRUE, right = FALSE)
     if (any(is.na(x) != is.na(ints)))
       warning("Some values were outside the color scale and will be treated as NA")
     colorFunc(ints)
-  }
+  })
 }
 
 # If already a factor, return the levels. Otherwise, convert to factor then
@@ -185,7 +194,7 @@ colorFactor = function(palette, domain, levels = NULL, ordered = FALSE,
   hasFixedLevels = is.null(lvls)
   pf = safePaletteFunc(palette, na.color)
 
-  function(x) {
+  withColorAttr('factor', list(na.color = na.color), function(x) {
     if (length(x) == 0 || all(is.na(x))) {
       return(pf(x))
     }
@@ -208,7 +217,7 @@ colorFactor = function(palette, domain, levels = NULL, ordered = FALSE,
       warning("Some values were outside the color scale and will be treated as NA")
     }
     pf(scaled)
-  }
+  })
 }
 
 #' @details The \code{palette} argument can be any of the following:

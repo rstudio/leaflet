@@ -751,6 +751,28 @@ var dataframe = (function() {
           console.log("Unknown method " + call.method);
       }
 
+      // color legend
+      if (data.legend) {
+        var legend = L.control({position: data.legend.position});
+
+        legend.onAdd = function (map) {
+          var div = L.DomUtil.create('div', 'info legend'),
+              colors = data.legend.colors,
+              labels = data.legend.labels,
+              cuts = data.legend.cuts,
+              interval = '';
+          for (var i = 0; i < colors.length; i++) {
+            if (cuts) interval = ' title="' + cuts[i] + ' &ndash; ' + cuts[i+1] + '"';
+            div.innerHTML += '<i style="background:' + colors[i] + '"' +
+                              interval + '></i> ' + labels[i] + '<br/>';
+          }
+          return div;
+        };
+
+        // TODO: how to remove it?
+        legend.addTo(map);
+      }
+
       map.leafletr.hasRendered = true;
 
       if (!HTMLWidgets.shinyMode) return;
