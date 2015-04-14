@@ -485,6 +485,9 @@ var dataframe = (function() {
 
       if (!HTMLWidgets.shinyMode) return map;
 
+      // The map is rendered staticly (no output binding, so no this.getId())
+      if (typeof this.getId === 'undefined') return map;
+
       map.id = this.getId(el);
 
       // When the map is clicked, send the coordinates back to the app
