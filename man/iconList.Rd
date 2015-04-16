@@ -130,4 +130,6 @@ leaflet() \%>\% addMarkers(
     'lat = \%.4f, long = \%.4f, group = \%s, pch = \%s', lat, lng, group, shapes[group]
   )
 )
+
+unlink(iconFiles)  # clean up the tmp png files that have been embedded
 }
