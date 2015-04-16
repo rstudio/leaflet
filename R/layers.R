@@ -225,32 +225,123 @@ clearPopups = function(map) {
   invokeMethod(map, NULL, 'clearPopups')
 }
 
-#' @param icon the icon for markers; if you want to create a new icon using
-#'   JavaScript, please remember to use \code{\link[htmlwidgets]{JS}()} on the
-#'   JavaScript string; see \url{http://leafletjs.com/reference.html#icon}
+#' @param icon the icon(s) for markers; you can either use literal JavaScript
+#'   code (e.g. \code{\link[htmlwidgets]{JS}('L.icon({iconUrl: '?', size: [?,
+#'   ?]})')} or an R list to create an icon (e.g. \code{list(iconUrl = '?', size
+#'   = c(x, y))}), or use \code{\link{iconList}()} to create a list of icons;
+#'   note when you use an R list that contains images as local files (tested by
+#'   \code{file.exists()}), these local image files will be base64 encoded into
+#'   the HTML page so the icon images will still be available even when you
+#'   publish the map elsewhere (use \code{iconList(..., embed = FALSE)} if you
+#'   do not want the images to be encoded and embedded)
+#' @param iconGroup when \code{icon} contains a list of different icons, this
+#'   argument is a numeric vector of the same length as \code{lat} and
+#'   \code{lng}, where \code{iconGroup[i]} is the index of the icon in the
+#'   \code{icon} list for \code{lat[i]} and \code{lng[i]}; the main purpose of
+#'   this argument is to reduce the size of the icon data when the icon images
+#'   are base64 encoded: it is not efficient to encode the same image multiple
+#'   times when the image is used multiple times on the map, and we can encode
+#'   it once in \code{iconList()} and index the list using this \code{iconGroup}
+#'   argument
 #' @describeIn map-layers Add markders to the map
 #' @export
 addMarkers = function(
   map, lng = NULL, lat = NULL, layerId = NULL,
   icon = NULL,
+  iconGroup = NULL,
   popup = NULL,
   options = markerOptions(),
   data = getMapData(map)
 ) {
-  options$icon = L.icon(icon)
+  options$icon = L.icon(evalFormula(icon, data))
+  if (length(iconGroup)) {
+    iconGroup = evalFormula(iconGroup, data)
+    if (is.character(iconGroup)) iconGroup = as.factor(iconGroup)
+    iconGroup = as.integer(iconGroup)
+  }
+  options$iconGroup = iconGroup
   pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addMarkers")
   invokeMethod(map, data, 'addMarkers', pts$lat, pts$lng, layerId, options, popup) %>%
     expandLimits(pts$lat, pts$lng)
 }
 
-L.icon = function(options) {
+L.icon = function(options, embed = TRUE) {
   if (!is.list(options)) return(options)
+  if (is.null(names(options))) {
+    if (length(options) == 0) return()
+    # in theory we need to check all sub-lists and all must be named
+    if (is.null(names(options[[1]])))
+      stop('The data for an individual icon must be a named list')
+    # it is already a list of icons, so no further base64 encoding
+    return(options)
+  }
   for (i in c('iconUrl', 'iconRetinaUrl', 'shadowUrl', 'shadowRetinaUrl')) {
     Url = options[[i]]
-    if (!is.character(Url) || !file.exists(Url)) next
+    if (!embed || !is.character(Url) || !file.exists(Url)) next
     options[[i]] = knitr::image_uri(Url)
   }
   options
+}
+
+#' Create a list of icons
+#'
+#' An icon can be represented as a list of the form \code{list(iconUrl,
+#' iconSize, ...)}. This function is vectorized over its arguments to create a
+#' list of icons. See \url{http://leafletjs.com/reference.html#icon} for the
+#' possible attributes of icons.
+#'
+#' Note some icon attributes are of length 2, such as \code{iconSize} and
+#' \code{iconAnchor}, and you have to make sure they are lists of vectors of
+#' length 2, e.g. \code{iconSize = list(c(20, 40))} if all icons use the same
+#' size, or \code{iconSize = list(c(20, 40), c(30, 80))} if the first icon size
+#' is 20 x 40, and the second icon size is 30 x 80. Since \code{\link{mapply}()}
+#' is applied to these arguments, shorter argument values will be re-cycled.
+#' \code{NULL} values for these arguments will be ignored.
+#' @param iconUrl the URL to the icon image
+#' @param iconRetinaUrl the URL to a retina sized version of the icon image
+#' @param iconSize size of the icon image in pixels
+#' @param iconAnchor the coordinates of the "tip" of the icon (relative to its
+#'   top left corner, i.e. the top left corner means \code{iconAnchor = c(0,
+#'   0)}), and the icon will be aligned so that this point is at the marker's
+#'   geographical location
+#' @param shadowUrl the URL to the icon shadow image
+#' @param shadowRetinaUrl the URL to the retina sized version of the icon shadow
+#'   image
+#' @param shadowSize size of the shadow image in pixels
+#' @param shadowAnchor the coordinates of the "tip" of the shadow
+#' @param popupAnchor the coordinates of the point from which popups will
+#'   "open", relative to the icon anchor
+#' @param className a custom class name to assign to both icon and shadow images
+#' @param embed whether to base64 encode local image files
+#' @note The argument \code{embed = TRUE} can be useful when you render the map
+#'   in a static HTML document and you want it to be self-contained (i.e. no
+#'   external image dependencies). If you are sure that the icon images will
+#'   always be available along with the HTML document, it is not necessary to
+#'   encode them. When using the icons in Shiny, you may (pre-)render the icon
+#'   images under the \file{www} directory of the app, and use them without
+#'   base64 encoding them, e.g. you can use an icon \file{www/foo.png} by
+#'   \code{iconList(iconUrl = 'foo.png', embed = FALSE)} (note there is no
+#'   \samp{www} prefix in the icon URL).
+#' @return A list of icon data that can be passed to the \code{icon} argument of
+#'   \code{\link{addMarkers}()}.
+#' @export
+#' @example inst/examples/iconList.R
+iconList = function(
+  iconUrl = NULL, iconRetinaUrl = NULL, iconSize = NULL, iconAnchor = NULL,
+  shadowUrl = NULL, shadowRetinaUrl = NULL, shadowSize = NULL, shadowAnchor = NULL,
+  popupAnchor = NULL, className = NULL, embed = TRUE
+) {
+  attrs = filterNULL(list(
+    iconUrl = iconUrl, iconRetinaUrl = iconRetinaUrl,
+    iconSize = iconSize, iconAnchor = iconAnchor,
+    shadowUrl = shadowUrl, shadowRetinaUrl = shadowRetinaUrl,
+    shadowSize = shadowSize, shadowAnchor = shadowAnchor,
+    popupAnchor = popupAnchor, className = className
+  ))
+  do.call(mapply, c(attrs, list(
+    FUN = function(...) L.icon(list(...), embed),
+    SIMPLIFY = FALSE, USE.NAMES = FALSE
+  )))
 }
 
 #' @param clickable whether the element emits mouse events

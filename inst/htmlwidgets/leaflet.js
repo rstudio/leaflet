@@ -289,9 +289,25 @@ var dataframe = (function() {
 
   methods.addMarkers = function(lat, lng, layerId, options, popup) {
     // create the icon if it was not created by JS('L.icon()')
-    if (options.icon && !(options.icon instanceof L.Icon)) {
-      options.icon = L.icon(options.icon);
+    var icon = options.icon, iconGroup = options.iconGroup;
+    delete options.icon; delete options.iconGroup;
+    var makeIcon = function(icon) {
+      if (icon instanceof L.Icon) return icon;
+      return L.icon(icon);
+    };
+    if (icon) {
+      if (icon instanceof Array) {
+        icon = $.map(icon, makeIcon);
+      } else {
+        icon = makeIcon(icon);
+      }
     }
+    var getIcon = function(i) {
+      var iconArray = icon instanceof Array;
+      if (!iconArray) return icon;
+      var idx = iconGroup ? iconGroup[i] - 1 : i % icon.length;
+      return icon[idx];
+    };
     var df = dataframe.create()
       .col('lat', lat)
       .col('lng', lng)
@@ -301,7 +317,9 @@ var dataframe = (function() {
 
     for (var i = 0; i < df.nrow(); i++) {
       (function() {
-        var marker = L.marker([df.get(i, 'lat'), df.get(i, 'lng')], df.get(i));
+        var options = df.get(i);
+        if (icon) options.icon = getIcon(i);
+        var marker = L.marker([df.get(i, 'lat'), df.get(i, 'lng')], options);
         var thisId = df.get(i, 'layerId');
         this.markers.add(marker, thisId);
         var popup = df.get(i, 'popup');
