@@ -12,19 +12,12 @@ addLegend = function(
     args = attr(pal, 'colorArgs', exact = TRUE)
     na.color = args$na.color
 
-    if (type == 'numeric') {
-      args$bins = bins
-      type = 'bin'
-    }
+    if (type == 'numeric' || type == 'bin') {
 
-    if (type == 'bin') {
-
-      r = range(values, na.rm = TRUE)
-      n = args$bins + 1
-      cuts = seq(r[1], r[2], length.out = n)
-      mids = (cuts[-1] + cuts[-n]) / 2
-      colors = pal(mids)
-      labels = mids
+      if (type == 'numeric') n = bins else n = args$bins
+      cuts = if (length(n) == 1) pretty(values, n = n) else n
+      colors = pal(cuts)
+      labels = cuts
 
     } else if (type == 'quantile') {
 

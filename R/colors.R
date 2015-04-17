@@ -74,8 +74,7 @@ getBins = function(domain, x, bins) {
     stop("Invalid bins value of ", bins, "; bin count must be at least 2")
   }
 
-  rng = range(domain %||% x, na.rm = TRUE)
-  seq(rng[1], rng[2], length.out = bins + 1)
+  pretty(domain %||% x, n = bins)
 }
 
 #' @details \code{colorBin} also maps continuous numeric data, but performs
