@@ -5,7 +5,6 @@ addLegend = function(
 ) {
   position = match.arg(position)
   formatNum = function(x) format(x, scientific = FALSE, big.mark = ',')
-  cuts = NULL
 
   if (!missing(pal)) {
 
@@ -17,12 +16,15 @@ addLegend = function(
 
       if (type == 'numeric') n = bins else n = args$bins
       cuts = if (length(n) == 1) pretty(values, n = n) else n
+      n = length(cuts)
+      mids = (cuts[-1] + cuts[-n]) / 2
+      i = rep_len(TRUE, n - 1)
       if (type == 'numeric') {
         r = range(values, na.rm = TRUE)
-        cuts = cuts[cuts >= r[1] & cuts <= r[2]]
+        i = mids >= r[1] & mids <= r[2]
       }
-      colors = pal(cuts)
-      labels = cuts
+      colors = pal(mids[i])
+      labels = sprintf('%s &ndash; %s', formatNum(cuts[-n]), formatNum(cuts[-1]))[i]
 
     } else if (type == 'quantile') {
 
@@ -31,7 +33,9 @@ addLegend = function(
       cuts = quantile(values, probs = p, na.rm = TRUE)
       mids = quantile(values, probs = (p[-1] + p[-n]) / 2, na.rm = TRUE)
       colors = pal(mids)
-      labels = mids
+      p = paste0(round(p * 100), '%')
+      cuts = sprintf('%s &ndash; %s', formatNum(cuts[-n]), formatNum(cuts[-1]))
+      labels = sprintf('<span title="%s">%s &ndash; %s</span>', cuts, p[-n], p[-1])
 
     } else if (type == 'factor') {
 
@@ -49,7 +53,7 @@ addLegend = function(
 
   map$x$legend = list(
     colors = I(unname(colors)), labels = I(unname(labels)),
-    cuts = I(unname(cuts)), position = position
+    position = position
   )
   map
 }

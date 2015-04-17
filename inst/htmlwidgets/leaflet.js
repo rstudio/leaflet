@@ -759,13 +759,12 @@ var dataframe = (function() {
           var div = L.DomUtil.create('div', 'info legend'),
               colors = data.legend.colors,
               labels = data.legend.labels,
-              cuts = data.legend.cuts,
-              interval = '';
+              legendHTML = '';
           for (var i = 0; i < colors.length; i++) {
-            if (cuts) interval = ' title="' + cuts[i] + ' &ndash; ' + cuts[i+1] + '"';
-            div.innerHTML += '<i style="background:' + colors[i] + '"' +
-                              interval + '></i> ' + labels[i] + '<br/>';
+            legendHTML += '<i style="background:' + colors[i] + '"></i> ' +
+                          labels[i] + '<br/>';
           }
+          div.innerHTML = legendHTML;
           return div;
         };
 
