@@ -16,6 +16,10 @@ addLegend = function(
 
       if (type == 'numeric') n = bins else n = args$bins
       cuts = if (length(n) == 1) pretty(values, n = n) else n
+      if (type == 'numeric') {
+        r = range(values, na.rm = TRUE)
+        cuts = cuts[cuts >= r[1] & cuts <= r[2]]
+      }
       colors = pal(cuts)
       labels = cuts
 
