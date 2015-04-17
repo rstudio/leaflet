@@ -56,7 +56,7 @@ addLegend = function(
 
     } else stop('Palette function not supported')
     labels = formatNum(labels)
-    if (any(is.na(values))) {
+    if (type != 'numeric' && any(is.na(values))) {
       colors = c(colors, na.color)
       labels = c(labels, na.label)
     }
