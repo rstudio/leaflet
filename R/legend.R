@@ -42,6 +42,7 @@ addLegend = function(
       labels = as.character(v)
 
     } else stop('Palette function not supported')
+    labels = format(labels, scientific = FALSE, big.mark = ',')
     if (any(is.na(values))) {
       colors = c(colors, na.color)
       labels = c(labels, na.label)
