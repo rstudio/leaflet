@@ -4,6 +4,7 @@ addLegend = function(
   pal, values, na.label = 'NA', bins = 7, colors, labels
 ) {
   position = match.arg(position)
+  type = 'unknown'; extra = NULL
   formatNum = function(x) format(x, scientific = FALSE, big.mark = ',')
 
   if (!missing(pal)) {
@@ -17,14 +18,24 @@ addLegend = function(
       if (type == 'numeric') n = bins else n = args$bins
       cuts = if (length(n) == 1) pretty(values, n = n) else n
       n = length(cuts)
-      mids = (cuts[-1] + cuts[-n]) / 2
-      i = rep_len(TRUE, n - 1)
       if (type == 'numeric') {
         r = range(values, na.rm = TRUE)
-        i = mids >= r[1] & mids <= r[2]
+        cuts = cuts[cuts >= r[1] & cuts <= r[2]]
+        n = length(cuts)
+        p = (cuts - r[1]) / (r[2] - r[1])
+        extra = c(
+          (1 - p[1] / (p[2] - p[1])),
+          (n - 1) + (p[1] + 1 - p[n]) / (p[2] - p[1])
+        ) / n
+        p = c('', paste0(100 * p, '%'), '')
+        colors = pal(c(r[1], cuts, r[2]))
+        colors = paste(colors, p, sep = ' ', collapse = ', ')
+        labels = sprintf('- %s', formatNum(cuts))
+      } else {
+        mids = (cuts[-1] + cuts[-n]) / 2
+        colors = pal(mids)
+        labels = sprintf('%s &ndash; %s', formatNum(cuts[-n]), formatNum(cuts[-1]))
       }
-      colors = pal(mids[i])
-      labels = sprintf('%s &ndash; %s', formatNum(cuts[-n]), formatNum(cuts[-1]))[i]
 
     } else if (type == 'quantile') {
 

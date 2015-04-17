@@ -754,22 +754,51 @@ var dataframe = (function() {
       // color legend
       if (data.legend) {
         var legend = L.control({position: data.legend.position});
+        var gradSpan;
 
         legend.onAdd = function (map) {
           var div = L.DomUtil.create('div', 'info legend'),
               colors = data.legend.colors,
               labels = data.legend.labels,
               legendHTML = '';
-          for (var i = 0; i < colors.length; i++) {
-            legendHTML += '<i style="background:' + colors[i] + '"></i> ' +
-                          labels[i] + '<br/>';
+          if (data.legend.type === 'numeric') {
+            gradSpan = $('<span/>').css({
+              'background': 'linear-gradient(' + colors + ')',
+              'height': '100px',
+              'width': '18px',
+              'display': 'block'
+            });
+            var leftDiv = $('<div/>').css('float', 'left'),
+                rightDiv = $('<div/>').css('float', 'right');
+            leftDiv.append(gradSpan);
+            var labelTable = '<table>';
+            for (var i = 0; i < labels.length; i++) {
+              labelTable += '<tr><td><span style="display: block;">' + labels[i] +
+                            '</span></td></tr>';
+            }
+            labelTable += '</table>';
+            rightDiv.append(labelTable);
+            $(div).append(leftDiv).append(rightDiv);
+          } else {
+            for (var i = 0; i < colors.length; i++) {
+              legendHTML += '<i style="background:' + colors[i] + '"></i> ' +
+                            labels[i] + '<br/>';
+            }
+            div.innerHTML = legendHTML;
           }
-          div.innerHTML = legendHTML;
           return div;
         };
 
         // TODO: how to remove it?
         legend.addTo(map);
+
+        // calculate the height of the gradient bar after the legend is rendered
+        if (data.legend.type === 'numeric') {
+          var legendHeight = $(legend.getContainer()).find('table').height();
+          gradSpan.height(data.legend.extra[1] * legendHeight).css({
+            'margin-top': data.legend.extra[0] * legendHeight
+          });
+        }
       }
 
       map.leafletr.hasRendered = true;
