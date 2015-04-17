@@ -1,7 +1,7 @@
 #' @export
 addLegend = function(
   map, position = c('topright', 'bottomright', 'bottomleft', 'topleft'),
-  pal, values, na.label = 'NA', bins = 7, colors, labels
+  pal, values, na.label = 'NA', bins = 7, colors, labels, title = deparse(substitute(values))
 ) {
   position = match.arg(position)
   type = 'unknown'; extra = NULL
@@ -64,7 +64,7 @@ addLegend = function(
 
   map$x$legend = list(
     colors = I(unname(colors)), labels = I(unname(labels)),
-    position = position
+    position = position, type = type, title = title, extra = extra
   )
   map
 }
