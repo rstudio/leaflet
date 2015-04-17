@@ -4,6 +4,7 @@ addLegend = function(
   pal, values, na.label = 'NA', bins = 7, colors, labels
 ) {
   position = match.arg(position)
+  formatNum = function(x) format(x, scientific = FALSE, big.mark = ',')
   cuts = NULL
 
   if (!missing(pal)) {
@@ -39,7 +40,7 @@ addLegend = function(
       labels = as.character(v)
 
     } else stop('Palette function not supported')
-    labels = format(labels, scientific = FALSE, big.mark = ',')
+    labels = formatNum(labels)
     if (any(is.na(values))) {
       colors = c(colors, na.color)
       labels = c(labels, na.label)
