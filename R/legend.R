@@ -24,8 +24,8 @@ addLegend = function(
         n = length(cuts)
         p = (cuts - r[1]) / (r[2] - r[1])
         extra = c(
-          (1 - p[1] / (p[2] - p[1])),
-          (n - 1) + (p[1] + 1 - p[n]) / (p[2] - p[1])
+          (1 - p[1] / (p[2] - p[1])),  # top margin % of the color gradient span
+          (n - 1) + (p[1] + 1 - p[n]) / (p[2] - p[1])  # height of color gradient
         ) / n
         p = c('', paste0(100 * p, '%'), '')
         colors = pal(c(r[1], cuts, r[2]))
