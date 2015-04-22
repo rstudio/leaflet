@@ -4,7 +4,7 @@ addLegend = function(
   pal, values, na.label = 'NA', bins = 7, colors, labels, title = deparse(substitute(values))
 ) {
   position = match.arg(position)
-  type = 'unknown'; extra = NULL
+  type = 'unknown'; extra = NULL; na.color = NULL
   formatNum = function(x) format(x, scientific = FALSE, big.mark = ',')
 
   if (!missing(pal)) {
@@ -55,15 +55,14 @@ addLegend = function(
       labels = as.character(v)
 
     } else stop('Palette function not supported')
+
     labels = formatNum(labels)
-    if (type != 'numeric' && any(is.na(values))) {
-      colors = c(colors, na.color)
-      labels = c(labels, na.label)
-    }
+    if (!any(is.na(values))) na.color = NULL
   }
 
   map$x$legend = list(
     colors = I(unname(colors)), labels = I(unname(labels)),
+    na_color = na.color, na_label = na.label,
     position = position, type = type, title = title, extra = extra
   )
   map

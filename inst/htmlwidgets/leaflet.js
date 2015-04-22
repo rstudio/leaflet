@@ -768,8 +768,8 @@ var dataframe = (function() {
               'width': '18px',
               'display': 'block'
             });
-            var leftDiv = $('<div/>').css('float', 'left'),
-                rightDiv = $('<div/>').css('float', 'right');
+            var leftDiv = $('<div/>').css('display', 'inline-block'),
+                rightDiv = $('<div/>').css('display', 'inline-block');
             leftDiv.append(gradSpan);
             var labelTable = '<table>';
             for (var i = 0; i < labels.length; i++) {
@@ -779,7 +779,15 @@ var dataframe = (function() {
             labelTable += '</table>';
             rightDiv.append(labelTable);
             $(div).append(leftDiv).append(rightDiv);
+            if (data.legend.na_color) {
+              $(div).append('<div><i style="background:' + data.legend.na_color +
+                            '"></i> ' + data.legend.na_label + '</div>');
+            }
           } else {
+            if (data.legend.na_color) {
+              colors.push(data.legend.na_color);
+              labels.push(data.legend.na_label);
+            }
             for (var i = 0; i < colors.length; i++) {
               legendHTML += '<i style="background:' + colors[i] + '"></i> ' +
                             labels[i] + '<br/>';
