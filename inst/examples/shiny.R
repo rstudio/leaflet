@@ -14,7 +14,7 @@ server <- function(input, output, session) {
   v <- reactiveValues(msg = "")
 
   output$map1 <- renderLeaflet({
-    m = leaflet() %>%
+    leaflet() %>%
       addGeoJSON(geodata) %>%
       addCircles(-60, 60, radius = 5e5, layerId = "circle") %>%
       fitBounds(-87.1875, 71.4131, 128.3203, 0.3515)
