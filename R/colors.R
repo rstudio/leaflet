@@ -91,10 +91,11 @@ colorBin = function(palette, domain, bins = 7, na.color = "#808080") {
   if (missing(domain) && length(bins) > 1) {
     domain = NULL
   }
+  autobin = is.null(domain) && length(bins) == 1
   if (!is.null(domain))
     bins = getBins(domain, NULL, bins)
   numColors = if (length(bins) == 1) bins else length(bins) - 1
-  colorFunc = colorFactor(palette, domain = 1:numColors, na.color = na.color)
+  colorFunc = colorFactor(palette, domain = if (!autobin) 1:numColors, na.color = na.color)
   pf = safePaletteFunc(palette, na.color)
 
   withColorAttr('bin', list(bins = bins, na.color = na.color), function(x) {
