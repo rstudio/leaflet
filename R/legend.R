@@ -31,7 +31,7 @@ addLegend = function(
         p = c('', paste0(100 * p, '%'), '')
         colors = pal(c(r[1], cuts, r[2]))
         colors = paste(colors, p, sep = ' ', collapse = ', ')
-        labels = sprintf('- %s', formatNum(cuts))
+        labels = formatNum(cuts)
       } else {
         mids = (cuts[-1] + cuts[-n]) / 2
         colors = pal(mids)

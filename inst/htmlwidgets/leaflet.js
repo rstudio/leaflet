@@ -774,7 +774,8 @@ var dataframe = (function() {
             leftDiv.append(gradSpan);
             var labelTable = '<table>';
             for (var i = 0; i < labels.length; i++) {
-              labelTable += '<tr><td><span style="display: block;">' + labels[i] +
+              labelTable += '<tr><td>-</td><td style="text-align:right">' +
+                            '<span style="display: block;">' + labels[i] +
                             '</span></td></tr>';
             }
             labelTable += '</table>';
