@@ -12,7 +12,7 @@
 \title{Graphics elements and layers}
 \usage{
 addTiles(map, urlTemplate = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", 
-    attribution = NULL, options = tileOptions())
+    attribution = NULL, layerId = NULL, options = tileOptions())
 
 addPopups(map, lng = NULL, lat = NULL, popup, layerId = NULL, options = popupOptions(), 
     data = getMapData(map))
@@ -54,6 +54,8 @@ addGeoJSON(map, geojson, layerId = NULL)
 
 \item{attribution}{the attribution text of the tile layer (HTML)}
 
+\item{layerId}{the layer id}
+
 \item{options}{a list of extra options for tile layers, popups, paths
 (circles, rectangles, polygons, ...), or other map elements}
 
@@ -70,8 +72,6 @@ the latitude column from \code{data})}
 \item{popup}{a character vector of the HTML content for the popups (you are
 recommended to escape the text using \code{\link[htmltools]{htmlEscape}()}
 for security reasons)}
-
-\item{layerId}{the layer id}
 
 \item{data}{the data object from which the argument values are derived; by
 default, it is the \code{data} object provided to \code{leaflet()}

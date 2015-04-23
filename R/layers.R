@@ -70,6 +70,7 @@ addTiles = function(
   map,
   urlTemplate = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
   attribution = NULL,
+  layerId = NULL,
   options = tileOptions()
 ) {
   options$attribution = attribution
@@ -78,7 +79,7 @@ addTiles = function(
       '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a>',
       'contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
     )
-  appendMapData(map, getMapData(map), 'tileLayer', urlTemplate, options)
+  appendMapData(map, getMapData(map), 'tileLayer', urlTemplate, layerId, options)
 }
 
 #' Extra options for map elements and layers
@@ -119,6 +120,24 @@ tileOptions = function(
     zIndex = zIndex, unloadInvisibleTiles = unloadInvisibleTiles,
     updateWhenIdle = updateWhenIdle, detectRetina = detectRetina,
     reuseTiles = reuseTiles
+  )
+}
+
+#' @export
+removeTiles = function(map, layerId) {
+  dispatch(map,
+    remote = {
+      invokeRemote(map, 'removeTileLayer', layerId);
+    }
+  )
+}
+
+#' @export
+clearTiles = function(map) {
+  dispatch(map,
+    remote = {
+      invokeRemote(map, 'clearTileLayers')
+    }
   )
 }
 
@@ -174,6 +193,24 @@ popupOptions = function(
     maxWidth = maxWidth, minWidth = minWidth, maxHeight = maxHeight,
     autoPan = autoPan, keepInView = keepInView, closeButton = closeButton,
     zoomAnimation = zoomAnimation, closeOnClick = closeOnClick, className = className
+  )
+}
+
+#' @export
+removePopup = function(map, layerId) {
+  dispatch(map,
+    remote = {
+      invokeRemote(map, 'removePopup', layerId);
+    }
+  )
+}
+
+#' @export
+clearPopups = function(map) {
+  dispatch(map,
+    remote = {
+      invokeRemote(map, 'clearPopups')
+    }
   )
 }
 
@@ -258,6 +295,24 @@ addCircleMarkers = function(
   pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addCircleMarkers")
   appendMapData(map, data, 'circleMarker', pts$lat, pts$lng, radius, layerId, options, popup) %>%
     expandLimits(pts$lat, pts$lng)
+}
+
+#' @export
+removeMarker = function(map, layerId) {
+  dispatch(map,
+    remote = {
+      invokeRemote(map, 'removeMarker', layerId);
+    }
+  )
+}
+
+#' @export
+clearMarkers = function(map) {
+  dispatch(map,
+    remote = {
+      invokeRemote(map, 'clearMarkers')
+    }
+  )
 }
 
 #' @param lineCap a string that defines
@@ -400,6 +455,24 @@ addPolygons = function(
   pgons = derivePolygons(data, lng, lat, missing(lng), missing(lat), "addPolygons")
   appendMapData(map, data, 'polygon', pgons, layerId, options, popup) %>%
     expandLimitsBbox(pgons)
+}
+
+#' @export
+removeShape = function(map, layerId) {
+  dispatch(map,
+    remote = {
+      invokeRemote(map, 'removeShape', layerId);
+    }
+  )
+}
+
+#' @export
+clearShapes = function(map) {
+  dispatch(map,
+    remote = {
+      invokeRemote(map, 'clearShapes')
+    }
+  )
 }
 
 #' @param geojson a GeoJSON list

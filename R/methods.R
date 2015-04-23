@@ -17,18 +17,37 @@
 #' m %>% fitBounds(-72, 40, -70, 43)
 #' m %>% clearBounds()  # world view
 setView = function(map, lng, lat, zoom, options = list()) {
-  map$x$setView = list(c(lat, lng), zoom, options)
-  map$x$fitBounds = NULL
-  map
+  view = list(c(lat, lng), zoom, options)
+
+  dispatch(map,
+    local = {
+      map$x$setView = view
+      map$x$fitBounds = NULL
+      map
+    },
+    remote = {
+      invokeRemote(map, "setView", view)
+      map
+    }
+  )
 }
 
 #' @describeIn map-methods Set the bounds of a map
 #' @param lng1,lat1,lng2,lat2 the coordinates of the map bounds
 #' @export
 fitBounds = function(map, lng1, lat1, lng2, lat2) {
-  map$x$fitBounds = list(lat1, lng1, lat2, lng2)
-  map$x$setView = NULL
-  map
+  bounds = list(lat1, lng1, lat2, lng2)
+
+  dispatch(map,
+    local = {
+      map$x$fitBounds = bounds
+      map$x$setView = NULL
+      map
+    },
+    remote = {
+      invokeRemote(map, "fitBounds", bounds)
+    }
+  )
 }
 
 #' @describeIn map-methods Clear the bounds of a map, and the bounds will be
@@ -36,7 +55,14 @@ fitBounds = function(map, lng1, lat1, lng2, lat2) {
 #'   if available (otherwise the full world view is used)
 #' @export
 clearBounds = function(map) {
-  map$x$fitBounds = NULL
-  map$x$setView = NULL
-  map
+  dispatch(map,
+    local = {
+      map$x$fitBounds = NULL
+      map$x$setView = NULL
+      map
+    },
+    remote = {
+
+    }
+  )
 }
