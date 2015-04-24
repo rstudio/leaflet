@@ -5,6 +5,8 @@ geodata <- paste(readLines(system.file("examples/test.json", package = "leaflet"
 
 ui <- fluidPage(
   leafletOutput("map1"),
+  checkboxInput("addMarker", "Add marker on click"),
+  actionButton("clearMarkers", "Clear all markers"),
   textOutput("message", container = h3)
 )
 
@@ -38,12 +40,19 @@ server <- function(input, output, session) {
   })
   observeEvent(input$map1_click, {
     v$msg <- paste("Clicked map at", input$map1_click$lat, "/", input$map1_click$lng)
+    if (input$addMarker) {
+      getMapProxy("map1") %>%
+        addMarkers(lng = input$map1_click$lng, lat = input$map1_click$lat)
+    }
   })
   observeEvent(input$map1_zoom, {
     v$msg <- paste("Zoom changed to", input$map1_zoom)
   })
   observeEvent(input$map1_bounds, {
     v$msg <- paste("Bounds changed to", paste(input$map1_bounds, collapse = ", "))
+  })
+  observeEvent(input$clearMarkers, {
+    getMapProxy("map1") %>% clearMarkers()
   })
 
   output$message <- renderText(v$msg)
