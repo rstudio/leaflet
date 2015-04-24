@@ -1,3 +1,6 @@
+# Given a local and/or remote operation and a map, execute one or the other
+# depending on the type of the map object (regular or map proxy). If code was
+# not provided for the appropriate mode, an error will be raised.
 dispatch = function(map,
   local = stop("Operation requires a map proxy object"),
   remote = stop("Operation does not support map proxy objects")
