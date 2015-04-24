@@ -229,7 +229,8 @@ var dataframe = (function() {
     Shiny.onInputChange(id + '_zoom', map.getZoom());
   }
 
-  var methods = {};
+  window.LeafletWidget = {};
+  var methods = window.LeafletWidget.methods = {};
 
   methods.setView = function(center, zoom, options) {
     this.setView(center, zoom, options);
@@ -614,20 +615,6 @@ var dataframe = (function() {
         methods[call.method].apply(map, call.args);
       else
         console.log("Unknown method " + call.method);
-    }
-  });
-
-  // Shiny support via the Leaflet map controller
-  Shiny.addCustomMessageHandler('leaflet', function(data) {
-    var mapId = data.mapId;
-    var map = document.getElementById(mapId);
-    if (!map)
-      return;
-
-    if (methods[data.method]) {
-      methods[data.method].apply(map, data.args);
-    } else {
-      throw new Error('Unknown method ' + data.method);
     }
   });
 
