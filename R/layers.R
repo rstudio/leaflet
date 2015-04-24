@@ -125,20 +125,12 @@ tileOptions = function(
 
 #' @export
 removeTiles = function(map, layerId) {
-  dispatch(map,
-    remote = {
-      invokeRemote(map, 'removeTileLayer', layerId);
-    }
-  )
+  appendMapData(map, NULL, 'removeTileLayer', layerId)
 }
 
 #' @export
 clearTiles = function(map) {
-  dispatch(map,
-    remote = {
-      invokeRemote(map, 'clearTileLayers')
-    }
-  )
+  appendMapData(map, NULL, 'clearTileLayers')
 }
 
 #' @param lng a numeric vector of longitudes, or a one-sided formula of the form
@@ -198,20 +190,12 @@ popupOptions = function(
 
 #' @export
 removePopup = function(map, layerId) {
-  dispatch(map,
-    remote = {
-      invokeRemote(map, 'removePopup', layerId);
-    }
-  )
+  appendMapData(map, NULL, 'removePopup', layerId)
 }
 
 #' @export
 clearPopups = function(map) {
-  dispatch(map,
-    remote = {
-      invokeRemote(map, 'clearPopups')
-    }
-  )
+  appendMapData(map, NULL, 'clearPopups')
 }
 
 #' @param icon the icon for markers; if you want to create a new icon using
@@ -299,20 +283,12 @@ addCircleMarkers = function(
 
 #' @export
 removeMarker = function(map, layerId) {
-  dispatch(map,
-    remote = {
-      invokeRemote(map, 'removeMarker', layerId);
-    }
-  )
+  appendMapData(map, NULL, 'removeMarker', layerId)
 }
 
 #' @export
 clearMarkers = function(map) {
-  dispatch(map,
-    remote = {
-      invokeRemote(map, 'clearMarkers')
-    }
-  )
+  appendMapData(map, NULL, 'clearMarkers')
 }
 
 #' @param lineCap a string that defines
@@ -459,20 +435,12 @@ addPolygons = function(
 
 #' @export
 removeShape = function(map, layerId) {
-  dispatch(map,
-    remote = {
-      invokeRemote(map, 'removeShape', layerId);
-    }
-  )
+  appendMapData(map, NULL, 'removeShape', layerId)
 }
 
 #' @export
 clearShapes = function(map) {
-  dispatch(map,
-    remote = {
-      invokeRemote(map, 'clearShapes')
-    }
-  )
+  appendMapData(map, NULL, 'clearShapes')
 }
 
 #' @param geojson a GeoJSON list
