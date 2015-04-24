@@ -60,9 +60,6 @@ clearBounds = function(map) {
       map$x$fitBounds = NULL
       map$x$setView = NULL
       map
-    },
-    remote = {
-
     }
   )
 }
