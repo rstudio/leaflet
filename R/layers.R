@@ -60,6 +60,7 @@ bboxAdd = function(a, b) {
 #' @param attribution the attribution text of the tile layer (HTML)
 #' @param options a list of extra options for tile layers, popups, paths
 #'   (circles, rectangles, polygons, ...), or other map elements
+#' @return the new \code{map} object
 #' @seealso \code{\link{tileOptions}}, \code{\link{popupOptions}},
 #'   \code{\link{markerOptions}}, \code{\link{pathOptions}}
 #' @references The Leaflet API documentation:
@@ -123,11 +124,35 @@ tileOptions = function(
   )
 }
 
+#' Remove elements from a map
+#'
+#' Remove one or more features from a map, identified by \code{layerId}; or,
+#' clear all features of the given type.
+#'
+#' @note When used with a \code{\link{leaflet}}() map object, these functions
+#' don't actually remove the features from the map object, but simply add an
+#' operation that will cause those features to be removed after they are added.
+#' In other words, if you add a polygon \code{"foo"} and the call
+#' \code{removeShape("foo")}, it's not smart enough to prevent the polygon from
+#' being added in the first place; instead, when the map is rendered, the
+#' polygon will be added and then removed.
+#'
+#' For that reason, these functions aren't that useful with \code{leaflet} map
+#' objects and are really intended to be used with \code{\link{getMapProxy}}
+#' instead.
+#'
+#' @param map a map widget object, possibly created from \code{\link{leaflet}}()
+#'   but more likely from \code{\link{getMapProxy}}()
+#' @param layerId character vector; the layer id(s) of the item to remove
+#' @return the new \code{map} object
+#'
+#' @name remove
 #' @export
 removeTiles = function(map, layerId) {
   appendMapData(map, NULL, 'removeTileLayer', layerId)
 }
 
+#' @rdname remove
 #' @export
 clearTiles = function(map) {
   appendMapData(map, NULL, 'clearTileLayers')
@@ -188,11 +213,13 @@ popupOptions = function(
   )
 }
 
+#' @rdname remove
 #' @export
 removePopup = function(map, layerId) {
   appendMapData(map, NULL, 'removePopup', layerId)
 }
 
+#' @rdname remove
 #' @export
 clearPopups = function(map) {
   appendMapData(map, NULL, 'clearPopups')
@@ -281,11 +308,13 @@ addCircleMarkers = function(
     expandLimits(pts$lat, pts$lng)
 }
 
+#' @rdname remove
 #' @export
 removeMarker = function(map, layerId) {
   appendMapData(map, NULL, 'removeMarker', layerId)
 }
 
+#' @rdname remove
 #' @export
 clearMarkers = function(map) {
   appendMapData(map, NULL, 'clearMarkers')
@@ -433,11 +462,13 @@ addPolygons = function(
     expandLimitsBbox(pgons)
 }
 
+#' @rdname remove
 #' @export
 removeShape = function(map, layerId) {
   appendMapData(map, NULL, 'removeShape', layerId)
 }
 
+#' @rdname remove
 #' @export
 clearShapes = function(map) {
   appendMapData(map, NULL, 'clearShapes')

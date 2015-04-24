@@ -115,6 +115,9 @@ north-east corners of rectangles}
 
 \item{geojson}{a GeoJSON list}
 }
+\value{
+the new \code{map} object
+}
 \description{
 Add graphics elements and layers to the map widget.
 }
