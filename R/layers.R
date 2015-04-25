@@ -480,3 +480,15 @@ clearShapes = function(map) {
 addGeoJSON = function(map, geojson, layerId = NULL) {
   appendMapData(map, getMapData(map), 'geoJSON', geojson, layerId)
 }
+
+#' @rdname remove
+#' @export
+removeGeoJSON = function(map, layerId) {
+  appendMapData(map, NULL, 'removeGeoJSON', layerId)
+}
+
+#' @rdname remove
+#' @export
+clearGeoJSON = function(map) {
+  appendMapData(map, NULL, 'clearGeoJSON')
+}

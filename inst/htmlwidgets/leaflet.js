@@ -483,6 +483,16 @@ var dataframe = (function() {
     this.geojson.add(gjlayer, layerId);
   };
 
+  methods.removeGeoJSON = function(layerId) {
+    this.geojson.remove(layerId);
+  };
+
+  methods.clearGeoJSON = function() {
+    this.geojson.clear();
+  };
+
+
+
   HTMLWidgets.widget({
     name: "leaflet",
     type: "output",

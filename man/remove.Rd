@@ -1,10 +1,12 @@
 % Please edit documentation in R/layers.R
 \name{remove}
+\alias{clearGeoJSON}
 \alias{clearMarkers}
 \alias{clearPopups}
 \alias{clearShapes}
 \alias{clearTiles}
 \alias{remove}
+\alias{removeGeoJSON}
 \alias{removeMarker}
 \alias{removePopup}
 \alias{removeShape}
@@ -26,6 +28,10 @@ clearMarkers(map)
 removeShape(map, layerId)
 
 clearShapes(map)
+
+removeGeoJSON(map, layerId)
+
+clearGeoJSON(map)
 }
 \arguments{
 \item{map}{a map widget object, possibly created from \code{\link{leaflet}}()
