@@ -9,6 +9,7 @@ Authors@R: c(
       person("Hadley", "Wickham", role = c("ctb")),
       person("jQuery contributors", role = c("ctb", "cph"), comment = "jQuery library"),
       person("Leaflet contributors", role = c("ctb", "cph"), comment = "Leaflet library"),
+      person("Leaflet Providers contributors", role = c("ctb", "cph"), comment = "Leaflet Providers plugin"),
       person("RStudio", role = c("cph"))
     )
 Maintainer: Joe Cheng <joe@rstudio.com>

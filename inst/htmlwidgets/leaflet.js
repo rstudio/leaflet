@@ -624,6 +624,9 @@ var dataframe = (function() {
 
     for (var i = 0; i < data.calls.length; i++) {
       var call = data.calls[i];
+      if (call.dependencies) {
+        Shiny.renderDependencies(call.dependencies);
+      }
       if (methods[call.method])
         methods[call.method].apply(map, call.args);
       else
