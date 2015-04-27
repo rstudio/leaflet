@@ -242,7 +242,7 @@ var dataframe = (function() {
     ]);
   };
 
-  methods.popup = function(lat, lng, popup, layerId, options) {
+  methods.addPopups = function(lat, lng, popup, layerId, options) {
     var df = dataframe.create()
       .col('lat', lat)
       .col('lng', lng)
@@ -272,19 +272,19 @@ var dataframe = (function() {
     this.popups.clear();
   };
 
-  methods.tileLayer = function(urlTemplate, layerId, options) {
+  methods.addTiles = function(urlTemplate, layerId, options) {
     this.tiles.add(L.tileLayer(urlTemplate, options), layerId);
   };
 
-  methods.removeTileLayer = function(layerId) {
+  methods.removeTiles = function(layerId) {
     this.tiles.remove(layerId);
   };
 
-  methods.clearTileLayers = function() {
+  methods.clearTiles = function() {
     this.tiles.clear();
   };
 
-  methods.marker = function(lat, lng, layerId, options, popup) {
+  methods.addMarkers = function(lat, lng, layerId, options, popup) {
     var df = dataframe.create()
       .col('lat', lat)
       .col('lng', lng)
@@ -306,7 +306,7 @@ var dataframe = (function() {
     }
   };
 
-  methods.circle = function(lat, lng, radius, layerId, options, popup) {
+  methods.addCircles = function(lat, lng, radius, layerId, options, popup) {
     var df = dataframe.create()
       .col('lat', lat)
       .col('lng', lng)
@@ -329,7 +329,7 @@ var dataframe = (function() {
     }
   };
 
-  methods.circleMarker = function(lat, lng, radius, layerId, options, popup) {
+  methods.addCircleMarkers = function(lat, lng, radius, layerId, options, popup) {
     var df = dataframe.create()
       .col('lat', lat)
       .col('lng', lng)
@@ -356,7 +356,7 @@ var dataframe = (function() {
    * @param lat Array of arrays of latitude coordinates for polylines
    * @param lng Array of arrays of longitude coordinates for polylines
    */
-  methods.polyline = function(polygons, layerId, options, popup) {
+  methods.addPolylines = function(polygons, layerId, options, popup) {
     var df = dataframe.create()
       .col('shapes', polygons)
       .col('layerId', layerId)
@@ -395,7 +395,7 @@ var dataframe = (function() {
     this.shapes.clear();
   };
 
-  methods.rectangle = function(lat1, lng1, lat2, lng2, layerId, options, popup) {
+  methods.addRectangles = function(lat1, lng1, lat2, lng2, layerId, options, popup) {
     var df = dataframe.create()
       .col('lat1', lat1)
       .col('lng1', lng1)
@@ -427,7 +427,7 @@ var dataframe = (function() {
    * @param lat Array of arrays of latitude coordinates for polygons
    * @param lng Array of arrays of longitude coordinates for polygons
    */
-  methods.polygon = function(polygons, layerId, options, popup) {
+  methods.addPolygons = function(polygons, layerId, options, popup) {
     var df = dataframe.create()
       .col('shapes', polygons)
       .col('layerId', layerId)
@@ -452,7 +452,7 @@ var dataframe = (function() {
     }
   };
 
-  methods.geoJSON = function(data, layerId) {
+  methods.addGeoJSON = function(data, layerId) {
     var self = this;
     if (typeof(data) === "string") {
       data = JSON.parse(data);

@@ -80,7 +80,7 @@ addTiles = function(
       '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a>',
       'contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
     )
-  appendMapData(map, getMapData(map), 'tileLayer', urlTemplate, layerId, options)
+  appendMapData(map, getMapData(map), 'addTiles', urlTemplate, layerId, options)
 }
 
 #' Extra options for map elements and layers
@@ -149,13 +149,13 @@ tileOptions = function(
 #' @name remove
 #' @export
 removeTiles = function(map, layerId) {
-  appendMapData(map, NULL, 'removeTileLayer', layerId)
+  appendMapData(map, NULL, 'removeTiles', layerId)
 }
 
 #' @rdname remove
 #' @export
 clearTiles = function(map) {
-  appendMapData(map, NULL, 'clearTileLayers')
+  appendMapData(map, NULL, 'clearTiles')
 }
 
 #' @param lng a numeric vector of longitudes, or a one-sided formula of the form
@@ -181,7 +181,7 @@ addPopups = function(
   data = getMapData(map)
 ) {
   pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addPopups")
-  appendMapData(map, data, 'popup', pts$lat, pts$lng, popup, layerId, options) %>%
+  appendMapData(map, data, 'addPopups', pts$lat, pts$lng, popup, layerId, options) %>%
     expandLimits(pts$lat, pts$lng)
 }
 
@@ -239,7 +239,7 @@ addMarkers = function(
 ) {
   options$icon = icon
   pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addMarkers")
-  appendMapData(map, data, 'marker', pts$lat, pts$lng, layerId, options, popup) %>%
+  appendMapData(map, data, 'addMarkers', pts$lat, pts$lng, layerId, options, popup) %>%
     expandLimits(pts$lat, pts$lng)
 }
 
@@ -304,7 +304,7 @@ addCircleMarkers = function(
     dashArray = dashArray
   ))
   pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addCircleMarkers")
-  appendMapData(map, data, 'circleMarker', pts$lat, pts$lng, radius, layerId, options, popup) %>%
+  appendMapData(map, data, 'addCircleMarkers', pts$lat, pts$lng, radius, layerId, options, popup) %>%
     expandLimits(pts$lat, pts$lng)
 }
 
@@ -366,7 +366,7 @@ addCircles = function(
     dashArray = dashArray
   ))
   pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addCircles")
-  appendMapData(map, data, 'circle', pts$lat, pts$lng, radius, layerId, options, popup) %>%
+  appendMapData(map, data, 'addCircles', pts$lat, pts$lng, radius, layerId, options, popup) %>%
     expandLimits(pts$lat, pts$lng)
 }
 
@@ -397,7 +397,7 @@ addPolylines = function(
     dashArray = dashArray, smoothFactor = smoothFactor, noClip = noClip
   ))
   pgons = derivePolygons(data, lng, lat, missing(lng), missing(lat), "addPolylines")
-  appendMapData(map, data, 'polyline', pgons, layerId, options, popup) %>%
+  appendMapData(map, data, 'addPolylines', pgons, layerId, options, popup) %>%
     expandLimitsBbox(pgons)
 }
 
@@ -430,7 +430,7 @@ addRectangles = function(
   lat1 = resolveFormula(lat1, data)
   lng2 = resolveFormula(lng2, data)
   lat2 = resolveFormula(lat2, data)
-  appendMapData(map, data, 'rectangle',lat1, lng1, lat2, lng2, layerId, options, popup) %>%
+  appendMapData(map, data, 'addRectangles',lat1, lng1, lat2, lng2, layerId, options, popup) %>%
     expandLimits(c(lat1, lat2), c(lng1, lng2))
 }
 
@@ -458,7 +458,7 @@ addPolygons = function(
     dashArray = dashArray, smoothFactor = smoothFactor, noClip = noClip
   ))
   pgons = derivePolygons(data, lng, lat, missing(lng), missing(lat), "addPolygons")
-  appendMapData(map, data, 'polygon', pgons, layerId, options, popup) %>%
+  appendMapData(map, data, 'addPolygons', pgons, layerId, options, popup) %>%
     expandLimitsBbox(pgons)
 }
 
@@ -478,7 +478,7 @@ clearShapes = function(map) {
 #' @describeIn map-layers Add GeoJSON layers to the map
 #' @export
 addGeoJSON = function(map, geojson, layerId = NULL) {
-  appendMapData(map, getMapData(map), 'geoJSON', geojson, layerId)
+  appendMapData(map, getMapData(map), 'addGeoJSON', geojson, layerId)
 }
 
 #' @rdname remove

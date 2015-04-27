@@ -2,13 +2,14 @@
 # depending on the type of the map object (regular or map proxy). If code was
 # not provided for the appropriate mode, an error will be raised.
 dispatch = function(map,
-  local = stop("Operation requires a map proxy object"),
-  remote = stop("Operation does not support map proxy objects")
+  label,
+  leaflet = stop(paste(label, "requires a map proxy object")),
+  leaflet_remote = stop(paste(label, "does not support map proxy objects"))
 ) {
   if (inherits(map, "leaflet"))
-    return(local)
+    return(leaflet)
   else if (inherits(map, "leaflet_remote"))
-    return(remote)
+    return(leaflet_remote)
   else
     stop("Invalid map parameter")
 }
@@ -24,7 +25,8 @@ appendMapData = function(map, data, component, ...) {
   args = evalFormula(list(...), data)
 
   dispatch(map,
-    local = {
+    component,
+    leaflet = {
       x = map$x$calls
       if (is.null(x)) x = list()
       n = length(x)
@@ -32,7 +34,7 @@ appendMapData = function(map, data, component, ...) {
       map$x$calls = x
       map
     },
-    remote = {
+    leaflet_remote = {
       invokeRemote(map, method, args)
       map
     }

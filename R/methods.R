@@ -20,12 +20,13 @@ setView = function(map, lng, lat, zoom, options = list()) {
   view = list(c(lat, lng), zoom, options)
 
   dispatch(map,
-    local = {
+    "setView",
+    leaflet = {
       map$x$setView = view
       map$x$fitBounds = NULL
       map
     },
-    remote = {
+    leaflet_remote = {
       invokeRemote(map, "setView", view)
       map
     }
@@ -39,12 +40,13 @@ fitBounds = function(map, lng1, lat1, lng2, lat2) {
   bounds = list(lat1, lng1, lat2, lng2)
 
   dispatch(map,
-    local = {
+    "fitBounds",
+    leaflet = {
       map$x$fitBounds = bounds
       map$x$setView = NULL
       map
     },
-    remote = {
+    leaflet_remote = {
       invokeRemote(map, "fitBounds", bounds)
     }
   )
@@ -56,7 +58,8 @@ fitBounds = function(map, lng1, lat1, lng2, lat2) {
 #' @export
 clearBounds = function(map) {
   dispatch(map,
-    local = {
+    "clearBounds",
+    leaflet = {
       map$x$fitBounds = NULL
       map$x$setView = NULL
       map
