@@ -80,7 +80,7 @@ addTiles = function(
       '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a>',
       'contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
     )
-  appendMapData(map, getMapData(map), 'addTiles', urlTemplate, layerId, options)
+  invokeMethod(map, getMapData(map), 'addTiles', urlTemplate, layerId, options)
 }
 
 #' Extra options for map elements and layers
@@ -149,13 +149,13 @@ tileOptions = function(
 #' @name remove
 #' @export
 removeTiles = function(map, layerId) {
-  appendMapData(map, NULL, 'removeTiles', layerId)
+  invokeMethod(map, NULL, 'removeTiles', layerId)
 }
 
 #' @rdname remove
 #' @export
 clearTiles = function(map) {
-  appendMapData(map, NULL, 'clearTiles')
+  invokeMethod(map, NULL, 'clearTiles')
 }
 
 #' @param lng a numeric vector of longitudes, or a one-sided formula of the form
@@ -181,7 +181,7 @@ addPopups = function(
   data = getMapData(map)
 ) {
   pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addPopups")
-  appendMapData(map, data, 'addPopups', pts$lat, pts$lng, popup, layerId, options) %>%
+  invokeMethod(map, data, 'addPopups', pts$lat, pts$lng, popup, layerId, options) %>%
     expandLimits(pts$lat, pts$lng)
 }
 
@@ -216,13 +216,13 @@ popupOptions = function(
 #' @rdname remove
 #' @export
 removePopup = function(map, layerId) {
-  appendMapData(map, NULL, 'removePopup', layerId)
+  invokeMethod(map, NULL, 'removePopup', layerId)
 }
 
 #' @rdname remove
 #' @export
 clearPopups = function(map) {
-  appendMapData(map, NULL, 'clearPopups')
+  invokeMethod(map, NULL, 'clearPopups')
 }
 
 #' @param icon the icon for markers; if you want to create a new icon using
@@ -239,7 +239,7 @@ addMarkers = function(
 ) {
   options$icon = icon
   pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addMarkers")
-  appendMapData(map, data, 'addMarkers', pts$lat, pts$lng, layerId, options, popup) %>%
+  invokeMethod(map, data, 'addMarkers', pts$lat, pts$lng, layerId, options, popup) %>%
     expandLimits(pts$lat, pts$lng)
 }
 
@@ -304,20 +304,20 @@ addCircleMarkers = function(
     dashArray = dashArray
   ))
   pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addCircleMarkers")
-  appendMapData(map, data, 'addCircleMarkers', pts$lat, pts$lng, radius, layerId, options, popup) %>%
+  invokeMethod(map, data, 'addCircleMarkers', pts$lat, pts$lng, radius, layerId, options, popup) %>%
     expandLimits(pts$lat, pts$lng)
 }
 
 #' @rdname remove
 #' @export
 removeMarker = function(map, layerId) {
-  appendMapData(map, NULL, 'removeMarker', layerId)
+  invokeMethod(map, NULL, 'removeMarker', layerId)
 }
 
 #' @rdname remove
 #' @export
 clearMarkers = function(map) {
-  appendMapData(map, NULL, 'clearMarkers')
+  invokeMethod(map, NULL, 'clearMarkers')
 }
 
 #' @param lineCap a string that defines
@@ -366,7 +366,7 @@ addCircles = function(
     dashArray = dashArray
   ))
   pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addCircles")
-  appendMapData(map, data, 'addCircles', pts$lat, pts$lng, radius, layerId, options, popup) %>%
+  invokeMethod(map, data, 'addCircles', pts$lat, pts$lng, radius, layerId, options, popup) %>%
     expandLimits(pts$lat, pts$lng)
 }
 
@@ -397,7 +397,7 @@ addPolylines = function(
     dashArray = dashArray, smoothFactor = smoothFactor, noClip = noClip
   ))
   pgons = derivePolygons(data, lng, lat, missing(lng), missing(lat), "addPolylines")
-  appendMapData(map, data, 'addPolylines', pgons, layerId, options, popup) %>%
+  invokeMethod(map, data, 'addPolylines', pgons, layerId, options, popup) %>%
     expandLimitsBbox(pgons)
 }
 
@@ -430,7 +430,7 @@ addRectangles = function(
   lat1 = resolveFormula(lat1, data)
   lng2 = resolveFormula(lng2, data)
   lat2 = resolveFormula(lat2, data)
-  appendMapData(map, data, 'addRectangles',lat1, lng1, lat2, lng2, layerId, options, popup) %>%
+  invokeMethod(map, data, 'addRectangles',lat1, lng1, lat2, lng2, layerId, options, popup) %>%
     expandLimits(c(lat1, lat2), c(lng1, lng2))
 }
 
@@ -458,37 +458,37 @@ addPolygons = function(
     dashArray = dashArray, smoothFactor = smoothFactor, noClip = noClip
   ))
   pgons = derivePolygons(data, lng, lat, missing(lng), missing(lat), "addPolygons")
-  appendMapData(map, data, 'addPolygons', pgons, layerId, options, popup) %>%
+  invokeMethod(map, data, 'addPolygons', pgons, layerId, options, popup) %>%
     expandLimitsBbox(pgons)
 }
 
 #' @rdname remove
 #' @export
 removeShape = function(map, layerId) {
-  appendMapData(map, NULL, 'removeShape', layerId)
+  invokeMethod(map, NULL, 'removeShape', layerId)
 }
 
 #' @rdname remove
 #' @export
 clearShapes = function(map) {
-  appendMapData(map, NULL, 'clearShapes')
+  invokeMethod(map, NULL, 'clearShapes')
 }
 
 #' @param geojson a GeoJSON list
 #' @describeIn map-layers Add GeoJSON layers to the map
 #' @export
 addGeoJSON = function(map, geojson, layerId = NULL) {
-  appendMapData(map, getMapData(map), 'addGeoJSON', geojson, layerId)
+  invokeMethod(map, getMapData(map), 'addGeoJSON', geojson, layerId)
 }
 
 #' @rdname remove
 #' @export
 removeGeoJSON = function(map, layerId) {
-  appendMapData(map, NULL, 'removeGeoJSON', layerId)
+  invokeMethod(map, NULL, 'removeGeoJSON', layerId)
 }
 
 #' @rdname remove
 #' @export
 clearGeoJSON = function(map) {
-  appendMapData(map, NULL, 'clearGeoJSON')
+  invokeMethod(map, NULL, 'clearGeoJSON')
 }
