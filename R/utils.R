@@ -61,6 +61,17 @@ appendMapData = function(map, data, component, ...) {
 #' instead of customizing an in-memory representation, these commands will
 #' execute on the live Leaflet map instance.
 #'
+#' @param mapId single-element character vector indicating the output ID of the
+#'   map to modify
+#' @param session the Shiny session object to which the map belongs; usually the
+#'   default value will suffice
+#' @param data a data object; see Details under the \code{\link{leaflet}} help
+#'   topic
+#' @param deferUntilFlush indicates whether actions performed against this
+#'   instance should be carried out right away, or whether they should be held
+#'   until after the next time all of the outputs are updated; defaults to
+#'   \code{TRUE}
+#'
 #' @examples
 #' \donttest{
 #' library(shiny)
@@ -89,7 +100,7 @@ appendMapData = function(map, data, component, ...) {
 #'
 #' @export
 getMapProxy <- function(mapId, session = shiny::getDefaultReactiveDomain(),
-  data = NULL) {
+  data = NULL, deferUntilFlush = TRUE) {
   structure(
     list(
       session = session,
@@ -97,7 +108,8 @@ getMapProxy <- function(mapId, session = shiny::getDefaultReactiveDomain(),
       x = structure(
         list(),
         leafletData = data
-      )
+      ),
+      deferUntilFlush = deferUntilFlush
     ),
     class = "leaflet_remote"
   )
@@ -107,7 +119,7 @@ invokeRemote = function(map, method, args = list()) {
   if (!inherits(map, "leaflet_remote"))
     stop("Invalid map parameter; map proxy object was expected")
 
-  map$session$sendCustomMessage("leaflet-calls", list(
+  msg <- list(
     id = map$id,
     calls = list(
       list(
@@ -115,7 +127,15 @@ invokeRemote = function(map, method, args = list()) {
         args = args
       )
     )
-  ))
+  )
+
+  if (map$deferUntilFlush) {
+    map$session$onFlushed(function() {
+      map$session$sendCustomMessage("leaflet-calls", msg)
+    }, once = TRUE)
+  } else {
+    map$session$sendCustomMessage("leaflet-calls", msg)
+  }
 }
 
 # A helper function to generate the body of function(x, y) list(x = x, y = y),

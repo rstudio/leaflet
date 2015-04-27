@@ -3,7 +3,23 @@
 \alias{getMapProxy}
 \title{Send commands to a Leaflet instance in a Shiny app}
 \usage{
-getMapProxy(mapId, session = shiny::getDefaultReactiveDomain(), data = NULL)
+getMapProxy(mapId, session = shiny::getDefaultReactiveDomain(), data = NULL, 
+    deferUntilFlush = TRUE)
+}
+\arguments{
+\item{mapId}{single-element character vector indicating the output ID of the
+map to modify}
+
+\item{session}{the Shiny session object to which the map belongs; usually the
+default value will suffice}
+
+\item{data}{a data object; see Details under the \code{\link{leaflet}} help
+topic}
+
+\item{deferUntilFlush}{indicates whether actions performed against this
+  instance should be carried out right away, or whether they should be held
+  until after the next time all of the outputs are updated; defaults to
+  \code{TRUE}}
 }
 \description{
 Creates a map-like object that can be used to customize and control a map
