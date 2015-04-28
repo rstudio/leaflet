@@ -3,33 +3,35 @@
 \alias{iconList}
 \title{Create a list of icons}
 \usage{
-iconList(iconUrl = NULL, iconRetinaUrl = NULL, iconSize = NULL, iconAnchor = NULL, 
-    shadowUrl = NULL, shadowRetinaUrl = NULL, shadowSize = NULL, shadowAnchor = NULL, 
-    popupAnchor = NULL, className = NULL, embed = TRUE)
+iconList(iconUrl = NULL, iconRetinaUrl = NULL, iconSizeX = NULL, iconSizeY = NULL, 
+    iconAnchorX = NULL, iconAnchorY = NULL, shadowUrl = NULL, shadowRetinaUrl = NULL, 
+    shadowSizeX = NULL, shadowSizeY = NULL, shadowAnchorX = NULL, shadowAnchorY = NULL, 
+    popupAnchorX = NULL, popupAnchorY = NULL, className = NULL, embed = TRUE)
 }
 \arguments{
 \item{iconUrl}{the URL to the icon image}
 
 \item{iconRetinaUrl}{the URL to a retina sized version of the icon image}
 
-\item{iconSize}{size of the icon image in pixels}
+\item{iconSizeX, iconSizeY}{size of the icon image in pixels (\code{iconSizeX}
+is width and \code{iconSizeY} is height)}
 
-\item{iconAnchor}{the coordinates of the "tip" of the icon (relative to its
-top left corner, i.e. the top left corner means \code{iconAnchor = c(0,
-0)}), and the icon will be aligned so that this point is at the marker's
-geographical location}
+\item{iconAnchorX, iconAnchorY}{the coordinates of the "tip" of the icon
+(relative to its top left corner, i.e. the top left corner means
+\code{iconAnchorX = 0} and \code{iconAnchorY = 0)}, and the icon will be
+aligned so that this point is at the marker's geographical location}
 
 \item{shadowUrl}{the URL to the icon shadow image}
 
 \item{shadowRetinaUrl}{the URL to the retina sized version of the icon shadow
 image}
 
-\item{shadowSize}{size of the shadow image in pixels}
+\item{shadowSizeX, shadownSizeY}{size of the shadow image in pixels}
 
-\item{shadowAnchor}{the coordinates of the "tip" of the shadow}
+\item{shadowAnchorX, shadowAnchorY}{the coordinates of the "tip" of the shadow}
 
-\item{popupAnchor}{the coordinates of the point from which popups will
-"open", relative to the icon anchor}
+\item{popupAnchorX, popupAnchorY}{the coordinates of the point from which
+popups will "open", relative to the icon anchor}
 
 \item{className}{a custom class name to assign to both icon and shadow images}
 
@@ -47,12 +49,10 @@ possible attributes of icons.
 }
 \details{
 Note some icon attributes are of length 2, such as \code{iconSize} and
-\code{iconAnchor}, and you have to make sure they are lists of vectors of
-length 2, e.g. \code{iconSize = list(c(20, 40))} if all icons use the same
-size, or \code{iconSize = list(c(20, 40), c(30, 80))} if the first icon size
-is 20 x 40, and the second icon size is 30 x 80. Since \code{\link{mapply}()}
-is applied to these arguments, shorter argument values will be re-cycled.
-\code{NULL} values for these arguments will be ignored.
+\code{iconAnchor}, and \code{iconList()} provides two separate arguments for
+these attributes, e.g. \code{iconSizeX = 20} and \code{iconSizeY = 40} means
+\code{iconSize = c(20, 40)} internally. Shorter argument values will be
+re-cycled. \code{NULL} values for these arguments will be ignored.
 }
 \note{
 The argument \code{embed = TRUE} can be useful when you render the map
@@ -82,9 +82,9 @@ leaflet() \%>\% addMarkers(
   icon = ~ iconList(
     iconUrl = sprintf('http://leafletjs.com/docs/images/leaf-\%s.png', group),
     shadowUrl = 'http://leafletjs.com/docs/images/leaf-shadow.png',
-    iconSize = list(c(38, 95)), shadowSize = list(c(50, 64)),
-    iconAnchor = list(c(22, 94)), shadowAnchor = list(c(4, 62)),
-    popupAnchor = list(c(-3, -76))
+    iconSizeX = 38, iconSizeY = 95, shadowSizeX = 50, shadowSizeY = 64,
+    iconAnchorX = 22, iconAnchorY = 94, shadowAnchorX = 4, shadowAnchorY = 62,
+    popupAnchorX = -3, popupAnchorY = -76
   )
 )
 
@@ -116,16 +116,15 @@ iconData = as.data.frame(iconData)
 shapes = sample(0:14, 10)
 iconFiles = pchIcons(shapes, 40, 40, col = 'steelblue', lwd = 2)
 
-# note the data has 250 rows, and the icon list is of length 10; they are
+# note the data has 250 rows, and there are 10 icons in iconFiles; they are
 # connected by the `group` variable: the i-th row of iconData uses the
 # group[i]-th icon in the icon list
 leaflet() \%>\% addMarkers(
   data = iconData,
-  icon = iconList(
-    iconUrl = iconFiles,
-    popupAnchor = list(c(20, 0))
+  icon = ~ iconList(
+    iconUrl = iconFiles[group],
+    popupAnchorX = 20, popupAnchorY = 0
   ),
-  iconGroup = ~ group,
   popup = ~ sprintf(
     'lat = \%.4f, long = \%.4f, group = \%s, pch = \%s', lat, lng, group, shapes[group]
   )

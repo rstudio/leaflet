@@ -17,8 +17,8 @@ addTiles(map, urlTemplate = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
 addPopups(map, lng = NULL, lat = NULL, popup, layerId = NULL, options = popupOptions(), 
     data = getMapData(map))
 
-addMarkers(map, lng = NULL, lat = NULL, layerId = NULL, icon = NULL, iconGroup = NULL, 
-    popup = NULL, options = markerOptions(), data = getMapData(map))
+addMarkers(map, lng = NULL, lat = NULL, layerId = NULL, icon = NULL, popup = NULL, 
+    options = markerOptions(), data = getMapData(map))
 
 addCircleMarkers(map, lng = NULL, lat = NULL, radius = 10, layerId = NULL, 
     stroke = TRUE, color = "#03F", weight = 5, opacity = 0.5, fill = TRUE, 
@@ -77,25 +77,13 @@ for security reasons)}
 default, it is the \code{data} object provided to \code{leaflet()}
 initially, but can be overridden}
 
-\item{icon}{the icon(s) for markers; you can either use literal JavaScript
-code (e.g. \code{\link[htmlwidgets]{JS}('L.icon({iconUrl: '?', size: [?,
-?]})')} or an R list to create an icon (e.g. \code{list(iconUrl = '?', size
-= c(x, y))}), or use \code{\link{iconList}()} to create a list of icons;
-note when you use an R list that contains images as local files (tested by
-\code{file.exists()}), these local image files will be base64 encoded into
-the HTML page so the icon images will still be available even when you
-publish the map elsewhere (use \code{iconList(..., embed = FALSE)} if you
-do not want the images to be encoded and embedded)}
-
-\item{iconGroup}{when \code{icon} contains a list of different icons, this
-argument is a numeric vector of the same length as \code{lat} and
-\code{lng}, where \code{iconGroup[i]} is the index of the icon in the
-\code{icon} list for \code{lat[i]} and \code{lng[i]}; the main purpose of
-this argument is to reduce the size of the icon data when the icon images
-are base64 encoded: it is not efficient to encode the same image multiple
-times when the image is used multiple times on the map, and we can encode
-it once in \code{iconList()} and index the list using this \code{iconGroup}
-argument}
+\item{icon}{the icon(s) for markers; an icon is represented by an R list of
+the form \code{list(iconUrl = '?', iconSize = c(x, y))}, and you can use
+\code{\link{iconList}()} to create a list of icons; note when you use an R
+list that contains images as local files, these local image files will be
+base64 encoded into the HTML page so the icon images will still be
+available even when you publish the map elsewhere (use \code{iconList(...,
+embed = FALSE)} if you do not want the images to be encoded and embedded)}
 
 \item{radius}{a numeric vector of radii for the circles; it can also be a
 one-sided formula, in which case the radius values are derived from the
