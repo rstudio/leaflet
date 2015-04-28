@@ -35,7 +35,7 @@ clearGeoJSON(map)
 }
 \arguments{
 \item{map}{a map widget object, possibly created from \code{\link{leaflet}}()
-but more likely from \code{\link{getMapProxy}}()}
+but more likely from \code{\link{leafletProxy}}()}
 
 \item{layerId}{character vector; the layer id(s) of the item to remove}
 }
@@ -56,6 +56,6 @@ being added in the first place; instead, when the map is rendered, the
 polygon will be added and then removed.
 
 For that reason, these functions aren't that useful with \code{leaflet} map
-objects and are really intended to be used with \code{\link{getMapProxy}}
+objects and are really intended to be used with \code{\link{leafletProxy}}
 instead.
 }

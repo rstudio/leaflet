@@ -41,7 +41,7 @@ server <- function(input, output, session) {
   observeEvent(input$map1_click, {
     v$msg <- paste("Clicked map at", input$map1_click$lat, "/", input$map1_click$lng)
     if (input$addMarker) {
-      getMapProxy("map1") %>%
+      leafletProxy("map1") %>%
         addMarkers(lng = input$map1_click$lng, lat = input$map1_click$lat)
     }
   })
@@ -52,7 +52,7 @@ server <- function(input, output, session) {
     v$msg <- paste("Bounds changed to", paste(input$map1_bounds, collapse = ", "))
   })
   observeEvent(input$clearMarkers, {
-    getMapProxy("map1") %>% clearMarkers()
+    leafletProxy("map1") %>% clearMarkers()
   })
 
   output$message <- renderText(v$msg)

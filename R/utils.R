@@ -5,13 +5,13 @@
 #' Extension points for plugins
 #'
 #' @param map a map object, as returned from \code{\link{leaflet}} or
-#'   \code{\link{getMapProxy}}
+#'   \code{\link{leafletProxy}}
 #' @param funcName the name of the function that the user called that caused
 #'   this \code{dispatch} call; for error message purposes
 #' @param leaflet an action to be performed if the map is from
 #'   \code{\link{leaflet}}
 #' @param leaflet_remote an action to be performed if the map is from
-#'   \code{\link{getMapProxy}}
+#'   \code{\link{leafletProxy}}
 #'
 #' @return \code{dispatch} returns the value of \code{leaflet} or
 #'   \code{leaflet_remote}, or an error. \code{invokeMethod} returns the
@@ -79,7 +79,7 @@ invokeMethod = function(map, data, method, ...) {
 #' map is long gone, and the user's web browser has already realized the Leaflet
 #' map instance.
 #'
-#' This is where \code{getMapProxy} comes in. It returns an object that can
+#' This is where \code{leafletProxy} comes in. It returns an object that can
 #' stand in for the usual Leaflet map object. The usual map functions like
 #' \code{\link{addPolygons}} and \code{\link{setView}} can be called, and
 #' instead of customizing an in-memory representation, these commands will
@@ -113,7 +113,7 @@ invokeMethod = function(map, data, method, ...) {
 #'   })
 #'
 #'   observeEvent(input$map1_marker_click, {
-#'     getMapProxy("map1", session) %>%
+#'     leafletProxy("map1", session) %>%
 #'       removeMarker(input$map1_marker_click$id)
 #'   })
 #' }
@@ -123,7 +123,7 @@ invokeMethod = function(map, data, method, ...) {
 #' }
 #'
 #' @export
-getMapProxy <- function(mapId, session = shiny::getDefaultReactiveDomain(),
+leafletProxy <- function(mapId, session = shiny::getDefaultReactiveDomain(),
   data = NULL, deferUntilFlush = TRUE) {
   structure(
     list(

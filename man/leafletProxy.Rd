@@ -1,9 +1,9 @@
 % Please edit documentation in R/utils.R
-\name{getMapProxy}
-\alias{getMapProxy}
+\name{leafletProxy}
+\alias{leafletProxy}
 \title{Send commands to a Leaflet instance in a Shiny app}
 \usage{
-getMapProxy(mapId, session = shiny::getDefaultReactiveDomain(), data = NULL, 
+leafletProxy(mapId, session = shiny::getDefaultReactiveDomain(), data = NULL, 
     deferUntilFlush = TRUE)
 }
 \arguments{
@@ -37,7 +37,7 @@ is rendered to an output. At this point, the in-memory representation of the
 map is long gone, and the user's web browser has already realized the Leaflet
 map instance.
 
-This is where \code{getMapProxy} comes in. It returns an object that can
+This is where \code{leafletProxy} comes in. It returns an object that can
 stand in for the usual Leaflet map object. The usual map functions like
 \code{\link{addPolygons}} and \code{\link{setView}} can be called, and
 instead of customizing an in-memory representation, these commands will
@@ -56,7 +56,7 @@ server <- function(input, output, session) {
     })
     
     observeEvent(input$map1_marker_click, {
-        getMapProxy("map1", session) \%>\% removeMarker(input$map1_marker_click$id)
+        leafletProxy("map1", session) \%>\% removeMarker(input$map1_marker_click$id)
     })
 }
 

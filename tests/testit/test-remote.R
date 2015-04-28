@@ -126,7 +126,7 @@ MockSession <- R6Class("MockSession",
 local <- leaflet()
 
 mockSession <- MockSession$new()
-remote <- getMapProxy("map", mockSession)
+remote <- leafletProxy("map", mockSession)
 
 remote %>% addPolygons(lng=1:5, lat=1:5)
 
@@ -143,7 +143,7 @@ assert(identical(mockSession$.calls, expected))
 mockSession$.calls <- list()
 
 # Create another remote map which doesn't wait until flush
-remote2 <- getMapProxy("map", mockSession,
+remote2 <- leafletProxy("map", mockSession,
   data.frame(lat=10:1, lng=10:1),
   deferUntilFlush = FALSE
 )
