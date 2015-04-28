@@ -225,41 +225,24 @@ clearPopups = function(map) {
   invokeMethod(map, NULL, 'clearPopups')
 }
 
-#' @param icon the icon(s) for markers; you can either use literal JavaScript
-#'   code (e.g. \code{\link[htmlwidgets]{JS}('L.icon({iconUrl: '?', size: [?,
-#'   ?]})')} or an R list to create an icon (e.g. \code{list(iconUrl = '?', size
-#'   = c(x, y))}), or use \code{\link{iconList}()} to create a list of icons;
-#'   note when you use an R list that contains images as local files (tested by
-#'   \code{file.exists()}), these local image files will be base64 encoded into
-#'   the HTML page so the icon images will still be available even when you
-#'   publish the map elsewhere (use \code{iconList(..., embed = FALSE)} if you
-#'   do not want the images to be encoded and embedded)
-#' @param iconGroup when \code{icon} contains a list of different icons, this
-#'   argument is a numeric vector of the same length as \code{lat} and
-#'   \code{lng}, where \code{iconGroup[i]} is the index of the icon in the
-#'   \code{icon} list for \code{lat[i]} and \code{lng[i]}; the main purpose of
-#'   this argument is to reduce the size of the icon data when the icon images
-#'   are base64 encoded: it is not efficient to encode the same image multiple
-#'   times when the image is used multiple times on the map, and we can encode
-#'   it once in \code{iconList()} and index the list using this \code{iconGroup}
-#'   argument
+#' @param icon the icon(s) for markers; an icon is represented by an R list of
+#'   the form \code{list(iconUrl = '?', iconSize = c(x, y))}, and you can use
+#'   \code{\link{iconList}()} to create a list of icons; note when you use an R
+#'   list that contains images as local files, these local image files will be
+#'   base64 encoded into the HTML page so the icon images will still be
+#'   available even when you publish the map elsewhere (use \code{iconList(...,
+#'   embed = FALSE)} if you do not want the images to be encoded and embedded)
 #' @describeIn map-layers Add markders to the map
 #' @export
 addMarkers = function(
   map, lng = NULL, lat = NULL, layerId = NULL,
   icon = NULL,
-  iconGroup = NULL,
   popup = NULL,
   options = markerOptions(),
   data = getMapData(map)
 ) {
   options$icon = L.icon(evalFormula(icon, data))
-  if (length(iconGroup)) {
-    iconGroup = evalFormula(iconGroup, data)
-    if (is.character(iconGroup)) iconGroup = as.factor(iconGroup)
-    iconGroup = as.integer(iconGroup)
-  }
-  options$iconGroup = iconGroup
+  options$iconGroup = attr(options$icon, 'iconGroup', exact = TRUE)
   pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addMarkers")
   invokeMethod(map, data, 'addMarkers', pts$lat, pts$lng, layerId, options, popup) %>%
     expandLimits(pts$lat, pts$lng)
@@ -291,26 +274,25 @@ L.icon = function(options, embed = TRUE) {
 #' possible attributes of icons.
 #'
 #' Note some icon attributes are of length 2, such as \code{iconSize} and
-#' \code{iconAnchor}, and you have to make sure they are lists of vectors of
-#' length 2, e.g. \code{iconSize = list(c(20, 40))} if all icons use the same
-#' size, or \code{iconSize = list(c(20, 40), c(30, 80))} if the first icon size
-#' is 20 x 40, and the second icon size is 30 x 80. Since \code{\link{mapply}()}
-#' is applied to these arguments, shorter argument values will be re-cycled.
-#' \code{NULL} values for these arguments will be ignored.
+#' \code{iconAnchor}, and \code{iconList()} provides two separate arguments for
+#' these attributes, e.g. \code{iconSizeX = 20} and \code{iconSizeY = 40} means
+#' \code{iconSize = c(20, 40)} internally. Shorter argument values will be
+#' re-cycled. \code{NULL} values for these arguments will be ignored.
 #' @param iconUrl the URL to the icon image
 #' @param iconRetinaUrl the URL to a retina sized version of the icon image
-#' @param iconSize size of the icon image in pixels
-#' @param iconAnchor the coordinates of the "tip" of the icon (relative to its
-#'   top left corner, i.e. the top left corner means \code{iconAnchor = c(0,
-#'   0)}), and the icon will be aligned so that this point is at the marker's
-#'   geographical location
+#' @param iconSizeX,iconSizeY size of the icon image in pixels (\code{iconSizeX}
+#'   is width and \code{iconSizeY} is height)
+#' @param iconAnchorX,iconAnchorY the coordinates of the "tip" of the icon
+#'   (relative to its top left corner, i.e. the top left corner means
+#'   \code{iconAnchorX = 0} and \code{iconAnchorY = 0)}, and the icon will be
+#'   aligned so that this point is at the marker's geographical location
 #' @param shadowUrl the URL to the icon shadow image
 #' @param shadowRetinaUrl the URL to the retina sized version of the icon shadow
 #'   image
-#' @param shadowSize size of the shadow image in pixels
-#' @param shadowAnchor the coordinates of the "tip" of the shadow
-#' @param popupAnchor the coordinates of the point from which popups will
-#'   "open", relative to the icon anchor
+#' @param shadowSizeX,shadownSizeY size of the shadow image in pixels
+#' @param shadowAnchorX,shadowAnchorY the coordinates of the "tip" of the shadow
+#' @param popupAnchorX,popupAnchorY the coordinates of the point from which
+#'   popups will "open", relative to the icon anchor
 #' @param className a custom class name to assign to both icon and shadow images
 #' @param embed whether to base64 encode local image files
 #' @note The argument \code{embed = TRUE} can be useful when you render the map
@@ -327,21 +309,49 @@ L.icon = function(options, embed = TRUE) {
 #' @export
 #' @example inst/examples/iconList.R
 iconList = function(
-  iconUrl = NULL, iconRetinaUrl = NULL, iconSize = NULL, iconAnchor = NULL,
-  shadowUrl = NULL, shadowRetinaUrl = NULL, shadowSize = NULL, shadowAnchor = NULL,
-  popupAnchor = NULL, className = NULL, embed = TRUE
+  iconUrl = NULL, iconRetinaUrl = NULL, iconSizeX = NULL, iconSizeY = NULL,
+  iconAnchorX = NULL, iconAnchorY = NULL, shadowUrl = NULL, shadowRetinaUrl = NULL,
+  shadowSizeX = NULL, shadowSizeY = NULL, shadowAnchorX = NULL, shadowAnchorY = NULL,
+  popupAnchorX = NULL, popupAnchorY = NULL, className = NULL, embed = TRUE
 ) {
+  op = options(stringsAsFactors = FALSE); on.exit(options(op))
   attrs = filterNULL(list(
     iconUrl = iconUrl, iconRetinaUrl = iconRetinaUrl,
-    iconSize = iconSize, iconAnchor = iconAnchor,
+    iconSizeX = iconSizeX, iconSizeY = iconSizeY,
+    iconAnchorX = iconAnchorX, iconAnchorY = iconAnchorY,
     shadowUrl = shadowUrl, shadowRetinaUrl = shadowRetinaUrl,
-    shadowSize = shadowSize, shadowAnchor = shadowAnchor,
-    popupAnchor = popupAnchor, className = className
+    shadowSizeX = shadowSizeX, shadowSizeY = shadowSizeY,
+    shadowAnchorX = shadowAnchorX, shadowAnchorY = shadowAnchorY,
+    popupAnchorX = popupAnchorX, popupAnchorY = popupAnchorY,
+    className = className
   ))
-  do.call(mapply, c(attrs, list(
-    FUN = function(...) L.icon(list(...), embed),
-    SIMPLIFY = FALSE, USE.NAMES = FALSE
-  )))
+  attrs = as.data.frame(do.call(cbind, attrs))
+  group = apply(as.matrix(attrs), 1, paste, collapse = '\r') # one row to one value
+  group = as.integer(factor(group, unique(group)))  # map rows to groups
+  attrs = attrs[!duplicated(group), , drop = FALSE] # dedup
+  structure(
+    lapply(seq_len(nrow(attrs)), function(i) {
+      L.icon(iconData(attrs[i, , drop = FALSE]), embed = embed)
+    }),
+    iconGroup = group
+  )
+}
+
+# convert fooX and fooY variables to a list of foo = c(fooX, fooY)
+iconData = function(options) {
+  options = as.list(options)
+  for (i in c('iconSize', 'iconAnchor', 'shadowSize', 'shadowAnchor', 'popupAnchor')) {
+    x = paste0(i, 'X')
+    y = paste0(i, 'Y')
+    if (xor(is.null(options[[x]]), is.null(options[[y]]))) {
+      stop('The icon options ', x, ' and ', y, ' must be both NULL or both not NULL')
+    }
+    if (!is.null(options[[x]])) {
+      options[[i]] = as.numeric(c(options[[x]], options[[y]]))
+      options[[x]] = options[[y]] = NULL
+    }
+  }
+  options
 }
 
 #' @param clickable whether the element emits mouse events
