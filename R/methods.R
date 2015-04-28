@@ -26,7 +26,7 @@ setView = function(map, lng, lat, zoom, options = list()) {
       map$x$fitBounds = NULL
       map
     },
-    leaflet_remote = {
+    leaflet_proxy = {
       invokeRemote(map, "setView", view)
       map
     }
@@ -46,7 +46,7 @@ fitBounds = function(map, lng1, lat1, lng2, lat2) {
       map$x$setView = NULL
       map
     },
-    leaflet_remote = {
+    leaflet_proxy = {
       invokeRemote(map, "fitBounds", bounds)
     }
   )

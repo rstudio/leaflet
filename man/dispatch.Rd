@@ -5,7 +5,7 @@
 \title{Extension points for plugins}
 \usage{
 dispatch(map, funcName, leaflet = stop(paste(funcName, "requires a map proxy object")), 
-    leaflet_remote = stop(paste(funcName, "does not support map proxy objects")))
+    leaflet_proxy = stop(paste(funcName, "does not support map proxy objects")))
 
 invokeMethod(map, data, method, ...)
 }
@@ -19,7 +19,7 @@ this \code{dispatch} call; for error message purposes}
 \item{leaflet}{an action to be performed if the map is from
 \code{\link{leaflet}}}
 
-\item{leaflet_remote}{an action to be performed if the map is from
+\item{leaflet_proxy}{an action to be performed if the map is from
   \code{\link{leafletProxy}}}
 
 \item{data}{a data object that will be used when evaluating formulas in
@@ -31,7 +31,7 @@ this \code{dispatch} call; for error message purposes}
 }
 \value{
 \code{dispatch} returns the value of \code{leaflet} or
-  \code{leaflet_remote}, or an error. \code{invokeMethod} returns the
+  \code{leaflet_proxy}, or an error. \code{invokeMethod} returns the
   \code{map} object that was passed in, possibly modified.
 }
 \description{

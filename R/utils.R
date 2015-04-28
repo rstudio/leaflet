@@ -10,23 +10,23 @@
 #'   this \code{dispatch} call; for error message purposes
 #' @param leaflet an action to be performed if the map is from
 #'   \code{\link{leaflet}}
-#' @param leaflet_remote an action to be performed if the map is from
+#' @param leaflet_proxy an action to be performed if the map is from
 #'   \code{\link{leafletProxy}}
 #'
 #' @return \code{dispatch} returns the value of \code{leaflet} or
-#'   \code{leaflet_remote}, or an error. \code{invokeMethod} returns the
+#'   \code{leaflet_proxy}, or an error. \code{invokeMethod} returns the
 #'   \code{map} object that was passed in, possibly modified.
 #'
 #' @export
 dispatch = function(map,
   funcName,
   leaflet = stop(paste(funcName, "requires a map proxy object")),
-  leaflet_remote = stop(paste(funcName, "does not support map proxy objects"))
+  leaflet_proxy = stop(paste(funcName, "does not support map proxy objects"))
 ) {
   if (inherits(map, "leaflet"))
     return(leaflet)
-  else if (inherits(map, "leaflet_remote"))
-    return(leaflet_remote)
+  else if (inherits(map, "leaflet_proxy"))
+    return(leaflet_proxy)
   else
     stop("Invalid map parameter")
 }
@@ -56,7 +56,7 @@ invokeMethod = function(map, data, method, ...) {
       map$x$calls = x
       map
     },
-    leaflet_remote = {
+    leaflet_proxy = {
       invokeRemote(map, method, args)
       map
     }
@@ -135,12 +135,12 @@ leafletProxy <- function(mapId, session = shiny::getDefaultReactiveDomain(),
       ),
       deferUntilFlush = deferUntilFlush
     ),
-    class = "leaflet_remote"
+    class = "leaflet_proxy"
   )
 }
 
 invokeRemote = function(map, method, args = list()) {
-  if (!inherits(map, "leaflet_remote"))
+  if (!inherits(map, "leaflet_proxy"))
     stop("Invalid map parameter; map proxy object was expected")
 
   msg <- list(
