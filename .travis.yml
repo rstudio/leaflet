@@ -12,6 +12,7 @@ install:
   - "wget -q -O - http://yihui.name/xran/r-config | bash"
   - Rscript -e "devtools::install_deps(dep = TRUE)"
   - Rscript -e "install.packages('xtable')"
+  - Rscript -e "devtools::install_github('rstudio/shiny')"
 
 script:
   - cd ..; rm -f *.tar.gz; R CMD build $R_PKG
