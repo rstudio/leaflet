@@ -95,7 +95,7 @@ pchIcons = function(pch = 0:14, width = 30, height = 30, ...) {
   files = character(n)
   # create a sequence of png images
   for (i in seq_len(n)) {
-    f = tempfile()
+    f = tempfile(fileext = '.png')
     png(f, width = width, height = height, bg = 'transparent')
     par(mar = c(0, 0, 0, 0))
     plot.new()
