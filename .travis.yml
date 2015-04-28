@@ -11,6 +11,7 @@ install:
   - sudo apt-get -y install r-base-core r-cran-devtools r-cran-knitr r-cran-shiny r-cran-sp r-cran-yaml
   - "wget -q -O - http://yihui.name/xran/r-config | bash"
   - Rscript -e "devtools::install_deps(dep = TRUE)"
+  - Rscript -e "install.packages('xtable')"
 
 script:
   - cd ..; rm -f *.tar.gz; R CMD build $R_PKG
