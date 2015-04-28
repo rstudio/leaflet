@@ -60,6 +60,7 @@ bboxAdd = function(a, b) {
 #' @param attribution the attribution text of the tile layer (HTML)
 #' @param options a list of extra options for tile layers, popups, paths
 #'   (circles, rectangles, polygons, ...), or other map elements
+#' @return the new \code{map} object
 #' @seealso \code{\link{tileOptions}}, \code{\link{popupOptions}},
 #'   \code{\link{markerOptions}}, \code{\link{pathOptions}}
 #' @references The Leaflet API documentation:
@@ -70,6 +71,7 @@ addTiles = function(
   map,
   urlTemplate = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
   attribution = NULL,
+  layerId = NULL,
   options = tileOptions()
 ) {
   options$attribution = attribution
@@ -78,7 +80,7 @@ addTiles = function(
       '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a>',
       'contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
     )
-  appendMapData(map, getMapData(map), 'tileLayer', urlTemplate, options)
+  invokeMethod(map, getMapData(map), 'addTiles', urlTemplate, layerId, options)
 }
 
 #' Extra options for map elements and layers
@@ -122,6 +124,40 @@ tileOptions = function(
   )
 }
 
+#' Remove elements from a map
+#'
+#' Remove one or more features from a map, identified by \code{layerId}; or,
+#' clear all features of the given type.
+#'
+#' @note When used with a \code{\link{leaflet}}() map object, these functions
+#' don't actually remove the features from the map object, but simply add an
+#' operation that will cause those features to be removed after they are added.
+#' In other words, if you add a polygon \code{"foo"} and the call
+#' \code{removeShape("foo")}, it's not smart enough to prevent the polygon from
+#' being added in the first place; instead, when the map is rendered, the
+#' polygon will be added and then removed.
+#'
+#' For that reason, these functions aren't that useful with \code{leaflet} map
+#' objects and are really intended to be used with \code{\link{leafletProxy}}
+#' instead.
+#'
+#' @param map a map widget object, possibly created from \code{\link{leaflet}}()
+#'   but more likely from \code{\link{leafletProxy}}()
+#' @param layerId character vector; the layer id(s) of the item to remove
+#' @return the new \code{map} object
+#'
+#' @name remove
+#' @export
+removeTiles = function(map, layerId) {
+  invokeMethod(map, NULL, 'removeTiles', layerId)
+}
+
+#' @rdname remove
+#' @export
+clearTiles = function(map) {
+  invokeMethod(map, NULL, 'clearTiles')
+}
+
 #' @param lng a numeric vector of longitudes, or a one-sided formula of the form
 #'   \code{~x} where \code{x} is a variable in \code{data}; by default (if not
 #'   explicitly provided), it will be automatically inferred from \code{data} by
@@ -145,7 +181,7 @@ addPopups = function(
   data = getMapData(map)
 ) {
   pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addPopups")
-  appendMapData(map, data, 'popup', pts$lat, pts$lng, popup, layerId, options) %>%
+  invokeMethod(map, data, 'addPopups', pts$lat, pts$lng, popup, layerId, options) %>%
     expandLimits(pts$lat, pts$lng)
 }
 
@@ -177,6 +213,18 @@ popupOptions = function(
   )
 }
 
+#' @rdname remove
+#' @export
+removePopup = function(map, layerId) {
+  invokeMethod(map, NULL, 'removePopup', layerId)
+}
+
+#' @rdname remove
+#' @export
+clearPopups = function(map) {
+  invokeMethod(map, NULL, 'clearPopups')
+}
+
 #' @param icon the icon for markers; if you want to create a new icon using
 #'   JavaScript, please remember to use \code{\link[htmlwidgets]{JS}()} on the
 #'   JavaScript string; see \url{http://leafletjs.com/reference.html#icon}
@@ -191,7 +239,7 @@ addMarkers = function(
 ) {
   options$icon = icon
   pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addMarkers")
-  appendMapData(map, data, 'marker', pts$lat, pts$lng, layerId, options, popup) %>%
+  invokeMethod(map, data, 'addMarkers', pts$lat, pts$lng, layerId, options, popup) %>%
     expandLimits(pts$lat, pts$lng)
 }
 
@@ -256,8 +304,20 @@ addCircleMarkers = function(
     dashArray = dashArray
   ))
   pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addCircleMarkers")
-  appendMapData(map, data, 'circleMarker', pts$lat, pts$lng, radius, layerId, options, popup) %>%
+  invokeMethod(map, data, 'addCircleMarkers', pts$lat, pts$lng, radius, layerId, options, popup) %>%
     expandLimits(pts$lat, pts$lng)
+}
+
+#' @rdname remove
+#' @export
+removeMarker = function(map, layerId) {
+  invokeMethod(map, NULL, 'removeMarker', layerId)
+}
+
+#' @rdname remove
+#' @export
+clearMarkers = function(map) {
+  invokeMethod(map, NULL, 'clearMarkers')
 }
 
 #' @param lineCap a string that defines
@@ -306,7 +366,7 @@ addCircles = function(
     dashArray = dashArray
   ))
   pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addCircles")
-  appendMapData(map, data, 'circle', pts$lat, pts$lng, radius, layerId, options, popup) %>%
+  invokeMethod(map, data, 'addCircles', pts$lat, pts$lng, radius, layerId, options, popup) %>%
     expandLimits(pts$lat, pts$lng)
 }
 
@@ -337,7 +397,7 @@ addPolylines = function(
     dashArray = dashArray, smoothFactor = smoothFactor, noClip = noClip
   ))
   pgons = derivePolygons(data, lng, lat, missing(lng), missing(lat), "addPolylines")
-  appendMapData(map, data, 'polyline', pgons, layerId, options, popup) %>%
+  invokeMethod(map, data, 'addPolylines', pgons, layerId, options, popup) %>%
     expandLimitsBbox(pgons)
 }
 
@@ -370,7 +430,7 @@ addRectangles = function(
   lat1 = resolveFormula(lat1, data)
   lng2 = resolveFormula(lng2, data)
   lat2 = resolveFormula(lat2, data)
-  appendMapData(map, data, 'rectangle',lat1, lng1, lat2, lng2, layerId, options, popup) %>%
+  invokeMethod(map, data, 'addRectangles',lat1, lng1, lat2, lng2, layerId, options, popup) %>%
     expandLimits(c(lat1, lat2), c(lng1, lng2))
 }
 
@@ -398,13 +458,37 @@ addPolygons = function(
     dashArray = dashArray, smoothFactor = smoothFactor, noClip = noClip
   ))
   pgons = derivePolygons(data, lng, lat, missing(lng), missing(lat), "addPolygons")
-  appendMapData(map, data, 'polygon', pgons, layerId, options, popup) %>%
+  invokeMethod(map, data, 'addPolygons', pgons, layerId, options, popup) %>%
     expandLimitsBbox(pgons)
+}
+
+#' @rdname remove
+#' @export
+removeShape = function(map, layerId) {
+  invokeMethod(map, NULL, 'removeShape', layerId)
+}
+
+#' @rdname remove
+#' @export
+clearShapes = function(map) {
+  invokeMethod(map, NULL, 'clearShapes')
 }
 
 #' @param geojson a GeoJSON list
 #' @describeIn map-layers Add GeoJSON layers to the map
 #' @export
 addGeoJSON = function(map, geojson, layerId = NULL) {
-  appendMapData(map, getMapData(map), 'geoJSON', geojson, layerId)
+  invokeMethod(map, getMapData(map), 'addGeoJSON', geojson, layerId)
+}
+
+#' @rdname remove
+#' @export
+removeGeoJSON = function(map, layerId) {
+  invokeMethod(map, NULL, 'removeGeoJSON', layerId)
+}
+
+#' @rdname remove
+#' @export
+clearGeoJSON = function(map) {
+  invokeMethod(map, NULL, 'clearGeoJSON')
 }

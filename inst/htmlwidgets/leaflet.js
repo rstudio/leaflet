@@ -166,9 +166,16 @@ var dataframe = (function() {
   };
 
   LayerStore.prototype.remove = function(id) {
-    if (this._layers[id]) {
-      this._group.removeLayer(this._layers[id]);
-      delete this._layers[id];
+    if (typeof(id) === 'undefined' || id === null) {
+      return;
+    }
+
+    id = asArray(id);
+    for (var i = 0; i < id.length; i++) {
+      if (this._layers[id[i]]) {
+        this._group.removeLayer(this._layers[id[i]]);
+        delete this._layers[id[i]];
+      }
     }
   };
 
@@ -225,7 +232,8 @@ var dataframe = (function() {
     Shiny.onInputChange(id + '_zoom', map.getZoom());
   }
 
-  var methods = {};
+  window.LeafletWidget = {};
+  var methods = window.LeafletWidget.methods = {};
 
   methods.setView = function(center, zoom, options) {
     this.setView(center, zoom, options);
@@ -237,7 +245,7 @@ var dataframe = (function() {
     ]);
   };
 
-  methods.popup = function(lat, lng, popup, layerId, options) {
+  methods.addPopups = function(lat, lng, popup, layerId, options) {
     var df = dataframe.create()
       .col('lat', lat)
       .col('lng', lng)
@@ -267,11 +275,19 @@ var dataframe = (function() {
     this.popups.clear();
   };
 
-  methods.tileLayer = function(urlTemplate, options) {
-    this.tiles.add(L.tileLayer(urlTemplate, options));
+  methods.addTiles = function(urlTemplate, layerId, options) {
+    this.tiles.add(L.tileLayer(urlTemplate, options), layerId);
   };
 
-  methods.marker = function(lat, lng, layerId, options, popup) {
+  methods.removeTiles = function(layerId) {
+    this.tiles.remove(layerId);
+  };
+
+  methods.clearTiles = function() {
+    this.tiles.clear();
+  };
+
+  methods.addMarkers = function(lat, lng, layerId, options, popup) {
     var df = dataframe.create()
       .col('lat', lat)
       .col('lng', lng)
@@ -293,7 +309,7 @@ var dataframe = (function() {
     }
   };
 
-  methods.circle = function(lat, lng, radius, layerId, options, popup) {
+  methods.addCircles = function(lat, lng, radius, layerId, options, popup) {
     var df = dataframe.create()
       .col('lat', lat)
       .col('lng', lng)
@@ -316,7 +332,7 @@ var dataframe = (function() {
     }
   };
 
-  methods.circleMarker = function(lat, lng, radius, layerId, options, popup) {
+  methods.addCircleMarkers = function(lat, lng, radius, layerId, options, popup) {
     var df = dataframe.create()
       .col('lat', lat)
       .col('lng', lng)
@@ -343,7 +359,7 @@ var dataframe = (function() {
    * @param lat Array of arrays of latitude coordinates for polylines
    * @param lng Array of arrays of longitude coordinates for polylines
    */
-  methods.polyline = function(polygons, layerId, options, popup) {
+  methods.addPolylines = function(polygons, layerId, options, popup) {
     var df = dataframe.create()
       .col('shapes', polygons)
       .col('layerId', layerId)
@@ -382,7 +398,7 @@ var dataframe = (function() {
     this.shapes.clear();
   };
 
-  methods.rectangle = function(lat1, lng1, lat2, lng2, layerId, options, popup) {
+  methods.addRectangles = function(lat1, lng1, lat2, lng2, layerId, options, popup) {
     var df = dataframe.create()
       .col('lat1', lat1)
       .col('lng1', lng1)
@@ -414,7 +430,7 @@ var dataframe = (function() {
    * @param lat Array of arrays of latitude coordinates for polygons
    * @param lng Array of arrays of longitude coordinates for polygons
    */
-  methods.polygon = function(polygons, layerId, options, popup) {
+  methods.addPolygons = function(polygons, layerId, options, popup) {
     var df = dataframe.create()
       .col('shapes', polygons)
       .col('layerId', layerId)
@@ -439,7 +455,7 @@ var dataframe = (function() {
     }
   };
 
-  methods.geoJSON = function(data, layerId) {
+  methods.addGeoJSON = function(data, layerId) {
     var self = this;
     if (typeof(data) === "string") {
       data = JSON.parse(data);
@@ -470,6 +486,16 @@ var dataframe = (function() {
     this.geojson.add(gjlayer, layerId);
   };
 
+  methods.removeGeoJSON = function(layerId) {
+    this.geojson.remove(layerId);
+  };
+
+  methods.clearGeoJSON = function() {
+    this.geojson.clear();
+  };
+
+
+
   HTMLWidgets.widget({
     name: "leaflet",
     type: "output",
@@ -492,6 +518,9 @@ var dataframe = (function() {
       if (typeof this.getId === 'undefined') return map;
 
       map.id = this.getId(el);
+
+      // Store the map on the element so we can find it later by ID
+      $(el).data("leaflet-map", map);
 
       // When the map is clicked, send the coordinates back to the app
       map.on('click', function(e) {
@@ -567,6 +596,8 @@ var dataframe = (function() {
         var call = data.calls[i];
         if (methods[call.method])
           methods[call.method].apply(map, call.args);
+        else
+          console.log("Unknown method " + call.method);
       }
 
       map.leafletr.hasRendered = true;
@@ -582,17 +613,21 @@ var dataframe = (function() {
 
   if (!HTMLWidgets.shinyMode) return;
 
-  // Shiny support via the Leaflet map controller
-  Shiny.addCustomMessageHandler('leaflet', function(data) {
-    var mapId = data.mapId;
-    var map = document.getElementById(mapId);
-    if (!map)
+  Shiny.addCustomMessageHandler('leaflet-calls', function(data) {
+    var id = data.id;
+    var el = document.getElementById(id);
+    var map = el ? $(el).data('leaflet-map') : null;
+    if (!map) {
+      console.log("Couldn't find map with id " + id);
       return;
+    }
 
-    if (methods[data.method]) {
-      methods[data.method].apply(map, data.args);
-    } else {
-      throw new Error('Unknown method ' + data.method);
+    for (var i = 0; i < data.calls.length; i++) {
+      var call = data.calls[i];
+      if (methods[call.method])
+        methods[call.method].apply(map, call.args);
+      else
+        console.log("Unknown method " + call.method);
     }
   });
 
