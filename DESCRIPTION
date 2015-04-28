@@ -31,5 +31,6 @@ Suggests:
     maps,
     shiny,
     sp,
-    testit
+    testit,
+    R6
 VignetteBuilder: knitr
