@@ -136,6 +136,7 @@ mockSession$.flush()
 expected <- list(
   list(type = "leaflet-calls", message = structure("{\"id\":\"map\",\"calls\":[{\"method\":\"addPolygons\",\"args\":[[[{\"lng\":[1,2,3,4,5],\"lat\":[1,2,3,4,5]}]],null,{\"lineCap\":null,\"lineJoin\":null,\"clickable\":true,\"pointerEvents\":null,\"className\":\"\",\"stroke\":true,\"color\":\"#03F\",\"weight\":5,\"opacity\":0.5,\"fill\":true,\"fillColor\":\"#03F\",\"fillOpacity\":0.2,\"dashArray\":null,\"smoothFactor\":1,\"noClip\":false},null]}]}", class = "json"))
 )
+cat(deparse(mockSession$.calls), "\n")
 assert(identical(mockSession$.calls, expected))
 
 
