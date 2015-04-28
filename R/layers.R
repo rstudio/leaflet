@@ -258,10 +258,11 @@ L.icon = function(options, embed = TRUE) {
     # it is already a list of icons, so no further base64 encoding
     return(options)
   }
+  image_uri = getFromNamespace('.b64EncodeFile', 'markdown')
   for (i in c('iconUrl', 'iconRetinaUrl', 'shadowUrl', 'shadowRetinaUrl')) {
     Url = options[[i]]
     if (!embed || !is.character(Url) || !file.exists(Url)) next
-    options[[i]] = knitr::image_uri(Url)
+    options[[i]] = image_uri(Url)
   }
   options
 }
