@@ -197,14 +197,17 @@ var dataframe = (function() {
   function mouseHandler(mapId, layerId, eventName, extraInfo) {
     return function(e) {
       if (!HTMLWidgets.shinyMode) return;
-      var lat = e.target.getLatLng ? e.target.getLatLng().lat : null;
-      var lng = e.target.getLatLng ? e.target.getLatLng().lng : null;
-      Shiny.onInputChange(mapId + '_' + eventName, $.extend({
-        id: layerId,
-        lat: lat,
-        lng: lng,
-        '.nonce': Math.random()  // force reactivity
-      }, extraInfo));
+
+      var eventInfo = $.extend(
+        {
+          id: layerId,
+          '.nonce': Math.random()  // force reactivity
+        },
+        e.target.getLatLng ? e.target.getLatLng() : e.latlng,
+        extraInfo
+      );
+
+      Shiny.onInputChange(mapId + '_' + eventName, eventInfo);
     };
   }
 
