@@ -151,6 +151,8 @@ remote2 <- leafletProxy("map", mockSession,
 remote2 %>% addMarkers()
 expected <- list(list(type = "leaflet-calls", message = structure("{\"id\":\"map\",\"calls\":[{\"method\":\"addMarkers\",\"args\":[[10,9,8,7,6,5,4,3,2,1],[10,9,8,7,6,5,4,3,2,1],null,{\"clickable\":true,\"draggable\":false,\"keyboard\":true,\"title\":\"\",\"alt\":\"\",\"zIndexOffset\":0,\"opacity\":1,\"riseOnHover\":false,\"riseOffset\":250},null]}]}", class = "json")))
 assert(identical(mockSession$.calls, expected))
+cat(deparse(mockSession$.calls), "\n")
 # Flushing should do nothing
 mockSession$.flush()
 assert(identical(mockSession$.calls, expected))
+cat(deparse(mockSession$.calls), "\n")
