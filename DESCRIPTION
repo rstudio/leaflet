@@ -1,21 +1,21 @@
 Package: leaflet
 Type: Package
 Title: Create Interactive Web Maps with the JavaScript LeafLet Library
-Version: 0.0.11
-Date: 2014-11-12
-Authors@R: as.person(c(
-    "Joe Cheng [aut, cre] <joe@rstudio.com>",
-    "Yihui Xie [aut]",
-    "Hadley Wickham [ctb]",
-    "jQuery contributors [ctb, cph] (the jQuery library in htmlwidgets/lib)",
-    "Leaflet contributors [ctb, cph] (the Leaflet library in htmlwidgets/lib)",
-    "RStudio [cph]"
-    ))
+Version: 0.0.12
+Date: 2015-04-28
+Authors@R: c(
+      person("Joe", "Cheng", email = "joe@rstudio.com", role = c("aut", "cre")),
+      person("Yihui", "Xie", role = c("aut")),
+      person("Hadley", "Wickham", role = c("ctb")),
+      person("jQuery contributors", role = c("ctb", "cph"), comment = "jQuery library"),
+      person("Leaflet contributors", role = c("ctb", "cph"), comment = "Leaflet library"),
+      person("RStudio", role = c("cph"))
+    )
 Maintainer: Joe Cheng <joe@rstudio.com>
 Description: Leaflet is "an open-source JavaScript library for mobile-friendly
     interactive maps". This package makes it easy to integrate Leaflet maps into
     HTML applications with R (e.g. Shiny and R Markdown).
-License: GPL-3
+License: GPL-3 | file LICENSE
 URL: https://github.com/rstudio/leaflet
 BugReports: https://github.com/rstudio/leaflet/issues
 Imports:
