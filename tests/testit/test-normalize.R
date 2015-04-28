@@ -8,7 +8,7 @@ assert(
   identical(guessLL(c('lat', 'long')), list(lng = 'long', lat = 'lat')),
   identical(guessLL(c('latitude', 'lng')), list(lng = 'lng', lat = 'latitude')),
   identical(guessLL(c('Latitude', 'Long')), list(lng = 'Long', lat = 'Latitude')),
-  identical(guessLL(c('Lat', 'lng', 'latt')), list(lng = 'lng', lat = 'Lat')),
+  identical(suppressMessages(guessLL(c('Lat', 'lng', 'latt'))), list(lng = 'lng', lat = 'Lat')),
   identical(guessLL(c('Lat', 'foo'), stopOnFailure = FALSE), list(lng = NA, lat = NA)),
   TRUE
 )

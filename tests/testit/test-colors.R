@@ -10,6 +10,7 @@ assert(
 )
 
 # Outside of domain? Return na.color
+suppressWarnings(
 assert(
   identical("#808080", colorFactor(bw, letters)("foo")),
   identical("#808080", colorQuantile(bw, 0:1)(-1)),
@@ -27,6 +28,7 @@ assert(
   has_warning(colorNumeric(bw, c(0, 1), na.color = NA)(-1)),
   has_warning(colorNumeric(bw, c(0, 1), na.color = NA)(2)),
   TRUE
+)
 )
 
 assert(
