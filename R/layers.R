@@ -271,14 +271,8 @@ L.icon = function(options, embed = TRUE) {
 #'
 #' An icon can be represented as a list of the form \code{list(iconUrl,
 #' iconSize, ...)}. This function is vectorized over its arguments to create a
-#' list of icons. See \url{http://leafletjs.com/reference.html#icon} for the
-#' possible attributes of icons.
-#'
-#' Note some icon attributes are of length 2, such as \code{iconSize} and
-#' \code{iconAnchor}, and \code{iconList()} provides two separate arguments for
-#' these attributes, e.g. \code{iconSizeX = 20} and \code{iconSizeY = 40} means
-#' \code{iconSize = c(20, 40)} internally. Shorter argument values will be
-#' re-cycled. \code{NULL} values for these arguments will be ignored.
+#' list of icons. Shorter argument values will be re-cycled. \code{NULL} values
+#' for these arguments will be ignored.
 #' @param iconUrl the URL to the icon image
 #' @param iconRetinaUrl the URL to a retina sized version of the icon image
 #' @param iconSizeX,iconSizeY size of the icon image in pixels (\code{iconSizeX}
