@@ -74,7 +74,7 @@ leaflet() \%>\% addMarkers(
   icon = ~ iconList(
     iconUrl = sprintf('http://leafletjs.com/docs/images/leaf-\%s.png', group),
     shadowUrl = 'http://leafletjs.com/docs/images/leaf-shadow.png',
-    iconSizeX = 38, iconSizeY = 95, shadowSizeX = 50, shadowSizeY = 64,
+    iconWidth = 38, iconHeight = 95, shadowWidth = 50, shadowHeight = 64,
     iconAnchorX = 22, iconAnchorY = 94, shadowAnchorX = 4, shadowAnchorY = 62,
     popupAnchorX = -3, popupAnchorY = -76
   )
