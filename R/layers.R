@@ -241,30 +241,26 @@ addMarkers = function(
   options = markerOptions(),
   data = getMapData(map)
 ) {
-  options$icon = L.icon(evalFormula(icon, data))
-  options$iconGroup = attr(options$icon, 'iconGroup', exact = TRUE)
-  pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addMarkers")
-  invokeMethod(map, data, 'addMarkers', pts$lat, pts$lng, layerId, options, popup) %>%
-    expandLimits(pts$lat, pts$lng)
-}
+  if (!is.null(icon)) {
+    # If custom icons are specified, we need to 1) deduplicate any URLs/files,
+    # so we can efficiently send e.g. 1000 markers that all use the same 2
+    # icons; and 2) do base64 encoding on any local icon files (as opposed to
+    # URLs [absolute or relative] which will be left alone).
 
-L.icon = function(options, embed = TRUE) {
-  if (!is.list(options)) return(options)
-  if (is.null(names(options))) {
-    if (length(options) == 0) return()
-    # in theory we need to check all sub-lists and all must be named
-    if (is.null(names(options[[1]])))
-      stop('The data for an individual icon must be a named list')
-    # it is already a list of icons, so no further base64 encoding
-    return(options)
+    # If formulas are present, they must be evaluated first so we can pack the
+    # resulting values
+    icon = evalFormula(list(icon), data)[[1]]
+    # Pack and encode each URL vector; this will be reversed on the client
+    icon$iconUrl         = b64EncodePackedIcons(packStrings(icon$iconUrl))
+    icon$iconRetinaUrl   = b64EncodePackedIcons(packStrings(icon$iconRetinaUrl))
+    icon$shadowUrl       = b64EncodePackedIcons(packStrings(icon$shadowUrl))
+    icon$shadowRetinaUrl = b64EncodePackedIcons(packStrings(icon$shadowRetinaUrl))
+    icon = filterNULL(icon)
   }
-  image_uri = getFromNamespace('.b64EncodeFile', 'markdown')
-  for (i in c('iconUrl', 'iconRetinaUrl', 'shadowUrl', 'shadowRetinaUrl')) {
-    Url = options[[i]]
-    if (!embed || !is.character(Url) || !file.exists(Url)) next
-    options[[i]] = image_uri(Url)
-  }
-  options
+
+  pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addMarkers")
+  invokeMethod(map, data, 'addMarkers', pts$lat, pts$lng, icon, layerId, options, popup) %>%
+    expandLimits(pts$lat, pts$lng)
 }
 
 #' Create a list of icons
@@ -308,8 +304,7 @@ iconList = function(
   shadowWidth = NULL, shadowHeight = NULL, shadowAnchorX = NULL, shadowAnchorY = NULL,
   popupAnchorX = NULL, popupAnchorY = NULL, className = NULL, embed = TRUE
 ) {
-  op = options(stringsAsFactors = FALSE); on.exit(options(op))
-  attrs = filterNULL(list(
+  filterNULL(list(
     iconUrl = iconUrl, iconRetinaUrl = iconRetinaUrl,
     iconWidth = iconWidth, iconHeight = iconHeight,
     iconAnchorX = iconAnchorX, iconAnchorY = iconAnchorY,
@@ -319,16 +314,35 @@ iconList = function(
     popupAnchorX = popupAnchorX, popupAnchorY = popupAnchorY,
     className = className
   ))
-  attrs = as.data.frame(do.call(cbind, attrs))
-  group = apply(as.matrix(attrs), 1, paste, collapse = '\r') # one row to one value
-  group = as.integer(factor(group, unique(group)))  # map rows to groups
-  attrs = attrs[!duplicated(group), , drop = FALSE] # dedup
-  structure(
-    lapply(seq_len(nrow(attrs)), function(i) {
-      L.icon(iconData(attrs[i, , drop = FALSE]), embed = embed)
-    }),
-    iconGroup = group
+}
+
+packStrings = function(strings) {
+  if (length(strings) == 0) {
+    return(NULL)
+  }
+  uniques = unique(strings)
+  indices = match(strings, uniques)
+  indices = indices - 1 # convert to 0-based for easy JS usage
+
+  list(
+    data = uniques,
+    index = indices
   )
+}
+
+b64EncodePackedIcons = function(packedIcons) {
+  if (is.null(packedIcons))
+    return(packedIcons)
+
+  image_uri = getFromNamespace('.b64EncodeFile', 'markdown')
+  packedIcons$data = sapply(packedIcons$data, function(icon) {
+    if (is.character(icon) && file.exists(icon)) {
+      image_uri(icon)
+    } else {
+      icon
+    }
+  }, USE.NAMES = FALSE)
+  packedIcons
 }
 
 # convert fooX and fooY variables to a list of foo = c(fooX, fooY)

@@ -1,32 +1,15 @@
 library(testit)
 
-f = tempfile()
-unlink(f)
-
+icons <- c("leaf-green.png", "leaf-red.png")
+m <- leaflet(data = data.frame(color = sample.int(2, 30, replace = TRUE))) %>%
+  addMarkers(1:30, 30:1, icon = iconList(
+    iconUrl = ~icons[color],
+    shadowUrl = c("leaf-shadow.png"),
+    iconWidth = 38, iconHeight = 95, iconAnchorX = 22, iconAnchorY = 94,
+    shadowWidth = 50, shadowHeight = 64, shadowAnchorX = 4, shadowAnchorY = 62
+  ))
 assert(
-  'L.icon() constructs icons correctly',
-  identical(L.icon(NULL), NULL),
-  identical(L.icon(list(iconUrl = f)), list(iconUrl = f)),
-  identical(
-    L.icon(iconList(iconUrl = f, className = c('a', 'b'))),
-    iconList(iconUrl = f, className = c('a', 'b'))
-  ),
-  TRUE
-)
-
-Rlogo = file.path(R.home('doc'), 'html', 'logo.jpg')
-
-if (file.exists(Rlogo)) assert(
-  'L.icon() base64 encodes local images',
-  L.icon(list(iconUrl = Rlogo))$iconUrl != Rlogo
-)
-
-res = iconList(iconUrl = rep(f, 10), iconWidth = 10, iconHeight = c(10, 20))
-assert(
-  'iconList() works',
-  length(res) == 2,
-  res[[1]]$iconUrl == f,
-  identical(res[[1]]$iconSize, c(10, 10)),
-  identical(res[[2]]$iconSize, c(10, 20)),
+  'icon deduping works',
+  identical(length(m$x$calls[[1]]$args[[3]]$iconUrl$data), 2L),
   TRUE
 )
