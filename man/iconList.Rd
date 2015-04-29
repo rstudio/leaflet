@@ -3,9 +3,9 @@
 \alias{iconList}
 \title{Create a list of icons}
 \usage{
-iconList(iconUrl = NULL, iconRetinaUrl = NULL, iconSizeX = NULL, iconSizeY = NULL, 
+iconList(iconUrl = NULL, iconRetinaUrl = NULL, iconWidth = NULL, iconHeight = NULL, 
     iconAnchorX = NULL, iconAnchorY = NULL, shadowUrl = NULL, shadowRetinaUrl = NULL, 
-    shadowSizeX = NULL, shadowSizeY = NULL, shadowAnchorX = NULL, shadowAnchorY = NULL, 
+    shadowWidth = NULL, shadowHeight = NULL, shadowAnchorX = NULL, shadowAnchorY = NULL, 
     popupAnchorX = NULL, popupAnchorY = NULL, className = NULL, embed = TRUE)
 }
 \arguments{
@@ -13,8 +13,7 @@ iconList(iconUrl = NULL, iconRetinaUrl = NULL, iconSizeX = NULL, iconSizeY = NUL
 
 \item{iconRetinaUrl}{the URL to a retina sized version of the icon image}
 
-\item{iconSizeX, iconSizeY}{size of the icon image in pixels (\code{iconSizeX}
-is width and \code{iconSizeY} is height)}
+\item{iconWidth, iconHeight}{size of the icon image in pixels}
 
 \item{iconAnchorX, iconAnchorY}{the coordinates of the "tip" of the icon
 (relative to its top left corner, i.e. the top left corner means
@@ -26,7 +25,7 @@ aligned so that this point is at the marker's geographical location}
 \item{shadowRetinaUrl}{the URL to the retina sized version of the icon shadow
 image}
 
-\item{shadowSizeX, shadownSizeY}{size of the shadow image in pixels}
+\item{shadowWidth, shadowHeight}{size of the shadow image in pixels}
 
 \item{shadowAnchorX, shadowAnchorY}{the coordinates of the "tip" of the shadow}
 
@@ -44,15 +43,8 @@ A list of icon data that can be passed to the \code{icon} argument of
 \description{
 An icon can be represented as a list of the form \code{list(iconUrl,
 iconSize, ...)}. This function is vectorized over its arguments to create a
-list of icons. See \url{http://leafletjs.com/reference.html#icon} for the
-possible attributes of icons.
-}
-\details{
-Note some icon attributes are of length 2, such as \code{iconSize} and
-\code{iconAnchor}, and \code{iconList()} provides two separate arguments for
-these attributes, e.g. \code{iconSizeX = 20} and \code{iconSizeY = 40} means
-\code{iconSize = c(20, 40)} internally. Shorter argument values will be
-re-cycled. \code{NULL} values for these arguments will be ignored.
+list of icons. Shorter argument values will be re-cycled. \code{NULL} values
+for these arguments will be ignored.
 }
 \note{
 The argument \code{embed = TRUE} can be useful when you render the map
