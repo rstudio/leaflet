@@ -44,11 +44,23 @@ addProviderTiles <- function(
     provider, layerId, options)
 }
 
-#' @param opacity the opacity of the layer (or \code{NULL} for the provider
-#'   default)
+#' @param
+#' errorTileUrl,noWrap,opacity,zIndex,unloadInvisibleTiles,updateWhenIdle,detectRetina,reuseTiles
+#' the tile layer options; see
+#' \url{http://leafletjs.com/reference.html#tilelayer}
 #' @param ... named parameters to add to the options
 #' @rdname addProviderTiles
 #' @export
-providerTileOptions <- function(opacity = NULL, ...) {
-  list(opacity = opacity, ...)
+providerTileOptions <- function(errorTileUrl = '', noWrap = FALSE,
+  opacity = NULL, zIndex = NULL, unloadInvisibleTiles = NULL,
+  updateWhenIdle = NULL, detectRetina = FALSE, reuseTiles = FALSE, ...
+) {
+  opts <- list(errorTileUrl = errorTileUrl, noWrap = noWrap,
+    zIndex = zIndex, unloadInvisibleTiles = unloadInvisibleTiles,
+    updateWhenIdle = updateWhenIdle, detectRetina = detectRetina,
+    reuseTiles = reuseTiles, ...)
+  # Don't include opacity=NULL--it overrides the provider's default opacity
+  if (!is.null(opacity))
+    opts$opacity <- opacity
+  opts
 }

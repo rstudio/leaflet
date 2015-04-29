@@ -6,7 +6,9 @@
 \usage{
 addProviderTiles(map, provider, layerId = NULL, options = providerTileOptions())
 
-providerTileOptions(opacity = NULL, ...)
+providerTileOptions(errorTileUrl = "", noWrap = FALSE, opacity = NULL, zIndex = NULL, 
+    unloadInvisibleTiles = NULL, updateWhenIdle = NULL, detectRetina = FALSE, 
+    reuseTiles = FALSE, ...)
 }
 \arguments{
 \item{map}{the map to add the tile layer to}
@@ -19,8 +21,8 @@ providerTileOptions(opacity = NULL, ...)
 
 \item{options}{tile options}
 
-\item{opacity}{the opacity of the layer (or \code{NULL} for the provider
-default)}
+\item{errorTileUrl, noWrap, opacity, zIndex, unloadInvisibleTiles, updateWhenIdle, detectRetina, reuseTiles}{the tile layer options; see
+\url{http://leafletjs.com/reference.html#tilelayer}}
 
 \item{...}{named parameters to add to the options}
 }
