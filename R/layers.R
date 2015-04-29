@@ -275,8 +275,7 @@ L.icon = function(options, embed = TRUE) {
 #' for these arguments will be ignored.
 #' @param iconUrl the URL to the icon image
 #' @param iconRetinaUrl the URL to a retina sized version of the icon image
-#' @param iconSizeX,iconSizeY size of the icon image in pixels (\code{iconSizeX}
-#'   is width and \code{iconSizeY} is height)
+#' @param iconWidth,iconHeight size of the icon image in pixels
 #' @param iconAnchorX,iconAnchorY the coordinates of the "tip" of the icon
 #'   (relative to its top left corner, i.e. the top left corner means
 #'   \code{iconAnchorX = 0} and \code{iconAnchorY = 0)}, and the icon will be
@@ -284,7 +283,7 @@ L.icon = function(options, embed = TRUE) {
 #' @param shadowUrl the URL to the icon shadow image
 #' @param shadowRetinaUrl the URL to the retina sized version of the icon shadow
 #'   image
-#' @param shadowSizeX,shadownSizeY size of the shadow image in pixels
+#' @param shadowWidth,shadowHeight size of the shadow image in pixels
 #' @param shadowAnchorX,shadowAnchorY the coordinates of the "tip" of the shadow
 #' @param popupAnchorX,popupAnchorY the coordinates of the point from which
 #'   popups will "open", relative to the icon anchor
@@ -304,18 +303,18 @@ L.icon = function(options, embed = TRUE) {
 #' @export
 #' @example inst/examples/iconList.R
 iconList = function(
-  iconUrl = NULL, iconRetinaUrl = NULL, iconSizeX = NULL, iconSizeY = NULL,
+  iconUrl = NULL, iconRetinaUrl = NULL, iconWidth = NULL, iconHeight = NULL,
   iconAnchorX = NULL, iconAnchorY = NULL, shadowUrl = NULL, shadowRetinaUrl = NULL,
-  shadowSizeX = NULL, shadowSizeY = NULL, shadowAnchorX = NULL, shadowAnchorY = NULL,
+  shadowWidth = NULL, shadowHeight = NULL, shadowAnchorX = NULL, shadowAnchorY = NULL,
   popupAnchorX = NULL, popupAnchorY = NULL, className = NULL, embed = TRUE
 ) {
   op = options(stringsAsFactors = FALSE); on.exit(options(op))
   attrs = filterNULL(list(
     iconUrl = iconUrl, iconRetinaUrl = iconRetinaUrl,
-    iconSizeX = iconSizeX, iconSizeY = iconSizeY,
+    iconWidth = iconWidth, iconHeight = iconHeight,
     iconAnchorX = iconAnchorX, iconAnchorY = iconAnchorY,
     shadowUrl = shadowUrl, shadowRetinaUrl = shadowRetinaUrl,
-    shadowSizeX = shadowSizeX, shadowSizeY = shadowSizeY,
+    shadowWidth = shadowWidth, shadowHeight = shadowHeight,
     shadowAnchorX = shadowAnchorX, shadowAnchorY = shadowAnchorY,
     popupAnchorX = popupAnchorX, popupAnchorY = popupAnchorY,
     className = className
@@ -335,7 +334,7 @@ iconList = function(
 # convert fooX and fooY variables to a list of foo = c(fooX, fooY)
 iconData = function(options) {
   options = as.list(options)
-  for (i in c('iconSize', 'iconAnchor', 'shadowSize', 'shadowAnchor', 'popupAnchor')) {
+  for (i in c('iconAnchor', 'shadowAnchor', 'popupAnchor')) {
     x = paste0(i, 'X')
     y = paste0(i, 'Y')
     if (xor(is.null(options[[x]]), is.null(options[[y]]))) {
@@ -343,6 +342,17 @@ iconData = function(options) {
     }
     if (!is.null(options[[x]])) {
       options[[i]] = as.numeric(c(options[[x]], options[[y]]))
+      options[[x]] = options[[y]] = NULL
+    }
+  }
+  for (i in c('icon', 'shadow')) {
+    x = paste0(i, 'Width')
+    y = paste0(i, 'Height')
+    if (xor(is.null(options[[x]]), is.null(options[[y]]))) {
+      stop('The icon options ', x, ' and ', y, ' must be both NULL or both not NULL')
+    }
+    if (!is.null(options[[x]])) {
+      options[[paste0(i, 'Size')]] = as.numeric(c(options[[x]], options[[y]]))
       options[[x]] = options[[y]] = NULL
     }
   }

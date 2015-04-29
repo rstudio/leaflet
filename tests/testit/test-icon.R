@@ -21,7 +21,7 @@ if (file.exists(Rlogo)) assert(
   L.icon(list(iconUrl = Rlogo))$iconUrl != Rlogo
 )
 
-res = iconList(iconUrl = rep(f, 10), iconSizeX = 10, iconSizeY = c(10, 20))
+res = iconList(iconUrl = rep(f, 10), iconWidth = 10, iconHeight = c(10, 20))
 assert(
   'iconList() works',
   length(res) == 2,
