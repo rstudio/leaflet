@@ -57,7 +57,7 @@ var dataframe = (function() {
     if (typeof(index) === 'undefined')
       return -1;
     return index;
-  }
+  };
 
   DataFrame.prototype.col = function(name, values, strict) {
     if (typeof(name) !== 'string')
@@ -84,7 +84,7 @@ var dataframe = (function() {
     this._updateCachedProperties();
 
     return this;
-  }
+  };
 
   DataFrame.prototype.cbind = function(obj, strict) {
     var self = this, name;
@@ -116,11 +116,11 @@ var dataframe = (function() {
       throw new Error('Unknown column index: ' + col);
 
     return this.columns[colIndex][row % this.columns[colIndex].length];
-  }
+  };
 
   DataFrame.prototype.nrow = function() {
     return this.effectiveLength;
-  }
+  };
 
   function test() {
     var df = new DataFrame();
@@ -150,8 +150,6 @@ var dataframe = (function() {
 })();
 
 (function() {
-  var maps = {};
-
   function LayerStore(map) {
     this._layers = {};
     this._group = L.layerGroup().addTo(map);
@@ -168,9 +166,16 @@ var dataframe = (function() {
   };
 
   LayerStore.prototype.remove = function(id) {
-    if (this._layers[id]) {
-      this._group.removeLayer(this._layers[id]);
-      delete this._layers[id];
+    if (typeof(id) === 'undefined' || id === null) {
+      return;
+    }
+
+    id = asArray(id);
+    for (var i = 0; i < id.length; i++) {
+      if (this._layers[id[i]]) {
+        this._group.removeLayer(this._layers[id[i]]);
+        delete this._layers[id[i]];
+      }
     }
   };
 
@@ -199,18 +204,36 @@ var dataframe = (function() {
   function mouseHandler(mapId, layerId, eventName, extraInfo) {
     return function(e) {
       if (!HTMLWidgets.shinyMode) return;
-      var lat = e.target.getLatLng ? e.target.getLatLng().lat : null;
-      var lng = e.target.getLatLng ? e.target.getLatLng().lng : null;
-      Shiny.onInputChange(mapId + '_' + eventName, $.extend({
-        id: layerId,
-        lat: lat,
-        lng: lng,
-        '.nonce': Math.random()  // force reactivity
-      }, extraInfo));
+
+      var eventInfo = $.extend(
+        {
+          id: layerId,
+          '.nonce': Math.random()  // force reactivity
+        },
+        e.target.getLatLng ? e.target.getLatLng() : e.latlng,
+        extraInfo
+      );
+
+      Shiny.onInputChange(mapId + '_' + eventName, eventInfo);
     };
   }
 
-  var methods = {};
+  // Send updated bounds back to app. Takes a leaflet event object as input.
+  function updateBounds(map) {
+    var id = map.getContainer().id;
+    var bounds = map.getBounds();
+
+    Shiny.onInputChange(id + '_bounds', {
+      north: bounds.getNorthEast().lat,
+      east: bounds.getNorthEast().lng,
+      south: bounds.getSouthWest().lat,
+      west: bounds.getSouthWest().lng
+    });
+    Shiny.onInputChange(id + '_zoom', map.getZoom());
+  }
+
+  window.LeafletWidget = {};
+  var methods = window.LeafletWidget.methods = {};
 
   methods.setView = function(center, zoom, options) {
     this.setView(center, zoom, options);
@@ -222,7 +245,7 @@ var dataframe = (function() {
     ]);
   };
 
-  methods.popup = function(lat, lng, popup, layerId, options) {
+  methods.addPopups = function(lat, lng, popup, layerId, options) {
     var df = dataframe.create()
       .col('lat', lat)
       .col('lng', lng)
@@ -252,11 +275,80 @@ var dataframe = (function() {
     this.popups.clear();
   };
 
-  methods.tileLayer = function(urlTemplate, options) {
-    this.tiles.add(L.tileLayer(urlTemplate, options));
+  methods.addTiles = function(urlTemplate, layerId, options) {
+    this.tiles.add(L.tileLayer(urlTemplate, options), layerId);
   };
 
-  methods.marker = function(lat, lng, layerId, options, popup) {
+  methods.removeTiles = function(layerId) {
+    this.tiles.remove(layerId);
+  };
+
+  methods.clearTiles = function() {
+    this.tiles.clear();
+  };
+
+  // Given:
+  //   {data: ["a", "b", "c"], index: [0, 1, 0, 2]}
+  // returns:
+  //   ["a", "b", "a", "c"]
+  function unpackStrings(iconset) {
+    if (!iconset) {
+      return iconset;
+    }
+    if (typeof(iconset.index) === 'undefined') {
+      return iconset;
+    }
+
+    iconset.data = asArray(iconset.data);
+    iconset.index = asArray(iconset.index);
+
+    return $.map(iconset.index, function(e, i) {
+      return iconset.data[e];
+    });
+  }
+
+  methods.addMarkers = function(lat, lng, icon, layerId, options, popup) {
+    if (icon) {
+      // Unpack icons
+      icon.iconUrl         = unpackStrings(icon.iconUrl);
+      icon.iconRetinaUrl   = unpackStrings(icon.iconRetinaUrl);
+      icon.shadowUrl       = unpackStrings(icon.shadowUrl);
+      icon.shadowRetinaUrl = unpackStrings(icon.shadowRetinaUrl);
+
+      // This cbinds the icon URLs and any other icon options; they're all
+      // present on the icon object.
+      var icondf = dataframe.create().cbind(icon);
+
+      // Constructs an icon from a specified row of the icon dataframe.
+      var getIcon = function(i) {
+        var opts = icondf.get(i);
+        if (!opts.iconUrl) {
+          return new L.Icon.Default();
+        }
+
+        // Composite options (like points or sizes) are passed from R with each
+        // individual component as its own option. We need to combine them now
+        // into their composite form.
+        if (opts.iconWidth) {
+          opts.iconSize = [opts.iconWidth, opts.iconHeight];
+        }
+        if (opts.shadowWidth) {
+          opts.shadowSize = [opts.shadowWidth, opts.shadowHeight];
+        }
+        if (opts.iconAnchorX) {
+          opts.iconAnchor = [opts.iconAnchorX, opts.iconAnchorY];
+        }
+        if (opts.shadowAnchorX) {
+          opts.shadowAnchor = [opts.shadowAnchorX, opts.shadowAnchorY];
+        }
+        if (opts.popupAnchorX) {
+          opts.popupAnchor = [opts.popupAnchorX, opts.popupAnchorY];
+        }
+
+        return new L.Icon(opts);
+      };
+    }
+
     var df = dataframe.create()
       .col('lat', lat)
       .col('lng', lng)
@@ -264,9 +356,13 @@ var dataframe = (function() {
       .col('popup', popup)
       .cbind(options);
 
+    icondf.effectiveLength = df.nrow();
+
     for (var i = 0; i < df.nrow(); i++) {
       (function() {
-        var marker = L.marker([df.get(i, 'lat'), df.get(i, 'lng')], df.get(i));
+        var options = df.get(i);
+        if (icon) options.icon = getIcon(i);
+        var marker = L.marker([df.get(i, 'lat'), df.get(i, 'lng')], options);
         var thisId = df.get(i, 'layerId');
         this.markers.add(marker, thisId);
         var popup = df.get(i, 'popup');
@@ -278,7 +374,7 @@ var dataframe = (function() {
     }
   };
 
-  methods.circle = function(lat, lng, radius, layerId, options, popup) {
+  methods.addCircles = function(lat, lng, radius, layerId, options, popup) {
     var df = dataframe.create()
       .col('lat', lat)
       .col('lng', lng)
@@ -301,7 +397,7 @@ var dataframe = (function() {
     }
   };
 
-  methods.circleMarker = function(lat, lng, radius, layerId, options, popup) {
+  methods.addCircleMarkers = function(lat, lng, radius, layerId, options, popup) {
     var df = dataframe.create()
       .col('lat', lat)
       .col('lng', lng)
@@ -328,7 +424,7 @@ var dataframe = (function() {
    * @param lat Array of arrays of latitude coordinates for polylines
    * @param lng Array of arrays of longitude coordinates for polylines
    */
-  methods.polyline = function(polygons, layerId, options, popup) {
+  methods.addPolylines = function(polygons, layerId, options, popup) {
     var df = dataframe.create()
       .col('shapes', polygons)
       .col('layerId', layerId)
@@ -367,7 +463,7 @@ var dataframe = (function() {
     this.shapes.clear();
   };
 
-  methods.rectangle = function(lat1, lng1, lat2, lng2, layerId, options, popup) {
+  methods.addRectangles = function(lat1, lng1, lat2, lng2, layerId, options, popup) {
     var df = dataframe.create()
       .col('lat1', lat1)
       .col('lng1', lng1)
@@ -399,7 +495,7 @@ var dataframe = (function() {
    * @param lat Array of arrays of latitude coordinates for polygons
    * @param lng Array of arrays of longitude coordinates for polygons
    */
-  methods.polygon = function(polygons, layerId, options, popup) {
+  methods.addPolygons = function(polygons, layerId, options, popup) {
     var df = dataframe.create()
       .col('shapes', polygons)
       .col('layerId', layerId)
@@ -424,7 +520,7 @@ var dataframe = (function() {
     }
   };
 
-  methods.geoJSON = function(data, layerId) {
+  methods.addGeoJSON = function(data, layerId) {
     var self = this;
     if (typeof(data) === "string") {
       data = JSON.parse(data);
@@ -455,18 +551,58 @@ var dataframe = (function() {
     this.geojson.add(gjlayer, layerId);
   };
 
+  methods.removeGeoJSON = function(layerId) {
+    this.geojson.remove(layerId);
+  };
+
+  methods.clearGeoJSON = function() {
+    this.geojson.clear();
+  };
+
+
+
   HTMLWidgets.widget({
     name: "leaflet",
     type: "output",
     initialize: function(el, width, height) {
       // hard-coding center/zoom here for a non-empty initial view, since there
       // is no way for htmlwidgets to pass initial params to initialize()
-      return L.map(el, {
+      var map = L.map(el, {
         center: [51.505, -0.09],
         zoom: 13
       });
+
+      // Store some state in the map object
+      map.leafletr = {
+        hasRendered: false
+      };
+
+      if (!HTMLWidgets.shinyMode) return map;
+
+      // The map is rendered staticly (no output binding, so no this.getId())
+      if (typeof this.getId === 'undefined') return map;
+
+      map.id = this.getId(el);
+
+      // Store the map on the element so we can find it later by ID
+      $(el).data("leaflet-map", map);
+
+      // When the map is clicked, send the coordinates back to the app
+      map.on('click', function(e) {
+        Shiny.onInputChange(map.id + '_click', {
+          lat: e.latlng.lat,
+          lng: e.latlng.lng,
+          '.nonce': Math.random() // Force reactivity if lat/lng hasn't changed
+        });
+      });
+
+      map.on('moveend', function(e) { updateBounds(e.target); });
+
+      return map;
     },
     renderValue: function(el, data, map) {
+      // Merge data options into defaults
+      var options = $.extend({ zoomToLimits: "always" }, data.options);
 
       if (!map.markers) {
         map.markers = new LayerStore(map);
@@ -491,7 +627,15 @@ var dataframe = (function() {
         explicitView = true;
         methods.fitBounds.apply(map, data.fitBounds);
       }
-      if (!explicitView) {
+
+      // Returns true if the zoomToLimits option says that the map should be
+      // zoomed to map elements.
+      function needsZoom() {
+        return options.zoomToLimits === "always" ||
+               (options.zoomToLimits === "first" && !map.leafletr.hasRendered);
+      }
+
+      if (!explicitView && needsZoom()) {
         if (data.limits) {
           // Use the natural limits of what's being drawn on the map
           // If the size of the bounding box is 0, leaflet gets all weird
@@ -517,38 +661,15 @@ var dataframe = (function() {
         var call = data.calls[i];
         if (methods[call.method])
           methods[call.method].apply(map, call.args);
+        else
+          console.log("Unknown method " + call.method);
       }
 
-      var id = data.mapId;
-      if (id === null) return;
-      maps[id] = map;
+      map.leafletr.hasRendered = true;
 
       if (!HTMLWidgets.shinyMode) return;
 
-      // When the map is clicked, send the coordinates back to the app
-      map.on('click', function(e) {
-        Shiny.onInputChange(id + '_click', {
-          lat: e.latlng.lat,
-          lng: e.latlng.lng,
-          '.nonce': Math.random() // Force reactivity if lat/lng hasn't changed
-        });
-      });
-
-      // Send bounds info back to the app
-      function updateBounds() {
-        var bounds = map.getBounds();
-        Shiny.onInputChange(id + '_bounds', {
-          north: bounds.getNorthEast().lat,
-          east: bounds.getNorthEast().lng,
-          south: bounds.getSouthWest().lat,
-          west: bounds.getSouthWest().lng
-        });
-        Shiny.onInputChange(id + '_zoom', map.getZoom());
-      }
-      setTimeout(updateBounds, 1);
-
-      map.on('moveend', updateBounds);
-
+      setTimeout(function() { updateBounds(map); }, 1);
     },
     resize: function(el, width, height, data) {
 
@@ -557,17 +678,24 @@ var dataframe = (function() {
 
   if (!HTMLWidgets.shinyMode) return;
 
-  // Shiny support via the Leaflet map controller
-  Shiny.addCustomMessageHandler('leaflet', function(data) {
-    var mapId = data.mapId;
-    var map = maps[mapId];
-    if (!map)
+  Shiny.addCustomMessageHandler('leaflet-calls', function(data) {
+    var id = data.id;
+    var el = document.getElementById(id);
+    var map = el ? $(el).data('leaflet-map') : null;
+    if (!map) {
+      console.log("Couldn't find map with id " + id);
       return;
+    }
 
-    if (methods[data.method]) {
-      methods[data.method].apply(map, data.args);
-    } else {
-      throw new Error('Unknown method ' + data.method);
+    for (var i = 0; i < data.calls.length; i++) {
+      var call = data.calls[i];
+      if (call.dependencies) {
+        Shiny.renderDependencies(call.dependencies);
+      }
+      if (methods[call.method])
+        methods[call.method].apply(map, call.args);
+      else
+        console.log("Unknown method " + call.method);
     }
   });
 

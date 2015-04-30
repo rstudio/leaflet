@@ -376,6 +376,7 @@
       overrideMethod(shinyBinding, "renderValue", function(superfunc) {
         return function(el, data) {
           // Resolve strings marked as javascript literals to objects
+          if (!(data.evals instanceof Array)) data.evals = [data.evals];
           for (var i = 0; data.evals && i < data.evals.length; i++) {
             window.HTMLWidgets.evaluateStringMember(data.x, data.evals[i]);
           }
@@ -421,14 +422,14 @@
     if (!scheduleStaticRenderTimerId) {
       scheduleStaticRenderTimerId = setTimeout(function() {
         scheduleStaticRenderTimerId = null;
-        staticRender();
+        window.HTMLWidgets.staticRender();
       }, 1);
     }
   }
 
   // Render static widgets after the document finishes loading
   // Statically render all elements that are of this widget's class
-  function staticRender() {
+  window.HTMLWidgets.staticRender = function() {
     var bindings = window.HTMLWidgets.widgets || [];
     for (var i = 0; i < bindings.length; i++) {
       var binding = bindings[i];
@@ -469,8 +470,9 @@
         if (scriptData) {
           var data = JSON.parse(scriptData.textContent || scriptData.text);
           // Resolve strings marked as javascript literals to objects
-          for (var i = 0; data.evals && i < data.evals.length; i++) {
-            window.HTMLWidgets.evaluateStringMember(data.x, data.evals[i]);
+          if (!(data.evals instanceof Array)) data.evals = [data.evals];
+          for (var k = 0; data.evals && k < data.evals.length; k++) {
+            window.HTMLWidgets.evaluateStringMember(data.x, data.evals[k]);
           }
           binding.renderValue(el, data.x, initResult);
         }
@@ -482,13 +484,13 @@
   if (document.addEventListener) {
     document.addEventListener("DOMContentLoaded", function() {
       document.removeEventListener("DOMContentLoaded", arguments.callee, false);
-      staticRender();
+      window.HTMLWidgets.staticRender();
     }, false);
   } else if (document.attachEvent) {
     document.attachEvent("onreadystatechange", function() {
       if (document.readyState === "complete") {
         document.detachEvent("onreadystatechange", arguments.callee);
-        staticRender();
+        window.HTMLWidgets.staticRender();
       }
     });
   }
