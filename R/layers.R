@@ -230,8 +230,7 @@ clearPopups = function(map) {
 #'   \code{\link{icons}()} to create multiple icons; note when you use an R
 #'   list that contains images as local files, these local image files will be
 #'   base64 encoded into the HTML page so the icon images will still be
-#'   available even when you publish the map elsewhere (use \code{icons(...,
-#'   embed = FALSE)} if you do not want the images to be encoded and embedded)
+#'   available even when you publish the map elsewhere
 #' @describeIn map-layers Add markders to the map
 #' @export
 addMarkers = function(
@@ -263,12 +262,12 @@ addMarkers = function(
     expandLimits(pts$lat, pts$lng)
 }
 
-#' Create a list of icons
+#' Create a list of icon data
 #'
 #' An icon can be represented as a list of the form \code{list(iconUrl,
 #' iconSize, ...)}. This function is vectorized over its arguments to create a
-#' list of icons. Shorter argument values will be re-cycled. \code{NULL} values
-#' for these arguments will be ignored.
+#' list of icon data. Shorter argument values will be re-cycled. \code{NULL}
+#' values for these arguments will be ignored.
 #' @param iconUrl the URL to the icon image
 #' @param iconRetinaUrl the URL to a retina sized version of the icon image
 #' @param iconWidth,iconHeight size of the icon image in pixels
@@ -284,16 +283,6 @@ addMarkers = function(
 #' @param popupAnchorX,popupAnchorY the coordinates of the point from which
 #'   popups will "open", relative to the icon anchor
 #' @param className a custom class name to assign to both icon and shadow images
-#' @param embed whether to base64 encode local image files
-#' @note The argument \code{embed = TRUE} can be useful when you render the map
-#'   in a static HTML document and you want it to be self-contained (i.e. no
-#'   external image dependencies). If you are sure that the icon images will
-#'   always be available along with the HTML document, it is not necessary to
-#'   encode them. When using the icons in Shiny, you may (pre-)render the icon
-#'   images under the \file{www} directory of the app, and use them without
-#'   base64 encoding them, e.g. you can use an icon \file{www/foo.png} by
-#'   \code{iconList(iconUrl = 'foo.png', embed = FALSE)} (note there is no
-#'   \samp{www} prefix in the icon URL).
 #' @return A list of icon data that can be passed to the \code{icon} argument of
 #'   \code{\link{addMarkers}()}.
 #' @export
@@ -302,7 +291,7 @@ icons = function(
   iconUrl = NULL, iconRetinaUrl = NULL, iconWidth = NULL, iconHeight = NULL,
   iconAnchorX = NULL, iconAnchorY = NULL, shadowUrl = NULL, shadowRetinaUrl = NULL,
   shadowWidth = NULL, shadowHeight = NULL, shadowAnchorX = NULL, shadowAnchorY = NULL,
-  popupAnchorX = NULL, popupAnchorY = NULL, className = NULL, embed = TRUE
+  popupAnchorX = NULL, popupAnchorY = NULL, className = NULL
 ) {
   filterNULL(list(
     iconUrl = iconUrl, iconRetinaUrl = iconRetinaUrl,

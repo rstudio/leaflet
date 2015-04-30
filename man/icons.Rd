@@ -1,12 +1,12 @@
 % Please edit documentation in R/layers.R
-\name{iconList}
-\alias{iconList}
-\title{Create a list of icons}
+\name{icons}
+\alias{icons}
+\title{Create a list of icon data}
 \usage{
-iconList(iconUrl = NULL, iconRetinaUrl = NULL, iconWidth = NULL, iconHeight = NULL, 
+icons(iconUrl = NULL, iconRetinaUrl = NULL, iconWidth = NULL, iconHeight = NULL, 
     iconAnchorX = NULL, iconAnchorY = NULL, shadowUrl = NULL, shadowRetinaUrl = NULL, 
     shadowWidth = NULL, shadowHeight = NULL, shadowAnchorX = NULL, shadowAnchorY = NULL, 
-    popupAnchorX = NULL, popupAnchorY = NULL, className = NULL, embed = TRUE)
+    popupAnchorX = NULL, popupAnchorY = NULL, className = NULL)
 }
 \arguments{
 \item{iconUrl}{the URL to the icon image}
@@ -33,8 +33,6 @@ image}
 popups will "open", relative to the icon anchor}
 
 \item{className}{a custom class name to assign to both icon and shadow images}
-
-\item{embed}{whether to base64 encode local image files}
 }
 \value{
 A list of icon data that can be passed to the \code{icon} argument of
@@ -43,19 +41,8 @@ A list of icon data that can be passed to the \code{icon} argument of
 \description{
 An icon can be represented as a list of the form \code{list(iconUrl,
 iconSize, ...)}. This function is vectorized over its arguments to create a
-list of icons. Shorter argument values will be re-cycled. \code{NULL} values
-for these arguments will be ignored.
-}
-\note{
-The argument \code{embed = TRUE} can be useful when you render the map
-  in a static HTML document and you want it to be self-contained (i.e. no
-  external image dependencies). If you are sure that the icon images will
-  always be available along with the HTML document, it is not necessary to
-  encode them. When using the icons in Shiny, you may (pre-)render the icon
-  images under the \file{www} directory of the app, and use them without
-  base64 encoding them, e.g. you can use an icon \file{www/foo.png} by
-  \code{iconList(iconUrl = 'foo.png', embed = FALSE)} (note there is no
-  \samp{www} prefix in the icon URL).
+list of icon data. Shorter argument values will be re-cycled. \code{NULL}
+values for these arguments will be ignored.
 }
 \examples{
 library(leaflet)
@@ -71,7 +58,7 @@ iconData = data.frame(
 
 leaflet() \%>\% addMarkers(
   data = iconData,
-  icon = ~ iconList(
+  icon = ~ icons(
     iconUrl = sprintf('http://leafletjs.com/docs/images/leaf-\%s.png', group),
     shadowUrl = 'http://leafletjs.com/docs/images/leaf-shadow.png',
     iconWidth = 38, iconHeight = 95, shadowWidth = 50, shadowHeight = 64,
@@ -113,7 +100,7 @@ iconFiles = pchIcons(shapes, 40, 40, col = 'steelblue', lwd = 2)
 # group[i]-th icon in the icon list
 leaflet() \%>\% addMarkers(
   data = iconData,
-  icon = ~ iconList(
+  icon = ~ icons(
     iconUrl = iconFiles[group],
     popupAnchorX = 20, popupAnchorY = 0
   ),
