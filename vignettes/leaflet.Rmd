@@ -152,7 +152,7 @@ The UI elements markers and popups are supported via `addMarkers()` and `addPopu
 
 ```{r}
 leaflet() %>% addTiles() %>%
-  addMarkers(174.7690922, -36.8523071, icon = iconList(
+  addMarkers(174.7690922, -36.8523071, icon = icons(
     iconUrl = 'http://cran.rstudio.com/Rlogo.jpg',
     iconWidth = 40, iconHeight = 40
   )) %>%

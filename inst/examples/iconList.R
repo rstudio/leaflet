@@ -11,7 +11,7 @@ iconData = data.frame(
 
 leaflet() %>% addMarkers(
   data = iconData,
-  icon = ~ iconList(
+  icon = ~ icons(
     iconUrl = sprintf('http://leafletjs.com/docs/images/leaf-%s.png', group),
     shadowUrl = 'http://leafletjs.com/docs/images/leaf-shadow.png',
     iconWidth = 38, iconHeight = 95, shadowWidth = 50, shadowHeight = 64,
@@ -53,7 +53,7 @@ iconFiles = pchIcons(shapes, 40, 40, col = 'steelblue', lwd = 2)
 # group[i]-th icon in the icon list
 leaflet() %>% addMarkers(
   data = iconData,
-  icon = ~ iconList(
+  icon = ~ icons(
     iconUrl = iconFiles[group],
     popupAnchorX = 20, popupAnchorY = 0
   ),

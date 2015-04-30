@@ -227,10 +227,10 @@ clearPopups = function(map) {
 
 #' @param icon the icon(s) for markers; an icon is represented by an R list of
 #'   the form \code{list(iconUrl = '?', iconSize = c(x, y))}, and you can use
-#'   \code{\link{iconList}()} to create a list of icons; note when you use an R
+#'   \code{\link{icons}()} to create multiple icons; note when you use an R
 #'   list that contains images as local files, these local image files will be
 #'   base64 encoded into the HTML page so the icon images will still be
-#'   available even when you publish the map elsewhere (use \code{iconList(...,
+#'   available even when you publish the map elsewhere (use \code{icons(...,
 #'   embed = FALSE)} if you do not want the images to be encoded and embedded)
 #' @describeIn map-layers Add markders to the map
 #' @export
@@ -298,7 +298,7 @@ addMarkers = function(
 #'   \code{\link{addMarkers}()}.
 #' @export
 #' @example inst/examples/iconList.R
-iconList = function(
+icons = function(
   iconUrl = NULL, iconRetinaUrl = NULL, iconWidth = NULL, iconHeight = NULL,
   iconAnchorX = NULL, iconAnchorY = NULL, shadowUrl = NULL, shadowRetinaUrl = NULL,
   shadowWidth = NULL, shadowHeight = NULL, shadowAnchorX = NULL, shadowAnchorY = NULL,
