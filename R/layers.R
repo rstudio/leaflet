@@ -286,7 +286,7 @@ addMarkers = function(
 #' @return A list of icon data that can be passed to the \code{icon} argument of
 #'   \code{\link{addMarkers}()}.
 #' @export
-#' @example inst/examples/iconList.R
+#' @example inst/examples/icons.R
 icons = function(
   iconUrl = NULL, iconRetinaUrl = NULL, iconWidth = NULL, iconHeight = NULL,
   iconAnchorX = NULL, iconAnchorY = NULL, shadowUrl = NULL, shadowRetinaUrl = NULL,
