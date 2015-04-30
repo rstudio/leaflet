@@ -323,6 +323,8 @@ b64EncodePackedIcons = function(packedIcons) {
   if (is.null(packedIcons))
     return(packedIcons)
 
+  # TODO: remove this when we've got our own encoding function
+  markdown::markdownToHTML
   image_uri = getFromNamespace('.b64EncodeFile', 'markdown')
   packedIcons$data = sapply(packedIcons$data, function(icon) {
     if (is.character(icon) && file.exists(icon)) {
