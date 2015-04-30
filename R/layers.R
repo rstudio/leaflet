@@ -249,6 +249,12 @@ addMarkers = function(
     # If formulas are present, they must be evaluated first so we can pack the
     # resulting values
     icon = evalFormula(list(icon), data)[[1]]
+
+    # TODO: Figure out why this doesn't work
+    if (inherits(icon, "leaflet_icon_set")) {
+      icon <- iconSetToIcons(icon)
+    }
+
     # Pack and encode each URL vector; this will be reversed on the client
     icon$iconUrl         = b64EncodePackedIcons(packStrings(icon$iconUrl))
     icon$iconRetinaUrl   = b64EncodePackedIcons(packStrings(icon$iconRetinaUrl))
@@ -262,22 +268,101 @@ addMarkers = function(
     expandLimits(pts$lat, pts$lng)
 }
 
+#' Make icon set
+#'
+#' @export
+#' @examples
+#'
+#' iconSet = makeIconSet(
+#'   red = makeIcon("leaf-red.png", iconWidth=32, iconHeight=32),
+#'   green = makeIcon("leaf-green.png", iconWidth=32, iconHeight=32)
+#' )
+#'
+#' iconSet[c('red', 'green', 'red')]
+makeIconSet = function(...) {
+  # TODO: Test all values of ... to make sure they are icons
+  structure(
+    list(...),
+    class = "leaflet_icon_set"
+  )
+}
+
+#' @export
+`[.leaflet_icon_set` = function(x, i) {
+  if (is.factor(i)) {
+    i = as.character(i)
+  }
+
+  if (!is.character(i) && !is.numeric(i) && !is.integer(i)) {
+    stop("Invalid subscript type '", typeof(i), "'")
+  }
+
+  structure(.subset(x, i), class = "leaflet_icon_set")
+}
+
+iconSetToIcons = function(x) {
+  # c("iconUrl", "iconRetinaUrl", ...)
+  cols = names(formals(makeIcon))
+  # list(iconUrl = "iconUrl", iconRetinaUrl = "iconRetinaUrl", ...)
+  cols = structure(as.list(cols), names = cols)
+
+  # Construct an equivalent output to icons().
+  filterNULL(lapply(cols, function(col) {
+    # Pluck the `col` member off of each item in iconObjs and put them in an
+    # unnamed list (or vector if possible).
+    colVals = unname(sapply(x, `[[`, col))
+
+    # If this is the common case where there's lots of values but they're all
+    # actually the same exact thing, then just return one value; this will be
+    # much cheaper to send to the client, and we'll do recycling on the client
+    # side anyway.
+    if (length(unique(colVals)) == 1) {
+      return(colVals[[1]])
+    } else {
+      return(colVals)
+    }
+  }))
+}
+
+#' Define icon sets
+#'
+#' @inheritParams icons
+#'
+#' @export
+makeIcon = function(iconUrl = NULL, iconRetinaUrl = NULL, iconWidth = NULL, iconHeight = NULL,
+  iconAnchorX = NULL, iconAnchorY = NULL, shadowUrl = NULL, shadowRetinaUrl = NULL,
+  shadowWidth = NULL, shadowHeight = NULL, shadowAnchorX = NULL, shadowAnchorY = NULL,
+  popupAnchorX = NULL, popupAnchorY = NULL, className = NULL) {
+
+  filterNULL(list(
+    iconUrl = iconUrl, iconRetinaUrl = iconRetinaUrl,
+    iconWidth = iconWidth, iconHeight = iconHeight,
+    iconAnchorX = iconAnchorX, iconAnchorY = iconAnchorY,
+    shadowUrl = shadowUrl, shadowRetinaUrl = shadowRetinaUrl,
+    shadowWidth = shadowWidth, shadowHeight = shadowHeight,
+    shadowAnchorX = shadowAnchorX, shadowAnchorY = shadowAnchorY,
+    popupAnchorX = popupAnchorX, popupAnchorY = popupAnchorY,
+    className = className
+  ))
+}
+
 #' Create a list of icon data
 #'
 #' An icon can be represented as a list of the form \code{list(iconUrl,
 #' iconSize, ...)}. This function is vectorized over its arguments to create a
 #' list of icon data. Shorter argument values will be re-cycled. \code{NULL}
 #' values for these arguments will be ignored.
-#' @param iconUrl the URL to the icon image
-#' @param iconRetinaUrl the URL to a retina sized version of the icon image
+#' @param iconUrl the URL or file path to the icon image
+#' @param iconRetinaUrl the URL or file path to a retina sized version of the
+#'   icon image
 #' @param iconWidth,iconHeight size of the icon image in pixels
 #' @param iconAnchorX,iconAnchorY the coordinates of the "tip" of the icon
 #'   (relative to its top left corner, i.e. the top left corner means
 #'   \code{iconAnchorX = 0} and \code{iconAnchorY = 0)}, and the icon will be
 #'   aligned so that this point is at the marker's geographical location
-#' @param shadowUrl the URL to the icon shadow image
-#' @param shadowRetinaUrl the URL to the retina sized version of the icon shadow
-#'   image
+#' @param shadowUrl the URL or file path to the icon shadow image
+#' @param shadowRetinaUrl the URL or file path to the retina sized version of
+#'   the icon shadow image
 #' @param shadowWidth,shadowHeight size of the shadow image in pixels
 #' @param shadowAnchorX,shadowAnchorY the coordinates of the "tip" of the shadow
 #' @param popupAnchorX,popupAnchorY the coordinates of the point from which
