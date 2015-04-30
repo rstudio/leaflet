@@ -334,34 +334,6 @@ b64EncodePackedIcons = function(packedIcons) {
   packedIcons
 }
 
-# convert fooX and fooY variables to a list of foo = c(fooX, fooY)
-iconData = function(options) {
-  options = as.list(options)
-  for (i in c('iconAnchor', 'shadowAnchor', 'popupAnchor')) {
-    x = paste0(i, 'X')
-    y = paste0(i, 'Y')
-    if (xor(is.null(options[[x]]), is.null(options[[y]]))) {
-      stop('The icon options ', x, ' and ', y, ' must be both NULL or both not NULL')
-    }
-    if (!is.null(options[[x]])) {
-      options[[i]] = as.numeric(c(options[[x]], options[[y]]))
-      options[[x]] = options[[y]] = NULL
-    }
-  }
-  for (i in c('icon', 'shadow')) {
-    x = paste0(i, 'Width')
-    y = paste0(i, 'Height')
-    if (xor(is.null(options[[x]]), is.null(options[[y]]))) {
-      stop('The icon options ', x, ' and ', y, ' must be both NULL or both not NULL')
-    }
-    if (!is.null(options[[x]])) {
-      options[[paste0(i, 'Size')]] = as.numeric(c(options[[x]], options[[y]]))
-      options[[x]] = options[[y]] = NULL
-    }
-  }
-  options
-}
-
 #' @param clickable whether the element emits mouse events
 #' @param
 #'   draggable,keyboard,title,alt,zIndexOffset,opacity,riseOnHover,riseOffset
