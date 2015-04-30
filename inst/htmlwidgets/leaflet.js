@@ -200,6 +200,42 @@ var dataframe = (function() {
     }
     return keys;
   };
+  function ControlStore(map) {
+    this._controlsNoId = [];
+    this._controlsById = {};
+    this._map = map
+  }
+
+  ControlStore.prototype.add = function(control, id) {
+    if (typeof(id) !== 'undefined' && id !== null) {
+      if (this._controlsById[id]) {
+        this._map.removeControl(this._controlsById[id]);
+      }
+      this._controlsById[id] = control;
+    } else {
+      this._controlsNoId.push(control)
+    }
+    this._map.addControl(control);
+  };
+
+  ControlStore.prototype.remove = function(id) {
+    if (this._controlsById[id]) {
+      this._map.removeControl(this._controlsById[id]);
+      delete this._controlsById[id];
+    }
+  };
+
+  ControlStore.prototype.clear = function() {
+    for (var i = 0; i < this._controlsNoId.length; i++) {
+        this._map.removeControl(this._controlsNoId[i]);
+    };
+    this._controlsNoId = [];
+
+    for (var key in this._controlsById) {
+        this._map.removeControl(this._controlsById[key])
+    }
+    this._controlsById = {}
+  }
 
   function mouseHandler(mapId, layerId, eventName, extraInfo) {
     return function(e) {
@@ -559,7 +595,28 @@ var dataframe = (function() {
     this.geojson.clear();
   };
 
+  methods.addControl = function(position, html, controlId, classes) {
+    var onAdd = function(map) {
+      var div = L.DomUtil.create('div', classes);
+      div.innerHTML = html;
+      if (typeof controlId !== 'undefined' && controlId !== null) {
+        div.setAttribute('id', controlId)
+      }
+      this._div = div;
+      Shiny.bindAll(this._div);
+      return this._div;
+    };
+    var Control = L.Control.extend({options: {position: position}, onAdd: onAdd})
+    this.controls.add(new Control, controlId);
+  };
 
+  methods.removeControl = function(controlId) {
+    this.controls.remove(controlId);
+  };
+
+  methods.clearControls = function() {
+    this.controls.clear();
+  };
 
   HTMLWidgets.widget({
     name: "leaflet",
@@ -605,12 +662,14 @@ var dataframe = (function() {
       var options = $.extend({ zoomToLimits: "always" }, data.options);
 
       if (!map.markers) {
+        map.controls = new ControlStore(map);
         map.markers = new LayerStore(map);
         map.shapes = new LayerStore(map);
         map.popups = new LayerStore(map);
         map.geojson = new LayerStore(map);
         map.tiles = new LayerStore(map);
       } else {
+        map.controls.clear();
         map.markers.clear();
         map.shapes.clear();
         map.popups.clear();
