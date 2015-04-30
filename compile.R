@@ -1,4 +1,5 @@
 set.seed(0102)
+options(htmlwidgets.TOJSON_ARGS = list(pretty = TRUE))
 library(leaflet)
 f = rmarkdown::render(commandArgs(TRUE), 'html_document')
 # remove version numbers in HTML
