@@ -225,9 +225,12 @@ clearPopups = function(map) {
   invokeMethod(map, NULL, 'clearPopups')
 }
 
-#' @param icon the icon for markers; if you want to create a new icon using
-#'   JavaScript, please remember to use \code{\link[htmlwidgets]{JS}()} on the
-#'   JavaScript string; see \url{http://leafletjs.com/reference.html#icon}
+#' @param icon the icon(s) for markers; an icon is represented by an R list of
+#'   the form \code{list(iconUrl = '?', iconSize = c(x, y))}, and you can use
+#'   \code{\link{icons}()} to create multiple icons; note when you use an R
+#'   list that contains images as local files, these local image files will be
+#'   base64 encoded into the HTML page so the icon images will still be
+#'   available even when you publish the map elsewhere
 #' @describeIn map-layers Add markders to the map
 #' @export
 addMarkers = function(
@@ -237,10 +240,100 @@ addMarkers = function(
   options = markerOptions(),
   data = getMapData(map)
 ) {
-  options$icon = icon
+  if (!is.null(icon)) {
+    # If custom icons are specified, we need to 1) deduplicate any URLs/files,
+    # so we can efficiently send e.g. 1000 markers that all use the same 2
+    # icons; and 2) do base64 encoding on any local icon files (as opposed to
+    # URLs [absolute or relative] which will be left alone).
+
+    # If formulas are present, they must be evaluated first so we can pack the
+    # resulting values
+    icon = evalFormula(list(icon), data)[[1]]
+    # Pack and encode each URL vector; this will be reversed on the client
+    icon$iconUrl         = b64EncodePackedIcons(packStrings(icon$iconUrl))
+    icon$iconRetinaUrl   = b64EncodePackedIcons(packStrings(icon$iconRetinaUrl))
+    icon$shadowUrl       = b64EncodePackedIcons(packStrings(icon$shadowUrl))
+    icon$shadowRetinaUrl = b64EncodePackedIcons(packStrings(icon$shadowRetinaUrl))
+    icon = filterNULL(icon)
+  }
+
   pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addMarkers")
-  invokeMethod(map, data, 'addMarkers', pts$lat, pts$lng, layerId, options, popup) %>%
+  invokeMethod(map, data, 'addMarkers', pts$lat, pts$lng, icon, layerId, options, popup) %>%
     expandLimits(pts$lat, pts$lng)
+}
+
+#' Create a list of icon data
+#'
+#' An icon can be represented as a list of the form \code{list(iconUrl,
+#' iconSize, ...)}. This function is vectorized over its arguments to create a
+#' list of icon data. Shorter argument values will be re-cycled. \code{NULL}
+#' values for these arguments will be ignored.
+#' @param iconUrl the URL to the icon image
+#' @param iconRetinaUrl the URL to a retina sized version of the icon image
+#' @param iconWidth,iconHeight size of the icon image in pixels
+#' @param iconAnchorX,iconAnchorY the coordinates of the "tip" of the icon
+#'   (relative to its top left corner, i.e. the top left corner means
+#'   \code{iconAnchorX = 0} and \code{iconAnchorY = 0)}, and the icon will be
+#'   aligned so that this point is at the marker's geographical location
+#' @param shadowUrl the URL to the icon shadow image
+#' @param shadowRetinaUrl the URL to the retina sized version of the icon shadow
+#'   image
+#' @param shadowWidth,shadowHeight size of the shadow image in pixels
+#' @param shadowAnchorX,shadowAnchorY the coordinates of the "tip" of the shadow
+#' @param popupAnchorX,popupAnchorY the coordinates of the point from which
+#'   popups will "open", relative to the icon anchor
+#' @param className a custom class name to assign to both icon and shadow images
+#' @return A list of icon data that can be passed to the \code{icon} argument of
+#'   \code{\link{addMarkers}()}.
+#' @export
+#' @example inst/examples/icons.R
+icons = function(
+  iconUrl = NULL, iconRetinaUrl = NULL, iconWidth = NULL, iconHeight = NULL,
+  iconAnchorX = NULL, iconAnchorY = NULL, shadowUrl = NULL, shadowRetinaUrl = NULL,
+  shadowWidth = NULL, shadowHeight = NULL, shadowAnchorX = NULL, shadowAnchorY = NULL,
+  popupAnchorX = NULL, popupAnchorY = NULL, className = NULL
+) {
+  filterNULL(list(
+    iconUrl = iconUrl, iconRetinaUrl = iconRetinaUrl,
+    iconWidth = iconWidth, iconHeight = iconHeight,
+    iconAnchorX = iconAnchorX, iconAnchorY = iconAnchorY,
+    shadowUrl = shadowUrl, shadowRetinaUrl = shadowRetinaUrl,
+    shadowWidth = shadowWidth, shadowHeight = shadowHeight,
+    shadowAnchorX = shadowAnchorX, shadowAnchorY = shadowAnchorY,
+    popupAnchorX = popupAnchorX, popupAnchorY = popupAnchorY,
+    className = className
+  ))
+}
+
+packStrings = function(strings) {
+  if (length(strings) == 0) {
+    return(NULL)
+  }
+  uniques = unique(strings)
+  indices = match(strings, uniques)
+  indices = indices - 1 # convert to 0-based for easy JS usage
+
+  list(
+    data = uniques,
+    index = indices
+  )
+}
+
+b64EncodePackedIcons = function(packedIcons) {
+  if (is.null(packedIcons))
+    return(packedIcons)
+
+  # TODO: remove this when we've got our own encoding function
+  markdown::markdownToHTML
+  image_uri = getFromNamespace('.b64EncodeFile', 'markdown')
+  packedIcons$data = sapply(packedIcons$data, function(icon) {
+    if (is.character(icon) && file.exists(icon)) {
+      image_uri(icon)
+    } else {
+      icon
+    }
+  }, USE.NAMES = FALSE)
+  packedIcons
 }
 
 #' @param clickable whether the element emits mouse events

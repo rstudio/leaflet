@@ -25,6 +25,7 @@ Imports:
     htmlwidgets,
     htmltools,
     magrittr,
+    markdown,
     RColorBrewer,
     RJSONIO,
     grDevices,

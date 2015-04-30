@@ -77,9 +77,12 @@ for security reasons)}
 default, it is the \code{data} object provided to \code{leaflet()}
 initially, but can be overridden}
 
-\item{icon}{the icon for markers; if you want to create a new icon using
-JavaScript, please remember to use \code{\link[htmlwidgets]{JS}()} on the
-JavaScript string; see \url{http://leafletjs.com/reference.html#icon}}
+\item{icon}{the icon(s) for markers; an icon is represented by an R list of
+the form \code{list(iconUrl = '?', iconSize = c(x, y))}, and you can use
+\code{\link{icons}()} to create multiple icons; note when you use an R
+list that contains images as local files, these local image files will be
+base64 encoded into the HTML page so the icon images will still be
+available even when you publish the map elsewhere}
 
 \item{radius}{a numeric vector of radii for the circles; it can also be a
 one-sided formula, in which case the radius values are derived from the

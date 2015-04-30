@@ -27,6 +27,24 @@ m %>% addMarkers(
   rand_lng(), rand_lat(), popup = paste('A random letter', sample(LETTERS, 10))
 )
 
+Rlogo = file.path(R.home('doc'), 'html', 'logo.jpg')
+m %>% addMarkers(
+  174.7690922, -36.8523071, icon = list(
+    iconUrl = Rlogo, iconSize = c(100, 76)
+  ), popup = 'R was born here!'
+)
+
+m %>% addMarkers(rnorm(30, 175), rnorm(30, -37), icon = list(
+  iconUrl = Rlogo, iconSize = c(25, 19)
+))
+
+m %>% addMarkers(
+  c(-71.0382679, -122.1217866), c(42.3489054, 47.6763144), icon = list(
+    iconUrl = 'http://www.rstudio.com/wp-content/uploads/2014/03/blue-125.png'
+  ), popup = c('RStudio @ Boston', 'RStudio @ Seattle')
+)
+
+
 # circle (units in metres)
 m %>% addCircles(rand_lng(50), rand_lat(50), radius = runif(50, 50, 150))
 

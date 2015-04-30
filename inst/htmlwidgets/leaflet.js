@@ -287,7 +287,68 @@ var dataframe = (function() {
     this.tiles.clear();
   };
 
-  methods.addMarkers = function(lat, lng, layerId, options, popup) {
+  // Given:
+  //   {data: ["a", "b", "c"], index: [0, 1, 0, 2]}
+  // returns:
+  //   ["a", "b", "a", "c"]
+  function unpackStrings(iconset) {
+    if (!iconset) {
+      return iconset;
+    }
+    if (typeof(iconset.index) === 'undefined') {
+      return iconset;
+    }
+
+    iconset.data = asArray(iconset.data);
+    iconset.index = asArray(iconset.index);
+
+    return $.map(iconset.index, function(e, i) {
+      return iconset.data[e];
+    });
+  }
+
+  methods.addMarkers = function(lat, lng, icon, layerId, options, popup) {
+    if (icon) {
+      // Unpack icons
+      icon.iconUrl         = unpackStrings(icon.iconUrl);
+      icon.iconRetinaUrl   = unpackStrings(icon.iconRetinaUrl);
+      icon.shadowUrl       = unpackStrings(icon.shadowUrl);
+      icon.shadowRetinaUrl = unpackStrings(icon.shadowRetinaUrl);
+
+      // This cbinds the icon URLs and any other icon options; they're all
+      // present on the icon object.
+      var icondf = dataframe.create().cbind(icon);
+
+      // Constructs an icon from a specified row of the icon dataframe.
+      var getIcon = function(i) {
+        var opts = icondf.get(i);
+        if (!opts.iconUrl) {
+          return new L.Icon.Default();
+        }
+
+        // Composite options (like points or sizes) are passed from R with each
+        // individual component as its own option. We need to combine them now
+        // into their composite form.
+        if (opts.iconWidth) {
+          opts.iconSize = [opts.iconWidth, opts.iconHeight];
+        }
+        if (opts.shadowWidth) {
+          opts.shadowSize = [opts.shadowWidth, opts.shadowHeight];
+        }
+        if (opts.iconAnchorX) {
+          opts.iconAnchor = [opts.iconAnchorX, opts.iconAnchorY];
+        }
+        if (opts.shadowAnchorX) {
+          opts.shadowAnchor = [opts.shadowAnchorX, opts.shadowAnchorY];
+        }
+        if (opts.popupAnchorX) {
+          opts.popupAnchor = [opts.popupAnchorX, opts.popupAnchorY];
+        }
+
+        return new L.Icon(opts);
+      };
+    }
+
     var df = dataframe.create()
       .col('lat', lat)
       .col('lng', lng)
@@ -295,9 +356,13 @@ var dataframe = (function() {
       .col('popup', popup)
       .cbind(options);
 
+    icondf.effectiveLength = df.nrow();
+
     for (var i = 0; i < df.nrow(); i++) {
       (function() {
-        var marker = L.marker([df.get(i, 'lat'), df.get(i, 'lng')], df.get(i));
+        var options = df.get(i);
+        if (icon) options.icon = getIcon(i);
+        var marker = L.marker([df.get(i, 'lat'), df.get(i, 'lng')], options);
         var thisId = df.get(i, 'layerId');
         this.markers.add(marker, thisId);
         var popup = df.get(i, 'popup');
