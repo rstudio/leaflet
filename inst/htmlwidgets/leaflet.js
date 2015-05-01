@@ -221,7 +221,6 @@ var dataframe = (function() {
   ControlStore.prototype.remove = function(id) {
     if (this._controlsById[id]) {
       var control = this._controlsById[id];
-      Shiny.unbindAll(control._div);
       this._map.removeControl(control);
       delete this._controlsById[id];
     }
@@ -601,22 +600,40 @@ var dataframe = (function() {
     this.geojson.clear();
   };
 
-  methods.addControl = function(position, html, dependencies, controlId, classes) {
-    var onAdd = function(map) {
+  methods.addControl = function(html, position, controlId, classes) {
+    function onAdd(map) {
       var div = L.DomUtil.create('div', classes);
       if (typeof controlId !== 'undefined' && controlId !== null) {
         div.setAttribute('id', controlId)
       }
       this._div = div;
 
-      Shiny.unbindAll(this._div);
-      Shiny.renderHtml(html, this._div, dependencies);
-      Shiny.initializeInputs(this._div);
-      Shiny.bindAll(this._div);
+      // It's possible for window.Shiny to be true but Shiny.initializeInputs to
+      // not be, when a static leaflet widget is included as part of the shiny
+      // UI directly (not through leafletOutput or uiOutput). In this case we
+      // don't do the normal Shiny stuff as that will all happen when Shiny
+      // itself loads and binds the entire doc.
+
+      if (window.Shiny && Shiny.initializeInputs) {
+        Shiny.renderHtml(html, this._div);
+        Shiny.initializeInputs(this._div);
+        Shiny.bindAll(this._div);
+      } else {
+        this._div.innerHTML = html;
+      }
 
       return this._div;
-    };
-    var Control = L.Control.extend({options: {position: position}, onAdd: onAdd})
+    }
+    function onRemove(map) {
+      if (window.Shiny && Shiny.unbindAll) {
+        Shiny.unbindAll(this._div);
+      }
+    }
+    var Control = L.Control.extend({
+      options: {position: position},
+      onAdd: onAdd,
+      onRemove: onRemove
+    })
     this.controls.add(new Control, controlId, html);
   };
 

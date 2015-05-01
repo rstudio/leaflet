@@ -1,15 +1,20 @@
-#' @param position Defines position of control: 'topleft', 'topright', 'bottomleft', or 'bottomright'
-#' @param html Defines content of the control. May be provided as string or as HTML generated with Shiny tags
-#' @param controlId Id to assign to the control
+#' @param html the content of the control. May be provided as string or as
+#'   HTML generated with Shiny/htmltools tags
+#' @param position position of control: 'topleft', 'topright',
+#'   'bottomleft', or 'bottomright'
+#' @param controlId the id of this control
+#' @param classes extra CSS classes to append to the control
+#'
+#' @describeIn map-layers Add arbitrary HTML controls to the map
 #' @export
-addControl = function(map, 
-    position=c('topleft', 'topright', 'bottomleft', 'bottomright'), 
-    html, 
+addControl = function(map,
+    html,
+    position=c('topleft', 'topright', 'bottomleft', 'bottomright'),
     controlId=NULL,
     classes=c('info', 'legend'),
     data=getMapData(map)) {
 
-    position <- 
+    position <-
         if (missing(position)) position[1]
         else position
 
@@ -17,7 +22,8 @@ addControl = function(map,
     deps <- htmltools::resolveDependencies(htmltools::findDependencies(html))
     html <- as.character(html)
 
-    invokeMethod(map, data, 'addControl', position, html, deps, controlId, classes)
+    map$dependencies <- c(map$dependencies, deps)
+    invokeMethod(map, data, 'addControl', html, position, controlId, classes)
 }
 
 #' @export
@@ -25,7 +31,7 @@ removeControl = function(map, controlId) {
     invokeMethod(map, NULL, 'removeControl', controlId)
 }
 
-#' @export 
+#' @export
 clearControls = function(map) {
     invokeMethod(map, NULL, 'clearControls')
 }

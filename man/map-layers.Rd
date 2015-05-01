@@ -1,7 +1,8 @@
-% Please edit documentation in R/layers.R
-\name{addTiles}
+% Please edit documentation in R/controls.R, R/layers.R
+\name{addControl}
 \alias{addCircleMarkers}
 \alias{addCircles}
+\alias{addControl}
 \alias{addGeoJSON}
 \alias{addMarkers}
 \alias{addPolygons}
@@ -11,24 +12,28 @@
 \alias{addTiles}
 \title{Graphics elements and layers}
 \usage{
+addControl(map, html, position = c("topleft", "topright", "bottomleft", 
+    "bottomright"), controlId = NULL, classes = c("info", "legend"), 
+    data = getMapData(map))
+
 addTiles(map, urlTemplate = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", 
     attribution = NULL, layerId = NULL, options = tileOptions())
 
 addPopups(map, lng = NULL, lat = NULL, popup, layerId = NULL, options = popupOptions(), 
     data = getMapData(map))
 
-addMarkers(map, lng = NULL, lat = NULL, layerId = NULL, icon = NULL, popup = NULL, 
-    options = markerOptions(), data = getMapData(map))
+addMarkers(map, lng = NULL, lat = NULL, layerId = NULL, icon = NULL, 
+    popup = NULL, options = markerOptions(), data = getMapData(map))
 
 addCircleMarkers(map, lng = NULL, lat = NULL, radius = 10, layerId = NULL, 
     stroke = TRUE, color = "#03F", weight = 5, opacity = 0.5, fill = TRUE, 
     fillColor = color, fillOpacity = 0.2, dashArray = NULL, popup = NULL, 
     options = pathOptions(), data = getMapData(map))
 
-addCircles(map, lng = NULL, lat = NULL, radius = 10, layerId = NULL, stroke = TRUE, 
-    color = "#03F", weight = 5, opacity = 0.5, fill = TRUE, fillColor = color, 
-    fillOpacity = 0.2, dashArray = NULL, popup = NULL, options = pathOptions(), 
-    data = getMapData(map))
+addCircles(map, lng = NULL, lat = NULL, radius = 10, layerId = NULL, 
+    stroke = TRUE, color = "#03F", weight = 5, opacity = 0.5, fill = TRUE, 
+    fillColor = color, fillOpacity = 0.2, dashArray = NULL, popup = NULL, 
+    options = pathOptions(), data = getMapData(map))
 
 addPolylines(map, lng = NULL, lat = NULL, layerId = NULL, stroke = TRUE, 
     color = "#03F", weight = 5, opacity = 0.5, fill = FALSE, fillColor = color, 
@@ -49,6 +54,20 @@ addGeoJSON(map, geojson, layerId = NULL)
 }
 \arguments{
 \item{map}{a map widget object created from \code{\link{leaflet}()}}
+
+\item{html}{the content of the control. May be provided as string or as
+HTML generated with Shiny/htmltools tags}
+
+\item{position}{position of control: 'topleft', 'topright',
+'bottomleft', or 'bottomright'}
+
+\item{controlId}{the id of this control}
+
+\item{classes}{extra CSS classes to append to the control}
+
+\item{data}{the data object from which the argument values are derived; by
+default, it is the \code{data} object provided to \code{leaflet()}
+initially, but can be overridden}
 
 \item{urlTemplate}{a character string as the URL template}
 
@@ -72,10 +91,6 @@ the latitude column from \code{data})}
 \item{popup}{a character vector of the HTML content for the popups (you are
 recommended to escape the text using \code{\link[htmltools]{htmlEscape}()}
 for security reasons)}
-
-\item{data}{the data object from which the argument values are derived; by
-default, it is the \code{data} object provided to \code{leaflet()}
-initially, but can be overridden}
 
 \item{icon}{the icon(s) for markers; an icon is represented by an R list of
 the form \code{list(iconUrl = '?', iconSize = c(x, y))}, and you can use
@@ -126,6 +141,8 @@ Add graphics elements and layers to the map widget.
 }
 \section{Functions}{
 \itemize{
+\item \code{addControl}: Add arbitrary HTML controls to the map
+
 \item \code{addTiles}: Add a tile layer to the map
 
 \item \code{addPopups}: Add popups to the map
