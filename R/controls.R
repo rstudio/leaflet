@@ -14,9 +14,10 @@ addControl = function(map,
         else position
 
     classes <- paste(classes, collapse=' ')
-    html <- as.character(html);
+    deps <- htmltools::resolveDependencies(htmltools::findDependencies(html))
+    html <- as.character(html)
 
-    invokeMethod(map, data, 'addControl', position, html, controlId, classes)
+    invokeMethod(map, data, 'addControl', position, html, deps, controlId, classes)
 }
 
 #' @export

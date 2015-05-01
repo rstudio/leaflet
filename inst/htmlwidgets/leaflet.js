@@ -206,7 +206,7 @@ var dataframe = (function() {
     this._map = map
   }
 
-  ControlStore.prototype.add = function(control, id) {
+  ControlStore.prototype.add = function(control, id, html) {
     if (typeof(id) !== 'undefined' && id !== null) {
       if (this._controlsById[id]) {
         this._map.removeControl(this._controlsById[id]);
@@ -220,19 +220,25 @@ var dataframe = (function() {
 
   ControlStore.prototype.remove = function(id) {
     if (this._controlsById[id]) {
-      this._map.removeControl(this._controlsById[id]);
+      var control = this._controlsById[id];
+      Shiny.unbindAll(control._div);
+      this._map.removeControl(control);
       delete this._controlsById[id];
     }
   };
 
   ControlStore.prototype.clear = function() {
     for (var i = 0; i < this._controlsNoId.length; i++) {
-        this._map.removeControl(this._controlsNoId[i]);
+      var control = this._controlsNoId[i];
+      Shiny.unbindAll(control._div);
+      this._map.removeControl(control);
     };
     this._controlsNoId = [];
 
     for (var key in this._controlsById) {
-        this._map.removeControl(this._controlsById[key])
+      var control = this._controlsById[key];
+      Shiny.unbindAll(control._div);
+      this._map.removeControl(control)
     }
     this._controlsById = {}
   }
@@ -595,19 +601,23 @@ var dataframe = (function() {
     this.geojson.clear();
   };
 
-  methods.addControl = function(position, html, controlId, classes) {
+  methods.addControl = function(position, html, dependencies, controlId, classes) {
     var onAdd = function(map) {
       var div = L.DomUtil.create('div', classes);
-      div.innerHTML = html;
       if (typeof controlId !== 'undefined' && controlId !== null) {
         div.setAttribute('id', controlId)
       }
       this._div = div;
+
+      Shiny.unbindAll(this._div);
+      Shiny.renderHtml(html, this._div, dependencies);
+      Shiny.initializeInputs(this._div);
       Shiny.bindAll(this._div);
+
       return this._div;
     };
     var Control = L.Control.extend({options: {position: position}, onAdd: onAdd})
-    this.controls.add(new Control, controlId);
+    this.controls.add(new Control, controlId, html);
   };
 
   methods.removeControl = function(controlId) {
