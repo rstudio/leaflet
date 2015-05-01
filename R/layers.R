@@ -281,11 +281,14 @@ addMarkers = function(
 #'
 #' iconSet[c('red', 'green', 'red')]
 iconList = function(...) {
-  # TODO: Test all values of ... to make sure they are icons
-  structure(
+  res = structure(
     list(...),
     class = "leaflet_icon_set"
   )
+  cls = unlist(lapply(res, inherits, 'leaflet_icon'))
+  if (any(!cls))
+    stop('Arguments passed to iconList() must be icon objects returned from makeIcon()')
+  res
 }
 
 #' @export
@@ -335,7 +338,7 @@ makeIcon = function(iconUrl = NULL, iconRetinaUrl = NULL, iconWidth = NULL, icon
   shadowWidth = NULL, shadowHeight = NULL, shadowAnchorX = NULL, shadowAnchorY = NULL,
   popupAnchorX = NULL, popupAnchorY = NULL, className = NULL) {
 
-  filterNULL(list(
+  icon = filterNULL(list(
     iconUrl = iconUrl, iconRetinaUrl = iconRetinaUrl,
     iconWidth = iconWidth, iconHeight = iconHeight,
     iconAnchorX = iconAnchorX, iconAnchorY = iconAnchorY,
@@ -345,6 +348,7 @@ makeIcon = function(iconUrl = NULL, iconRetinaUrl = NULL, iconWidth = NULL, icon
     popupAnchorX = popupAnchorX, popupAnchorY = popupAnchorY,
     className = className
   ))
+  structure(icon, class = "leaflet_icon")
 }
 
 #' Create a list of icon data
