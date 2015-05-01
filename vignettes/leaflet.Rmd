@@ -12,6 +12,7 @@ output:
     theme: cosmo
     css: styles.css
     self_contained: no
+    lib_dir: libs
     includes:
       before_body: before_body.html
       after_body: after_body.html
