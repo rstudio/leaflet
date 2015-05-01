@@ -9,9 +9,10 @@ icons(iconUrl = NULL, iconRetinaUrl = NULL, iconWidth = NULL, iconHeight = NULL,
     popupAnchorX = NULL, popupAnchorY = NULL, className = NULL)
 }
 \arguments{
-\item{iconUrl}{the URL to the icon image}
+\item{iconUrl}{the URL or file path to the icon image}
 
-\item{iconRetinaUrl}{the URL to a retina sized version of the icon image}
+\item{iconRetinaUrl}{the URL or file path to a retina sized version of the
+icon image}
 
 \item{iconWidth, iconHeight}{size of the icon image in pixels}
 
@@ -20,10 +21,10 @@ icons(iconUrl = NULL, iconRetinaUrl = NULL, iconWidth = NULL, iconHeight = NULL,
 \code{iconAnchorX = 0} and \code{iconAnchorY = 0)}, and the icon will be
 aligned so that this point is at the marker's geographical location}
 
-\item{shadowUrl}{the URL to the icon shadow image}
+\item{shadowUrl}{the URL or file path to the icon shadow image}
 
-\item{shadowRetinaUrl}{the URL to the retina sized version of the icon shadow
-image}
+\item{shadowRetinaUrl}{the URL or file path to the retina sized version of
+the icon shadow image}
 
 \item{shadowWidth, shadowHeight}{size of the shadow image in pixels}
 
