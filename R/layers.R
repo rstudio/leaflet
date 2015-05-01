@@ -2,7 +2,9 @@
 # (if provided, otherwise the formula environment)
 evalFormula = function(list, data) {
   evalAll = function(x) {
-    if (is.list(x)) lapply(x, evalAll) else resolveFormula(x, data)
+    if (is.list(x)) {
+      structure(lapply(x, evalAll), class = class(x))
+    } else resolveFormula(x, data)
   }
   evalAll(list)
 }
@@ -250,9 +252,8 @@ addMarkers = function(
     # resulting values
     icon = evalFormula(list(icon), data)[[1]]
 
-    # TODO: Figure out why this doesn't work
     if (inherits(icon, "leaflet_icon_set")) {
-      icon <- iconSetToIcons(icon)
+      icon = iconSetToIcons(icon)
     }
 
     # Pack and encode each URL vector; this will be reversed on the client
