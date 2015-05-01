@@ -274,13 +274,13 @@ addMarkers = function(
 #' @export
 #' @examples
 #'
-#' iconSet = makeIconSet(
+#' iconSet = iconList(
 #'   red = makeIcon("leaf-red.png", iconWidth=32, iconHeight=32),
 #'   green = makeIcon("leaf-green.png", iconWidth=32, iconHeight=32)
 #' )
 #'
 #' iconSet[c('red', 'green', 'red')]
-makeIconSet = function(...) {
+iconList = function(...) {
   # TODO: Test all values of ... to make sure they are icons
   structure(
     list(...),
