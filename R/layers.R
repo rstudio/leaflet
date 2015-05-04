@@ -548,7 +548,7 @@ addCircles = function(
     fill = fill, fillColor = fillColor, fillOpacity = fillOpacity,
     dashArray = dashArray
   ))
-  pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addCircles")
+  pts = derivePoints(data, lng[!is.na(lng)], lat[!is.na(lat)], missing(lng), missing(lat), "addCircles")
   invokeMethod(map, data, 'addCircles', pts$lat, pts$lng, radius, layerId, options, popup) %>%
     expandLimits(pts$lat, pts$lng)
 }
