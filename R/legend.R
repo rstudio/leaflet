@@ -9,6 +9,7 @@ addLegend = function(
   formatNum = function(x) format(x, scientific = FALSE, big.mark = ',')
 
   if (!missing(pal)) {
+    values = evalFormula(values, getMapData(map))
 
     type = attr(pal, 'colorType', exact = TRUE)
     args = attr(pal, 'colorArgs', exact = TRUE)
