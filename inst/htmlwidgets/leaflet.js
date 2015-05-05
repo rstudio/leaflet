@@ -356,7 +356,7 @@ var dataframe = (function() {
       .col('popup', popup)
       .cbind(options);
 
-    icondf.effectiveLength = df.nrow();
+    if (icon) icondf.effectiveLength = df.nrow();
 
     for (var i = 0; i < df.nrow(); i++) {
       (function() {
