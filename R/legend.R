@@ -9,6 +9,8 @@ addLegend = function(
   formatNum = function(x) format(x, scientific = FALSE, big.mark = ',')
 
   if (!missing(pal)) {
+    # a better default title when values is formula
+    if (missing(title) && inherits(values, 'formula')) title = deparse(values[[2]])
     values = evalFormula(values, getMapData(map))
 
     type = attr(pal, 'colorType', exact = TRUE)
