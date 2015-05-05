@@ -808,6 +808,7 @@ var dataframe = (function() {
         // calculate the height of the gradient bar after the legend is rendered
         if (data.legend.type === 'numeric') {
           var legendHeight = $(legend.getContainer()).find('table').height();
+          gradSpan.parent().height(legendHeight);
           gradSpan.height(data.legend.extra[1] * legendHeight).css({
             'margin-top': data.legend.extra[0] * legendHeight
           });
