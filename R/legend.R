@@ -1,3 +1,25 @@
+#' Add a color legend to a map
+#'
+#' When a color palette function is used in a map (e.g.
+#' \code{\link{colorNumeric}}), a color legend can be automatically derived from
+#' the palette function. You can also manually specify the colors and labels for
+#' the legend.
+#' @inheritParams setView
+#' @param position the position of the legend
+#' @param pal the color palette function, generated from
+#'   \code{\link{colorNumeric}()}, \code{colorBin()}, \code{colorQuantile()}, or
+#'   \code{colorFactor()}
+#' @param values the values used to generate colors from the palette function
+#' @param na.label the legend label for \code{NA}s in \code{values}
+#' @param bins the (approximate) number of tick-marks on the color gradient for
+#'   the \code{colorNumeric} palette
+#' @param colors a vector of (HTML) colors to be used in the legend if
+#'   \code{pal} is not provided
+#' @param opacity the opacity of colors
+#' @param labels a vector of text labels in the legend corresponding to
+#'   \code{colors}
+#' @param title the legend title
+#' @example inst/examples/legend.R
 #' @export
 addLegend = function(
   map, position = c('topright', 'bottomright', 'bottomleft', 'topleft'),
