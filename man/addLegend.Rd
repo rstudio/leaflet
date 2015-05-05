@@ -20,8 +20,9 @@ addLegend(map, position = c("topright", "bottomright", "bottomleft", "topleft"),
 
 \item{na.label}{the legend label for \code{NA}s in \code{values}}
 
-\item{bins}{the (approximate) number of tick-marks on the color gradient for
-the \code{colorNumeric} palette}
+\item{bins}{an approximate number of tick-marks on the color gradient for the
+\code{colorNumeric} palette if it is of length one; you can also provide a
+numeric vector as the pre-defined breaks (equally spaced)}
 
 \item{colors}{a vector of (HTML) colors to be used in the legend if
 \code{pal} is not provided}

@@ -11,8 +11,9 @@
 #'   \code{colorFactor()}
 #' @param values the values used to generate colors from the palette function
 #' @param na.label the legend label for \code{NA}s in \code{values}
-#' @param bins the (approximate) number of tick-marks on the color gradient for
-#'   the \code{colorNumeric} palette
+#' @param bins an approximate number of tick-marks on the color gradient for the
+#'   \code{colorNumeric} palette if it is of length one; you can also provide a
+#'   numeric vector as the pre-defined breaks (equally spaced)
 #' @param colors a vector of (HTML) colors to be used in the legend if
 #'   \code{pal} is not provided
 #' @param opacity the opacity of colors
@@ -47,8 +48,12 @@ addLegend = function(
 
     if (type == 'numeric') {
 
-      # choose pretty cut points to draw tick-marks on the color gradient
-      cuts = pretty(values, n = bins)
+      # choose pretty cut points to draw tick-marks on the color gradient if
+      # 'bins' is the number of bins, otherwise 'bins' is just the breaks
+      cuts = if (length(bins) == 1) pretty(values, n = bins) else bins
+      if (length(bins) > 2)
+        if (!all(abs(diff(bins, differences = 2)) <= sqrt(.Machine$double.eps)))
+          stop("The vector of breaks 'bins' must be equally spaced")
       n = length(cuts)
       r = range(values, na.rm = TRUE)
       # pretty cut points may be out of the range of `values`
