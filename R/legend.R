@@ -66,7 +66,7 @@ addLegend = function(
       # column in a <span>; finally, we adjust the height and top margin of the
       # <span> so that "cuts" points to the correct positions on the <span>
       extra = c(
-        (1 - p[1] / (p[2] - p[1])),  # top margin % of the color gradient span
+        (.5 - p[1] / (p[2] - p[1])),  # top margin % of the color gradient span
         (n - 1) + (p[1] + 1 - p[n]) / (p[2] - p[1])  # height of color gradient
       ) / n
       # syntax for the color gradient: linear-gradient(start-color, color1 p1%,
