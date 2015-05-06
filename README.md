@@ -28,4 +28,4 @@ devtools::install_github('rstudio/leaflet')
 This package is licensed to you under the terms of the [GNU General Public
 License](http://www.gnu.org/licenses/gpl.html) version 3 or later.
 
-Copyright 2013-2014 RStudio, Inc.
+Copyright 2013-2015 RStudio, Inc.
