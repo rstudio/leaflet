@@ -10,6 +10,7 @@
 \alias{addPopups}
 \alias{addRectangles}
 \alias{addTiles}
+\alias{addWMSTiles}
 \title{Graphics elements and layers}
 \usage{
 addControl(map, html, position = c("topleft", "topright", "bottomleft", 
@@ -18,6 +19,10 @@ addControl(map, html, position = c("topleft", "topright", "bottomleft",
 
 addTiles(map, urlTemplate = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", 
     attribution = NULL, layerId = NULL, options = tileOptions())
+
+addWMSTiles(map, baseUrl, layerId = NULL, options = tileOptions(), attribution = NULL, 
+    layers = "", styles = "", format = "image/jpeg", transparent = FALSE, 
+    version = "1.1.1", crs = NULL)
 
 addPopups(map, lng = NULL, lat = NULL, popup, layerId = NULL, options = popupOptions(), 
     data = getMapData(map))
@@ -75,6 +80,23 @@ initially, but can be overridden}
 
 \item{options}{a list of extra options for tile layers, popups, paths
 (circles, rectangles, polygons, ...), or other map elements}
+
+\item{baseUrl}{a base URL of the WMS service}
+
+\item{layers}{comma-separated list of WMS layers to show}
+
+\item{styles}{comma-separated list of WMS styles}
+
+\item{format}{WMS image format (use \code{'image/png'} for layers with
+transparency)}
+
+\item{transparent}{if \code{TRUE}, the WMS service will return images with
+transparency}
+
+\item{version}{version of the WMS service to use}
+
+\item{crs}{Coordinate Reference System to use for the WMS requests, defaults
+to map CRS (don't change this if you're not sure what it means)}
 
 \item{lng}{a numeric vector of longitudes, or a one-sided formula of the form
 \code{~x} where \code{x} is a variable in \code{data}; by default (if not
@@ -142,6 +164,8 @@ Add graphics elements and layers to the map widget.
 \item \code{addControl}: Add arbitrary HTML controls to the map
 
 \item \code{addTiles}: Add a tile layer to the map
+
+\item \code{addWMSTiles}: Add a WMS tile layer to the map
 
 \item \code{addPopups}: Add popups to the map
 

@@ -6,6 +6,7 @@
 \alias{clearPopups}
 \alias{clearShapes}
 \alias{clearTiles}
+\alias{clearWMSTiles}
 \alias{remove}
 \alias{removeControl}
 \alias{removeGeoJSON}
@@ -13,6 +14,7 @@
 \alias{removePopup}
 \alias{removeShape}
 \alias{removeTiles}
+\alias{removeWMSTiles}
 \title{Remove elements from a map}
 \usage{
 removeControl(map, layerId)
@@ -22,6 +24,10 @@ clearControls(map)
 removeTiles(map, layerId)
 
 clearTiles(map)
+
+removeWMSTiles(map, layerId)
+
+clearWMSTiles(map)
 
 removePopup(map, layerId)
 
