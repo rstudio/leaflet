@@ -13,7 +13,7 @@
 \title{Graphics elements and layers}
 \usage{
 addControl(map, html, position = c("topleft", "topright", "bottomleft", 
-    "bottomright"), controlId = NULL, classes = c("info", "legend"), 
+    "bottomright"), layerId = NULL, classes = c("info", "legend"), 
     data = getMapData(map))
 
 addTiles(map, urlTemplate = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", 
@@ -61,7 +61,7 @@ generated with Shiny/htmltools tags}
 \item{position}{position of control: 'topleft', 'topright', 'bottomleft', or
 'bottomright'}
 
-\item{controlId}{the id of this control}
+\item{layerId}{the layer id}
 
 \item{classes}{extra CSS classes to append to the control}
 
@@ -72,8 +72,6 @@ initially, but can be overridden}
 \item{urlTemplate}{a character string as the URL template}
 
 \item{attribution}{the attribution text of the tile layer (HTML)}
-
-\item{layerId}{the layer id}
 
 \item{options}{a list of extra options for tile layers, popups, paths
 (circles, rectangles, polygons, ...), or other map elements}

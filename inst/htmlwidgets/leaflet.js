@@ -600,11 +600,11 @@ var dataframe = (function() {
     this.geojson.clear();
   };
 
-  methods.addControl = function(html, position, controlId, classes) {
+  methods.addControl = function(html, position, layerId, classes) {
     function onAdd(map) {
       var div = L.DomUtil.create('div', classes);
-      if (typeof controlId !== 'undefined' && controlId !== null) {
-        div.setAttribute('id', controlId)
+      if (typeof layerId !== 'undefined' && layerId !== null) {
+        div.setAttribute('id', layerId)
       }
       this._div = div;
 
@@ -634,11 +634,11 @@ var dataframe = (function() {
       onAdd: onAdd,
       onRemove: onRemove
     })
-    this.controls.add(new Control, controlId, html);
+    this.controls.add(new Control, layerId, html);
   };
 
-  methods.removeControl = function(controlId) {
-    this.controls.remove(controlId);
+  methods.removeControl = function(layerId) {
+    this.controls.remove(layerId);
   };
 
   methods.clearControls = function() {

@@ -2,14 +2,13 @@
 #'   generated with Shiny/htmltools tags
 #' @param position position of control: 'topleft', 'topright', 'bottomleft', or
 #'   'bottomright'
-#' @param controlId the id of this control
 #' @param classes extra CSS classes to append to the control
 #'
 #' @describeIn map-layers Add arbitrary HTML controls to the map
 #' @export
 addControl = function(
   map, html, position = c('topleft', 'topright', 'bottomleft', 'bottomright'),
-  controlId = NULL, classes = c('info', 'legend'), data = getMapData(map)
+  layerId = NULL, classes = c('info', 'legend'), data = getMapData(map)
 ) {
 
     position = match.arg(position)
@@ -19,15 +18,17 @@ addControl = function(
     html = as.character(html)
 
     map$dependencies = c(map$dependencies, deps)
-    invokeMethod(map, data, 'addControl', html, position, controlId, classes)
+    invokeMethod(map, data, 'addControl', html, position, layerId, classes)
 }
 
 #' @export
-removeControl = function(map, controlId) {
-    invokeMethod(map, NULL, 'removeControl', controlId)
+#' @rdname remove
+removeControl = function(map, layerId) {
+    invokeMethod(map, NULL, 'removeControl', layerId)
 }
 
 #' @export
+#' @rdname remove
 clearControls = function(map) {
     invokeMethod(map, NULL, 'clearControls')
 }
