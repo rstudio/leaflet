@@ -144,8 +144,7 @@ m %>% addCircleMarkers(radius = runif(100, 4, 10), color = c('red'))
 
 ## Shiny
 
-There are two wrapper functions `leafletOutput()` and `renderLeaflet()` in this package for using Leaflet maps in **shiny**.
-Compared to the **leaflet** package at <https://github.com/jcheng5/leaflet-shiny>, the **shiny** support in this package is still very limited at the moment, but will be improved in the future.
+There are two wrapper functions `leafletOutput()` and `renderLeaflet()` in this package for using Leaflet maps in **shiny**. The function `leafletProxy()` allows you to manipulate a map after it has been rendered.
 
 # UI Layers
 
