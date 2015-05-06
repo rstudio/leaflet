@@ -18,3 +18,18 @@ pal = colorNumeric('OrRd', df$z)
 leaflet(df) %>%
   addCircleMarkers(~x, ~y, color = ~pal(z)) %>%
   addLegend(pal = pal, values = ~z)
+
+# format legend labels
+df = data.frame(x = rnorm(100), y = rexp(100, 2), z = runif(100))
+pal = colorBin('PuOr', df$z, bins = c(0, .1, .4, .9, 1))
+leaflet(df) %>%
+  addCircleMarkers(~x, ~y, color = ~pal(z)) %>%
+  addLegend(pal = pal, values = ~z)
+
+leaflet(df) %>%
+  addCircleMarkers(~x, ~y, color = ~pal(z)) %>%
+  addLegend(pal = pal, values = ~z, labelFormat = function(cuts) {
+    n = length(cuts)
+    p = paste0(round(cuts * 100), '%')
+    paste(p[-n], p[-1], sep = ' - ')
+  })

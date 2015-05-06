@@ -4,6 +4,26 @@
 #' \code{\link{colorNumeric}}), a color legend can be automatically derived from
 #' the palette function. You can also manually specify the colors and labels for
 #' the legend.
+#'
+#' The \code{labelFormat} argument is a function with different arguments for
+#' different types of color palettes. For the \code{colorNumeric()} palette,
+#' \code{labelFormat} takes a single argument, which is the breaks of the
+#' numeric vector, and returns a character vector of the same length. For
+#' \code{colorBin()}, \code{labelFormat} also takes a vector of breaks of length
+#' \code{n} but should return a character vector of length \code{n - 1}, with
+#' the \code{i}-th element representing the interval \code{c(x[i], x[i + 1])}.
+#' For \code{colorQuantile}, \code{labelFormat} takes two arguments, the
+#' quantiles and the associated probabilities (each of length \code{n}), and
+#' should return a character vector of length \code{n - 1} (similar to the
+#' \code{colorBin()} palette). For \code{colorFactor()}, \code{labelFormat}
+#' takes one argument, the unique values of the factor, and should return a
+#' character vector of the same length.
+#'
+#' By default, \code{labelFormat} is basically \code{format(scientific = FALSE,
+#' big.mark = ',')} for the numeric palette, \code{as.character()} for the
+#' factor palette, and a function to return labels of the form \samp{x[i] - x[i
+#' + 1]} for bin and quantile palettes (in the case of quantile palettes,
+#' \code{x} is the probabilities instead of the values of breaks).
 #' @inheritParams setView
 #' @param position the position of the legend
 #' @param pal the color palette function, generated from
@@ -19,13 +39,15 @@
 #' @param opacity the opacity of colors
 #' @param labels a vector of text labels in the legend corresponding to
 #'   \code{colors}
+#' @param labelFormat a function to format the labels derived from \code{pal}
+#'   and \code{values}
 #' @param title the legend title
 #' @example inst/examples/legend.R
 #' @export
 addLegend = function(
   map, position = c('topright', 'bottomright', 'bottomleft', 'topleft'),
   pal, values, na.label = 'NA', bins = 7, colors, opacity = 0.5, labels,
-  title = deparse(substitute(values))
+  labelFormat, title = deparse(substitute(values))
 ) {
   position = match.arg(position)
   type = 'unknown'; na.color = NULL
@@ -45,6 +67,22 @@ addLegend = function(
     na.color = args$na.color
     if (type != 'numeric' && !missing(bins))
       warning("'bins' is ignored because the palette type is not numeric")
+    if (missing(labelFormat)) labelFormat = switch(
+      type,
+      `numeric` = formatNum,
+      `bin` = function(cuts) {
+        n = length(cuts)
+        sprintf('%s &ndash; %s', formatNum(cuts[-n]), formatNum(cuts[-1]))
+      },
+      `quantile` = function(cuts, p) {
+        n = length(cuts)
+        p = paste0(round(p * 100), '%')
+        cuts = sprintf('%s &ndash; %s', formatNum(cuts[-n]), formatNum(cuts[-1]))
+        # mouse over the legend labels to see the values (quantiles)
+        sprintf('<span title="%s">%s &ndash; %s</span>', cuts, p[-n], p[-1])
+      },
+      `factor` = as.character
+    )
 
     if (type == 'numeric') {
 
@@ -79,7 +117,7 @@ addLegend = function(
       p = c('', paste0(100 * p, '%'), '')
       colors = pal(c(r[1], cuts, r[2]))
       colors = paste(colors, p, sep = ' ', collapse = ', ')
-      labels = formatNum(cuts)
+      labels = labelFormat(cuts)
 
     } else if (type == 'bin') {
 
@@ -88,7 +126,7 @@ addLegend = function(
       # use middle points to represent intervals
       mids = (cuts[-1] + cuts[-n]) / 2
       colors = pal(mids)
-      labels = sprintf('%s &ndash; %s', formatNum(cuts[-n]), formatNum(cuts[-1]))
+      labels = labelFormat(cuts)
 
     } else if (type == 'quantile') {
 
@@ -98,16 +136,13 @@ addLegend = function(
       cuts = quantile(values, probs = p, na.rm = TRUE)
       mids = quantile(values, probs = (p[-1] + p[-n]) / 2, na.rm = TRUE)
       colors = pal(mids)
-      p = paste0(round(p * 100), '%')
-      cuts = sprintf('%s &ndash; %s', formatNum(cuts[-n]), formatNum(cuts[-1]))
-      # mouse over the legend labels to see the values (quantiles)
-      labels = sprintf('<span title="%s">%s &ndash; %s</span>', cuts, p[-n], p[-1])
+      labels = labelFormat(cuts, p)
 
     } else if (type == 'factor') {
 
       v = unique(na.omit(values))
       colors = pal(v)
-      labels = as.character(v)
+      labels = labelFormat(v)
 
     } else stop('Palette function not supported')
 
