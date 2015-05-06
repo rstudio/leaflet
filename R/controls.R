@@ -14,9 +14,7 @@ addControl = function(map,
     classes=c('info', 'legend'),
     data=getMapData(map)) {
 
-    position <-
-        if (missing(position)) position[1]
-        else position
+    position <- match.arg(position)
 
     classes <- paste(classes, collapse=' ')
     deps <- htmltools::resolveDependencies(htmltools::findDependencies(html))
