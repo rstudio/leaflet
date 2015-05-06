@@ -160,6 +160,45 @@ clearTiles = function(map) {
   invokeMethod(map, NULL, 'clearTiles')
 }
 
+
+#' @param baseUrl a base URL of the WMS service
+#' @param layers comma-separated list of WMS layers to show
+#' @param styles comma-separated list of WMS styles
+#' @param format WMS image format (use \code{'image/png'} for layers with
+#'   transparency)
+#' @param transparent if \code{TRUE}, the WMS service will return images with
+#'   transparency
+#' @param version version of the WMS service to use
+#' @param crs Coordinate Reference System to use for the WMS requests, defaults
+#'   to map CRS (don't change this if you're not sure what it means)
+#' @describeIn map-layers Add a WMS tile layer to the map
+#' @export
+addWMSTiles = function(
+  map, baseUrl, layerId = NULL, options = tileOptions(), attribution = NULL,
+  layers = '', styles = '', format = 'image/jpeg', transparent = FALSE,
+  version = '1.1.1', crs = NULL
+) {
+  options2 = list(
+    attribution = attribution, layers = layers, styles = styles, format = format,
+    transparent = transparent, version = version, crs = crs
+  )
+  # merge WMS options into tile options
+  options[names(options2)] = options2
+  invokeMethod(map, getMapData(map), 'addWMSTiles', baseUrl, layerId, options)
+}
+
+#' @name remove
+#' @export
+removeWMSTiles = function(map, layerId) {
+  invokeMethod(map, NULL, 'removeWMSTiles', layerId)
+}
+
+#' @rdname remove
+#' @export
+clearWMSTiles = function(map) {
+  invokeMethod(map, NULL, 'clearWMSTiles')
+}
+
 #' @param lng a numeric vector of longitudes, or a one-sided formula of the form
 #'   \code{~x} where \code{x} is a variable in \code{data}; by default (if not
 #'   explicitly provided), it will be automatically inferred from \code{data} by

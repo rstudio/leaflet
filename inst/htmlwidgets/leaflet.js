@@ -328,6 +328,18 @@ var dataframe = (function() {
     this.tiles.clear();
   };
 
+  methods.addWMSTiles = function(baseUrl, layerId, options) {
+    this.WMStiles.add(L.tileLayer.wms(baseUrl, options), layerId);
+  };
+
+  methods.removeWMSTiles = function(layerId) {
+    this.WMStiles.remove(layerId);
+  };
+
+  methods.clearWMSTiles = function() {
+    this.WMStiles.clear();
+  };
+
   // Given:
   //   {data: ["a", "b", "c"], index: [0, 1, 0, 2]}
   // returns:
@@ -695,6 +707,7 @@ var dataframe = (function() {
         map.popups = new LayerStore(map);
         map.geojson = new LayerStore(map);
         map.tiles = new LayerStore(map);
+        map.WMStiles = new LayerStore(map);
       } else {
         map.controls.clear();
         map.markers.clear();
@@ -702,6 +715,7 @@ var dataframe = (function() {
         map.popups.clear();
         map.geojson.clear();
         map.tiles.clear();
+        map.WMStiles.clear();
       }
 
       var explicitView = false;
