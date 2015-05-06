@@ -55,11 +55,11 @@ addGeoJSON(map, geojson, layerId = NULL)
 \arguments{
 \item{map}{a map widget object created from \code{\link{leaflet}()}}
 
-\item{html}{the content of the control. May be provided as string or as
-HTML generated with Shiny/htmltools tags}
+\item{html}{the content of the control. May be provided as string or as HTML
+generated with Shiny/htmltools tags}
 
-\item{position}{position of control: 'topleft', 'topright',
-'bottomleft', or 'bottomright'}
+\item{position}{position of control: 'topleft', 'topright', 'bottomleft', or
+'bottomright'}
 
 \item{controlId}{the id of this control}
 
