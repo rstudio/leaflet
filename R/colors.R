@@ -249,33 +249,40 @@ NULL
 
 
 safePaletteFunc = function(pal, na.color) {
-  toPaletteFunc(pal) %>% filterRGB() %>% filterNA(na.color) %>%
-    filterRange() %>% filterPreserveDim()
+  paletteFunc <- toPaletteFunc(pal, na.color = na.color)
+
+  if (isTRUE(attr(paletteFunc, "safe_palette_func", exact = TRUE))) {
+    paletteFunc %>% filterPreserveDim()
+  } else {
+    paletteFunc %>% filterRGB() %>% filterNA(na.color) %>%
+      filterRange() %>% filterPreserveDim()
+  }
 }
 
-toPaletteFunc = function(pal) {
+toPaletteFunc = function(pal, na.color) {
   UseMethod("toPaletteFunc")
 }
 
 # Strings are interpreted as color names, unless length is 1 and it's the name
 # of an RColorBrewer palette
-toPaletteFunc.character = function(pal) {
+toPaletteFunc.character = function(pal, na.color) {
   if (length(pal) == 1 && pal %in% row.names(RColorBrewer::brewer.pal.info)) {
-    return(grDevices::colorRamp(
-      RColorBrewer::brewer.pal(RColorBrewer::brewer.pal.info[pal, 'maxcolors'], pal)
+    return(rasterfaster::createColorRamp(
+      RColorBrewer::brewer.pal(RColorBrewer::brewer.pal.info[pal, 'maxcolors'], pal),
+      na.color = na.color
     ))
   }
 
-  grDevices::colorRamp(pal)
+  rasterfaster::createColorRamp(pal, na.color = na.color)
 }
 
 # Accept colorRamp style matrix
-toPaletteFunc.matrix = function(pal) {
-  toPaletteFunc(rgb(pal, maxColorValue = 255))
+toPaletteFunc.matrix = function(pal, na.color) {
+  toPaletteFunc(rgb(pal, maxColorValue = 255), na.color)
 }
 
 # If a function, just assume it's already a function over [0-1]
-toPaletteFunc.function = function(pal) {
+toPaletteFunc.function = function(pal, na.color) {
   pal
 }
 
