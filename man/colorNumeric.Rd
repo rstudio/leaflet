@@ -34,8 +34,11 @@ colorFactor(palette, domain, levels = NULL, ordered = FALSE, na.color = "#808080
   \code{na.color=NA} is valid.}
 
 \item{bins}{Either a numeric vector of two or more unique cut points or a
-  single number (greater than or equal to 2) giving the number of intervals
-  into which the domain values are to be cut.}
+  single number (greater than or equal to 2) giving the \emph{approximate}
+  number of intervals into which the domain values are to be cut. When it is
+  a single number, the actual number of bins is determined by
+  \code{\link{pretty}()}, and you may not get exactly the number of bins you
+  specified.}
 
 \item{n}{Number of equal-size quantiles desired. For more precise control,
 use the \code{probs} argument instead.}
