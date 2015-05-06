@@ -110,7 +110,7 @@ colorBin = function(palette, domain, bins = 7, pretty = TRUE, na.color = "#80808
     if (length(x) == 0 || all(is.na(x))) {
       return(pf(x))
     }
-    binsToUse = getBins(domain, x, bins)
+    binsToUse = getBins(domain, x, bins, pretty)
     ints = cut(x, binsToUse, labels = FALSE, include.lowest = TRUE, right = FALSE)
     if (any(is.na(x) != is.na(ints)))
       warning("Some values were outside the color scale and will be treated as NA")
