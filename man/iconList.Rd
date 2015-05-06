@@ -5,6 +5,9 @@
 \usage{
 iconList(...)
 }
+\arguments{
+\item{...}{icons created from \code{\link{makeIcon}()}}
+}
 \description{
 Make icon set
 }

@@ -271,6 +271,7 @@ addMarkers = function(
 
 #' Make icon set
 #'
+#' @param ... icons created from \code{\link{makeIcon}()}
 #' @export
 #' @examples
 #'
