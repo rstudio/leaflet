@@ -200,6 +200,47 @@ var dataframe = (function() {
     }
     return keys;
   };
+  function ControlStore(map) {
+    this._controlsNoId = [];
+    this._controlsById = {};
+    this._map = map
+  }
+
+  ControlStore.prototype.add = function(control, id, html) {
+    if (typeof(id) !== 'undefined' && id !== null) {
+      if (this._controlsById[id]) {
+        this._map.removeControl(this._controlsById[id]);
+      }
+      this._controlsById[id] = control;
+    } else {
+      this._controlsNoId.push(control)
+    }
+    this._map.addControl(control);
+  };
+
+  ControlStore.prototype.remove = function(id) {
+    if (this._controlsById[id]) {
+      var control = this._controlsById[id];
+      this._map.removeControl(control);
+      delete this._controlsById[id];
+    }
+  };
+
+  ControlStore.prototype.clear = function() {
+    for (var i = 0; i < this._controlsNoId.length; i++) {
+      var control = this._controlsNoId[i];
+      Shiny.unbindAll(control._div);
+      this._map.removeControl(control);
+    };
+    this._controlsNoId = [];
+
+    for (var key in this._controlsById) {
+      var control = this._controlsById[key];
+      Shiny.unbindAll(control._div);
+      this._map.removeControl(control)
+    }
+    this._controlsById = {}
+  }
 
   function mouseHandler(mapId, layerId, eventName, extraInfo) {
     return function(e) {
@@ -356,7 +397,7 @@ var dataframe = (function() {
       .col('popup', popup)
       .cbind(options);
 
-    icondf.effectiveLength = df.nrow();
+    if (icon) icondf.effectiveLength = df.nrow();
 
     for (var i = 0; i < df.nrow(); i++) {
       (function() {
@@ -559,7 +600,50 @@ var dataframe = (function() {
     this.geojson.clear();
   };
 
+  methods.addControl = function(html, position, controlId, classes) {
+    function onAdd(map) {
+      var div = L.DomUtil.create('div', classes);
+      if (typeof controlId !== 'undefined' && controlId !== null) {
+        div.setAttribute('id', controlId)
+      }
+      this._div = div;
 
+      // It's possible for window.Shiny to be true but Shiny.initializeInputs to
+      // not be, when a static leaflet widget is included as part of the shiny
+      // UI directly (not through leafletOutput or uiOutput). In this case we
+      // don't do the normal Shiny stuff as that will all happen when Shiny
+      // itself loads and binds the entire doc.
+
+      if (window.Shiny && Shiny.initializeInputs) {
+        Shiny.renderHtml(html, this._div);
+        Shiny.initializeInputs(this._div);
+        Shiny.bindAll(this._div);
+      } else {
+        this._div.innerHTML = html;
+      }
+
+      return this._div;
+    }
+    function onRemove(map) {
+      if (window.Shiny && Shiny.unbindAll) {
+        Shiny.unbindAll(this._div);
+      }
+    }
+    var Control = L.Control.extend({
+      options: {position: position},
+      onAdd: onAdd,
+      onRemove: onRemove
+    })
+    this.controls.add(new Control, controlId, html);
+  };
+
+  methods.removeControl = function(controlId) {
+    this.controls.remove(controlId);
+  };
+
+  methods.clearControls = function() {
+    this.controls.clear();
+  };
 
   HTMLWidgets.widget({
     name: "leaflet",
@@ -605,12 +689,14 @@ var dataframe = (function() {
       var options = $.extend({ zoomToLimits: "always" }, data.options);
 
       if (!map.markers) {
+        map.controls = new ControlStore(map);
         map.markers = new LayerStore(map);
         map.shapes = new LayerStore(map);
         map.popups = new LayerStore(map);
         map.geojson = new LayerStore(map);
         map.tiles = new LayerStore(map);
       } else {
+        map.controls.clear();
         map.markers.clear();
         map.shapes.clear();
         map.popups.clear();
