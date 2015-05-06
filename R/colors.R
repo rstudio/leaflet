@@ -60,7 +60,7 @@ withColorAttr = function(type, args = list(), fun) {
 # domain may or may not be NULL.
 # Iff domain is non-NULL, x may be NULL.
 # bins is non-NULL. It may be a scalar value (# of breaks) or a set of breaks.
-getBins = function(domain, x, bins) {
+getBins = function(domain, x, bins, pretty) {
   if (is.null(domain) && is.null(x)) {
     stop("Assertion failed: domain and x can't both be NULL")
   }
@@ -73,22 +73,27 @@ getBins = function(domain, x, bins) {
   if (bins < 2) {
     stop("Invalid bins value of ", bins, "; bin count must be at least 2")
   }
-
-  pretty(domain %||% x, n = bins)
+  if (pretty) {
+    base::pretty(domain %||% x, n = bins)
+  } else {
+    rng = range(domain %||% x, na.rm = TRUE)
+    seq(rng[1], rng[2], length.out = bins + 1)
+  }
 }
 
 #' @details \code{colorBin} also maps continuous numeric data, but performs
 #'   binning based on value (see the \code{\link[base]{cut}} function).
 #' @param bins Either a numeric vector of two or more unique cut points or a
-#'   single number (greater than or equal to 2) giving the \emph{approximate}
-#'   number of intervals into which the domain values are to be cut. When it is
-#'   a single number, the actual number of bins is determined by
-#'   \code{\link{pretty}()}, and you may not get exactly the number of bins you
-#'   specified.
-#'
+#'   single number (greater than or equal to 2) giving the number of intervals
+#'   into which the domain values are to be cut.
+#' @param pretty Whether to use the function \code{\link{pretty}()} to generate
+#'   the bins when the argument \code{bins} is a single number. When
+#'   \code{pretty = TRUE}, the actual number of bins may not be the number of
+#'   bins you specified. When \code{pretty = FALSE}, \code{\link{seq}()} is used
+#'   to generate the bins and the breaks may not be "pretty".
 #' @rdname colorNumeric
 #' @export
-colorBin = function(palette, domain, bins = 7, na.color = "#808080") {
+colorBin = function(palette, domain, bins = 7, pretty = TRUE, na.color = "#808080") {
   # domain usually needs to be explicitly provided (even if NULL) but not if
   # breaks are specified
   if (missing(domain) && length(bins) > 1) {
@@ -96,7 +101,7 @@ colorBin = function(palette, domain, bins = 7, na.color = "#808080") {
   }
   autobin = is.null(domain) && length(bins) == 1
   if (!is.null(domain))
-    bins = getBins(domain, NULL, bins)
+    bins = getBins(domain, NULL, bins, pretty)
   numColors = if (length(bins) == 1) bins else length(bins) - 1
   colorFunc = colorFactor(palette, domain = if (!autobin) 1:numColors, na.color = na.color)
   pf = safePaletteFunc(palette, na.color)
