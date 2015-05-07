@@ -1,0 +1,33 @@
+---
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(tidy = FALSE)
+set.seed(109)
+```
+[Leaflet](http://leafletjs.com) is an open-source JavaScript library for interactive maps. This R package makes it easy to integrate and control Leaflet maps in R.
+
+## Installation and Use
+
+To install this R package, run this command at your R prompt:
+
+```{r eval=FALSE}
+devtools::install_github("rstudio/leaflet")
+```
+
+Once installed, you can use this package at the R console, within [R Markdown](http://rmarkdown.rstudio.com/) documents, and within [Shiny](http://shiny.rstudio.com/) applications.
+
+To create a Leaflet map, first you call the function `leaflet()`, then you can add more layers on the map, and manipulate the view. For example,
+
+```{r}
+library(leaflet)
+m = leaflet() %>% addTiles()
+m  # a map with the default OSM tile layer
+
+m = m %>% setView(-93.65, 42.0285, zoom = 17)
+m
+
+m %>% addPopups(-93.65, 42.0285, 'Here is the <b>Department of Statistics</b>, ISU')
+```
+
+Although we have tried to provide an R-like interface to Leaflet, you may want to check out the [API documentation](http://leafletjs.com/reference.html) of Leaflet occasionally when the meanings of certain parameters are not clear to you.
