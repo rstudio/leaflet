@@ -132,16 +132,16 @@ tileOptions = function(
 #' clear all features of the given type.
 #'
 #' @note When used with a \code{\link{leaflet}}() map object, these functions
-#' don't actually remove the features from the map object, but simply add an
-#' operation that will cause those features to be removed after they are added.
-#' In other words, if you add a polygon \code{"foo"} and the call
-#' \code{removeShape("foo")}, it's not smart enough to prevent the polygon from
-#' being added in the first place; instead, when the map is rendered, the
-#' polygon will be added and then removed.
+#'   don't actually remove the features from the map object, but simply add an
+#'   operation that will cause those features to be removed after they are
+#'   added. In other words, if you add a polygon \code{"foo"} and the call
+#'   \code{removeShape("foo")}, it's not smart enough to prevent the polygon
+#'   from being added in the first place; instead, when the map is rendered, the
+#'   polygon will be added and then removed.
 #'
-#' For that reason, these functions aren't that useful with \code{leaflet} map
-#' objects and are really intended to be used with \code{\link{leafletProxy}}
-#' instead.
+#'   For that reason, these functions aren't that useful with \code{leaflet} map
+#'   objects and are really intended to be used with \code{\link{leafletProxy}}
+#'   instead.
 #'
 #' @param map a map widget object, possibly created from \code{\link{leaflet}}()
 #'   but more likely from \code{\link{leafletProxy}}()
