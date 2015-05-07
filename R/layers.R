@@ -144,6 +144,8 @@ tileOptions = function(
 #'   objects and are really intended to be used with \code{\link{leafletProxy}}
 #'   instead.
 #'
+#'   WMS tile layers are extensions of tile layers, so they can also be removed
+#'   or cleared via \code{removeTiles()} or \code{clearTiles()}.
 #' @param map a map widget object, possibly created from \code{\link{leaflet}}()
 #'   but more likely from \code{\link{leafletProxy}}()
 #' @param layerId character vector; the layer id(s) of the item to remove
@@ -195,18 +197,6 @@ WMSTileOptions = function(
     styles = styles, format = format, transparent = transparent,
     version = version, crs = crs, ...
   )
-}
-
-#' @name remove
-#' @export
-removeWMSTiles = function(map, layerId) {
-  invokeMethod(map, NULL, 'removeWMSTiles', layerId)
-}
-
-#' @rdname remove
-#' @export
-clearWMSTiles = function(map) {
-  invokeMethod(map, NULL, 'clearWMSTiles')
 }
 
 #' @param lng a numeric vector of longitudes, or a one-sided formula of the form
