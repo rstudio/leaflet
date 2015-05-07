@@ -475,7 +475,11 @@ var dataframe = (function() {
     for (var i = 0; i < df.nrow(); i++) {
       (function() {
         var shape = df.get(i, 'shapes')[0];
-        shape = HTMLWidgets.dataframeToD3(shape);
+        // Undo JSON auto-unboxing
+        shape = HTMLWidgets.dataframeToD3(!shape.lat.length ? {
+          lat: asArray(shape.lat),
+          lng: asArray(shape.lng)
+        } : shape);
         var polyline = L.polyline(shape, df.get(i));
         var thisId = df.get(i, 'layerId');
         this.shapes.add(polyline, thisId);
@@ -547,7 +551,11 @@ var dataframe = (function() {
       (function() {
         var shapes = df.get(i, 'shapes');
         for (var j = 0; j < shapes.length; j++) {
-          shapes[j] = HTMLWidgets.dataframeToD3(shapes[j]);
+        // Undo JSON auto-unboxing
+          shapes[j] = HTMLWidgets.dataframeToD3(!shapes[j].lat.length ? {
+            lat: asArray(shapes[j].lat),
+            lng: asArray(shapes[j].lng)
+          } : shapes[j]);
         }
         var polygon = L.polygon(shapes, df.get(i));
         var thisId = df.get(i, 'layerId');
