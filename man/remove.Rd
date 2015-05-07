@@ -1,11 +1,13 @@
-% Please edit documentation in R/layers.R
-\name{remove}
+% Please edit documentation in R/controls.R, R/layers.R
+\name{removeControl}
+\alias{clearControls}
 \alias{clearGeoJSON}
 \alias{clearMarkers}
 \alias{clearPopups}
 \alias{clearShapes}
 \alias{clearTiles}
 \alias{remove}
+\alias{removeControl}
 \alias{removeGeoJSON}
 \alias{removeMarker}
 \alias{removePopup}
@@ -13,6 +15,10 @@
 \alias{removeTiles}
 \title{Remove elements from a map}
 \usage{
+removeControl(map, layerId)
+
+clearControls(map)
+
 removeTiles(map, layerId)
 
 clearTiles(map)
