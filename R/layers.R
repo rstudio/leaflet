@@ -63,8 +63,9 @@ bboxAdd = function(a, b) {
 #' @param options a list of extra options for tile layers, popups, paths
 #'   (circles, rectangles, polygons, ...), or other map elements
 #' @return the new \code{map} object
-#' @seealso \code{\link{tileOptions}}, \code{\link{popupOptions}},
-#'   \code{\link{markerOptions}}, \code{\link{pathOptions}}
+#' @seealso \code{\link{tileOptions}}, \code{\link{WMSTileOptions}},
+#'   \code{\link{popupOptions}}, \code{\link{markerOptions}},
+#'   \code{\link{pathOptions}}
 #' @references The Leaflet API documentation:
 #'   \url{http://leafletjs.com/reference.html}
 #' @describeIn map-layers Add a tile layer to the map
@@ -163,6 +164,17 @@ clearTiles = function(map) {
 
 #' @param baseUrl a base URL of the WMS service
 #' @param layers comma-separated list of WMS layers to show
+#' @describeIn map-layers Add a WMS tile layer to the map
+#' @export
+addWMSTiles = function(
+  map, baseUrl, layerId = NULL,
+  options = WMSTileOptions(), attribution = NULL, layers = ''
+) {
+  options$attribution = attribution
+  options$layers = layers
+  invokeMethod(map, getMapData(map), 'addWMSTiles', baseUrl, layerId, options)
+}
+
 #' @param styles comma-separated list of WMS styles
 #' @param format WMS image format (use \code{'image/png'} for layers with
 #'   transparency)
@@ -171,20 +183,18 @@ clearTiles = function(map) {
 #' @param version version of the WMS service to use
 #' @param crs Coordinate Reference System to use for the WMS requests, defaults
 #'   to map CRS (don't change this if you're not sure what it means)
-#' @describeIn map-layers Add a WMS tile layer to the map
+#' @param ... other tile options for \code{WMSTileOptions()} (all arguments of
+#'   \code{tileOptions()} can be used)
+#' @describeIn map-options Options for WMS tile layers
 #' @export
-addWMSTiles = function(
-  map, baseUrl, layerId = NULL, options = tileOptions(), attribution = NULL,
-  layers = '', styles = '', format = 'image/jpeg', transparent = FALSE,
-  version = '1.1.1', crs = NULL
+WMSTileOptions = function(
+  styles = '', format = 'image/jpeg', transparent = FALSE, version = '1.1.1',
+  crs = NULL, ...
 ) {
-  options2 = list(
-    attribution = attribution, layers = layers, styles = styles, format = format,
-    transparent = transparent, version = version, crs = crs
+  list(
+    styles = styles, format = format, transparent = transparent,
+    version = version, crs = crs, ...
   )
-  # merge WMS options into tile options
-  options[names(options2)] = options2
-  invokeMethod(map, getMapData(map), 'addWMSTiles', baseUrl, layerId, options)
 }
 
 #' @name remove
