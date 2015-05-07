@@ -4,3 +4,4 @@
 ^inst/csv
 ^inst/examples
 \.bower\.json$
+^docs/
