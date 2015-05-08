@@ -8,7 +8,7 @@
 \usage{
 colorNumeric(palette, domain, na.color = "#808080")
 
-colorBin(palette, domain, bins = 7, na.color = "#808080")
+colorBin(palette, domain, bins = 7, pretty = TRUE, na.color = "#808080")
 
 colorQuantile(palette, domain, n = 4, probs = seq(0, 1, length.out = n + 1), 
     na.color = "#808080")
@@ -34,8 +34,14 @@ colorFactor(palette, domain, levels = NULL, ordered = FALSE, na.color = "#808080
   \code{na.color=NA} is valid.}
 
 \item{bins}{Either a numeric vector of two or more unique cut points or a
-  single number (greater than or equal to 2) giving the number of intervals
-  into which the domain values are to be cut.}
+single number (greater than or equal to 2) giving the number of intervals
+into which the domain values are to be cut.}
+
+\item{pretty}{Whether to use the function \code{\link{pretty}()} to generate
+the bins when the argument \code{bins} is a single number. When
+\code{pretty = TRUE}, the actual number of bins may not be the number of
+bins you specified. When \code{pretty = FALSE}, \code{\link{seq}()} is used
+to generate the bins and the breaks may not be "pretty".}
 
 \item{n}{Number of equal-size quantiles desired. For more precise control,
 use the \code{probs} argument instead.}

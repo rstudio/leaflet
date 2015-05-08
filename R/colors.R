@@ -37,7 +37,7 @@ colorNumeric = function(palette, domain, na.color = "#808080") {
 
   pf = safePaletteFunc(palette, na.color)
 
-  function(x) {
+  withColorAttr('numeric', list(na.color = na.color), function(x) {
     if (length(x) == 0 || all(is.na(x))) {
       return(pf(x))
     }
@@ -48,13 +48,19 @@ colorNumeric = function(palette, domain, na.color = "#808080") {
     if (any(rescaled < 0 | rescaled > 1, na.rm = TRUE))
       warning("Some values were outside the color scale and will be treated as NA")
     pf(rescaled)
-  }
+  })
+}
+
+# Attach an attribute colorType to a color function f so we can derive legend
+# items from it
+withColorAttr = function(type, args = list(), fun) {
+  structure(fun, colorType = type, colorArgs = args)
 }
 
 # domain may or may not be NULL.
 # Iff domain is non-NULL, x may be NULL.
 # bins is non-NULL. It may be a scalar value (# of breaks) or a set of breaks.
-getBins = function(domain, x, bins) {
+getBins = function(domain, x, bins, pretty) {
   if (is.null(domain) && is.null(x)) {
     stop("Assertion failed: domain and x can't both be NULL")
   }
@@ -67,9 +73,12 @@ getBins = function(domain, x, bins) {
   if (bins < 2) {
     stop("Invalid bins value of ", bins, "; bin count must be at least 2")
   }
-
-  rng = range(domain %||% x, na.rm = TRUE)
-  seq(rng[1], rng[2], length.out = bins + 1)
+  if (pretty) {
+    base::pretty(domain %||% x, n = bins)
+  } else {
+    rng = range(domain %||% x, na.rm = TRUE)
+    seq(rng[1], rng[2], length.out = bins + 1)
+  }
 }
 
 #' @details \code{colorBin} also maps continuous numeric data, but performs
@@ -77,30 +86,36 @@ getBins = function(domain, x, bins) {
 #' @param bins Either a numeric vector of two or more unique cut points or a
 #'   single number (greater than or equal to 2) giving the number of intervals
 #'   into which the domain values are to be cut.
-#'
+#' @param pretty Whether to use the function \code{\link{pretty}()} to generate
+#'   the bins when the argument \code{bins} is a single number. When
+#'   \code{pretty = TRUE}, the actual number of bins may not be the number of
+#'   bins you specified. When \code{pretty = FALSE}, \code{\link{seq}()} is used
+#'   to generate the bins and the breaks may not be "pretty".
 #' @rdname colorNumeric
 #' @export
-colorBin = function(palette, domain, bins = 7, na.color = "#808080") {
+colorBin = function(palette, domain, bins = 7, pretty = TRUE, na.color = "#808080") {
   # domain usually needs to be explicitly provided (even if NULL) but not if
   # breaks are specified
   if (missing(domain) && length(bins) > 1) {
     domain = NULL
   }
+  autobin = is.null(domain) && length(bins) == 1
   if (!is.null(domain))
-    bins = getBins(domain, NULL, bins)
+    bins = getBins(domain, NULL, bins, pretty)
   numColors = if (length(bins) == 1) bins else length(bins) - 1
-  colorFunc = colorFactor(palette, domain = 1:numColors, na.color = na.color)
+  colorFunc = colorFactor(palette, domain = if (!autobin) 1:numColors, na.color = na.color)
+  pf = safePaletteFunc(palette, na.color)
 
-  function(x) {
+  withColorAttr('bin', list(bins = bins, na.color = na.color), function(x) {
     if (length(x) == 0 || all(is.na(x))) {
       return(pf(x))
     }
-    binsToUse = getBins(domain, x, bins)
+    binsToUse = getBins(domain, x, bins, pretty)
     ints = cut(x, binsToUse, labels = FALSE, include.lowest = TRUE, right = FALSE)
     if (any(is.na(x) != is.na(ints)))
       warning("Some values were outside the color scale and will be treated as NA")
     colorFunc(ints)
-  }
+  })
 }
 
 #' @details \code{colorQuantile} similarly bins numeric data, but via the
@@ -116,20 +131,23 @@ colorQuantile = function(palette, domain, n = 4,
 
   if (!is.null(domain)) {
     bins = quantile(domain, probs, na.rm = TRUE, names = FALSE)
-    return(colorBin(palette, domain = NULL, bins = bins, na.color = na.color))
+    return(withColorAttr(
+      'quantile', list(probs = probs, na.color = na.color),
+      colorBin(palette, domain = NULL, bins = bins, na.color = na.color)
+    ))
   }
 
   # I don't have a precise understanding of how quantiles are meant to map to colors.
   # If you say probs = seq(0, 1, 0.25), which has length 5, does that map to 4 colors
   # or 5? 4, right?
   colorFunc = colorFactor(palette, domain = 1:(length(probs) - 1), na.color = na.color)
-  function(x) {
+  withColorAttr('quantile', list(probs = probs, na.color = na.color), function(x) {
     binsToUse = quantile(x, probs, na.rm = TRUE, names = FALSE)
     ints = cut(x, binsToUse, labels = FALSE, include.lowest = TRUE, right = FALSE)
     if (any(is.na(x) != is.na(ints)))
       warning("Some values were outside the color scale and will be treated as NA")
     colorFunc(ints)
-  }
+  })
 }
 
 # If already a factor, return the levels. Otherwise, convert to factor then
@@ -185,7 +203,7 @@ colorFactor = function(palette, domain, levels = NULL, ordered = FALSE,
   hasFixedLevels = is.null(lvls)
   pf = safePaletteFunc(palette, na.color)
 
-  function(x) {
+  withColorAttr('factor', list(na.color = na.color), function(x) {
     if (length(x) == 0 || all(is.na(x))) {
       return(pf(x))
     }
@@ -208,7 +226,7 @@ colorFactor = function(palette, domain, levels = NULL, ordered = FALSE,
       warning("Some values were outside the color scale and will be treated as NA")
     }
     pf(scaled)
-  }
+  })
 }
 
 #' @details The \code{palette} argument can be any of the following:

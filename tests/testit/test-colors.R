@@ -2,10 +2,10 @@ library(testit)
 
 bw = c("black", "white")
 
-# These currently error, but maybe shouldn't...?
+# Do these cases make sense?
 assert(
-  has_error(colorBin(bw, NULL)(1)),            # Return "#000000"?
-  has_error(colorBin(bw, 1)(1)),               # Return "#000000"?
+  colorBin(bw, NULL)(1) == "#7F7F7F",
+  colorBin(bw, 1)(1) == "#FFFFFF",
   TRUE
 )
 
