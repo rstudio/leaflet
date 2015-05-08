@@ -70,11 +70,11 @@ assert(
 # test the helper function labelFormat()
 f = labelFormat(
   prefix = 'a', suffix = 'b', between = '--', digits = 1,
-  transform = function(x) x / 10, big.mark = "'", type = 'bin'
+  transform = function(x) x / 10, big.mark = "'"
 )
 assert(
   'labelFormat() works',
-  identical(f(c(1.234, 2.345)), 'a0.1--0.2b'),
-  identical(f(c(123456.78, 987654.32)), "a12'345.7--98'765.4b"),
+  identical(f('bin', c(1.234, 2.345)), 'a0.1--0.2b'),
+  identical(f('bin', c(123456.78, 987654.32)), "a12'345.7--98'765.4b"),
   TRUE
 )

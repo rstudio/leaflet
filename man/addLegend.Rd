@@ -9,7 +9,7 @@ addLegend(map, position = c("topright", "bottomright", "bottomleft", "topleft"),
     labFormat = labelFormat(), title = deparse(substitute(values)))
 
 labelFormat(prefix = "", suffix = "", between = " &ndash; ", digits = 3, big.mark = ",", 
-    transform = identity, type = c("numeric", "bin", "quantile", "factor"))
+    transform = identity)
 }
 \arguments{
 \item{map}{a map widget object created from \code{\link{leaflet}()}}
@@ -65,7 +65,8 @@ the palette function. You can also manually specify the colors and labels for
 the legend.
 }
 \details{
-The \code{labFormat} argument is a function with different arguments for
+The \code{labFormat} argument is a function that takes the argument
+\code{type = c("numeric", "bin", "quantile", "factor")}, plus, arguments for
 different types of color palettes. For the \code{colorNumeric()} palette,
 \code{labFormat} takes a single argument, which is the breaks of the numeric
 vector, and returns a character vector of the same length. For
