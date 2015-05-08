@@ -5,21 +5,21 @@
 #' the palette function. You can also manually specify the colors and labels for
 #' the legend.
 #'
-#' The \code{labelFormat} argument is a function with different arguments for
+#' The \code{labFormat} argument is a function with different arguments for
 #' different types of color palettes. For the \code{colorNumeric()} palette,
-#' \code{labelFormat} takes a single argument, which is the breaks of the
-#' numeric vector, and returns a character vector of the same length. For
-#' \code{colorBin()}, \code{labelFormat} also takes a vector of breaks of length
+#' \code{labFormat} takes a single argument, which is the breaks of the numeric
+#' vector, and returns a character vector of the same length. For
+#' \code{colorBin()}, \code{labFormat} also takes a vector of breaks of length
 #' \code{n} but should return a character vector of length \code{n - 1}, with
 #' the \code{i}-th element representing the interval \code{c(x[i], x[i + 1])}.
-#' For \code{colorQuantile}, \code{labelFormat} takes two arguments, the
-#' quantiles and the associated probabilities (each of length \code{n}), and
-#' should return a character vector of length \code{n - 1} (similar to the
-#' \code{colorBin()} palette). For \code{colorFactor()}, \code{labelFormat}
-#' takes one argument, the unique values of the factor, and should return a
-#' character vector of the same length.
+#' For \code{colorQuantile}, \code{labFormat} takes two arguments, the quantiles
+#' and the associated probabilities (each of length \code{n}), and should return
+#' a character vector of length \code{n - 1} (similar to the \code{colorBin()}
+#' palette). For \code{colorFactor()}, \code{labFormat} takes one argument, the
+#' unique values of the factor, and should return a character vector of the same
+#' length.
 #'
-#' By default, \code{labelFormat} is basically \code{format(scientific = FALSE,
+#' By default, \code{labFormat} is basically \code{format(scientific = FALSE,
 #' big.mark = ',')} for the numeric palette, \code{as.character()} for the
 #' factor palette, and a function to return labels of the form \samp{x[i] - x[i
 #' + 1]} for bin and quantile palettes (in the case of quantile palettes,
@@ -39,20 +39,21 @@
 #' @param opacity the opacity of colors
 #' @param labels a vector of text labels in the legend corresponding to
 #'   \code{colors}
-#' @param labelFormat a function to format the labels derived from \code{pal}
-#'   and \code{values}
+#' @param labFormat a function to format the labels derived from \code{pal} and
+#'   \code{values} (see Details below to know what \code{labelFormat()} returns
+#'   by default; you can either use the helper function \code{labelFormat()}, or
+#'   write your own function)
 #' @param title the legend title
 #' @example inst/examples/legend.R
 #' @export
 addLegend = function(
   map, position = c('topright', 'bottomright', 'bottomleft', 'topleft'),
   pal, values, na.label = 'NA', bins = 7, colors, opacity = 0.5, labels,
-  labelFormat, title = deparse(substitute(values))
+  labFormat = labelFormat(), title = deparse(substitute(values))
 ) {
   position = match.arg(position)
   type = 'unknown'; na.color = NULL
   extra = NULL  # only used for numeric palettes to store extra info
-  formatNum = function(x) format(x, scientific = FALSE, big.mark = ',')
 
   if (!missing(pal)) {
     if (!missing(colors))
@@ -67,22 +68,6 @@ addLegend = function(
     na.color = args$na.color
     if (type != 'numeric' && !missing(bins))
       warning("'bins' is ignored because the palette type is not numeric")
-    if (missing(labelFormat)) labelFormat = switch(
-      type,
-      `numeric` = formatNum,
-      `bin` = function(cuts) {
-        n = length(cuts)
-        sprintf('%s &ndash; %s', formatNum(cuts[-n]), formatNum(cuts[-1]))
-      },
-      `quantile` = function(cuts, p) {
-        n = length(cuts)
-        p = paste0(round(p * 100), '%')
-        cuts = sprintf('%s &ndash; %s', formatNum(cuts[-n]), formatNum(cuts[-1]))
-        # mouse over the legend labels to see the values (quantiles)
-        sprintf('<span title="%s">%s &ndash; %s</span>', cuts, p[-n], p[-1])
-      },
-      `factor` = as.character
-    )
 
     if (type == 'numeric') {
 
@@ -117,7 +102,7 @@ addLegend = function(
       p = c('', paste0(100 * p, '%'), '')
       colors = pal(c(r[1], cuts, r[2]))
       colors = paste(colors, p, sep = ' ', collapse = ', ')
-      labels = labelFormat(cuts)
+      labels = labFormat(cuts)
 
     } else if (type == 'bin') {
 
@@ -126,7 +111,7 @@ addLegend = function(
       # use middle points to represent intervals
       mids = (cuts[-1] + cuts[-n]) / 2
       colors = pal(mids)
-      labels = labelFormat(cuts)
+      labels = labFormat(cuts)
 
     } else if (type == 'quantile') {
 
@@ -136,17 +121,16 @@ addLegend = function(
       cuts = quantile(values, probs = p, na.rm = TRUE)
       mids = quantile(values, probs = (p[-1] + p[-n]) / 2, na.rm = TRUE)
       colors = pal(mids)
-      labels = labelFormat(cuts, p)
+      labels = labFormat(cuts, p)
 
     } else if (type == 'factor') {
 
       v = unique(na.omit(values))
       colors = pal(v)
-      labels = labelFormat(v)
+      labels = labFormat(v)
 
     } else stop('Palette function not supported')
 
-    labels = formatNum(labels)
     if (!any(is.na(values))) na.color = NULL
   } else {
     if (length(colors) != length(labels))
@@ -159,4 +143,62 @@ addLegend = function(
     position = position, type = type, title = title, extra = extra
   )
   map
+}
+
+#' @param prefix a prefix of legend labels
+#' @param suffix a suffix of legend labels
+#' @param between a separator between \code{x[i]} and \code{x[i + 1]} in legend
+#'   labels (by default, it is a dash)
+#' @param digits the number of digits of numeric values in labels
+#' @param big.mark the thousand separator
+#' @param transform a function to transform the label value
+#' @param type the type of the legend (will be automatically derived if missing)
+#' @rdname addLegend
+#' @export
+labelFormat = function(
+  prefix = '', suffix = '', between = ' &ndash; ', digits = 3, big.mark = ',',
+  transform = identity, type = c('numeric', 'bin', 'quantile', 'factor')
+) {
+
+  formatNum = function(x) {
+    format(
+      round(transform(x), digits), trim = TRUE, scientific = FALSE,
+      big.mark = big.mark
+    )
+  }
+
+  if (missing(type)) {
+    # look for 'pal' in the parent environment and automatically get the type
+    if (exists('pal', sys.frame(-1), inherits = FALSE, mode = 'function')) {
+      pal = get('pal', sys.frame(-1), inherits = FALSE)
+      type0 = attr(pal, 'colorType', exact = TRUE)
+      if (is.character(type0)) type = type0
+    }
+  }
+  type = match.arg(type)
+
+  switch(
+    type,
+    numeric = function(cuts) {
+      paste0(prefix, formatNum(cuts), suffix)
+    },
+    bin = function(cuts) {
+      n = length(cuts)
+      paste0(prefix, formatNum(cuts[-n]), between, formatNum(cuts[-1]), suffix)
+    },
+    quantile = function(cuts, p) {
+      n = length(cuts)
+      p = paste0(round(p * 100), '%')
+      cuts = paste0(formatNum(cuts[-n]), between, formatNum(cuts[-1]))
+      # mouse over the legend labels to see the values (quantiles)
+      paste0(
+        '<span title="', cuts, '">', prefix, p[-n], between, p[-1], suffix,
+        '</span>'
+      )
+    },
+    factor = function(cuts) {
+      paste0(prefix, as.character(transform(cuts)), suffix)
+    }
+  )
+
 }

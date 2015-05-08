@@ -28,8 +28,7 @@ leaflet(df) %>%
 
 leaflet(df) %>%
   addCircleMarkers(~x, ~y, color = ~pal(z)) %>%
-  addLegend(pal = pal, values = ~z, labelFormat = function(cuts) {
-    n = length(cuts)
-    p = paste0(round(cuts * 100), '%')
-    paste(p[-n], p[-1], sep = ' - ')
-  })
+  addLegend(pal = pal, values = ~z, labFormat = labelFormat(
+    prefix = '(', suffix = ')%', between = ', ',
+    transform = function(x) 100 * x
+  ))
