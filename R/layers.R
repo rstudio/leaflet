@@ -919,7 +919,7 @@ clearShapes = function(map) {
   invokeMethod(map, NULL, 'clearShapes')
 }
 
-#' @param geojson a GeoJSON list
+#' @param geojson a GeoJSON list, or character vector of length 1
 #' @describeIn map-layers Add GeoJSON layers to the map
 #' @export
 addGeoJSON = function(map, geojson, layerId = NULL, group = NULL) {
