@@ -43,9 +43,9 @@ l3 = m3$x$legend
 assert(
   l3$colors == c('#F7FCFD', '#AADED2', '#37A265', '#00441B'),
   l3$labels == c(
-    '<span title="1.0 &ndash; 1.5">0% &ndash; 25%</span>  ',
-    '<span title="1.5 &ndash; 2.0">25% &ndash; 50%</span> ',
-    '<span title="2.0 &ndash; 2.5">50% &ndash; 75%</span> ',
+    '<span title="1.0 &ndash; 1.5">0% &ndash; 25%</span>',
+    '<span title="1.5 &ndash; 2.0">25% &ndash; 50%</span>',
+    '<span title="2.0 &ndash; 2.5">50% &ndash; 75%</span>',
     '<span title="2.5 &ndash; 3.0">75% &ndash; 100%</span>'
   ),
   l3$type == 'quantile'
