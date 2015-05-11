@@ -69,17 +69,17 @@ assert(
 
 assert(
   identical(
-    c("#000000", "#7F7F7F", "#FFFFFF"),
+    c("#000000", "#767676", "#FFFFFF"),
     colorNumeric(bw, NULL)(1:3)
   ),
 
   identical(
-    c("#000000", "#7F7F7F", "#FFFFFF"),
+    c("#000000", "#767676", "#FFFFFF"),
     colorNumeric(bw, c(1:3))(1:3)
   ),
 
   identical(
-    rev(c("#000000", "#7F7F7F", "#FFFFFF")),
+    rev(c("#000000", "#767676", "#FFFFFF")),
     colorNumeric(rev(bw), c(1:3))(1:3)
   ),
 
@@ -96,23 +96,23 @@ assert(
 
   # domain == unique(x)
   identical(
-    c("#000000", "#7F7F7F", "#FFFFFF"),
+    c("#000000", "#767676", "#FFFFFF"),
     colorFactor(bw, LETTERS[1:3])(LETTERS[1:3])
   ),
 
   # no domain
   identical(
-    c("#000000", "#7F7F7F", "#FFFFFF"),
+    c("#000000", "#767676", "#FFFFFF"),
     colorFactor(bw, NULL)(LETTERS[1:3])
   ),
 
   # Non-factor domains are sorted unless instructed otherwise
   identical(
-    c("#000000", "#7F7F7F", "#FFFFFF"),
+    c("#000000", "#767676", "#FFFFFF"),
     colorFactor(bw, rev(LETTERS[1:3]))(LETTERS[1:3])
   ),
   identical(
-    rev(c("#000000", "#7F7F7F", "#FFFFFF")),
+    rev(c("#000000", "#767676", "#FFFFFF")),
     colorFactor(bw, rev(LETTERS[1:3]), ordered = TRUE)(LETTERS[1:3])
   ),
 
