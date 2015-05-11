@@ -41,9 +41,9 @@ pal <- colorNumeric(
 )
 ```
 
-The `palette` argument is the ordered list of colors you will map colors to. In this case we used a Color Brewer palette, but we could've used `c("white", "navy")` or `c("#FFFFFF", "#000080")` for a similar effect. You can also pass more than two colors, for a diverging palette for example. And for maximum flexibility, you can even pass a function that takes a numeric value over the interval [0,1] and returns a color.
+The `palette` parameter is the ordered list of colors you will map colors to. In this case we used a Color Brewer palette, but we could've used `c("white", "navy")` or `c("#FFFFFF", "#000080")` for a similar effect. You can also pass more than two colors, for a diverging palette for example. And for maximum flexibility, you can even pass a function that takes a numeric value over the interval [0,1] and returns a color.
 
-The second argument, `domain`, indicates the set of input values that we are mapping to these colors. For `colorNumeric`, you can provide either a min/max as in this example, or a set of numbers that `colorNumeric` can call `range()` on.
+The second parameter, `domain`, indicates the set of input values that we are mapping to these colors. For `colorNumeric`, you can provide either a min/max as in this example, or a set of numbers that `colorNumeric` can call `range()` on.
 
 The result is `pal`, a function that can accept numeric vectors with values in the range `range(countries$gdp_md_est)` and return colors in `"#RRGGBB"` format.
 
@@ -84,7 +84,7 @@ map %>%
 
 For categorical data, use the `colorFactor` function. If the `palette` contains the same number of elements as there are factor levels, then the mapping will be 1:1; otherwise, the palette will be interpolated to produce the desired number of colors.
 
-You can specify the input domain either by passing a factor or character vector to `domain`, or by providing levels directly using the `levels` argument (in which case the `domain` will be ignored).
+You can specify the input domain either by passing a factor or character vector to `domain`, or by providing levels directly using the `levels` parameter (in which case the `domain` will be ignored).
 
 ```{r}
 # Make up some random levels. (TODO: Better example)
