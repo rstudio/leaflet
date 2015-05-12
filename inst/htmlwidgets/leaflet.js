@@ -821,8 +821,8 @@ var dataframe = (function() {
 
       setTimeout(function() { updateBounds(map); }, 1);
     },
-    resize: function(el, width, height, data) {
-
+    resize: function(el, width, height, map) {
+      map.invalidateSize();
     }
   });
 
