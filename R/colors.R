@@ -258,7 +258,7 @@ NULL
 
 
 safePaletteFunc = function(pal, na.color) {
-  toPaletteFunc(pal) %>% filterRGB() %>% filterNA(na.color) %>% filterRange()
+  toPaletteFunc(pal) %>% filterRGB() %>% filterZeroLength() %>% filterNA(na.color) %>% filterRange()
 }
 
 toPaletteFunc = function(pal) {
@@ -270,11 +270,12 @@ toPaletteFunc = function(pal) {
 toPaletteFunc.character = function(pal) {
   if (length(pal) == 1 && pal %in% row.names(RColorBrewer::brewer.pal.info)) {
     return(grDevices::colorRamp(
-      RColorBrewer::brewer.pal(RColorBrewer::brewer.pal.info[pal, 'maxcolors'], pal)
+      RColorBrewer::brewer.pal(RColorBrewer::brewer.pal.info[pal, 'maxcolors'], pal),
+      space = 'Lab'
     ))
   }
 
-  grDevices::colorRamp(pal)
+  grDevices::colorRamp(pal, space = 'Lab')
 }
 
 # Accept colorRamp style matrix
@@ -319,6 +320,19 @@ previewColors = function(pal, values) {
       )
     ))
   )
+}
+
+# colorRamp(space = 'Lab') throws error when called with
+# zero-length input
+filterZeroLength = function(f) {
+  force(f)
+  function(x) {
+    if (length(x) == 0) {
+      character(0)
+    } else {
+      f(x)
+    }
+  }
 }
 
 # Wraps an underlying non-NA-safe function (like colorRamp).
