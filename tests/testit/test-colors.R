@@ -4,7 +4,7 @@ bw = c("black", "white")
 
 # Do these cases make sense?
 assert(
-  colorBin(bw, NULL)(1) == "#7F7F7F",
+  colorBin(bw, NULL)(1) == "#767676",
   colorBin(bw, 1)(1) == "#FFFFFF",
   TRUE
 )
@@ -90,7 +90,7 @@ assert(
 
   # domain != unique(x)
   identical(
-    c("#000000", "#0A0A0A", "#141414"),
+    c("#000000", "#0E0E0E", "#171717"),
     colorFactor(bw, LETTERS)(LETTERS[1:3])
   ),
 
