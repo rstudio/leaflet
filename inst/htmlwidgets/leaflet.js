@@ -645,6 +645,68 @@ var dataframe = (function() {
     this.controls.clear();
   };
 
+  methods.addLegend = function(options) {
+    var legend = L.control({position: options.position});
+    var gradSpan;
+
+    legend.onAdd = function (map) {
+      var div = L.DomUtil.create('div', 'info legend'),
+          colors = options.colors,
+          labels = options.labels,
+          legendHTML = '';
+      if (options.type === 'numeric') {
+        gradSpan = $('<span/>').css({
+          'background': 'linear-gradient(' + colors + ')',
+          'opacity': options.opacity,
+          'height': '100px',
+          'width': '18px',
+          'display': 'block'
+        });
+        var leftDiv = $('<div/>').css('display', 'inline-block'),
+            rightDiv = $('<div/>').css('display', 'inline-block');
+        leftDiv.append(gradSpan);
+        var labelTable = '<table>';
+        for (var i = 0; i < labels.length; i++) {
+          labelTable += '<tr><td>-</td><td style="text-align:right">' +
+                        '<span style="display: block;">' + labels[i] +
+                        '</span></td></tr>';
+        }
+        labelTable += '</table>';
+        rightDiv.append(labelTable);
+        $(div).append(leftDiv).append(rightDiv);
+        if (options.na_color) {
+          $(div).append('<div><i style="background:' + options.na_color +
+                        '"></i> ' + options.na_label + '</div>');
+        }
+      } else {
+        if (options.na_color) {
+          colors.push(options.na_color);
+          labels.push(options.na_label);
+        }
+        for (var i = 0; i < colors.length; i++) {
+          legendHTML += '<i style="background:' + colors[i] + ';opacity:' +
+                        options.opacity + '"></i> ' + labels[i] + '<br/>';
+        }
+        div.innerHTML = legendHTML;
+      }
+      if (options.title)
+        $(div).prepend('<div style="margin-bottom:3px"><strong>' +
+                        options.title + '</strong></div>');
+      return div;
+    };
+
+    this.controls.add(legend, options.controlId);
+
+    // calculate the height of the gradient bar after the legend is rendered
+    if (options.type === 'numeric') {
+      var legendHeight = $(legend.getContainer()).find('table').height();
+      gradSpan.parent().height(legendHeight);
+      gradSpan.height(options.extra[1] * legendHeight).css({
+        'margin-top': options.extra[0] * legendHeight
+      });
+    }
+  };
+
   HTMLWidgets.widget({
     name: "leaflet",
     type: "output",
@@ -749,70 +811,6 @@ var dataframe = (function() {
           methods[call.method].apply(map, call.args);
         else
           console.log("Unknown method " + call.method);
-      }
-
-      // color legend
-      if (data.legend) {
-        var legend = L.control({position: data.legend.position});
-        var gradSpan;
-
-        legend.onAdd = function (map) {
-          var div = L.DomUtil.create('div', 'info legend'),
-              colors = data.legend.colors,
-              labels = data.legend.labels,
-              legendHTML = '';
-          if (data.legend.type === 'numeric') {
-            gradSpan = $('<span/>').css({
-              'background': 'linear-gradient(' + colors + ')',
-              'opacity': data.legend.opacity,
-              'height': '100px',
-              'width': '18px',
-              'display': 'block'
-            });
-            var leftDiv = $('<div/>').css('display', 'inline-block'),
-                rightDiv = $('<div/>').css('display', 'inline-block');
-            leftDiv.append(gradSpan);
-            var labelTable = '<table>';
-            for (var i = 0; i < labels.length; i++) {
-              labelTable += '<tr><td>-</td><td style="text-align:right">' +
-                            '<span style="display: block;">' + labels[i] +
-                            '</span></td></tr>';
-            }
-            labelTable += '</table>';
-            rightDiv.append(labelTable);
-            $(div).append(leftDiv).append(rightDiv);
-            if (data.legend.na_color) {
-              $(div).append('<div><i style="background:' + data.legend.na_color +
-                            '"></i> ' + data.legend.na_label + '</div>');
-            }
-          } else {
-            if (data.legend.na_color) {
-              colors.push(data.legend.na_color);
-              labels.push(data.legend.na_label);
-            }
-            for (var i = 0; i < colors.length; i++) {
-              legendHTML += '<i style="background:' + colors[i] + ';opacity:' +
-                            data.legend.opacity + '"></i> ' + labels[i] + '<br/>';
-            }
-            div.innerHTML = legendHTML;
-          }
-          if (data.legend.title)
-            $(div).prepend('<div style="margin-bottom:3px"><strong>' +
-                            data.legend.title + '</strong></div>');
-          return div;
-        };
-
-        // TODO: how to remove it?
-        legend.addTo(map);
-
-        // calculate the height of the gradient bar after the legend is rendered
-        if (data.legend.type === 'numeric') {
-          var legendHeight = $(legend.getContainer()).find('table').height();
-          gradSpan.parent().height(legendHeight);
-          gradSpan.height(data.legend.extra[1] * legendHeight).css({
-            'margin-top': data.legend.extra[0] * legendHeight
-          });
-        }
       }
 
       map.leafletr.hasRendered = true;

@@ -6,7 +6,7 @@
 \usage{
 addLegend(map, position = c("topright", "bottomright", "bottomleft", "topleft"), 
     pal, values, na.label = "NA", bins = 7, colors, opacity = 0.5, labels, 
-    labFormat = labelFormat(), title = deparse(substitute(values)))
+    labFormat = labelFormat(), title = deparse(substitute(values)), controlId = NULL)
 
 labelFormat(prefix = "", suffix = "", between = " &ndash; ", digits = 3, big.mark = ",", 
     transform = identity)
@@ -42,6 +42,10 @@ by default; you can either use the helper function \code{labelFormat()}, or
 write your own function)}
 
 \item{title}{the legend title}
+
+\item{controlId}{the ID of the legend; subsequent calls to \code{addLegend}
+or \code{addControl} with the same \code{controlId} will replace this
+legend. The ID can also be used with \code{removeControl}.}
 
 \item{prefix}{a prefix of legend labels}
 
