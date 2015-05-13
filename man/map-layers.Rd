@@ -10,6 +10,7 @@
 \alias{addPopups}
 \alias{addRectangles}
 \alias{addTiles}
+\alias{addWMSTiles}
 \title{Graphics elements and layers}
 \usage{
 addControl(map, html, position = c("topleft", "topright", "bottomleft", 
@@ -18,6 +19,9 @@ addControl(map, html, position = c("topleft", "topright", "bottomleft",
 
 addTiles(map, urlTemplate = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", 
     attribution = NULL, layerId = NULL, options = tileOptions())
+
+addWMSTiles(map, baseUrl, layerId = NULL, options = WMSTileOptions(), 
+    attribution = NULL, layers = "")
 
 addPopups(map, lng = NULL, lat = NULL, popup, layerId = NULL, options = popupOptions(), 
     data = getMapData(map))
@@ -75,6 +79,10 @@ initially, but can be overridden}
 
 \item{options}{a list of extra options for tile layers, popups, paths
 (circles, rectangles, polygons, ...), or other map elements}
+
+\item{baseUrl}{a base URL of the WMS service}
+
+\item{layers}{comma-separated list of WMS layers to show}
 
 \item{lng}{a numeric vector of longitudes, or a one-sided formula of the form
 \code{~x} where \code{x} is a variable in \code{data}; by default (if not
@@ -143,6 +151,8 @@ Add graphics elements and layers to the map widget.
 
 \item \code{addTiles}: Add a tile layer to the map
 
+\item \code{addWMSTiles}: Add a WMS tile layer to the map
+
 \item \code{addPopups}: Add popups to the map
 
 \item \code{addMarkers}: Add markders to the map
@@ -164,6 +174,7 @@ The Leaflet API documentation:
   \url{http://leafletjs.com/reference.html}
 }
 \seealso{
-\code{\link{tileOptions}}, \code{\link{popupOptions}},
-  \code{\link{markerOptions}}, \code{\link{pathOptions}}
+\code{\link{tileOptions}}, \code{\link{WMSTileOptions}},
+  \code{\link{popupOptions}}, \code{\link{markerOptions}},
+  \code{\link{pathOptions}}
 }

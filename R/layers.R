@@ -63,8 +63,9 @@ bboxAdd = function(a, b) {
 #' @param options a list of extra options for tile layers, popups, paths
 #'   (circles, rectangles, polygons, ...), or other map elements
 #' @return the new \code{map} object
-#' @seealso \code{\link{tileOptions}}, \code{\link{popupOptions}},
-#'   \code{\link{markerOptions}}, \code{\link{pathOptions}}
+#' @seealso \code{\link{tileOptions}}, \code{\link{WMSTileOptions}},
+#'   \code{\link{popupOptions}}, \code{\link{markerOptions}},
+#'   \code{\link{pathOptions}}
 #' @references The Leaflet API documentation:
 #'   \url{http://leafletjs.com/reference.html}
 #' @describeIn map-layers Add a tile layer to the map
@@ -132,17 +133,19 @@ tileOptions = function(
 #' clear all features of the given type.
 #'
 #' @note When used with a \code{\link{leaflet}}() map object, these functions
-#' don't actually remove the features from the map object, but simply add an
-#' operation that will cause those features to be removed after they are added.
-#' In other words, if you add a polygon \code{"foo"} and the call
-#' \code{removeShape("foo")}, it's not smart enough to prevent the polygon from
-#' being added in the first place; instead, when the map is rendered, the
-#' polygon will be added and then removed.
+#'   don't actually remove the features from the map object, but simply add an
+#'   operation that will cause those features to be removed after they are
+#'   added. In other words, if you add a polygon \code{"foo"} and the call
+#'   \code{removeShape("foo")}, it's not smart enough to prevent the polygon
+#'   from being added in the first place; instead, when the map is rendered, the
+#'   polygon will be added and then removed.
 #'
-#' For that reason, these functions aren't that useful with \code{leaflet} map
-#' objects and are really intended to be used with \code{\link{leafletProxy}}
-#' instead.
+#'   For that reason, these functions aren't that useful with \code{leaflet} map
+#'   objects and are really intended to be used with \code{\link{leafletProxy}}
+#'   instead.
 #'
+#'   WMS tile layers are extensions of tile layers, so they can also be removed
+#'   or cleared via \code{removeTiles()} or \code{clearTiles()}.
 #' @param map a map widget object, possibly created from \code{\link{leaflet}}()
 #'   but more likely from \code{\link{leafletProxy}}()
 #' @param layerId character vector; the layer id(s) of the item to remove
@@ -158,6 +161,42 @@ removeTiles = function(map, layerId) {
 #' @export
 clearTiles = function(map) {
   invokeMethod(map, NULL, 'clearTiles')
+}
+
+
+#' @param baseUrl a base URL of the WMS service
+#' @param layers comma-separated list of WMS layers to show
+#' @describeIn map-layers Add a WMS tile layer to the map
+#' @export
+addWMSTiles = function(
+  map, baseUrl, layerId = NULL,
+  options = WMSTileOptions(), attribution = NULL, layers = ''
+) {
+  options$attribution = attribution
+  options$layers = layers
+  invokeMethod(map, getMapData(map), 'addWMSTiles', baseUrl, layerId, options)
+}
+
+#' @param styles comma-separated list of WMS styles
+#' @param format WMS image format (use \code{'image/png'} for layers with
+#'   transparency)
+#' @param transparent if \code{TRUE}, the WMS service will return images with
+#'   transparency
+#' @param version version of the WMS service to use
+#' @param crs Coordinate Reference System to use for the WMS requests, defaults
+#'   to map CRS (don't change this if you're not sure what it means)
+#' @param ... other tile options for \code{WMSTileOptions()} (all arguments of
+#'   \code{tileOptions()} can be used)
+#' @describeIn map-options Options for WMS tile layers
+#' @export
+WMSTileOptions = function(
+  styles = '', format = 'image/jpeg', transparent = FALSE, version = '1.1.1',
+  crs = NULL, ...
+) {
+  list(
+    styles = styles, format = format, transparent = transparent,
+    version = version, crs = crs, ...
+  )
 }
 
 #' @param lng a numeric vector of longitudes, or a one-sided formula of the form

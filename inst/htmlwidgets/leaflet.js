@@ -328,6 +328,10 @@ var dataframe = (function() {
     this.tiles.clear();
   };
 
+  methods.addWMSTiles = function(baseUrl, layerId, options) {
+    this.tiles.add(L.tileLayer.wms(baseUrl, options), layerId);
+  };
+
   // Given:
   //   {data: ["a", "b", "c"], index: [0, 1, 0, 2]}
   // returns:

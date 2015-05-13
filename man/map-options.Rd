@@ -1,5 +1,6 @@
 % Please edit documentation in R/layers.R
 \name{tileOptions}
+\alias{WMSTileOptions}
 \alias{markerOptions}
 \alias{pathOptions}
 \alias{popupOptions}
@@ -11,6 +12,9 @@ tileOptions(minZoom = 0, maxZoom = 18, maxNativeZoom = NULL, tileSize = 256,
     noWrap = FALSE, zoomOffset = 0, zoomReverse = FALSE, opacity = 1, zIndex = NULL, 
     unloadInvisibleTiles = NULL, updateWhenIdle = NULL, detectRetina = FALSE, 
     reuseTiles = FALSE)
+
+WMSTileOptions(styles = "", format = "image/jpeg", transparent = FALSE, 
+    version = "1.1.1", crs = NULL, ...)
 
 popupOptions(maxWidth = 300, minWidth = 50, maxHeight = NULL, autoPan = TRUE, 
     keepInView = FALSE, closeButton = TRUE, zoomAnimation = TRUE, closeOnClick = NULL, 
@@ -25,6 +29,22 @@ pathOptions(lineCap = NULL, lineJoin = NULL, clickable = TRUE, pointerEvents = N
 \arguments{
 \item{minZoom, maxZoom, maxNativeZoom, tileSize, subdomains, errorTileUrl, tms, continuousWorld, noWrap, zoomOffset, zoomReverse, zIndex, unloadInvisibleTiles, updateWhenIdle, detectRetina, reuseTiles}{the tile layer options; see
 \url{http://leafletjs.com/reference.html#tilelayer}}
+
+\item{styles}{comma-separated list of WMS styles}
+
+\item{format}{WMS image format (use \code{'image/png'} for layers with
+transparency)}
+
+\item{transparent}{if \code{TRUE}, the WMS service will return images with
+transparency}
+
+\item{version}{version of the WMS service to use}
+
+\item{crs}{Coordinate Reference System to use for the WMS requests, defaults
+to map CRS (don't change this if you're not sure what it means)}
+
+\item{...}{other tile options for \code{WMSTileOptions()} (all arguments of
+\code{tileOptions()} can be used)}
 
 \item{maxWidth, minWidth, maxHeight, autoPan, keepInView, closeButton, zoomAnimation, closeOnClick}{popup options; see \url{http://leafletjs.com/reference.html#popup}}
 
@@ -52,6 +72,8 @@ listed in the layer functions.
 \section{Functions}{
 \itemize{
 \item \code{tileOptions}: Options for tile layers
+
+\item \code{WMSTileOptions}: Options for WMS tile layers
 
 \item \code{popupOptions}: Options for popups
 
