@@ -21,9 +21,13 @@ assert(
   has_error(addLegend(map, colors = '#ffffff', labels = c('a', 'b')))
 )
 
+getLastLegend = function(map) {
+  tail(map$x$calls, 1)[[1]]$args[[1]]
+}
+
 # automatic legends
 m1 = addLegend(map, pal = pal1, values = ~x1)
-l1 = m1$x$legend
+l1 = getLastLegend(m1)
 assert(
   l1$colors == "#66001F , #66001F 0%, #E58366 25%, #F7F7F7 50%, #6DABD0 75%, #053060 100%, #053060 ",
   l1$labels == c('1.0', '1.5', '2.0', '2.5', '3.0'),
@@ -31,7 +35,7 @@ assert(
 )
 
 m2 = addLegend(map, pal = pal2, values = ~x2)
-l2 = m2$x$legend
+l2 = getLastLegend(m2)
 assert(
   l2$colors == c("#66001F", "#F8B698", "#A7CFE4", "#053060"),
   l2$labels == c('1.0 &ndash; 1.5', '1.5 &ndash; 2.0', '2.0 &ndash; 2.5', '2.5 &ndash; 3.0'),
@@ -39,7 +43,7 @@ assert(
 )
 
 m3 = addLegend(map, pal = pal3, values = ~x3)
-l3 = m3$x$legend
+l3 = getLastLegend(m3)
 assert(
   l3$colors == c("#F7FCFD", "#AADED2", "#37A265", "#00441A"),
   l3$labels == c(
@@ -52,7 +56,7 @@ assert(
 )
 
 m4 = addLegend(map, pal = pal4, values = ~x4)
-l4 = m4$x$legend
+l4 = getLastLegend(m4)
 assert(
   l4$colors == c("#1A9E77", "#B27D5C", "#666666"),
   l4$labels == as.character(df$x4),
@@ -61,7 +65,7 @@ assert(
 
 # manual legends
 m5 = addLegend(map, colors = palette(), labels = palette())
-l5 = m5$x$legend
+l5 = getLastLegend(m5)
 assert(
   l5$colors == palette(),
   l5$labels == palette()
