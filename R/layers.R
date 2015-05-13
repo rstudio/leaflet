@@ -86,6 +86,33 @@ addTiles = function(
   invokeMethod(map, getMapData(map), 'addTiles', urlTemplate, layerId, options)
 }
 
+#' @export
+addRasterImage = function(
+  map,
+  x,
+  colorFunc = colorNumeric("RdBu", domain = c(minValue(x), maxValue(x)), na.color = "#00000000"),
+  opacity = 1,
+  attribution = NULL,
+  layerId = NULL
+) {
+  projected <- projectRaster(x, crs = CRS("+init=epsg:3857"))
+  bounds <- extent(projectExtent(projected, crs = CRS("+init=epsg:4326")))
+
+  tileData <- values(projected) %>% colorFunc() %>% col2rgb(alpha = TRUE) %>% as.raw()
+  dim(tileData) <- c(4, ncol(projected), nrow(projected))
+  pngData <- png::writePNG(tileData)
+  encoded <- base64enc::base64encode(pngData)
+  uri <- paste0("data:image/png;base64,", encoded)
+
+  latlng <- list(
+    list(ymin(bounds), xmin(bounds)),
+    list(ymax(bounds), xmax(bounds))
+  )
+
+  invokeMethod(map, getMapData(map), "addRasterImage", uri, latlng, opacity, attribution, layerId) %>%
+    expandLimits(c(ymin(bounds), ymax(bounds)), c(xmin(bounds), xmax(bounds)))
+}
+
 #' Extra options for map elements and layers
 #'
 #' The rest of all possible options for map elements and layers that are not

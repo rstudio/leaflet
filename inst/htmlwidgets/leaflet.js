@@ -715,6 +715,13 @@ var dataframe = (function() {
     }
   };
 
+  methods.addRasterImage = function(uri, bounds, opacity, attribution, layerId) {
+    L.imageOverlay(uri, bounds, {
+      opacity: opacity,
+      attribution: attribution
+    }).addTo(this);
+  };
+
   HTMLWidgets.widget({
     name: "leaflet",
     type: "output",
