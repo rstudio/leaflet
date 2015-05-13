@@ -695,7 +695,7 @@ var dataframe = (function() {
       return div;
     };
 
-    this.controls.add(legend, options.controlId);
+    this.controls.add(legend, options.layerId);
 
     // calculate the height of the gradient bar after the legend is rendered
     if (options.type === 'numeric') {
