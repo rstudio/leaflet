@@ -93,14 +93,18 @@ addRasterImage = function(
   colorFunc = colorNumeric("RdBu", domain = c(minValue(x), maxValue(x)), na.color = "#00000000"),
   opacity = 1,
   attribution = NULL,
-  layerId = NULL
+  layerId = NULL,
+  maxBytes = 2*1024*1024
 ) {
-  projected <- projectRaster(x, crs = CRS("+init=epsg:3857"))
+  projected <- rasterfaster::projectTo(x, ncol(x), nrow(x), method = "bilinear")
   bounds <- extent(projectExtent(projected, crs = CRS("+init=epsg:4326")))
 
   tileData <- values(projected) %>% colorFunc() %>% col2rgb(alpha = TRUE) %>% as.raw()
   dim(tileData) <- c(4, ncol(projected), nrow(projected))
   pngData <- png::writePNG(tileData)
+  if (length(pngData) > maxBytes) {
+    stop("Raster image too large; ", length(pngData), " bytes is greater than maximum ", maxBytes, " bytes")
+  }
   encoded <- base64enc::base64encode(pngData)
   uri <- paste0("data:image/png;base64,", encoded)
 

@@ -269,13 +269,12 @@ toPaletteFunc = function(pal) {
 # of an RColorBrewer palette
 toPaletteFunc.character = function(pal) {
   if (length(pal) == 1 && pal %in% row.names(RColorBrewer::brewer.pal.info)) {
-    return(grDevices::colorRamp(
-      RColorBrewer::brewer.pal(RColorBrewer::brewer.pal.info[pal, 'maxcolors'], pal),
-      space = 'Lab'
+    return(rasterfaster::createColorRamp(
+      RColorBrewer::brewer.pal(RColorBrewer::brewer.pal.info[pal, 'maxcolors'], pal)
     ))
   }
 
-  grDevices::colorRamp(pal, space = 'Lab')
+  rasterfaster::createColorRamp(pal)
 }
 
 # Accept colorRamp style matrix
