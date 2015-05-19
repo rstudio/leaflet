@@ -2,15 +2,13 @@
 pagetitle: Leaflet for R - Introduction
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(tidy = FALSE)
-set.seed(109)
-```
+## Introduction
+
 [Leaflet](http://leafletjs.com) is one of the most popular open-source JavaScript libraries for interactive maps. It's used by websites ranging from [The New York Times](http://www.nytimes.com/projects/elections/2013/nyc-primary/mayor/map.html) and [The Washington Post](http://www.washingtonpost.com/sf/local/2013/11/09/washington-a-world-apart/) to [GitHub](https://github.com/blog/1528-there-s-a-map-for-that) and [Flickr](https://www.flickr.com/map), as well as GIS specialists like [OpenStreetMap](http://www.openstreetmap.org/), [Mapbox](http://www.mapbox.com/), and [CartoDB](http://cartodb.com/).
 
 This R package makes it easy to integrate and control Leaflet maps in R.
 
-## Features
+### Features
 
 * Interactive panning/zooming
 * Compose maps using arbitrary combinations of:
@@ -25,7 +23,7 @@ This R package makes it easy to integrate and control Leaflet maps in R.
 * Easily render `Spatial` objects from the `sp` package, or data frames with latitude/longitude columns
 * Use map bounds and mouse events to drive Shiny logic
 
-## Installation
+### Installation
 
 To install this R package, run this command at your R prompt:
 
@@ -35,7 +33,7 @@ devtools::install_github("rstudio/leaflet")
 
 Once installed, you can use this package at the R console, within [R Markdown](http://rmarkdown.rstudio.com/) documents, and within [Shiny](http://shiny.rstudio.com/) applications.
 
-## Basic Usage
+### Basic Usage
 
 You create a Leaflet map with these basic steps:
 
@@ -64,7 +62,7 @@ m <- addMarkers(m, lng=174.768, lat=-36.852, popup="The birthplace of R")
 m
 ```
 
-## Next Steps
+### Next Steps
 
 We highly recommend that you proceed to [The Map Widget](map_widget.html) page before exploring the rest of this site, as it describes common idioms we'll use throughout the examples on the other pages.
 
