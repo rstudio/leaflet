@@ -36,6 +36,14 @@ doResolveFormula.data.frame = function(data, f) {
   eval(f[[2]], data, environment(f))
 }
 
+doResolveFormula.map = function(data, f) {
+  eval(f[[2]], data, environment(f))
+}
+
+doResolveFormula.list = function(data, f) {
+  eval(f[[2]], data, environment(f))
+}
+
 doResolveFormula.SpatialPolygonsDataFrame =
 doResolveFormula.SpatialPointsDataFrame = function(data, f) {
   doResolveFormula(data@data, f)
