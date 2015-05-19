@@ -3,7 +3,7 @@
 
 ## The Map Widget
 
-The function `leaflet()` returns a Leaflet map widget, which stores a list of objects that can be modified or updated later. Most functions in this package have an argument `map` as their first argument, which makes it easy to use the pipe operator `%>%` in the **magrittr** package, as you have seen from the examples above.
+The function `leaflet()` returns a Leaflet map widget, which stores a list of objects that can be modified or updated later. Most functions in this package have an argument `map` as their first argument, which makes it easy to use the pipe operator `%>%` in the **magrittr** package, as you have seen from the example in the [Introduction](./).
 
 ### Map Methods
 
@@ -15,24 +15,28 @@ You can manipulate the attributes of the map widget using a series of methods. P
 
 ### The Data Object
 
-Both `leaflet()` and the map layer functions have an argument `data`, and we can reference or derive variables from this data object. Currently these objects are supported:
+Both `leaflet()` and the map layer functions have an optional `data` parameter that is designed to receive spatial data in one of several forms:
 
 - From base R:
     - lng/lat matrix
     - data frame with lng/lat columns
 - From the [**sp** package](http://cran.rstudio.com/package=sp):
-    - SpatialPoints[DataFrame]
-    - Line/Lines
-    - SpatialLines[DataFrame]
-    - Polygon/Polygons
-    - SpatialPolygons(DataFrame)
+    - `SpatialPoints[DataFrame]`
+    - `Line`/`Lines`
+    - `SpatialLines[DataFrame]`
+    - `Polygon`/`Polygons`
+    - `SpatialPolygons[DataFrame]`
 - From the [**maps** package](http://cran.rstudio.com/package=maps):
     - the data frame from returned from `map()`
 
-Perhaps the most frequently used variables in the data objects are the latitudes and longitudes of graphical elements. It is straightforward to derive these variables from **sp** objects since they are well defined in the S4 objects. For a normal matrix or data frame, these two variables are guessed from the column names:
+The `data` argument is used to derive spatial data for functions that need it; for example, if `data` is a `SpatialPolygonsDataFrame` object, then calling `addPolygons` on that map widget will know to add the polygons from that `SpatialPolygonsDataFrame`.
 
-- the latitude variable is guessed by matching the names `lat` and `latitude` case-insensitively in the column names;
-- the longitude variable is guessed using `lng`, `long`, `lng`, and `longitude`;
+It is straightforward to derive these variables from **sp** objects since they always represent spatial data in the same way. On the other hand, for a normal matrix or data frame, any numeric column could potentially contain spatial data. So we resort to guessing based on column names:
+
+- the latitude variable is guessed by looking for columns named `lat` or `latitude` (case-insensitive)
+- the longitude variable is guessed by looking for `lng`, `long`, `lng`, or `longitude`
+
+You can always explicitly identify latitude/longitude columns by providing `lng` and `lat` arguments to the layer function.
 
 For example, we do not specify the values for the arguments `lat` and `lng` in `addCircles()` below, but the columns `Lat` and `Long` in the data frame `df` will be automatically used:
 
@@ -40,8 +44,12 @@ For example, we do not specify the values for the arguments `lat` and `lng` in `
 # add some circles to a map
 df = data.frame(Lat = 1:10, Long = rnorm(10))
 leaflet(df) %>% addCircles()
-# you can also explicitly use Lat and Long
-leaflet(df) %>% addCircles(lat = ~ Lat, lng = ~ Long)
+```
+
+You can also explicitly specify the `Lat` and `Long` columns (see below for more info on the `~` syntax):
+
+```{r eval=FALSE}
+leaflet(df) %>% addCircles(lng = ~Long, lat = ~Lat)
 ```
 
 A map layer may use a different data object to override the data provided in `leaflet()`. We can rewrite the above example as:
