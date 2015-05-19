@@ -1,4 +1,5 @@
 ---
+pagetitle: Leaflet for R - Introduction
 ---
 
 ```{r setup, include=FALSE}

@@ -1,4 +1,5 @@
 ---
+pagetitle: Leaflet for R - The Map Widget
 ---
 
 ## The Map Widget

@@ -1,4 +1,5 @@
 ---
+pagetitle: Leaflet for R - Legends
 ---
 
 ## Legends
