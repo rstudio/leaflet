@@ -1,10 +1,13 @@
 <style type="text/css">
+  body {
+    padding-top: 20px;
+  }
+  .navbar-brand {
+    font-weight: bold;
+  }
   footer {
     border-top: 1px solid #CCC;
     margin-top: 24px;
-  }
-  h1.main-headline {
-    margin-bottom: 20px;
   }
   .content-body>:first-child, .content-body>:first-child>:first-child {
     margin-top: 0 !important;
@@ -16,8 +19,14 @@
 
 <div class="fluid-row">
   <div class="col-sm-12">
-    <h1 class="main-headline">Leaflet <small>htmlwidget for R</small></h1>
-    <br/>
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <a class="navbar-brand" href="./">Leaflet for R</a>
+        </div>
+      </div>
+    </nav>
   </div>
 </div>
 
@@ -42,7 +51,7 @@
       href = href.substr(href.lastIndexOf('/') + 1);
       if (href === "" || href === "index.html")
         href = "./";
-      $('a[href="' + href + '"]').addClass('active');
+      $('a.list-group-item[href="' + href + '"]').addClass('active');
     </script>
   </div>
   <div class="col-sm-9 content-body">
