@@ -724,7 +724,10 @@ var dataframe = (function() {
 
       // Store some state in the map object
       map.leafletr = {
-        hasRendered: false
+        // Has the map ever rendered successfully?
+        hasRendered: false,
+        // Data to be rendered when resize is called with area != 0
+        pendingRenderData: null
       };
 
       if (!HTMLWidgets.shinyMode) return map;
@@ -751,6 +754,22 @@ var dataframe = (function() {
       return map;
     },
     renderValue: function(el, data, map) {
+      // Leaflet does not behave well when you set up a bunch of layers when
+      // the map is not visible (width/height == 0). Popups get misaligned
+      // relative to their owning markers, and the fitBounds calculations
+      // are off. Therefore we wait until the map is actually showing to
+      // render the value (we rely on the resize() callback being invoked
+      // at the appropriate time).
+      //
+      // There may be an issue with leafletProxy() calls being made while
+      // the map is not being viewed--not sure what the right solution is
+      // there.
+      if (el.offsetWidth === 0 || el.offsetHeight === 0) {
+        map.leafletr.pendingRenderData = data;
+        return;
+      }
+      map.leafletr.pendingRenderData = null;
+
       // Merge data options into defaults
       var options = $.extend({ zoomToLimits: "always" }, data.options);
 
@@ -825,6 +844,9 @@ var dataframe = (function() {
     },
     resize: function(el, width, height, map) {
       map.invalidateSize();
+      if (map.leafletr.pendingRenderData) {
+        this.renderValue(el, map.leafletr.pendingRenderData, map);
+      }
     }
   });
 
