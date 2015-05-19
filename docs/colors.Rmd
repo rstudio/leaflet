@@ -24,7 +24,7 @@ map <- leaflet(countries)
 
 We've loaded some shape data for countries, including a numeric field `gdp_md_est` which contains GDP estimates.
 
-```{r, fig.height=3.5, fig.width= 4.5}
+```{r, fig.height=3.5, fig.width= 4.5, out.width=NULL}
 par(mar = c(5,5,0,0), cex = 0.8)
 hist(countries$gdp_md_est, breaks = 20, main = "")
 ```
