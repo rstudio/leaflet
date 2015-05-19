@@ -4,7 +4,7 @@ knitr::opts_chunk$set(out.width = '100%')
 library(leaflet)
 f = rmarkdown::render(commandArgs(TRUE))
 # remove version numbers in HTML
-r = '-\\d+[.]\\d+[.]\\d+$'
+r = '-\\d+[.]\\d+([.]\\d+)?$'
 v1 = rev(list.files('libs', r, full.names = TRUE))
 v2 = gsub(r, '', v1)
 x = readLines(f)
