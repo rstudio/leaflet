@@ -1,5 +1,6 @@
 set.seed(0102)
 options(htmlwidgets.TOJSON_ARGS = list(pretty = TRUE))
+knitr::opts_chunk$set(out.width = '100%')
 library(leaflet)
 f = rmarkdown::render(commandArgs(TRUE))
 # remove version numbers in HTML
