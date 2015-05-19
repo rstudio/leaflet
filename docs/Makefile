@@ -6,7 +6,7 @@ all: html
 
 html: $(HTML_FILES)
 
-%.html: %.Rmd
+%.html: %.Rmd _includes/* _output.yaml
 	Rscript compile.R "$<"
 
 %.html: %.md

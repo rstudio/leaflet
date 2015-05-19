@@ -1,4 +1,5 @@
 ---
+pagetitle: Leaflet for R - Using Leaflet with Shiny
 ---
 
 ## Using Leaflet with Shiny

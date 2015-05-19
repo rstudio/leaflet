@@ -3,6 +3,9 @@
     border-top: 1px solid #CCC;
     margin-top: 24px;
   }
+  h1.main-headline {
+    margin-bottom: 20px;
+  }
   .content-body>:first-child, .content-body>:first-child>:first-child {
     margin-top: 0 !important;
   }
@@ -14,6 +17,7 @@
 <div class="fluid-row">
   <div class="col-sm-12">
     <h1 class="main-headline">Leaflet <small>htmlwidget for R</small></h1>
+    <br/>
   </div>
 </div>
 
@@ -32,5 +36,13 @@
       <a class="list-group-item" href="colors.html">Colors</a>
       <a class="list-group-item" href="legends.html">Legends</a>
     </div>
+    <script>
+      // manage active state of toc based on current page
+      var href = window.location.pathname;
+      href = href.substr(href.lastIndexOf('/') + 1);
+      if (href === "" || href === "index.html")
+        href = "./";
+      $('a[href="' + href + '"]').addClass('active');
+    </script>
   </div>
   <div class="col-sm-9 content-body">
