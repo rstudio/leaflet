@@ -229,14 +229,12 @@ var dataframe = (function() {
   ControlStore.prototype.clear = function() {
     for (var i = 0; i < this._controlsNoId.length; i++) {
       var control = this._controlsNoId[i];
-      Shiny.unbindAll(control._div);
       this._map.removeControl(control);
     };
     this._controlsNoId = [];
 
     for (var key in this._controlsById) {
       var control = this._controlsById[key];
-      Shiny.unbindAll(control._div);
       this._map.removeControl(control)
     }
     this._controlsById = {}
