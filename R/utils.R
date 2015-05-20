@@ -174,7 +174,7 @@ invokeRemote = function(map, method, args = list()) {
 
   sess <- map$session
   if (map$deferUntilFlush) {
-    if (compareVersion(as.character(packageVersion("shiny")), "0.12.0.9001") < 0) {
+    if (packageVersion("shiny") < "0.12.0.9002") {
 
       # See comment on sessionFlushQueue.
 
@@ -186,13 +186,13 @@ invokeRemote = function(map, method, args = list()) {
         # If the session ends before the next onFlushed call, remove the entry
         # for this session from the sessionFlushQueue.
         endedUnreg <- sess$onSessionEnded(function() {
-          rm(list = sess$token, pos = sessionFlushQueue)
+          rm(list = sess$token, envir = sessionFlushQueue)
         })
 
         # On the next flush, pass all the messages to the client, and remove the
         # entry from sessionFlushQueue.
         sess$onFlushed(function() {
-          on.exit(rm(list = sess$token, pos = sessionFlushQueue), add = TRUE)
+          on.exit(rm(list = sess$token, envir = sessionFlushQueue), add = TRUE)
           endedUnreg()
           for (msg in sessionFlushQueue[[sess$token]]) {
             sess$sendCustomMessage("leaflet-calls", msg)
