@@ -178,10 +178,10 @@ invokeRemote = function(map, method, args = list()) {
 
       # See comment on sessionFlushQueue.
 
-      if (!exists(sess$token, sessionFlushQueue)) {
+      if (is.null(sessionFlushQueue[[sess$token]])) {
         # If the current session doesn't have an entry in the sessionFlushQueue,
         # initialize it with a blank list.
-        assign(sess$token, list(), sessionFlushQueue)
+        sessionFlushQueue[[sess$token]] <- list()
 
         # If the session ends before the next onFlushed call, remove the entry
         # for this session from the sessionFlushQueue.
