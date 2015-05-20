@@ -1,0 +1,75 @@
+---
+pagetitle: Leaflet for R - Shapes
+---
+
+## Lines and Shapes
+
+Leaflet makes it easy to take spatial lines and shapes from R and add them to maps.
+
+### Polygons and Polylines
+
+Line and polygon data can come from a variety of sources:
+
+* Objects of `SpatialPolygons`, `SpatialPolygonsDataFrame`, `Polygon`, and `Polygons` class (from the `sp` package)
+* Objects of `SpatialLines`, `SpatialLinesDataFrame`, `Lines`, and `Line` class (from the `sp` package)
+* Objects of `map` class (from the `maps` package's `map()` function); use `map(fill = TRUE)` for polygons, `FALSE` for polylines
+* Numeric matrix with two columns
+
+When a numeric matrix is used, the first column is longitude and the second is latitude. Polygons are separated by rows of `(NA, NA)`. It is not possible to represent polygons with holes using this method -- use `SpatialPolygons` instead.
+
+```{r echo=FALSE,results='hide',message=FALSE,warning=FALSE}
+library(rgdal, quietly = TRUE)
+```
+```{r states,message=FALSE,warning=FALSE}
+library(rgdal)
+
+# From https://www.census.gov/geo/maps-data/data/cbf/cbf_state.html
+states <- readOGR("shp/cb_2013_us_state_20m.shp",
+  layer = "cb_2013_us_state_20m", verbose = FALSE)
+
+neStates <- subset(states, states$STUSPS %in% c(
+  "CT","ME","MA","NH","RI","VT","NY","NJ","PA"
+))
+
+leaflet(neStates) %>%
+  addPolygons(
+    stroke = FALSE, fillOpacity = 0.5, smoothFactor = 0.5,
+    color = ~colorQuantile("YlOrRd", states$AWATER)(AWATER)
+  )
+```
+
+### Circles
+
+Circles are added using `addCircles()`. Circles are similar to [circle markers](markers.html#circle-markers); the only difference is that circles have their radii specified in meters, while circle markers are specified in pixels. As a result, circles are scaled with the map as the user zooms in and out, while circle markers remain a constant size on the screen regardless of zoom level.
+
+When plotting circles, only the circle centers (and radii) are required, so the set of valid data sources is different than for polygons and the same as for markers. See the introduction to [Markers](markers.html) for specifics.
+
+```{r}
+cities <- read.csv(textConnection("
+City,Lat,Long,Pop
+Boston,42.3601,-71.0589,645966
+Hartford,41.7627,-72.6743,125017
+New York City,40.7127,-74.0059,8406000
+Philadelphia,39.9500,-75.1667,1553000
+Pittsburgh,40.4397,-79.9764,305841
+Providence,41.8236,-71.4222,177994
+"))
+
+leaflet(cities) %>% addTiles() %>%
+  addCircles(lng = ~Long, lat = ~Lat, weight = 1,
+    radius = ~sqrt(Pop) * 30, popup = ~City
+  )
+```
+
+### Rectangles
+
+Rectangles are added using the `addRectangles()` function. It takes `lng1`, `lng2`, `lat1`, and `lat2` vector arguments that define the corners of the rectangles. These arguments are always required; the rectangle geometry cannot be inferred from the data object.
+
+```{r fig.height=2}
+leaflet() %>% addTiles() %>%
+  addRectangles(
+    lng1=-118.456554, lat1=34.078039,
+    lng2=-118.436383, lat2=34.062717,
+    fillColor = "transparent"
+  )
+```

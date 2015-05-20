@@ -1,0 +1,40 @@
+---
+pagetitle: Leaflet for R - Popups
+---
+
+## Popups
+
+Popups are small boxes containing arbitrary HTML, that point to a specific point on the map.
+
+Use the `addPopups()` function to add standalone popup to the map.
+
+```{r}
+content <- paste(sep = "<br/>",
+  "<b><a href='http://www.samurainoodle.com'>Samurai Noodle</a></b>",
+  "606 5th Ave. S",
+  "Seattle, WA 98138"
+)
+
+leaflet() %>% addTiles() %>%
+  addPopups(-122.327298, 47.597131, content,
+    options = popupOptions(closeButton = FALSE)
+  )
+```
+
+A common use for popups is to have them appear when markers or shapes are clicked. Marker and shape functions in the Leaflet package take a `popup` argument, where you can pass in HTML to easily attach a simple popup.
+
+```{r}
+library(htmltools)
+
+df <- read.csv(textConnection(
+"Name,Lat,Long
+Samurai Noodle,47.597131,-122.327298
+Kukai Ramen,47.6154,-122.327157
+Tsukushinbo,47.59987,-122.326726"
+))
+
+leaflet(df) %>% addTiles() %>%
+  addMarkers(~Long, ~Lat, popup = ~htmlEscape(Name))
+```
+
+In the preceding example, `htmltools::htmlEscape` was used to santize any characters in the name that might be interpreted as HTML. While it wasn't necessary for this example (as the restaurant names contained no HTML markup), doing so is important in any situation where the data may come from a file or database, or from the user.

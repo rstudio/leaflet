@@ -229,14 +229,12 @@ var dataframe = (function() {
   ControlStore.prototype.clear = function() {
     for (var i = 0; i < this._controlsNoId.length; i++) {
       var control = this._controlsNoId[i];
-      Shiny.unbindAll(control._div);
       this._map.removeControl(control);
     };
     this._controlsNoId = [];
 
     for (var key in this._controlsById) {
       var control = this._controlsById[key];
-      Shiny.unbindAll(control._div);
       this._map.removeControl(control)
     }
     this._controlsById = {}
@@ -326,6 +324,10 @@ var dataframe = (function() {
 
   methods.clearTiles = function() {
     this.tiles.clear();
+  };
+
+  methods.addWMSTiles = function(baseUrl, layerId, options) {
+    this.tiles.add(L.tileLayer.wms(baseUrl, options), layerId);
   };
 
   // Given:
@@ -600,11 +602,11 @@ var dataframe = (function() {
     this.geojson.clear();
   };
 
-  methods.addControl = function(html, position, controlId, classes) {
+  methods.addControl = function(html, position, layerId, classes) {
     function onAdd(map) {
       var div = L.DomUtil.create('div', classes);
-      if (typeof controlId !== 'undefined' && controlId !== null) {
-        div.setAttribute('id', controlId)
+      if (typeof layerId !== 'undefined' && layerId !== null) {
+        div.setAttribute('id', layerId)
       }
       this._div = div;
 
@@ -634,15 +636,77 @@ var dataframe = (function() {
       onAdd: onAdd,
       onRemove: onRemove
     })
-    this.controls.add(new Control, controlId, html);
+    this.controls.add(new Control, layerId, html);
   };
 
-  methods.removeControl = function(controlId) {
-    this.controls.remove(controlId);
+  methods.removeControl = function(layerId) {
+    this.controls.remove(layerId);
   };
 
   methods.clearControls = function() {
     this.controls.clear();
+  };
+
+  methods.addLegend = function(options) {
+    var legend = L.control({position: options.position});
+    var gradSpan;
+
+    legend.onAdd = function (map) {
+      var div = L.DomUtil.create('div', 'info legend'),
+          colors = options.colors,
+          labels = options.labels,
+          legendHTML = '';
+      if (options.type === 'numeric') {
+        gradSpan = $('<span/>').css({
+          'background': 'linear-gradient(' + colors + ')',
+          'opacity': options.opacity,
+          'height': '100px',
+          'width': '18px',
+          'display': 'block'
+        });
+        var leftDiv = $('<div/>').css('display', 'inline-block'),
+            rightDiv = $('<div/>').css('display', 'inline-block');
+        leftDiv.append(gradSpan);
+        var labelTable = '<table>';
+        for (var i = 0; i < labels.length; i++) {
+          labelTable += '<tr><td>-</td><td style="text-align:right">' +
+                        '<span style="display: block;">' + labels[i] +
+                        '</span></td></tr>';
+        }
+        labelTable += '</table>';
+        rightDiv.append(labelTable);
+        $(div).append(leftDiv).append(rightDiv);
+        if (options.na_color) {
+          $(div).append('<div><i style="background:' + options.na_color +
+                        '"></i> ' + options.na_label + '</div>');
+        }
+      } else {
+        if (options.na_color) {
+          colors.push(options.na_color);
+          labels.push(options.na_label);
+        }
+        for (var i = 0; i < colors.length; i++) {
+          legendHTML += '<i style="background:' + colors[i] + ';opacity:' +
+                        options.opacity + '"></i> ' + labels[i] + '<br/>';
+        }
+        div.innerHTML = legendHTML;
+      }
+      if (options.title)
+        $(div).prepend('<div style="margin-bottom:3px"><strong>' +
+                        options.title + '</strong></div>');
+      return div;
+    };
+
+    this.controls.add(legend, options.layerId);
+
+    // calculate the height of the gradient bar after the legend is rendered
+    if (options.type === 'numeric') {
+      var legendHeight = $(legend.getContainer()).find('table').height();
+      gradSpan.parent().height(legendHeight);
+      gradSpan.height(options.extra[1] * legendHeight).css({
+        'margin-top': options.extra[0] * legendHeight
+      });
+    }
   };
 
   HTMLWidgets.widget({
@@ -658,7 +722,10 @@ var dataframe = (function() {
 
       // Store some state in the map object
       map.leafletr = {
-        hasRendered: false
+        // Has the map ever rendered successfully?
+        hasRendered: false,
+        // Data to be rendered when resize is called with area != 0
+        pendingRenderData: null
       };
 
       if (!HTMLWidgets.shinyMode) return map;
@@ -685,6 +752,22 @@ var dataframe = (function() {
       return map;
     },
     renderValue: function(el, data, map) {
+      // Leaflet does not behave well when you set up a bunch of layers when
+      // the map is not visible (width/height == 0). Popups get misaligned
+      // relative to their owning markers, and the fitBounds calculations
+      // are off. Therefore we wait until the map is actually showing to
+      // render the value (we rely on the resize() callback being invoked
+      // at the appropriate time).
+      //
+      // There may be an issue with leafletProxy() calls being made while
+      // the map is not being viewed--not sure what the right solution is
+      // there.
+      if (el.offsetWidth === 0 || el.offsetHeight === 0) {
+        map.leafletr.pendingRenderData = data;
+        return;
+      }
+      map.leafletr.pendingRenderData = null;
+
       // Merge data options into defaults
       var options = $.extend({ zoomToLimits: "always" }, data.options);
 
@@ -757,8 +840,11 @@ var dataframe = (function() {
 
       setTimeout(function() { updateBounds(map); }, 1);
     },
-    resize: function(el, width, height, data) {
-
+    resize: function(el, width, height, map) {
+      map.invalidateSize();
+      if (map.leafletr.pendingRenderData) {
+        this.renderValue(el, map.leafletr.pendingRenderData, map);
+      }
     }
   });
 

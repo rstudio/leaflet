@@ -1,0 +1,56 @@
+---
+pagetitle: Leaflet for R - Using Basemaps
+---
+
+## Using Basemaps
+
+Leaflet supports basemaps using [map tiles](https://www.mapbox.com/guides/how-web-maps-work/), popularized by Google Maps and now used by nearly all interactive web maps.
+
+### Default (OpenStreetMap) Tiles
+
+The easiest way to add tiles is by calling `addTiles()` with no arguments; by default, [OpenStreetMap](https://www.openstreetmap.org/) tiles are used.
+
+```{r fig.height=2.5}
+m <- leaflet() %>% setView(lng = -71.0589, lat = 42.3601, zoom = 12)
+m %>% addTiles() 
+```
+
+### Third-Party Tiles
+
+Alternatively, many popular free third-party basemaps can be added using the `addProviderTiles()` function, which is implemented using the [leaflet-providers plugin](https://github.com/leaflet-extras/leaflet-providers). See [here](http://leaflet-extras.github.io/leaflet-providers/preview/index.html) for the complete set. Note that some tile set providers require you to register; see the [project page](https://github.com/leaflet-extras/leaflet-providers) for more information.
+
+```{r fig.height=1.25}
+m %>% addProviderTiles("Stamen.Toner")
+m %>% addProviderTiles("Acetate.terrain")
+m %>% addProviderTiles("CartoDB.Positron")
+```
+
+### Custom Tile URL Template
+
+If you happen to have a custom map tile URL template to use, you can provide it as an argument to `addTiles()`.
+
+### WMS Tiles
+
+You can use `addWMSTiles()` to add WMS (Web Map Service) tiles. The map below shows the Base Reflectivity (a measure of the intensity of precipitation occurring) using the WMS from the [Iowa Environmental Mesonet ](http://mesonet.agron.iastate.edu):
+
+```{r fig.height=2.5}
+leaflet() %>% addTiles() %>% setView(-93.65, 42.0285, zoom = 4) %>%
+  addWMSTiles(
+    "http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi",
+    layers = "nexrad-n0r-900913",
+    options = WMSTileOptions(format = "image/png", transparent = TRUE),
+    attribution = "Weather data © 2012 IEM Nexrad"
+  )
+```
+
+### Combining Tile Layers
+
+You aren't restricted to using a single basemap on a map; you can stack them by adding multiple tile layers. This generally only makes sense if the front tiles consist of semi transparent tiles, or have an adjusted opacity via the `options` argument.
+
+```{r fig.height=1.75}
+m %>% addProviderTiles("MtbMap") %>%
+  addProviderTiles("Stamen.TonerLines",
+    options = providerTileOptions(opacity = 0.35)
+  ) %>%
+  addProviderTiles("Stamen.TonerLabels")
+```
