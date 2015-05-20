@@ -43,12 +43,6 @@ leaflet() %>% addTiles() %>% setView(-93.65, 42.0285, zoom = 4) %>%
   )
 ```
 
-### Raster Tiles [coming soon]
-
-You can use Raster objects from the [`raster`](http://cran.r-project.org/web/packages/raster/) package to generate map tile layers on-the-fly. (This only works when Leaflet maps are used with Shiny, as R routines must be invoked as the viewer zooms and pans around the map.)
-
-// TODO: Example
-
 ### Combining Tile Layers
 
 You aren't restricted to using a single basemap on a map; you can stack them by adding multiple tile layers. This generally only makes sense if the front tiles consist of semi transparent tiles, or have an adjusted opacity via the `options` argument.
