@@ -158,7 +158,6 @@ addLegend = function(
 #' @param digits the number of digits of numeric values in labels
 #' @param big.mark the thousand separator
 #' @param transform a function to transform the label value
-#' @param type the type of the legend (will be automatically derived if missing)
 #' @rdname addLegend
 #' @export
 labelFormat = function(

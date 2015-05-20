@@ -59,8 +59,6 @@ labels (by default, it is a dash)}
 \item{big.mark}{the thousand separator}
 
 \item{transform}{a function to transform the label value}
-
-\item{type}{the type of the legend (will be automatically derived if missing)}
 }
 \description{
 When a color palette function is used in a map (e.g.
