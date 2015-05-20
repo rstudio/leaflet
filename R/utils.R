@@ -140,6 +140,23 @@ leafletProxy <- function(mapId, session = shiny::getDefaultReactiveDomain(),
   )
 }
 
+# Shiny versions <= 0.12.0.9001 can't guarantee that onFlushed
+# callbacks are called in the order they were registered. Rather
+# than wait for this to be fixed in Shiny and released to CRAN,
+# work around this for older versions by maintaining our own
+# queue of work items. The names in this environment are session
+# tokens, and the values are lists of invokeRemote msg objects.
+# During the course of execution, leafletProxy() should cause
+# deferred messages to be appended to the appropriate value in
+# sessionFlushQueue. It's the responsibility of invokeRemote to
+# ensure that the sessionFlushQueue values are properly reaped
+# as soon as possible, to prevent session objects from being
+# leaked.
+#
+# When Shiny >0.12.0 goes to CRAN, we should update our version
+# dependency and remove this entire mechanism.
+sessionFlushQueue = new.env(parent = emptyenv())
+
 invokeRemote = function(map, method, args = list()) {
   if (!inherits(map, "leaflet_proxy"))
     stop("Invalid map parameter; map proxy object was expected")
@@ -155,12 +172,45 @@ invokeRemote = function(map, method, args = list()) {
     )
   )
 
+  sess <- map$session
   if (map$deferUntilFlush) {
-    map$session$onFlushed(function() {
-      map$session$sendCustomMessage("leaflet-calls", msg)
-    }, once = TRUE)
+    if (compareVersion(as.character(packageVersion("shiny")), "0.12.0.9001") < 0) {
+
+      # See comment on sessionFlushQueue.
+
+      if (!exists(sess$token, sessionFlushQueue)) {
+        # If the current session doesn't have an entry in the sessionFlushQueue,
+        # initialize it with a blank list.
+        assign(sess$token, list(), sessionFlushQueue)
+
+        # If the session ends before the next onFlushed call, remove the entry
+        # for this session from the sessionFlushQueue.
+        endedUnreg <- sess$onSessionEnded(function() {
+          rm(list = sess$token, pos = sessionFlushQueue)
+        })
+
+        # On the next flush, pass all the messages to the client, and remove the
+        # entry from sessionFlushQueue.
+        sess$onFlushed(function() {
+          on.exit(rm(list = sess$token, pos = sessionFlushQueue), add = TRUE)
+          endedUnreg()
+          for (msg in sessionFlushQueue[[sess$token]]) {
+            sess$sendCustomMessage("leaflet-calls", msg)
+          }
+        }, once = TRUE)
+      }
+
+      # Append the current value to the apporpriate sessionFlushQueue entry,
+      # which is now guaranteed to exist.
+      sessionFlushQueue[[sess$token]] <- c(sessionFlushQueue[[sess$token]], list(msg))
+
+    } else {
+      sess$onFlushed(function() {
+        sess$sendCustomMessage("leaflet-calls", msg)
+      }, once = TRUE)
+    }
   } else {
-    map$session$sendCustomMessage("leaflet-calls", msg)
+    sess$sendCustomMessage("leaflet-calls", msg)
   }
 }
 
