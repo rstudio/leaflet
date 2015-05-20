@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+<title>Leaflet for R - Markers</title>
+
+<script src="libs/jquery/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap/css/flatly.min.css" rel="stylesheet" />
+<script src="libs/bootstrap/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap/shim/respond.min.js"></script>
+<script src="libs/htmlwidgets/htmlwidgets.js"></script>
+<link href="libs/leaflet/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet/leaflet.js"></script>
+<link href="libs/leafletfix/leafletfix.css" rel="stylesheet" />
+<script src="libs/leaflet-binding/leaflet.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="libs/highlight/default.css"
+      type="text/css" />
+<script src="libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img { 
+  max-width:100%; 
+  height: auto; 
+}
+</style>
+<div class="container-fluid main-container">
+
+<style type="text/css">
+  body {
+    padding-top: 20px;
+  }
+  .navbar-brand {
+    font-weight: bold;
+  }
+  footer {
+    border-top: 1px solid #CCC;
+    margin-top: 60px;
+    margin-bottom: 48px;
+    opacity: 0.75;
+  }
+  .content-body>:first-child, .content-body>:first-child>:first-child {
+    margin-top: 0 !important;
+  }
+  p code {
+    white-space: inherit;
+  }
+</style>
+
+<div class="fluid-row">
+  <div class="col-sm-12">
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <a class="navbar-brand" href="./">Leaflet for R</a>
+        </div>
+      </div>
+    </nav>
+  </div>
+</div>
+
+<div class="fluid-row">
+  <div class="col-sm-3">
+    <div class="list-group">
+      <a class="list-group-item" href="./">Introduction</a>
+      <a class="list-group-item" href="map_widget.html">The Map Widget</a>
+      <a class="list-group-item" href="basemaps.html">Basemaps</a>
+      <a class="list-group-item" href="markers.html">Markers</a>
+      <a class="list-group-item" href="popups.html">Popups</a>
+      <a class="list-group-item" href="shapes.html">Lines and Shapes</a>
+      <a class="list-group-item" href="geojson.html">GeoJSON</a>
+      <!--<a class="list-group-item" href="raster.html">Raster Images</a>-->
+      <a class="list-group-item" href="shiny.html">Shiny Integration</a>
+      <a class="list-group-item" href="colors.html">Colors</a>
+      <a class="list-group-item" href="legends.html">Legends</a>
+    </div>
+    <script>
+      // manage active state of toc based on current page
+      var href = window.location.pathname;
+      href = href.substr(href.lastIndexOf('/') + 1);
+      if (href === "" || href === "index.html")
+        href = "./";
+      $('a.list-group-item[href="' + href + '"]').addClass('active');
+    </script>
+  </div>
+  <div class="col-sm-9 content-body">
+
+
+
+<div id="markers" class="section level2">
+<h2>Markers</h2>
+<p>Use markers to call out points on the map. Marker locations are expressed in latitude/longitude coordinates, and can either appear as icons or as circles. You can use <code>SpatialPoints</code>, <code>SpatialPointsDataFrame</code>, or a two-column numeric matrix (first column is longitude, second column is latitude) as data objects.</p>
+<p>You can also use a data frame with latitude and longitude columns. You can explicitly tell the marker function which columns contain the coorinate data (e.g. <code>addMarker(lng = ~Longitude, lat = ~Latitude)</code>), or let the function look for columns named <code>lat</code>/<code>latitude</code> and <code>lon</code>/<code>lng</code>/<code>long</code>/<code>longitude</code> (case insensitive).</p>
+<div id="icon-markers" class="section level3">
+<h3>Icon Markers</h3>
+<p>Icon markers are added using the <code>addMarker</code> function. Their default appearance is a dropped pin. As with most layer functions, the <code>popup</code> argument can be used to add a message to be displayed on click.</p>
+<pre class="r"><code>data(quakes)
+
+# Show first 20 rows from the `quakes` dataset
+leaflet(data = quakes[1:20,]) %&gt;% addTiles() %&gt;%
+  addMarkers(~long, ~lat, popup = ~as.character(mag))</code></pre>
+<p><div id="htmlwidget-5716" style="width:100%;height:216px;" class="leaflet"></div>
+<script type="application/json" data-for="htmlwidget-5716">{
+  "x": {
+    "calls": [
+      {
+        "method": "addTiles",
+        "args": [
+          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          null,
+          {
+            "minZoom": 0,
+            "maxZoom": 18,
+            "maxNativeZoom": null,
+            "tileSize": 256,
+            "subdomains": "abc",
+            "errorTileUrl": "",
+            "tms": false,
+            "continuousWorld": false,
+            "noWrap": false,
+            "zoomOffset": 0,
+            "zoomReverse": false,
+            "opacity": 1,
+            "zIndex": null,
+            "unloadInvisibleTiles": null,
+            "updateWhenIdle": null,
+            "detectRetina": false,
+            "reuseTiles": false,
+            "attribution": "&copy; \u003ca href=\"http://openstreetmap.org\">OpenStreetMap\u003c/a> contributors, \u003ca href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA\u003c/a>"
+          }
+        ]
+      },
+      {
+        "method": "addMarkers",
+        "args": [
+          [-20.42, -20.62, -26, -17.97, -20.42, -19.68, -11.7, -28.11, -28.74, -17.47, -21.44, -12.26, -18.54, -21, -20.7, -15.94, -13.64, -17.83, -23.5, -22.63],
+          [181.62, 181.03, 184.1, 181.66, 181.96, 184.31, 166.1, 181.93, 181.74, 179.59, 180.69, 167, 182.11, 181.66, 169.92, 184.95, 165.96, 181.5, 179.78, 180.31],
+          null,
+          null,
+          {
+            "clickable": true,
+            "draggable": false,
+            "keyboard": true,
+            "title": "",
+            "alt": "",
+            "zIndexOffset": 0,
+            "opacity": 1,
+            "riseOnHover": false,
+            "riseOffset": 250
+          },
+          ["4.8", "4.2", "5.4", "4.1", "4", "4", "4.8", "4.4", "4.7", "4.3", "4.4", "4.6", "4.4", "4.4", "6.1", "4.3", "6", "4.5", "4.4", "4.4"]
+        ]
+      }
+    ],
+    "limits": {
+      "lat": [-28.74, -11.7],
+      "lng": [165.96, 184.95]
+    }
+  },
+  "evals": []
+}</script></p>
+<div id="customizing-marker-icons" class="section level4">
+<h4>Customizing Marker Icons</h4>
+<p>You can provide custom markers in one of several ways, depending on the scenario. For each of these ways, the icon can be provided as either a URL or as a file path.</p>
+<p>For the simple case of applying a single icon to a set of markers, use <code>makeIcon()</code>.</p>
+<pre class="r"><code>greenLeafIcon &lt;- makeIcon(
+  iconUrl = &quot;http://leafletjs.com/docs/images/leaf-green.png&quot;,
+  iconWidth = 38, iconHeight = 95,
+  iconAnchorX = 22, iconAnchorY = 94,
+  shadowUrl = &quot;http://leafletjs.com/docs/images/leaf-shadow.png&quot;,
+  shadowWidth = 50, shadowHeight = 64,
+  shadowAnchorX = 4, shadowAnchorY = 62
+)
+
+leaflet(data = quakes[1:4,]) %&gt;% addTiles() %&gt;%
+  addMarkers(~long, ~lat, icon = greenLeafIcon)</code></pre>
+<p><div id="htmlwidget-4929" style="width:100%;height:168px;" class="leaflet"></div>
+<script type="application/json" data-for="htmlwidget-4929">{
+  "x": {
+    "calls": [
+      {
+        "method": "addTiles",
+        "args": [
+          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          null,
+          {
+            "minZoom": 0,
+            "maxZoom": 18,
+            "maxNativeZoom": null,
+            "tileSize": 256,
+            "subdomains": "abc",
+            "errorTileUrl": "",
+            "tms": false,
+            "continuousWorld": false,
+            "noWrap": false,
+            "zoomOffset": 0,
+            "zoomReverse": false,
+            "opacity": 1,
+            "zIndex": null,
+            "unloadInvisibleTiles": null,
+            "updateWhenIdle": null,
+            "detectRetina": false,
+            "reuseTiles": false,
+            "attribution": "&copy; \u003ca href=\"http://openstreetmap.org\">OpenStreetMap\u003c/a> contributors, \u003ca href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA\u003c/a>"
+          }
+        ]
+      },
+      {
+        "method": "addMarkers",
+        "args": [
+          [-20.42, -20.62, -26, -17.97],
+          [181.62, 181.03, 184.1, 181.66],
+          {
+            "iconUrl": {
+              "data": "http://leafletjs.com/docs/images/leaf-green.png",
+              "index": 0
+            },
+            "iconWidth": 38,
+            "iconHeight": 95,
+            "iconAnchorX": 22,
+            "iconAnchorY": 94,
+            "shadowUrl": {
+              "data": "http://leafletjs.com/docs/images/leaf-shadow.png",
+              "index": 0
+            },
+            "shadowWidth": 50,
+            "shadowHeight": 64,
+            "shadowAnchorX": 4,
+            "shadowAnchorY": 62
+          },
+          null,
+          {
+            "clickable": true,
+            "draggable": false,
+            "keyboard": true,
+            "title": "",
+            "alt": "",
+            "zIndexOffset": 0,
+            "opacity": 1,
+            "riseOnHover": false,
+            "riseOffset": 250
+          },
+          null
+        ]
+      }
+    ],
+    "limits": {
+      "lat": [-26, -17.97],
+      "lng": [181.03, 184.1]
+    }
+  },
+  "evals": []
+}</script></p>
+<p>If you have several icons to apply that vary only by a couple of parameters (i.e. they share the same size and anchor points but have different URLs), use the <code>icons()</code> function. <code>icons()</code> performs similarly to <code>data.frame()</code>, in that any arguments that are shorter than the number of markers will be recycled to fit.</p>
+<pre class="r"><code>quakes1 &lt;- quakes[1:10,]
+
+leafIcons &lt;- icons(
+  iconUrl = ifelse(quakes1$mag &lt; 4.6,
+    &quot;http://leafletjs.com/docs/images/leaf-green.png&quot;,
+    &quot;http://leafletjs.com/docs/images/leaf-red.png&quot;
+  ),
+  iconWidth = 38, iconHeight = 95,
+  iconAnchorX = 22, iconAnchorY = 94,
+  shadowUrl = &quot;http://leafletjs.com/docs/images/leaf-shadow.png&quot;,
+  shadowWidth = 50, shadowHeight = 64,
+  shadowAnchorX = 4, shadowAnchorY = 62
+)
+
+leaflet(data = quakes1) %&gt;% addTiles() %&gt;%
+  addMarkers(~long, ~lat, icon = leafIcons)</code></pre>
+<p><div id="htmlwidget-7837" style="width:100%;height:192px;" class="leaflet"></div>
+<script type="application/json" data-for="htmlwidget-7837">{
+  "x": {
+    "calls": [
+      {
+        "method": "addTiles",
+        "args": [
+          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          null,
+          {
+            "minZoom": 0,
+            "maxZoom": 18,
+            "maxNativeZoom": null,
+            "tileSize": 256,
+            "subdomains": "abc",
+            "errorTileUrl": "",
+            "tms": false,
+            "continuousWorld": false,
+            "noWrap": false,
+            "zoomOffset": 0,
+            "zoomReverse": false,
+            "opacity": 1,
+            "zIndex": null,
+            "unloadInvisibleTiles": null,
+            "updateWhenIdle": null,
+            "detectRetina": false,
+            "reuseTiles": false,
+            "attribution": "&copy; \u003ca href=\"http://openstreetmap.org\">OpenStreetMap\u003c/a> contributors, \u003ca href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA\u003c/a>"
+          }
+        ]
+      },
+      {
+        "method": "addMarkers",
+        "args": [
+          [-20.42, -20.62, -26, -17.97, -20.42, -19.68, -11.7, -28.11, -28.74, -17.47],
+          [181.62, 181.03, 184.1, 181.66, 181.96, 184.31, 166.1, 181.93, 181.74, 179.59],
+          {
+            "iconUrl": {
+              "data": ["http://leafletjs.com/docs/images/leaf-red.png", "http://leafletjs.com/docs/images/leaf-green.png"],
+              "index": [0, 1, 0, 1, 1, 1, 0, 1, 0, 1]
+            },
+            "iconWidth": 38,
+            "iconHeight": 95,
+            "iconAnchorX": 22,
+            "iconAnchorY": 94,
+            "shadowUrl": {
+              "data": "http://leafletjs.com/docs/images/leaf-shadow.png",
+              "index": 0
+            },
+            "shadowWidth": 50,
+            "shadowHeight": 64,
+            "shadowAnchorX": 4,
+            "shadowAnchorY": 62
+          },
+          null,
+          {
+            "clickable": true,
+            "draggable": false,
+            "keyboard": true,
+            "title": "",
+            "alt": "",
+            "zIndexOffset": 0,
+            "opacity": 1,
+            "riseOnHover": false,
+            "riseOffset": 250
+          },
+          null
+        ]
+      }
+    ],
+    "limits": {
+      "lat": [-28.74, -11.7],
+      "lng": [166.1, 184.31]
+    }
+  },
+  "evals": []
+}</script></p>
+<p>Finally, if you have a set of icons that vary in multiple parameters, it may be more convenient to use the <code>iconList()</code> function. It lets you create a list of (named or unnamed) <code>makeIcon()</code> icons, and select from that list by position or name.</p>
+<pre class="r"><code># Make a list of icons. We&#39;ll index into it based on name.
+oceanIcons &lt;- iconList(
+  ship = makeIcon(&quot;ferry-18.png&quot;, &quot;ferry-18@2x.png&quot;, 18, 18),
+  pirate = makeIcon(&quot;danger-24.png&quot;, &quot;danger-24@2x.png&quot;, 24, 24)
+)
+
+# Some fake data
+df &lt;- sp::SpatialPointsDataFrame(
+  cbind(
+    (runif(20) - .5) * 10 - 90.620130,  # lng
+    (runif(20) - .5) * 3.8 + 25.638077  # lat
+  ),
+  data.frame(type = factor(
+    ifelse(runif(20) &gt; 0.75, &quot;pirate&quot;, &quot;ship&quot;),
+    c(&quot;ship&quot;, &quot;pirate&quot;)
+  ))
+)
+
+leaflet(df) %&gt;% addTiles() %&gt;%
+  # Select from oceanIcons based on df$type
+  addMarkers(icon = ~oceanIcons[type])</code></pre>
+<p><div id="htmlwidget-6939" style="width:100%;height:168px;" class="leaflet"></div>
+<script type="application/json" data-for="htmlwidget-6939">{
+  "x": {
+    "calls": [
+      {
+        "method": "addTiles",
+        "args": [
+          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          null,
+          {
+            "minZoom": 0,
+            "maxZoom": 18,
+            "maxNativeZoom": null,
+            "tileSize": 256,
+            "subdomains": "abc",
+            "errorTileUrl": "",
+            "tms": false,
+            "continuousWorld": false,
+            "noWrap": false,
+            "zoomOffset": 0,
+            "zoomReverse": false,
+            "opacity": 1,
+            "zIndex": null,
+            "unloadInvisibleTiles": null,
+            "updateWhenIdle": null,
+            "detectRetina": false,
+            "reuseTiles": false,
+            "attribution": "&copy; \u003ca href=\"http://openstreetmap.org\">OpenStreetMap\u003c/a> contributors, \u003ca href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA\u003c/a>"
+          }
+        ]
+      },
+      {
+        "method": "addMarkers",
+        "args": [
+          [26.0922202832833, 24.7460131391719, 25.1055897517432, 24.1261839484632, 25.2599177407403, 25.2956705222208, 25.4284856971655, 25.2476026060828, 27.1596904123038, 23.9574402272072, 26.8981645156932, 27.3872971391608, 24.7596707227476, 23.9153210665867, 26.9830587697052, 26.4069715678528, 25.2131111271982, 26.6798568772454, 26.1589937272784, 25.3216350086801],
+          [-90.2167229841623, -94.7401146798554, -91.4138303020197, -85.856800661252, -92.3169800055373, -86.6978360012333, -91.4410607584912, -86.769628259183, -88.9534458912137, -87.470993553118, -91.2541632096443, -89.618806254414, -86.5406962994646, -88.5330975962031, -91.9801516130726, -85.905090756544, -87.152760994916, -86.3630746349852, -89.4867287085551, -90.1611835112023],
+          {
+            "iconUrl": {
+              "data": ["data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAN1wAADdcBQiibeAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAJ0SURBVDiNjZNfSFNhGMZ/8zQdZxEy2kbSDFzQhUOIhC2hqzq16fJOdKlXg/C6yxjURXTb7QrP1bTptUtW0+6SMxL6wwq9mBCGNSdywM7m1v504Zkcp0tfODff+5zf93zP936mer1Oi7IBfcB5w9of4Cuw2yw+dwLAoQMs4+Pjke3tbe9hw+FIz87OPgP2gc/ATqNnOsGRNDIy8kJV1d6WVm22L/Pz84+A960cte3t7VlVVe1NpVL3W4EkSVoAxCM/NmnqgiAcWiyVSpVIJDI0PDz8MhKJDJVKpUor+LGMOjo6agDT09N9iUTioaZpVwDS6fTU6OhoIBgMvjLITUAdjmbkADyyLHvn5uaet9q5UWNjY4/D4XAa+AbkjCBpYmLiaS6XGzgN0iin07kyMzPzBFgyZvS7u7s7c1YIgK7PwdGjtRcKhTuhUChaKBRcp0FEUdyMx+NToiguAWWjo7IoimuSJMlncSNJkiyK4hpQbnYEB7cwpM/Jf0ufszfot3ZsjoCy3W7/CNQABEHQXC7XsiAImq6p6f1yA9LsyARcBq4BFkVRLiaTyeuTk5Mrbrdby2az1lgsNuD3+z/5fL4dDt7bOvATqBtB/bIsS8lk8kG1WrV4PJ63g4ODq/F4/O7Gxsbtnp6e5VAo9G5xcbE/k8ncEwRh3+/3vw6Hwylg1QgKSpK00NnZmTGbzcV8Pn8DaBMEQevq6lK2trZ81WrVCmC1Wn/UarX2YrF4Sc8qYXwiFX1aFeCvoihX9aN9cLvdm9ls1hWLxW55vd7vgUBgvVKpmKPR6E2g0pyRDbAAv/QQL+hreUADrIAdUPWvDXACJWD3Hy/KBlbjTmN4AAAAAElFTkSuQmCC", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAN1wAADdcBQiibeAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAMbSURBVEiJvZVRSFtXGMd/twlNDAnMOm1jILGd86EzBXGMNW3pAprdrVUCUgYKJawPiQ8ioy+DBqx92kv7IkEFIdcHhTl8cm5ZFHQwV9imtyjpi27VgEknbC3mEo1LdvvQu1LcTe5Ysd/Tx/l/5/8/5//xnSOoqspRxrEjZX8dAub/WGcFGoETgA3IA38CG8D+qwqcyuVy7w4MDHyyubl5Pp/Pu2w223ZDQ8P9wcHBLx0Oxy/A43KbBYMm23d2dtrC4fBdRVHO/Au0238bHR29WVdXNw8oegRGPWiKRqM39MgBFEU5E41GbwBN5QiMBGoymcz7AMFg8HYwGLx9ONfwmv8rYCkUCm9WKtBwSzncqAdX29vbZwwOwdzcXAfwtR5mdIOcy+VarFSg4blyuJHAA0mS7vj9/nt6oN/vvytJ0h3gQTkCPYtOAF4tTwPbQEDPKs2aJOAC3NryGs+HENAftHM9PT1f7O/vV7e2ts709fUtOhwONRwOf5ZIJD7MZrPvOZ3On0RR/A5Qc7lcYGho6IPl5eUOq9X6ZGJi4nNgsZLAcVVVzbu7u28vLCzcXFpa+rSxsTERCoW+HRsbiwExAFmWq/v7+3s2NjbEg4ODakC1WCwrwHEji2qAs8lk8uz09PSVra2ttlKpVCUIQtHpdC55vd4f19bWfNls9oKqqmaTybTn8Xjmu7q6ZgOBwEPgIfBHJYF/ohp4J51OO2OxmCjL8nVVVV/cuKqqaru5uXk2EonMu93uLJACnhwmKffY1QGnZVk+PT4+Lq6vr3+kkau1tbUrPp9vpre3d2V1dfWNeDx+qbOz8+eWlpa/gEfAjpFFrZOTk5eTyWRHJpO5qGNDChDi8bhvamrqVrFYdAiCUKyvr/8hEAjMdHd3fw8sVxL4WBTFr0qlku0lG+bcbvev2gmfAnagKZ1OvzU8PNyWSqWu7u3t1ZtMpnwikbgGfFNJwCtJ0hVFUSyRSOS+2WzeBLaAgo6VVsBTLBY9IyMj5+12eyEUCs3yfBbKCgjAKS3/Hfhbh/hwHANOavlj4AWp0WP3ynHkn/4zxidQ8Sfdhd8AAAAASUVORK5CYII="],
+              "index": [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0]
+            },
+            "iconRetinaUrl": {
+              "data": ["data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAbrwAAG68BXhqRHAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAS4SURBVFiFvZhfaFtVHMc/8d42zR1ds+m6de2iKYThyGB98KFOcX0IS5zFwci6DIrgkFrBByEU9rS9FfIksz4UyYMvhrYMppORtonuj1LB4gaW6VZw2jY6sbNZsmW5ye7iw71pb7N7e9Os9feSe875nXM+95dzfud7rq1UKlGDiUA7sAdwmPg8AuaB34DH1Q5sqwFIBDqBpir97wNT1UJVC+QA9gK7NCBGR0c9Y2Nj76XT6ZeNOjidzl+CweBnx48fn9WqHgN/A7+iRq9mIAfwGmDXVwaDwYgZjB5qbGxsoKI6D3yn/dYEdABoO3fu3CsTExMfyLL8glUHI7Pb7f8cOXJkqL+//yfgD+BnI7/nLMaxAS2KotgmJiberxUGQJblHePj4+9qxV1mfqLFOAIgpFIphyzLzQCTk5PdtQD5fL6LDx8+fFEr2s38rCJUAhAE4UktELWYFRAAdXV1Rgvtr/JDIpHYHQqFzoRCoTOJRGK3kU+1ZvWXlQDq6+uNItQyNzfniEQiPbdv3367VCqJAJFI5MCFCxe+HBgYGHG5XC2bAiQIwqoIKYpiGxwc7JqamnqnUChsX9WhVBJv3bp1rL+/v6uzs/Pz06dPf1vZ/1mABFgdodHRUc/IyEhfJpPZu1bHQqGw/cqVKx9dv379zZ6enmGTuZ/K3mZ5SAReQj2v6hVFsfn9/q+0thJqOliPLffR7dIi6jl3Rw9mBNSIelbVA0Sj0f3xePxkOp32rhPC0JxO54zf7//i1KlT5cRYBH5APfMMgd4AGjcaxALsPnANjLd9CSCZTB7bLBiAdDrtTSaTx/RzmgGlAHp7e6M2m03ZLCCbzab09vZGteJyvjICugPkAoHAvNvtvrRZQG63+1IgEJgHctqcpkBPgJsA4XA4JopidqNhRFHMhsPhmFa8qc1pCgRwF7jn8XiyHR0dMROfmq2joyPm8XiywD1trmVbSw9tBV7P5XJiKBT6JJfL7dkIGEmS5mOx2IeSJD1G3VkZfftah2sGmJckSfH5fNE1/NZlPp8vKkmSgnoByFS2WylGO+DTBrq4EUC6TD0JyJXtVvLjqQ4baIZjV6WH/k8Tzp49a+WzA3BIkvTj4uIiDx48aCtrn7I5nc6Zo0ePfuz1epMLCws78/l886pJBCHvcrkSJ06c+HTfvn3/UpF79Ga1hkRgP9BarkilUg3Dw8OHZmZmDguCkK84KIGVA1lRlAav1zve19d3ubW1VX/tmUPNP+uSH25U+VG3FvEzWAFVfvxOFfLj1TJIFW+77ANgFDGLqBaBadQkaQjUBWwxkx+CIOTb2tou+/3+8Uwm0xCPx08uLS3t1/uUpUVTU9OjeDx+eGFh4ZCiKA1GPhrYEvC9GdBbsHF5x8p0eelrsNbU63pbADNR19jYOOvxeK7JstwwOzsbKBQK24zmM41QMBgcrGE9ACtrqlgsbm1vb7/a3d19taura1nzZLNZcWho6OD09HT3+fPnw/oIGQEdBPT0ZTGeA1zA8wYvVmQlr7gx3pkFVCFmB3ay+qKQA74xA9qG+i1oC2q+WHUr0OpdQDOqjrlb4VNOGS3a8z3gT2CRFanqQL3VNGt1N9AO2lq+oG2q/QcnKzAMmsba6AAAAABJRU5ErkJggg==", "data:image/png;base64,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"],
+              "index": [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0]
+            },
+            "iconWidth": [18, 18, 18, 18, 18, 18, 24, 18, 18, 18, 18, 18, 18, 24, 18, 24, 24, 24, 18, 18],
+            "iconHeight": [18, 18, 18, 18, 18, 18, 24, 18, 18, 18, 18, 18, 18, 24, 18, 24, 24, 24, 18, 18]
+          },
+          null,
+          {
+            "clickable": true,
+            "draggable": false,
+            "keyboard": true,
+            "title": "",
+            "alt": "",
+            "zIndexOffset": 0,
+            "opacity": 1,
+            "riseOnHover": false,
+            "riseOffset": 250
+          },
+          null
+        ]
+      }
+    ],
+    "limits": {
+      "lat": [23.9153210665867, 27.3872971391608],
+      "lng": [-94.7401146798554, -85.856800661252]
+    }
+  },
+  "evals": []
+}</script></p>
+</div>
+</div>
+<div id="circle-markers" class="section level3">
+<h3>Circle Markers</h3>
+<p>Circle markers are much like regular circles (see <a href="shapes.html">Lines and Shapes</a>), except that their radius in onscreen pixels stays constant regardless of zoom level.</p>
+<p>You can use their default appearance:</p>
+<pre class="r"><code>leaflet(df) %&gt;% addTiles() %&gt;% addCircleMarkers()</code></pre>
+<p><div id="htmlwidget-1358" style="width:100%;height:168px;" class="leaflet"></div>
+<script type="application/json" data-for="htmlwidget-1358">{
+  "x": {
+    "calls": [
+      {
+        "method": "addTiles",
+        "args": [
+          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          null,
+          {
+            "minZoom": 0,
+            "maxZoom": 18,
+            "maxNativeZoom": null,
+            "tileSize": 256,
+            "subdomains": "abc",
+            "errorTileUrl": "",
+            "tms": false,
+            "continuousWorld": false,
+            "noWrap": false,
+            "zoomOffset": 0,
+            "zoomReverse": false,
+            "opacity": 1,
+            "zIndex": null,
+            "unloadInvisibleTiles": null,
+            "updateWhenIdle": null,
+            "detectRetina": false,
+            "reuseTiles": false,
+            "attribution": "&copy; \u003ca href=\"http://openstreetmap.org\">OpenStreetMap\u003c/a> contributors, \u003ca href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA\u003c/a>"
+          }
+        ]
+      },
+      {
+        "method": "addCircleMarkers",
+        "args": [
+          [26.0922202832833, 24.7460131391719, 25.1055897517432, 24.1261839484632, 25.2599177407403, 25.2956705222208, 25.4284856971655, 25.2476026060828, 27.1596904123038, 23.9574402272072, 26.8981645156932, 27.3872971391608, 24.7596707227476, 23.9153210665867, 26.9830587697052, 26.4069715678528, 25.2131111271982, 26.6798568772454, 26.1589937272784, 25.3216350086801],
+          [-90.2167229841623, -94.7401146798554, -91.4138303020197, -85.856800661252, -92.3169800055373, -86.6978360012333, -91.4410607584912, -86.769628259183, -88.9534458912137, -87.470993553118, -91.2541632096443, -89.618806254414, -86.5406962994646, -88.5330975962031, -91.9801516130726, -85.905090756544, -87.152760994916, -86.3630746349852, -89.4867287085551, -90.1611835112023],
+          10,
+          null,
+          {
+            "lineCap": null,
+            "lineJoin": null,
+            "clickable": true,
+            "pointerEvents": null,
+            "className": "",
+            "stroke": true,
+            "color": "#03F",
+            "weight": 5,
+            "opacity": 0.5,
+            "fill": true,
+            "fillColor": "#03F",
+            "fillOpacity": 0.2,
+            "dashArray": null
+          },
+          null
+        ]
+      }
+    ],
+    "limits": {
+      "lat": [23.9153210665867, 27.3872971391608],
+      "lng": [-94.7401146798554, -85.856800661252]
+    }
+  },
+  "evals": []
+}</script></p>
+<p>Or customize their color, radius, stroke, opacity, etc.</p>
+<pre class="r"><code># Create a palette that maps factor levels to colors
+pal &lt;- colorFactor(c(&quot;navy&quot;, &quot;red&quot;), domain = c(&quot;ship&quot;, &quot;pirate&quot;))
+
+leaflet(df) %&gt;% addTiles() %&gt;%
+  addCircleMarkers(
+    radius = ~ifelse(type == &quot;ship&quot;, 6, 10),
+    color = ~pal(type),
+    stroke = FALSE, fillOpacity = 0.5
+  )</code></pre>
+<p><div id="htmlwidget-7415" style="width:100%;height:168px;" class="leaflet"></div>
+<script type="application/json" data-for="htmlwidget-7415">{
+  "x": {
+    "calls": [
+      {
+        "method": "addTiles",
+        "args": [
+          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          null,
+          {
+            "minZoom": 0,
+            "maxZoom": 18,
+            "maxNativeZoom": null,
+            "tileSize": 256,
+            "subdomains": "abc",
+            "errorTileUrl": "",
+            "tms": false,
+            "continuousWorld": false,
+            "noWrap": false,
+            "zoomOffset": 0,
+            "zoomReverse": false,
+            "opacity": 1,
+            "zIndex": null,
+            "unloadInvisibleTiles": null,
+            "updateWhenIdle": null,
+            "detectRetina": false,
+            "reuseTiles": false,
+            "attribution": "&copy; \u003ca href=\"http://openstreetmap.org\">OpenStreetMap\u003c/a> contributors, \u003ca href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA\u003c/a>"
+          }
+        ]
+      },
+      {
+        "method": "addCircleMarkers",
+        "args": [
+          [26.0922202832833, 24.7460131391719, 25.1055897517432, 24.1261839484632, 25.2599177407403, 25.2956705222208, 25.4284856971655, 25.2476026060828, 27.1596904123038, 23.9574402272072, 26.8981645156932, 27.3872971391608, 24.7596707227476, 23.9153210665867, 26.9830587697052, 26.4069715678528, 25.2131111271982, 26.6798568772454, 26.1589937272784, 25.3216350086801],
+          [-90.2167229841623, -94.7401146798554, -91.4138303020197, -85.856800661252, -92.3169800055373, -86.6978360012333, -91.4410607584912, -86.769628259183, -88.9534458912137, -87.470993553118, -91.2541632096443, -89.618806254414, -86.5406962994646, -88.5330975962031, -91.9801516130726, -85.905090756544, -87.152760994916, -86.3630746349852, -89.4867287085551, -90.1611835112023],
+          [6, 6, 6, 6, 6, 6, 10, 6, 6, 6, 6, 6, 6, 10, 6, 10, 10, 10, 6, 6],
+          null,
+          {
+            "lineCap": null,
+            "lineJoin": null,
+            "clickable": true,
+            "pointerEvents": null,
+            "className": "",
+            "stroke": false,
+            "color": ["#00007F", "#00007F", "#00007F", "#00007F", "#00007F", "#00007F", "#FF0000", "#00007F", "#00007F", "#00007F", "#00007F", "#00007F", "#00007F", "#FF0000", "#00007F", "#FF0000", "#FF0000", "#FF0000", "#00007F", "#00007F"],
+            "weight": 5,
+            "opacity": 0.5,
+            "fill": true,
+            "fillColor": ["#00007F", "#00007F", "#00007F", "#00007F", "#00007F", "#00007F", "#FF0000", "#00007F", "#00007F", "#00007F", "#00007F", "#00007F", "#00007F", "#FF0000", "#00007F", "#FF0000", "#FF0000", "#FF0000", "#00007F", "#00007F"],
+            "fillOpacity": 0.5,
+            "dashArray": null
+          },
+          null
+        ]
+      }
+    ],
+    "limits": {
+      "lat": [23.9153210665867, 27.3872971391608],
+      "lng": [-94.7401146798554, -85.856800661252]
+    }
+  },
+  "evals": []
+}</script></p>
+</div>
+</div>
+
+<footer>
+<p><small>The "leaflet" R package is copyright &copy; 2014-2015 RStudio, Inc.<br/>
+The Leaflet JavaScript library is &copy; 2010–2014 <a href="http://agafonkin.com/en">Vladimir Agafonkin</a>, 2010–2011 <a href="http://cloudmade.com">CloudMade</a>.<br/>
+Maps &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors unless otherwise noted.
+</small></p>
+</footer>
+
+  </div>
+</div>
+
+<a href="https://github.com/rstudio/leaflet"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
