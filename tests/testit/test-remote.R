@@ -16,6 +16,9 @@ Map <- R6Class(
       env[[key]] <- value
       value
     },
+    mget = function(keys) {
+      base::mget(keys, env)
+    },
     mset = function(...) {
       args <- list(...)
       if (length(args) == 0)
@@ -82,7 +85,11 @@ Callbacks <- R6Class(
       })
     },
     invoke = function(..., onError=NULL) {
-      for (callback in .callbacks$values()) {
+      # Ensure that calls are invoked in the order that they were registered
+      keys <- as.character(sort(as.integer(.callbacks$keys()), decreasing = TRUE))
+      callbacks <- .callbacks$mget(keys)
+
+      for (callback in callbacks) {
         if (is.null(onError)) {
           callback(...)
         } else {
@@ -99,6 +106,9 @@ Callbacks <- R6Class(
 
 MockSession <- R6Class("MockSession",
   public = list(
+    initialize = function() {
+      self$token <- shiny:::createUniqueId(8)
+    },
     sendCustomMessage = function(type, message) {
       self$.calls <- c(self$.calls, list(list(
         type = type,
@@ -112,6 +122,10 @@ MockSession <- R6Class("MockSession",
           unregister()
       })
     },
+    onSessionEnded = function(func) {
+      function() {}
+    },
+    token = 0,
     .flush = function() {
       private$flushCallbacks$invoke()
     },
@@ -157,3 +171,16 @@ assert(identical(mockSession$.calls, expected2))
 mockSession$.flush()
 # cat(deparse(mockSession$.calls), "\n")
 assert(identical(mockSession$.calls, expected2))
+
+# Reset mock session
+mockSession$.calls <- list()
+
+remote3 <- leafletProxy("map", mockSession,
+  data.frame(lat=10:1, lng=10:1)
+)
+remote3 %>% clearShapes() %>% addMarkers()
+assert(identical(mockSession$.calls, list()))
+mockSession$.flush()
+expected3 <- list(structure(list(type = "leaflet-calls", message = structure("{\"id\":\"map\",\"calls\":[{\"dependencies\":[],\"method\":\"clearShapes\",\"args\":[]}]}", class = "json")), .Names = c("type",  "message")), structure(list(type = "leaflet-calls", message = structure("{\"id\":\"map\",\"calls\":[{\"dependencies\":[],\"method\":\"addMarkers\",\"args\":[[10,9,8,7,6,5,4,3,2,1],[10,9,8,7,6,5,4,3,2,1],null,null,{\"clickable\":true,\"draggable\":false,\"keyboard\":true,\"title\":\"\",\"alt\":\"\",\"zIndexOffset\":0,\"opacity\":1,\"riseOnHover\":false,\"riseOffset\":250},null]}]}", class = "json")), .Names = c("type",  "message")))
+# Check that multiple calls are invoked in order
+assert(identical(mockSession$.calls, expected3))
