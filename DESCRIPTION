@@ -29,7 +29,10 @@ Imports:
     RColorBrewer,
     RJSONIO,
     grDevices,
-    scales
+    raster,
+    rasterfaster,
+    scales,
+    sp
 Suggests:
     knitr,
     maps,

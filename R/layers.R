@@ -90,16 +90,16 @@ addTiles = function(
 addRasterImage = function(
   map,
   x,
-  colorFunc = colorNumeric("RdBu", domain = c(minValue(x), maxValue(x)), na.color = "#00000000"),
+  colorFunc = colorNumeric("RdBu", domain = c(raster::minValue(x), raster::maxValue(x)), na.color = "#00000000"),
   opacity = 1,
   attribution = NULL,
   layerId = NULL,
   maxBytes = 2*1024*1024
 ) {
-  projected <- rasterfaster::projectTo(x, ncol(x), nrow(x), method = "bilinear")
-  bounds <- extent(projectExtent(projected, crs = CRS("+init=epsg:4326")))
+  projected <- raster::projectRaster(x, crs = sp::CRS("+init=epsg:3857"))
+  bounds <- raster::extent(raster::projectExtent(projected, crs = sp::CRS("+init=epsg:4326")))
 
-  tileData <- values(projected) %>% colorFunc() %>% col2rgb(alpha = TRUE) %>% as.raw()
+  tileData <- raster::values(projected) %>% colorFunc() %>% col2rgb(alpha = TRUE) %>% as.raw()
   dim(tileData) <- c(4, ncol(projected), nrow(projected))
   pngData <- png::writePNG(tileData)
   if (length(pngData) > maxBytes) {
@@ -109,12 +109,12 @@ addRasterImage = function(
   uri <- paste0("data:image/png;base64,", encoded)
 
   latlng <- list(
-    list(ymin(bounds), xmin(bounds)),
-    list(ymax(bounds), xmax(bounds))
+    list(raster::ymin(bounds), raster::xmin(bounds)),
+    list(raster::ymax(bounds), raster::xmax(bounds))
   )
 
   invokeMethod(map, getMapData(map), "addRasterImage", uri, latlng, opacity, attribution, layerId) %>%
-    expandLimits(c(ymin(bounds), ymax(bounds)), c(xmin(bounds), xmax(bounds)))
+    expandLimits(c(raster::ymin(bounds), raster::ymax(bounds)), c(raster::xmin(bounds), raster::xmax(bounds)))
 }
 
 #' Extra options for map elements and layers
