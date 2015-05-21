@@ -12,3 +12,7 @@ dependencies:
     version: 1.0.0
     src: "htmlwidgets/lib/leafletfix"
     stylesheet: leafletfix.css
+  - name: Leaflet.Sleep
+    version: 2015.02.25
+    src: "htmlwidgets/plugins/Leaflet.Sleep"
+    script: Leaflet.Sleep.js
