@@ -2,12 +2,15 @@
 \name{setView}
 \alias{clearBounds}
 \alias{fitBounds}
+\alias{setMaxBounds}
 \alias{setView}
 \title{Methods to manipulate the map widget}
 \usage{
 setView(map, lng, lat, zoom, options = list())
 
 fitBounds(map, lng1, lat1, lng2, lat2)
+
+setMaxBounds(map, lng1, lat1, lng2, lat2)
 
 clearBounds(map)
 }
@@ -36,6 +39,8 @@ A series of methods to manipulate the map.
 \item \code{setView}: Set the view of the map (center and zoom level)
 
 \item \code{fitBounds}: Set the bounds of a map
+
+\item \code{setMaxBounds}: Restricts the map view to the given bounds
 
 \item \code{clearBounds}: Clear the bounds of a map, and the bounds will be
 automatically determined from latitudes and longitudes of the map elements
