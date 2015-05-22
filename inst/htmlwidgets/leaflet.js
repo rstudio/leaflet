@@ -284,6 +284,12 @@ var dataframe = (function() {
     ]);
   };
 
+  methods.setMaxBounds = function(lat1, lng1, lat2, lng2) {
+    this.setMaxBounds([
+      [lat1, lng1], [lat2, lng2]
+    ]);
+  };
+
   methods.addPopups = function(lat, lng, popup, layerId, options) {
     var df = dataframe.create()
       .col('lat', lat)

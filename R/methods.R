@@ -52,6 +52,12 @@ fitBounds = function(map, lng1, lat1, lng2, lat2) {
   )
 }
 
+#' @describeIn map-methods Restricts the map view to the given bounds
+#' @export
+setMaxBounds = function(map, lng1, lat1, lng2, lat2) {
+  invokeMethod(map, getMapData(map), 'setMaxBounds', lat1, lng1, lat2, lng2)
+}
+
 #' @describeIn map-methods Clear the bounds of a map, and the bounds will be
 #'   automatically determined from latitudes and longitudes of the map elements
 #'   if available (otherwise the full world view is used)
