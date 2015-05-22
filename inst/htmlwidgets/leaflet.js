@@ -431,7 +431,8 @@ var dataframe = (function() {
     });
   }
 
-  methods.addMarkers = function(lat, lng, icon, layerId, options, popup) {
+  methods.addMarkers = function(lat, lng, icon, layerId, options, popup,
+                                clusterOptions, clusterId) {
     if (icon) {
       // Unpack icons
       icon.iconUrl         = unpackStrings(icon.iconUrl);
@@ -482,19 +483,32 @@ var dataframe = (function() {
 
     if (icon) icondf.effectiveLength = df.nrow();
 
+    var clusterGroup, cluster = clusterOptions !== null;
+    if (cluster) {
+      clusterGroup = L.markerClusterGroup(clusterOptions);
+    }
+
     for (var i = 0; i < df.nrow(); i++) {
       (function() {
         var options = df.get(i);
         if (icon) options.icon = getIcon(i);
         var marker = L.marker([df.get(i, 'lat'), df.get(i, 'lng')], options);
         var thisId = df.get(i, 'layerId');
-        this.markers.add(marker, thisId);
+        if (cluster) {
+          clusterGroup.addLayer(marker);
+        } else {
+          this.markers.add(marker, thisId);
+        }
         var popup = df.get(i, 'popup');
         if (popup !== null) marker.bindPopup(popup);
         marker.on('click', mouseHandler(this.id, thisId, 'marker_click'), this);
         marker.on('mouseover', mouseHandler(this.id, thisId, 'marker_mouseover'), this);
         marker.on('mouseout', mouseHandler(this.id, thisId, 'marker_mouseout'), this);
       }).call(this);
+
+      if (cluster) {
+        this.markerclusters.add(clusterGroup, clusterId);
+      }
     }
   };
 
@@ -577,6 +591,14 @@ var dataframe = (function() {
 
   methods.clearMarkers = function() {
     this.markers.clear();
+  };
+
+  methods.removeMarkerCluster = function(layerId) {
+    this.markerclusters.remove(layerId);
+  }
+
+  methods.clearMarkerClusters = function() {
+    this.markerclusters.clear();
   };
 
   methods.removeShape = function(layerId) {
@@ -1130,6 +1152,7 @@ var dataframe = (function() {
         map.geojson = new LayerStore(map);
         map.tiles = new LayerStore(map);
         map.images = new LayerStore(map);
+        map.markerclusters = new LayerStore(map);
       } else {
         map.controls.clear();
         map.markers.clear();
@@ -1138,6 +1161,7 @@ var dataframe = (function() {
         map.geojson.clear();
         map.tiles.clear();
         map.images.clear();
+        map.markerclusters.clear();
       }
 
       var explicitView = false;

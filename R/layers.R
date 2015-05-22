@@ -392,6 +392,8 @@ addMarkers = function(
   icon = NULL,
   popup = NULL,
   options = markerOptions(),
+  clusterOptions = NULL,
+  clusterId = NULL,
   data = getMapData(map)
 ) {
   if (!is.null(icon)) {
@@ -416,9 +418,26 @@ addMarkers = function(
     icon = filterNULL(icon)
   }
 
+  if (!is.null(clusterOptions))
+    map$dependencies = c(map$dependencies, markerClusterDependencies())
+
   pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addMarkers")
-  invokeMethod(map, data, 'addMarkers', pts$lat, pts$lng, icon, layerId, options, popup) %>%
-    expandLimits(pts$lat, pts$lng)
+  invokeMethod(
+    map, data, 'addMarkers', pts$lat, pts$lng, icon, layerId, options, popup,
+    clusterOptions, clusterId
+  ) %>% expandLimits(pts$lat, pts$lng)
+}
+
+markerClusterDependencies = function() {
+  list(
+    htmltools::htmlDependency(
+      'leaflet-markercluster',
+      '0.4.0',
+      system.file('htmlwidgets/plugins/Leaflet.markercluster', package = 'leaflet'),
+      script = 'leaflet.markercluster.js',
+      stylesheet = c('MarkerCluster.css', 'MarkerCluster.Default.css')
+    )
+  )
 }
 
 #' Make icon set

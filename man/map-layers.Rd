@@ -27,7 +27,8 @@ addPopups(map, lng = NULL, lat = NULL, popup, layerId = NULL, options = popupOpt
     data = getMapData(map))
 
 addMarkers(map, lng = NULL, lat = NULL, layerId = NULL, icon = NULL, 
-    popup = NULL, options = markerOptions(), data = getMapData(map))
+    popup = NULL, options = markerOptions(), clusterOptions = NULL, 
+    clusterId = NULL, data = getMapData(map))
 
 addCircleMarkers(map, lng = NULL, lat = NULL, radius = 10, layerId = NULL, 
     stroke = TRUE, color = "#03F", weight = 5, opacity = 0.5, fill = TRUE, 
