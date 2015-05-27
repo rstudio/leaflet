@@ -130,7 +130,7 @@ addLegend = function(
 
     } else if (type == 'factor') {
 
-      v = unique(na.omit(values))
+      v = sort(unique(na.omit(values)))
       colors = pal(v)
       labels = labFormat(type = 'factor', v)
 
