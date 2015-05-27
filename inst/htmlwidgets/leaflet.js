@@ -716,10 +716,201 @@ var dataframe = (function() {
   };
 
   methods.addRasterImage = function(uri, bounds, opacity, attribution, layerId) {
-    L.imageOverlay(uri, bounds, {
-      opacity: opacity,
-      attribution: attribution
-    }).addTo(this);
+    var self = this;
+
+    // uri is a data URI containing an image. We want to paint this image as a
+    // layer at (top-left) bounds[0] to (bottom-right) bounds[1].
+
+    // We can't simply use ImageOverlay, as it uses bilinear scaling which looks
+    // awful as you zoom in (and sometimes shifts positions or disappears).
+    // Instead, we'll use a TileLayer.Canvas to draw pieces of the image.
+
+    // First, some helper functions.
+
+    // degree2tile converts latitude, longitude, and zoom to x and y tile
+    // numbers. The tile numbers returned can be non-integral, as there's no
+    // reason to expect that the lat/lng inputs are exactly on the border of two
+    // tiles.
+    //
+    // We'll use this to convert the bounds we got from the server, into coords
+    // in tile-space at a given zoom level. Note that once we do the conversion,
+    // we don't to do any more trigonometry to convert between pixel coordinates
+    // and tile coordinates; the source image pixel coords, destination canvas
+    // pixel coords, and tile coords all can be scaled linearly.
+    function degree2tile(lat, lng, zoom) {
+      var latRad = lat * Math.PI / 180;
+      var n = Math.pow(2, zoom);
+      var x = (lng + 180) / 360 * n
+      var y = (1 - Math.log(Math.tan(latRad) + (1 / Math.cos(latRad))) / Math.PI) / 2 * n
+      return {x: x, y: y};
+    }
+
+    // Given a range [from,to) and either one or two numbers, returns true if
+    // there is any overlap between [x,x1) and the range--or if x1 is omitted,
+    // then returns true if x is within [from,to).
+    function overlap(from, to, x, /* optional */ x1) {
+      if (arguments.length == 3)
+        x1 = x;
+      return x < to && x1 >= from;
+    }
+
+    // Our general strategy is to:
+    // 1. Load the data URI in an Image() object, so we can get its pixel
+    //    dimensions and the underlying image data. (We could have done this
+    //    by not encoding as PNG at all but just send an array of RGBA values
+    //    from the server, but that would inflate the JSON too much.)
+    // 2. Create a hidden canvas that we use just to extract the image data
+    //    from the Image (using Context2D.getImageData()).
+    // 3. Create a TileLayer.Canvas and add it to the map.
+
+    var imgData = null;
+    var w = null;
+    var h = null;
+    var imgDataCallbacks = [];
+    function getImageData(callback) {
+      if (imgData != null) {
+        callback(imgData, w, h);
+      } else {
+        imgDataCallbacks.push(callback);
+      }
+    }
+
+    var img = new Image();
+    img.onload = function() {
+      w = img.width;
+      h = img.height;
+
+      var imgDataCanvas = document.createElement("canvas");
+      imgDataCanvas.width = w;
+      imgDataCanvas.height = h;
+      imgDataCanvas.style.display = "none";
+      document.body.appendChild(imgDataCanvas);
+
+      var imgDataCtx = imgDataCanvas.getContext("2d");
+      imgDataCtx.drawImage(img, 0, 0);
+      imgData = imgDataCtx.getImageData(0, 0, w, h).data;
+      document.body.removeChild(imgDataCanvas);
+
+      for (var i = 0; i < imgDataCallbacks.length; i++) {
+        imgDataCallbacks[i](imgData, w, h);
+      }
+      imgDataCallbacks = [];
+
+      var canvasTiles = L.tileLayer.canvas({
+        opacity: opacity,
+        attribution: attribution
+      });
+      canvasTiles.drawTile = function(canvas, tilePoint, zoom) {
+        canvas.style.imageRendering = "crisp-edges";
+
+        var ctx = canvas.getContext('2d');
+        var topLeft = degree2tile(bounds[0][0], bounds[0][1], zoom);
+        var bottomRight = degree2tile(bounds[1][0], bounds[1][1], zoom);
+        var extent = {x: bottomRight.x - topLeft.x, y: bottomRight.y - topLeft.y};
+
+        // Short circuit if tile is totally disjoint from image
+        if (!overlap(tilePoint.x, tilePoint.x + 1, topLeft.x, bottomRight.x))
+          return;
+        if (!overlap(tilePoint.y, tilePoint.y + 1, topLeft.y, bottomRight.y))
+          return;
+
+        // The linear resolution of the tile we're drawing is always 256px per tile unit.
+        // If the linear resolution (in either direction) of the image is less than 256px
+        // per tile unit, then use nearest neighbor; otherwise, use the canvas's built-in
+        // scaling.
+        var imgRes = {
+          x: w / extent.x,
+          y: h / extent.y
+        };
+
+        // Some browsers support an imageSmoothingEnabled property, which means that the
+        // cavnas itself can do nearest neighbor scaling natively.
+        var nativeNgb = typeof(ctx.imageSmoothingEnabled) != "undefined";
+
+        if (nativeNgb || imgRes.x >= 256 && imgRes.y >= 256) {
+          // Use built-in scaling
+
+          // Turn off anti-aliasing if necessary
+          if (nativeNgb) {
+            ctx.imageSmoothingEnabled = imgRes.x >= 256 && imgRes.y >= 256;
+          }
+
+          ctx.drawImage(img,
+            (topLeft.x - tilePoint.x) * 256,
+            (topLeft.y - tilePoint.y) * 256,
+            extent.x * 256,
+            extent.y * 256
+          );
+        /*
+        } else if (false) {
+          console.log("Using nearest neighbor");
+          var start = new Date();
+          for (var row = 0; row < 256; row++) {
+            for (var col = 0; col < 256; col++) {
+              var xcoord = tilePoint.x + (col / 256);
+              var ycoord = tilePoint.y + (row / 256);
+              // Convert xcoord/ycoord into percentages of the image width/height
+              var xpct = (xcoord - topLeft.x) / extent.x;
+              var ypct = (ycoord - topLeft.y) / extent.y;
+              if (xpct < 0 || xpct >= 1 || ypct < 0 || ypct >= 1) {
+                continue;
+              }
+              var xpixel = Math.round(xpct * w);
+              var ypixel = Math.round(ypct * h);
+              var i = ((ypixel * w) + xpixel) * 4;
+              var r = imgData[i];
+              var g = imgData[i+1];
+              var b = imgData[i+2];
+              var a = imgData[i+3];
+              ctx.fillStyle = "rgba(" + [r,g,b,a/255].join(",") + ")";
+              ctx.fillRect(col, row, 1, 1);
+            }
+          }
+          var elapsed = new Date() - start;
+          console.log("Elapsed time: " + elapsed + "ms");
+        */
+        } else {
+          var sourceStart = {
+            x: Math.floor((tilePoint.x - topLeft.x) * imgRes.x),
+            y: Math.floor((tilePoint.y - topLeft.y) * imgRes.y)
+          };
+          var sourceEnd = {
+            x: Math.ceil((tilePoint.x + 1 - topLeft.x) * imgRes.x),
+            y: Math.ceil((tilePoint.y + 1 - topLeft.y) * imgRes.y)
+          };
+
+          var pixelSize = {
+            width: 256 / imgRes.x,
+            height: 256 / imgRes.y
+          };
+
+          for (var row = sourceStart.y; row < sourceEnd.y; row++) {
+            for (var col = sourceStart.x; col < sourceEnd.x; col++) {
+              var i = ((row * w) + col) * 4;
+              var r = imgData[i];
+              var g = imgData[i+1];
+              var b = imgData[i+2];
+              var a = imgData[i+3];
+              ctx.fillStyle = "rgba(" + [r,g,b,a/255].join(",") + ")";
+              var pixelPos = {
+                x: (((col / imgRes.x) + topLeft.x) - tilePoint.x) * 256,
+                y: (((row / imgRes.y) + topLeft.y) - tilePoint.y) * 256
+              };
+              ctx.fillRect(Math.floor(pixelPos.x), Math.floor(pixelPos.y),
+                pixelSize.width + 1, pixelSize.height + 1);
+            }
+          }
+        }
+      };
+      canvasTiles.addTo(self);
+
+    };
+    img.src = uri;
+
+    // L.imageOverlay(uri, bounds, {
+    //   opacity: opacity,
+    //   attribution: attribution
+    // }).addTo(this);
   };
 
   HTMLWidgets.widget({

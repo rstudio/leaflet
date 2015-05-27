@@ -109,8 +109,8 @@ addRasterImage = function(
   uri <- paste0("data:image/png;base64,", encoded)
 
   latlng <- list(
-    list(raster::ymin(bounds), raster::xmin(bounds)),
-    list(raster::ymax(bounds), raster::xmax(bounds))
+    list(raster::ymax(bounds), raster::xmin(bounds)),
+    list(raster::ymin(bounds), raster::xmax(bounds))
   )
 
   invokeMethod(map, getMapData(map), "addRasterImage", uri, latlng, opacity, attribution, layerId) %>%
