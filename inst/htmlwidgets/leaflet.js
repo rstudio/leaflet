@@ -795,12 +795,17 @@ var dataframe = (function() {
         imgDataCallbacks[i](imgData, w, h);
       }
       imgDataCallbacks = [];
+    };
+    img.src = uri;
 
-      var canvasTiles = L.tileLayer.canvas({
-        opacity: opacity,
-        attribution: attribution
-      });
-      canvasTiles.drawTile = function(canvas, tilePoint, zoom) {
+    var canvasTiles = L.tileLayer.canvas({
+      opacity: opacity,
+      attribution: attribution,
+      async: true
+    });
+    canvasTiles.drawTile = function(canvas, tilePoint, zoom) {
+      getImageData(function(imgData, w, h) {
+
         canvas.style.imageRendering = "crisp-edges";
 
         var ctx = canvas.getContext('2d');
@@ -901,16 +906,10 @@ var dataframe = (function() {
             }
           }
         }
-      };
-      canvasTiles.addTo(self);
-
+        canvasTiles.tileDrawn(canvas);
+      });
     };
-    img.src = uri;
-
-    // L.imageOverlay(uri, bounds, {
-    //   opacity: opacity,
-    //   attribution: attribution
-    // }).addTo(this);
+    canvasTiles.addTo(self);
   };
 
   HTMLWidgets.widget({
