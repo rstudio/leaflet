@@ -738,6 +738,7 @@ var dataframe = (function() {
     // and tile coordinates; the source image pixel coords, destination canvas
     // pixel coords, and tile coords all can be scaled linearly.
     function degree2tile(lat, lng, zoom) {
+      // See http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames
       var latRad = lat * Math.PI / 180;
       var n = Math.pow(2, zoom);
       var x = (lng + 180) / 360 * n
