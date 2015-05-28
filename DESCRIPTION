@@ -22,10 +22,12 @@ License: GPL-3 | file LICENSE
 URL: https://github.com/rstudio/leaflet
 BugReports: https://github.com/rstudio/leaflet/issues
 Imports:
+    base64enc,
     htmlwidgets,
     htmltools,
     magrittr,
     markdown,
+    png,
     RColorBrewer,
     RJSONIO,
     grDevices,

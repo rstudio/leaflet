@@ -4,7 +4,7 @@ bw = c("black", "white")
 
 # Do these cases make sense?
 assert(
-  colorBin(bw, NULL)(1) == "#767676",
+  colorBin(bw, NULL)(1) == "#777777",
   colorBin(bw, 1)(1) == "#FFFFFF",
   TRUE
 )
@@ -69,17 +69,17 @@ assert(
 
 assert(
   identical(
-    c("#000000", "#767676", "#FFFFFF"),
+    c("#000000", "#777777", "#FFFFFF"),
     colorNumeric(bw, NULL)(1:3)
   ),
 
   identical(
-    c("#000000", "#767676", "#FFFFFF"),
+    c("#000000", "#777777", "#FFFFFF"),
     colorNumeric(bw, c(1:3))(1:3)
   ),
 
   identical(
-    rev(c("#000000", "#767676", "#FFFFFF")),
+    rev(c("#000000", "#777777", "#FFFFFF")),
     colorNumeric(rev(bw), c(1:3))(1:3)
   ),
 
@@ -90,29 +90,29 @@ assert(
 
   # domain != unique(x)
   identical(
-    c("#000000", "#0E0E0E", "#171717"),
+    c("#000000", "#0E0E0E", "#181818"),
     colorFactor(bw, LETTERS)(LETTERS[1:3])
   ),
 
   # domain == unique(x)
   identical(
-    c("#000000", "#767676", "#FFFFFF"),
+    c("#000000", "#777777", "#FFFFFF"),
     colorFactor(bw, LETTERS[1:3])(LETTERS[1:3])
   ),
 
   # no domain
   identical(
-    c("#000000", "#767676", "#FFFFFF"),
+    c("#000000", "#777777", "#FFFFFF"),
     colorFactor(bw, NULL)(LETTERS[1:3])
   ),
 
   # Non-factor domains are sorted unless instructed otherwise
   identical(
-    c("#000000", "#767676", "#FFFFFF"),
+    c("#000000", "#777777", "#FFFFFF"),
     colorFactor(bw, rev(LETTERS[1:3]))(LETTERS[1:3])
   ),
   identical(
-    rev(c("#000000", "#767676", "#FFFFFF")),
+    rev(c("#000000", "#777777", "#FFFFFF")),
     colorFactor(bw, rev(LETTERS[1:3]), ordered = TRUE)(LETTERS[1:3])
   ),
 
