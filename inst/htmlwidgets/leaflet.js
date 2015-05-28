@@ -716,8 +716,6 @@ var dataframe = (function() {
   };
 
   methods.addRasterImage = function(uri, bounds, opacity, attribution, layerId) {
-    var self = this;
-
     // uri is a data URI containing an image. We want to paint this image as a
     // layer at (top-left) bounds[0] to (bottom-right) bounds[1].
 
@@ -945,7 +943,7 @@ var dataframe = (function() {
         canvasTiles.tileDrawn(canvas);
       });
     };
-    canvasTiles.addTo(self);
+    canvasTiles.addTo(this);
   };
 
   HTMLWidgets.widget({

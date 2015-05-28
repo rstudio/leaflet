@@ -90,14 +90,20 @@ addTiles = function(
 addRasterImage = function(
   map,
   x,
+  project = TRUE,
   colorFunc = colorNumeric("RdBu", domain = c(raster::minValue(x), raster::maxValue(x)), na.color = "#00000000"),
   opacity = 1,
   attribution = NULL,
   layerId = NULL,
   maxBytes = 2*1024*1024
 ) {
-  projected <- raster::projectRaster(x, crs = sp::CRS("+init=epsg:3857"))
-  bounds <- raster::extent(raster::projectExtent(projected, crs = sp::CRS("+init=epsg:4326")))
+  if (project) {
+    projected <- raster::projectRaster(x, raster::projectExtent(x, crs = sp::CRS("+init=epsg:3785")))
+    bounds <- raster::extent(raster::projectExtent(raster::projectExtent(x, crs = sp::CRS("+init=epsg:3785")), crs = sp::CRS("+init=epsg:4326")))
+  } else {
+    projected <- x
+    bounds <- raster::extent(x)
+  }
 
   tileData <- raster::values(projected) %>% colorFunc() %>% col2rgb(alpha = TRUE) %>% as.raw()
   dim(tileData) <- c(4, ncol(projected), nrow(projected))
