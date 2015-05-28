@@ -141,7 +141,7 @@ addRasterImage = function(
   }
 
   if (!is.function(colors)) {
-    colors <- colorNumeric(colors, domain = NULL, na.color = "#00000000")
+    colors <- colorNumeric(colors, domain = NULL, na.color = "#00000000", alpha = TRUE)
   }
 
   tileData <- raster::values(projected) %>% colors() %>% col2rgb(alpha = TRUE) %>% as.raw()

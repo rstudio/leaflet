@@ -6,14 +6,15 @@
 \alias{colorQuantile}
 \title{Color mapping}
 \usage{
-colorNumeric(palette, domain, na.color = "#808080")
+colorNumeric(palette, domain, na.color = "#808080", alpha = FALSE)
 
-colorBin(palette, domain, bins = 7, pretty = TRUE, na.color = "#808080")
+colorBin(palette, domain, bins = 7, pretty = TRUE, na.color = "#808080", alpha = FALSE)
 
 colorQuantile(palette, domain, n = 4, probs = seq(0, 1, length.out = n + 1), 
-    na.color = "#808080")
+    na.color = "#808080", alpha = FALSE)
 
-colorFactor(palette, domain, levels = NULL, ordered = FALSE, na.color = "#808080")
+colorFactor(palette, domain, levels = NULL, ordered = FALSE, na.color = "#808080", 
+    alpha = FALSE)
 }
 \arguments{
 \item{palette}{The colors or color function that values will be mapped to}
