@@ -3,9 +3,8 @@
 \alias{addRasterImage}
 \title{Add a raster image as a layer}
 \usage{
-addRasterImage(map, x, project = TRUE, colorFunc = colorNumeric("RdBu", domain = NULL, 
-    na.color = "#00000000"), opacity = 1, attribution = NULL, layerId = NULL, 
-    maxBytes = 2 * 1024 * 1024)
+addRasterImage(map, x, project = TRUE, colors = "Spectral", opacity = 1, 
+    attribution = NULL, layerId = NULL, maxBytes = 2 * 1024 * 1024)
 }
 \arguments{
 \item{map}{a map widget object}
@@ -18,9 +17,9 @@ the caller's responsibility to ensure that \code{x} is already projected,
 and that \code{extent(x)} is expressed in WGS84 latitude/longitude
 coordinates}
 
-\item{colorFunc}{the color function to use to color the raster values (hint:
-set \code{na.color} to \code{"#00000000"} to make \code{NA} areas
-transparent)}
+\item{colors}{the color palette (see \code{\link{colorNumeric}}) or function
+to use to color the raster values (hint: if providing a function, set
+\code{na.color} to \code{"#00000000"} to make \code{NA} areas transparent)}
 
 \item{opacity}{the base opacity of the raster, expressed from 0 to 1}
 
@@ -36,4 +35,13 @@ Create an image overlay from a \code{RasterLayer} object. This is only
 suitable for small to medium sized rasters, as the entire image will be
 embedded into the HTML page (or passed over the websocket in a Shiny
 context).
+}
+\examples{
+library(raster)
+
+r <- raster(xmn = -2.8, xmx = -2.79, ymn = 54.04, ymx = 54.05, nrows = 30, ncols = 30)
+values(r) <- matrix(1:900, nrow(r), ncol(r), byrow = TRUE)
+crs(r) <- CRS("+init=epsg:4326")
+
+leaflet() \%>\% addTiles() \%>\% addRasterImage(r, colors = "Spectral", opacity = 0.8)
 }

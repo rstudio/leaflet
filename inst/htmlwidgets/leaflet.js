@@ -827,123 +827,149 @@ var dataframe = (function() {
 
     canvasTiles.drawTile = function(canvas, tilePoint, zoom) {
       getImageData(function(imgData, w, h) {
+        try {
+          // The Context2D we'll being drawing onto. It's always 256x256.
+          var ctx = canvas.getContext('2d');
 
-        // The Context2D we'll being drawing onto. It's always 256x256.
-        var ctx = canvas.getContext('2d');
+          // Convert our image data's top-left and bottom-right locations into
+          // x/y tile coordinates. This is essentially doing a spherical mercator
+          // projection, then multiplying by 2^zoom.
+          var topLeft = degree2tile(bounds[0][0], bounds[0][1], zoom);
+          var bottomRight = degree2tile(bounds[1][0], bounds[1][1], zoom);
+          // The size of the image in x/y tile coordinates.
+          var extent = {x: bottomRight.x - topLeft.x, y: bottomRight.y - topLeft.y};
 
-        // Convert our image data's top-left and bottom-right locations into
-        // x/y tile coordinates. This is essentially doing a spherical mercator
-        // projection, then multiplying by 2^zoom.
-        var topLeft = degree2tile(bounds[0][0], bounds[0][1], zoom);
-        var bottomRight = degree2tile(bounds[1][0], bounds[1][1], zoom);
-        // The size of the image in x/y tile coordinates.
-        var extent = {x: bottomRight.x - topLeft.x, y: bottomRight.y - topLeft.y};
+          // Short circuit if tile is totally disjoint from image.
+          if (!overlap(tilePoint.x, tilePoint.x + 1, topLeft.x, bottomRight.x))
+            return;
+          if (!overlap(tilePoint.y, tilePoint.y + 1, topLeft.y, bottomRight.y))
+            return;
 
-        // Short circuit if tile is totally disjoint from image.
-        if (!overlap(tilePoint.x, tilePoint.x + 1, topLeft.x, bottomRight.x))
-          return;
-        if (!overlap(tilePoint.y, tilePoint.y + 1, topLeft.y, bottomRight.y))
-          return;
-
-        // The linear resolution of the tile we're drawing is always 256px per tile unit.
-        // If the linear resolution (in either direction) of the image is less than 256px
-        // per tile unit, then use nearest neighbor; otherwise, use the canvas's built-in
-        // scaling.
-        var imgRes = {
-          x: w / extent.x,
-          y: h / extent.y
-        };
-
-        // We can do the actual drawing in one of three ways:
-        // - Call drawImage(). This is easy and fast, and results in smooth
-        //   interpolation (bilinear?). This is what we want when we are
-        //   reducing the image from its native size.
-        // - Call drawImage() with imageSmoothingEnabled=false. This is easy
-        //   and fast and gives us nearest-neighbor interpolation, which is what
-        //   we want when enlarging the image. However, it's unsupported on many
-        //   browsers (including QtWebkit).
-        // - Do a manual nearest-neighbor interpolation. This is what we'll fall
-        //   back to when enlarging, and imageSmoothingEnabled isn't supported.
-        //   In theory it's slower, but still pretty fast on my machine, and the
-        //   results look the same AFAICT.
-
-
-        // Is imageSmoothingEnabled supported? If so, we can let canvas do
-        // nearest-neighbor interpolation for us.
-        var nativeNgb = typeof(ctx.imageSmoothingEnabled) != "undefined";
-
-        if (nativeNgb || imgRes.x >= 256 && imgRes.y >= 256) {
-          // Use built-in scaling
-
-          // Turn off anti-aliasing if necessary
-          if (nativeNgb) {
-            ctx.imageSmoothingEnabled = imgRes.x >= 256 && imgRes.y >= 256;
-          }
-
-          // It's possible that the image will go off the edge of the canvas--
-          // that's OK, the canvas should clip appropriately.
-          ctx.drawImage(img,
-            // Convert abs tile coords to rel tile coords, then *256 to convert
-            // to rel pixel coords
-            (topLeft.x - tilePoint.x) * 256,
-            (topLeft.y - tilePoint.y) * 256,
-            // Always draw the whole thing and let canvas clip; so we can just
-            // convert from size in tile coords straight to pixels
-            extent.x * 256,
-            extent.y * 256
-          );
-        } else {
-          // Use manual nearest-neighbor interpolation
-
-          // Calculate the source image pixel coordinates that correspond with
-          // the top-left and bottom-right of this tile. (If the source image
-          // only partially overlaps the tile, we use max/min to limit the
-          // sourceStart/End to only reflect the overlapping portion.)
-          var sourceStart = {
-            x: Math.max(0, Math.floor((tilePoint.x - topLeft.x) * imgRes.x)),
-            y: Math.max(0, Math.floor((tilePoint.y - topLeft.y) * imgRes.y))
-          };
-          var sourceEnd = {
-            x: Math.min(w, Math.ceil((tilePoint.x + 1 - topLeft.x) * imgRes.x)),
-            y: Math.min(h, Math.ceil((tilePoint.y + 1 - topLeft.y) * imgRes.y))
+          // The linear resolution of the tile we're drawing is always 256px per tile unit.
+          // If the linear resolution (in either direction) of the image is less than 256px
+          // per tile unit, then use nearest neighbor; otherwise, use the canvas's built-in
+          // scaling.
+          var imgRes = {
+            x: w / extent.x,
+            y: h / extent.y
           };
 
-          // The size, in dest pixels, that each source pixel should occupy.
-          // This might be greater or less than 1 (e.g. if x and y resolution
-          // are very different).
-          var pixelSize = {
-            x: 256 / imgRes.x,
-            y: 256 / imgRes.y
-          };
+          // We can do the actual drawing in one of three ways:
+          // - Call drawImage(). This is easy and fast, and results in smooth
+          //   interpolation (bilinear?). This is what we want when we are
+          //   reducing the image from its native size.
+          // - Call drawImage() with imageSmoothingEnabled=false. This is easy
+          //   and fast and gives us nearest-neighbor interpolation, which is what
+          //   we want when enlarging the image. However, it's unsupported on many
+          //   browsers (including QtWebkit).
+          // - Do a manual nearest-neighbor interpolation. This is what we'll fall
+          //   back to when enlarging, and imageSmoothingEnabled isn't supported.
+          //   In theory it's slower, but still pretty fast on my machine, and the
+          //   results look the same AFAICT.
 
-          // For each pixel in the source image that overlaps the tile...
-          for (var row = sourceStart.y; row < sourceEnd.y; row++) {
-            for (var col = sourceStart.x; col < sourceEnd.x; col++) {
-              // ...extract the pixel data...
-              var i = ((row * w) + col) * 4;
-              var r = imgData[i];
-              var g = imgData[i+1];
-              var b = imgData[i+2];
-              var a = imgData[i+3];
-              ctx.fillStyle = "rgba(" + [r,g,b,a/255].join(",") + ")";
+          // Is imageSmoothingEnabled supported? If so, we can let canvas do
+          // nearest-neighbor interpolation for us.
+          var nativeNgb = typeof(ctx.mozImageSmoothingEnabled) !== "undefined" ||
+              typeof(ctx.webkitImageSmoothingEnabled) !== "undefined" ||
+              typeof(ctx.msImageSmoothingEnabled) !== "undefined" ||
+              typeof(ctx.imageSmoothingEnabled) !== "undefined";
 
-              // ...calculate the corresponding pixel coord in the dest image
-              // where it should be drawn...
-              var pixelPos = {
-                x: (((col / imgRes.x) + topLeft.x) - tilePoint.x) * 256,
-                y: (((row / imgRes.y) + topLeft.y) - tilePoint.y) * 256
-              };
+          if (nativeNgb || imgRes.x >= 256 && imgRes.y >= 256) {
+            // Use built-in scaling
 
-              // ...and draw a rectangle there.
-              ctx.fillRect(Math.floor(pixelPos.x), Math.floor(pixelPos.y),
-                pixelSize.x + 1, pixelSize.y + 1);
+            // Turn off anti-aliasing if necessary
+            if (nativeNgb) {
+              ctx.mozImageSmoothingEnabled =
+                  ctx.webkitImageSmoothingEnabled =
+                  ctx.msImageSmoothingEnabled =
+                  ctx.imageSmoothingEnabled =
+                  imgRes.x >= 256 && imgRes.y >= 256;
+            }
+
+            // It's possible that the image will go off the edge of the canvas--
+            // that's OK, the canvas should clip appropriately.
+            ctx.drawImage(img,
+              // Convert abs tile coords to rel tile coords, then *256 to convert
+              // to rel pixel coords
+              (topLeft.x - tilePoint.x) * 256,
+              (topLeft.y - tilePoint.y) * 256,
+              // Always draw the whole thing and let canvas clip; so we can just
+              // convert from size in tile coords straight to pixels
+              extent.x * 256,
+              extent.y * 256
+            );
+          } else {
+            // Use manual nearest-neighbor interpolation
+
+            // Calculate the source image pixel coordinates that correspond with
+            // the top-left and bottom-right of this tile. (If the source image
+            // only partially overlaps the tile, we use max/min to limit the
+            // sourceStart/End to only reflect the overlapping portion.)
+            var sourceStart = {
+              x: Math.max(0, Math.floor((tilePoint.x - topLeft.x) * imgRes.x)),
+              y: Math.max(0, Math.floor((tilePoint.y - topLeft.y) * imgRes.y))
+            };
+            var sourceEnd = {
+              x: Math.min(w, Math.ceil((tilePoint.x + 1 - topLeft.x) * imgRes.x)),
+              y: Math.min(h, Math.ceil((tilePoint.y + 1 - topLeft.y) * imgRes.y))
+            };
+
+            // The size, in dest pixels, that each source pixel should occupy.
+            // This might be greater or less than 1 (e.g. if x and y resolution
+            // are very different).
+            var pixelSize = {
+              x: 256 / imgRes.x,
+              y: 256 / imgRes.y
+            };
+
+            // For each pixel in the source image that overlaps the tile...
+            for (var row = sourceStart.y; row < sourceEnd.y; row++) {
+              for (var col = sourceStart.x; col < sourceEnd.x; col++) {
+                // ...extract the pixel data...
+                var i = ((row * w) + col) * 4;
+                var r = imgData[i];
+                var g = imgData[i+1];
+                var b = imgData[i+2];
+                var a = imgData[i+3];
+                ctx.fillStyle = "rgba(" + [r,g,b,a/255].join(",") + ")";
+
+                // ...calculate the corresponding pixel coord in the dest image
+                // where it should be drawn...
+                var pixelPos = {
+                  x: (((col / imgRes.x) + topLeft.x) - tilePoint.x) * 256,
+                  y: (((row / imgRes.y) + topLeft.y) - tilePoint.y) * 256
+                };
+
+                // ...and draw a rectangle there.
+                ctx.fillRect(
+                  Math.round(pixelPos.x),
+                  Math.round(pixelPos.y),
+                  // Looks crazy, but this is necessary to prevent rounding from
+                  // causing overlap between this rect and its neighbors. The
+                  // minuend is the location of the next pixel, while the
+                  // subtrahend is the position of the current pixel (to turn an
+                  // absolute coordinate to a width/height). Yes, I had to look
+                  // up minuend and subtrahend.
+                  Math.round(pixelPos.x + pixelSize.x) - Math.round(pixelPos.x),
+                  Math.round(pixelPos.y + pixelSize.y) - Math.round(pixelPos.y));
+              }
             }
           }
+        } finally {
+          canvasTiles.tileDrawn(canvas);
         }
-        canvasTiles.tileDrawn(canvas);
       });
     };
-    canvasTiles.addTo(this);
+
+    this.images.add(canvasTiles, layerId);
+  };
+
+  methods.removeImage = function(layerId) {
+    this.images.remove(layerId);
+  };
+
+  methods.clearImages = function() {
+    this.images.clear();
   };
 
   HTMLWidgets.widget({
@@ -1015,6 +1041,7 @@ var dataframe = (function() {
         map.popups = new LayerStore(map);
         map.geojson = new LayerStore(map);
         map.tiles = new LayerStore(map);
+        map.images = new LayerStore(map);
       } else {
         map.controls.clear();
         map.markers.clear();
@@ -1022,6 +1049,7 @@ var dataframe = (function() {
         map.popups.clear();
         map.geojson.clear();
         map.tiles.clear();
+        map.images.clear();
       }
 
       var explicitView = false;

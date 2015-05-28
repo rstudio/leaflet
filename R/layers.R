@@ -100,21 +100,31 @@ addTiles = function(
 #'   the caller's responsibility to ensure that \code{x} is already projected,
 #'   and that \code{extent(x)} is expressed in WGS84 latitude/longitude
 #'   coordinates
-#' @param colorFunc the color function to use to color the raster values (hint:
-#'   set \code{na.color} to \code{"#00000000"} to make \code{NA} areas
-#'   transparent)
+#' @param colors the color palette (see \code{\link{colorNumeric}}) or function
+#'   to use to color the raster values (hint: if providing a function, set
+#'   \code{na.color} to \code{"#00000000"} to make \code{NA} areas transparent)
 #' @param opacity the base opacity of the raster, expressed from 0 to 1
 #' @param attribution the HTML string to show as the attribution for this layer
 #' @param layerId the layer id
 #' @param maxBytes the maximum number of bytes to allow for the projected image
 #'   (before base64 encoding); defaults to 2MB.
 #'
+#' @examples
+#' library(raster)
+#'
+#' r <- raster(xmn=-2.8, xmx=-2.79, ymn=54.04, ymx=54.05, nrows=30, ncols=30)
+#' values(r) <- matrix(1:900, nrow(r), ncol(r), byrow = TRUE)
+#' crs(r) <- CRS("+init=epsg:4326")
+#'
+#' leaflet() %>% addTiles() %>%
+#'   addRasterImage(r, colors = "Spectral", opacity = 0.8)
+#'
 #' @export
 addRasterImage = function(
   map,
   x,
   project = TRUE,
-  colorFunc = colorNumeric("RdBu", domain = NULL, na.color = "#00000000"),
+  colors = "Spectral",
   opacity = 1,
   attribution = NULL,
   layerId = NULL,
@@ -130,7 +140,11 @@ addRasterImage = function(
     bounds <- raster::extent(x)
   }
 
-  tileData <- raster::values(projected) %>% colorFunc() %>% col2rgb(alpha = TRUE) %>% as.raw()
+  if (!is.function(colors)) {
+    colors <- colorNumeric(colors, domain = NULL, na.color = "#00000000")
+  }
+
+  tileData <- raster::values(projected) %>% colors() %>% col2rgb(alpha = TRUE) %>% as.raw()
   dim(tileData) <- c(4, ncol(projected), nrow(projected))
   pngData <- png::writePNG(tileData)
   if (length(pngData) > maxBytes) {
@@ -146,6 +160,18 @@ addRasterImage = function(
 
   invokeMethod(map, getMapData(map), "addRasterImage", uri, latlng, opacity, attribution, layerId) %>%
     expandLimits(c(raster::ymin(bounds), raster::ymax(bounds)), c(raster::xmin(bounds), raster::xmax(bounds)))
+}
+
+#' @rdname remove
+#' @export
+removeImage = function(map, layerId) {
+  invokeMethod(map, NULL, 'removeImage', layerId)
+}
+
+#' @rdname remove
+#' @export
+clearImages = function(map) {
+  invokeMethod(map, NULL, 'clearImages')
 }
 
 #' Extra options for map elements and layers
