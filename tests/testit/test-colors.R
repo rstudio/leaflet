@@ -35,6 +35,10 @@ assert(
   identical(
     c("#000000", "#7F7F7F", "#FFFFFF"),
     colorNumeric(colorRamp(bw), NULL)(c(0, 0.5, 1))
+  ),
+  identical(
+    c("#000000FF", "#777777FF", "#FFFFFFFF", "#FFFFFF00", "blue"),
+    colorNumeric(c(bw, "#FFFFFF00"), NULL, na.color = "blue", alpha = TRUE)(c(0, 0.25, 0.5, 1, NA))
   )
 )
 
