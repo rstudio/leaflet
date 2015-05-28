@@ -270,11 +270,12 @@ toPaletteFunc = function(pal) {
 toPaletteFunc.character = function(pal) {
   if (length(pal) == 1 && pal %in% row.names(RColorBrewer::brewer.pal.info)) {
     return(rasterfaster::createColorRamp(
-      RColorBrewer::brewer.pal(RColorBrewer::brewer.pal.info[pal, 'maxcolors'], pal)
+      RColorBrewer::brewer.pal(RColorBrewer::brewer.pal.info[pal, 'maxcolors'], pal),
+      alpha = TRUE
     ))
   }
 
-  rasterfaster::createColorRamp(pal)
+  rasterfaster::createColorRamp(pal, alpha = TRUE)
 }
 
 # Accept colorRamp style matrix
