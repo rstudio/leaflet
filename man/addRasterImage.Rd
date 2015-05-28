@@ -3,10 +3,9 @@
 \alias{addRasterImage}
 \title{Add a raster image as a layer}
 \usage{
-addRasterImage(map, x, project = TRUE, colorFunc = colorNumeric("RdBu", 
-    domain = c(raster::minValue(x), raster::maxValue(x)), na.color = "#00000000"), 
-    opacity = 1, attribution = NULL, layerId = NULL, maxBytes = 2 * 1024 * 
-        1024)
+addRasterImage(map, x, project = TRUE, colorFunc = colorNumeric("RdBu", domain = NULL, 
+    na.color = "#00000000"), opacity = 1, attribution = NULL, layerId = NULL, 
+    maxBytes = 2 * 1024 * 1024)
 }
 \arguments{
 \item{map}{a map widget object}
