@@ -13,6 +13,7 @@ install:
   - Rscript -e "devtools::install_deps(dep = TRUE)"
   - Rscript -e "install.packages('xtable')"
   - Rscript -e "devtools::install_github('rstudio/shiny')"
+  - Rscript -e "devtools::install_github('jcheng5/rasterfaster')"
 
 script:
   - cd ..; rm -f *.tar.gz; R CMD build $R_PKG
