@@ -753,6 +753,17 @@ var dataframe = (function() {
       return x < to && x1 >= from;
     }
 
+    function getCanvasSmoothingProperty(ctx) {
+      var candidates = ["imageSmoothingEnabled", "mozImageSmoothingEnabled",
+          "webkitImageSmoothingEnabled", "msImageSmoothingEnabled"];
+      for (var i = 0; i < candidates.length; i++) {
+        if (typeof(ctx[candidates[i]]) !== "undefined") {
+          return candidates[i];
+        }
+      }
+      return null;
+    }
+
     // Our general strategy is to:
     // 1. Load the data URI in an Image() object, so we can get its pixel
     //    dimensions and the underlying image data. (We could have done this
@@ -870,21 +881,14 @@ var dataframe = (function() {
 
           // Is imageSmoothingEnabled supported? If so, we can let canvas do
           // nearest-neighbor interpolation for us.
-          var nativeNgb = typeof(ctx.mozImageSmoothingEnabled) !== "undefined" ||
-              typeof(ctx.webkitImageSmoothingEnabled) !== "undefined" ||
-              typeof(ctx.msImageSmoothingEnabled) !== "undefined" ||
-              typeof(ctx.imageSmoothingEnabled) !== "undefined";
+          var smoothingProperty = getCanvasSmoothingProperty(ctx);
 
-          if (nativeNgb || imgRes.x >= 256 && imgRes.y >= 256) {
+          if (smoothingProperty || imgRes.x >= 256 && imgRes.y >= 256) {
             // Use built-in scaling
 
             // Turn off anti-aliasing if necessary
-            if (nativeNgb) {
-              ctx.mozImageSmoothingEnabled =
-                  ctx.webkitImageSmoothingEnabled =
-                  ctx.msImageSmoothingEnabled =
-                  ctx.imageSmoothingEnabled =
-                  imgRes.x >= 256 && imgRes.y >= 256;
+            if (smoothingProperty) {
+              ctx[smoothingProperty] = imgRes.x >= 256 && imgRes.y >= 256;
             }
 
             // It's possible that the image will go off the edge of the canvas--
