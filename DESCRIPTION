@@ -30,7 +30,6 @@ Imports:
     png,
     RColorBrewer,
     RJSONIO,
-    grDevices,
     raster,
     rasterfaster,
     scales,
@@ -39,7 +38,6 @@ Suggests:
     knitr,
     maps,
     shiny,
-    sp,
     testit,
     R6
 VignetteBuilder: knitr
