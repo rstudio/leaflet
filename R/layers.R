@@ -110,6 +110,7 @@ addTiles = function(
 #'   (before base64 encoding); defaults to 2MB.
 #'
 #' @examples
+#' \donttest{
 #' library(raster)
 #'
 #' r <- raster(xmn=-2.8, xmx=-2.79, ymn=54.04, ymx=54.05, nrows=30, ncols=30)
@@ -118,7 +119,7 @@ addTiles = function(
 #'
 #' leaflet() %>% addTiles() %>%
 #'   addRasterImage(r, colors = "Spectral", opacity = 0.8)
-#'
+#' }
 #' @export
 addRasterImage = function(
   map,
