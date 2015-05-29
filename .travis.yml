@@ -9,7 +9,8 @@ install:
   - sudo apt-add-repository -y ppa:marutter/c2d4u
   - sudo apt-get update
   - sudo apt-get -y install r-base-core r-cran-devtools r-cran-knitr r-cran-shiny r-cran-sp r-cran-yaml
-  - sudo apt-get -y install libgdal1-dev libproj-dev
+  - sudo apt-get -y install aptitude
+  - sudo aptitude -y install libgdal-dev libproj-dev
   - "wget -q -O - http://yihui.name/xran/r-config | bash"
   - Rscript -e "devtools::install_deps(dep = TRUE)"
   - Rscript -e "install.packages(c('xtable', 'rgdal'))"
