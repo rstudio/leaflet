@@ -32,7 +32,11 @@ colorFactor(palette, domain, levels = NULL, ordered = FALSE, na.color = "#808080
   domain.}
 
 \item{na.color}{The color to return for \code{NA} values. Note that
-  \code{na.color=NA} is valid.}
+\code{na.color=NA} is valid.}
+
+\item{alpha}{Whether alpha channels should be respected or ignored. If
+  \code{TRUE} then colors without explicit alpha information will be treated
+  as fully opaque.}
 
 \item{bins}{Either a numeric vector of two or more unique cut points or a
 single number (greater than or equal to 2) giving the number of intervals
@@ -59,7 +63,8 @@ factor, treat it as already in the correct order}
 \value{
 A function that takes a single parameter \code{x}; when called with a
   vector of numbers (except for \code{colorFactor}, which expects
-  factors/characters), #RRGGBB color strings are returned.
+  factors/characters), #RRGGBB color strings are returned (unless
+  \code{alpha=TRUE} in which case #RRGGBBAA may also be possible).
 }
 \description{
 Conveniently maps data values (numeric or factor/character) to colors

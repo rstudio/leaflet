@@ -20,10 +20,14 @@
 #'   domain.
 #' @param na.color The color to return for \code{NA} values. Note that
 #'   \code{na.color=NA} is valid.
+#' @param alpha Whether alpha channels should be respected or ignored. If
+#'   \code{TRUE} then colors without explicit alpha information will be treated
+#'   as fully opaque.
 #'
 #' @return A function that takes a single parameter \code{x}; when called with a
 #'   vector of numbers (except for \code{colorFactor}, which expects
-#'   factors/characters), #RRGGBB color strings are returned.
+#'   factors/characters), #RRGGBB color strings are returned (unless
+#'   \code{alpha=TRUE} in which case #RRGGBBAA may also be possible).
 #'
 #' @export
 colorNumeric = function(palette, domain, na.color = "#808080", alpha = FALSE) {
