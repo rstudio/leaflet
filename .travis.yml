@@ -10,7 +10,7 @@ install:
   - sudo apt-get update
   - sudo apt-get -y install r-base-core r-cran-devtools r-cran-knitr r-cran-shiny r-cran-sp r-cran-yaml
   - sudo apt-get -y install aptitude
-  - sudo aptitude -y install libgdal-dev libproj-dev
+  - sudo aptitude -y install libgdal-dev libproj-dev gdal-bin
   - "wget -q -O - http://yihui.name/xran/r-config | bash"
   - Rscript -e "devtools::install_deps(dep = TRUE)"
   - Rscript -e "install.packages(c('xtable', 'rgdal'))"
