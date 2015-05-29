@@ -822,6 +822,7 @@ var dataframe = (function() {
     var canvasTiles = L.tileLayer.canvas({
       opacity: opacity,
       attribution: attribution,
+      detectRetina: true,
       async: true
     });
 

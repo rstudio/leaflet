@@ -3,19 +3,13 @@
 \alias{addRasterImage}
 \title{Add a raster image as a layer}
 \usage{
-addRasterImage(map, x, project = TRUE, colors = "Spectral", opacity = 1, 
-    attribution = NULL, layerId = NULL, maxBytes = 2 * 1024 * 1024)
+addRasterImage(map, x, colors = "Spectral", opacity = 1, attribution = NULL, 
+    layerId = NULL, project = TRUE, maxBytes = 2 * 1024 * 1024)
 }
 \arguments{
 \item{map}{a map widget object}
 
 \item{x}{a \code{RasterLayer} object--see \code{\link[raster]{raster}}}
-
-\item{project}{if \code{TRUE}, automatically project \code{x} to the map
-projection expected by Leaflet (\code{epsg:3785}); if \code{FALSE}, it's
-the caller's responsibility to ensure that \code{x} is already projected,
-and that \code{extent(x)} is expressed in WGS84 latitude/longitude
-coordinates}
 
 \item{colors}{the color palette (see \code{\link{colorNumeric}}) or function
 to use to color the raster values (hint: if providing a function, set
@@ -26,6 +20,12 @@ to use to color the raster values (hint: if providing a function, set
 \item{attribution}{the HTML string to show as the attribution for this layer}
 
 \item{layerId}{the layer id}
+
+\item{project}{if \code{TRUE}, automatically project \code{x} to the map
+projection expected by Leaflet (\code{epsg:3785}); if \code{FALSE}, it's
+the caller's responsibility to ensure that \code{x} is already projected,
+and that \code{extent(x)} is expressed in WGS84 latitude/longitude
+coordinates}
 
 \item{maxBytes}{the maximum number of bytes to allow for the projected image
   (before base64 encoding); defaults to 2MB.}
