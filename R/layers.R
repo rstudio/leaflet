@@ -86,6 +86,9 @@ addTiles = function(
   invokeMethod(map, getMapData(map), 'addTiles', urlTemplate, layerId, options)
 }
 
+epsg4326 <- "+proj=longlat +datum=WGS84 +no_defs"
+epsg3857 <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs"
+
 #' Add a raster image as a layer
 #'
 #' Create an image overlay from a \code{RasterLayer} object. This is only
@@ -102,7 +105,7 @@ addTiles = function(
 #' @param attribution the HTML string to show as the attribution for this layer
 #' @param layerId the layer id
 #' @param project if \code{TRUE}, automatically project \code{x} to the map
-#'   projection expected by Leaflet (\code{epsg:3785}); if \code{FALSE}, it's
+#'   projection expected by Leaflet (\code{epsg:3857}); if \code{FALSE}, it's
 #'   the caller's responsibility to ensure that \code{x} is already projected,
 #'   and that \code{extent(x)} is expressed in WGS84 latitude/longitude
 #'   coordinates
@@ -134,8 +137,8 @@ addRasterImage = function(
   stopifnot(inherits(x, "RasterLayer"))
 
   if (project) {
-    projected <- raster::projectRaster(x, raster::projectExtent(x, crs = sp::CRS("+init=epsg:3785")))
-    bounds <- raster::extent(raster::projectExtent(raster::projectExtent(x, crs = sp::CRS("+init=epsg:3785")), crs = sp::CRS("+init=epsg:4326")))
+    projected <- raster::projectRaster(x, raster::projectExtent(x, crs = sp::CRS(epsg3857)))
+    bounds <- raster::extent(raster::projectExtent(raster::projectExtent(x, crs = sp::CRS(epsg3857)), crs = sp::CRS(epsg4326)))
   } else {
     projected <- x
     bounds <- raster::extent(x)
