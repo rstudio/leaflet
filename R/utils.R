@@ -125,6 +125,11 @@ invokeMethod = function(map, data, method, ...) {
 #' @export
 leafletProxy <- function(mapId, session = shiny::getDefaultReactiveDomain(),
   data = NULL, deferUntilFlush = TRUE) {
+
+  if (is.null(session)) {
+    stop("leafletProxy must be called from the server function of a Shiny app")
+  }
+
   structure(
     list(
       session = session,
