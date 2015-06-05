@@ -89,17 +89,30 @@ addTiles = function(
 epsg4326 <- "+proj=longlat +datum=WGS84 +no_defs"
 epsg3857 <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs"
 
-#' @export
-projectRasterForLeaflet <- function(x) {
-  raster::projectRaster(x, raster::projectExtent(x, crs = sp::CRS(epsg3857)))
-}
-
 #' Add a raster image as a layer
 #'
-#' Create an image overlay from a \code{RasterLayer} object. This is only
-#' suitable for small to medium sized rasters, as the entire image will be
+#' Create an image overlay from a \code{RasterLayer} object. \emph{This is only
+#' suitable for small to medium sized rasters}, as the entire image will be
 #' embedded into the HTML page (or passed over the websocket in a Shiny
 #' context).
+#'
+#' The \code{maxBytes} parameter serves to prevent you from accidentally
+#' embedding an excessively large amount of data into your htmlwidget. This
+#' value is compared to the size of the final compressed image (after the raster
+#' has been projected, colored, and PNG encoded, but before base64 encoding is
+#' applied). Set \code{maxBytes} to \code{Inf} to disable this check, but be
+#' aware that very large rasters may not only make your map a large download but
+#' also may cause the browser to become slow or unresponsive.
+#'
+#' By default, the \code{addRasterImage} function will project the RasterLayer
+#' \code{x} to EPSG:3857 using the \code{raster} package's
+#' \code{\link[raster]{projectRaster}} function. This can be a time-consuming
+#' operation for even moderately sized rasters. Upgrading the \code{raster}
+#' package to 2.4 or later will provide a large speedup versus previous
+#' versions. If you are repeatedly adding a particular raster to your Leaflet
+#' maps, you can perform the projection ahead of time using
+#' \code{projectRasterForLeaflet()}, and call \code{addRasterImage} with
+#' \code{project=FALSE}.
 #'
 #' @param map a map widget object
 #' @param x a \code{RasterLayer} object--see \code{\link[raster]{raster}}
@@ -110,12 +123,12 @@ projectRasterForLeaflet <- function(x) {
 #' @param attribution the HTML string to show as the attribution for this layer
 #' @param layerId the layer id
 #' @param project if \code{TRUE}, automatically project \code{x} to the map
-#'   projection expected by Leaflet (\code{epsg:3857}); if \code{FALSE}, it's
+#'   projection expected by Leaflet (\code{EPSG:3857}); if \code{FALSE}, it's
 #'   the caller's responsibility to ensure that \code{x} is already projected,
 #'   and that \code{extent(x)} is expressed in WGS84 latitude/longitude
 #'   coordinates
 #' @param maxBytes the maximum number of bytes to allow for the projected image
-#'   (before base64 encoding); defaults to 2MB.
+#'   (before base64 encoding); defaults to 4MB.
 #'
 #' @examples
 #' \donttest{
@@ -137,7 +150,7 @@ addRasterImage = function(
   attribution = NULL,
   layerId = NULL,
   project = TRUE,
-  maxBytes = 2*1024*1024
+  maxBytes = 4*1024*1024
 ) {
   stopifnot(inherits(x, "RasterLayer"))
 
@@ -168,6 +181,12 @@ addRasterImage = function(
 
   invokeMethod(map, getMapData(map), "addRasterImage", uri, latlng, opacity, attribution, layerId) %>%
     expandLimits(c(raster::ymin(bounds), raster::ymax(bounds)), c(raster::xmin(bounds), raster::xmax(bounds)))
+}
+
+#' @rdname addRasterImage
+#' @export
+projectRasterForLeaflet <- function(x) {
+  raster::projectRaster(x, raster::projectExtent(x, crs = sp::CRS(epsg3857)))
 }
 
 #' @rdname remove
