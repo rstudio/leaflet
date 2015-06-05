@@ -89,6 +89,11 @@ addTiles = function(
 epsg4326 <- "+proj=longlat +datum=WGS84 +no_defs"
 epsg3857 <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs"
 
+#' @export
+projectRasterForLeaflet <- function(x) {
+  raster::projectRaster(x, raster::projectExtent(x, crs = sp::CRS(epsg3857)))
+}
+
 #' Add a raster image as a layer
 #'
 #' Create an image overlay from a \code{RasterLayer} object. This is only
@@ -137,12 +142,11 @@ addRasterImage = function(
   stopifnot(inherits(x, "RasterLayer"))
 
   if (project) {
-    projected <- raster::projectRaster(x, raster::projectExtent(x, crs = sp::CRS(epsg3857)))
-    bounds <- raster::extent(raster::projectExtent(raster::projectExtent(x, crs = sp::CRS(epsg3857)), crs = sp::CRS(epsg4326)))
+    projected <- projectRasterForLeaflet(x)
   } else {
     projected <- x
-    bounds <- raster::extent(x)
   }
+  bounds <- raster::extent(raster::projectExtent(raster::projectExtent(x, crs = sp::CRS(epsg3857)), crs = sp::CRS(epsg4326)))
 
   if (!is.function(colors)) {
     colors <- colorNumeric(colors, domain = NULL, na.color = "#00000000", alpha = TRUE)
