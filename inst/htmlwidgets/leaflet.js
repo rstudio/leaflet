@@ -150,6 +150,81 @@ var dataframe = (function() {
 })();
 
 (function() {
+  // This class simulates a mipmap, which shrinks images by powers of two. This
+  // stepwise reduction results in "pixel-perfect downscaling" (where every
+  // pixel of the original image has some contribution to the downscaled image)
+  // as opposed to a single-step downscaling which will discard a lot of data
+  // (and with sparse images at small scales can give very surprising results).
+  function Mipmapper(img) {
+    this._layers = [img];
+  }
+  // The various functions on this class take a callback function BUT MAY OR MAY
+  // NOT actually behave asynchronously.
+  Mipmapper.prototype.getBySize = function(desiredWidth, desiredHeight, callback) {
+    var self = this;
+    var i = 0;
+    var lastImg = this._layers[0];
+    function testNext() {
+      self.getByIndex(i, function(img) {
+        // If current image is invalid (i.e. too small to be rendered) or
+        // it's smaller than what we wanted, return the last known good image.
+        if (!img || img.width < desiredWidth || img.height < desiredHeight) {
+          callback(lastImg);
+          return;
+        } else {
+          lastImg = img;
+          i++;
+          testNext();
+          return;
+        }
+      });
+    }
+    testNext();
+  };
+  Mipmapper.prototype.getByIndex = function(i, callback) {
+    var self = this;
+    if (this._layers[i]) {
+      callback(this._layers[i]);
+      return;
+    }
+
+    this.getByIndex(i-1, function(prevImg) {
+      if (!prevImg) {
+        // prevImg could not be calculated (too small, possibly)
+        callback(null);
+        return;
+      }
+      if (prevImg.width < 2 || prevImg.height < 2) {
+        // Can't reduce this image any further
+        callback(null);
+        return;
+      }
+      // If reduce ever becomes truly asynchronous, we should stuff a promise or
+      // something into self._layers[i] before calling self.reduce(), to prevent
+      // redundant reduce operations from happening.
+      self.reduce(prevImg, function(reducedImg) {
+        self._layers[i] = reducedImg;
+        callback(reducedImg);
+        return;
+      });
+    });
+  };
+  Mipmapper.prototype.reduce = function(img, callback) {
+      var imgDataCanvas = document.createElement("canvas");
+      imgDataCanvas.width = Math.ceil(img.width / 2);
+      imgDataCanvas.height = Math.ceil(img.height / 2);
+      imgDataCanvas.style.display = "none";
+      document.body.appendChild(imgDataCanvas);
+      try {
+        var imgDataCtx = imgDataCanvas.getContext("2d");
+        imgDataCtx.drawImage(img, 0, 0, img.width/2, img.height/2);
+        callback(imgDataCanvas);
+      } finally {
+        document.body.removeChild(imgDataCanvas);
+      }
+
+  };
+
   function LayerStore(map) {
     this._layers = {};
     this._group = L.layerGroup().addTo(map);
@@ -782,6 +857,7 @@ var dataframe = (function() {
 
     // These are the variables that we will populate once the image is loaded.
     var imgData = null; // 1d row-major array, four [0-255] integers per pixel
+    var imgDataMipMapper = null;
     var w = null;       // image width in pixels
     var h = null;       // image height in pixels
 
@@ -794,7 +870,7 @@ var dataframe = (function() {
     // be invoked immediately/synchronously if the data is already available.
     function getImageData(callback) {
       if (imgData != null) {
-        callback(imgData, w, h);
+        callback(imgData, w, h, imgDataMipMapper);
       } else {
         imgDataCallbacks.push(callback);
       }
@@ -818,13 +894,14 @@ var dataframe = (function() {
 
       // Save the image data.
       imgData = imgDataCtx.getImageData(0, 0, w, h).data;
+      imgDataMipMapper = new Mipmapper(img);
 
       // Done with the canvas, remove it from the page so it can be gc'd.
       document.body.removeChild(imgDataCanvas);
 
       // Alert any getImageData callers who are waiting.
       for (var i = 0; i < imgDataCallbacks.length; i++) {
-        imgDataCallbacks[i](imgData, w, h);
+        imgDataCallbacks[i](imgData, w, h, imgDataMipMapper);
       }
       imgDataCallbacks = [];
     };
@@ -838,7 +915,7 @@ var dataframe = (function() {
     });
 
     canvasTiles.drawTile = function(canvas, tilePoint, zoom) {
-      getImageData(function(imgData, w, h) {
+      getImageData(function(imgData, w, h, mipmapper) {
         try {
           // The Context2D we'll being drawing onto. It's always 256x256.
           var ctx = canvas.getContext('2d');
@@ -891,18 +968,24 @@ var dataframe = (function() {
               ctx[smoothingProperty] = imgRes.x >= 256 && imgRes.y >= 256;
             }
 
-            // It's possible that the image will go off the edge of the canvas--
-            // that's OK, the canvas should clip appropriately.
-            ctx.drawImage(img,
-              // Convert abs tile coords to rel tile coords, then *256 to convert
-              // to rel pixel coords
-              (topLeft.x - tilePoint.x) * 256,
-              (topLeft.y - tilePoint.y) * 256,
-              // Always draw the whole thing and let canvas clip; so we can just
-              // convert from size in tile coords straight to pixels
-              extent.x * 256,
-              extent.y * 256
-            );
+            // Don't necessarily draw with the full-size image; if we're
+            // downscaling, use the mipmapper to get a pre-downscaled image
+            // (see comments on Mipmapper class for why this matters).
+            mipmapper.getBySize(extent.x*256, extent.y*256, function(mip) {
+              // It's possible that the image will go off the edge of the canvas--
+              // that's OK, the canvas should clip appropriately.
+              ctx.drawImage(mip,
+                // Convert abs tile coords to rel tile coords, then *256 to convert
+                // to rel pixel coords
+                (topLeft.x - tilePoint.x) * 256,
+                (topLeft.y - tilePoint.y) * 256,
+                // Always draw the whole thing and let canvas clip; so we can just
+                // convert from size in tile coords straight to pixels
+                extent.x * 256,
+                extent.y * 256
+              );
+            });
+
           } else {
             // Use manual nearest-neighbor interpolation
 
