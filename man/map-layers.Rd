@@ -18,21 +18,21 @@ addControl(map, html, position = c("topleft", "topright", "bottomleft",
     data = getMapData(map))
 
 addTiles(map, urlTemplate = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", 
-    attribution = NULL, layerId = NULL, options = tileOptions())
+    attribution = NULL, layerId = NULL, group = NULL, options = tileOptions())
 
 addWMSTiles(map, baseUrl, layerId = NULL, options = WMSTileOptions(), 
     attribution = NULL, layers = "")
 
-addPopups(map, lng = NULL, lat = NULL, popup, layerId = NULL, options = popupOptions(), 
-    data = getMapData(map))
+addPopups(map, lng = NULL, lat = NULL, popup, layerId = NULL, group = NULL, 
+    options = popupOptions(), data = getMapData(map))
 
-addMarkers(map, lng = NULL, lat = NULL, layerId = NULL, icon = NULL, 
-    popup = NULL, options = markerOptions(), data = getMapData(map))
+addMarkers(map, lng = NULL, lat = NULL, layerId = NULL, group = NULL, 
+    icon = NULL, popup = NULL, options = markerOptions(), data = getMapData(map))
 
 addCircleMarkers(map, lng = NULL, lat = NULL, radius = 10, layerId = NULL, 
-    stroke = TRUE, color = "#03F", weight = 5, opacity = 0.5, fill = TRUE, 
-    fillColor = color, fillOpacity = 0.2, dashArray = NULL, popup = NULL, 
-    options = pathOptions(), data = getMapData(map))
+    group = NULL, stroke = TRUE, color = "#03F", weight = 5, opacity = 0.5, 
+    fill = TRUE, fillColor = color, fillOpacity = 0.2, dashArray = NULL, 
+    popup = NULL, options = pathOptions(), data = getMapData(map))
 
 addCircles(map, lng = NULL, lat = NULL, radius = 10, layerId = NULL, 
     stroke = TRUE, color = "#03F", weight = 5, opacity = 0.5, fill = TRUE, 
@@ -44,17 +44,17 @@ addPolylines(map, lng = NULL, lat = NULL, layerId = NULL, stroke = TRUE,
     fillOpacity = 0.2, dashArray = NULL, smoothFactor = 1, noClip = FALSE, 
     popup = NULL, options = pathOptions(), data = getMapData(map))
 
-addRectangles(map, lng1, lat1, lng2, lat2, layerId = NULL, stroke = TRUE, 
-    color = "#03F", weight = 5, opacity = 0.5, fill = TRUE, fillColor = color, 
-    fillOpacity = 0.2, dashArray = NULL, smoothFactor = 1, noClip = FALSE, 
-    popup = NULL, options = pathOptions(), data = getMapData(map))
+addRectangles(map, lng1, lat1, lng2, lat2, layerId = NULL, group = NULL, 
+    stroke = TRUE, color = "#03F", weight = 5, opacity = 0.5, fill = TRUE, 
+    fillColor = color, fillOpacity = 0.2, dashArray = NULL, smoothFactor = 1, 
+    noClip = FALSE, popup = NULL, options = pathOptions(), data = getMapData(map))
 
 addPolygons(map, lng = NULL, lat = NULL, layerId = NULL, stroke = TRUE, 
     color = "#03F", weight = 5, opacity = 0.5, fill = TRUE, fillColor = color, 
     fillOpacity = 0.2, dashArray = NULL, smoothFactor = 1, noClip = FALSE, 
     popup = NULL, options = pathOptions(), data = getMapData(map))
 
-addGeoJSON(map, geojson, layerId = NULL)
+addGeoJSON(map, geojson, layerId = NULL, group = NULL)
 }
 \arguments{
 \item{map}{a map widget object created from \code{\link{leaflet}()}}

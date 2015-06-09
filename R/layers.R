@@ -54,6 +54,11 @@ bboxAdd = function(a, b) {
   )
 }
 
+#' @export
+clearGroup <- function(map, group) {
+  invokeMethod(map, getMapData(map), 'clearGroup', group);
+}
+
 #' Graphics elements and layers
 #'
 #' Add graphics elements and layers to the map widget.
@@ -75,6 +80,7 @@ addTiles = function(
   urlTemplate = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
   attribution = NULL,
   layerId = NULL,
+  group = NULL,
   options = tileOptions()
 ) {
   options$attribution = attribution
@@ -83,7 +89,8 @@ addTiles = function(
       '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a>',
       'contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
     )
-  invokeMethod(map, getMapData(map), 'addTiles', urlTemplate, layerId, options)
+  invokeMethod(map, getMapData(map), 'addTiles', urlTemplate, layerId, group,
+    options)
 }
 
 #' Extra options for map elements and layers
@@ -154,7 +161,7 @@ tileOptions = function(
 #' @name remove
 #' @export
 removeTiles = function(map, layerId) {
-  invokeMethod(map, NULL, 'removeTiles', layerId)
+  invokeMethod(map, getMapData(map), 'removeTiles', layerId)
 }
 
 #' @rdname remove
@@ -217,12 +224,12 @@ WMSTileOptions = function(
 #' @describeIn map-layers Add popups to the map
 #' @export
 addPopups = function(
-  map, lng = NULL, lat = NULL, popup, layerId = NULL,
+  map, lng = NULL, lat = NULL, popup, layerId = NULL, group = NULL,
   options = popupOptions(),
   data = getMapData(map)
 ) {
   pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addPopups")
-  invokeMethod(map, data, 'addPopups', pts$lat, pts$lng, popup, layerId, options) %>%
+  invokeMethod(map, data, 'addPopups', pts$lat, pts$lng, popup, layerId, group, options) %>%
     expandLimits(pts$lat, pts$lng)
 }
 
@@ -257,7 +264,7 @@ popupOptions = function(
 #' @rdname remove
 #' @export
 removePopup = function(map, layerId) {
-  invokeMethod(map, NULL, 'removePopup', layerId)
+  invokeMethod(map, getMapData(map), 'removePopup', layerId)
 }
 
 #' @rdname remove
@@ -275,7 +282,7 @@ clearPopups = function(map) {
 #' @describeIn map-layers Add markders to the map
 #' @export
 addMarkers = function(
-  map, lng = NULL, lat = NULL, layerId = NULL,
+  map, lng = NULL, lat = NULL, layerId = NULL, group = NULL,
   icon = NULL,
   popup = NULL,
   options = markerOptions(),
@@ -304,7 +311,7 @@ addMarkers = function(
   }
 
   pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addMarkers")
-  invokeMethod(map, data, 'addMarkers', pts$lat, pts$lng, icon, layerId, options, popup) %>%
+  invokeMethod(map, data, 'addMarkers', pts$lat, pts$lng, icon, layerId, group, options, popup) %>%
     expandLimits(pts$lat, pts$lng)
 }
 
@@ -508,7 +515,7 @@ markerOptions = function(
 #' @describeIn map-layers Add circle markers to the map
 #' @export
 addCircleMarkers = function(
-  map, lng = NULL, lat = NULL, radius = 10, layerId = NULL,
+  map, lng = NULL, lat = NULL, radius = 10, layerId = NULL, group = NULL,
   stroke = TRUE,
   color = "#03F",
   weight = 5,
@@ -527,14 +534,14 @@ addCircleMarkers = function(
     dashArray = dashArray
   ))
   pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addCircleMarkers")
-  invokeMethod(map, data, 'addCircleMarkers', pts$lat, pts$lng, radius, layerId, options, popup) %>%
+  invokeMethod(map, data, 'addCircleMarkers', pts$lat, pts$lng, radius, layerId, group, options, popup) %>%
     expandLimits(pts$lat, pts$lng)
 }
 
 #' @rdname remove
 #' @export
 removeMarker = function(map, layerId) {
-  invokeMethod(map, NULL, 'removeMarker', layerId)
+  invokeMethod(map, getMapData(map), 'removeMarker', layerId)
 }
 
 #' @rdname remove
@@ -629,7 +636,7 @@ addPolylines = function(
 #' @describeIn map-layers Add rectangles to the map
 #' @export
 addRectangles = function(
-  map, lng1, lat1, lng2, lat2, layerId = NULL,
+  map, lng1, lat1, lng2, lat2, layerId = NULL, group = NULL,
   stroke = TRUE,
   color = "#03F",
   weight = 5,
@@ -653,7 +660,7 @@ addRectangles = function(
   lat1 = resolveFormula(lat1, data)
   lng2 = resolveFormula(lng2, data)
   lat2 = resolveFormula(lat2, data)
-  invokeMethod(map, data, 'addRectangles',lat1, lng1, lat2, lng2, layerId, options, popup) %>%
+  invokeMethod(map, data, 'addRectangles',lat1, lng1, lat2, lng2, layerId, group, options, popup) %>%
     expandLimits(c(lat1, lat2), c(lng1, lng2))
 }
 
@@ -688,7 +695,7 @@ addPolygons = function(
 #' @rdname remove
 #' @export
 removeShape = function(map, layerId) {
-  invokeMethod(map, NULL, 'removeShape', layerId)
+  invokeMethod(map, getMapData(map), 'removeShape', layerId)
 }
 
 #' @rdname remove
@@ -700,18 +707,23 @@ clearShapes = function(map) {
 #' @param geojson a GeoJSON list
 #' @describeIn map-layers Add GeoJSON layers to the map
 #' @export
-addGeoJSON = function(map, geojson, layerId = NULL) {
-  invokeMethod(map, getMapData(map), 'addGeoJSON', geojson, layerId)
+addGeoJSON = function(map, geojson, layerId = NULL, group = NULL) {
+  invokeMethod(map, getMapData(map), 'addGeoJSON', geojson, layerId, group)
 }
 
 #' @rdname remove
 #' @export
 removeGeoJSON = function(map, layerId) {
-  invokeMethod(map, NULL, 'removeGeoJSON', layerId)
+  invokeMethod(map, getMapData(map), 'removeGeoJSON', layerId)
 }
 
 #' @rdname remove
 #' @export
 clearGeoJSON = function(map) {
   invokeMethod(map, NULL, 'clearGeoJSON')
+}
+
+#' @export
+addLayersControl = function(map, baseGroups = character(0), overlayGroups = character(0)) {
+  invokeMethod(map, getMapData(map), 'addLayersControl', baseGroups, overlayGroups)
 }

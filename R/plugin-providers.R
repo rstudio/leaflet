@@ -37,11 +37,12 @@ addProviderTiles <- function(
   map,
   provider,
   layerId = NULL,
+  group = NULL,
   options = providerTileOptions()
 ) {
   map$dependencies <- c(map$dependencies, leafletProviderDependencies())
   invokeMethod(map, getMapData(map), 'addProviderTiles',
-    provider, layerId, options)
+    provider, layerId, group, options)
 }
 
 #' @param
