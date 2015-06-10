@@ -848,7 +848,7 @@ var dataframe = (function() {
     }
   };
 
-  methods.addLayersControl = function(baseGroups, overlayGroups) {
+  methods.addLayersControl = function(baseGroups, overlayGroups, options) {
 
     var self = this;
     var base = {};
@@ -866,7 +866,7 @@ var dataframe = (function() {
       }
     });
 
-    L.control.layers(base, overlay).addTo(this);
+    L.control.layers(base, overlay, options).addTo(this);
   };
 
   HTMLWidgets.widget({

@@ -76,6 +76,12 @@ initially, but can be overridden}
 
 \item{attribution}{the attribution text of the tile layer (HTML)}
 
+\item{group}{the name of the group the newly created layers should belong to
+(for \code{\link{clearGroup}} and \code{\link{addLayersControl}} purposes).
+Human-friendly group names are permitted--they need not be short,
+identifier-style names. Any number of layers and even different types of
+layers (e.g. markers and polygons) can share the same group name.}
+
 \item{options}{a list of extra options for tile layers, popups, paths
 (circles, rectangles, polygons, ...), or other map elements}
 

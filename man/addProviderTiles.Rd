@@ -20,6 +20,11 @@ providerTileOptions(errorTileUrl = "", noWrap = FALSE, opacity = NULL,
 
 \item{layerId}{the layer id to assign}
 
+\item{group}{the name of the group the newly created layers should belong to
+(for \code{\link{clearGroup}} and \code{\link{addLayersControl}} purposes).
+Human-friendly group names are permitted--they need not be short,
+identifier-style names.}
+
 \item{options}{tile options}
 
 \item{errorTileUrl, noWrap, opacity, zIndex, unloadInvisibleTiles, updateWhenIdle, detectRetina, reuseTiles}{the tile layer options; see

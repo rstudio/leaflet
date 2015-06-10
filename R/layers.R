@@ -54,6 +54,8 @@ bboxAdd = function(a, b) {
   )
 }
 
+#' @param group the name of the group whose members should be removed
+#' @rdname remove
 #' @export
 clearGroup <- function(map, group) {
   invokeMethod(map, getMapData(map), 'clearGroup', group);
@@ -137,7 +139,7 @@ tileOptions = function(
 #' Remove elements from a map
 #'
 #' Remove one or more features from a map, identified by \code{layerId}; or,
-#' clear all features of the given type.
+#' clear all features of the given type or group.
 #'
 #' @note When used with a \code{\link{leaflet}}() map object, these functions
 #'   don't actually remove the features from the map object, but simply add an
@@ -218,6 +220,11 @@ WMSTileOptions = function(
 #'   recommended to escape the text using \code{\link[htmltools]{htmlEscape}()}
 #'   for security reasons)
 #' @param layerId the layer id
+#' @param group the name of the group the newly created layers should belong to
+#'   (for \code{\link{clearGroup}} and \code{\link{addLayersControl}} purposes).
+#'   Human-friendly group names are permitted--they need not be short,
+#'   identifier-style names. Any number of layers and even different types of
+#'   layers (e.g. markers and polygons) can share the same group name.
 #' @param data the data object from which the argument values are derived; by
 #'   default, it is the \code{data} object provided to \code{leaflet()}
 #'   initially, but can be overridden
@@ -723,7 +730,59 @@ clearGeoJSON = function(map) {
   invokeMethod(map, NULL, 'clearGeoJSON')
 }
 
+#' Add UI controls to switch layers on and off
+#'
+#' Uses Leaflet's built-in
+#' \href{http://leafletjs.com/reference.html#control-layers}{layers control}
+#' feature to allow users to choose one of several base layers, and to choose
+#' any number of overlay layers to view.
+#'
+#' @param map the map to add the layers control to
+#' @param baseGroups character vector where each element is the name of a group.
+#'   The user will be able to choose one base group (only) at a time. This is
+#'   most commonly used for mostly-opaque tile layers.
+#' @param overlayGroups character vector where each element is the name of a
+#'   group. The user can turn each overlay group on or off independently.
+#' @param position position of control: 'topleft', 'topright', 'bottomleft', or
+#'   'bottomright'
+#' @param options a list of additional options, intended to be provided by
+#'   a call to \code{layersControlOptions}
+#'
+#' @note The groups that are referred to in \code{baseGroups} and
+#'   \code{overlayGroups} must already exist in the map when
+#'   \code{addLayerGroups} is called. Any non-existent group will be silently
+#'   ignored.
+#'
+#' @examples
+#' \donttest{
+#' leaflet() %>%
+#'   addTiles(group = "OpenStreetMap") %>%
+#'   addProviderTiles("Stamen.Toner", group = "Toner by Stamen") %>%
+#'   addMarkers(runif(20, -75, -74), runif(20, 41, 42), group = "Markers") %>%
+#'   addLayersControl(
+#'     baseGroups = c("OpenStreetMap", "Toner by Stamen"),
+#'     overlayGroups = c("Markers")
+#'   )
+#' }
+#'
 #' @export
-addLayersControl = function(map, baseGroups = character(0), overlayGroups = character(0)) {
-  invokeMethod(map, getMapData(map), 'addLayersControl', baseGroups, overlayGroups)
+addLayersControl = function(map,
+  baseGroups = character(0), overlayGroups = character(0),
+  position = c('topright', 'bottomright', 'bottomleft', 'topleft'),
+  options = layersControlOptions()) {
+
+  options = c(options, list(position = match.arg(position)))
+  invokeMethod(map, getMapData(map), 'addLayersControl', baseGroups,
+    overlayGroups, options)
+}
+
+#' @rdname addLayersControl
+#' @param collapsed if \code{TRUE} (the default), the layers control will be
+#'   rendered as an icon that expands when hovered over. Set to \code{FALSE}
+#'   to have the layers control always appear in its expanded state.
+#' @param autoZIndex if \code{TRUE}, the control will automatically maintain
+#'   the z-order of its various groups as overlays are switched on and off.
+#' @export
+layersControlOptions = function(collapsed = TRUE, autoZIndex = TRUE) {
+  list(collapsed = collapsed, autoZIndex = autoZIndex)
 }
