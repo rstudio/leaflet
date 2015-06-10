@@ -35,6 +35,6 @@ Suggests:
     maps,
     shiny,
     sp,
-    testit,
+    testit (>= 0.4),
     R6
 VignetteBuilder: knitr

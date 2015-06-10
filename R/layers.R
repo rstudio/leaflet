@@ -176,12 +176,12 @@ clearTiles = function(map) {
 #' @describeIn map-layers Add a WMS tile layer to the map
 #' @export
 addWMSTiles = function(
-  map, baseUrl, layerId = NULL,
+  map, baseUrl, layerId = NULL, group = NULL,
   options = WMSTileOptions(), attribution = NULL, layers = ''
 ) {
   options$attribution = attribution
   options$layers = layers
-  invokeMethod(map, getMapData(map), 'addWMSTiles', baseUrl, layerId, options)
+  invokeMethod(map, getMapData(map), 'addWMSTiles', baseUrl, layerId, group, options)
 }
 
 #' @param styles comma-separated list of WMS styles
@@ -577,7 +577,7 @@ pathOptions = function(
 #' @describeIn map-layers Add circles to the map
 #' @export
 addCircles = function(
-  map, lng = NULL, lat = NULL, radius = 10, layerId = NULL,
+  map, lng = NULL, lat = NULL, radius = 10, layerId = NULL, group = NULL,
   stroke = TRUE,
   color = "#03F",
   weight = 5,
@@ -596,7 +596,7 @@ addCircles = function(
     dashArray = dashArray
   ))
   pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addCircles")
-  invokeMethod(map, data, 'addCircles', pts$lat, pts$lng, radius, layerId, options, popup) %>%
+  invokeMethod(map, data, 'addCircles', pts$lat, pts$lng, radius, layerId, group, options, popup) %>%
     expandLimits(pts$lat, pts$lng)
 }
 
@@ -606,7 +606,7 @@ addCircles = function(
 #' @describeIn map-layers Add polylines to the map
 #' @export
 addPolylines = function(
-  map, lng = NULL, lat = NULL, layerId = NULL,
+  map, lng = NULL, lat = NULL, layerId = NULL, group = NULL,
   stroke = TRUE,
   color = "#03F",
   weight = 5,
@@ -627,7 +627,7 @@ addPolylines = function(
     dashArray = dashArray, smoothFactor = smoothFactor, noClip = noClip
   ))
   pgons = derivePolygons(data, lng, lat, missing(lng), missing(lat), "addPolylines")
-  invokeMethod(map, data, 'addPolylines', pgons, layerId, options, popup) %>%
+  invokeMethod(map, data, 'addPolylines', pgons, layerId, group, options, popup) %>%
     expandLimitsBbox(pgons)
 }
 
@@ -667,7 +667,7 @@ addRectangles = function(
 #' @describeIn map-layers Add polygons to the map
 #' @export
 addPolygons = function(
-  map, lng = NULL, lat = NULL, layerId = NULL,
+  map, lng = NULL, lat = NULL, layerId = NULL, group = NULL,
   stroke = TRUE,
   color = "#03F",
   weight = 5,
@@ -688,7 +688,7 @@ addPolygons = function(
     dashArray = dashArray, smoothFactor = smoothFactor, noClip = noClip
   ))
   pgons = derivePolygons(data, lng, lat, missing(lng), missing(lat), "addPolygons")
-  invokeMethod(map, data, 'addPolygons', pgons, layerId, options, popup) %>%
+  invokeMethod(map, data, 'addPolygons', pgons, layerId, group, options, popup) %>%
     expandLimitsBbox(pgons)
 }
 

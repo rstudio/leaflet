@@ -13,43 +13,42 @@
 \alias{addWMSTiles}
 \title{Graphics elements and layers}
 \usage{
-addControl(map, html, position = c("topleft", "topright", "bottomleft", 
-    "bottomright"), layerId = NULL, classes = c("info", "legend"), 
-    data = getMapData(map))
+addControl(map, html, position = c("topleft", "topright", "bottomleft", "bottomright"), 
+    layerId = NULL, classes = c("info", "legend"), data = getMapData(map))
 
 addTiles(map, urlTemplate = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", 
     attribution = NULL, layerId = NULL, group = NULL, options = tileOptions())
 
-addWMSTiles(map, baseUrl, layerId = NULL, options = WMSTileOptions(), 
+addWMSTiles(map, baseUrl, layerId = NULL, group = NULL, options = WMSTileOptions(), 
     attribution = NULL, layers = "")
 
 addPopups(map, lng = NULL, lat = NULL, popup, layerId = NULL, group = NULL, 
     options = popupOptions(), data = getMapData(map))
 
-addMarkers(map, lng = NULL, lat = NULL, layerId = NULL, group = NULL, 
-    icon = NULL, popup = NULL, options = markerOptions(), data = getMapData(map))
+addMarkers(map, lng = NULL, lat = NULL, layerId = NULL, group = NULL, icon = NULL, 
+    popup = NULL, options = markerOptions(), data = getMapData(map))
 
 addCircleMarkers(map, lng = NULL, lat = NULL, radius = 10, layerId = NULL, 
     group = NULL, stroke = TRUE, color = "#03F", weight = 5, opacity = 0.5, 
-    fill = TRUE, fillColor = color, fillOpacity = 0.2, dashArray = NULL, 
-    popup = NULL, options = pathOptions(), data = getMapData(map))
+    fill = TRUE, fillColor = color, fillOpacity = 0.2, dashArray = NULL, popup = NULL, 
+    options = pathOptions(), data = getMapData(map))
 
-addCircles(map, lng = NULL, lat = NULL, radius = 10, layerId = NULL, 
+addCircles(map, lng = NULL, lat = NULL, radius = 10, layerId = NULL, group = NULL, 
     stroke = TRUE, color = "#03F", weight = 5, opacity = 0.5, fill = TRUE, 
     fillColor = color, fillOpacity = 0.2, dashArray = NULL, popup = NULL, 
     options = pathOptions(), data = getMapData(map))
 
-addPolylines(map, lng = NULL, lat = NULL, layerId = NULL, stroke = TRUE, 
+addPolylines(map, lng = NULL, lat = NULL, layerId = NULL, group = NULL, stroke = TRUE, 
     color = "#03F", weight = 5, opacity = 0.5, fill = FALSE, fillColor = color, 
     fillOpacity = 0.2, dashArray = NULL, smoothFactor = 1, noClip = FALSE, 
     popup = NULL, options = pathOptions(), data = getMapData(map))
 
-addRectangles(map, lng1, lat1, lng2, lat2, layerId = NULL, group = NULL, 
-    stroke = TRUE, color = "#03F", weight = 5, opacity = 0.5, fill = TRUE, 
-    fillColor = color, fillOpacity = 0.2, dashArray = NULL, smoothFactor = 1, 
-    noClip = FALSE, popup = NULL, options = pathOptions(), data = getMapData(map))
+addRectangles(map, lng1, lat1, lng2, lat2, layerId = NULL, group = NULL, stroke = TRUE, 
+    color = "#03F", weight = 5, opacity = 0.5, fill = TRUE, fillColor = color, 
+    fillOpacity = 0.2, dashArray = NULL, smoothFactor = 1, noClip = FALSE, 
+    popup = NULL, options = pathOptions(), data = getMapData(map))
 
-addPolygons(map, lng = NULL, lat = NULL, layerId = NULL, stroke = TRUE, 
+addPolygons(map, lng = NULL, lat = NULL, layerId = NULL, group = NULL, stroke = TRUE, 
     color = "#03F", weight = 5, opacity = 0.5, fill = TRUE, fillColor = color, 
     fillOpacity = 0.2, dashArray = NULL, smoothFactor = 1, noClip = FALSE, 
     popup = NULL, options = pathOptions(), data = getMapData(map))
