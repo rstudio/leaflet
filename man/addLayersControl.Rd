@@ -2,6 +2,7 @@
 \name{addLayersControl}
 \alias{addLayersControl}
 \alias{layersControlOptions}
+\alias{removeLayersControl}
 \title{Add UI controls to switch layers on and off}
 \usage{
 addLayersControl(map, baseGroups = character(0), overlayGroups = character(0), 
@@ -9,6 +10,8 @@ addLayersControl(map, baseGroups = character(0), overlayGroups = character(0),
     options = layersControlOptions())
 
 layersControlOptions(collapsed = TRUE, autoZIndex = TRUE)
+
+removeLayersControl(map)
 }
 \arguments{
 \item{map}{the map to add the layers control to}

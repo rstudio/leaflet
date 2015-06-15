@@ -786,3 +786,9 @@ addLayersControl = function(map,
 layersControlOptions = function(collapsed = TRUE, autoZIndex = TRUE) {
   list(collapsed = collapsed, autoZIndex = autoZIndex)
 }
+
+#' @rdname addLayersControl
+#' @export
+removeLayersControl = function(map) {
+  invokeMethod(map, NULL, 'removeLayersControl')
+}
