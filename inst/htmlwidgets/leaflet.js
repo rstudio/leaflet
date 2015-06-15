@@ -851,6 +851,13 @@ var dataframe = (function() {
   methods.addLayersControl = function(baseGroups, overlayGroups, options) {
 
     var self = this;
+
+    // Only allow one layers control at a time
+    if (this.currentLayersControl) {
+      this.currentLayersControl.removeFrom(this);
+      this.currentLayersControl = null;
+    }
+
     var base = {};
     $.each(asArray(baseGroups), function(i, g) {
       var layer = self.layerManager.getLayerGroup(g);
@@ -866,7 +873,8 @@ var dataframe = (function() {
       }
     });
 
-    L.control.layers(base, overlay, options).addTo(this);
+    var layersControl = L.control.layers(base, overlay, options).addTo(this);
+    this.currentLayersControl = layersControl;
   };
 
   HTMLWidgets.widget({
