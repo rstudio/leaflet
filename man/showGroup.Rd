@@ -1,0 +1,24 @@
+% Please edit documentation in R/layers.R
+\name{showGroup}
+\alias{hideGroup}
+\alias{showGroup}
+\title{Show or hide layer groups}
+\usage{
+showGroup(map, group)
+
+hideGroup(map, group)
+}
+\arguments{
+\item{map}{the map to modify}
+
+\item{group}{character vector of one or more group names to show or hide}
+}
+\description{
+Hide groups of layers without removing them from the map entirely. Groups are
+created using the \code{group} parameter that is included on most layer
+adding functions.
+}
+\seealso{
+\code{\link{addLayersControl}} to allow users to show/hide layer
+  groups interactively
+}

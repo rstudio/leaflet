@@ -886,6 +886,26 @@ var dataframe = (function() {
     }
   };
 
+  methods.hideGroup = function(group) {
+    var self = this;
+    $.each(asArray(group), function(i, g) {
+      var layer = self.layerManager.getLayerGroup(g, true);
+      if (layer) {
+        self.removeLayer(layer);
+      }
+    });
+  };
+
+  methods.showGroup = function(group) {
+    var self = this;
+    $.each(asArray(group), function(i, g) {
+      var layer = self.layerManager.getLayerGroup(g, true);
+      if (layer) {
+        self.addLayer(layer);
+      }
+    });
+  };
+
   HTMLWidgets.widget({
     name: "leaflet",
     type: "output",

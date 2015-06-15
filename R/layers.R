@@ -61,6 +61,29 @@ clearGroup <- function(map, group) {
   invokeMethod(map, getMapData(map), 'clearGroup', group);
 }
 
+#' Show or hide layer groups
+#'
+#' Hide groups of layers without removing them from the map entirely. Groups are
+#' created using the \code{group} parameter that is included on most layer
+#' adding functions.
+#'
+#' @param map the map to modify
+#' @param group character vector of one or more group names to show or hide
+#'
+#' @seealso \code{\link{addLayersControl}} to allow users to show/hide layer
+#'   groups interactively
+#'
+#' @export
+showGroup = function(map, group) {
+  invokeMethod(map, getMapData(map), 'showGroup', group)
+}
+
+#' @rdname showGroup
+#' @export
+hideGroup = function(map, group) {
+  invokeMethod(map, getMapData(map), 'hideGroup', group)
+}
+
 #' Graphics elements and layers
 #'
 #' Add graphics elements and layers to the map widget.

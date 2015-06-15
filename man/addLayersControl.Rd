@@ -42,12 +42,6 @@ Uses Leaflet's built-in
 feature to allow users to choose one of several base layers, and to choose
 any number of overlay layers to view.
 }
-\note{
-The groups that are referred to in \code{baseGroups} and
-  \code{overlayGroups} must already exist in the map when
-  \code{addLayerGroups} is called. Any non-existent group will be silently
-  ignored.
-}
 \examples{
 \donttest{
 leaflet() \%>\% addTiles(group = "OpenStreetMap") \%>\% addProviderTiles("Stamen.Toner", 
