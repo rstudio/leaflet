@@ -279,13 +279,13 @@ toPaletteFunc = function(pal, alpha) {
 # of an RColorBrewer palette
 toPaletteFunc.character = function(pal, alpha) {
   if (length(pal) == 1 && pal %in% row.names(RColorBrewer::brewer.pal.info)) {
-    return(rasterfaster::createColorRamp(
+    return(scales::colour_ramp(
       RColorBrewer::brewer.pal(RColorBrewer::brewer.pal.info[pal, 'maxcolors'], pal),
       alpha = alpha
     ))
   }
 
-  rasterfaster::createColorRamp(pal, alpha = alpha)
+  scales::colour_ramp(pal, alpha = alpha)
 }
 
 # Accept colorRamp style matrix

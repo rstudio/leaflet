@@ -31,8 +31,7 @@ Imports:
     RColorBrewer,
     RJSONIO,
     raster,
-    rasterfaster,
-    scales,
+    scales (>= 0.2.5),
     sp
 Suggests:
     knitr,
