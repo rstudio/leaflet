@@ -315,6 +315,14 @@ var dataframe = (function() {
     this._controlsById = {}
   }
 
+  function ClusterManager(group) {
+    this._layers = {};
+    this._group = group;
+  }
+  $.each(['add', 'remove', 'clear'], function(i, v) {
+    ClusterManager.prototype[v] = LayerStore.prototype[v];
+  });
+
   function mouseHandler(mapId, layerId, eventName, extraInfo) {
     return function(e) {
       if (!HTMLWidgets.shinyMode) return;
@@ -487,6 +495,7 @@ var dataframe = (function() {
         cluster = clusterOptions !== null;
     if (cluster && !clusterGroup) {
       clusterGroup = L.markerClusterGroup(clusterOptions);
+      clusterGroup.clusterManger = new ClusterManager(clusterGroup);
     }
 
     for (var i = 0; i < df.nrow(); i++) {
@@ -496,7 +505,7 @@ var dataframe = (function() {
         var marker = L.marker([df.get(i, 'lat'), df.get(i, 'lng')], options);
         var thisId = df.get(i, 'layerId');
         if (cluster) {
-          clusterGroup.addLayer(marker);
+          clusterGroup.clusterManger.add(marker, thisId);
         } else {
           this.markers.add(marker, thisId);
         }
@@ -596,6 +605,12 @@ var dataframe = (function() {
 
   methods.removeMarkerCluster = function(layerId) {
     this.markerclusters.remove(layerId);
+  }
+
+  methods.removeMarkerFromCluster = function(layerId, clusterId) {
+    var cluster = this.markerclusters.get(clusterId);
+    if (!cluster) return;
+    cluster.clusterManger.remove(layerId);
   }
 
   methods.clearMarkerClusters = function() {
