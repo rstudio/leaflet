@@ -3,6 +3,7 @@
 \alias{clearControls}
 \alias{clearGeoJSON}
 \alias{clearImages}
+\alias{clearMarkerClusters}
 \alias{clearMarkers}
 \alias{clearPopups}
 \alias{clearShapes}
@@ -12,6 +13,8 @@
 \alias{removeGeoJSON}
 \alias{removeImage}
 \alias{removeMarker}
+\alias{removeMarkerCluster}
+\alias{removeMarkerFromCluster}
 \alias{removePopup}
 \alias{removeShape}
 \alias{removeTiles}
@@ -36,6 +39,12 @@ clearPopups(map)
 removeMarker(map, layerId)
 
 clearMarkers(map)
+
+removeMarkerCluster(map, layerId)
+
+clearMarkerClusters(map)
+
+removeMarkerFromCluster(map, layerId, clusterId)
 
 removeShape(map, layerId)
 
