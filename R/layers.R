@@ -675,6 +675,24 @@ clearMarkers = function(map) {
   invokeMethod(map, NULL, 'clearMarkers')
 }
 
+#' @rdname remove
+#' @export
+removeMarkerCluster = function(map, layerId) {
+  invokeMethod(map, NULL, 'removeMarkerCluster', layerId)
+}
+
+#' @rdname remove
+#' @export
+clearMarkerClusters = function(map) {
+  invokeMethod(map, NULL, 'clearMarkerClusters')
+}
+
+#' @rdname remove
+#' @export
+removeMarkerFromCluster = function(map, layerId, clusterId) {
+  invokeMethod(map, NULL, 'removeMarkerFromCluster', layerId, clusterId)
+}
+
 #' @param lineCap a string that defines
 #'   \href{https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linecap}{shape
 #'    to be used at the end} of the stroke
