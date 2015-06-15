@@ -271,7 +271,7 @@ var dataframe = (function() {
     }
     return g;
   };
-  LayerManager.prototype.removeGroup = function(group) {
+  LayerManager.prototype.clearGroup = function(group) {
     var self = this;
 
     // Find all layers in _byGroup[group]
@@ -408,7 +408,7 @@ var dataframe = (function() {
   methods.clearGroup = function(group) {
     var self = this;
     $.each(asArray(group), function(i, v) {
-      self.layerManager.removeGroup(v);
+      self.layerManager.clearGroup(v);
     });
   };
 
