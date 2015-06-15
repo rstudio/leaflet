@@ -263,8 +263,13 @@ var dataframe = (function() {
       self._removeLayer(stamp);
     });
   };
-  LayerManager.prototype.getLayerGroup = function(group) {
-    return this._groupContainers[group];
+  LayerManager.prototype.getLayerGroup = function(group, ensureExists) {
+    var g = this._groupContainers[group];
+    if (ensureExists && !g) {
+      this._byGroup[group] = this._byGroup[group] || {};
+      g = this._groupContainers[group] = L.layerGroup().addTo(this._map);
+    }
+    return g;
   };
   LayerManager.prototype.removeGroup = function(group) {
     var self = this;
@@ -857,14 +862,14 @@ var dataframe = (function() {
 
     var base = {};
     $.each(asArray(baseGroups), function(i, g) {
-      var layer = self.layerManager.getLayerGroup(g);
+      var layer = self.layerManager.getLayerGroup(g, true);
       if (layer) {
         base[g] = layer;
       }
     });
     var overlay = {};
     $.each(asArray(overlayGroups), function(i, g) {
-      var layer = self.layerManager.getLayerGroup(g);
+      var layer = self.layerManager.getLayerGroup(g, true);
       if (layer) {
         overlay[g] = layer;
       }
