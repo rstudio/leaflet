@@ -174,7 +174,7 @@ invokeRemote = function(map, method, args = list()) {
 
   sess <- map$session
   if (map$deferUntilFlush) {
-    if (packageVersion("shiny") < "0.12.0.9002") {
+    if (packageVersion("shiny") < "0.12.1.9000") {
 
       # See comment on sessionFlushQueue.
 
