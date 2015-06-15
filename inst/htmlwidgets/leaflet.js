@@ -483,8 +483,9 @@ var dataframe = (function() {
 
     if (icon) icondf.effectiveLength = df.nrow();
 
-    var clusterGroup, cluster = clusterOptions !== null;
-    if (cluster) {
+    var clusterGroup = this.markerclusters.get(clusterId),
+        cluster = clusterOptions !== null;
+    if (cluster && !clusterGroup) {
       clusterGroup = L.markerClusterGroup(clusterOptions);
     }
 
