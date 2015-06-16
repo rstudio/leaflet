@@ -315,13 +315,39 @@ var dataframe = (function() {
     this._controlsById = {}
   }
 
-  function ClusterManager(group) {
+  function ClusterLayerStore(group) {
     this._layers = {};
     this._group = group;
   }
-  $.each(['add', 'remove', 'clear'], function(i, v) {
-    ClusterManager.prototype[v] = LayerStore.prototype[v];
-  });
+
+  ClusterLayerStore.prototype.add = function(layer, id) {
+    if (typeof(id) !== 'undefined' && id !== null) {
+      if (this._layers[id]) {
+        this._group.removeLayer(this._layers[id]);
+      }
+      this._layers[id] = layer;
+    }
+    this._group.addLayer(layer);
+  };
+
+  ClusterLayerStore.prototype.remove = function(id) {
+    if (typeof(id) === 'undefined' || id === null) {
+      return;
+    }
+
+    id = asArray(id);
+    for (var i = 0; i < id.length; i++) {
+      if (this._layers[id[i]]) {
+        this._group.removeLayer(this._layers[id[i]]);
+        delete this._layers[id[i]];
+      }
+    }
+  };
+
+  ClusterLayerStore.prototype.clear = function() {
+    this._layers = {};
+    this._group.clearLayers();
+  };
 
   function mouseHandler(mapId, layerId, eventName, extraInfo) {
     return function(e) {
@@ -495,7 +521,7 @@ var dataframe = (function() {
         cluster = clusterOptions !== null;
     if (cluster && !clusterGroup) {
       clusterGroup = L.markerClusterGroup(clusterOptions);
-      clusterGroup.clusterManger = new ClusterManager(clusterGroup);
+      clusterGroup.clusterLayerStore = new ClusterLayerStore(clusterGroup);
     }
 
     for (var i = 0; i < df.nrow(); i++) {
@@ -505,7 +531,7 @@ var dataframe = (function() {
         var marker = L.marker([df.get(i, 'lat'), df.get(i, 'lng')], options);
         var thisId = df.get(i, 'layerId');
         if (cluster) {
-          clusterGroup.clusterManger.add(marker, thisId);
+          clusterGroup.clusterLayerStore.add(marker, thisId);
         } else {
           this.markers.add(marker, thisId);
         }
@@ -610,7 +636,7 @@ var dataframe = (function() {
   methods.removeMarkerFromCluster = function(layerId, clusterId) {
     var cluster = this.markerclusters.get(clusterId);
     if (!cluster) return;
-    cluster.clusterManger.remove(layerId);
+    cluster.clusterLayerStore.remove(layerId);
   }
 
   methods.clearMarkerClusters = function() {
