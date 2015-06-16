@@ -523,6 +523,11 @@ var dataframe = (function() {
       clusterGroup = L.markerClusterGroup(clusterOptions);
       clusterGroup.clusterLayerStore = new ClusterLayerStore(clusterGroup);
     }
+    (function() {
+      clusterGroup.on('clusterclick', mouseHandler(this.id, clusterId, 'cluster_click'), this);
+      clusterGroup.on('clustermouseover', mouseHandler(this.id, clusterId, 'cluster_mouseover'), this);
+      clusterGroup.on('clustermouseout', mouseHandler(this.id, clusterId, 'cluster_mouseout'), this);
+    }).call(this);
 
     for (var i = 0; i < df.nrow(); i++) {
       (function() {
