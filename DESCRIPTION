@@ -29,7 +29,6 @@ Imports:
     markdown,
     png,
     RColorBrewer,
-    RJSONIO,
     raster,
     scales (>= 0.2.5),
     sp
@@ -38,5 +37,6 @@ Suggests:
     maps,
     shiny,
     testit,
+    rgdal,
     R6
 VignetteBuilder: knitr
