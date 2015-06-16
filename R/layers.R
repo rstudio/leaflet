@@ -381,10 +381,15 @@ clearPopups = function(map) {
 
 #' @param icon the icon(s) for markers; an icon is represented by an R list of
 #'   the form \code{list(iconUrl = '?', iconSize = c(x, y))}, and you can use
-#'   \code{\link{icons}()} to create multiple icons; note when you use an R
-#'   list that contains images as local files, these local image files will be
-#'   base64 encoded into the HTML page so the icon images will still be
-#'   available even when you publish the map elsewhere
+#'   \code{\link{icons}()} to create multiple icons; note when you use an R list
+#'   that contains images as local files, these local image files will be base64
+#'   encoded into the HTML page so the icon images will still be available even
+#'   when you publish the map elsewhere
+#' @param clusterOptions if not \code{NULL}, markers will be clustered using
+#'   \href{https://github.com/Leaflet/Leaflet.markercluster}{Leaflet.markercluster};
+#'    you can use \code{\link{markerClusterOptions}()} to specify marker cluster
+#'   options
+#' @param clusterId the id for the marker cluster layer
 #' @describeIn map-layers Add markders to the map
 #' @export
 addMarkers = function(
@@ -619,6 +624,27 @@ markerOptions = function(
     clickable = clickable, draggable = draggable, keyboard = keyboard,
     title = title, alt = alt, zIndexOffset = zIndexOffset, opacity = opacity,
     riseOnHover = riseOnHover, riseOffset = riseOffset
+  )
+}
+
+#' @param showCoverageOnHover when you mouse over a cluster it shows the bounds
+#'   of its markers
+#' @param zoomToBoundsOnClick when you click a cluster we zoom to its bounds
+#' @param spiderfyOnMaxZoom when you click a cluster at the bottom zoom level we
+#'   spiderfy it so you can see all of its markers
+#' @param removeOutsideVisibleBounds clusters and markers too far from the
+#'   viewport are removed from the map for performance
+#' @describeIn map-options Options for marker clusters
+#' @export
+markerClusterOptions = function(
+  showCoverageOnHover = TRUE, zoomToBoundsOnClick = TRUE,
+  spiderfyOnMaxZoom = TRUE, removeOutsideVisibleBounds = TRUE, ...
+) {
+  list(
+    showCoverageOnHover = showCoverageOnHover,
+    zoomToBoundsOnClick = zoomToBoundsOnClick,
+    spiderfyOnMaxZoom = spiderfyOnMaxZoom,
+    removeOutsideVisibleBounds = removeOutsideVisibleBounds, ...
   )
 }
 
