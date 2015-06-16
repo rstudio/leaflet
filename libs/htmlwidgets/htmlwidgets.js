@@ -452,7 +452,7 @@
 
         if (binding.resize) {
           var lastSize = {};
-          on(window, "resize", function(e) {
+          var resizeHandler = function(e) {
             var size = {
               w: sizeObj ? sizeObj.getWidth() : el.offsetWidth,
               h: sizeObj ? sizeObj.getHeight() : el.offsetHeight
@@ -463,7 +463,35 @@
               return;
             lastSize = size;
             binding.resize(el, size.w, size.h, initResult);
-          });
+          };
+
+          on(window, "resize", resizeHandler);
+
+          // This is needed for cases where we're running in a Shiny
+          // app, but the widget itself is not a Shiny output, but
+          // rather a simple static widget. One example of this is
+          // an rmarkdown document that has runtime:shiny and widget
+          // that isn't in a render function. Shiny only knows to
+          // call resize handlers for Shiny outputs, not for static
+          // widgets, so we do it ourselves.
+          if (window.jQuery) {
+            window.jQuery(document).on("shown", resizeHandler);
+            window.jQuery(document).on("hidden", resizeHandler);
+          }
+
+          // This is needed for the specific case of ioslides, which
+          // flips slides between display:none and display:block.
+          // Ideally we would not have to have ioslide-specific code
+          // here, but rather have ioslides raise a generic event,
+          // but the rmarkdown package just went to CRAN so the
+          // window to getting that fixed may be long.
+          if (window.addEventListener) {
+            // It's OK to limit this to window.addEventListener
+            // browsers because ioslides itself only supports
+            // such browsers.
+            on(document, "slideenter", resizeHandler);
+            on(document, "slideleave", resizeHandler);
+          }
         }
 
         var scriptData = document.querySelector("script[data-for='" + el.id + "'][type='application/json']");
