@@ -154,12 +154,10 @@ img {
 </div>
 <div id="example" class="section level3">
 <h3>Example</h3>
-<pre class="r"><code>library(raster)</code></pre>
-<pre><code>## Loading required package: methods
-## Loading required package: sp</code></pre>
-<pre class="r"><code>r &lt;- raster(&quot;nc/oisst-sst.nc&quot;)</code></pre>
-<pre><code>## Loading required namespace: ncdf</code></pre>
-<pre class="r"><code>pal &lt;- colorNumeric(c(&quot;#0C2C84&quot;, &quot;#41B6C4&quot;, &quot;#FFFFCC&quot;), values(r),
+<pre class="r"><code>library(raster)
+
+r &lt;- raster(&quot;nc/oisst-sst.nc&quot;)
+pal &lt;- colorNumeric(c(&quot;#0C2C84&quot;, &quot;#41B6C4&quot;, &quot;#FFFFCC&quot;), values(r),
   na.color = &quot;transparent&quot;)
 
 leaflet() %&gt;% addTiles() %&gt;%

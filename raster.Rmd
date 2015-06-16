@@ -36,6 +36,11 @@ In order to render the `RasterLayer` as an image, each cell value must be conver
 
 ### Example
 
+```{r echo=FALSE}
+suppressPackageStartupMessages({
+  library(raster)
+  r <- raster("nc/oisst-sst.nc")
+})
 ```{r}
 library(raster)
 
