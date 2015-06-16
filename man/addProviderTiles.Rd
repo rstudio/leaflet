@@ -33,8 +33,6 @@ modified map object
 Add a tile layer from a known map provider
 }
 \examples{
-\donttest{
 leaflet() \%>\% addProviderTiles("Stamen.Watercolor") \%>\% 
     addProviderTiles("Stamen.TonerHybrid")
-}
 }

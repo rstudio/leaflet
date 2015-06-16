@@ -131,7 +131,6 @@ epsg3857 <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y
 #'   (before base64 encoding); defaults to 4MB.
 #'
 #' @examples
-#' \donttest{
 #' library(raster)
 #'
 #' r <- raster(xmn=-2.8, xmx=-2.79, ymn=54.04, ymx=54.05, nrows=30, ncols=30)
@@ -140,7 +139,6 @@ epsg3857 <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y
 #'
 #' leaflet() %>% addTiles() %>%
 #'   addRasterImage(r, colors = "Spectral", opacity = 0.8)
-#' }
 #' @export
 addRasterImage = function(
   map,

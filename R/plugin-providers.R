@@ -26,11 +26,9 @@ leafletProviderDependencies <- function() {
 #' @return modified map object
 #'
 #' @examples
-#' \donttest{
 #' leaflet() %>%
 #'   addProviderTiles("Stamen.Watercolor") %>%
 #'   addProviderTiles("Stamen.TonerHybrid")
-#' }
 #'
 #' @export
 addProviderTiles <- function(
