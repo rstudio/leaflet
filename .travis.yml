@@ -9,10 +9,10 @@ install:
   - sudo apt-add-repository -y ppa:marutter/c2d4u
   - sudo apt-get update
   - sudo apt-get -y install r-base-core r-cran-devtools r-cran-knitr r-cran-shiny r-cran-sp r-cran-yaml
+  - sudo apt-get -y install aptitude
   - "wget -q -O - http://yihui.name/xran/r-config | bash"
   - Rscript -e "devtools::install_deps(dep = TRUE)"
-  - Rscript -e "install.packages('xtable')"
-  - Rscript -e "devtools::install_github('rstudio/shiny')"
+  - Rscript -e "install.packages(c('shiny', 'xtable'))"
 
 script:
   - cd ..; rm -f *.tar.gz; R CMD build $R_PKG

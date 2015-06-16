@@ -20,13 +20,17 @@
 #'   domain.
 #' @param na.color The color to return for \code{NA} values. Note that
 #'   \code{na.color=NA} is valid.
+#' @param alpha Whether alpha channels should be respected or ignored. If
+#'   \code{TRUE} then colors without explicit alpha information will be treated
+#'   as fully opaque.
 #'
 #' @return A function that takes a single parameter \code{x}; when called with a
 #'   vector of numbers (except for \code{colorFactor}, which expects
-#'   factors/characters), #RRGGBB color strings are returned.
+#'   factors/characters), #RRGGBB color strings are returned (unless
+#'   \code{alpha=TRUE} in which case #RRGGBBAA may also be possible).
 #'
 #' @export
-colorNumeric = function(palette, domain, na.color = "#808080") {
+colorNumeric = function(palette, domain, na.color = "#808080", alpha = FALSE) {
   rng = NULL
   if (length(domain) > 0) {
     rng = range(domain, na.rm = TRUE)
@@ -35,7 +39,7 @@ colorNumeric = function(palette, domain, na.color = "#808080") {
     }
   }
 
-  pf = safePaletteFunc(palette, na.color)
+  pf = safePaletteFunc(palette, na.color, alpha)
 
   withColorAttr('numeric', list(na.color = na.color), function(x) {
     if (length(x) == 0 || all(is.na(x))) {
@@ -93,7 +97,9 @@ getBins = function(domain, x, bins, pretty) {
 #'   to generate the bins and the breaks may not be "pretty".
 #' @rdname colorNumeric
 #' @export
-colorBin = function(palette, domain, bins = 7, pretty = TRUE, na.color = "#808080") {
+colorBin = function(palette, domain, bins = 7, pretty = TRUE,
+  na.color = "#808080", alpha = FALSE) {
+
   # domain usually needs to be explicitly provided (even if NULL) but not if
   # breaks are specified
   if (missing(domain) && length(bins) > 1) {
@@ -104,7 +110,7 @@ colorBin = function(palette, domain, bins = 7, pretty = TRUE, na.color = "#80808
     bins = getBins(domain, NULL, bins, pretty)
   numColors = if (length(bins) == 1) bins else length(bins) - 1
   colorFunc = colorFactor(palette, domain = if (!autobin) 1:numColors, na.color = na.color)
-  pf = safePaletteFunc(palette, na.color)
+  pf = safePaletteFunc(palette, na.color, alpha)
 
   withColorAttr('bin', list(bins = bins, na.color = na.color), function(x) {
     if (length(x) == 0 || all(is.na(x))) {
@@ -127,20 +133,23 @@ colorBin = function(palette, domain, bins = 7, pretty = TRUE, na.color = "#80808
 #' @rdname colorNumeric
 #' @export
 colorQuantile = function(palette, domain, n = 4,
-  probs = seq(0, 1, length.out = n + 1), na.color = "#808080") {
+  probs = seq(0, 1, length.out = n + 1), na.color = "#808080", alpha = FALSE) {
 
   if (!is.null(domain)) {
     bins = quantile(domain, probs, na.rm = TRUE, names = FALSE)
     return(withColorAttr(
       'quantile', list(probs = probs, na.color = na.color),
-      colorBin(palette, domain = NULL, bins = bins, na.color = na.color)
+      colorBin(palette, domain = NULL, bins = bins, na.color = na.color,
+        alpha = alpha)
     ))
   }
 
   # I don't have a precise understanding of how quantiles are meant to map to colors.
   # If you say probs = seq(0, 1, 0.25), which has length 5, does that map to 4 colors
   # or 5? 4, right?
-  colorFunc = colorFactor(palette, domain = 1:(length(probs) - 1), na.color = na.color)
+  colorFunc = colorFactor(palette, domain = 1:(length(probs) - 1),
+    na.color = na.color, alpha = alpha)
+
   withColorAttr('quantile', list(probs = probs, na.color = na.color), function(x) {
     binsToUse = quantile(x, probs, na.rm = TRUE, names = FALSE)
     ints = cut(x, binsToUse, labels = FALSE, include.lowest = TRUE, right = FALSE)
@@ -187,7 +196,7 @@ getLevels = function(domain, x, lvls, ordered) {
 #' @rdname colorNumeric
 #' @export
 colorFactor = function(palette, domain, levels = NULL, ordered = FALSE,
-  na.color = "#808080") {
+  na.color = "#808080", alpha = FALSE) {
 
   # domain usually needs to be explicitly provided (even if NULL) but not if
   # levels are specified
@@ -201,7 +210,7 @@ colorFactor = function(palette, domain, levels = NULL, ordered = FALSE,
   }
   lvls = getLevels(domain, NULL, levels, ordered)
   hasFixedLevels = is.null(lvls)
-  pf = safePaletteFunc(palette, na.color)
+  pf = safePaletteFunc(palette, na.color, alpha)
 
   withColorAttr('factor', list(na.color = na.color), function(x) {
     if (length(x) == 0 || all(is.na(x))) {
@@ -257,34 +266,35 @@ colorFactor = function(palette, domain, levels = NULL, ordered = FALSE,
 NULL
 
 
-safePaletteFunc = function(pal, na.color) {
-  toPaletteFunc(pal) %>% filterRGB() %>% filterZeroLength() %>% filterNA(na.color) %>% filterRange()
+safePaletteFunc = function(pal, na.color, alpha) {
+  toPaletteFunc(pal, alpha=alpha) %>% filterRGB() %>% filterZeroLength() %>%
+    filterNA(na.color) %>% filterRange()
 }
 
-toPaletteFunc = function(pal) {
+toPaletteFunc = function(pal, alpha) {
   UseMethod("toPaletteFunc")
 }
 
 # Strings are interpreted as color names, unless length is 1 and it's the name
 # of an RColorBrewer palette
-toPaletteFunc.character = function(pal) {
+toPaletteFunc.character = function(pal, alpha) {
   if (length(pal) == 1 && pal %in% row.names(RColorBrewer::brewer.pal.info)) {
-    return(grDevices::colorRamp(
+    return(scales::colour_ramp(
       RColorBrewer::brewer.pal(RColorBrewer::brewer.pal.info[pal, 'maxcolors'], pal),
-      space = 'Lab'
+      alpha = alpha
     ))
   }
 
-  grDevices::colorRamp(pal, space = 'Lab')
+  scales::colour_ramp(pal, alpha = alpha)
 }
 
 # Accept colorRamp style matrix
-toPaletteFunc.matrix = function(pal) {
-  toPaletteFunc(rgb(pal, maxColorValue = 255))
+toPaletteFunc.matrix = function(pal, alpha) {
+  toPaletteFunc(rgb(pal, maxColorValue = 255), alpha = alpha)
 }
 
 # If a function, just assume it's already a function over [0-1]
-toPaletteFunc.function = function(pal) {
+toPaletteFunc.function = function(pal, alpha) {
   pal
 }
 
