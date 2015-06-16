@@ -713,6 +713,7 @@ clearMarkerClusters = function(map) {
   invokeMethod(map, NULL, 'clearMarkerClusters')
 }
 
+#' @param clusterId the id of the marker cluster layer
 #' @rdname remove
 #' @export
 removeMarkerFromCluster = function(map, layerId, clusterId) {

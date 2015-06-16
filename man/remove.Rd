@@ -59,6 +59,8 @@ clearGeoJSON(map)
 but more likely from \code{\link{leafletProxy}}()}
 
 \item{layerId}{character vector; the layer id(s) of the item to remove}
+
+\item{clusterId}{the id of the marker cluster layer}
 }
 \value{
 the new \code{map} object
