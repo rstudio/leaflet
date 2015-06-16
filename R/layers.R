@@ -666,7 +666,7 @@ addCircleMarkers = function(
 #' @rdname remove
 #' @export
 removeMarker = function(map, layerId) {
-  invokeMethod(map, NULL, 'removeMarker', layerId)
+  invokeMethod(map, getMapData(map), 'removeMarker', layerId)
 }
 
 #' @rdname remove
@@ -678,7 +678,7 @@ clearMarkers = function(map) {
 #' @rdname remove
 #' @export
 removeMarkerCluster = function(map, layerId) {
-  invokeMethod(map, NULL, 'removeMarkerCluster', layerId)
+  invokeMethod(map, getMapData(map), 'removeMarkerCluster', layerId)
 }
 
 #' @rdname remove
@@ -690,7 +690,7 @@ clearMarkerClusters = function(map) {
 #' @rdname remove
 #' @export
 removeMarkerFromCluster = function(map, layerId, clusterId) {
-  invokeMethod(map, NULL, 'removeMarkerFromCluster', layerId, clusterId)
+  invokeMethod(map, getMapData(map), 'removeMarkerFromCluster', layerId, clusterId)
 }
 
 #' @param lineCap a string that defines
