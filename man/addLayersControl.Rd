@@ -1,0 +1,52 @@
+% Please edit documentation in R/layers.R
+\name{addLayersControl}
+\alias{addLayersControl}
+\alias{layersControlOptions}
+\alias{removeLayersControl}
+\title{Add UI controls to switch layers on and off}
+\usage{
+addLayersControl(map, baseGroups = character(0), overlayGroups = character(0), 
+    position = c("topright", "bottomright", "bottomleft", "topleft"), 
+    options = layersControlOptions())
+
+layersControlOptions(collapsed = TRUE, autoZIndex = TRUE)
+
+removeLayersControl(map)
+}
+\arguments{
+\item{map}{the map to add the layers control to}
+
+\item{baseGroups}{character vector where each element is the name of a group.
+The user will be able to choose one base group (only) at a time. This is
+most commonly used for mostly-opaque tile layers.}
+
+\item{overlayGroups}{character vector where each element is the name of a
+group. The user can turn each overlay group on or off independently.}
+
+\item{position}{position of control: 'topleft', 'topright', 'bottomleft', or
+'bottomright'}
+
+\item{options}{a list of additional options, intended to be provided by
+  a call to \code{layersControlOptions}}
+
+\item{collapsed}{if \code{TRUE} (the default), the layers control will be
+rendered as an icon that expands when hovered over. Set to \code{FALSE}
+to have the layers control always appear in its expanded state.}
+
+\item{autoZIndex}{if \code{TRUE}, the control will automatically maintain
+the z-order of its various groups as overlays are switched on and off.}
+}
+\description{
+Uses Leaflet's built-in
+\href{http://leafletjs.com/reference.html#control-layers}{layers control}
+feature to allow users to choose one of several base layers, and to choose
+any number of overlay layers to view.
+}
+\examples{
+\donttest{
+leaflet() \%>\% addTiles(group = "OpenStreetMap") \%>\% addProviderTiles("Stamen.Toner", 
+    group = "Toner by Stamen") \%>\% addMarkers(runif(20, -75, -74), runif(20, 
+    41, 42), group = "Markers") \%>\% addLayersControl(baseGroups = c("OpenStreetMap", 
+    "Toner by Stamen"), overlayGroups = c("Markers"))
+}
+}

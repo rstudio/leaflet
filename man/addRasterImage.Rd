@@ -5,7 +5,7 @@
 \title{Add a raster image as a layer}
 \usage{
 addRasterImage(map, x, colors = "Spectral", opacity = 1, attribution = NULL, 
-    layerId = NULL, project = TRUE, maxBytes = 4 * 1024 * 1024)
+    layerId = NULL, group = NULL, project = TRUE, maxBytes = 4 * 1024 * 1024)
 
 projectRasterForLeaflet(x)
 }
@@ -23,6 +23,9 @@ to use to color the raster values (hint: if providing a function, set
 \item{attribution}{the HTML string to show as the attribution for this layer}
 
 \item{layerId}{the layer id}
+
+\item{group}{the name of the group this raster image should belong to (see
+the same parameter under \code{\link{addTiles}})}
 
 \item{project}{if \code{TRUE}, automatically project \code{x} to the map
 projection expected by Leaflet (\code{EPSG:3857}); if \code{FALSE}, it's

@@ -2,6 +2,7 @@
 \name{removeControl}
 \alias{clearControls}
 \alias{clearGeoJSON}
+\alias{clearGroup}
 \alias{clearImages}
 \alias{clearMarkerClusters}
 \alias{clearMarkers}
@@ -23,6 +24,8 @@
 removeControl(map, layerId)
 
 clearControls(map)
+
+clearGroup(map, group)
 
 removeImage(map, layerId)
 
@@ -60,6 +63,8 @@ but more likely from \code{\link{leafletProxy}}()}
 
 \item{layerId}{character vector; the layer id(s) of the item to remove}
 
+\item{group}{the name of the group whose members should be removed}
+
 \item{clusterId}{the id of the marker cluster layer}
 }
 \value{
@@ -67,7 +72,7 @@ the new \code{map} object
 }
 \description{
 Remove one or more features from a map, identified by \code{layerId}; or,
-clear all features of the given type.
+clear all features of the given type or group.
 }
 \note{
 When used with a \code{\link{leaflet}}() map object, these functions
