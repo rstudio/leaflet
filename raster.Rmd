@@ -22,7 +22,13 @@ If you have a large raster layer, you can provide a larger number of bytes and s
 
 ### Projection Performance
 
-The `addRasterImage` function projects using `raster::projectRaster`, which can take a while on all but the smallest rasters. If you have a large raster layer or expect to call `addRasterImage` on the same raster layer many times, you can perform the [EPSG:3857](http://spatialreference.org/ref/sr-org/7483/) projection yourself (either using `leaflet::projectRasterForLeaflet` or using another GIS library or program) and call `addRasterImage` with `project = FALSE`.
+The `addRasterImage` function projects using `raster::projectRaster`, which can take a while on all but the smallest rasters. To improve performance, the first thing to do is install a new version of `raster`; version 2.4 includes optimizations that speed up bilinear projection by about 10X. This version has not yet been released to CRAN at the time of this writing (June 17, 2015) but can be installed directly from R-Forge:
+
+```r
+install.packages('raster', repos = 'http://r-forge.r-project.org/', type = 'source')
+```
+
+If you have a large raster layer or expect to call `addRasterImage` on the same raster layer many times, you can perform the [EPSG:3857](http://spatialreference.org/ref/sr-org/7483/) projection yourself (either using `leaflet::projectRasterForLeaflet` or using another GIS library or program) and call `addRasterImage` with `project = FALSE`.
 
 Be sure that your pre-projected raster layer is tagged with an accurate extent and CRS, as these values are still needed to place the image in the proper position on the map.
 
