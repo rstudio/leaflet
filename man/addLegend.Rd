@@ -6,7 +6,7 @@
 \usage{
 addLegend(map, position = c("topright", "bottomright", "bottomleft", "topleft"), 
     pal, values, na.label = "NA", bins = 7, colors, opacity = 0.5, labels, 
-    labFormat = labelFormat(), title = deparse(substitute(values)), layerId = NULL)
+    labFormat = labelFormat(), title = NULL, layerId = NULL)
 
 labelFormat(prefix = "", suffix = "", between = " &ndash; ", digits = 3, big.mark = ",", 
     transform = identity)
