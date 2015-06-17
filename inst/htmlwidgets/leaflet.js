@@ -446,7 +446,7 @@ var dataframe = (function() {
     this._controlsById = {}
   }
 
-  function mouseHandler(mapId, layerId, eventName, extraInfo) {
+  function mouseHandler(mapId, layerId, group, eventName, extraInfo) {
     return function(e) {
       if (!HTMLWidgets.shinyMode) return;
 
@@ -455,6 +455,7 @@ var dataframe = (function() {
           id: layerId,
           '.nonce': Math.random()  // force reactivity
         },
+        group !== null ? {group: group} : null,
         e.target.getLatLng ? e.target.getLatLng() : e.latlng,
         extraInfo
       );
@@ -518,9 +519,9 @@ var dataframe = (function() {
                      .setContent(df.get(i, 'popup'));
         var thisId = df.get(i, 'layerId');
         this.layerManager.addLayer(popup, "popup", thisId, group);
-        popup.on('click', mouseHandler(this.id, thisId, 'popup_click'), this);
-        popup.on('mouseover', mouseHandler(this.id, thisId, 'popup_mouseover'), this);
-        popup.on('mouseout', mouseHandler(this.id, thisId, 'popup_mouseout'), this);
+        popup.on('click', mouseHandler(this.id, thisId, group, 'popup_click'), this);
+        popup.on('mouseover', mouseHandler(this.id, thisId, group, 'popup_mouseover'), this);
+        popup.on('mouseout', mouseHandler(this.id, thisId, group, 'popup_mouseout'), this);
       }).call(this);
     }
   };
@@ -629,9 +630,9 @@ var dataframe = (function() {
         this.layerManager.addLayer(marker, "marker", thisId, group);
         var popup = df.get(i, 'popup');
         if (popup !== null) marker.bindPopup(popup);
-        marker.on('click', mouseHandler(this.id, thisId, 'marker_click'), this);
-        marker.on('mouseover', mouseHandler(this.id, thisId, 'marker_mouseover'), this);
-        marker.on('mouseout', mouseHandler(this.id, thisId, 'marker_mouseout'), this);
+        marker.on('click', mouseHandler(this.id, thisId, group, 'marker_click'), this);
+        marker.on('mouseover', mouseHandler(this.id, thisId, group, 'marker_mouseover'), this);
+        marker.on('mouseout', mouseHandler(this.id, thisId, group, 'marker_mouseout'), this);
       }).call(this);
     }
   };
@@ -652,9 +653,9 @@ var dataframe = (function() {
         this.layerManager.addLayer(circle, "shape", thisId, group);
         var popup = df.get(i, 'popup');
         if (popup !== null) circle.bindPopup(popup);
-        circle.on('click', mouseHandler(this.id, thisId, 'shape_click'), this);
-        circle.on('mouseover', mouseHandler(this.id, thisId, 'shape_mouseover'), this);
-        circle.on('mouseout', mouseHandler(this.id, thisId, 'shape_mouseout'), this);
+        circle.on('click', mouseHandler(this.id, thisId, group, 'shape_click'), this);
+        circle.on('mouseover', mouseHandler(this.id, thisId, group, 'shape_mouseover'), this);
+        circle.on('mouseout', mouseHandler(this.id, thisId, group, 'shape_mouseout'), this);
       }).call(this);
     }
   };
@@ -675,9 +676,9 @@ var dataframe = (function() {
         this.layerManager.addLayer(circle, "marker", thisId, group);
         var popup = df.get(i, 'popup');
         if (popup !== null) circle.bindPopup(popup);
-        circle.on('click', mouseHandler(this.id, thisId, 'marker_click'), this);
-        circle.on('mouseover', mouseHandler(this.id, thisId, 'marker_mouseover'), this);
-        circle.on('mouseout', mouseHandler(this.id, thisId, 'marker_mouseout'), this);
+        circle.on('click', mouseHandler(this.id, thisId, group, 'marker_click'), this);
+        circle.on('mouseover', mouseHandler(this.id, thisId, group, 'marker_mouseover'), this);
+        circle.on('mouseout', mouseHandler(this.id, thisId, group, 'marker_mouseout'), this);
       }).call(this);
     }
   };
@@ -702,9 +703,9 @@ var dataframe = (function() {
         this.layerManager.addLayer(polyline, "shape", thisId, group);
         var popup = df.get(i, 'popup');
         if (popup !== null) polyline.bindPopup(popup);
-        polyline.on('click', mouseHandler(this.id, thisId, 'shape_click'), this);
-        polyline.on('mouseover', mouseHandler(this.id, thisId, 'shape_mouseover'), this);
-        polyline.on('mouseout', mouseHandler(this.id, thisId, 'shape_mouseout'), this);
+        polyline.on('click', mouseHandler(this.id, thisId, group, 'shape_click'), this);
+        polyline.on('mouseover', mouseHandler(this.id, thisId, group, 'shape_mouseover'), this);
+        polyline.on('mouseout', mouseHandler(this.id, thisId, group, 'shape_mouseout'), this);
       }).call(this);
     }
   };
@@ -746,9 +747,9 @@ var dataframe = (function() {
         this.layerManager.addLayer(rect, "shape", thisId, group);
         var popup = df.get(i, 'popup');
         if (popup !== null) rect.bindPopup(popup);
-        rect.on('click', mouseHandler(this.id, thisId, 'shape_click'), this);
-        rect.on('mouseover', mouseHandler(this.id, thisId, 'shape_mouseover'), this);
-        rect.on('mouseout', mouseHandler(this.id, thisId, 'shape_mouseout'), this);
+        rect.on('click', mouseHandler(this.id, thisId, group, 'shape_click'), this);
+        rect.on('mouseover', mouseHandler(this.id, thisId, group, 'shape_mouseover'), this);
+        rect.on('mouseout', mouseHandler(this.id, thisId, group, 'shape_mouseout'), this);
       }).call(this);
     }
   };
@@ -775,9 +776,9 @@ var dataframe = (function() {
         this.layerManager.addLayer(polygon, "shape", thisId, group);
         var popup = df.get(i, 'popup');
         if (popup !== null) polygon.bindPopup(popup);
-        polygon.on('click', mouseHandler(this.id, thisId, 'shape_click'), this);
-        polygon.on('mouseover', mouseHandler(this.id, thisId, 'shape_mouseover'), this);
-        polygon.on('mouseout', mouseHandler(this.id, thisId, 'shape_mouseout'), this);
+        polygon.on('click', mouseHandler(this.id, thisId, group, 'shape_click'), this);
+        polygon.on('mouseover', mouseHandler(this.id, thisId, group, 'shape_mouseover'), this);
+        polygon.on('mouseout', mouseHandler(this.id, thisId, group, 'shape_mouseout'), this);
       }).call(this);
     }
   };
@@ -805,9 +806,9 @@ var dataframe = (function() {
         };
         var popup = feature.properties.popup;
         if (typeof popup !== 'undefined' && popup !== null) layer.bindPopup(popup);
-        layer.on("click", mouseHandler(self.id, layerId, "geojson_click", extraInfo), this);
-        layer.on("mouseover", mouseHandler(self.id, layerId, "geojson_mouseover", extraInfo), this);
-        layer.on("mouseout", mouseHandler(self.id, layerId, "geojson_mouseout", extraInfo), this);
+        layer.on("click", mouseHandler(self.id, layerId, group, "geojson_click", extraInfo), this);
+        layer.on("mouseover", mouseHandler(self.id, layerId, group, "geojson_mouseover", extraInfo), this);
+        layer.on("mouseout", mouseHandler(self.id, layerId, group, "geojson_mouseout", extraInfo), this);
       }
     });
     this.layerManager.addLayer(gjlayer, "geojson", layerId, group);
