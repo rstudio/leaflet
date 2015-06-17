@@ -22,19 +22,22 @@ License: GPL-3 | file LICENSE
 URL: https://github.com/rstudio/leaflet
 BugReports: https://github.com/rstudio/leaflet/issues
 Imports:
+    base64enc,
     htmlwidgets,
     htmltools,
     magrittr,
     markdown,
+    png,
     RColorBrewer,
-    RJSONIO,
-    grDevices,
-    scales
+    raster,
+    scales (>= 0.2.5),
+    sp
 Suggests:
     knitr,
     maps,
     shiny,
     sp,
     testit (>= 0.4),
+    rgdal,
     R6
 VignetteBuilder: knitr

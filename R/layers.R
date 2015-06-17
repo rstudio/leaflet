@@ -118,6 +118,120 @@ addTiles = function(
     options)
 }
 
+epsg4326 <- "+proj=longlat +datum=WGS84 +no_defs"
+epsg3857 <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs"
+
+#' Add a raster image as a layer
+#'
+#' Create an image overlay from a \code{RasterLayer} object. \emph{This is only
+#' suitable for small to medium sized rasters}, as the entire image will be
+#' embedded into the HTML page (or passed over the websocket in a Shiny
+#' context).
+#'
+#' The \code{maxBytes} parameter serves to prevent you from accidentally
+#' embedding an excessively large amount of data into your htmlwidget. This
+#' value is compared to the size of the final compressed image (after the raster
+#' has been projected, colored, and PNG encoded, but before base64 encoding is
+#' applied). Set \code{maxBytes} to \code{Inf} to disable this check, but be
+#' aware that very large rasters may not only make your map a large download but
+#' also may cause the browser to become slow or unresponsive.
+#'
+#' By default, the \code{addRasterImage} function will project the RasterLayer
+#' \code{x} to EPSG:3857 using the \code{raster} package's
+#' \code{\link[raster]{projectRaster}} function. This can be a time-consuming
+#' operation for even moderately sized rasters. Upgrading the \code{raster}
+#' package to 2.4 or later will provide a large speedup versus previous
+#' versions. If you are repeatedly adding a particular raster to your Leaflet
+#' maps, you can perform the projection ahead of time using
+#' \code{projectRasterForLeaflet()}, and call \code{addRasterImage} with
+#' \code{project=FALSE}.
+#'
+#' @param map a map widget object
+#' @param x a \code{RasterLayer} object--see \code{\link[raster]{raster}}
+#' @param colors the color palette (see \code{\link{colorNumeric}}) or function
+#'   to use to color the raster values (hint: if providing a function, set
+#'   \code{na.color} to \code{"#00000000"} to make \code{NA} areas transparent)
+#' @param opacity the base opacity of the raster, expressed from 0 to 1
+#' @param attribution the HTML string to show as the attribution for this layer
+#' @param layerId the layer id
+#' @param project if \code{TRUE}, automatically project \code{x} to the map
+#'   projection expected by Leaflet (\code{EPSG:3857}); if \code{FALSE}, it's
+#'   the caller's responsibility to ensure that \code{x} is already projected,
+#'   and that \code{extent(x)} is expressed in WGS84 latitude/longitude
+#'   coordinates
+#' @param maxBytes the maximum number of bytes to allow for the projected image
+#'   (before base64 encoding); defaults to 4MB.
+#'
+#' @examples
+#' library(raster)
+#'
+#' r <- raster(xmn=-2.8, xmx=-2.79, ymn=54.04, ymx=54.05, nrows=30, ncols=30)
+#' values(r) <- matrix(1:900, nrow(r), ncol(r), byrow = TRUE)
+#' crs(r) <- CRS("+init=epsg:4326")
+#'
+#' leaflet() %>% addTiles() %>%
+#'   addRasterImage(r, colors = "Spectral", opacity = 0.8)
+#' @export
+addRasterImage = function(
+  map,
+  x,
+  colors = "Spectral",
+  opacity = 1,
+  attribution = NULL,
+  layerId = NULL,
+  group = NULL,
+  project = TRUE,
+  maxBytes = 4*1024*1024
+) {
+  stopifnot(inherits(x, "RasterLayer"))
+
+  if (project) {
+    projected <- projectRasterForLeaflet(x)
+  } else {
+    projected <- x
+  }
+  bounds <- raster::extent(raster::projectExtent(raster::projectExtent(x, crs = sp::CRS(epsg3857)), crs = sp::CRS(epsg4326)))
+
+  if (!is.function(colors)) {
+    colors <- colorNumeric(colors, domain = NULL, na.color = "#00000000", alpha = TRUE)
+  }
+
+  tileData <- raster::values(projected) %>% colors() %>% col2rgb(alpha = TRUE) %>% as.raw()
+  dim(tileData) <- c(4, ncol(projected), nrow(projected))
+  pngData <- png::writePNG(tileData)
+  if (length(pngData) > maxBytes) {
+    stop("Raster image too large; ", length(pngData), " bytes is greater than maximum ", maxBytes, " bytes")
+  }
+  encoded <- base64enc::base64encode(pngData)
+  uri <- paste0("data:image/png;base64,", encoded)
+
+  latlng <- list(
+    list(raster::ymax(bounds), raster::xmin(bounds)),
+    list(raster::ymin(bounds), raster::xmax(bounds))
+  )
+
+  invokeMethod(map, getMapData(map), "addRasterImage", uri, latlng, opacity, attribution, layerId, group) %>%
+    expandLimits(c(raster::ymin(bounds), raster::ymax(bounds)), c(raster::xmin(bounds), raster::xmax(bounds)))
+}
+
+#' @rdname addRasterImage
+#' @export
+projectRasterForLeaflet <- function(x) {
+  raster::projectRaster(x, raster::projectExtent(x, crs = sp::CRS(epsg3857)))
+}
+
+#' @rdname remove
+#' @export
+removeImage = function(map, layerId) {
+  invokeMethod(map, NULL, 'removeImage', layerId)
+}
+
+#' @rdname remove
+#' @export
+clearImages = function(map) {
+  invokeMethod(map, NULL, 'clearImages')
+}
+
 #' Extra options for map elements and layers
 #'
 #' The rest of all possible options for map elements and layers that are not
