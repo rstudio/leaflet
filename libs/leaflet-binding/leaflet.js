@@ -225,56 +225,204 @@ var dataframe = (function() {
 
   };
 
-  function LayerStore(map) {
-    this._layers = {};
-    this._group = L.layerGroup().addTo(map);
+  function LayerManager(map) {
+    this._map = map;
+
+    // BEGIN layer indices
+
+    // {<groupname>: {<stamp>: layer}}
+    this._byGroup = {};
+    // {<categoryName>: {<stamp>: layer}}
+    this._byCategory = {};
+    // {<categoryName_layerId>: layer}
+    this._byLayerId = {};
+    // {<stamp>: {
+    //             "group": <groupname>,
+    //             "layerId": <layerId>,
+    //             "category": <category>,
+    //             "container": <container>
+    //           }
+    // }
+    this._byStamp = {};
+
+    // END layer indices
+
+    // {<categoryName>: L.layerGroup}
+    this._categoryContainers = {};
+    // {<groupName>: L.layerGroup}
+    this._groupContainers = {};
   }
+  LayerManager.prototype.addLayer = function(layer, category, layerId, group) {
+    // Was a group provided?
+    var hasId = typeof(layerId) === "string";
+    var grouped = typeof(group) === "string";
 
-  LayerStore.prototype.add = function(layer, id) {
-    if (typeof(id) !== 'undefined' && id !== null) {
-      if (this._layers[id]) {
-        this._group.removeLayer(this._layers[id]);
+    var stamp = L.Util.stamp(layer);
+
+    // This will be the default layer group to add the layer to.
+    // We may overwrite this var before using it (i.e. if a group is assigned).
+    // This one liner creates the _categoryContainers[category] entry if it
+    // doesn't already exist.
+    var container = this._categoryContainers[category] =
+        this._categoryContainers[category] || L.layerGroup().addTo(this._map);
+
+    var oldLayer = null;
+    if (hasId) {
+      // First, remove any layer with the same category and layerId
+      var prefixedLayerId = this._layerIdKey(category, layerId);
+      oldLayer = this._byLayerId[prefixedLayerId];
+      if (oldLayer) {
+        this._removeLayer(oldLayer);
       }
-      this._layers[id] = layer;
+
+      // Update layerId index
+      this._byLayerId[prefixedLayerId] = layer;
     }
-    this._group.addLayer(layer);
+
+    // Update group index
+    if (grouped) {
+      this._byGroup[group] = this._byGroup[group] || {};
+      this._byGroup[group][stamp] = layer;
+
+      // Since a group is assigned, don't add the layer to the category's layer
+      // group; instead, use the group's layer group.
+      // This one liner creates the _groupContainers[group] entry if it doesn't
+      // already exist.
+      container = this.getLayerGroup(group, true);
+    }
+
+    // Update category index
+    this._byCategory[category] = this._byCategory[category] || {};
+    this._byCategory[category][stamp] = layer;
+
+    // Update stamp index
+    this._byStamp[stamp] = {
+      layer: layer,
+      group: group,
+      layerId: layerId,
+      category: category,
+      container: container
+    };
+
+    // Add to container
+    container.addLayer(layer);
+
+    return oldLayer;
   };
+  LayerManager.prototype.getLayer = function(category, layerId) {
+    return this._byLayerId[this._layerIdKey(category, layerId)];
+  };
+  LayerManager.prototype.removeLayer = function(category, layerId) {
+    // Find layer info
+    var layer = this._byLayerId[this._layerIdKey(category, layerId)];
+    if (!layer) {
+      return false;
+    }
+    this._removeLayer(layer);
+    return true;
+  };
+  LayerManager.prototype.clearLayers = function(category) {
+    var self = this;
 
-  LayerStore.prototype.remove = function(id) {
-    if (typeof(id) === 'undefined' || id === null) {
-      return;
+    // Find all layers in _byCategory[category]
+    var catTable = this._byCategory[category];
+    if (!catTable) {
+      return false;
     }
 
-    id = asArray(id);
-    for (var i = 0; i < id.length; i++) {
-      if (this._layers[id[i]]) {
-        this._group.removeLayer(this._layers[id[i]]);
-        delete this._layers[id[i]];
+    // Remove all layers. Make copy of keys to avoid mutating the collection
+    // behind the iterator you're accessing.
+    var stamps = [];
+    $.each(catTable, function(k, v) {
+      stamps.push(k);
+    });
+    $.each(stamps, function(i, stamp) {
+      self._removeLayer(stamp);
+    });
+  };
+  LayerManager.prototype.getLayerGroup = function(group, ensureExists) {
+    var g = this._groupContainers[group];
+    if (ensureExists && !g) {
+      this._byGroup[group] = this._byGroup[group] || {};
+      g = this._groupContainers[group] = L.layerGroup();
+      g.groupname = group;
+      g.addTo(this._map);
+    }
+    return g;
+  };
+  LayerManager.prototype.getGroupNameFromLayerGroup = function(layerGroup) {
+    return layerGroup.groupname;
+  };
+  LayerManager.prototype.getVisibleGroups = function() {
+    var self = this;
+    var result = [];
+    $.each(this._groupContainers, function(k, v) {
+      if (self._map.hasLayer(v)) {
+        result.push(k);
       }
+    });
+    return result;
+  };
+  LayerManager.prototype.clearGroup = function(group) {
+    var self = this;
+
+    // Find all layers in _byGroup[group]
+    var groupTable = this._byGroup[group];
+    if (!groupTable) {
+      return false;
     }
-  };
 
-  LayerStore.prototype.get = function(id) {
-    return this._layers[id];
+    // Remove all layers. Make copy of keys to avoid mutating the collection
+    // behind the iterator you're accessing.
+    var stamps = [];
+    $.each(groupTable, function(k, v) {
+      stamps.push(k);
+    });
+    $.each(stamps, function(i, stamp) {
+      self._removeLayer(stamp);
+    });
   };
-
-  LayerStore.prototype.clear = function() {
-    this._layers = {};
-    this._group.clearLayers();
-  };
-
-  LayerStore.prototype.each = function(iterator) {
-    this._group.eachLayer(iterator);
-  };
-
-  LayerStore.prototype.keys = function() {
-    var keys = [];
-    for (var key in this._layers) {
-      if (this._layers.hasOwnProperty(key))
-        keys.push(key);
+  LayerManager.prototype.clear = function() {
+    function clearLayerGroup(key, layerGroup) {
+      layerGroup.clearLayers();
     }
-    return keys;
+    // Clear all indices and layerGroups
+    this._byGroup = {};
+    this._byCategory = {};
+    this._byLayerId = {};
+    this._byStamp = {};
+    $.each(this._categoryContainers, clearLayerGroup);
+    this._categoryContainers = {};
+    $.each(this._groupContainers, clearLayerGroup);
+    this._groupContainers = {};
   };
+  LayerManager.prototype._removeLayer = function(layer) {
+    var stamp;
+    if (typeof(layer) === "string") {
+      stamp = layer;
+    } else {
+      stamp = L.Util.stamp(layer);
+    }
+
+    var layerInfo = this._byStamp[stamp];
+    if (!layerInfo) {
+      return false;
+    }
+
+    layerInfo.container.removeLayer(stamp);
+    if (typeof(layerInfo.group) === "string") {
+      delete this._byGroup[layerInfo.group][stamp];
+    }
+    if (typeof(layerInfo.layerId) === "string") {
+      delete this._byLayerId[this._layerIdKey(layerInfo.category, layerInfo.layerId)];
+    }
+    delete this._byCategory[layerInfo.category][stamp];
+    delete this._byStamp[stamp];
+  };
+  LayerManager.prototype._layerIdKey = function(category, layerId) {
+    return category + "\n" + layerId;
+  };
+
   function ControlStore(map) {
     this._controlsNoId = [];
     this._controlsById = {};
@@ -349,7 +497,7 @@ var dataframe = (function() {
     this._group.clearLayers();
   };
 
-  function mouseHandler(mapId, layerId, eventName, extraInfo) {
+  function mouseHandler(mapId, layerId, group, eventName, extraInfo) {
     return function(e) {
       if (!HTMLWidgets.shinyMode) return;
 
@@ -358,6 +506,7 @@ var dataframe = (function() {
           id: layerId,
           '.nonce': Math.random()  // force reactivity
         },
+        group !== null ? {group: group} : null,
         e.target.getLatLng ? e.target.getLatLng() : e.latlng,
         extraInfo
       );
@@ -383,6 +532,13 @@ var dataframe = (function() {
   window.LeafletWidget = {};
   var methods = window.LeafletWidget.methods = {};
 
+  methods.clearGroup = function(group) {
+    var self = this;
+    $.each(asArray(group), function(i, v) {
+      self.layerManager.clearGroup(v);
+    });
+  };
+
   methods.setView = function(center, zoom, options) {
     this.setView(center, zoom, options);
   };
@@ -399,7 +555,7 @@ var dataframe = (function() {
     ]);
   };
 
-  methods.addPopups = function(lat, lng, popup, layerId, options) {
+  methods.addPopups = function(lat, lng, popup, layerId, group, options) {
     var df = dataframe.create()
       .col('lat', lat)
       .col('lng', lng)
@@ -413,36 +569,36 @@ var dataframe = (function() {
                      .setLatLng([df.get(i, 'lat'), df.get(i, 'lng')])
                      .setContent(df.get(i, 'popup'));
         var thisId = df.get(i, 'layerId');
-        this.popups.add(popup, thisId);
-        popup.on('click', mouseHandler(this.id, thisId, 'popup_click'), this);
-        popup.on('mouseover', mouseHandler(this.id, thisId, 'popup_mouseover'), this);
-        popup.on('mouseout', mouseHandler(this.id, thisId, 'popup_mouseout'), this);
+        this.layerManager.addLayer(popup, "popup", thisId, group);
+        popup.on('click', mouseHandler(this.id, thisId, group, 'popup_click'), this);
+        popup.on('mouseover', mouseHandler(this.id, thisId, group, 'popup_mouseover'), this);
+        popup.on('mouseout', mouseHandler(this.id, thisId, group, 'popup_mouseout'), this);
       }).call(this);
     }
   };
 
   methods.removePopup = function(layerId) {
-    this.popups.remove(layerId);
+    this.layerManager.removeLayer("popup", layerId);
   };
 
   methods.clearPopups = function() {
-    this.popups.clear();
+    this.layerManager.clearLayers("popup");
   };
 
-  methods.addTiles = function(urlTemplate, layerId, options) {
-    this.tiles.add(L.tileLayer(urlTemplate, options), layerId);
+  methods.addTiles = function(urlTemplate, layerId, group, options) {
+    this.layerManager.addLayer(L.tileLayer(urlTemplate, options), "tile", layerId, group);
   };
 
   methods.removeTiles = function(layerId) {
-    this.tiles.remove(layerId);
+    this.layerManager.removeLayer("tile", layerId);
   };
 
   methods.clearTiles = function() {
-    this.tiles.clear();
+    this.layerManager.clearLayers("tile");
   };
 
-  methods.addWMSTiles = function(baseUrl, layerId, options) {
-    this.tiles.add(L.tileLayer.wms(baseUrl, options), layerId);
+  methods.addWMSTiles = function(baseUrl, layerId, group, options) {
+    this.layerManager.addLayer(L.tileLayer.wms(baseUrl, options), "tile", layerId, group);
   };
 
   // Given:
@@ -465,7 +621,7 @@ var dataframe = (function() {
     });
   }
 
-  methods.addMarkers = function(lat, lng, icon, layerId, options, popup,
+  methods.addMarkers = function(lat, lng, icon, layerId, group, options, popup,
                                 clusterOptions, clusterId) {
     if (icon) {
       // Unpack icons
@@ -517,7 +673,7 @@ var dataframe = (function() {
 
     if (icon) icondf.effectiveLength = df.nrow();
 
-    var clusterGroup = this.markerclusters.get(clusterId),
+    var clusterGroup = this.layerManager.getLayer("cluster", clusterId),
         cluster = clusterOptions !== null;
     if (cluster && !clusterGroup) {
       clusterGroup = L.markerClusterGroup(clusterOptions);
@@ -534,22 +690,22 @@ var dataframe = (function() {
         if (cluster) {
           clusterGroup.clusterLayerStore.add(marker, thisId);
         } else {
-          this.markers.add(marker, thisId);
+          this.layerManager.addLayer(marker, "marker", thisId, group);
         }
         var popup = df.get(i, 'popup');
         if (popup !== null) marker.bindPopup(popup);
-        marker.on('click', mouseHandler(this.id, thisId, 'marker_click', extraInfo), this);
-        marker.on('mouseover', mouseHandler(this.id, thisId, 'marker_mouseover', extraInfo), this);
-        marker.on('mouseout', mouseHandler(this.id, thisId, 'marker_mouseout', extraInfo), this);
+        marker.on('click', mouseHandler(this.id, thisId, group, 'marker_click', extraInfo), this);
+        marker.on('mouseover', mouseHandler(this.id, thisId, group, 'marker_mouseover', extraInfo), this);
+        marker.on('mouseout', mouseHandler(this.id, thisId, group, 'marker_mouseout', extraInfo), this);
       }).call(this);
 
       if (cluster) {
-        this.markerclusters.add(clusterGroup, clusterId);
+        this.layerManager.addLayer(clusterGroup, "cluster", clusterId, group);
       }
     }
   };
 
-  methods.addCircles = function(lat, lng, radius, layerId, options, popup) {
+  methods.addCircles = function(lat, lng, radius, layerId, group, options, popup) {
     var df = dataframe.create()
       .col('lat', lat)
       .col('lng', lng)
@@ -562,17 +718,17 @@ var dataframe = (function() {
       (function() {
         var circle = L.circle([df.get(i, 'lat'), df.get(i, 'lng')], df.get(i, 'radius'), df.get(i));
         var thisId = df.get(i, 'layerId');
-        this.shapes.add(circle, thisId);
+        this.layerManager.addLayer(circle, "shape", thisId, group);
         var popup = df.get(i, 'popup');
         if (popup !== null) circle.bindPopup(popup);
-        circle.on('click', mouseHandler(this.id, thisId, 'shape_click'), this);
-        circle.on('mouseover', mouseHandler(this.id, thisId, 'shape_mouseover'), this);
-        circle.on('mouseout', mouseHandler(this.id, thisId, 'shape_mouseout'), this);
+        circle.on('click', mouseHandler(this.id, thisId, group, 'shape_click'), this);
+        circle.on('mouseover', mouseHandler(this.id, thisId, group, 'shape_mouseover'), this);
+        circle.on('mouseout', mouseHandler(this.id, thisId, group, 'shape_mouseout'), this);
       }).call(this);
     }
   };
 
-  methods.addCircleMarkers = function(lat, lng, radius, layerId, options, popup) {
+  methods.addCircleMarkers = function(lat, lng, radius, layerId, group, options, popup) {
     var df = dataframe.create()
       .col('lat', lat)
       .col('lng', lng)
@@ -585,12 +741,12 @@ var dataframe = (function() {
       (function() {
         var circle = L.circleMarker([df.get(i, 'lat'), df.get(i, 'lng')], df.get(i));
         var thisId = df.get(i, 'layerId');
-        this.markers.add(circle, thisId);
+        this.layerManager.addLayer(circle, "marker", thisId, group);
         var popup = df.get(i, 'popup');
         if (popup !== null) circle.bindPopup(popup);
-        circle.on('click', mouseHandler(this.id, thisId, 'marker_click'), this);
-        circle.on('mouseover', mouseHandler(this.id, thisId, 'marker_mouseover'), this);
-        circle.on('mouseout', mouseHandler(this.id, thisId, 'marker_mouseout'), this);
+        circle.on('click', mouseHandler(this.id, thisId, group, 'marker_click'), this);
+        circle.on('mouseover', mouseHandler(this.id, thisId, group, 'marker_mouseover'), this);
+        circle.on('mouseout', mouseHandler(this.id, thisId, group, 'marker_mouseout'), this);
       }).call(this);
     }
   };
@@ -599,7 +755,7 @@ var dataframe = (function() {
    * @param lat Array of arrays of latitude coordinates for polylines
    * @param lng Array of arrays of longitude coordinates for polylines
    */
-  methods.addPolylines = function(polygons, layerId, options, popup) {
+  methods.addPolylines = function(polygons, layerId, group, options, popup) {
     var df = dataframe.create()
       .col('shapes', polygons)
       .col('layerId', layerId)
@@ -612,47 +768,47 @@ var dataframe = (function() {
         shape = HTMLWidgets.dataframeToD3(shape);
         var polyline = L.polyline(shape, df.get(i));
         var thisId = df.get(i, 'layerId');
-        this.shapes.add(polyline, thisId);
+        this.layerManager.addLayer(polyline, "shape", thisId, group);
         var popup = df.get(i, 'popup');
         if (popup !== null) polyline.bindPopup(popup);
-        polyline.on('click', mouseHandler(this.id, thisId, 'shape_click'), this);
-        polyline.on('mouseover', mouseHandler(this.id, thisId, 'shape_mouseover'), this);
-        polyline.on('mouseout', mouseHandler(this.id, thisId, 'shape_mouseout'), this);
+        polyline.on('click', mouseHandler(this.id, thisId, group, 'shape_click'), this);
+        polyline.on('mouseover', mouseHandler(this.id, thisId, group, 'shape_mouseover'), this);
+        polyline.on('mouseout', mouseHandler(this.id, thisId, group, 'shape_mouseout'), this);
       }).call(this);
     }
   };
 
   methods.removeMarker = function(layerId) {
-    this.markers.remove(layerId);
+    this.layerManager.removeLayer("marker", layerId);
   };
 
   methods.clearMarkers = function() {
-    this.markers.clear();
+    this.layerManager.clearLayers("marker");
   };
 
   methods.removeMarkerCluster = function(layerId) {
-    this.markerclusters.remove(layerId);
+    this.layerManager.removeLayer("cluster", layerId);
   }
 
   methods.removeMarkerFromCluster = function(layerId, clusterId) {
-    var cluster = this.markerclusters.get(clusterId);
+    var cluster = this.layerManager.getLayer("cluster", clusterId);
     if (!cluster) return;
     cluster.clusterLayerStore.remove(layerId);
   }
 
   methods.clearMarkerClusters = function() {
-    this.markerclusters.clear();
+    this.layerManager.clearLayers("cluster");
   };
 
   methods.removeShape = function(layerId) {
-    this.shapes.remove(layerId);
+    this.layerManager.removeLayer("shape", layerId);
   };
 
   methods.clearShapes = function() {
-    this.shapes.clear();
+    this.layerManager.clearLayers("shape");
   };
 
-  methods.addRectangles = function(lat1, lng1, lat2, lng2, layerId, options, popup) {
+  methods.addRectangles = function(lat1, lng1, lat2, lng2, layerId, group, options, popup) {
     var df = dataframe.create()
       .col('lat1', lat1)
       .col('lng1', lng1)
@@ -670,12 +826,12 @@ var dataframe = (function() {
           ],
           df.get(i));
         var thisId = df.get(i, 'layerId');
-        this.shapes.add(rect, thisId);
+        this.layerManager.addLayer(rect, "shape", thisId, group);
         var popup = df.get(i, 'popup');
         if (popup !== null) rect.bindPopup(popup);
-        rect.on('click', mouseHandler(this.id, thisId, 'shape_click'), this);
-        rect.on('mouseover', mouseHandler(this.id, thisId, 'shape_mouseover'), this);
-        rect.on('mouseout', mouseHandler(this.id, thisId, 'shape_mouseout'), this);
+        rect.on('click', mouseHandler(this.id, thisId, group, 'shape_click'), this);
+        rect.on('mouseover', mouseHandler(this.id, thisId, group, 'shape_mouseover'), this);
+        rect.on('mouseout', mouseHandler(this.id, thisId, group, 'shape_mouseout'), this);
       }).call(this);
     }
   };
@@ -684,7 +840,7 @@ var dataframe = (function() {
    * @param lat Array of arrays of latitude coordinates for polygons
    * @param lng Array of arrays of longitude coordinates for polygons
    */
-  methods.addPolygons = function(polygons, layerId, options, popup) {
+  methods.addPolygons = function(polygons, layerId, group, options, popup) {
     var df = dataframe.create()
       .col('shapes', polygons)
       .col('layerId', layerId)
@@ -699,17 +855,17 @@ var dataframe = (function() {
         }
         var polygon = L.polygon(shapes, df.get(i));
         var thisId = df.get(i, 'layerId');
-        this.shapes.add(polygon, thisId);
+        this.layerManager.addLayer(polygon, "shape", thisId, group);
         var popup = df.get(i, 'popup');
         if (popup !== null) polygon.bindPopup(popup);
-        polygon.on('click', mouseHandler(this.id, thisId, 'shape_click'), this);
-        polygon.on('mouseover', mouseHandler(this.id, thisId, 'shape_mouseover'), this);
-        polygon.on('mouseout', mouseHandler(this.id, thisId, 'shape_mouseout'), this);
+        polygon.on('click', mouseHandler(this.id, thisId, group, 'shape_click'), this);
+        polygon.on('mouseover', mouseHandler(this.id, thisId, group, 'shape_mouseover'), this);
+        polygon.on('mouseout', mouseHandler(this.id, thisId, group, 'shape_mouseout'), this);
       }).call(this);
     }
   };
 
-  methods.addGeoJSON = function(data, layerId) {
+  methods.addGeoJSON = function(data, layerId, group) {
     var self = this;
     if (typeof(data) === "string") {
       data = JSON.parse(data);
@@ -732,20 +888,20 @@ var dataframe = (function() {
         };
         var popup = feature.properties.popup;
         if (typeof popup !== 'undefined' && popup !== null) layer.bindPopup(popup);
-        layer.on("click", mouseHandler(self.id, layerId, "geojson_click", extraInfo), this);
-        layer.on("mouseover", mouseHandler(self.id, layerId, "geojson_mouseover", extraInfo), this);
-        layer.on("mouseout", mouseHandler(self.id, layerId, "geojson_mouseout", extraInfo), this);
+        layer.on("click", mouseHandler(self.id, layerId, group, "geojson_click", extraInfo), this);
+        layer.on("mouseover", mouseHandler(self.id, layerId, group, "geojson_mouseover", extraInfo), this);
+        layer.on("mouseout", mouseHandler(self.id, layerId, group, "geojson_mouseout", extraInfo), this);
       }
     });
-    this.geojson.add(gjlayer, layerId);
+    this.layerManager.addLayer(gjlayer, "geojson", layerId, group);
   };
 
   methods.removeGeoJSON = function(layerId) {
-    this.geojson.remove(layerId);
+    this.layerManager.removeLayer("geojson", layerId);
   };
 
   methods.clearGeoJSON = function() {
-    this.geojson.clear();
+    this.layerManager.clearLayers("geojson");
   };
 
   methods.addControl = function(html, position, layerId, classes) {
@@ -855,7 +1011,60 @@ var dataframe = (function() {
     }
   };
 
-  methods.addRasterImage = function(uri, bounds, opacity, attribution, layerId) {
+  methods.addLayersControl = function(baseGroups, overlayGroups, options) {
+
+    var self = this;
+
+    // Only allow one layers control at a time
+    methods.removeLayersControl.call(this);
+
+    var base = {};
+    $.each(asArray(baseGroups), function(i, g) {
+      var layer = self.layerManager.getLayerGroup(g, true);
+      if (layer) {
+        base[g] = layer;
+      }
+    });
+    var overlay = {};
+    $.each(asArray(overlayGroups), function(i, g) {
+      var layer = self.layerManager.getLayerGroup(g, true);
+      if (layer) {
+        overlay[g] = layer;
+      }
+    });
+
+    var layersControl = L.control.layers(base, overlay, options).addTo(this);
+    this.currentLayersControl = layersControl;
+  };
+
+  methods.removeLayersControl = function() {
+    if (this.currentLayersControl) {
+      this.currentLayersControl.removeFrom(this);
+      this.currentLayersControl = null;
+    }
+  };
+
+  methods.hideGroup = function(group) {
+    var self = this;
+    $.each(asArray(group), function(i, g) {
+      var layer = self.layerManager.getLayerGroup(g, true);
+      if (layer) {
+        self.removeLayer(layer);
+      }
+    });
+  };
+
+  methods.showGroup = function(group) {
+    var self = this;
+    $.each(asArray(group), function(i, g) {
+      var layer = self.layerManager.getLayerGroup(g, true);
+      if (layer) {
+        self.addLayer(layer);
+      }
+    });
+  };
+
+  methods.addRasterImage = function(uri, bounds, opacity, attribution, layerId, group) {
     // uri is a data URI containing an image. We want to paint this image as a
     // layer at (top-left) bounds[0] to (bottom-right) bounds[1].
 
@@ -1114,15 +1323,15 @@ var dataframe = (function() {
       });
     };
 
-    this.images.add(canvasTiles, layerId);
+    this.layerManager.addLayer(canvasTiles, "image", layerId, group);
   };
 
   methods.removeImage = function(layerId) {
-    this.images.remove(layerId);
+    this.layerManager.removeLayer("image", layerId);
   };
 
   methods.clearImages = function() {
-    this.images.clear();
+    this.layerManager.clearLayers("image");
   };
 
   HTMLWidgets.widget({
@@ -1163,7 +1372,26 @@ var dataframe = (function() {
         });
       });
 
-      map.on('moveend', function(e) { updateBounds(e.target); });
+      var groupTimerId = null;
+
+      map
+        .on('moveend', function(e) { updateBounds(e.target); })
+        .on('layeradd layerremove', function(e) {
+          // If the layer that's coming or going is a group we created, tell
+          // the server.
+          if (map.layerManager.getGroupNameFromLayerGroup(e.layer)) {
+            // But to avoid chattiness, coalesce events
+            if (groupTimerId) {
+              clearTimeout(groupTimerId);
+              groupTimerId = null;
+            }
+            groupTimerId = setTimeout(function() {
+              groupTimerId = null;
+              Shiny.onInputChange(map.id + '_groups',
+                map.layerManager.getVisibleGroups());
+            }, 100);
+          }
+        });
 
       return map;
     },
@@ -1187,24 +1415,12 @@ var dataframe = (function() {
       // Merge data options into defaults
       var options = $.extend({ zoomToLimits: "always" }, data.options);
 
-      if (!map.markers) {
+      if (!map.layerManager) {
         map.controls = new ControlStore(map);
-        map.markers = new LayerStore(map);
-        map.shapes = new LayerStore(map);
-        map.popups = new LayerStore(map);
-        map.geojson = new LayerStore(map);
-        map.tiles = new LayerStore(map);
-        map.images = new LayerStore(map);
-        map.markerclusters = new LayerStore(map);
+        map.layerManager = new LayerManager(map);
       } else {
         map.controls.clear();
-        map.markers.clear();
-        map.shapes.clear();
-        map.popups.clear();
-        map.geojson.clear();
-        map.tiles.clear();
-        map.images.clear();
-        map.markerclusters.clear();
+        map.layerManager.clear();
       }
 
       var explicitView = false;
