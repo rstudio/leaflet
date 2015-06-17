@@ -26,7 +26,6 @@ shinyApp(
       leafletProxy('map1') %>% removeMarkerFromCluster(input$remove1, 'cluster1')
     })
     observe({
-      print(input$map1_cluster_click)
       print(input$map1_marker_click)
     })
   }

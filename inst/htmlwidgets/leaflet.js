@@ -523,11 +523,7 @@ var dataframe = (function() {
       clusterGroup = L.markerClusterGroup(clusterOptions);
       clusterGroup.clusterLayerStore = new ClusterLayerStore(clusterGroup);
     }
-    if (cluster) (function() {
-      clusterGroup.on('clusterclick', mouseHandler(this.id, clusterId, 'cluster_click'), this);
-      clusterGroup.on('clustermouseover', mouseHandler(this.id, clusterId, 'cluster_mouseover'), this);
-      clusterGroup.on('clustermouseout', mouseHandler(this.id, clusterId, 'cluster_mouseout'), this);
-    }).call(this);
+    var extraInfo = cluster ? { clusterId: clusterId } : {};
 
     for (var i = 0; i < df.nrow(); i++) {
       (function() {
@@ -542,9 +538,9 @@ var dataframe = (function() {
         }
         var popup = df.get(i, 'popup');
         if (popup !== null) marker.bindPopup(popup);
-        marker.on('click', mouseHandler(this.id, thisId, 'marker_click'), this);
-        marker.on('mouseover', mouseHandler(this.id, thisId, 'marker_mouseover'), this);
-        marker.on('mouseout', mouseHandler(this.id, thisId, 'marker_mouseout'), this);
+        marker.on('click', mouseHandler(this.id, thisId, 'marker_click', extraInfo), this);
+        marker.on('mouseover', mouseHandler(this.id, thisId, 'marker_mouseover', extraInfo), this);
+        marker.on('mouseout', mouseHandler(this.id, thisId, 'marker_mouseout', extraInfo), this);
       }).call(this);
 
       if (cluster) {
