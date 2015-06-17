@@ -87,6 +87,16 @@ leaflet(df) %>% addTiles() %>%
   addMarkers(icon = ~oceanIcons[type])
 ```
 
+#### Marker Clusters
+
+When there are a large number of markers on a map, you can cluster them using the [Leaflet.markercluster](https://github.com/Leaflet/Leaflet.markercluster) plug-in. To enable this plug-in, you can provide a list of options to the argument `clusterOptions`, e.g.
+
+```{r fig.height=2.5, message=FALSE}
+leaflet(quakes) %>% addTiles() %>% addMarkers(
+  clusterOptions = markerClusterOptions()
+)
+```
+
 ### Circle Markers
 
 Circle markers are much like regular circles (see [Lines and Shapes](shapes.html)), except that their radius in onscreen pixels stays constant regardless of zoom level.
