@@ -24,6 +24,9 @@ to use to color the raster values (hint: if providing a function, set
 
 \item{layerId}{the layer id}
 
+\item{group}{the name of the group this raster image should belong to (see
+the same parameter under \code{\link{addTiles}})}
+
 \item{project}{if \code{TRUE}, automatically project \code{x} to the map
 projection expected by Leaflet (\code{EPSG:3857}); if \code{FALSE}, it's
 the caller's responsibility to ensure that \code{x} is already projected,

@@ -154,6 +154,8 @@ epsg3857 <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y
 #' @param opacity the base opacity of the raster, expressed from 0 to 1
 #' @param attribution the HTML string to show as the attribution for this layer
 #' @param layerId the layer id
+#' @param group the name of the group this raster image should belong to (see
+#'   the same parameter under \code{\link{addTiles}})
 #' @param project if \code{TRUE}, automatically project \code{x} to the map
 #'   projection expected by Leaflet (\code{EPSG:3857}); if \code{FALSE}, it's
 #'   the caller's responsibility to ensure that \code{x} is already projected,
