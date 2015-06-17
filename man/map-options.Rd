@@ -1,6 +1,7 @@
 % Please edit documentation in R/layers.R
 \name{tileOptions}
 \alias{WMSTileOptions}
+\alias{markerClusterOptions}
 \alias{markerOptions}
 \alias{pathOptions}
 \alias{popupOptions}
@@ -22,6 +23,9 @@ popupOptions(maxWidth = 300, minWidth = 50, maxHeight = NULL, autoPan = TRUE,
 
 markerOptions(clickable = TRUE, draggable = FALSE, keyboard = TRUE, title = "", 
     alt = "", zIndexOffset = 0, opacity = 1, riseOnHover = FALSE, riseOffset = 250)
+
+markerClusterOptions(showCoverageOnHover = TRUE, zoomToBoundsOnClick = TRUE, 
+    spiderfyOnMaxZoom = TRUE, removeOutsideVisibleBounds = TRUE, ...)
 
 pathOptions(lineCap = NULL, lineJoin = NULL, clickable = TRUE, pointerEvents = NULL, 
     className = "")
@@ -54,6 +58,17 @@ to map CRS (don't change this if you're not sure what it means)}
 
 \item{draggable, keyboard, title, alt, zIndexOffset, opacity, riseOnHover, riseOffset}{marker options; see \url{http://leafletjs.com/reference.html#marker}}
 
+\item{showCoverageOnHover}{when you mouse over a cluster it shows the bounds
+of its markers}
+
+\item{zoomToBoundsOnClick}{when you click a cluster we zoom to its bounds}
+
+\item{spiderfyOnMaxZoom}{when you click a cluster at the bottom zoom level we
+spiderfy it so you can see all of its markers}
+
+\item{removeOutsideVisibleBounds}{clusters and markers too far from the
+viewport are removed from the map for performance}
+
 \item{lineCap}{a string that defines
 \href{https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linecap}{shape
  to be used at the end} of the stroke}
@@ -78,6 +93,8 @@ listed in the layer functions.
 \item \code{popupOptions}: Options for popups
 
 \item \code{markerOptions}: Options for markers
+
+\item \code{markerClusterOptions}: Options for marker clusters
 
 \item \code{pathOptions}: Options for vector layers (polylines, polygons,
 rectangles, and circles, etc)

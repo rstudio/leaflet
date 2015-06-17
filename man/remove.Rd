@@ -3,6 +3,7 @@
 \alias{clearControls}
 \alias{clearGeoJSON}
 \alias{clearImages}
+\alias{clearMarkerClusters}
 \alias{clearMarkers}
 \alias{clearPopups}
 \alias{clearShapes}
@@ -12,6 +13,8 @@
 \alias{removeGeoJSON}
 \alias{removeImage}
 \alias{removeMarker}
+\alias{removeMarkerCluster}
+\alias{removeMarkerFromCluster}
 \alias{removePopup}
 \alias{removeShape}
 \alias{removeTiles}
@@ -37,6 +40,12 @@ removeMarker(map, layerId)
 
 clearMarkers(map)
 
+removeMarkerCluster(map, layerId)
+
+clearMarkerClusters(map)
+
+removeMarkerFromCluster(map, layerId, clusterId)
+
 removeShape(map, layerId)
 
 clearShapes(map)
@@ -50,6 +59,8 @@ clearGeoJSON(map)
 but more likely from \code{\link{leafletProxy}}()}
 
 \item{layerId}{character vector; the layer id(s) of the item to remove}
+
+\item{clusterId}{the id of the marker cluster layer}
 }
 \value{
 the new \code{map} object

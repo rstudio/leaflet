@@ -315,6 +315,40 @@ var dataframe = (function() {
     this._controlsById = {}
   }
 
+  function ClusterLayerStore(group) {
+    this._layers = {};
+    this._group = group;
+  }
+
+  ClusterLayerStore.prototype.add = function(layer, id) {
+    if (typeof(id) !== 'undefined' && id !== null) {
+      if (this._layers[id]) {
+        this._group.removeLayer(this._layers[id]);
+      }
+      this._layers[id] = layer;
+    }
+    this._group.addLayer(layer);
+  };
+
+  ClusterLayerStore.prototype.remove = function(id) {
+    if (typeof(id) === 'undefined' || id === null) {
+      return;
+    }
+
+    id = asArray(id);
+    for (var i = 0; i < id.length; i++) {
+      if (this._layers[id[i]]) {
+        this._group.removeLayer(this._layers[id[i]]);
+        delete this._layers[id[i]];
+      }
+    }
+  };
+
+  ClusterLayerStore.prototype.clear = function() {
+    this._layers = {};
+    this._group.clearLayers();
+  };
+
   function mouseHandler(mapId, layerId, eventName, extraInfo) {
     return function(e) {
       if (!HTMLWidgets.shinyMode) return;
@@ -431,7 +465,8 @@ var dataframe = (function() {
     });
   }
 
-  methods.addMarkers = function(lat, lng, icon, layerId, options, popup) {
+  methods.addMarkers = function(lat, lng, icon, layerId, options, popup,
+                                clusterOptions, clusterId) {
     if (icon) {
       // Unpack icons
       icon.iconUrl         = unpackStrings(icon.iconUrl);
@@ -482,19 +517,35 @@ var dataframe = (function() {
 
     if (icon) icondf.effectiveLength = df.nrow();
 
+    var clusterGroup = this.markerclusters.get(clusterId),
+        cluster = clusterOptions !== null;
+    if (cluster && !clusterGroup) {
+      clusterGroup = L.markerClusterGroup(clusterOptions);
+      clusterGroup.clusterLayerStore = new ClusterLayerStore(clusterGroup);
+    }
+    var extraInfo = cluster ? { clusterId: clusterId } : {};
+
     for (var i = 0; i < df.nrow(); i++) {
       (function() {
         var options = df.get(i);
         if (icon) options.icon = getIcon(i);
         var marker = L.marker([df.get(i, 'lat'), df.get(i, 'lng')], options);
         var thisId = df.get(i, 'layerId');
-        this.markers.add(marker, thisId);
+        if (cluster) {
+          clusterGroup.clusterLayerStore.add(marker, thisId);
+        } else {
+          this.markers.add(marker, thisId);
+        }
         var popup = df.get(i, 'popup');
         if (popup !== null) marker.bindPopup(popup);
-        marker.on('click', mouseHandler(this.id, thisId, 'marker_click'), this);
-        marker.on('mouseover', mouseHandler(this.id, thisId, 'marker_mouseover'), this);
-        marker.on('mouseout', mouseHandler(this.id, thisId, 'marker_mouseout'), this);
+        marker.on('click', mouseHandler(this.id, thisId, 'marker_click', extraInfo), this);
+        marker.on('mouseover', mouseHandler(this.id, thisId, 'marker_mouseover', extraInfo), this);
+        marker.on('mouseout', mouseHandler(this.id, thisId, 'marker_mouseout', extraInfo), this);
       }).call(this);
+
+      if (cluster) {
+        this.markerclusters.add(clusterGroup, clusterId);
+      }
     }
   };
 
@@ -577,6 +628,20 @@ var dataframe = (function() {
 
   methods.clearMarkers = function() {
     this.markers.clear();
+  };
+
+  methods.removeMarkerCluster = function(layerId) {
+    this.markerclusters.remove(layerId);
+  }
+
+  methods.removeMarkerFromCluster = function(layerId, clusterId) {
+    var cluster = this.markerclusters.get(clusterId);
+    if (!cluster) return;
+    cluster.clusterLayerStore.remove(layerId);
+  }
+
+  methods.clearMarkerClusters = function() {
+    this.markerclusters.clear();
   };
 
   methods.removeShape = function(layerId) {
@@ -1130,6 +1195,7 @@ var dataframe = (function() {
         map.geojson = new LayerStore(map);
         map.tiles = new LayerStore(map);
         map.images = new LayerStore(map);
+        map.markerclusters = new LayerStore(map);
       } else {
         map.controls.clear();
         map.markers.clear();
@@ -1138,6 +1204,7 @@ var dataframe = (function() {
         map.geojson.clear();
         map.tiles.clear();
         map.images.clear();
+        map.markerclusters.clear();
       }
 
       var explicitView = false;
