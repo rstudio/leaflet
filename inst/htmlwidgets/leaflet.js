@@ -288,8 +288,7 @@ var dataframe = (function() {
       // group; instead, use the group's layer group.
       // This one liner creates the _groupContainers[group] entry if it doesn't
       // already exist.
-      container = this._groupContainers[group] =
-          this._groupContainers[group] || L.layerGroup().addTo(this._map);
+      container = this.getLayerGroup(group, true);
     }
 
     // Update category index
@@ -342,9 +341,24 @@ var dataframe = (function() {
     var g = this._groupContainers[group];
     if (ensureExists && !g) {
       this._byGroup[group] = this._byGroup[group] || {};
-      g = this._groupContainers[group] = L.layerGroup().addTo(this._map);
+      g = this._groupContainers[group] = L.layerGroup();
+      g.groupname = group;
+      g.addTo(this._map);
     }
     return g;
+  };
+  LayerManager.prototype.getGroupNameFromLayerGroup = function(layerGroup) {
+    return layerGroup.groupname;
+  };
+  LayerManager.prototype.getVisibleGroups = function() {
+    var self = this;
+    var result = [];
+    $.each(this._groupContainers, function(k, v) {
+      if (self._map.hasLayer(v)) {
+        result.push(k);
+      }
+    });
+    return result;
   };
   LayerManager.prototype.clearGroup = function(group) {
     var self = this;
@@ -1290,7 +1304,26 @@ var dataframe = (function() {
         });
       });
 
-      map.on('moveend', function(e) { updateBounds(e.target); });
+      var groupTimerId = null;
+
+      map
+        .on('moveend', function(e) { updateBounds(e.target); })
+        .on('layeradd layerremove', function(e) {
+          // If the layer that's coming or going is a group we created, tell
+          // the server.
+          if (map.layerManager.getGroupNameFromLayerGroup(e.layer)) {
+            // But to avoid chattiness, coalesce events
+            if (groupTimerId) {
+              clearTimeout(groupTimerId);
+              groupTimerId = null;
+            }
+            groupTimerId = setTimeout(function() {
+              groupTimerId = null;
+              Shiny.onInputChange(map.id + '_groups',
+                map.layerManager.getVisibleGroups());
+            }, 100);
+          }
+        });
 
       return map;
     },
