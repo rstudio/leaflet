@@ -53,7 +53,7 @@
 addLegend = function(
   map, position = c('topright', 'bottomright', 'bottomleft', 'topleft'),
   pal, values, na.label = 'NA', bins = 7, colors, opacity = 0.5, labels,
-  labFormat = labelFormat(), title = deparse(substitute(values)),
+  labFormat = labelFormat(), title = NULL,
   layerId = NULL
 ) {
   position = match.arg(position)
