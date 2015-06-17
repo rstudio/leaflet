@@ -421,10 +421,15 @@ clearPopups = function(map) {
 
 #' @param icon the icon(s) for markers; an icon is represented by an R list of
 #'   the form \code{list(iconUrl = '?', iconSize = c(x, y))}, and you can use
-#'   \code{\link{icons}()} to create multiple icons; note when you use an R
-#'   list that contains images as local files, these local image files will be
-#'   base64 encoded into the HTML page so the icon images will still be
-#'   available even when you publish the map elsewhere
+#'   \code{\link{icons}()} to create multiple icons; note when you use an R list
+#'   that contains images as local files, these local image files will be base64
+#'   encoded into the HTML page so the icon images will still be available even
+#'   when you publish the map elsewhere
+#' @param clusterOptions if not \code{NULL}, markers will be clustered using
+#'   \href{https://github.com/Leaflet/Leaflet.markercluster}{Leaflet.markercluster};
+#'    you can use \code{\link{markerClusterOptions}()} to specify marker cluster
+#'   options
+#' @param clusterId the id for the marker cluster layer
 #' @describeIn map-layers Add markders to the map
 #' @export
 addMarkers = function(
@@ -432,6 +437,8 @@ addMarkers = function(
   icon = NULL,
   popup = NULL,
   options = markerOptions(),
+  clusterOptions = NULL,
+  clusterId = NULL,
   data = getMapData(map)
 ) {
   if (!is.null(icon)) {
@@ -456,9 +463,26 @@ addMarkers = function(
     icon = filterNULL(icon)
   }
 
+  if (!is.null(clusterOptions))
+    map$dependencies = c(map$dependencies, markerClusterDependencies())
+
   pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addMarkers")
-  invokeMethod(map, data, 'addMarkers', pts$lat, pts$lng, icon, layerId, group, options, popup) %>%
-    expandLimits(pts$lat, pts$lng)
+  invokeMethod(
+    map, data, 'addMarkers', pts$lat, pts$lng, icon, layerId, group, options, popup,
+    clusterOptions, clusterId
+  ) %>% expandLimits(pts$lat, pts$lng)
+}
+
+markerClusterDependencies = function() {
+  list(
+    htmltools::htmlDependency(
+      'leaflet-markercluster',
+      '0.4.0',
+      system.file('htmlwidgets/plugins/Leaflet.markercluster', package = 'leaflet'),
+      script = 'leaflet.markercluster.js',
+      stylesheet = c('MarkerCluster.css', 'MarkerCluster.Default.css')
+    )
+  )
 }
 
 #' Make icon set
@@ -643,6 +667,27 @@ markerOptions = function(
   )
 }
 
+#' @param showCoverageOnHover when you mouse over a cluster it shows the bounds
+#'   of its markers
+#' @param zoomToBoundsOnClick when you click a cluster we zoom to its bounds
+#' @param spiderfyOnMaxZoom when you click a cluster at the bottom zoom level we
+#'   spiderfy it so you can see all of its markers
+#' @param removeOutsideVisibleBounds clusters and markers too far from the
+#'   viewport are removed from the map for performance
+#' @describeIn map-options Options for marker clusters
+#' @export
+markerClusterOptions = function(
+  showCoverageOnHover = TRUE, zoomToBoundsOnClick = TRUE,
+  spiderfyOnMaxZoom = TRUE, removeOutsideVisibleBounds = TRUE, ...
+) {
+  list(
+    showCoverageOnHover = showCoverageOnHover,
+    zoomToBoundsOnClick = zoomToBoundsOnClick,
+    spiderfyOnMaxZoom = spiderfyOnMaxZoom,
+    removeOutsideVisibleBounds = removeOutsideVisibleBounds, ...
+  )
+}
+
 #' @param radius a numeric vector of radii for the circles; it can also be a
 #'   one-sided formula, in which case the radius values are derived from the
 #'   \code{data} (units in meters for circles, and pixels for circle markers)
@@ -694,6 +739,25 @@ removeMarker = function(map, layerId) {
 #' @export
 clearMarkers = function(map) {
   invokeMethod(map, NULL, 'clearMarkers')
+}
+
+#' @rdname remove
+#' @export
+removeMarkerCluster = function(map, layerId) {
+  invokeMethod(map, getMapData(map), 'removeMarkerCluster', layerId)
+}
+
+#' @rdname remove
+#' @export
+clearMarkerClusters = function(map) {
+  invokeMethod(map, NULL, 'clearMarkerClusters')
+}
+
+#' @param clusterId the id of the marker cluster layer
+#' @rdname remove
+#' @export
+removeMarkerFromCluster = function(map, layerId, clusterId) {
+  invokeMethod(map, getMapData(map), 'removeMarkerFromCluster', layerId, clusterId)
 }
 
 #' @param lineCap a string that defines
