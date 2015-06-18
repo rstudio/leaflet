@@ -11,6 +11,7 @@ addons:
     - r-packages-precise
     packages:
     - r-base-dev
+    - r-cran-mass
     - libgdal1-dev
     - libproj-dev
 
