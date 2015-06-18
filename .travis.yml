@@ -1,16 +1,25 @@
 language: c
 
+sudo: false
+
 env:
   - R_PKG="$(basename $TRAVIS_REPO_SLUG)"
 
+addons:
+  apt:
+    packages:
+    - r-base-dev
+    - libgdal1-dev
+    - libproj-dev
+
 install:
-  - sudo apt-add-repository -y "deb http://cran.rstudio.com/bin/linux/ubuntu `lsb_release -cs`/"
-  - sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
-  - sudo apt-get update
-  - sudo apt-get -y install r-base-dev libgdal1-dev libproj-dev
   - "wget -q -O - http://yihui.name/xran/r-config | bash"
   - Rscript -e "if (!require('devtools')) install.packages('devtools'); devtools::install_deps(dep = TRUE)"
-  - Rscript -e "install.packages(c('shiny', 'xtable'))"
+  - Rscript -e "if (!require('xtable')) install.packages('xtable')"
+
+cache:
+  directories:
+  - $HOME/R
 
 script:
   - cd ..; rm -f *.tar.gz; R CMD build $R_PKG
