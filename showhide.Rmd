@@ -1,0 +1,29 @@
+---
+pagetitle: Leaflet for R - Show/Hide Layers
+---
+
+## Show/Hide Layers
+
+The Leaflet package includes functions to show and hide map layers. You can allow users to decide what layers to show and hide, or programmatically control the visibility of layers using [server-side code in Shiny](shiny.html).
+
+In both cases, the fundamental unit of showing/hiding is the **group**.
+
+### Understanding Groups
+
+A group is a label given to a set of layers. You assign layers to groups by using the `group` parameter when adding the layers to the map.
+
+```r
+leaflet() %>%
+  addTiles() %>%
+  addMarkers(data = coffee_shops, group = "Food & Drink") %>%
+  addMarkers(data = restaurants, group = "Food & Drink") %>%
+  addMarkers(data = restrooms, group = "Restrooms")
+```
+
+Many layers can belong to same group. But each layer can only belong to zero or one groups (you can't assign a layer to two groups).
+
+#### Groups vs. Layer IDs
+
+Groups and [Layer IDs](shiny.html#understanding-layer-ids) may sound similar, in that both are used to assign an identifier to a layer. However, they differ in important ways.
+
+`layerId` arguments are vectorized; when calling e.g. `addMarkers` you need to provide one layer ID per marker, and they must all be different. `group` arguments must not be vectorized; 
