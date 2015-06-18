@@ -561,6 +561,7 @@ var dataframe = (function() {
       .col('lng', lng)
       .col('popup', popup)
       .col('layerId', layerId)
+      .col('group', group)
       .cbind(options);
 
     for (var i = 0; i < df.nrow(); i++) {
@@ -569,10 +570,11 @@ var dataframe = (function() {
                      .setLatLng([df.get(i, 'lat'), df.get(i, 'lng')])
                      .setContent(df.get(i, 'popup'));
         var thisId = df.get(i, 'layerId');
-        this.layerManager.addLayer(popup, "popup", thisId, group);
-        popup.on('click', mouseHandler(this.id, thisId, group, 'popup_click'), this);
-        popup.on('mouseover', mouseHandler(this.id, thisId, group, 'popup_mouseover'), this);
-        popup.on('mouseout', mouseHandler(this.id, thisId, group, 'popup_mouseout'), this);
+        var thisGroup = df.get(i, 'group');
+        this.layerManager.addLayer(popup, "popup", thisId, thisGroup);
+        popup.on('click', mouseHandler(this.id, thisId, thisGroup, 'popup_click'), this);
+        popup.on('mouseover', mouseHandler(this.id, thisId, thisGroup, 'popup_mouseover'), this);
+        popup.on('mouseout', mouseHandler(this.id, thisId, thisGroup, 'popup_mouseout'), this);
       }).call(this);
     }
   };
@@ -619,6 +621,40 @@ var dataframe = (function() {
     return $.map(iconset.index, function(e, i) {
       return iconset.data[e];
     });
+  }
+
+  function addMarkers(map, df, group, clusterOptions, clusterId, markerFunc) {
+    (function() {
+      var clusterGroup = this.layerManager.getLayer("cluster", clusterId),
+          cluster = clusterOptions !== null;
+      if (cluster && !clusterGroup) {
+        clusterGroup = L.markerClusterGroup(clusterOptions);
+        clusterGroup.clusterLayerStore = new ClusterLayerStore(clusterGroup);
+      }
+      var extraInfo = cluster ? { clusterId: clusterId } : {};
+
+      for (var i = 0; i < df.nrow(); i++) {
+        (function() {
+          var marker = markerFunc(df, i);
+          var thisId = df.get(i, 'layerId');
+          var thisGroup = cluster ? null : df.get(i, 'group');
+          if (cluster) {
+            clusterGroup.clusterLayerStore.add(marker, thisId);
+          } else {
+            this.layerManager.addLayer(marker, "marker", thisId, thisGroup);
+          }
+          var popup = df.get(i, 'popup');
+          if (popup !== null) marker.bindPopup(popup);
+          marker.on('click', mouseHandler(this.id, thisId, thisGroup, 'marker_click', extraInfo), this);
+          marker.on('mouseover', mouseHandler(this.id, thisId, thisGroup, 'marker_mouseover', extraInfo), this);
+          marker.on('mouseout', mouseHandler(this.id, thisId, thisGroup, 'marker_mouseout', extraInfo), this);
+        }).call(this);
+      }
+
+      if (cluster) {
+        this.layerManager.addLayer(clusterGroup, "cluster", clusterId, group);
+      }
+    }).call(map);
   }
 
   methods.addMarkers = function(lat, lng, icon, layerId, group, options, popup,
@@ -668,42 +704,36 @@ var dataframe = (function() {
       .col('lat', lat)
       .col('lng', lng)
       .col('layerId', layerId)
+      .col('group', group)
       .col('popup', popup)
       .cbind(options);
 
     if (icon) icondf.effectiveLength = df.nrow();
 
-    var clusterGroup = this.layerManager.getLayer("cluster", clusterId),
-        cluster = clusterOptions !== null;
-    if (cluster && !clusterGroup) {
-      clusterGroup = L.markerClusterGroup(clusterOptions);
-      clusterGroup.clusterLayerStore = new ClusterLayerStore(clusterGroup);
-    }
-    var extraInfo = cluster ? { clusterId: clusterId } : {};
+    addMarkers(this, df, group, clusterOptions, clusterId, function(df, i) {
+      var options = df.get(i);
+      if (icon) options.icon = getIcon(i);
+      return L.marker([df.get(i, 'lat'), df.get(i, 'lng')], options);
+    });
+  };
 
+  addLayers = function(map, category, df, layerFunc) {
     for (var i = 0; i < df.nrow(); i++) {
       (function() {
-        var options = df.get(i);
-        if (icon) options.icon = getIcon(i);
-        var marker = L.marker([df.get(i, 'lat'), df.get(i, 'lng')], options);
+        var layer = layerFunc(df, i);
         var thisId = df.get(i, 'layerId');
-        if (cluster) {
-          clusterGroup.clusterLayerStore.add(marker, thisId);
-        } else {
-          this.layerManager.addLayer(marker, "marker", thisId, group);
+        var thisGroup = df.get(i, 'group');
+        this.layerManager.addLayer(layer, category, thisId, thisGroup);
+        if (layer.bindPopup) {
+          var popup = df.get(i, 'popup');
+          if (popup !== null) layer.bindPopup(popup);
         }
-        var popup = df.get(i, 'popup');
-        if (popup !== null) marker.bindPopup(popup);
-        marker.on('click', mouseHandler(this.id, thisId, group, 'marker_click', extraInfo), this);
-        marker.on('mouseover', mouseHandler(this.id, thisId, group, 'marker_mouseover', extraInfo), this);
-        marker.on('mouseout', mouseHandler(this.id, thisId, group, 'marker_mouseout', extraInfo), this);
-      }).call(this);
-
-      if (cluster) {
-        this.layerManager.addLayer(clusterGroup, "cluster", clusterId, group);
-      }
+        layer.on('click', mouseHandler(this.id, thisId, thisGroup, category + '_click'), this);
+        layer.on('mouseover', mouseHandler(this.id, thisId, thisGroup, category + '_mouseover'), this);
+        layer.on('mouseout', mouseHandler(this.id, thisId, thisGroup, category + '_mouseout'), this);
+      }).call(map);
     }
-  };
+  }
 
   methods.addCircles = function(lat, lng, radius, layerId, group, options, popup) {
     var df = dataframe.create()
@@ -711,44 +741,28 @@ var dataframe = (function() {
       .col('lng', lng)
       .col('radius', radius)
       .col('layerId', layerId)
+      .col('group', group)
       .col('popup', popup)
       .cbind(options);
 
-    for (var i = 0; i < df.nrow(); i++) {
-      (function() {
-        var circle = L.circle([df.get(i, 'lat'), df.get(i, 'lng')], df.get(i, 'radius'), df.get(i));
-        var thisId = df.get(i, 'layerId');
-        this.layerManager.addLayer(circle, "shape", thisId, group);
-        var popup = df.get(i, 'popup');
-        if (popup !== null) circle.bindPopup(popup);
-        circle.on('click', mouseHandler(this.id, thisId, group, 'shape_click'), this);
-        circle.on('mouseover', mouseHandler(this.id, thisId, group, 'shape_mouseover'), this);
-        circle.on('mouseout', mouseHandler(this.id, thisId, group, 'shape_mouseout'), this);
-      }).call(this);
-    }
+    addLayers(this, "shape", df, function(df, i) {
+      return L.circle([df.get(i, 'lat'), df.get(i, 'lng')], df.get(i, 'radius'), df.get(i));
+    });
   };
 
-  methods.addCircleMarkers = function(lat, lng, radius, layerId, group, options, popup) {
+  methods.addCircleMarkers = function(lat, lng, radius, layerId, group, options, clusterOptions, clusterId, popup) {
     var df = dataframe.create()
       .col('lat', lat)
       .col('lng', lng)
       .col('radius', radius)
       .col('layerId', layerId)
+      .col('group', group)
       .col('popup', popup)
       .cbind(options);
 
-    for (var i = 0; i < df.nrow(); i++) {
-      (function() {
-        var circle = L.circleMarker([df.get(i, 'lat'), df.get(i, 'lng')], df.get(i));
-        var thisId = df.get(i, 'layerId');
-        this.layerManager.addLayer(circle, "marker", thisId, group);
-        var popup = df.get(i, 'popup');
-        if (popup !== null) circle.bindPopup(popup);
-        circle.on('click', mouseHandler(this.id, thisId, group, 'marker_click'), this);
-        circle.on('mouseover', mouseHandler(this.id, thisId, group, 'marker_mouseover'), this);
-        circle.on('mouseout', mouseHandler(this.id, thisId, group, 'marker_mouseout'), this);
-      }).call(this);
-    }
+    addMarkers(this, df, group, clusterOptions, clusterId, function(df, i) {
+      return L.circleMarker([df.get(i, 'lat'), df.get(i, 'lng')], df.get(i));
+    });
   };
 
   /*
@@ -759,23 +773,15 @@ var dataframe = (function() {
     var df = dataframe.create()
       .col('shapes', polygons)
       .col('layerId', layerId)
+      .col('group', group)
       .col('popup', popup)
       .cbind(options);
 
-    for (var i = 0; i < df.nrow(); i++) {
-      (function() {
+    addLayers(this, "shape", df, function(df, i) {
         var shape = df.get(i, 'shapes')[0];
         shape = HTMLWidgets.dataframeToD3(shape);
-        var polyline = L.polyline(shape, df.get(i));
-        var thisId = df.get(i, 'layerId');
-        this.layerManager.addLayer(polyline, "shape", thisId, group);
-        var popup = df.get(i, 'popup');
-        if (popup !== null) polyline.bindPopup(popup);
-        polyline.on('click', mouseHandler(this.id, thisId, group, 'shape_click'), this);
-        polyline.on('mouseover', mouseHandler(this.id, thisId, group, 'shape_mouseover'), this);
-        polyline.on('mouseout', mouseHandler(this.id, thisId, group, 'shape_mouseout'), this);
-      }).call(this);
-    }
+        return L.polyline(shape, df.get(i));
+    });
   };
 
   methods.removeMarker = function(layerId) {
@@ -815,25 +821,17 @@ var dataframe = (function() {
       .col('lat2', lat2)
       .col('lng2', lng2)
       .col('layerId', layerId)
+      .col('group', group)
       .col('popup', popup)
       .cbind(options);
 
-    for (var i = 0; i < df.nrow(); i++) {
-      (function() {
-        var rect = L.rectangle([
-            [df.get(i, 'lat1'), df.get(i, 'lng1')],
-            [df.get(i, 'lat2'), df.get(i, 'lng2')]
-          ],
-          df.get(i));
-        var thisId = df.get(i, 'layerId');
-        this.layerManager.addLayer(rect, "shape", thisId, group);
-        var popup = df.get(i, 'popup');
-        if (popup !== null) rect.bindPopup(popup);
-        rect.on('click', mouseHandler(this.id, thisId, group, 'shape_click'), this);
-        rect.on('mouseover', mouseHandler(this.id, thisId, group, 'shape_mouseover'), this);
-        rect.on('mouseout', mouseHandler(this.id, thisId, group, 'shape_mouseout'), this);
-      }).call(this);
-    }
+    addLayers(this, "shape", df, function(df, i) {
+      return L.rectangle([
+          [df.get(i, 'lat1'), df.get(i, 'lng1')],
+          [df.get(i, 'lat2'), df.get(i, 'lng2')]
+        ],
+        df.get(i));
+    });
   };
 
   /*
@@ -844,25 +842,17 @@ var dataframe = (function() {
     var df = dataframe.create()
       .col('shapes', polygons)
       .col('layerId', layerId)
+      .col('group', group)
       .col('popup', popup)
       .cbind(options);
 
-    for (var i = 0; i < df.nrow(); i++) {
-      (function() {
-        var shapes = df.get(i, 'shapes');
-        for (var j = 0; j < shapes.length; j++) {
-          shapes[j] = HTMLWidgets.dataframeToD3(shapes[j]);
-        }
-        var polygon = L.polygon(shapes, df.get(i));
-        var thisId = df.get(i, 'layerId');
-        this.layerManager.addLayer(polygon, "shape", thisId, group);
-        var popup = df.get(i, 'popup');
-        if (popup !== null) polygon.bindPopup(popup);
-        polygon.on('click', mouseHandler(this.id, thisId, group, 'shape_click'), this);
-        polygon.on('mouseover', mouseHandler(this.id, thisId, group, 'shape_mouseover'), this);
-        polygon.on('mouseout', mouseHandler(this.id, thisId, group, 'shape_mouseout'), this);
-      }).call(this);
-    }
+    addLayers(this, "shape", df, function(df, i) {
+      var shapes = df.get(i, 'shapes');
+      for (var j = 0; j < shapes.length; j++) {
+        shapes[j] = HTMLWidgets.dataframeToD3(shapes[j]);
+      }
+      return L.polygon(shapes, df.get(i));
+    });
   };
 
   methods.addGeoJSON = function(data, layerId, group) {
@@ -1018,11 +1008,21 @@ var dataframe = (function() {
     // Only allow one layers control at a time
     methods.removeLayersControl.call(this);
 
+    var firstLayer = true;
     var base = {};
     $.each(asArray(baseGroups), function(i, g) {
       var layer = self.layerManager.getLayerGroup(g, true);
       if (layer) {
         base[g] = layer;
+
+        // Check if >1 base layers are visible; if so, hide all but the first one
+        if (self.hasLayer(layer)) {
+          if (firstLayer) {
+            firstLayer = false;
+          } else {
+            self.removeLayer(layer);
+          }
+        }
       }
     });
     var overlay = {};

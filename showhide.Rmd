@@ -22,8 +22,58 @@ leaflet() %>%
 
 Many layers can belong to same group. But each layer can only belong to zero or one groups (you can't assign a layer to two groups).
 
-#### Groups vs. Layer IDs
+<div class="panel panel-info">
+<div class="panel-heading">
+<h4 class="panel-title">Groups vs. Layer IDs</h4>
+</div>
+<div class="panel-body">
+Groups and [Layer IDs](shiny.html#understanding-layer-ids) may appear similar, in that both are used to assign a name to a layer. However, they differ in that layer IDs are used to provide a *unique identifier* to *individual* markers and shapes, etc., while groups are used to give *shared labels* to *many* items.
 
-Groups and [Layer IDs](shiny.html#understanding-layer-ids) may sound similar, in that both are used to assign an identifier to a layer. However, they differ in important ways.
+You generally provide one `group` value for the entire `addMarkers` call, and you can reuse that same `group` value in future `addXXX` calls to add to that group's membership (as in the example above).
 
-`layerId` arguments are vectorized; when calling e.g. `addMarkers` you need to provide one layer ID per marker, and they must all be different. `group` arguments must not be vectorized; 
+`layerId` arguments are *always* vectorized: when calling e.g. `addMarkers` you need to provide one layer ID per marker, and they must all be unique. If you add a circle with a layer ID of `"foo"` and later add a different shape with the same layer ID, the original circle will be removed.
+</div>
+</div>
+
+### Interactive Layer Display
+
+You can use Leaflet's layers control feature to allow users to toggle the visibility of groups.
+
+```{r fig.height=3}
+outline <- quakes[chull(quakes$long, quakes$lat),]
+
+map <- leaflet(quakes) %>%
+  # Base groups
+  addTiles(group = "OSM (default)") %>%
+  addProviderTiles("Stamen.Toner", group = "Toner") %>%
+  addProviderTiles("Stamen.TonerLite", group = "Toner Lite") %>%
+  # Overlay groups
+  addCircles(~long, ~lat, ~10^mag/5, stroke = F, group = "Quakes") %>%
+  addPolygons(data = outline, lng = ~long, lat = ~lat,
+    fill = F, weight = 2, color = "#FFFFCC", group = "Outline") %>%
+  # Layers control
+  addLayersControl(
+    baseGroups = c("OSM (default)", "Toner", "Toner Lite"),
+    overlayGroups = c("Quakes", "Outline"),
+    options = layersControlOptions(collapsed = FALSE)
+  )
+map
+```
+
+The `addLayersControl` function distinguishes between *base groups*, which can only be viewed one group at a time, and *overlay groups*, which can be individually checked or unchecked.
+
+Although base groups are generally tile layers, and overlay groups are usually markers and shapes, there is no restriction on what types of layers can be placed in each category.
+
+Only one layers control can be present on a map at a time. If you call `addLayersControl` multiple times, the last call will win.
+
+### Programmatic Layer Display
+
+You can use the `showGroup` and `hideGroup` functions to show and hide groups from code. This mostly makes sense in a [Shiny context with `leafletProxy`](shiny.html), where perhaps you might toggle group visibility based on input controls in a sidebar.
+
+You can also use `showGroup`/`hideGroup` in conjuction with `addLayersControl` to set which groups are checked by default.
+
+```{r}
+map %>% hideGroup("Outline")
+```
+
+Finally, you can remove the layers in a group using `clearGroup`. Note that this doesn't just remove the layers from the group, it also removes them from the map. (It does not, however, remove the group itself from the map; it still exists, but is empty.)
