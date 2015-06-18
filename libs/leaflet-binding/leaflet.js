@@ -1334,6 +1334,44 @@ var dataframe = (function() {
     this.layerManager.clearLayers("image");
   };
 
+  function preventUnintendedZoomOnScroll(map) {
+    // Prevent unwanted scroll capturing. Similar in purpose to
+    // https://github.com/CliffCloud/Leaflet.Sleep but with a
+    // different set of heuristics.
+
+    // The basic idea is that when a mousewheel/DOMMouseScroll
+    // event is seen, we disable scroll wheel zooming until the
+    // user moves their mouse cursor or clicks on the map. This
+    // is slightly trickier than just listening for mousemove,
+    // because mousemove is fired when the page is scrolled,
+    // even if the user did not physically move the mouse. We
+    // handle this by examining the mousemove event's screenX
+    // and screenY properties; if they change, we know it's a
+    // "true" move.
+
+    // lastScreen can never be null, but its x and y can.
+    var lastScreen = {x: null, y: null};
+    $(document).on("mousewheel DOMMouseScroll", "*", function(e) {
+      // Disable zooming (until the mouse moves or click)
+      map.scrollWheelZoom.disable();
+      // Any mousemove events at this screen position will be ignored.
+      lastScreen = {x: e.originalEvent.screenX, y: e.originalEvent.screenY};
+    });
+    $(document).on("mousemove", "*", function(e) {
+      // Did the mouse really move?
+      if (lastScreen.x !== null && e.screenX !== lastScreen.x || e.screenY !== lastScreen.y) {
+        // It really moved. Enable zooming.
+        map.scrollWheelZoom.enable();
+        lastScreen = {x: null, y: null};
+      }
+    });
+    $(document).on("mousedown", ".leaflet", function(e) {
+      // Clicking always enables zooming.
+      map.scrollWheelZoom.enable();
+      lastScreen = {x: null, y: null};
+    });
+  }
+
   HTMLWidgets.widget({
     name: "leaflet",
     type: "output",
@@ -1344,6 +1382,8 @@ var dataframe = (function() {
         center: [51.505, -0.09],
         zoom: 13
       });
+
+      preventUnintendedZoomOnScroll(map);
 
       // Store some state in the map object
       map.leafletr = {
