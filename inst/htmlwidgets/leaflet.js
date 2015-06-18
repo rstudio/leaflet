@@ -561,6 +561,7 @@ var dataframe = (function() {
       .col('lng', lng)
       .col('popup', popup)
       .col('layerId', layerId)
+      .col('group', group)
       .cbind(options);
 
     for (var i = 0; i < df.nrow(); i++) {
@@ -569,10 +570,11 @@ var dataframe = (function() {
                      .setLatLng([df.get(i, 'lat'), df.get(i, 'lng')])
                      .setContent(df.get(i, 'popup'));
         var thisId = df.get(i, 'layerId');
-        this.layerManager.addLayer(popup, "popup", thisId, group);
-        popup.on('click', mouseHandler(this.id, thisId, group, 'popup_click'), this);
-        popup.on('mouseover', mouseHandler(this.id, thisId, group, 'popup_mouseover'), this);
-        popup.on('mouseout', mouseHandler(this.id, thisId, group, 'popup_mouseout'), this);
+        var thisGroup = df.get(i, 'group');
+        this.layerManager.addLayer(popup, "popup", thisId, thisGroup);
+        popup.on('click', mouseHandler(this.id, thisId, thisGroup, 'popup_click'), this);
+        popup.on('mouseover', mouseHandler(this.id, thisId, thisGroup, 'popup_mouseover'), this);
+        popup.on('mouseout', mouseHandler(this.id, thisId, thisGroup, 'popup_mouseout'), this);
       }).call(this);
     }
   };
@@ -668,6 +670,7 @@ var dataframe = (function() {
       .col('lat', lat)
       .col('lng', lng)
       .col('layerId', layerId)
+      .col('group', group)
       .col('popup', popup)
       .cbind(options);
 
@@ -687,21 +690,22 @@ var dataframe = (function() {
         if (icon) options.icon = getIcon(i);
         var marker = L.marker([df.get(i, 'lat'), df.get(i, 'lng')], options);
         var thisId = df.get(i, 'layerId');
+        var thisGroup = cluster ? null : df.get(i, 'group');
         if (cluster) {
           clusterGroup.clusterLayerStore.add(marker, thisId);
         } else {
-          this.layerManager.addLayer(marker, "marker", thisId, group);
+          this.layerManager.addLayer(marker, "marker", thisId, thisGroup);
         }
         var popup = df.get(i, 'popup');
         if (popup !== null) marker.bindPopup(popup);
-        marker.on('click', mouseHandler(this.id, thisId, group, 'marker_click', extraInfo), this);
-        marker.on('mouseover', mouseHandler(this.id, thisId, group, 'marker_mouseover', extraInfo), this);
-        marker.on('mouseout', mouseHandler(this.id, thisId, group, 'marker_mouseout', extraInfo), this);
+        marker.on('click', mouseHandler(this.id, thisId, thisGroup, 'marker_click', extraInfo), this);
+        marker.on('mouseover', mouseHandler(this.id, thisId, thisGroup, 'marker_mouseover', extraInfo), this);
+        marker.on('mouseout', mouseHandler(this.id, thisId, thisGroup, 'marker_mouseout', extraInfo), this);
       }).call(this);
+    }
 
-      if (cluster) {
-        this.layerManager.addLayer(clusterGroup, "cluster", clusterId, group);
-      }
+    if (cluster) {
+      this.layerManager.addLayer(clusterGroup, "cluster", clusterId, group);
     }
   };
 
@@ -711,6 +715,7 @@ var dataframe = (function() {
       .col('lng', lng)
       .col('radius', radius)
       .col('layerId', layerId)
+      .col('group', group)
       .col('popup', popup)
       .cbind(options);
 
@@ -718,12 +723,13 @@ var dataframe = (function() {
       (function() {
         var circle = L.circle([df.get(i, 'lat'), df.get(i, 'lng')], df.get(i, 'radius'), df.get(i));
         var thisId = df.get(i, 'layerId');
-        this.layerManager.addLayer(circle, "shape", thisId, group);
+        var thisGroup = df.get(i, 'group');
+        this.layerManager.addLayer(circle, "shape", thisId, thisGroup);
         var popup = df.get(i, 'popup');
         if (popup !== null) circle.bindPopup(popup);
-        circle.on('click', mouseHandler(this.id, thisId, group, 'shape_click'), this);
-        circle.on('mouseover', mouseHandler(this.id, thisId, group, 'shape_mouseover'), this);
-        circle.on('mouseout', mouseHandler(this.id, thisId, group, 'shape_mouseout'), this);
+        circle.on('click', mouseHandler(this.id, thisId, thisGroup, 'shape_click'), this);
+        circle.on('mouseover', mouseHandler(this.id, thisId, thisGroup, 'shape_mouseover'), this);
+        circle.on('mouseout', mouseHandler(this.id, thisId, thisGroup, 'shape_mouseout'), this);
       }).call(this);
     }
   };
@@ -734,6 +740,7 @@ var dataframe = (function() {
       .col('lng', lng)
       .col('radius', radius)
       .col('layerId', layerId)
+      .col('group', group)
       .col('popup', popup)
       .cbind(options);
 
@@ -741,12 +748,13 @@ var dataframe = (function() {
       (function() {
         var circle = L.circleMarker([df.get(i, 'lat'), df.get(i, 'lng')], df.get(i));
         var thisId = df.get(i, 'layerId');
-        this.layerManager.addLayer(circle, "marker", thisId, group);
+        var thisGroup = df.get(i, 'group');
+        this.layerManager.addLayer(circle, "marker", thisId, thisGroup);
         var popup = df.get(i, 'popup');
         if (popup !== null) circle.bindPopup(popup);
-        circle.on('click', mouseHandler(this.id, thisId, group, 'marker_click'), this);
-        circle.on('mouseover', mouseHandler(this.id, thisId, group, 'marker_mouseover'), this);
-        circle.on('mouseout', mouseHandler(this.id, thisId, group, 'marker_mouseout'), this);
+        circle.on('click', mouseHandler(this.id, thisId, thisGroup, 'marker_click'), this);
+        circle.on('mouseover', mouseHandler(this.id, thisId, thisGroup, 'marker_mouseover'), this);
+        circle.on('mouseout', mouseHandler(this.id, thisId, thisGroup, 'marker_mouseout'), this);
       }).call(this);
     }
   };
@@ -759,6 +767,7 @@ var dataframe = (function() {
     var df = dataframe.create()
       .col('shapes', polygons)
       .col('layerId', layerId)
+      .col('group', group)
       .col('popup', popup)
       .cbind(options);
 
@@ -768,12 +777,13 @@ var dataframe = (function() {
         shape = HTMLWidgets.dataframeToD3(shape);
         var polyline = L.polyline(shape, df.get(i));
         var thisId = df.get(i, 'layerId');
-        this.layerManager.addLayer(polyline, "shape", thisId, group);
+        var thisGroup = df.get(i, 'group');
+        this.layerManager.addLayer(polyline, "shape", thisId, thisGroup);
         var popup = df.get(i, 'popup');
         if (popup !== null) polyline.bindPopup(popup);
-        polyline.on('click', mouseHandler(this.id, thisId, group, 'shape_click'), this);
-        polyline.on('mouseover', mouseHandler(this.id, thisId, group, 'shape_mouseover'), this);
-        polyline.on('mouseout', mouseHandler(this.id, thisId, group, 'shape_mouseout'), this);
+        polyline.on('click', mouseHandler(this.id, thisId, thisGroup, 'shape_click'), this);
+        polyline.on('mouseover', mouseHandler(this.id, thisId, thisGroup, 'shape_mouseover'), this);
+        polyline.on('mouseout', mouseHandler(this.id, thisId, thisGroup, 'shape_mouseout'), this);
       }).call(this);
     }
   };
@@ -815,6 +825,7 @@ var dataframe = (function() {
       .col('lat2', lat2)
       .col('lng2', lng2)
       .col('layerId', layerId)
+      .col('group', group)
       .col('popup', popup)
       .cbind(options);
 
@@ -826,12 +837,13 @@ var dataframe = (function() {
           ],
           df.get(i));
         var thisId = df.get(i, 'layerId');
-        this.layerManager.addLayer(rect, "shape", thisId, group);
+        var thisGroup = df.get(i, 'group');
+        this.layerManager.addLayer(rect, "shape", thisId, thisGroup);
         var popup = df.get(i, 'popup');
         if (popup !== null) rect.bindPopup(popup);
-        rect.on('click', mouseHandler(this.id, thisId, group, 'shape_click'), this);
-        rect.on('mouseover', mouseHandler(this.id, thisId, group, 'shape_mouseover'), this);
-        rect.on('mouseout', mouseHandler(this.id, thisId, group, 'shape_mouseout'), this);
+        rect.on('click', mouseHandler(this.id, thisId, thisGroup, 'shape_click'), this);
+        rect.on('mouseover', mouseHandler(this.id, thisId, thisGroup, 'shape_mouseover'), this);
+        rect.on('mouseout', mouseHandler(this.id, thisId, thisGroup, 'shape_mouseout'), this);
       }).call(this);
     }
   };
@@ -844,6 +856,7 @@ var dataframe = (function() {
     var df = dataframe.create()
       .col('shapes', polygons)
       .col('layerId', layerId)
+      .col('group', group)
       .col('popup', popup)
       .cbind(options);
 
@@ -855,12 +868,13 @@ var dataframe = (function() {
         }
         var polygon = L.polygon(shapes, df.get(i));
         var thisId = df.get(i, 'layerId');
-        this.layerManager.addLayer(polygon, "shape", thisId, group);
+        var thisGroup = df.get(i, 'group');
+        this.layerManager.addLayer(polygon, "shape", thisId, thisGroup);
         var popup = df.get(i, 'popup');
         if (popup !== null) polygon.bindPopup(popup);
-        polygon.on('click', mouseHandler(this.id, thisId, group, 'shape_click'), this);
-        polygon.on('mouseover', mouseHandler(this.id, thisId, group, 'shape_mouseover'), this);
-        polygon.on('mouseout', mouseHandler(this.id, thisId, group, 'shape_mouseout'), this);
+        polygon.on('click', mouseHandler(this.id, thisId, thisGroup, 'shape_click'), this);
+        polygon.on('mouseover', mouseHandler(this.id, thisId, thisGroup, 'shape_mouseover'), this);
+        polygon.on('mouseout', mouseHandler(this.id, thisId, thisGroup, 'shape_mouseout'), this);
       }).call(this);
     }
   };
