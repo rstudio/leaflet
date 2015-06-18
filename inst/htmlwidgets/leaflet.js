@@ -1018,11 +1018,21 @@ var dataframe = (function() {
     // Only allow one layers control at a time
     methods.removeLayersControl.call(this);
 
+    var firstLayer = true;
     var base = {};
     $.each(asArray(baseGroups), function(i, g) {
       var layer = self.layerManager.getLayerGroup(g, true);
       if (layer) {
         base[g] = layer;
+
+        // Check if >1 base layers are visible; if so, hide all but the first one
+        if (self.hasLayer(layer)) {
+          if (firstLayer) {
+            firstLayer = false;
+          } else {
+            self.removeLayer(layer);
+          }
+        }
       }
     });
     var overlay = {};
