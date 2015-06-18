@@ -717,6 +717,8 @@ addCircleMarkers = function(
   dashArray = NULL,
   popup = NULL,
   options = pathOptions(),
+  clusterOptions = NULL,
+  clusterId = NULL,
   data = getMapData(map)
 ) {
   options = c(options, list(
@@ -724,8 +726,11 @@ addCircleMarkers = function(
     fill = fill, fillColor = fillColor, fillOpacity = fillOpacity,
     dashArray = dashArray
   ))
+  if (!is.null(clusterOptions))
+    map$dependencies = c(map$dependencies, markerClusterDependencies())
   pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addCircleMarkers")
-  invokeMethod(map, data, 'addCircleMarkers', pts$lat, pts$lng, radius, layerId, group, options, popup) %>%
+  invokeMethod(map, data, 'addCircleMarkers', pts$lat, pts$lng, radius,
+      layerId, group, options, clusterOptions, clusterId, popup) %>%
     expandLimits(pts$lat, pts$lng)
 }
 

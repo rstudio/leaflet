@@ -31,8 +31,9 @@ addMarkers(map, lng = NULL, lat = NULL, layerId = NULL, group = NULL, icon = NUL
 
 addCircleMarkers(map, lng = NULL, lat = NULL, radius = 10, layerId = NULL, 
     group = NULL, stroke = TRUE, color = "#03F", weight = 5, opacity = 0.5, 
-    fill = TRUE, fillColor = color, fillOpacity = 0.2, dashArray = NULL, popup = NULL, 
-    options = pathOptions(), data = getMapData(map))
+    fill = TRUE, fillColor = color, fillOpacity = 0.2, dashArray = NULL, 
+    popup = NULL, options = pathOptions(), clusterOptions = NULL, clusterId = NULL, 
+    data = getMapData(map))
 
 addCircles(map, lng = NULL, lat = NULL, radius = 10, layerId = NULL, group = NULL, 
     stroke = TRUE, color = "#03F", weight = 5, opacity = 0.5, fill = TRUE, 
@@ -44,10 +45,10 @@ addPolylines(map, lng = NULL, lat = NULL, layerId = NULL, group = NULL, stroke =
     fillOpacity = 0.2, dashArray = NULL, smoothFactor = 1, noClip = FALSE, 
     popup = NULL, options = pathOptions(), data = getMapData(map))
 
-addRectangles(map, lng1, lat1, lng2, lat2, layerId = NULL, group = NULL, stroke = TRUE, 
-    color = "#03F", weight = 5, opacity = 0.5, fill = TRUE, fillColor = color, 
-    fillOpacity = 0.2, dashArray = NULL, smoothFactor = 1, noClip = FALSE, 
-    popup = NULL, options = pathOptions(), data = getMapData(map))
+addRectangles(map, lng1, lat1, lng2, lat2, layerId = NULL, group = NULL, 
+    stroke = TRUE, color = "#03F", weight = 5, opacity = 0.5, fill = TRUE, 
+    fillColor = color, fillOpacity = 0.2, dashArray = NULL, smoothFactor = 1, 
+    noClip = FALSE, popup = NULL, options = pathOptions(), data = getMapData(map))
 
 addPolygons(map, lng = NULL, lat = NULL, layerId = NULL, group = NULL, stroke = TRUE, 
     color = "#03F", weight = 5, opacity = 0.5, fill = TRUE, fillColor = color, 
