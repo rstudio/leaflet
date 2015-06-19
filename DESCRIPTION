@@ -38,5 +38,6 @@ Suggests:
     shiny,
     testit (>= 0.4),
     rgdal,
-    R6
+    R6,
+    RJSONIO
 VignetteBuilder: knitr
