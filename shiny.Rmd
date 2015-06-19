@@ -50,12 +50,77 @@ For some situations that may be acceptable or desirable behavior. But in other s
 
 To modify a map that's already running in the page, you use the `leafletProxy()` function in place of the `leaflet()` call, but otherwise use Leaflet function calls as normal.
 
-```{r eval=FALSE}
-# Create a new map and add a marker to it
-leaflet() %>% addTiles() %>% addMarkers(-122.151529, 47.694289)
+Normally you use `leaflet` to create the static aspects of the map, and `leafletProxy` to manage the dynamic elements, like so:
 
-# Add a marker to the map with id "mymap"
-leafletProxy("mymap") %>% addMarkers(-122.151529, 47.694289)
+```{r eval=FALSE}
+library(shiny)
+library(RColorBrewer)
+
+ui <- bootstrapPage(
+  tags$style(type = "text/css", "html, body { width: 100%; height: 100% }"),
+  leafletOutput("map", width = "100%", height = "100%"),
+  absolutePanel(top = 10, right = 10,
+    sliderInput("range", "Magnitudes", min(quakes$mag), max(quakes$mag),
+      value = range(quakes$mag), step = 0.1),
+    selectInput("colors", "Color Scheme",
+      rownames(brewer.pal.info)[brewer.pal.info$category %in% c("seq", "div")]
+    ),
+    checkboxInput("legend", "Show legend", TRUE)
+  )
+)
+
+server <- function(input, output, session) {
+
+  # Reactive expression for the data subsetted to what the user selected
+  filteredData <- reactive({
+    quakes[quakes$mag >= input$range[1] & quakes$mag <= input$range[2],]
+  })
+  
+  # This reactive expression represents the palette function,
+  # which changes as the user makes selections in UI.
+  colorpal <- reactive({
+    colorNumeric(input$colors, quakes$mag)
+  })
+  
+  output$map <- renderLeaflet({
+    # Use leaflet() here, and only include aspects of the map that
+    # won't need to change dynamically (at least, not unless the
+    # entire map is being torn down and recreated).
+    leaflet(quakes) %>% addTiles() %>%
+      fitBounds(~min(long), ~min(lat), ~max(long), ~max(lat))
+  })
+  
+  # Incremental changes to the map (in this case, replacing the
+  # circles when a new color is chosen) should be performed in
+  # an observer. Each independent set of things that can change
+  # should be managed in its own observer.
+  observe({
+    pal <- colorpal()
+    
+    leafletProxy("map", data = filteredData()) %>%
+      clearShapes() %>%
+      addCircles(radius = ~10^mag/10, weight = 1, color = "#777777",
+        fillColor = ~pal(mag), fillOpacity = 0.7, popup = ~paste(mag)
+      )
+  })
+  
+  # Use a separate observer to recreate the legend as needed.
+  observe({
+    proxy <- leafletProxy("map", data = quakes)
+    
+    # Remove any existing legend, and only if the legend is
+    # enabled, create a new one.
+    proxy %>% clearControls()
+    if (input$legend) {
+      pal <- colorpal()
+      proxy %>% addLegend(position = "bottomright",
+        pal = pal, values = ~mag
+      )
+    }
+  })
+}
+
+shinyApp(ui, server)
 ```
 
 Besides adding layers, you can set the map bounds, remove specific objects by ID, or clear categories of layers.
@@ -78,7 +143,7 @@ proxy %>% clearShapes()
 
 ### Understanding Layer IDs
 
-Layer IDs can be used to replace or remove specific map elements.
+Layer IDs can be used to replace or remove specific map elements. (**Note:** For managing groups of map elements, see the [Show/Hide Layers](showhide.html) topic.)
 
 When you give an object a layer ID, if a similar object exists with the same ID, it will be removed from the map when the new object is added.
 
@@ -92,7 +157,8 @@ tile           | `addTiles`, `addProviderTiles`                                 
 marker         | `addMarkers`, `addCircleMarkers`                               | `removeMarker`  | `clearMarkers`
 popup          | `addPopups`                                                    | `removePopup`   | `clearPopups`
 shape          | `addPolygons`, `addPolylines`, `addCircles`, `addRectangles`   | `removeShape`   | `clearShapes`
-geojson        | `addGeoJSON`, `addTopoJSON`                                    | `removeGeoJSON` | `clearGeoJSON`
+geojson        | `addTopoJSON`                                                  | `removeGeoJSON` | `clearGeoJSON`
+topojson       | `addTopoJSON`                                                  | `removeTopoJSON` | `clearTopoJSON`
 control        | `addControl`                                                   | `removeControl` | `clearControls`
 
 ### Inputs/Events
@@ -109,7 +175,7 @@ So for a `leafletOutput("mymap")` had a circle on it, clicking on that circle wo
 
 If no shape has ever been clicked on this map, then `input$mymap_shape_click` is null.
 
-Valid values for *OBJCATEGORY* above are `marker`, `popup`, `shape`, and `geojson`. (Tiles and controls don't raise mouse events.) Valid values for *EVENTNAME* are `click`, `mouseover`, and `mouseout`.
+Valid values for *OBJCATEGORY* above are `marker`, `popup`, `shape`, `geojson`, and `topojson`. (Tiles and controls don't raise mouse events.) Valid values for *EVENTNAME* are `click`, `mouseover`, and `mouseout`.
 
 All of these events are set to either `NULL` if the event has never happened, or a `list()` that includes:
 
@@ -134,4 +200,4 @@ The map itself also has a few input values/events.
 
 ### Putting it all together
 
-// TODO: Rewrite Superzip example to use these features
+For an extensive example of Shiny and Leaflet working together, take a look at the [SuperZip Explorer](http://shiny.rstudio.com/gallery/superzip-example.html) example app (note the "Get Code" button at the top of the page). (Hint: Try clicking on the bubbles, and also notice that the plots in the sidebar change as you pan and zoom around the map.)
