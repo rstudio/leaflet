@@ -1,5 +1,5 @@
 ---
-pagetitle: Leaflet for R - GeoJSON
+pagetitle: Leaflet for R - Working with GeoJSON & TopoJSON
 ---
 
 ## Working with GeoJSON & TopoJSON
