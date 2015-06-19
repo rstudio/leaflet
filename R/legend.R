@@ -45,6 +45,7 @@
 #'   by default; you can either use the helper function \code{labelFormat()}, or
 #'   write your own function)
 #' @param title the legend title
+#' @param className extra CSS classes to append to the control, space separated
 #' @param layerId the ID of the legend; subsequent calls to \code{addLegend}
 #'   or \code{addControl} with the same \code{layerId} will replace this
 #'   legend. The ID can also be used with \code{removeControl}.
@@ -53,7 +54,7 @@
 addLegend = function(
   map, position = c('topright', 'bottomright', 'bottomleft', 'topleft'),
   pal, values, na.label = 'NA', bins = 7, colors, opacity = 0.5, labels,
-  labFormat = labelFormat(), title = NULL,
+  labFormat = labelFormat(), title = NULL, className = "info legend",
   layerId = NULL
 ) {
   position = match.arg(position)
@@ -146,7 +147,7 @@ addLegend = function(
     colors = I(unname(colors)), labels = I(unname(labels)),
     na_color = na.color, na_label = na.label, opacity = opacity,
     position = position, type = type, title = title, extra = extra,
-    layerId = layerId
+    layerId = layerId, className = className
   )
   invokeMethod(map, getMapData(map), "addLegend", legend)
 }

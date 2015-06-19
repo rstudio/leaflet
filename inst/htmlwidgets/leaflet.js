@@ -984,7 +984,7 @@ var dataframe = (function() {
     var gradSpan;
 
     legend.onAdd = function (map) {
-      var div = L.DomUtil.create('div', 'info legend'),
+      var div = L.DomUtil.create('div', options.className),
           colors = options.colors,
           labels = options.labels,
           legendHTML = '';

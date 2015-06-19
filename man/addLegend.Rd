@@ -6,7 +6,7 @@
 \usage{
 addLegend(map, position = c("topright", "bottomright", "bottomleft", "topleft"), 
     pal, values, na.label = "NA", bins = 7, colors, opacity = 0.5, labels, 
-    labFormat = labelFormat(), title = NULL, layerId = NULL)
+    labFormat = labelFormat(), title = NULL, className = "info legend", layerId = NULL)
 
 labelFormat(prefix = "", suffix = "", between = " &ndash; ", digits = 3, big.mark = ",", 
     transform = identity)
@@ -42,6 +42,8 @@ by default; you can either use the helper function \code{labelFormat()}, or
 write your own function)}
 
 \item{title}{the legend title}
+
+\item{className}{extra CSS classes to append to the control, space separated}
 
 \item{layerId}{the ID of the legend; subsequent calls to \code{addLegend}
 or \code{addControl} with the same \code{layerId} will replace this
