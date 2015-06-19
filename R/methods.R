@@ -17,7 +17,7 @@
 #' m %>% fitBounds(-72, 40, -70, 43)
 #' m %>% clearBounds()  # world view
 setView = function(map, lng, lat, zoom, options = list()) {
-  view = list(c(lat, lng), zoom, options)
+  view = evalFormula(list(c(lat, lng), zoom, options))
 
   dispatch(map,
     "setView",
@@ -37,7 +37,7 @@ setView = function(map, lng, lat, zoom, options = list()) {
 #' @param lng1,lat1,lng2,lat2 the coordinates of the map bounds
 #' @export
 fitBounds = function(map, lng1, lat1, lng2, lat2) {
-  bounds = list(lat1, lng1, lat2, lng2)
+  bounds = evalFormula(list(lat1, lng1, lat2, lng2), getMapData(map))
 
   dispatch(map,
     "fitBounds",
