@@ -230,6 +230,7 @@ server &lt;- function(input, output, session) {
 }
 
 shinyApp(ui, server)</code></pre>
+<p><img src="images/shiny2.png" alt="Screenshot of a Shiny app" /></p>
 <p>Besides adding layers, you can set the map bounds, remove specific objects by ID, or clear categories of layers.</p>
 <pre class="r"><code>proxy &lt;- leafletProxy(&quot;mymap&quot;)
 
@@ -341,6 +342,7 @@ proxy %&gt;% clearShapes()</code></pre>
 <div id="putting-it-all-together" class="section level3">
 <h3>Putting it all together</h3>
 <p>For an extensive example of Shiny and Leaflet working together, take a look at the <a href="http://shiny.rstudio.com/gallery/superzip-example.html">SuperZip Explorer</a> example app (note the “Get Code” button at the top of the page). (Hint: Try clicking on the bubbles, and also notice that the plots in the sidebar change as you pan and zoom around the map.)</p>
+<p><a href="http://shiny.rstudio.com/gallery/superzip-example.html"><img src="images/shiny3.png" alt="Screenshot of SuperZip Explorer example app" /></a></p>
 </div>
 </div>
 

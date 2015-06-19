@@ -123,6 +123,8 @@ server <- function(input, output, session) {
 shinyApp(ui, server)
 ```
 
+![Screenshot of a Shiny app](images/shiny2.png)
+
 Besides adding layers, you can set the map bounds, remove specific objects by ID, or clear categories of layers.
 
 ```{r eval=FALSE}
@@ -201,3 +203,6 @@ The map itself also has a few input values/events.
 ### Putting it all together
 
 For an extensive example of Shiny and Leaflet working together, take a look at the [SuperZip Explorer](http://shiny.rstudio.com/gallery/superzip-example.html) example app (note the "Get Code" button at the top of the page). (Hint: Try clicking on the bubbles, and also notice that the plots in the sidebar change as you pan and zoom around the map.)
+
+[![Screenshot of SuperZip Explorer example app](images/shiny3.png)](http://shiny.rstudio.com/gallery/superzip-example.html)
+
