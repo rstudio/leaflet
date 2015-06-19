@@ -15,7 +15,7 @@
 \title{Graphics elements and layers}
 \usage{
 addControl(map, html, position = c("topleft", "topright", "bottomleft", "bottomright"), 
-    layerId = NULL, classes = c("info", "legend"), data = getMapData(map))
+    layerId = NULL, className = "info legend", data = getMapData(map))
 
 addTiles(map, urlTemplate = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", 
     attribution = NULL, layerId = NULL, group = NULL, options = tileOptions())
@@ -75,7 +75,7 @@ generated with Shiny/htmltools tags}
 
 \item{layerId}{the layer id}
 
-\item{classes}{extra CSS classes to append to the control}
+\item{className}{extra CSS classes to append to the control, space separated}
 
 \item{data}{the data object from which the argument values are derived; by
 default, it is the \code{data} object provided to \code{leaflet()}
