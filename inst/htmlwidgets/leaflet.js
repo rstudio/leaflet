@@ -855,13 +855,13 @@ var dataframe = (function() {
     });
   };
 
-  methods.addGeoJSON = function(data, layerId, group) {
+  methods.addGeoJSON = function(data, layerId, group, style) {
     var self = this;
     if (typeof(data) === "string") {
       data = JSON.parse(data);
     }
 
-    var globalStyle = data.style || {};
+    var globalStyle = $.extend({}, style, data.style || {});
 
     var gjlayer = L.geoJson(data, {
       style: function(feature) {
@@ -892,6 +892,46 @@ var dataframe = (function() {
 
   methods.clearGeoJSON = function() {
     this.layerManager.clearLayers("geojson");
+  };
+
+  methods.addTopoJSON = function(data, layerId, group, style) {
+    var self = this;
+    if (typeof(data) === "string") {
+      data = JSON.parse(data);
+    }
+
+    var globalStyle = $.extend({}, style, data.style || {});
+
+    var gjlayer = L.geoJson(null, {
+      style: function(feature) {
+        if (feature.style || feature.properties.style) {
+          return $.extend({}, globalStyle, feature.style, feature.properties.style);
+        } else {
+          return globalStyle;
+        }
+      },
+      onEachFeature: function(feature, layer) {
+        var extraInfo = {
+          featureId: feature.id,
+          properties: feature.properties
+        };
+        var popup = feature.properties.popup;
+        if (typeof popup !== 'undefined' && popup !== null) layer.bindPopup(popup);
+        layer.on("click", mouseHandler(self.id, layerId, group, "topojson_click", extraInfo), this);
+        layer.on("mouseover", mouseHandler(self.id, layerId, group, "topojson_mouseover", extraInfo), this);
+        layer.on("mouseout", mouseHandler(self.id, layerId, group, "topojson_mouseout", extraInfo), this);
+      }
+    });
+    omnivore.topojson.parse(data, null, gjlayer);
+    this.layerManager.addLayer(gjlayer, "topojson", layerId, group);
+  };
+
+  methods.removeTopoJSON = function(layerId) {
+    this.layerManager.removeLayer("topojson", layerId);
+  };
+
+  methods.clearTopoJSON = function() {
+    this.layerManager.clearLayers("topojson");
   };
 
   methods.addControl = function(html, position, layerId, classes) {

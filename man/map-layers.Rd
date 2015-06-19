@@ -1,4 +1,4 @@
-% Please edit documentation in R/controls.R, R/layers.R
+% Please edit documentation in R/controls.R, R/layers.R, R/plugin-omnivore.R
 \name{addControl}
 \alias{addCircleMarkers}
 \alias{addCircles}
@@ -10,6 +10,7 @@
 \alias{addPopups}
 \alias{addRectangles}
 \alias{addTiles}
+\alias{addTopoJSON}
 \alias{addWMSTiles}
 \title{Graphics elements and layers}
 \usage{
@@ -55,7 +56,13 @@ addPolygons(map, lng = NULL, lat = NULL, layerId = NULL, group = NULL, stroke = 
     fillOpacity = 0.2, dashArray = NULL, smoothFactor = 1, noClip = FALSE, 
     popup = NULL, options = pathOptions(), data = getMapData(map))
 
-addGeoJSON(map, geojson, layerId = NULL, group = NULL)
+addGeoJSON(map, geojson, layerId = NULL, group = NULL, stroke = TRUE, color = "#03F", 
+    weight = 5, opacity = 0.5, fill = TRUE, fillColor = color, fillOpacity = 0.2, 
+    dashArray = NULL, smoothFactor = 1, noClip = FALSE, options = pathOptions())
+
+addTopoJSON(map, topojson, layerId = NULL, group = NULL, stroke = TRUE, color = "#03F", 
+    weight = 5, opacity = 0.5, fill = TRUE, fillColor = color, fillOpacity = 0.2, 
+    dashArray = NULL, smoothFactor = 1, noClip = FALSE, options = pathOptions())
 }
 \arguments{
 \item{map}{a map widget object created from \code{\link{leaflet}()}}
@@ -151,7 +158,9 @@ pattern}}
 \item{lng1, lat1, lng2, lat2}{latitudes and longitudes of the south-west and
 north-east corners of rectangles}
 
-\item{geojson}{a GeoJSON list}
+\item{geojson}{a GeoJSON list, or character vector of length 1}
+
+\item{topojson}{a TopoJSON list, or character vector of length 1}
 }
 \value{
 the new \code{map} object
@@ -182,6 +191,8 @@ Add graphics elements and layers to the map widget.
 \item \code{addPolygons}: Add polygons to the map
 
 \item \code{addGeoJSON}: Add GeoJSON layers to the map
+
+\item \code{addTopoJSON}: Add TopoJSON layers to the map
 }}
 \references{
 The Leaflet API documentation:
