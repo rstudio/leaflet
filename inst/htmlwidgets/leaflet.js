@@ -855,13 +855,13 @@ var dataframe = (function() {
     });
   };
 
-  methods.addGeoJSON = function(data, layerId, group) {
+  methods.addGeoJSON = function(data, layerId, group, style) {
     var self = this;
     if (typeof(data) === "string") {
       data = JSON.parse(data);
     }
 
-    var globalStyle = data.style || {};
+    var globalStyle = $.extend({}, style, data.style || {});
 
     var gjlayer = L.geoJson(data, {
       style: function(feature) {
@@ -894,13 +894,13 @@ var dataframe = (function() {
     this.layerManager.clearLayers("geojson");
   };
 
-  methods.addTopoJSON = function(data, layerId, group) {
+  methods.addTopoJSON = function(data, layerId, group, style) {
     var self = this;
     if (typeof(data) === "string") {
       data = JSON.parse(data);
     }
 
-    var globalStyle = data.style || {};
+    var globalStyle = $.extend({}, style, data.style || {});
 
     var gjlayer = L.geoJson(null, {
       style: function(feature) {

@@ -56,9 +56,13 @@ addPolygons(map, lng = NULL, lat = NULL, layerId = NULL, group = NULL, stroke = 
     fillOpacity = 0.2, dashArray = NULL, smoothFactor = 1, noClip = FALSE, 
     popup = NULL, options = pathOptions(), data = getMapData(map))
 
-addGeoJSON(map, geojson, layerId = NULL, group = NULL)
+addGeoJSON(map, geojson, layerId = NULL, group = NULL, stroke = TRUE, color = "#03F", 
+    weight = 5, opacity = 0.5, fill = TRUE, fillColor = color, fillOpacity = 0.2, 
+    dashArray = NULL, smoothFactor = 1, noClip = FALSE, options = pathOptions())
 
-addTopoJSON(map, topojson, layerId = NULL, group = NULL)
+addTopoJSON(map, topojson, layerId = NULL, group = NULL, stroke = TRUE, color = "#03F", 
+    weight = 5, opacity = 0.5, fill = TRUE, fillColor = color, fillOpacity = 0.2, 
+    dashArray = NULL, smoothFactor = 1, noClip = FALSE, options = pathOptions())
 }
 \arguments{
 \item{map}{a map widget object created from \code{\link{leaflet}()}}

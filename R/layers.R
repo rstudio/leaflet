@@ -922,8 +922,25 @@ clearShapes = function(map) {
 #' @param geojson a GeoJSON list, or character vector of length 1
 #' @describeIn map-layers Add GeoJSON layers to the map
 #' @export
-addGeoJSON = function(map, geojson, layerId = NULL, group = NULL) {
-  invokeMethod(map, getMapData(map), 'addGeoJSON', geojson, layerId, group)
+addGeoJSON = function(map, geojson, layerId = NULL, group = NULL,
+  stroke = TRUE,
+  color = "#03F",
+  weight = 5,
+  opacity = 0.5,
+  fill = TRUE,
+  fillColor = color,
+  fillOpacity = 0.2,
+  dashArray = NULL,
+  smoothFactor = 1.0,
+  noClip = FALSE,
+  options = pathOptions()
+) {
+  options = c(options, list(
+    stroke = stroke, color = color, weight = weight, opacity = opacity,
+    fill = fill, fillColor = fillColor, fillOpacity = fillOpacity,
+    dashArray = dashArray, smoothFactor = smoothFactor, noClip = noClip
+  ))
+  invokeMethod(map, getMapData(map), 'addGeoJSON', geojson, layerId, group, options)
 }
 
 #' @rdname remove
