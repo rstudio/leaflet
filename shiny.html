@@ -129,6 +129,7 @@ img {
 <p>The Leaflet package includes powerful and convenient features for integrating with Shiny applications.</p>
 <p>Most Shiny output widgets are incorporated into an app by including an output (e.g. <code>plotOutput</code>) for the widget in the UI definition, and using a render function (e.g. <code>renderPlot</code>) in the server function. Leaflet maps are no different; in the UI you call <code>leafletOutput</code>, and on the server side you assign a <code>renderLeaflet</code> call to the output. Inside the <code>renderLeaflet</code> expression, you return a Leaflet map object.</p>
 <pre class="r"><code>library(shiny)
+library(leaflet)
 
 r_colors &lt;- rgb(t(col2rgb(colors()) / 255))
 names(r_colors) &lt;- colors()
@@ -163,16 +164,18 @@ shinyApp(ui, server)</code></pre>
 <p>To modify a map that’s already running in the page, you use the <code>leafletProxy()</code> function in place of the <code>leaflet()</code> call, but otherwise use Leaflet function calls as normal.</p>
 <p>Normally you use <code>leaflet</code> to create the static aspects of the map, and <code>leafletProxy</code> to manage the dynamic elements, like so:</p>
 <pre class="r"><code>library(shiny)
+library(leaflet)
 library(RColorBrewer)
 
 ui &lt;- bootstrapPage(
-  tags$style(type = &quot;text/css&quot;, &quot;html, body { width: 100%; height: 100% }&quot;),
+  tags$style(type = &quot;text/css&quot;, &quot;html, body {width:100%;height:100%}&quot;),
   leafletOutput(&quot;map&quot;, width = &quot;100%&quot;, height = &quot;100%&quot;),
   absolutePanel(top = 10, right = 10,
     sliderInput(&quot;range&quot;, &quot;Magnitudes&quot;, min(quakes$mag), max(quakes$mag),
-      value = range(quakes$mag), step = 0.1),
+      value = range(quakes$mag), step = 0.1
+    ),
     selectInput(&quot;colors&quot;, &quot;Color Scheme&quot;,
-      rownames(brewer.pal.info)[brewer.pal.info$category %in% c(&quot;seq&quot;, &quot;div&quot;)]
+      rownames(subset(brewer.pal.info, category %in% c(&quot;seq&quot;, &quot;div&quot;)))
     ),
     checkboxInput(&quot;legend&quot;, &quot;Show legend&quot;, TRUE)
   )
