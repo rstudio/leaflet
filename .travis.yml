@@ -32,8 +32,8 @@ addons:
 
 install:
   - "wget -q -O - http://yihui.name/xran/r-config | bash"
-  - Rscript -e "if (!require('devtools')) install.packages('devtools'); devtools::install_deps(dep = TRUE)"
-  - Rscript -e "if (!require('xtable')) install.packages('xtable')"
+  - Rscript -e "if (!require('devtools')) install.packages('devtools')"
+  - Rscript -e "devtools::install_deps(dep = TRUE)"
 
 cache:
   directories:
