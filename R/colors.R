@@ -248,6 +248,7 @@ colorFactor = function(palette, domain, levels = NULL, ordered = FALSE,
 #' pal = colorBin("Greens", domain = 0:100)
 #' pal(runif(10, 60, 100))
 #'
+#' \donttest{
 #' # Exponential distribution, mapped continuously
 #' previewColors(colorNumeric("Blues", domain = NULL), sort(rexp(16)))
 #' # Exponential distribution, mapped by interval
@@ -261,6 +262,7 @@ colorFactor = function(palette, domain, levels = NULL, ordered = FALSE,
 #' previewColors(colorFactor("RdYlBu", domain = NULL), factor(LETTERS[1:5], levels=LETTERS))
 #' # ...or the domain is stated explicitly.
 #' previewColors(colorFactor("RdYlBu", levels = LETTERS), LETTERS[1:5])
+#' }
 #' @rdname colorNumeric
 #' @name colorNumeric
 NULL
