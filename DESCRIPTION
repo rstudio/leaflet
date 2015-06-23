@@ -1,6 +1,6 @@
 Package: leaflet
 Type: Package
-Title: Create Interactive Web Maps with the JavaScript LeafLet Library
+Title: Create Interactive Web Maps with the JavaScript 'LeafLet' Library
 Version: 1.0.0
 Date: 2015-06-19
 Authors@R: c(
@@ -15,9 +15,9 @@ Authors@R: c(
       person("RStudio", role = c("cph"))
     )
 Maintainer: Joe Cheng <joe@rstudio.com>
-Description: Create and customize interactive maps using the Leaflet JavaScript
-    library and the htmlwidgets package. These maps can be used directly from
-    the R console, from RStudio, in Shiny apps and R Markdown documents.
+Description: Create and customize interactive maps using the 'Leaflet' JavaScript
+    library and the 'htmlwidgets' package. These maps can be used directly from
+    the R console, from 'RStudio', in Shiny apps and R Markdown documents.
 License: GPL-3 | file LICENSE
 URL: https://github.com/rstudio/leaflet
 BugReports: https://github.com/rstudio/leaflet/issues
