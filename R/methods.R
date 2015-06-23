@@ -48,6 +48,7 @@ fitBounds = function(map, lng1, lat1, lng2, lat2) {
     },
     leaflet_proxy = {
       invokeRemote(map, "fitBounds", bounds)
+      map
     }
   )
 }

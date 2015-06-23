@@ -1,5 +1,11 @@
+leaflet 1.0.1
+--------------------------------------------------------------------------------
+
+* When used with `leafletProxy`, `fitBounds` did not return its input object as
+  output, so magrittr chains would break after `fitBounds` was called.
+
 leaflet 1.0.0
-------------------------------------------------------------
+--------------------------------------------------------------------------------
 
 * Initial release
 

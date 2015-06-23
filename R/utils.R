@@ -217,6 +217,7 @@ invokeRemote = function(map, method, args = list()) {
   } else {
     sess$sendCustomMessage("leaflet-calls", msg)
   }
+  map
 }
 
 # A helper function to generate the body of function(x, y) list(x = x, y = y),
