@@ -30,10 +30,3 @@ img.leaflet-tile {
     margin-right: 8px;
     opacity: 0.7;
 }
-.legend table {
-    border-spacing: 2px;
-    border-collapse: separate;
-}
-.legend td {
-    padding: 1px;
-}
