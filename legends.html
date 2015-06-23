@@ -139,11 +139,11 @@ countries &lt;- readOGR(&quot;json/countries.geojson&quot;, &quot;OGRGeoJSON&quo
 ## Source: &quot;json/countries.geojson&quot;, layer: &quot;OGRGeoJSON&quot;
 ## with 177 features
 ## It has 2 fields</code></pre>
-<pre class="r"><code>map &lt;- leaflet(countries)</code></pre>
+<pre class="r"><code>map &lt;- leaflet(countries) %&gt;% addTiles()</code></pre>
 <p>Use the <code>addLegend</code> function to add a legend. The easiest way to use <code>addLegend</code> is to provide <code>pal</code> (a palette function, as generated from <code>colorNumeric</code> et al.) and <code>values</code>, and let it calculate the colors and labels for you.</p>
 <p>In most cases you will simply be separating the function and argument you passed into <code>addPolygons(color=...)</code>, as in this example:</p>
 <pre class="r"><code>pal &lt;- colorNumeric(
-  palette = &quot;Blues&quot;,
+  palette = &quot;YlGnBu&quot;,
   domain = countries$gdp_md_est
 )
 map %&gt;%
@@ -152,12 +152,41 @@ map %&gt;%
   ) %&gt;%
   addLegend(&quot;bottomright&quot;, pal = pal, values = ~gdp_md_est,
     title = &quot;Est. GDP (2010)&quot;,
-    labFormat = labelFormat(prefix = &quot;$&quot;)
+    labFormat = labelFormat(prefix = &quot;$&quot;),
+    opacity = 1
   )</code></pre>
-<p><div id="htmlwidget-5716" style="width:100%;height:216px;" class="leaflet"></div>
+<p><div id="htmlwidget-5716" style="width:100%;height:264px;" class="leaflet"></div>
 <script type="application/json" data-for="htmlwidget-5716">{
   "x": {
     "calls": [
+      {
+        "method": "addTiles",
+        "args": [
+          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          null,
+          null,
+          {
+            "minZoom": 0,
+            "maxZoom": 18,
+            "maxNativeZoom": null,
+            "tileSize": 256,
+            "subdomains": "abc",
+            "errorTileUrl": "",
+            "tms": false,
+            "continuousWorld": false,
+            "noWrap": false,
+            "zoomOffset": 0,
+            "zoomReverse": false,
+            "opacity": 1,
+            "zIndex": null,
+            "unloadInvisibleTiles": null,
+            "updateWhenIdle": null,
+            "detectRetina": false,
+            "reuseTiles": false,
+            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>"
+          }
+        ]
+      },
       {
         "method": "addPolygons",
         "args": [
@@ -1674,11 +1703,11 @@ map %&gt;%
             "pointerEvents": null,
             "className": "",
             "stroke": false,
-            "color": ["#F7FBFF", "#F6FAFF", "#F7FBFF", "#F5F9FE", "#EFF6FD", "#F7FBFF", "#F7FBFF", "#F7FBFF", "#ECF4FC", "#F3F8FE", "#F6FAFF", "#F7FBFF", "#F2F8FD", "#F7FBFF", "#F7FBFF", "#F4F9FE", "#F6FAFF", "#F7FBFF", "#F7FBFF", "#F5FAFF", "#F7FBFF", "#F6FBFF", "#DDEAF7", "#F7FBFF", "#F7FBFF", "#F7FBFF", "#F7FBFF", "#E6F0F9", "#F3F8FE", "#F4F9FE", "#63A8D2", "#F7FBFF", "#F6FBFF", "#F7FBFF", "#F7FBFF", "#F2F8FD", "#F6FBFF", "#F6FAFF", "#F7FBFF", "#F7FBFF", "#F3F9FE", "#D1E2F3", "#F7FBFF", "#F4F9FE", "#F6FAFF", "#F4F9FE", "#F6FAFF", "#F1F7FD", "#F7FBFF", "#E4EFF9", "#F7FBFF", "#F6FAFF", "#F4F9FE", "#F7FBFF", "#F7FBFF", "#DBE9F6", "#F7FBFF", "#DDEAF7", "#F7FBFF", "#F7FBFF", "#F7FBFF", "#F7FBFF", "#F7FBFF", "#F7FBFF", "#F2F8FE", "#F7FBFF", "#F6FAFF", "#F7FBFF", "#F7FBFF", "#F6FAFF", "#F7FBFF", "#F4F9FE", "#EBF3FB", "#CCDFF1", "#F5F9FE", "#ECF4FB", "#F6FAFF", "#F7FBFF", "#F4F9FE", "#DFECF7", "#F7FBFF", "#F7FBFF", "#BAD6EB", "#F5F9FE", "#F6FAFF", "#F7FBFF", "#F7FBFF", "#E5F0F9", "#F7FBFF", "#F5FAFE", "#F7FBFF", "#F6FBFF", "#F7FBFF", "#F6FAFF", "#F6FAFF", "#F7FBFF", "#F6FAFF", "#F6FBFF", "#F6FBFF", "#F5FAFE", "#F7FBFF", "#F7FBFF", "#E2EEF8", "#F7FBFF", "#F7FBFF", "#F6FBFF", "#F7FBFF", "#F7FBFF", "#F7FBFF", "#F7FBFF", "#F7FBFF", "#F2F8FD", "#F7FBFF", "#F7FBFF", "#F7FBFF", "#F3F8FE", "#F7FBFF", "#EEF5FC", "#F3F9FE", "#F7FBFF", "#F5FAFF", "#F6FAFF", "#F1F7FD", "#F6FBFF", "#F4F9FE", "#F3F8FE", "#F7FBFF", "#EEF5FC", "#F6FAFF", "#F6FBFF", "#F4F9FE", "#F7FBFF", "#F7FBFF", "#F6FAFF", "#F3F9FE", "#D9E8F5", "#F7FBFF", "#F7FBFF", "#EFF6FD", "#F6FAFF", "#F7FBFF", "#F7FBFF", "#F7FBFF", "#F7FBFF", "#F6FBFF", "#F7FBFF", "#F7FBFF", "#F6FAFF", "#F7FBFF", "#F5FAFE", "#F6FAFF", "#F2F8FE", "#F7FBFF", "#F6FAFF", "#F7FBFF", "#F7FBFF", "#F0F6FD", "#F7FBFF", "#F7FBFF", "#F7FBFF", "#F7FBFF", "#F6FAFF", "#EBF3FB", "#EEF5FC", "#F6FBFF", "#F6FBFF", "#F3F8FE", "#F6FBFF", "#08306B", "#F6FAFF", "#F2F8FD", "#F4F9FE", "#F7FBFF", "#F6FBFF", "#F1F7FD", "#F7FBFF", "#F7FBFF"],
+            "color": ["#FFFFD9", "#FEFFD7", "#FFFFD9", "#FDFED5", "#FAFDCD", "#FFFFD9", "#FFFFD9", "#FFFFD9", "#F8FCC8", "#FCFED2", "#FEFFD7", "#FFFFD9", "#FBFED1", "#FFFFD9", "#FFFFD9", "#FDFED4", "#FEFFD7", "#FFFFD9", "#FFFFD8", "#FEFFD7", "#FFFFD9", "#FFFFD8", "#EBF7B1", "#FFFFD9", "#FFFFD9", "#FFFFD8", "#FFFFD9", "#F3FABD", "#FCFED2", "#FDFED4", "#3BAEC3", "#FFFFD8", "#FFFFD8", "#FFFFD9", "#FFFFD9", "#FBFED1", "#FFFFD8", "#FEFFD7", "#FFFFD9", "#FFFFD9", "#FDFED3", "#D8F0B3", "#FFFFD9", "#FDFED5", "#FEFFD7", "#FDFED4", "#FEFFD7", "#FBFDD0", "#FFFFD9", "#F2FABB", "#FFFFD8", "#FEFFD8", "#FDFED5", "#FFFFD9", "#FFFFD9", "#E8F6B1", "#FFFFD9", "#EBF7B1", "#FFFFD9", "#FFFFD8", "#FFFFD9", "#FFFFD9", "#FFFFD9", "#FFFFD9", "#FCFED2", "#FFFFD9", "#FEFFD8", "#FFFFD9", "#FFFFD8", "#FEFFD7", "#FFFFD9", "#FDFED5", "#F6FCC6", "#D1EDB3", "#FDFED5", "#F7FCC7", "#FEFFD7", "#FFFFD9", "#FDFED5", "#EEF8B2", "#FFFFD9", "#FFFFD8", "#B3E1B6", "#FDFED5", "#FEFFD8", "#FFFFD9", "#FFFFD8", "#F2FABD", "#FFFFD9", "#FEFED6", "#FFFFD9", "#FFFFD8", "#FFFFD9", "#FEFFD7", "#FEFFD7", "#FFFFD9", "#FEFFD8", "#FFFFD8", "#FFFFD8", "#FEFED6", "#FFFFD9", "#FFFFD9", "#F0F9B8", "#FFFFD9", "#FFFFD9", "#FEFFD8", "#FFFFD9", "#FFFFD9", "#FFFFD9", "#FFFFD9", "#FFFFD9", "#FBFED1", "#FFFFD9", "#FFFFD9", "#FFFFD9", "#FCFED2", "#FFFFD9", "#F9FDCB", "#FCFED3", "#FFFFD8", "#FEFFD7", "#FEFFD8", "#FBFDD0", "#FFFFD8", "#FDFED4", "#FCFED2", "#FFFFD9", "#F9FDCB", "#FEFFD8", "#FFFFD8", "#FDFED5", "#FFFFD8", "#FFFFD9", "#FEFFD7", "#FCFED3", "#E6F5B2", "#FFFFD9", "#FFFFD9", "#FAFDCD", "#FEFFD7", "#FFFFD9", "#FFFFD9", "#FFFFD9", "#FFFFD9", "#FFFFD8", "#FFFFD9", "#FFFFD9", "#FEFFD7", "#FFFFD9", "#FEFFD6", "#FEFFD8", "#FCFED2", "#FFFFD9", "#FEFFD7", "#FFFFD9", "#FFFFD9", "#FAFDCD", "#FFFFD9", "#FFFFD8", "#FFFFD9", "#FFFFD8", "#FEFFD7", "#F7FCC6", "#F8FCCA", "#FFFFD8", "#FFFFD8", "#FCFED2", "#FFFFD8", "#081D58", "#FEFFD7", "#FCFED1", "#FDFED4", "#FFFFD9", "#FEFFD8", "#FAFDCF", "#FFFFD9", "#FFFFD9"],
             "weight": 5,
             "opacity": 0.5,
             "fill": true,
-            "fillColor": ["#F7FBFF", "#F6FAFF", "#F7FBFF", "#F5F9FE", "#EFF6FD", "#F7FBFF", "#F7FBFF", "#F7FBFF", "#ECF4FC", "#F3F8FE", "#F6FAFF", "#F7FBFF", "#F2F8FD", "#F7FBFF", "#F7FBFF", "#F4F9FE", "#F6FAFF", "#F7FBFF", "#F7FBFF", "#F5FAFF", "#F7FBFF", "#F6FBFF", "#DDEAF7", "#F7FBFF", "#F7FBFF", "#F7FBFF", "#F7FBFF", "#E6F0F9", "#F3F8FE", "#F4F9FE", "#63A8D2", "#F7FBFF", "#F6FBFF", "#F7FBFF", "#F7FBFF", "#F2F8FD", "#F6FBFF", "#F6FAFF", "#F7FBFF", "#F7FBFF", "#F3F9FE", "#D1E2F3", "#F7FBFF", "#F4F9FE", "#F6FAFF", "#F4F9FE", "#F6FAFF", "#F1F7FD", "#F7FBFF", "#E4EFF9", "#F7FBFF", "#F6FAFF", "#F4F9FE", "#F7FBFF", "#F7FBFF", "#DBE9F6", "#F7FBFF", "#DDEAF7", "#F7FBFF", "#F7FBFF", "#F7FBFF", "#F7FBFF", "#F7FBFF", "#F7FBFF", "#F2F8FE", "#F7FBFF", "#F6FAFF", "#F7FBFF", "#F7FBFF", "#F6FAFF", "#F7FBFF", "#F4F9FE", "#EBF3FB", "#CCDFF1", "#F5F9FE", "#ECF4FB", "#F6FAFF", "#F7FBFF", "#F4F9FE", "#DFECF7", "#F7FBFF", "#F7FBFF", "#BAD6EB", "#F5F9FE", "#F6FAFF", "#F7FBFF", "#F7FBFF", "#E5F0F9", "#F7FBFF", "#F5FAFE", "#F7FBFF", "#F6FBFF", "#F7FBFF", "#F6FAFF", "#F6FAFF", "#F7FBFF", "#F6FAFF", "#F6FBFF", "#F6FBFF", "#F5FAFE", "#F7FBFF", "#F7FBFF", "#E2EEF8", "#F7FBFF", "#F7FBFF", "#F6FBFF", "#F7FBFF", "#F7FBFF", "#F7FBFF", "#F7FBFF", "#F7FBFF", "#F2F8FD", "#F7FBFF", "#F7FBFF", "#F7FBFF", "#F3F8FE", "#F7FBFF", "#EEF5FC", "#F3F9FE", "#F7FBFF", "#F5FAFF", "#F6FAFF", "#F1F7FD", "#F6FBFF", "#F4F9FE", "#F3F8FE", "#F7FBFF", "#EEF5FC", "#F6FAFF", "#F6FBFF", "#F4F9FE", "#F7FBFF", "#F7FBFF", "#F6FAFF", "#F3F9FE", "#D9E8F5", "#F7FBFF", "#F7FBFF", "#EFF6FD", "#F6FAFF", "#F7FBFF", "#F7FBFF", "#F7FBFF", "#F7FBFF", "#F6FBFF", "#F7FBFF", "#F7FBFF", "#F6FAFF", "#F7FBFF", "#F5FAFE", "#F6FAFF", "#F2F8FE", "#F7FBFF", "#F6FAFF", "#F7FBFF", "#F7FBFF", "#F0F6FD", "#F7FBFF", "#F7FBFF", "#F7FBFF", "#F7FBFF", "#F6FAFF", "#EBF3FB", "#EEF5FC", "#F6FBFF", "#F6FBFF", "#F3F8FE", "#F6FBFF", "#08306B", "#F6FAFF", "#F2F8FD", "#F4F9FE", "#F7FBFF", "#F6FBFF", "#F1F7FD", "#F7FBFF", "#F7FBFF"],
+            "fillColor": ["#FFFFD9", "#FEFFD7", "#FFFFD9", "#FDFED5", "#FAFDCD", "#FFFFD9", "#FFFFD9", "#FFFFD9", "#F8FCC8", "#FCFED2", "#FEFFD7", "#FFFFD9", "#FBFED1", "#FFFFD9", "#FFFFD9", "#FDFED4", "#FEFFD7", "#FFFFD9", "#FFFFD8", "#FEFFD7", "#FFFFD9", "#FFFFD8", "#EBF7B1", "#FFFFD9", "#FFFFD9", "#FFFFD8", "#FFFFD9", "#F3FABD", "#FCFED2", "#FDFED4", "#3BAEC3", "#FFFFD8", "#FFFFD8", "#FFFFD9", "#FFFFD9", "#FBFED1", "#FFFFD8", "#FEFFD7", "#FFFFD9", "#FFFFD9", "#FDFED3", "#D8F0B3", "#FFFFD9", "#FDFED5", "#FEFFD7", "#FDFED4", "#FEFFD7", "#FBFDD0", "#FFFFD9", "#F2FABB", "#FFFFD8", "#FEFFD8", "#FDFED5", "#FFFFD9", "#FFFFD9", "#E8F6B1", "#FFFFD9", "#EBF7B1", "#FFFFD9", "#FFFFD8", "#FFFFD9", "#FFFFD9", "#FFFFD9", "#FFFFD9", "#FCFED2", "#FFFFD9", "#FEFFD8", "#FFFFD9", "#FFFFD8", "#FEFFD7", "#FFFFD9", "#FDFED5", "#F6FCC6", "#D1EDB3", "#FDFED5", "#F7FCC7", "#FEFFD7", "#FFFFD9", "#FDFED5", "#EEF8B2", "#FFFFD9", "#FFFFD8", "#B3E1B6", "#FDFED5", "#FEFFD8", "#FFFFD9", "#FFFFD8", "#F2FABD", "#FFFFD9", "#FEFED6", "#FFFFD9", "#FFFFD8", "#FFFFD9", "#FEFFD7", "#FEFFD7", "#FFFFD9", "#FEFFD8", "#FFFFD8", "#FFFFD8", "#FEFED6", "#FFFFD9", "#FFFFD9", "#F0F9B8", "#FFFFD9", "#FFFFD9", "#FEFFD8", "#FFFFD9", "#FFFFD9", "#FFFFD9", "#FFFFD9", "#FFFFD9", "#FBFED1", "#FFFFD9", "#FFFFD9", "#FFFFD9", "#FCFED2", "#FFFFD9", "#F9FDCB", "#FCFED3", "#FFFFD8", "#FEFFD7", "#FEFFD8", "#FBFDD0", "#FFFFD8", "#FDFED4", "#FCFED2", "#FFFFD9", "#F9FDCB", "#FEFFD8", "#FFFFD8", "#FDFED5", "#FFFFD8", "#FFFFD9", "#FEFFD7", "#FCFED3", "#E6F5B2", "#FFFFD9", "#FFFFD9", "#FAFDCD", "#FEFFD7", "#FFFFD9", "#FFFFD9", "#FFFFD9", "#FFFFD9", "#FFFFD8", "#FFFFD9", "#FFFFD9", "#FEFFD7", "#FFFFD9", "#FEFFD6", "#FEFFD8", "#FCFED2", "#FFFFD9", "#FEFFD7", "#FFFFD9", "#FFFFD9", "#FAFDCD", "#FFFFD9", "#FFFFD8", "#FFFFD9", "#FFFFD8", "#FEFFD7", "#F7FCC6", "#F8FCCA", "#FFFFD8", "#FFFFD8", "#FCFED2", "#FFFFD8", "#081D58", "#FEFFD7", "#FCFED1", "#FDFED4", "#FFFFD9", "#FEFFD8", "#FAFDCF", "#FFFFD9", "#FFFFD9"],
             "fillOpacity": 1,
             "dashArray": null,
             "smoothFactor": 0.2,
@@ -1691,15 +1720,18 @@ map %&gt;%
         "method": "addLegend",
         "args": [
           {
-            "colors": ["#F7FBFF , #F7FBFF 0.00065588545563402%, #DDEAF7 13.2508671103853%, #C1D9ED 26.501078335315%, #95C5DF 39.7512895602447%, #62A7D2 53.0015007851744%, #3A88C1 66.2517120101041%, #1A65AC 79.5019232350338%, #094387 92.7521344599635%, #08306B "],
+            "colors": ["#FFFFD9 , #FFFFD9 0.00065588545563402%, #EBF7B1 13.2508671103853%, #BFE6B5 26.501078335315%, #76C9BD 39.7512895602447%, #3BADC3 53.0015007851744%, #2281B9 66.2517120101041%, #254FA1 79.5019232350338%, #192A7A 92.7521344599635%, #081D58 "],
             "labels": ["$0", "$2,000,000", "$4,000,000", "$6,000,000", "$8,000,000", "$10,000,000", "$12,000,000", "$14,000,000"],
             "na_color": null,
             "na_label": "NA",
-            "opacity": 0.5,
+            "opacity": 1,
             "position": "bottomright",
             "type": "numeric",
             "title": "Est. GDP (2010)",
-            "extra": [0.0624938125, 0.9433811875],
+            "extra": {
+              "p_1": 6.5588545563402e-06,
+              "p_n": 0.927521344599635
+            },
             "layerId": null,
             "className": "info legend"
           }
@@ -1724,6 +1756,34 @@ map %&gt;%
 <script type="application/json" data-for="htmlwidget-4929">{
   "x": {
     "calls": [
+      {
+        "method": "addTiles",
+        "args": [
+          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          null,
+          null,
+          {
+            "minZoom": 0,
+            "maxZoom": 18,
+            "maxNativeZoom": null,
+            "tileSize": 256,
+            "subdomains": "abc",
+            "errorTileUrl": "",
+            "tms": false,
+            "continuousWorld": false,
+            "noWrap": false,
+            "zoomOffset": 0,
+            "zoomReverse": false,
+            "opacity": 1,
+            "zIndex": null,
+            "unloadInvisibleTiles": null,
+            "updateWhenIdle": null,
+            "detectRetina": false,
+            "reuseTiles": false,
+            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>"
+          }
+        ]
+      },
       {
         "method": "addPolygons",
         "args": [

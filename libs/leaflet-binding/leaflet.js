@@ -989,25 +989,88 @@ var dataframe = (function() {
           labels = options.labels,
           legendHTML = '';
       if (options.type === 'numeric') {
+        // # Formatting constants.
+        var singleBinHeight = 20;  // The distance between tick marks, in px
+        var vMargin = 8; // If 1st tick mark starts at top of gradient, how
+                         // many extra px are needed for the top half of the
+                         // 1st label? (ditto for last tick mark/label)
+        var tickWidth = 4;     // How wide should tick marks be, in px?
+        var labelPadding = 6;  // How much distance to reserve for tick mark?
+                               // (Must be >= tickWidth)
+
+        // # Derived formatting parameters.
+
+        // What's the height of a single bin, in percentage (of gradient height)?
+        // It might not just be 1/(n-1), if the gradient extends past the tick
+        // marks (which can be the case for pretty cut points).
+        var singleBinPct = (options.extra.p_n - options.extra.p_1) / (labels.length - 1);
+        // Each bin is `singleBinHeight` high. How tall is the gradient?
+        var totalHeight = (1 / singleBinPct) * singleBinHeight + 1;
+        // How far should the first tick be shifted down, relative to the top
+        // of the gradient?
+        var tickOffset = (singleBinHeight / singleBinPct) * options.extra.p_1;
+
         gradSpan = $('<span/>').css({
           'background': 'linear-gradient(' + colors + ')',
           'opacity': options.opacity,
-          'height': '100px',
+          'height': totalHeight + 'px',
           'width': '18px',
-          'display': 'block'
+          'display': 'block',
+          'margin-top': vMargin + 'px'
         });
-        var leftDiv = $('<div/>').css('display', 'inline-block'),
-            rightDiv = $('<div/>').css('display', 'inline-block');
+        var leftDiv = $('<div/>').css('float', 'left'),
+            rightDiv = $('<div/>').css('float', 'left');
         leftDiv.append(gradSpan);
-        var labelTable = '<table>';
-        for (var i = 0; i < labels.length; i++) {
-          labelTable += '<tr><td>-</td><td style="text-align:right">' +
-                        '<span style="display: block;">' + labels[i] +
-                        '</span></td></tr>';
-        }
-        labelTable += '</table>';
-        rightDiv.append(labelTable);
-        $(div).append(leftDiv).append(rightDiv);
+        $(div).append(leftDiv).append(rightDiv)
+          .append($("<br clear='both'/>"));
+
+        // Have to attach the div to the body at this early point, so that the
+        // svg text getComputedTextLength() actually works, below.
+        document.body.appendChild(div);
+
+        var ns = 'http://www.w3.org/2000/svg';
+        var svg = document.createElementNS(ns, 'svg');
+        rightDiv.append(svg);
+        var g = document.createElementNS(ns, 'g');
+        $(g).attr("transform", "translate(0, " + vMargin + ")");
+        svg.appendChild(g);
+
+        // max label width needed to set width of svg, and right-justify text
+        var maxLblWidth = 0;
+
+        // Create tick marks and labels
+        $.each(labels, function(i, label) {
+          var y = tickOffset + i*singleBinHeight + 0.5;
+
+          var thisLabel = document.createElementNS(ns, 'text');
+          $(thisLabel)
+            .text(labels[i])
+            .attr('y', y)
+            .attr('dx', labelPadding)
+            .attr('dy', '0.5ex');
+          g.appendChild(thisLabel);
+          maxLblWidth = Math.max(maxLblWidth, thisLabel.getComputedTextLength());
+
+          var thisTick = document.createElementNS(ns, 'line');
+          $(thisTick)
+            .attr('x1', 0)
+            .attr('x2', tickWidth)
+            .attr('y1', y)
+            .attr('y2', y)
+            .attr('stroke-width', 1);
+          g.appendChild(thisTick);
+        });
+
+        // Now that we know the max label width, we can right-justify
+        $(svg).find('text')
+          .attr('dx', labelPadding + maxLblWidth)
+          .attr('text-anchor', 'end');
+        // Final size for <svg>
+        $(svg).css({
+          width: (maxLblWidth + labelPadding) + "px",
+          height: totalHeight + vMargin*2 + "px"
+        });
+
         if (options.na_color) {
           $(div).append('<div><i style="background:' + options.na_color +
                         '"></i> ' + options.na_label + '</div>');
@@ -1030,15 +1093,6 @@ var dataframe = (function() {
     };
 
     this.controls.add(legend, options.layerId);
-
-    // calculate the height of the gradient bar after the legend is rendered
-    if (options.type === 'numeric') {
-      var legendHeight = $(legend.getContainer()).find('table').height();
-      gradSpan.parent().height(legendHeight);
-      gradSpan.height(options.extra[1] * legendHeight).css({
-        'margin-top': options.extra[0] * legendHeight
-      });
-    }
   };
 
   methods.addLayersControl = function(baseGroups, overlayGroups, options) {

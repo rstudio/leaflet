@@ -14,16 +14,16 @@ library(rgdal)
 
 # From http://data.okfn.org/data/datasets/geo-boundaries-world-110m
 countries <- readOGR("json/countries.geojson", "OGRGeoJSON")
-map <- leaflet(countries)
+map <- leaflet(countries) %>% addTiles()
 ```
 
 Use the `addLegend` function to add a legend. The easiest way to use `addLegend` is to provide `pal` (a palette function, as generated from `colorNumeric` et al.) and `values`, and let it calculate the colors and labels for you.
 
 In most cases you will simply be separating the function and argument you passed into `addPolygons(color=...)`, as in this example:
 
-```{r}
+```{r fig.height=2.75}
 pal <- colorNumeric(
-  palette = "Blues",
+  palette = "YlGnBu",
   domain = countries$gdp_md_est
 )
 map %>%
@@ -32,7 +32,8 @@ map %>%
   ) %>%
   addLegend("bottomright", pal = pal, values = ~gdp_md_est,
     title = "Est. GDP (2010)",
-    labFormat = labelFormat(prefix = "$")
+    labFormat = labelFormat(prefix = "$"),
+    opacity = 1
   )
 ```
 

@@ -225,13 +225,16 @@ leaflet() %&gt;% addTiles() %&gt;%
           {
             "colors": ["#0C2C84 , #1C3C8C 6.04938102993078%, #2E5D9C 18.3950623679573%, #397FAC 30.7407437059838%, #40A2BB 43.0864250440103%, #60BEC5 55.4321063820368%, #94D0C7 67.7777877200633%, #BFE2C9 80.1234690580899%, #E7F4CB 92.4691503961163%, #FFFFCC "],
             "labels": ["23", "24", "25", "26", "27", "28", "29", "30"],
-            "na_color": "transparent",
+            "na_color": null,
             "na_label": "NA",
             "opacity": 0.5,
             "position": "topright",
             "type": "numeric",
             "title": "Surface temp",
-            "extra": [0.00125002861022949, 1.01249980926514],
+            "extra": {
+              "p_1": 0.0604938102993078,
+              "p_n": 0.924691503961164
+            },
             "layerId": null,
             "className": "info legend"
           }
