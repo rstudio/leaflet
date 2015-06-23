@@ -17,6 +17,12 @@ img.leaflet-tile {
     line-height: 18px;
     color: #555;
 }
+.legend svg text {
+    fill: #555;
+}
+.legend svg line {
+    stroke: #555;
+}
 .legend i {
     width: 18px;
     height: 18px;
