@@ -1045,9 +1045,9 @@ var dataframe = (function() {
           var thisLabel = document.createElementNS(ns, 'text');
           $(thisLabel)
             .text(labels[i])
-            .attr('dy', y)
+            .attr('y', y)
             .attr('dx', labelPadding)
-            .attr('dominant-baseline', 'middle');
+            .attr('dy', '0.5ex');
           g.appendChild(thisLabel);
           maxLblWidth = Math.max(maxLblWidth, thisLabel.getComputedTextLength());
 
