@@ -17,10 +17,23 @@ img.leaflet-tile {
     line-height: 18px;
     color: #555;
 }
+.legend svg text {
+    fill: #555;
+}
+.legend svg line {
+    stroke: #555;
+}
 .legend i {
     width: 18px;
     height: 18px;
     float: left;
     margin-right: 8px;
     opacity: 0.7;
+}
+.legend table {
+    border-spacing: 2px;
+    border-collapse: separate;
+}
+.legend td {
+    padding: 1px;
 }
