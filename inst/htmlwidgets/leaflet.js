@@ -312,14 +312,15 @@ var dataframe = (function() {
   LayerManager.prototype.getLayer = function(category, layerId) {
     return this._byLayerId[this._layerIdKey(category, layerId)];
   };
-  LayerManager.prototype.removeLayer = function(category, layerId) {
+  LayerManager.prototype.removeLayer = function(category, layerIds) {
+    var self = this;
     // Find layer info
-    var layer = this._byLayerId[this._layerIdKey(category, layerId)];
-    if (!layer) {
-      return false;
-    }
-    this._removeLayer(layer);
-    return true;
+    $.each(asArray(layerIds), function(i, layerId) {
+      var layer = self._byLayerId[self._layerIdKey(category, layerId)];
+      if (layer) {
+        self._removeLayer(layer);
+      }
+    });
   };
   LayerManager.prototype.clearLayers = function(category) {
     var self = this;
