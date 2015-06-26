@@ -11,22 +11,7 @@ addons:
     - r-packages-precise
     packages:
     - r-base-dev
-    - r-cran-boot
-    - r-cran-class
-    - r-cran-cluster
-    - r-cran-codetools
-    - r-cran-foreign
-    - r-cran-kernsmooth
-    - r-cran-lattice
-    - r-cran-mass
-    - r-cran-matrix
-    - r-cran-mgcv
-    - r-cran-nlme
-    - r-cran-nnet
-    - r-cran-rodbc
-    - r-cran-rpart
-    - r-cran-spatial
-    - r-cran-survival
+    - r-recommended
     - libgdal1-dev
     - libproj-dev
 
