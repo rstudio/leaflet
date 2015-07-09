@@ -28,7 +28,7 @@ devtools::install_github('rstudio/leaflet')
 ## Documentation
 
 In addition to the usual R package documentation, we also have extensive docs and examples at:
-http://rstudio.github.io/leaflet
+http://rstudio.github.io/leaflet You may use [Github issues](https://github.com/rstudio/leaflet/issues) to file bug reports or feature requests, and ask questions on [StackOverflow](http://stackoverflow.com/questions/tagged/r+leaflet) or in the [Shiny mailing list](https://groups.google.com/forum/#!forum/shiny-discuss).
 
 ## License
 
