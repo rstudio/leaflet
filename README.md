@@ -18,9 +18,13 @@ m %>% addPopups(-93.65, 42.0285, 'Here is the <b>Department of Statistics</b>, I
 
 ## Installation
 
-This package is not on CRAN yet, but you can install it from Github:
+You can install this package from CRAN, or the development version from Github:
 
 ```r
+# CRAN version
+install.packages('leaflet')
+
+# Or Github version
 if (!require('devtools')) install.packages('devtools')
 devtools::install_github('rstudio/leaflet')
 ```
