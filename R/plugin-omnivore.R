@@ -34,3 +34,15 @@ addTopoJSON = function(map, topojson, layerId = NULL, group = NULL,
   ))
   invokeMethod(map, getMapData(map), 'addTopoJSON', topojson, layerId, group, options)
 }
+
+#' @rdname remove
+#' @export
+removeTopoJSON = function(map, layerId) {
+  invokeMethod(map, getMapData(map), 'removeTopoJSON', layerId)
+}
+
+#' @rdname remove
+#' @export
+clearTopoJSON = function(map) {
+  invokeMethod(map, NULL, 'clearTopoJSON')
+}

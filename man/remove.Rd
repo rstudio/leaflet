@@ -1,4 +1,4 @@
-% Please edit documentation in R/controls.R, R/layers.R
+% Please edit documentation in R/controls.R, R/layers.R, R/plugin-omnivore.R
 \name{removeControl}
 \alias{clearControls}
 \alias{clearGeoJSON}
@@ -9,6 +9,7 @@
 \alias{clearPopups}
 \alias{clearShapes}
 \alias{clearTiles}
+\alias{clearTopoJSON}
 \alias{remove}
 \alias{removeControl}
 \alias{removeGeoJSON}
@@ -19,6 +20,7 @@
 \alias{removePopup}
 \alias{removeShape}
 \alias{removeTiles}
+\alias{removeTopoJSON}
 \title{Remove elements from a map}
 \usage{
 removeControl(map, layerId)
@@ -56,6 +58,10 @@ clearShapes(map)
 removeGeoJSON(map, layerId)
 
 clearGeoJSON(map)
+
+removeTopoJSON(map, layerId)
+
+clearTopoJSON(map)
 }
 \arguments{
 \item{map}{a map widget object, possibly created from \code{\link{leaflet}}()
