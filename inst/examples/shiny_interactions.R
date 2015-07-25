@@ -52,7 +52,9 @@ ui <-
             actionButton("addGeojson", "addGeojson"),
             actionButton("clearGeojson", "clearGeojson"),
             checkboxInput('popupAll', 'popupAll', value = FALSE),
-            selectInput('countries', label = "countries", choices = countries,selected = NULL)
+            selectInput('setstyle', label = "Color a Country Blue!", choices = countries,selected = NULL),
+            selectInput('removefeature', label = "Remove a Country!", choices = countries,selected = NULL),
+            selectInput('addfeature', label = "Add back a Country!", choices = countries,selected = NULL)
           ),
           column(10,
              # Can't get map to show full-screen, see prod on old version
@@ -79,10 +81,11 @@ server <- function(input, output, session) {
   observe({
     content <- NULL
     if (is.null(input$mymap_geojson_click)==FALSE&&isolate({input$popupAll==FALSE})) {
+      print(input$mymap_geojson_click)
       isolate({
         content <- as.character(tagList(
 
-          tags$strong(paste0("ID: ",input$mymap_geojson_click$featureId)),
+          tags$strong(paste0("ID: ",input$mymap_geojson_click$properties$admin)),
           tags$a(target="_blank",href=sprintf("http://www.google.com/maps/place/%s,%s/@%s,%s,%sz/data=!3m1!1e3",input$mymap_geojson_click$lat, input$mymap_geojson_click$lng,input$mymap_geojson_click$lat, input$mymap_geojson_click$lng,input$mymap_zoom), "Google Maps")
 
         ))
@@ -96,7 +99,7 @@ server <- function(input, output, session) {
     if (is.null(input$mymap_click)==FALSE&&isolate({input$popupAll==FALSE})) {
       isolate({
         content <- as.character(tagList(
-          tags$strong(paste0("Map cLick: ",input$mymapn_click$id)),
+          tags$strong(paste0("Map Click: ",input$mymapn_click$id)),
           tags$a(target="_blank",href=sprintf("http://www.google.com/maps/place/%s,%s/@%s,%s,%sz/data=!3m1!1e3",input$mymap_click$lat, input$mymap_click$lng,input$mymap_click$lat, input$mymap_click$lng,input$mymap_zoom), "Google Maps")
 
         ))
@@ -139,9 +142,20 @@ server <- function(input, output, session) {
     leafletProxy("mymap") %>%
       addGeoJSON(geojson,layerId ='geojsonlayer')
   })
-  observeEvent(input$countries, {
+  observeEvent(input$setstyle, {
     leafletProxy("mymap") %>%
-    setStyleGeoJSON(layerId ='geojsonlayer', featureId = input$countries, style = '{"fillColor" :"blue"}')
+    setStyleGeoJSON(layerId ='geojsonlayer', featureId = input$setstyle, style = '{"fillColor" :"blue"}')
+  })
+  observeEvent(input$removefeature, {
+    leafletProxy("mymap") %>%
+      removeFeatureGeoJSON(layerId ='geojsonlayer', featureId = input$removefeature)
+  })
+  observeEvent(input$addfeature, {
+    # must be faster way to subset - named lists?
+    data <- geojson$features[[seq_along(geojson$features)[sapply(geojson$features,
+              FUN = function(x) x[["properties"]][["admin"]] == input$addfeature)]]]
+    leafletProxy("mymap") %>%
+      addFeatureGeoJSON(data, layerId ='geojsonlayer')
   })
   observeEvent(input$clearGeojson, {
     leafletProxy("mymap") %>%

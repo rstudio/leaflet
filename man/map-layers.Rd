@@ -3,6 +3,7 @@
 \alias{addCircleMarkers}
 \alias{addCircles}
 \alias{addControl}
+\alias{addFeatureGeoJSON}
 \alias{addGeoJSON}
 \alias{addMarkers}
 \alias{addPolygons}
@@ -12,6 +13,7 @@
 \alias{addTiles}
 \alias{addTopoJSON}
 \alias{addWMSTiles}
+\alias{removeFeatureGeoJSON}
 \alias{setStyleGeoJSON}
 \title{Graphics elements and layers}
 \usage{
@@ -62,6 +64,10 @@ addGeoJSON(map, geojson, layerId = NULL, group = NULL, stroke = TRUE, color = "#
     dashArray = NULL, smoothFactor = 1, noClip = FALSE, options = pathOptions())
 
 setStyleGeoJSON(map, layerId = NULL, featureId = NULL, style = NULL)
+
+removeFeatureGeoJSON(map, layerId = NULL, featureId = NULL)
+
+addFeatureGeoJSON(map, geojson = NULL, layerId = NULL)
 
 addTopoJSON(map, topojson, layerId = NULL, group = NULL, stroke = TRUE, color = "#03F", 
     weight = 5, opacity = 0.5, fill = TRUE, fillColor = color, fillOpacity = 0.2, 
@@ -166,6 +172,10 @@ north-east corners of rectangles}
 \item{style}{a JSON string}
 
 \item{topojson}{a TopoJSON list, or character vector of length 1}
+
+\item{remove}{feature from GeoJSON layer}
+
+\item{remove}{feature from GeoJSON layer}
 }
 \value{
 the new \code{map} object
@@ -198,6 +208,10 @@ Add graphics elements and layers to the map widget.
 \item \code{addGeoJSON}: Add GeoJSON layers to the map
 
 \item \code{setStyleGeoJSON}: change style of GeoJSON feature
+
+\item \code{removeFeatureGeoJSON}: change style of GeoJSON feature
+
+\item \code{addFeatureGeoJSON}: change style of GeoJSON feature
 
 \item \code{addTopoJSON}: Add TopoJSON layers to the map
 }}

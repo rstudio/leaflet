@@ -859,6 +859,8 @@ var dataframe = (function() {
   };
 
     // ADDED BY TBF
+    // need to rewrite this to allow for user specified styles on mouseover and mouseout
+    // and keep passing event data to R
     function highlightFeature(e) {
     	var layer = e.target;
 			layer.setStyle({
@@ -878,6 +880,9 @@ var dataframe = (function() {
         color: originalColor
 			});
 		};
+		// right now using .admin but will let users choose, also let users choose "<" or ">"
+		// also allow lists of lists for style that are parsed as JSON
+		// and create methods for many ids to style with single loop, and many ids to many styles
     methods.setStyleGeoJSON = function(layerId, featureId, style) {
       var layerPicked = this.layerManager.getLayer("geojson", layerId)
       layerPicked.eachLayer(function (layer) {
@@ -885,6 +890,21 @@ var dataframe = (function() {
          layer.setStyle(JSON.parse(style));
         }
       });
+    };
+    methods.removeFeatureGeoJSON = function(layerId, featureId) {
+      var layerPicked = this.layerManager.getLayer("geojson", layerId)
+      layerPicked.eachLayer(function (layer) {
+        if(layer.feature.properties.admin == featureId) {
+         layerPicked.removeLayer(layer);
+        }
+      });
+    };
+    methods.addFeatureGeoJSON = function(data, layerId) {
+      if (typeof(geojson) === "string") {
+        data = JSON.parse(data);
+      }
+      var layerPicked = this.layerManager.getLayer("geojson", layerId)
+      layerPicked.addData(data).addTo(this.map);
     };
 
   methods.addGeoJSON = function(data, layerId, group, style) {
