@@ -309,9 +309,11 @@ var dataframe = (function() {
 
     return oldLayer;
   };
+
   LayerManager.prototype.getLayer = function(category, layerId) {
     return this._byLayerId[this._layerIdKey(category, layerId)];
   };
+
   LayerManager.prototype.removeLayer = function(category, layerIds) {
     var self = this;
     // Find layer info
@@ -856,6 +858,35 @@ var dataframe = (function() {
     });
   };
 
+    // ADDED BY TBF
+    function highlightFeature(e) {
+    	var layer = e.target;
+			layer.setStyle({
+				weight: 3,
+        color: "black"
+			});
+			if (!L.Browser.ie && !L.Browser.opera) {
+				layer.bringToFront();
+			};
+		};
+    function resetHighlight(e) {
+      var layer = e.target;
+      var originalColor = e.target.feature.properties.style.color;
+      var originalWeight = e.target.feature.properties.style.weight;
+			layer.setStyle({
+				weight: originalWeight,
+        color: originalColor
+			});
+		};
+    methods.setStyleGeoJSON = function(layerId, featureId, style) {
+      var layerPicked = this.layerManager.getLayer("geojson", layerId)
+      layerPicked.eachLayer(function (layer) {
+        if(layer.feature.properties.admin == featureId) {
+         layer.setStyle(JSON.parse(style));
+        }
+      });
+    };
+
   methods.addGeoJSON = function(data, layerId, group, style) {
     var self = this;
     if (typeof(data) === "string") {
@@ -880,8 +911,9 @@ var dataframe = (function() {
         var popup = feature.properties.popup;
         if (typeof popup !== 'undefined' && popup !== null) layer.bindPopup(popup);
         layer.on("click", mouseHandler(self.id, layerId, group, "geojson_click", extraInfo), this);
-        layer.on("mouseover", mouseHandler(self.id, layerId, group, "geojson_mouseover", extraInfo), this);
-        layer.on("mouseout", mouseHandler(self.id, layerId, group, "geojson_mouseout", extraInfo), this);
+        // EDITED BY TBF
+        layer.on("mouseover", highlightFeature , this);
+        layer.on("mouseout", resetHighlight, this);
       }
     });
     this.layerManager.addLayer(gjlayer, "geojson", layerId, group);

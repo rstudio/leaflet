@@ -943,6 +943,13 @@ addGeoJSON = function(map, geojson, layerId = NULL, group = NULL,
   invokeMethod(map, getMapData(map), 'addGeoJSON', geojson, layerId, group, options)
 }
 
+#' @param style a JSON string
+#' @describeIn map-layers change style of GeoJSON feature
+#' @export
+setStyleGeoJSON = function(map, layerId = NULL, featureId = NULL, style = NULL) {
+  invokeMethod(map, getMapData(map), 'setStyleGeoJSON', layerId, featureId, style)
+}
+
 #' @rdname remove
 #' @export
 removeGeoJSON = function(map, layerId) {

@@ -12,6 +12,7 @@
 \alias{addTiles}
 \alias{addTopoJSON}
 \alias{addWMSTiles}
+\alias{setStyleGeoJSON}
 \title{Graphics elements and layers}
 \usage{
 addControl(map, html, position = c("topleft", "topright", "bottomleft", "bottomright"), 
@@ -59,6 +60,8 @@ addPolygons(map, lng = NULL, lat = NULL, layerId = NULL, group = NULL, stroke = 
 addGeoJSON(map, geojson, layerId = NULL, group = NULL, stroke = TRUE, color = "#03F", 
     weight = 5, opacity = 0.5, fill = TRUE, fillColor = color, fillOpacity = 0.2, 
     dashArray = NULL, smoothFactor = 1, noClip = FALSE, options = pathOptions())
+
+setStyleGeoJSON(map, layerId = NULL, featureId = NULL, style = NULL)
 
 addTopoJSON(map, topojson, layerId = NULL, group = NULL, stroke = TRUE, color = "#03F", 
     weight = 5, opacity = 0.5, fill = TRUE, fillColor = color, fillOpacity = 0.2, 
@@ -160,6 +163,8 @@ north-east corners of rectangles}
 
 \item{geojson}{a GeoJSON list, or character vector of length 1}
 
+\item{style}{a JSON string}
+
 \item{topojson}{a TopoJSON list, or character vector of length 1}
 }
 \value{
@@ -191,6 +196,8 @@ Add graphics elements and layers to the map widget.
 \item \code{addPolygons}: Add polygons to the map
 
 \item \code{addGeoJSON}: Add GeoJSON layers to the map
+
+\item \code{setStyleGeoJSON}: change style of GeoJSON feature
 
 \item \code{addTopoJSON}: Add TopoJSON layers to the map
 }}
