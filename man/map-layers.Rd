@@ -67,7 +67,7 @@ setStyleGeoJSON(map, layerId = NULL, featureId = NULL, style = NULL)
 
 removeFeatureGeoJSON(map, layerId = NULL, featureId = NULL)
 
-addFeatureGeoJSON(map, geojson = NULL, layerId = NULL)
+addFeatureGeoJSON(map, featureGeoJSON = NULL, layerId = NULL)
 
 addTopoJSON(map, topojson, layerId = NULL, group = NULL, stroke = TRUE, color = "#03F", 
     weight = 5, opacity = 0.5, fill = TRUE, fillColor = color, fillOpacity = 0.2, 
@@ -169,13 +169,13 @@ north-east corners of rectangles}
 
 \item{geojson}{a GeoJSON list, or character vector of length 1}
 
+\item{featureId}{must be available in geojson$features$id}
+
 \item{style}{a JSON string}
 
 \item{topojson}{a TopoJSON list, or character vector of length 1}
 
-\item{remove}{feature from GeoJSON layer}
-
-\item{remove}{feature from GeoJSON layer}
+\item{data}{in GeoJSON}
 }
 \value{
 the new \code{map} object
@@ -211,7 +211,7 @@ Add graphics elements and layers to the map widget.
 
 \item \code{removeFeatureGeoJSON}: change style of GeoJSON feature
 
-\item \code{addFeatureGeoJSON}: change style of GeoJSON feature
+\item \code{addFeatureGeoJSON}: add feature to GeoJSON layer
 
 \item \code{addTopoJSON}: Add TopoJSON layers to the map
 }}

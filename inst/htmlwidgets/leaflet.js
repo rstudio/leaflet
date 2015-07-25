@@ -880,13 +880,13 @@ var dataframe = (function() {
         color: originalColor
 			});
 		};
-		// right now using .admin but will let users choose, also let users choose "<" or ">"
+		// right now using .id but may let users choose, let users choose "<" or ">" or "=" (default)
 		// also allow lists of lists for style that are parsed as JSON
-		// and create methods for many ids to style with single loop, and many ids to many styles
+		// and create methods for many ids to style or remove with single loop, and many ids to many styles
     methods.setStyleGeoJSON = function(layerId, featureId, style) {
       var layerPicked = this.layerManager.getLayer("geojson", layerId)
       layerPicked.eachLayer(function (layer) {
-        if(layer.feature.properties.admin == featureId) {
+        if(layer.feature.id === featureId) {
          layer.setStyle(JSON.parse(style));
         }
       });
@@ -894,7 +894,7 @@ var dataframe = (function() {
     methods.removeFeatureGeoJSON = function(layerId, featureId) {
       var layerPicked = this.layerManager.getLayer("geojson", layerId)
       layerPicked.eachLayer(function (layer) {
-        if(layer.feature.properties.admin == featureId) {
+        if(layer.feature.id === featureId) {
          layerPicked.removeLayer(layer);
         }
       });

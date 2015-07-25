@@ -950,18 +950,18 @@ setStyleGeoJSON = function(map, layerId = NULL, featureId = NULL, style = NULL) 
   invokeMethod(map, getMapData(map), 'setStyleGeoJSON', layerId, featureId, style)
 }
 
-#' @param remove feature from GeoJSON layer
+#' @param featureId must be available in geojson$features$id
 #' @describeIn map-layers change style of GeoJSON feature
 #' @export
 removeFeatureGeoJSON = function(map, layerId = NULL, featureId = NULL) {
   invokeMethod(map, getMapData(map), 'removeFeatureGeoJSON', layerId, featureId)
 }
 
-#' @param remove feature from GeoJSON layer
-#' @describeIn map-layers change style of GeoJSON feature
+#' @param data in GeoJSON
+#' @describeIn map-layers add feature to GeoJSON layer
 #' @export
-addFeatureGeoJSON = function(map, geojson = NULL, layerId = NULL) {
-  invokeMethod(map, getMapData(map), 'addFeatureGeoJSON', geojson, layerId)
+addFeatureGeoJSON = function(map, featureGeoJSON = NULL, layerId = NULL) {
+  invokeMethod(map, getMapData(map), 'addFeatureGeoJSON', featureGeoJSON, layerId)
 }
 
 #' @rdname remove
