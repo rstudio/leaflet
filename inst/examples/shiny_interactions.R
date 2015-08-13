@@ -2,7 +2,7 @@ library(shiny)
 library(leaflet)
 library(rgdal)
 library(jsonlite)
-library(rescale)
+library(scales)
 googleLink <- function(lat,lng,zoom) {
   sprintf("http://www.google.com/maps/place/%s,%s/@%s,%s,%sz/data=!3m1!1e3",
           lat, lng, lat, lng, zoom)
@@ -71,18 +71,18 @@ server <- function(input, output, session) {
     if (input$colorBy == "none") {
       for (i in 1:length(addedData$df$ids)) {
         leafletProxy("mymap") %>%
-          setStyleGeoJSON(layerId ='geojsonlayer', featureId = addedData$df$ids[i],
+          styleFeatureGeoJSON(layerId ='geojsonlayer', featureId = addedData$df$ids[i],
                           style = sprintf('{"fillColor": "%s"}',"blue"))
       }
     } else {
       colorByData <- rescale(addedData$df[[input$colorBy]])
       pal <- colorBin("Greens", 0:1,bins=10)
-      for (i in 1:length(addedData$df$ids)) {
-        featureColor <- pal(colorByData[i])
+      addColorSetStyle <- function(featureId,color) {
         leafletProxy("mymap") %>%
-          setStyleGeoJSON(layerId ='geojsonlayer', featureId = addedData$df$ids[i],
-                          style = sprintf('{"fillColor": "%s"}',featureColor))
+          styleFeatureGeoJSON(layerId ='geojsonlayer', featureId = featureId,
+                          style = sprintf('{"fillColor": "%s"}',pal(color)))
       }
+      mapply(addColorSetStyle,addedData$df$ids,colorByData)
     }
   })
 
@@ -145,7 +145,7 @@ server <- function(input, output, session) {
   })
   observeEvent(input$setstyle, {
     leafletProxy("mymap") %>%
-    setStyleGeoJSON(layerId ='geojsonlayer', featureId = input$setstyle, style = '{"fillColor" :"red"}')
+    styleFeatureGeoJSON(layerId ='geojsonlayer', featureId = input$setstyle, style = '{"fillColor" :"red"}')
   })
   observeEvent(input$removefeature, {
     if(is.null(input$removefeature)==FALSE && input$removefeature != "") {
@@ -201,11 +201,11 @@ server <- function(input, output, session) {
   })
   observeEvent(input$mymap_geojson_mouseover, {
         leafletProxy("mymap") %>%
-          setStyleGeoJSON(layerId ='geojsonlayer', featureId = input$mymap_geojson_mouseover$featureId, style = '{"weight": 3, "color": "black"}')
+          styleFeatureGeoJSON(layerId ='geojsonlayer', featureId = input$mymap_geojson_mouseover$featureId, style = '{"weight": 3, "color": "black"}')
   })
   observeEvent(input$mymap_geojson_mouseout, {
         leafletProxy("mymap") %>%
-          setStyleGeoJSON(layerId ='geojsonlayer', featureId = input$mymap_geojson_mouseout$featureId, style = '{"weight": 1, "color": "#555555"}')
+          styleFeatureGeoJSON(layerId ='geojsonlayer', featureId = input$mymap_geojson_mouseout$featureId, style = '{"weight": 1, "color": "#555555"}')
   })
 }
 shinyApp(ui, server)

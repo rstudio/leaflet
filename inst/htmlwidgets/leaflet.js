@@ -861,7 +861,7 @@ var dataframe = (function() {
 		// TO DO: right now using .id but may let users choose, let users choose "<" or ">" or "=" (default)
 		// also allow lists of lists for style that are parsed as JSON
 		// and create methods for many ids to style or remove with single loop, and many ids to many styles
-    methods.setStyleGeoJSON = function(layerId, featureId, style) {
+    methods.styleFeatureGeoJSON = function(layerId, featureId, style) {
       var layerPicked = this.layerManager.getLayer("geojson", layerId)
       layerPicked.eachLayer(function (layer) {
         if(layer.feature.id === featureId) {

@@ -14,7 +14,7 @@
 \alias{addTopoJSON}
 \alias{addWMSTiles}
 \alias{removeFeatureGeoJSON}
-\alias{setStyleGeoJSON}
+\alias{styleFeatureGeoJSON}
 \title{Graphics elements and layers}
 \usage{
 addControl(map, html, position = c("topleft", "topright", "bottomleft", "bottomright"), 
@@ -63,7 +63,7 @@ addGeoJSON(map, geojson, layerId = NULL, group = NULL, stroke = TRUE, color = "#
     weight = 5, opacity = 0.5, fill = TRUE, fillColor = color, fillOpacity = 0.2, 
     dashArray = NULL, smoothFactor = 1, noClip = FALSE, options = pathOptions())
 
-setStyleGeoJSON(map, layerId = NULL, featureId = NULL, style = NULL)
+styleFeatureGeoJSON(map, layerId = NULL, featureId = NULL, style = NULL)
 
 removeFeatureGeoJSON(map, layerId = NULL, featureId = NULL)
 
@@ -207,7 +207,7 @@ Add graphics elements and layers to the map widget.
 
 \item \code{addGeoJSON}: Add GeoJSON layers to the map
 
-\item \code{setStyleGeoJSON}: change style of GeoJSON feature
+\item \code{styleFeatureGeoJSON}: change style of GeoJSON feature
 
 \item \code{removeFeatureGeoJSON}: change style of GeoJSON feature
 
