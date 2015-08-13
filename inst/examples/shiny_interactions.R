@@ -25,6 +25,27 @@ pop_est <- sapply(geojson$features, function(feat) {feat$properties$pop_est})
 ids <- sapply(geojson$features,function(x) x$id)
 allCountries <- data.frame(ids = ids, gdp_md_est = gdp_md_est, pop_est = pop_est , stringsAsFactors = FALSE)
 
+# note id specified in GeoJSON on highest level (of single feature) for use in removeFeatureGeoJSON and styleFeatureGeoJSON
+bermudaTriangle <- '{
+    "type": "Feature",
+"id": "Bermuda Triangle",
+    "properties": {
+    "name": "Bermuda Triangle",
+    "area": 1150180
+    },
+    "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+    [
+      [-64.73, 32.31],
+      [-80.19, 25.76],
+      [-66.09, 18.43],
+      [-64.73, 32.31]
+      ]
+      ]
+    }
+    }'
+
 ui <-
   navbarPage(title="R-Shiny/Leaflet Interactions",
     tabPanel("Map",
@@ -46,6 +67,8 @@ ui <-
             actionButton("clearPopup", "clearPopup"),
             actionButton("addGeojson", "addGeojson"),
             actionButton("clearGeojson", "clearGeojson"),
+            actionButton("addBermuda", "addBermuda"),
+            actionButton("removeBermuda", "removeBermuda"),
             checkboxInput('popupAll', 'popupAll', value = FALSE),
             selectInput('setstyle', label = "Color a Country Red!", choices = NULL,selected = NULL),
             selectInput('removefeature', label = "Remove a Country!", choices = NULL,selected = NULL),
@@ -162,10 +185,10 @@ server <- function(input, output, session) {
   })
   observeEvent(input$addfeature, {
     if(is.null(input$addfeature)==FALSE && input$addfeature != "") {
-      data <- geojson$features[[seq_along(geojson$features)[sapply(geojson$features,
+      geojson <- geojson$features[[seq_along(geojson$features)[sapply(geojson$features,
               FUN = function(x) x[["id"]] == input$addfeature)]]]
       leafletProxy("mymap") %>%
-      addFeatureGeoJSON(data, layerId ='geojsonlayer')
+      addFeatureGeoJSON(geojson, layerId ='geojsonlayer') # can use a list (slow)
       if (length(addedData$df$ids) > 1) {
         removedData$df <- removedData$df[-c(which(removedData$df$ids==input$addfeature)),]
       }
@@ -201,11 +224,23 @@ server <- function(input, output, session) {
   })
   observeEvent(input$mymap_geojson_mouseover, {
         leafletProxy("mymap") %>%
-          styleFeatureGeoJSON(layerId ='geojsonlayer', featureId = input$mymap_geojson_mouseover$featureId, style = '{"weight": 3, "color": "black"}')
+          styleFeatureGeoJSON(layerId ='geojsonlayer', featureId = input$mymap_geojson_mouseover$featureId,
+                              style = list(weight=5,color="black")) # can use a list
   })
   observeEvent(input$mymap_geojson_mouseout, {
         leafletProxy("mymap") %>%
-          styleFeatureGeoJSON(layerId ='geojsonlayer', featureId = input$mymap_geojson_mouseout$featureId, style = '{"weight": 1, "color": "#555555"}')
+          styleFeatureGeoJSON(layerId ='geojsonlayer', featureId = input$mymap_geojson_mouseout$featureId,
+                              style = '{"weight": 1, "color": "#555555"}') # or string
+  })
+  observeEvent(input$addBermuda, {
+    # geoJSON layer must already be added
+    # simplified example, not added to addedData
+    leafletProxy("mymap") %>%
+      addFeatureGeoJSON(as.character(minify(bermudaTriangle)), layerId ='geojsonlayer') # can use a GeoJSON string (as.character)
+  })
+  observeEvent(input$removeBermuda, {
+    leafletProxy("mymap") %>%
+      removeFeatureGeoJSON(layerId ='geojsonlayer', featureId = "Bermuda Triangle")
   })
 }
 shinyApp(ui, server)
