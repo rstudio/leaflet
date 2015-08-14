@@ -174,8 +174,6 @@ north-east corners of rectangles}
 \item{style}{a JSON string}
 
 \item{topojson}{a TopoJSON list, or character vector of length 1}
-
-\item{data}{in GeoJSON}
 }
 \value{
 the new \code{map} object

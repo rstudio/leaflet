@@ -858,22 +858,26 @@ var dataframe = (function() {
     });
   };
 
-		// TO DO: right now using .id but may let users choose, let users choose "<" or ">" or "=" (default)
-		// consider letting users specify listed style arguments ala addGeoJSON
-		// and create methods for many ids to style or remove with single loop, and many ids to many styles
+    // TO DO: right now using .id but may let users choose, let users choose "<" or ">" or "=" (default)
+    // consider letting users specify listed style arguments ala addGeoJSON
+    // and create methods for many ids to style or remove with single loop, and many ids to many styles
     methods.styleFeatureGeoJSON = function(layerId, featureId, style) {
       var layerPicked = this.layerManager.getLayer("geojson", layerId)
-      // if statement added to avoid JS warnings
+      // if statement added to avoid JS warnings (TO DO: investigate further)
       if (layerPicked !== undefined && layerPicked !== null) {
+         if (typeof(style) === "string") {
+           style = JSON.parse(style);
+         }
         layerPicked.eachLayer(function (layer) {
           if(layer.feature.id === featureId) {
-           layer.setStyle(JSON.parse(style));
+           layer.setStyle(style);
           }
         });
       };
     };
     methods.removeFeatureGeoJSON = function(layerId, featureId) {
       var layerPicked = this.layerManager.getLayer("geojson", layerId)
+      console.log(layerPicked)
       layerPicked.eachLayer(function (layer) {
         if(layer.feature.id === featureId) {
          layerPicked.removeLayer(layer);

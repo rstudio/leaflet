@@ -7,8 +7,8 @@ googleLink <- function(lat,lng,zoom) {
   sprintf("http://www.google.com/maps/place/%s,%s/@%s,%s,%sz/data=!3m1!1e3",
           lat, lng, lat, lng, zoom)
 }
-geojson <- paste(readLines(system.file("examples/countries.json", package = "leaflet")), collapse = "\n") %>%
-  fromJSON(simplifyVector = FALSE)
+geojson <-   fromJSON(system.file("examples/countries.json", package = "leaflet"),simplifyVector = FALSE)
+
 geojson$style = list(
   weight = 1,
   color = "#555555",
@@ -222,10 +222,11 @@ server <- function(input, output, session) {
   observeEvent(input$clear, {
     leafletProxy("mymap") %>% clearTiles()
   })
+  # need ability to bring to top
   observeEvent(input$mymap_geojson_mouseover, {
         leafletProxy("mymap") %>%
           styleFeatureGeoJSON(layerId ='geojsonlayer', featureId = input$mymap_geojson_mouseover$featureId,
-                              style = list(weight=5,color="black")) # can use a list
+                              style = list(weight=1,color="black")) # or string
   })
   observeEvent(input$mymap_geojson_mouseout, {
         leafletProxy("mymap") %>%
