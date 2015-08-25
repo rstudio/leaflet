@@ -1430,11 +1430,16 @@ var dataframe = (function() {
   };
 
   methods.addMeasure = function(options){
-    this.measureControl = L.control.measure(options)
+    // if a measureControl already exists, then remove it and
+    //   replace with a new one
+    if(this.measureControl) {
+      this.measureControl.removeFrom( this );
+    }
+    this.measureControl = L.control.measure(options);
     this.measureControl.addTo(this);
   };
 
-  methods.removeMeasure = function(layerId){
+  methods.removeMeasure = function( ){
     this.measureControl.removeFrom( this );
     delete this.measureControl;
   }
