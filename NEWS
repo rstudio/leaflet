@@ -4,6 +4,9 @@ leaflet 1.0.1
 * When used with `leafletProxy`, `fitBounds` did not return its input object as
   output, so magrittr chains would break after `fitBounds` was called.
 
+* Add addMeasure()/removeMeasure() functions to allow users to measure lines and
+  areas. (Thanks, Kenton Russell!)
+
 leaflet 1.0.0
 --------------------------------------------------------------------------------
 

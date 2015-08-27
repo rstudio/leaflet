@@ -37,6 +37,7 @@ leafletMeasureDependencies <- function() {
 #'   addTiles() %>%
 #'   # central park
 #'   fitBounds( -73.9, 40.75, -73.95, 40.8 ) %>%
+#'   addMeasure()
 #'
 #' leaf
 #'

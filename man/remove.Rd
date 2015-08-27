@@ -1,4 +1,4 @@
-% Please edit documentation in R/controls.R, R/layers.R, R/plugin-omnivore.R
+% Please edit documentation in R/controls.R, R/layers.R, R/plugin-measure.R, R/plugin-omnivore.R
 \name{removeControl}
 \alias{clearControls}
 \alias{clearGeoJSON}
@@ -17,6 +17,7 @@
 \alias{removeMarker}
 \alias{removeMarkerCluster}
 \alias{removeMarkerFromCluster}
+\alias{removeMeasure}
 \alias{removePopup}
 \alias{removeShape}
 \alias{removeTiles}
@@ -58,6 +59,8 @@ clearShapes(map)
 removeGeoJSON(map, layerId)
 
 clearGeoJSON(map)
+
+removeMeasure(map)
 
 removeTopoJSON(map, layerId)
 
