@@ -77,8 +77,6 @@ leaf <- leaflet() \%>\%
   addHeatmap(
     addressPoints
     ,blur = 50
-    # using example
-    # https://esri.github.io/esri-leaflet/examples/styling-heatmaps.html
     ,gradient = colorNumeric(
       palette = "Purples"
       ,domain = c(0,1)
@@ -122,7 +120,8 @@ quakes_mat <- matrix(t(quakes[,c(1:2,4)]),ncol=3,byrow=TRUE)
 leaflet() \%>\%
   addTiles( ) \%>\%
   setView( 178, -20, 5 ) \%>\%
-  addHeatmap( quakes_mat, blur = 30, max = 0.05, radius = 30 )
+  addHeatmap( quakes_mat, blur = 20, max = 0.02, radius = 10,
+              gradient = colorNumeric("Greys", 0:1) )
 
 # to remove the heatmap
 leaf \%>\% clearHeatmap()
