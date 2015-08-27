@@ -29,6 +29,7 @@ leaf
 
 # customize our heatmap with options
 leaf <- leaflet() %>%
+  addTiles() %>%
   setView( 175.475,-37.87, 12 ) %>%
   addHeatmap(
     addressPoints
