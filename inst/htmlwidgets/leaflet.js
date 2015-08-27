@@ -1429,6 +1429,21 @@ var dataframe = (function() {
     this.layerManager.clearLayers("image");
   };
 
+  methods.addMeasure = function(options){
+    // if a measureControl already exists, then remove it and
+    //   replace with a new one
+    if(this.measureControl) {
+      this.measureControl.removeFrom( this );
+    }
+    this.measureControl = L.control.measure(options);
+    this.measureControl.addTo(this);
+  };
+
+  methods.removeMeasure = function( ){
+    this.measureControl.removeFrom( this );
+    delete this.measureControl;
+  }
+
   function preventUnintendedZoomOnScroll(map) {
     // Prevent unwanted scroll capturing. Similar in purpose to
     // https://github.com/CliffCloud/Leaflet.Sleep but with a
