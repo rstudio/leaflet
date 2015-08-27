@@ -1,0 +1,90 @@
+library(leaflet)
+
+# match the heatmap demo from Leaflet.heat
+# https://github.com/Leaflet/Leaflet.heat/blob/gh-pages/demo/index.html
+
+# get the data to match exactly
+addressPoints <- readLines(
+  "http://leaflet.github.io/Leaflet.markercluster/example/realworld.10000.js"
+)
+addressPoints <- apply(
+  jsonlite::fromJSON(
+    sprintf("[%s]",
+      paste0(
+        addressPoints[4:(length(addressPoints)-1)]
+        ,collapse=""
+      )
+    )
+  )
+  ,MARGIN = 2
+  ,as.numeric
+)
+
+# create our heatmap
+leaf <- leaflet() %>%
+  setView( 175.475,-37.87, 12 ) %>%
+  addHeatmap(addressPoints)
+
+leaf
+
+# customize our heatmap with options
+library(RColorBrewer)
+pal <- brewer.pal(9,"BuPu")
+
+leaf <- leaflet() %>%
+  setView( 175.475,-37.87, 12 ) %>%
+  addHeatmap(
+    addressPoints
+    ,blur = 50
+    # using example
+    # https://esri.github.io/esri-leaflet/examples/styling-heatmaps.html
+    ,gradient = list(
+      '0.2' = '#ffffb2',
+      '0.4' = '#fd8d3c',
+      '0.6' = '#fd8d3c',
+      '0.8' = '#f03b20',
+      '1' = '#bd0026'
+    )
+  )
+
+leaf
+
+# replicate the example provided by
+#   http://www.d3noob.org/2014/02/generate-heatmap-with-leafletheat-and.html
+
+earthquakes <- readLines(
+  "http://bl.ocks.org/d3noob/raw/8973028/2013-earthquake.js"
+)
+earthquakes <- apply(
+  jsonlite::fromJSON(
+    sprintf("[%s]",
+            paste0(
+              earthquakes[5:(length(earthquakes)-1)]
+              ,collapse=""
+            )
+    )
+  )
+  ,MARGIN = 2
+  ,as.numeric
+)
+
+leaflet() %>%
+  addTiles() %>%
+  setView( 174.146, -41.5546, 10 ) %>%
+  addHeatmap(
+    earthquakes,
+    radius = 20,
+    blur = 15,
+    maxZoom = 17
+  )
+
+#  using data(quakes)
+data(quakes)
+quakes_mat <- matrix(t(quakes[,c(1:2,4)]),ncol=3,byrow=T)
+leaflet() %>%
+  addTiles( ) %>%
+  setView( 178, -20, 5 ) %>%
+  addHeatmap( quakes_mat, blur = 30, max = 0.05, radius = 30 )
+
+# to remove the heatmap
+leaf %>% clearHeatmap()
