@@ -935,6 +935,20 @@ var dataframe = (function() {
     this.layerManager.clearLayers("topojson");
   };
 
+  methods.addHeatmap = function( latlngs, options, layerId ) {
+    var heatmapLayer = L.heatLayer(latlngs, options);
+
+    this.layerManager.addLayer(heatmapLayer, "heatmap", layerId);
+  };
+
+  methods.removeHeatmap = function(layerId) {
+    this.layerManager.removeLayer("heatmap", layerId);
+  };
+
+  methods.clearHeatmap = function() {
+    this.layerManager.clearLayers("heatmap");
+  };
+
   methods.addControl = function(html, position, layerId, classes) {
     function onAdd(map) {
       var div = L.DomUtil.create('div', classes);
