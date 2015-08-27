@@ -28,9 +28,6 @@ leaf <- leaflet() %>%
 leaf
 
 # customize our heatmap with options
-library(RColorBrewer)
-pal <- brewer.pal(9,"BuPu")
-
 leaf <- leaflet() %>%
   setView( 175.475,-37.87, 12 ) %>%
   addHeatmap(
@@ -38,12 +35,9 @@ leaf <- leaflet() %>%
     ,blur = 50
     # using example
     # https://esri.github.io/esri-leaflet/examples/styling-heatmaps.html
-    ,gradient = list(
-      '0.2' = '#ffffb2',
-      '0.4' = '#fd8d3c',
-      '0.6' = '#fd8d3c',
-      '0.8' = '#f03b20',
-      '1' = '#bd0026'
+    ,gradient = colorNumeric(
+      palette = "Purples"
+      ,domain = c(0,1)
     )
   )
 
@@ -80,7 +74,7 @@ leaflet() %>%
 
 #  using data(quakes)
 data(quakes)
-quakes_mat <- matrix(t(quakes[,c(1:2,4)]),ncol=3,byrow=T)
+quakes_mat <- matrix(t(quakes[,c(1:2,4)]),ncol=3,byrow=TRUE)
 leaflet() %>%
   addTiles( ) %>%
   setView( 178, -20, 5 ) %>%

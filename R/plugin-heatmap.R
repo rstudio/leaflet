@@ -23,8 +23,9 @@ leafletHeatmapDependencies <- function() {
 #'          \code{25}.
 #' @param blur amount of blur to apply.  The default is \code{15}.
 #'          \code{blur=1} means no blur.
-#' @param gradient manual color gradient.  An example is
-#'          \code{gradient = list( '0.4' = 'blue', '0.65' = 'lime', '1'= 'red')}.
+#' @param gradient manual color gradient as \code{\link{colorNumeric}}
+#'          with \code{domain = 0:1}.  As an example,
+#'          \code{gradient = colorNumeric("RdYlBu", 0:1)}.
 #' @param layerId optional string identifying this layer.  \code{layerId} can
 #'          be helpful in a dynamic/Shiny situation where you might want to
 #'          remove at some point.
@@ -47,6 +48,16 @@ addHeatmap <- function(
   ,layerId = NULL
 ) {
   map$dependencies <- c(map$dependencies, leafletHeatmapDependencies())
+
+  #convert gradient to expected format from leaflet
+  if(!is.null(gradient)){
+    if(!inherits(gradient,"function")){
+      stop("gradient should be a function.",call.=FALSE)
+    }
+    gradient <- as.list(gradient(0:20 / 20))
+    names(gradient) <- as.character(0:20 / 20)
+  }
+
   invokeMethod(
     map
     , getMapData(map)
