@@ -62,11 +62,6 @@ addHeatmap <- function( map, lng = NULL, lat = NULL,
   pts = derivePoints(data, lng, lat, missing(lng), missing(lat),
                      "addHeatmap")
 
-  # get intensity if provided
-  if(!is.null(intensity)){
-    intensity <- resolveFormula( intensity, data )
-  }
-
   invokeMethod(
     map, data, 'addHeatmap', pts$lat, pts$lng, intensity,
     Filter(
