@@ -4,22 +4,30 @@
 \alias{addHeatmap}
 \title{Add a heatmap to the map.}
 \usage{
-addHeatmap(map, latlngs, minOpacity = 0.05, maxZoom = NULL, max = 1,
-  radius = 25, blur = 15, gradient = NULL, layerId = NULL)
+addHeatmap(map, lng = NULL, lat = NULL, minOpacity = 0.05,
+  intensity = NULL, maxZoom = NULL, max = 1, radius = 25, blur = 15,
+  gradient = NULL, layerId = NULL, data = getMapData(map))
 }
 \arguments{
-\item{map}{leaflet map to which you would like to add the heatmap.}
+\item{map}{leaflet map to which you would like to add the heatmap}
 
-\item{latlngs}{matrix of data with latitude in the first column
-and longitude in the second.  An optional third column
-can provide altitude or intensity.}
+\item{lng}{a numeric vector of longitudes, or a one-sided formula
+of the form ~x where x is a variable in data;
+by default (if not explicitly provided), it will be
+automatically inferred from data by looking for a
+column named lng, long, or longitude (case-insensitively)}
 
-\item{minOpacity}{minimum opacity at which the heat will start.}
+\item{lat}{a vector of latitudes or a formula
+(similar to the lng argument; the names lat and
+latitude are used when guessing the latitude column
+from data)}
+
+\item{minOpacity}{minimum opacity at which the heat will start}
 
 \item{maxZoom}{zoom level where the points reach maximum intensity
-(as intensity scales with zoom).}
+(as intensity scales with zoom)}
 
-\item{max}{maximum point intensity. The default is \code{1.0}.}
+\item{max}{maximum point intensity. The default is \code{1.0}}
 
 \item{radius}{radius of each "point" of the heatmap.  The default is
 \code{25}.}
@@ -27,13 +35,16 @@ can provide altitude or intensity.}
 \item{blur}{amount of blur to apply.  The default is \code{15}.
 \code{blur=1} means no blur.}
 
-\item{gradient}{manual color gradient as \code{\link{colorNumeric}}
-with \code{domain = 0:1}.  As an example,
-\code{gradient = colorNumeric("RdYlBu", 0:1)}.}
+\item{gradient}{palette name from \code{RColorBrewer} or an array of
+of colors to be provided to \link{\code{colorNumeric}}}
 
 \item{layerId}{optional string identifying this layer.  \code{layerId} can
          be helpful in a dynamic/Shiny situation where you might want to
-         remove at some point.}
+         remove at some point}
+
+\item{data}{the data object from which the argument values are derived; by default,
+it is the data object provided to leaflet() initially,
+but can be overridden}
 }
 \value{
 modified map
@@ -64,10 +75,13 @@ addressPoints <- apply(
   ,as.numeric
 )
 
+addressPoints <- data.frame( addressPoints )
+colnames( addressPoints ) <- c( "lat", "lng", "value" )
+
 # create our heatmap
-leaf <- leaflet() \%>\%
+leaf <- leaflet( addressPoints ) \%>\%
   setView( 175.475,-37.87, 12 ) \%>\%
-  addHeatmap(addressPoints)
+  addHeatmap(intensity=~value )
 
 leaf
 
@@ -76,12 +90,10 @@ leaf <- leaflet() \%>\%
   addTiles() \%>\%
   setView( 175.475,-37.87, 12 ) \%>\%
   addHeatmap(
-    addressPoints
-    ,blur = 50
-    ,gradient = colorNumeric(
-      palette = "Purples"
-      ,domain = c(0,1)
-    )
+    data = addressPoints,
+    intensity = ~value,
+    blur = 50,
+    gradient = "Purples"
   )
 
 leaf
@@ -105,11 +117,14 @@ earthquakes <- apply(
   ,as.numeric
 )
 
-leaflet() \%>\%
+earthquakes = data.frame( earthquakes )
+leaflet( earthquakes ) \%>\%
   addTiles() \%>\%
   setView( 174.146, -41.5546, 10 ) \%>\%
   addHeatmap(
-    earthquakes,
+    lat = ~X1,
+    lng = ~X2,
+    intensity = ~X3,
     radius = 20,
     blur = 15,
     maxZoom = 17
@@ -117,12 +132,13 @@ leaflet() \%>\%
 
 #  using data(quakes)
 data(quakes)
-quakes_mat <- matrix(t(quakes[,c(1:2,4)]),ncol=3,byrow=TRUE)
-leaflet() \%>\%
+
+leaflet(quakes) \%>\%
   addTiles( ) \%>\%
   setView( 178, -20, 5 ) \%>\%
-  addHeatmap( quakes_mat, blur = 20, max = 0.02, radius = 10,
-              gradient = colorNumeric("Greys", 0:1) )
+  addHeatmap( lng = ~long, intensity = ~mag,
+              blur = 20, max = 0.02, radius = 10,
+              gradient = "Greys" )
 
 # to remove the heatmap
 leaf \%>\% clearHeatmap()

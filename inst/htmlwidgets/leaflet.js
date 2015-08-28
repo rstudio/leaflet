@@ -935,7 +935,25 @@ var dataframe = (function() {
     this.layerManager.clearLayers("topojson");
   };
 
-  methods.addHeatmap = function( latlngs, options, layerId ) {
+  methods.addHeatmap = function( lat, lng, intensity, options, layerId ) {
+
+    // try to be consistent and use dataframe methods
+
+    var df = dataframe.create()
+        .col('lat',lat)
+        .col('lng',lng)
+        .col('intensity',intensity);
+
+    var latlngs = [];
+    var i = 0;
+    for(i;i<df.nrow();i++){
+      latlngs.push([
+        df.get(i,'lat'),
+        df.get(i,'lng'),
+        df.get(i,'intensity')
+      ])
+    };
+
     var heatmapLayer = L.heatLayer(latlngs, options);
 
     this.layerManager.addLayer(heatmapLayer, "heatmap", layerId);

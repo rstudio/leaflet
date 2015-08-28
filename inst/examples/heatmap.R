@@ -20,10 +20,13 @@ addressPoints <- apply(
   ,as.numeric
 )
 
+addressPoints <- data.frame( addressPoints )
+colnames( addressPoints ) <- c( "lat", "lng", "value" )
+
 # create our heatmap
-leaf <- leaflet() %>%
+leaf <- leaflet( addressPoints ) %>%
   setView( 175.475,-37.87, 12 ) %>%
-  addHeatmap(addressPoints)
+  addHeatmap(intensity=~value )
 
 leaf
 
@@ -32,12 +35,10 @@ leaf <- leaflet() %>%
   addTiles() %>%
   setView( 175.475,-37.87, 12 ) %>%
   addHeatmap(
-    addressPoints
-    ,blur = 50
-    ,gradient = colorNumeric(
-      palette = "Purples"
-      ,domain = c(0,1)
-    )
+    data = addressPoints,
+    intensity = ~value,
+    blur = 50,
+    gradient = "Purples"
   )
 
 leaf
@@ -61,11 +62,14 @@ earthquakes <- apply(
   ,as.numeric
 )
 
-leaflet() %>%
+earthquakes = data.frame( earthquakes )
+leaflet( earthquakes ) %>%
   addTiles() %>%
   setView( 174.146, -41.5546, 10 ) %>%
   addHeatmap(
-    earthquakes,
+    lat = ~X1,
+    lng = ~X2,
+    intensity = ~X3,
     radius = 20,
     blur = 15,
     maxZoom = 17
@@ -73,12 +77,13 @@ leaflet() %>%
 
 #  using data(quakes)
 data(quakes)
-quakes_mat <- matrix(t(quakes[,c(1:2,4)]),ncol=3,byrow=TRUE)
-leaflet() %>%
+
+leaflet(quakes) %>%
   addTiles( ) %>%
   setView( 178, -20, 5 ) %>%
-  addHeatmap( quakes_mat, blur = 20, max = 0.02, radius = 10,
-              gradient = colorNumeric("Greys", 0:1) )
+  addHeatmap( lng = ~long, intensity = ~mag,
+              blur = 20, max = 0.02, radius = 10,
+              gradient = "Greys" )
 
 # to remove the heatmap
 leaf %>% clearHeatmap()
