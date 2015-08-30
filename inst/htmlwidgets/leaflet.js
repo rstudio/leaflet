@@ -1546,6 +1546,9 @@ var dataframe = (function() {
       return map;
     },
     renderValue: function(el, data, map) {
+      return this.doRenderValue(el, data, map);
+    },
+    doRenderValue: function(el, data, map) {
       // Leaflet does not behave well when you set up a bunch of layers when
       // the map is not visible (width/height == 0). Popups get misaligned
       // relative to their owning markers, and the fitBounds calculations
@@ -1629,7 +1632,7 @@ var dataframe = (function() {
     resize: function(el, width, height, map) {
       map.invalidateSize();
       if (map.leafletr.pendingRenderData) {
-        this.renderValue(el, map.leafletr.pendingRenderData, map);
+        this.doRenderValue(el, map.leafletr.pendingRenderData, map);
       }
     }
   });
