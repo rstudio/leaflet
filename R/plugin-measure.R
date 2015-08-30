@@ -12,6 +12,7 @@ leafletMeasureDependencies <- function() {
 
 #' Add a measure control to the map.
 #'
+#' @param map a map widget object
 #' @param position standard \href{http://leafletjs.com/reference.html#control-positions}{Leaflet control position options}.
 #' @param primaryLengthUnit,secondaryLengthUnit units used to display length
 #'           results. secondaryLengthUnit is optional.
