@@ -30,6 +30,13 @@ leaf <- leaflet( addressPoints ) %>%
 
 leaf
 
+# or create a dot map-like heatmap
+# create our heatmap
+leaflet( addressPoints ) %>% addTiles() %>%
+  setView( 175.475,-37.87, 12 ) %>%
+  addHeatmap(intensity=~value, radius = 2, blur = 1,
+             max = 1e-10, gradient = blues9[8:9] )
+
 # customize our heatmap with options
 leaf <- leaflet() %>%
   addTiles() %>%
