@@ -419,6 +419,20 @@ clearPopups = function(map) {
   invokeMethod(map, NULL, 'clearPopups')
 }
 
+# Helper Function to create a safe label
+safeLabel <- function(label, data) {
+  if (is.null(label)) {
+    return(label)
+  }
+
+  label <- evalFormula(label, data)
+  if(! (inherits(label, "html") ||
+                    sum(sapply(label,function(x){!inherits(x,'html')})) == 0)) {
+    label <- htmltools::htmlEscape(label)
+  }
+  label
+}
+
 #' Extra options for marker and polygon labels
 #'
 #' @param
@@ -449,9 +463,7 @@ labelOptions = function(
 #'   that contains images as local files, these local image files will be base64
 #'   encoded into the HTML page so the icon images will still be available even
 #'   when you publish the map elsewhere
-#' @param label a character vector of the HTML content for the labels (you are
-#'   recommended to escape the text using \code{\link[htmltools]{htmlEscape}()}
-#'   for security reasons)
+#' @param label a character vector of the HTML content for the labels
 #' @param labelOptions A Vector of \code{\link{labelOptions}} to provide label
 #' options for each label. Default \code{NULL}
 #' @param clusterOptions if not \code{NULL}, markers will be clustered using
@@ -500,7 +512,7 @@ addMarkers = function(
   pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addMarkers")
   invokeMethod(
     map, data, 'addMarkers', pts$lat, pts$lng, icon, layerId, group, options, popup,
-    clusterOptions, clusterId, label, labelOptions
+    clusterOptions, clusterId, safeLabel(label, data), labelOptions
   ) %>% expandLimits(pts$lat, pts$lng)
 }
 
@@ -763,7 +775,7 @@ addCircleMarkers = function(
     map$dependencies = c(map$dependencies, markerClusterDependencies())
   pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addCircleMarkers")
   invokeMethod(map, data, 'addCircleMarkers', pts$lat, pts$lng, radius,
-      layerId, group, options, clusterOptions, clusterId, popup, label, labelOptions) %>%
+      layerId, group, options, clusterOptions, clusterId, popup, safeLabel(label, data), labelOptions) %>%
     expandLimits(pts$lat, pts$lng)
 }
 
@@ -846,7 +858,7 @@ addCircles = function(
     dashArray = dashArray
   ))
   pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addCircles")
-  invokeMethod(map, data, 'addCircles', pts$lat, pts$lng, radius, layerId, group, options, popup, label, labelOptions) %>%
+  invokeMethod(map, data, 'addCircles', pts$lat, pts$lng, radius, layerId, group, options, popup, safeLabel(label, data), labelOptions) %>%
     expandLimits(pts$lat, pts$lng)
 }
 
@@ -879,7 +891,7 @@ addPolylines = function(
     dashArray = dashArray, smoothFactor = smoothFactor, noClip = noClip
   ))
   pgons = derivePolygons(data, lng, lat, missing(lng), missing(lat), "addPolylines")
-  invokeMethod(map, data, 'addPolylines', pgons, layerId, group, options, popup, label, labelOptions) %>%
+  invokeMethod(map, data, 'addPolylines', pgons, layerId, group, options, popup, safeLabel(label, data), labelOptions) %>%
     expandLimitsBbox(pgons)
 }
 
@@ -914,7 +926,7 @@ addRectangles = function(
   lat1 = resolveFormula(lat1, data)
   lng2 = resolveFormula(lng2, data)
   lat2 = resolveFormula(lat2, data)
-  invokeMethod(map, data, 'addRectangles',lat1, lng1, lat2, lng2, layerId, group, options, popup, label, labelOptions) %>%
+  invokeMethod(map, data, 'addRectangles',lat1, lng1, lat2, lng2, layerId, group, options, popup, safeLabel(label, data), labelOptions) %>%
     expandLimits(c(lat1, lat2), c(lng1, lng2))
 }
 
@@ -944,7 +956,7 @@ addPolygons = function(
     dashArray = dashArray, smoothFactor = smoothFactor, noClip = noClip
   ))
   pgons = derivePolygons(data, lng, lat, missing(lng), missing(lat), "addPolygons")
-  invokeMethod(map, data, 'addPolygons', pgons, layerId, group, options, popup, label, labelOptions) %>%
+  invokeMethod(map, data, 'addPolygons', pgons, layerId, group, options, popup, safeLabel(label, data), labelOptions) %>%
     expandLimitsBbox(pgons)
 }
 
