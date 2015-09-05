@@ -1,3 +1,8 @@
+library(leaflet)
+
+leaflet() %>% addTiles() %>%
+  addAwesomeMarkers()
+
 cities <- read.csv(textConnection("
 City,Lat,Long,Pop
 Boston,42.3601,-71.0589,645966
@@ -8,15 +13,17 @@ Pittsburgh,40.4397,-79.9764,305841
 Providence,41.8236,-71.4222,177994
 "))
 
-library(leaflet)
-
-#icons <- lapply(seq_along(nrow(cities)), createAwesomeMarkerIcon())
+icons <- lapply(seq_along(nrow(cities)), createAwesomeMarkerIcon)
 
 leaflet(cities) %>% addTiles() %>%
   addAwesomeMarkers() %>%
   addMarkers(lng = ~Long, lat = ~Lat,
-             label = ~City,
-             labelOptions = lapply(1:nrow(cities), function(x) {
-               labelOptions(opacity=0.9)
-             })
+             label = ~City
+  )
+
+leaflet() %>% addTiles() %>%
+  addMarkers(
+    lng=-118.456554, lat=34.078039,
+    label='This is a label',
+    icon = createAwesomeMarkerIcon()
   )

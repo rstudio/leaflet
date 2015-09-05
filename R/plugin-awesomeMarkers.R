@@ -4,9 +4,9 @@ leafletAwesomeMarkersDependencies <- function() {
       "leaflet-awesomemarkers",
       "2.0.2",
       system.file("htmlwidgets/plugins/Leaflet.awesome-markers", package = "leaflet"),
-      script = c('leaflet-awesome-markers.js','bootstrap/js/bootstrap.min.js'),
-      stylesheet = c('leaflet-awesome-markers.css','bootstrap/css/bootstrap.min.css',
-                     'font-awesome/css/font-awesome.min.css','ionicon/css/ionicon.min.css')
+      script = c('leaflet-awesome-markers.js','bootstrap/bootstrap.min.js'),
+      stylesheet = c('leaflet-awesome-markers.css','bootstrap/bootstrap.min.css',
+                     'font-awesome/font-awesome.min.css','ionicon/ionicon.min.css')
     )
   )
 }
@@ -60,8 +60,9 @@ createAwesomeMarkerIcon <- function(
 	, 'prefix: \'' , prefix , '\', '
 	, 'markerColor: \'' , markerColor , '\', '
 	, 'iconColor: \'' , iconColor , '\', '
-	, 'spin: \'' , spin , '\', '
-	, 'prefix: \'' , prefix , '\''
-	,'});'
+	, 'spin: \'' , spin , '\' '
+	#, 'extraClasses: \'' , extraClasses , '\''
+	, '});'
   )
 }
+
