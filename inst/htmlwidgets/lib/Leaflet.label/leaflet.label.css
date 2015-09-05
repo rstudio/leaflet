@@ -19,7 +19,7 @@
 	        user-select: none;
 	pointer-events: none;
 	white-space: nowrap;
-	z-index: 6;
+	z-index: 500;
 }
 
 .leaflet-label.leaflet-clickable {
