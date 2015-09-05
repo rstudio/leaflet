@@ -131,9 +131,7 @@ that contains images as local files, these local image files will be base64
 encoded into the HTML page so the icon images will still be available even
 when you publish the map elsewhere}
 
-\item{label}{a character vector of the HTML content for the labels (you are
-recommended to escape the text using \code{\link[htmltools]{htmlEscape}()}
-for security reasons)}
+\item{label}{a character vector of the HTML content for the labels}
 
 \item{labelOptions}{A Vector of \code{\link{labelOptions}} to provide label
 options for each label. Default \code{NULL}}
