@@ -1,7 +1,38 @@
 library(leaflet)
 
+icon.glyphicon <- makeAwesomeIcon(icon= 'flag', markerColor = 'blue',
+                                  iconColor = 'black')
+icon.fa <- makeAwesomeIcon(icon = 'flag', markerColor = 'red', prefix='fa',
+                           iconColor = 'black')
+icon.ion <- makeAwesomeIcon(icon = 'home', markerColor = 'green', prefix='ion')
+
+# Marker + Label
 leaflet() %>% addTiles() %>%
-  addAwesomeMarkers()
+  addAwesomeMarkers(
+    lng=-118.456554, lat=34.078039,
+    label='This is a label',
+    icon = icon.glyphicon)
+
+leaflet() %>% addTiles() %>%
+  addAwesomeMarkers(
+    lng=-118.456554, lat=34.078039,
+    label='This is a label',
+    icon = icon.fa)
+
+leaflet() %>% addTiles() %>%
+  addAwesomeMarkers(
+    lng=-118.456554, lat=34.078039,
+    label='This is a label',
+    icon = icon.ion)
+
+# Marker + Static Label using custom label options
+leaflet() %>% addTiles() %>%
+  addAwesomeMarkers(
+    lng=-118.456554, lat=34.078039,
+    label='This is a static label',
+    labelOptions = labelOptions(noHide = T),
+    icon = icon.a)
+
 
 cities <- read.csv(textConnection("
 City,Lat,Long,Pop
@@ -13,17 +44,9 @@ Pittsburgh,40.4397,-79.9764,305841
 Providence,41.8236,-71.4222,177994
 "))
 
-icons <- lapply(seq_along(nrow(cities)), createAwesomeMarkerIcon)
 
 leaflet(cities) %>% addTiles() %>%
-  addAwesomeMarkers() %>%
-  addMarkers(lng = ~Long, lat = ~Lat,
-             label = ~City
-  )
-
-leaflet() %>% addTiles() %>%
-  addMarkers(
-    lng=-118.456554, lat=34.078039,
-    label='This is a label',
-    icon = createAwesomeMarkerIcon()
+  addAwesomeMarkers(lng = ~Long, lat = ~Lat,
+             label = ~City,
+             icon = icon.a
   )
