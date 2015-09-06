@@ -19,11 +19,6 @@ leafletAwesomeMarkersDependencies <- function() {
 #' @describeIn awesome-markers Create Awesome Markers
 #' @export
 makeAwesomeIcon <- function(
-#  iconSize = c(35, 45),
-#  iconAnchor =   c(17, 42),
-#  popupAnchor = c(1, -32),
-#  shadowAnchor = c(10, 12),
-#  shadowSize = c(36, 16),
   icon = NULL,
   prefix = NULL,
   markerColor = NULL,
@@ -32,8 +27,6 @@ makeAwesomeIcon <- function(
   extraClasses = NULL
 ) {
   icon = filterNULL(list(
-    #iconSize = iconSize, iconAnchor = iconAnchor,
-    #popupAnchor = popupAnchor, shadowAnchor = shadowAnchor, shadowSize = shadowSize,
     icon= icon, prefix = prefix, markerColor = markerColor, iconColor = iconColor,
     spin = spin, extraClasses = extraClasses
   ))
