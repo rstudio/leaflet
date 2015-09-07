@@ -25,23 +25,23 @@ LeafletWidget.methods.addDrawToolbar = function(layerID,position,polyline,polygo
     var type = e.layerType,
 		layer = e.layer;
     if (type== "polyline"){
-      var inflayer = layer.getLatLngs();
+      var infLayer = layer.getLatLngs();
     }
     if (type == "marker"){
-      var inflayer = layer.getLatLng();
+      var infLayer = layer.getLatLng();
     }
     if (type == "rectangle"){
-      var inflayer = layer.getLatLngs();
+      var infLayer = layer.getLatLngs();
     }
     if (type == "polygon"){
-      var inflayer = layer.getLatLngs();
+      var infLayer = layer.getLatLngs();
     }
     if (type == "circle"){
-      var inflayer = [layer.getLatLng(), layer.getRadius()];
+      var infLayer = [layer.getLatLng(), layer.getRadius()];
     }
 		drawnItems.addLayer(layer);
     if (!HTMLWidgets.shinyMode) return;
-    Shiny.onInputChange(layerID + type, inflayer);
+    Shiny.onInputChange(layerID +"_"+ type, infLayer);
 
   });
 };
