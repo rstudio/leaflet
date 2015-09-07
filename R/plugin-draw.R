@@ -11,7 +11,7 @@ leafletDrawDependencies <- function() {
       ),
     htmltools::htmlDependency(
       "leaflet-draw-plugin",
-      "1.0.0",
+      "0.2.3",
       system.file("htmlwidgets/plugins/leaflet-draw-plugin/", package = "leaflet"),
       script = "leaflet-draw-plugin.js"
     )    )
@@ -29,7 +29,6 @@ leafletDrawDependencies <- function() {
 #' map
 addDrawToolbar = function(map) {
  map$dependencies <- c(map$dependencies, leafletDrawDependencies())
- map$drawToolbar<-T
  invokeMethod(map,getMapData(map),method =  'addDrawToolbar')
 }
 
