@@ -734,7 +734,7 @@ var dataframe = (function() {
   };
 
   methods.addAwesomeMarkers = function(lat, lng, icon, layerId, group, options, popup,
-                                clusterOptions, clusterId, label, labelOptions) {
+  clusterOptions, clusterId, label, labelOptions) {
     if (icon) {
 
       // This cbinds the icon URLs and any other icon options; they're all
