@@ -20,7 +20,6 @@ LeafletWidget.methods.addDrawToolbar = function(layerID,position,polyline,polygo
   });
   this.drawControl = drawControl;
   this.drawControl.addTo(this);
-  this.elemIx = 0;
   this.on('draw:created', function (e) {
     var type = e.layerType,
 		layer = e.layer;
@@ -41,8 +40,24 @@ LeafletWidget.methods.addDrawToolbar = function(layerID,position,polyline,polygo
     }
 		drawnItems.addLayer(layer);
     if (!HTMLWidgets.shinyMode) return;
-    Shiny.onInputChange(layerID +"_"+ type, infLayer);
+    Shiny.onInputChange(layerID +"_create_"+ type, infLayer);
 
+  });
+
+  this.on('draw:edited', function (e) {
+    var layers = e.layers;
+    if (!HTMLWidgets.shinyMode) return;
+    layers.eachLayer(function (layer) {
+
+    // pass to shiny edit info
+    });
+  });
+  this.on('draw:deleted', function (e) {
+    var layers = e.layers;
+    if (!HTMLWidgets.shinyMode) return;
+    layers.eachLayer(function (layer) {
+      // pass to shiny deleted info
+    });
   });
 };
 
