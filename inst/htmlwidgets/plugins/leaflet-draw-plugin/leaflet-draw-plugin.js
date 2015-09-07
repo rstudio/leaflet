@@ -48,15 +48,53 @@ LeafletWidget.methods.addDrawToolbar = function(layerID,position,polyline,polygo
     var layers = e.layers;
     if (!HTMLWidgets.shinyMode) return;
     layers.eachLayer(function (layer) {
+<<<<<<< HEAD
 
     // pass to shiny edit info
+=======
+      if (type== "polyline"){
+      var infLayer = layer.getLatLngs();
+    }
+    if (type == "marker"){
+      var infLayer = layer.getLatLng();
+    }
+    if (type == "rectangle"){
+      var infLayer = layer.getLatLngs();
+    }
+    if (type == "polygon"){
+      var infLayer = layer.getLatLngs();
+    }
+    if (type == "circle"){
+      var infLayer = [layer.getLatLng(), layer.getRadius()];
+    }
+        Shiny.onInputChange(layerID +"_edit_"+ type, infLayer);
+>>>>>>> f397cc6bd0995232d0e9d9cbca433255a6a011cd
     });
   });
   this.on('draw:deleted', function (e) {
     var layers = e.layers;
     if (!HTMLWidgets.shinyMode) return;
     layers.eachLayer(function (layer) {
+<<<<<<< HEAD
       // pass to shiny deleted info
+=======
+      if (type== "polyline"){
+      var infLayer = layer.getLatLngs();
+    }
+    if (type == "marker"){
+      var infLayer = layer.getLatLng();
+    }
+    if (type == "rectangle"){
+      var infLayer = layer.getLatLngs();
+    }
+    if (type == "polygon"){
+      var infLayer = layer.getLatLngs();
+    }
+    if (type == "circle"){
+      var infLayer = [layer.getLatLng(), layer.getRadius()];
+    }
+        Shiny.onInputChange(layerID +"_delete_"+ type, infLayer);
+>>>>>>> f397cc6bd0995232d0e9d9cbca433255a6a011cd
     });
   });
 };
