@@ -34,9 +34,10 @@ leafletDrawDependencies <- function() {
 #' @param edit logical
 #' @return Modified map object.
 #'         If used in a shiny app it will return input on every object created,
-#'         the input name and type will be \code{layerID_type} where
+#'         the input name and type will be \code{layerID_action_type} where
 #'         \code{layerID} is
-#'         the string passed to the function \code{addDrawToolbar} and
+#'         the string passed to the function \code{addDrawToolbar},
+#'         \code{action} is one of \code{create, delete, edit} and
 #'         \code{type} is one of the following string: \code{"polyline"},
 #'         \code{"polygon"}, \code{"rectangle"}, \code{"circle"},
 #'         \code{"marker"}.

@@ -20,7 +20,6 @@ LeafletWidget.methods.addDrawToolbar = function(layerID,position,polyline,polygo
   });
   this.drawControl = drawControl;
   this.drawControl.addTo(this);
-  this.elemIx = 0;
   this.on('draw:created', function (e) {
     var type = e.layerType,
 		layer = e.layer;
@@ -41,8 +40,53 @@ LeafletWidget.methods.addDrawToolbar = function(layerID,position,polyline,polygo
     }
 		drawnItems.addLayer(layer);
     if (!HTMLWidgets.shinyMode) return;
-    Shiny.onInputChange(layerID +"_"+ type, infLayer);
+    Shiny.onInputChange(layerID +"_create_"+ type, infLayer);
 
+  });
+
+  this.on('draw:edited', function (e) {
+    var layers = e.layers;
+    if (!HTMLWidgets.shinyMode) return;
+    layers.eachLayer(function (layer) {
+      if (type== "polyline"){
+      var infLayer = layer.getLatLngs();
+    }
+    if (type == "marker"){
+      var infLayer = layer.getLatLng();
+    }
+    if (type == "rectangle"){
+      var infLayer = layer.getLatLngs();
+    }
+    if (type == "polygon"){
+      var infLayer = layer.getLatLngs();
+    }
+    if (type == "circle"){
+      var infLayer = [layer.getLatLng(), layer.getRadius()];
+    }
+        Shiny.onInputChange(layerID +"_edit_"+ type, infLayer);
+    });
+  });
+  this.on('draw:deleted', function (e) {
+    var layers = e.layers;
+    if (!HTMLWidgets.shinyMode) return;
+    layers.eachLayer(function (layer) {
+      if (type== "polyline"){
+      var infLayer = layer.getLatLngs();
+    }
+    if (type == "marker"){
+      var infLayer = layer.getLatLng();
+    }
+    if (type == "rectangle"){
+      var infLayer = layer.getLatLngs();
+    }
+    if (type == "polygon"){
+      var infLayer = layer.getLatLngs();
+    }
+    if (type == "circle"){
+      var infLayer = [layer.getLatLng(), layer.getRadius()];
+    }
+        Shiny.onInputChange(layerID +"_delete_"+ type, infLayer);
+    });
   });
 };
 
