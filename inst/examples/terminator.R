@@ -1,3 +1,4 @@
+library(leaflet)
 # Default Resolution
 leaflet() %>% addTiles() %>% addTerminator()
 

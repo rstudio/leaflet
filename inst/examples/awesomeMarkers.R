@@ -1,6 +1,5 @@
 library(leaflet)
 
-
 icon.glyphicon <- makeAwesomeIcon(icon= 'flag', markerColor = 'blue',
                                   iconColor = 'black')
 icon.fa <- makeAwesomeIcon(icon = 'flag', markerColor = 'red', prefix='fa',
