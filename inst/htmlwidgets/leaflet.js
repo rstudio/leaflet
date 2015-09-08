@@ -592,10 +592,6 @@ var dataframe = (function() {
     this.layerManager.addLayer(L.tileLayer(urlTemplate, options), "tile", layerId, group);
   };
 
-  function getTiles(urlTemplate, options) {
-    return(L.tileLayer(urlTemplate, options));
-  };
-
   methods.removeTiles = function(layerId) {
     this.layerManager.removeLayer("tile", layerId);
   };
@@ -735,47 +731,6 @@ var dataframe = (function() {
       if (icon) options.icon = getIcon(i);
       return L.marker([df.get(i, 'lat'), df.get(i, 'lng')], options);
     });
-  };
-
-  methods.addMagnifyingGlass = function(radius, zoomOffset, fixedZoom, fixedPosition,
-   latLng, layers, showControlButton, layerId, group) {
-    (function() {
-      if(!layers) {
-        layers = [ getTiles('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png') ]
-      }
-      glass =  L.magnifyingGlass({
-          radius: radius,
-          zoomOffset: zoomOffset,
-          fixedZoom: fixedZoom,
-          fixedPosition: fixedPosition,
-          latLng: latLng,
-          layers: layers
-        });
-
-      this.layerManager.addLayer(glass, 'shape', layerId, group);
-
-      if(showControlButton) {
-        if(this.magnifyingGlassControl) {
-          this.magnifyingGlassControl.removeFrom( this );
-        }
-        this.magnifyingGlassControl = L.control.magnifyingglass(glass,
-          {forceSeparateButton: true});
-      this.magnifyingGlassControl.addTo(this);
-      }
-    }).call(this);
-  };
-
-
-  methods.addTerminator = function(resolution, time, layerId, group) {
-    (function() {
-      this.layerManager.addLayer(
-        L.terminator({
-          resolution: resolution,
-          time: time,
-          group: group
-        }),
-        'shape', layerId, group);
-    }).call(this);
   };
 
   addLayers = function(map, category, df, layerFunc) {
