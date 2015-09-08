@@ -4,7 +4,7 @@ leafletSimpleGraticuleDependencies <- function() {
       "leaflet-simplegraticule",
       "0.1.0",
       system.file("htmlwidgets/plugins/Leaflet.SimpleGraticule", package = "leaflet"),
-      script = "L.SimpleGraticule.js",
+      script = c("L.SimpleGraticule.js", "SimpleGraticule-binding.js"),
       stylesheet = "L.SimpleGraticule.js"
     )
   )

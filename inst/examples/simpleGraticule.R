@@ -1,3 +1,4 @@
+library(leaflet)
 # Default
 leaflet() %>% addTiles() %>% addSimpleGraticule()
 

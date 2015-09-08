@@ -733,31 +733,6 @@ var dataframe = (function() {
     });
   };
 
-  methods.addTerminator = function(resolution, time, layerId, group) {
-    (function() {
-      this.layerManager.addLayer(
-        L.terminator({
-          resolution: resolution,
-          time: time,
-          group: group
-        }),
-        'shape', layerId, group);
-    }).call(this);
-  };
-
-  methods.addSimpleGraticule = function(interval, showOriginLabel, redraw, layerId, group) {
-    (function() {
-      this.layerManager.addLayer(
-        L.simpleGraticule({
-          interval: interval,
-          showOriginLabel: showOriginLabel,
-          redraw: redraw
-        }),
-        'shape', layerId, group);
-    }).call(this);
-  };
-
-
   addLayers = function(map, category, df, layerFunc) {
     for (var i = 0; i < df.nrow(); i++) {
       (function() {
