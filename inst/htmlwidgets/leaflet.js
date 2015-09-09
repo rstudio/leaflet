@@ -935,6 +935,38 @@ var dataframe = (function() {
     this.layerManager.clearLayers("topojson");
   };
 
+  methods.addHeatmap = function( lat, lng, intensity, options, layerId ) {
+
+    // try to be consistent and use dataframe methods
+
+    var df = dataframe.create()
+        .col('lat',lat)
+        .col('lng',lng)
+        .col('intensity',intensity);
+
+    var latlngs = [];
+    var i = 0;
+    for(i;i<df.nrow();i++){
+      latlngs.push([
+        df.get(i,'lat'),
+        df.get(i,'lng'),
+        df.get(i,'intensity')
+      ])
+    };
+
+    var heatmapLayer = L.heatLayer(latlngs, options);
+
+    this.layerManager.addLayer(heatmapLayer, "heatmap", layerId);
+  };
+
+  methods.removeHeatmap = function(layerId) {
+    this.layerManager.removeLayer("heatmap", layerId);
+  };
+
+  methods.clearHeatmap = function() {
+    this.layerManager.clearLayers("heatmap");
+  };
+
   methods.addControl = function(html, position, layerId, classes) {
     function onAdd(map) {
       var div = L.DomUtil.create('div', classes);
@@ -1546,9 +1578,6 @@ var dataframe = (function() {
       return map;
     },
     renderValue: function(el, data, map) {
-      return this.doRenderValue(el, data, map);
-    },
-    doRenderValue: function(el, data, map) {
       // Leaflet does not behave well when you set up a bunch of layers when
       // the map is not visible (width/height == 0). Popups get misaligned
       // relative to their owning markers, and the fitBounds calculations
@@ -1632,7 +1661,7 @@ var dataframe = (function() {
     resize: function(el, width, height, map) {
       map.invalidateSize();
       if (map.leafletr.pendingRenderData) {
-        this.doRenderValue(el, map.leafletr.pendingRenderData, map);
+        this.renderValue(el, map.leafletr.pendingRenderData, map);
       }
     }
   });
