@@ -21,42 +21,25 @@ LeafletWidget.methods.addDrawToolbar = function(layerID,position,polyline,polygo
   this.drawControl = drawControl;
   this.drawControl.addTo(this);
   this.on('draw:created', function (e) {
-    var type = e.layerType,
-		layer = e.layer;
-    if (type== "polyline"){
-      var infLayer = layer.getLatLngs();
-    }
-    if (type == "marker"){
-      var infLayer = layer.getLatLng();
-    }
-    if (type == "rectangle"){
-      var infLayer = layer.getLatLngs();
-    }
-    if (type == "polygon"){
-      var infLayer = layer.getLatLngs();
-    }
-    if (type == "circle"){
-      var infLayer = [layer.getLatLng(), layer.getRadius()];
-    }
+    var layer=e.layer;
 		drawnItems.addLayer(layer);
     if (!HTMLWidgets.shinyMode) return;
-    Shiny.onInputChange(layerID +"_create_"+ type, infLayer);
-
+    Shiny.onInputChange(layerID +"_create", layer.toGeoJSON());
   });
 
   this.on('draw:edited', function (e) {
     var layers = e.layers;
     if (!HTMLWidgets.shinyMode) return;
     layers.eachLayer(function (layer) {
-
-    // pass to shiny edit info
+      Shiny.onInputChange(layerID +"_edit", layer.toGeoJSON());
     });
   });
+
   this.on('draw:deleted', function (e) {
     var layers = e.layers;
     if (!HTMLWidgets.shinyMode) return;
     layers.eachLayer(function (layer) {
-      // pass to shiny deleted info
+      Shiny.onInputChange(layerID +"_edit", layer.toGeoJSON());
     });
   });
 };

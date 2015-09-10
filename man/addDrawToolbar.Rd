@@ -33,16 +33,17 @@ added}
 \value{
 Modified map object.
         If used in a shiny app it will return input on every object created,
-        the input name and type will be \code{layerID_action_type} where
+        edited or deleted.
+        The input name will be \code{layerID_action} where
         \code{layerID} is
         the string passed to the function \code{addDrawToolbar},
-        \code{action} is one of \code{create, delete, edit} and
-        \code{type} is one of the following string: \code{"polyline"},
-        \code{"polygon"}, \code{"rectangle"}, \code{"circle"},
-        \code{"marker"}.
-        The input will contain Lat and Lngs of the point of the object,
-        except for \code{type=circle} when it will contains the center and
-        the radious.
+        \code{action} is one of \code{create, delete, edit}.
+        The input will contain a list with the GeoJSON representation of the
+        created, edited or deleted item. In particular the input will be a
+        list, the third component of that is a list with components
+        \code{type} and \type(coordinates), so for example to get the
+        coordinates of a newly created item just use:
+        \code{input$drawnItems_create[[3]]$coordinates}.
 }
 \description{
 Leaflet.draw plugin:
