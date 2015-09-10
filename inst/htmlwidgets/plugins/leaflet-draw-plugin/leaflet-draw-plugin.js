@@ -39,7 +39,7 @@ LeafletWidget.methods.addDrawToolbar = function(layerID,position,polyline,polygo
     var layers = e.layers;
     if (!HTMLWidgets.shinyMode) return;
     layers.eachLayer(function (layer) {
-      Shiny.onInputChange(layerID +"_edit", layer.toGeoJSON());
+      Shiny.onInputChange(layerID +"_delete", layer.toGeoJSON());
     });
   });
 };
