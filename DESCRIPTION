@@ -1,13 +1,14 @@
 Package: leaflet
 Type: Package
 Title: Create Interactive Web Maps with the JavaScript 'Leaflet' Library
-Version: 1.0.0.9999
-Date: 2015-06-19
+Version: 1.0.1.9000
+Date: 2015-09-11
 Authors@R: c(
       person("Joe", "Cheng", email = "joe@rstudio.com", role = c("aut", "cre")),
       person("Yihui", "Xie", role = c("aut")),
       person("Hadley", "Wickham", role = c("ctb")),
       person("Kenton", "Russell", role = c("ctb")),
+      person("Bhaskar", "Karambelkar", role = c("ctb")),
       person("jQuery Foundation and contributors", role = c("ctb", "cph"), comment = "jQuery library"),
       person("Vladimir", "Agafonkin", role = c("ctb", "cph"), comment = "Leaflet library"),
       person("CloudMade", role = c("cph"), comment = "Leaflet library"),
