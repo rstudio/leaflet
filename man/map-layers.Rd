@@ -31,39 +31,40 @@ addPopups(map, lng = NULL, lat = NULL, popup, layerId = NULL,
   group = NULL, options = popupOptions(), data = getMapData(map))
 
 addMarkers(map, lng = NULL, lat = NULL, layerId = NULL, group = NULL,
-  icon = NULL, popup = NULL, options = markerOptions(),
-  clusterOptions = NULL, clusterId = NULL, data = getMapData(map))
+  icon = NULL, popup = NULL, label = NULL, labelOptions = NULL,
+  options = markerOptions(), clusterOptions = NULL, clusterId = NULL,
+  data = getMapData(map))
 
 addCircleMarkers(map, lng = NULL, lat = NULL, radius = 10,
   layerId = NULL, group = NULL, stroke = TRUE, color = "#03F",
   weight = 5, opacity = 0.5, fill = TRUE, fillColor = color,
-  fillOpacity = 0.2, dashArray = NULL, popup = NULL,
-  options = pathOptions(), clusterOptions = NULL, clusterId = NULL,
-  data = getMapData(map))
+  fillOpacity = 0.2, dashArray = NULL, popup = NULL, label = NULL,
+  labelOptions = NULL, options = pathOptions(), clusterOptions = NULL,
+  clusterId = NULL, data = getMapData(map))
 
 addCircles(map, lng = NULL, lat = NULL, radius = 10, layerId = NULL,
   group = NULL, stroke = TRUE, color = "#03F", weight = 5,
   opacity = 0.5, fill = TRUE, fillColor = color, fillOpacity = 0.2,
-  dashArray = NULL, popup = NULL, options = pathOptions(),
-  data = getMapData(map))
+  dashArray = NULL, popup = NULL, label = NULL, labelOptions = NULL,
+  options = pathOptions(), data = getMapData(map))
 
 addPolylines(map, lng = NULL, lat = NULL, layerId = NULL, group = NULL,
   stroke = TRUE, color = "#03F", weight = 5, opacity = 0.5,
   fill = FALSE, fillColor = color, fillOpacity = 0.2, dashArray = NULL,
-  smoothFactor = 1, noClip = FALSE, popup = NULL,
-  options = pathOptions(), data = getMapData(map))
+  smoothFactor = 1, noClip = FALSE, popup = NULL, label = NULL,
+  labelOptions = NULL, options = pathOptions(), data = getMapData(map))
 
 addRectangles(map, lng1, lat1, lng2, lat2, layerId = NULL, group = NULL,
   stroke = TRUE, color = "#03F", weight = 5, opacity = 0.5,
   fill = TRUE, fillColor = color, fillOpacity = 0.2, dashArray = NULL,
-  smoothFactor = 1, noClip = FALSE, popup = NULL,
-  options = pathOptions(), data = getMapData(map))
+  smoothFactor = 1, noClip = FALSE, popup = NULL, label = NULL,
+  labelOptions = NULL, options = pathOptions(), data = getMapData(map))
 
 addPolygons(map, lng = NULL, lat = NULL, layerId = NULL, group = NULL,
   stroke = TRUE, color = "#03F", weight = 5, opacity = 0.5,
   fill = TRUE, fillColor = color, fillOpacity = 0.2, dashArray = NULL,
-  smoothFactor = 1, noClip = FALSE, popup = NULL,
-  options = pathOptions(), data = getMapData(map))
+  smoothFactor = 1, noClip = FALSE, popup = NULL, label = NULL,
+  labelOptions = NULL, options = pathOptions(), data = getMapData(map))
 
 addGeoJSON(map, geojson, layerId = NULL, group = NULL, stroke = TRUE,
   color = "#03F", weight = 5, opacity = 0.5, fill = TRUE,
@@ -129,6 +130,11 @@ the form \code{list(iconUrl = '?', iconSize = c(x, y))}, and you can use
 that contains images as local files, these local image files will be base64
 encoded into the HTML page so the icon images will still be available even
 when you publish the map elsewhere}
+
+\item{label}{a character vector of the HTML content for the labels}
+
+\item{labelOptions}{A Vector of \code{\link{labelOptions}} to provide label
+options for each label. Default \code{NULL}}
 
 \item{clusterOptions}{if not \code{NULL}, markers will be clustered using
 \href{https://github.com/Leaflet/Leaflet.markercluster}{Leaflet.markercluster};

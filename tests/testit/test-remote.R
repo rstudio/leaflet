@@ -151,7 +151,7 @@ assert(
 )
 mockSession$.flush()
 expected <- list(
-  list(type = "leaflet-calls", message = structure("{\"id\":\"map\",\"calls\":[{\"dependencies\":[],\"method\":\"addPolygons\",\"args\":[[[{\"lng\":[1,2,3,4,5],\"lat\":[1,2,3,4,5]}]],null,null,{\"lineCap\":null,\"lineJoin\":null,\"clickable\":true,\"pointerEvents\":null,\"className\":\"\",\"stroke\":true,\"color\":\"#03F\",\"weight\":5,\"opacity\":0.5,\"fill\":true,\"fillColor\":\"#03F\",\"fillOpacity\":0.2,\"dashArray\":null,\"smoothFactor\":1,\"noClip\":false},null]}]}", class = "json"))
+  list(type = "leaflet-calls", message = structure("{\"id\":\"map\",\"calls\":[{\"dependencies\":[],\"method\":\"addPolygons\",\"args\":[[[{\"lng\":[1,2,3,4,5],\"lat\":[1,2,3,4,5]}]],null,null,{\"lineCap\":null,\"lineJoin\":null,\"clickable\":true,\"pointerEvents\":null,\"className\":\"\",\"stroke\":true,\"color\":\"#03F\",\"weight\":5,\"opacity\":0.5,\"fill\":true,\"fillColor\":\"#03F\",\"fillOpacity\":0.2,\"dashArray\":null,\"smoothFactor\":1,\"noClip\":false},null,null,null]}]}", class = "json"))
 )
 # cat(deparse(mockSession$.calls), "\n")
 assert(identical(mockSession$.calls, expected))
@@ -167,7 +167,7 @@ remote2 <- leafletProxy("map", mockSession,
 )
 # Check that addMarkers() takes effect immediately, no flush required
 remote2 %>% addMarkers()
-expected2 <- list(structure(list(type = "leaflet-calls", message = structure("{\"id\":\"map\",\"calls\":[{\"dependencies\":[],\"method\":\"addMarkers\",\"args\":[[10,9,8,7,6,5,4,3,2,1],[10,9,8,7,6,5,4,3,2,1],null,null,null,{\"clickable\":true,\"draggable\":false,\"keyboard\":true,\"title\":\"\",\"alt\":\"\",\"zIndexOffset\":0,\"opacity\":1,\"riseOnHover\":false,\"riseOffset\":250},null,null,null]}]}", class = "json")), .Names = c("type",  "message")))
+expected2 <- list(structure(list(type = "leaflet-calls", message = structure("{\"id\":\"map\",\"calls\":[{\"dependencies\":[],\"method\":\"addMarkers\",\"args\":[[10,9,8,7,6,5,4,3,2,1],[10,9,8,7,6,5,4,3,2,1],null,null,null,{\"clickable\":true,\"draggable\":false,\"keyboard\":true,\"title\":\"\",\"alt\":\"\",\"zIndexOffset\":0,\"opacity\":1,\"riseOnHover\":false,\"riseOffset\":250},null,null,null,null,null]}]}", class = "json")), .Names = c("type",  "message")))
 # cat(deparse(mockSession$.calls), "\n")
 assert(identical(mockSession$.calls, expected2))
 # Flushing should do nothing
@@ -184,6 +184,6 @@ remote3 <- leafletProxy("map", mockSession,
 remote3 %>% clearShapes() %>% addMarkers()
 assert(identical(mockSession$.calls, list()))
 mockSession$.flush()
-expected3 <- list(structure(list(type = "leaflet-calls", message = structure("{\"id\":\"map\",\"calls\":[{\"dependencies\":[],\"method\":\"clearShapes\",\"args\":[]}]}", class = "json")), .Names = c("type",  "message")), structure(list(type = "leaflet-calls", message = structure("{\"id\":\"map\",\"calls\":[{\"dependencies\":[],\"method\":\"addMarkers\",\"args\":[[10,9,8,7,6,5,4,3,2,1],[10,9,8,7,6,5,4,3,2,1],null,null,null,{\"clickable\":true,\"draggable\":false,\"keyboard\":true,\"title\":\"\",\"alt\":\"\",\"zIndexOffset\":0,\"opacity\":1,\"riseOnHover\":false,\"riseOffset\":250},null,null,null]}]}", class = "json")), .Names = c("type",  "message")))
+expected3 <- list(structure(list(type = "leaflet-calls", message = structure("{\"id\":\"map\",\"calls\":[{\"dependencies\":[],\"method\":\"clearShapes\",\"args\":[]}]}", class = "json")), .Names = c("type",  "message")), structure(list(type = "leaflet-calls", message = structure("{\"id\":\"map\",\"calls\":[{\"dependencies\":[],\"method\":\"addMarkers\",\"args\":[[10,9,8,7,6,5,4,3,2,1],[10,9,8,7,6,5,4,3,2,1],null,null,null,{\"clickable\":true,\"draggable\":false,\"keyboard\":true,\"title\":\"\",\"alt\":\"\",\"zIndexOffset\":0,\"opacity\":1,\"riseOnHover\":false,\"riseOffset\":250},null,null,null,null,null]}]}", class = "json")), .Names = c("type",  "message")))
 # Check that multiple calls are invoked in order
 assert(identical(mockSession$.calls, expected3))

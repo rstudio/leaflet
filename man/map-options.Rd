@@ -2,6 +2,7 @@
 % Please edit documentation in R/layers.R
 \name{tileOptions}
 \alias{WMSTileOptions}
+\alias{labelOptions}
 \alias{markerClusterOptions}
 \alias{markerOptions}
 \alias{pathOptions}
@@ -22,6 +23,10 @@ WMSTileOptions(styles = "", format = "image/jpeg", transparent = FALSE,
 popupOptions(maxWidth = 300, minWidth = 50, maxHeight = NULL,
   autoPan = TRUE, keepInView = FALSE, closeButton = TRUE,
   zoomAnimation = TRUE, closeOnClick = NULL, className = "")
+
+labelOptions(clickable = FALSE, noHide = FALSE, className = "",
+  direction = "right", offset = c(12, -15), opacity = 1,
+  zoomAnimation = TRUE)
 
 markerOptions(clickable = TRUE, draggable = FALSE, keyboard = TRUE,
   title = "", alt = "", zIndexOffset = 0, opacity = 1,
@@ -59,6 +64,8 @@ to map CRS (don't change this if you're not sure what it means)}
 
 \item{clickable}{whether the element emits mouse events}
 
+\item{noHide,direction,offset}{label options; see \url{https://github.com/Leaflet/Leaflet.label#options}}
+
 \item{draggable,keyboard,title,alt,zIndexOffset,opacity,riseOnHover,riseOffset}{marker options; see \url{http://leafletjs.com/reference.html#marker}}
 
 \item{showCoverageOnHover}{when you mouse over a cluster it shows the bounds
@@ -86,6 +93,8 @@ SVG backend is used}
 \description{
 The rest of all possible options for map elements and layers that are not
 listed in the layer functions.
+
+Extra options for marker and polygon labels
 }
 \section{Functions}{
 \itemize{
@@ -94,6 +103,8 @@ listed in the layer functions.
 \item \code{WMSTileOptions}: Options for WMS tile layers
 
 \item \code{popupOptions}: Options for popups
+
+\item \code{labelOptions}: Options for labels
 
 \item \code{markerOptions}: Options for markers
 
