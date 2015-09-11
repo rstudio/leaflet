@@ -14,10 +14,10 @@ leafletMiniMapDependencies <- function() {
 #'
 #' @param map a map widget object
 #' @param
-#' position,width,height,collapsedWidth,collapsedHeight; see
+#' position,width,height,collapsedWidth,collapsedHeight see
 #' \url{https://github.com/Norkart/Leaflet-MiniMap}
 #' @param
-#' zoomLevelOffset,zoomLevelFixed,zoomAnimation,toggleDisplay,autoToggleDisplay; see
+#' zoomLevelOffset,zoomLevelFixed,zoomAnimation,toggleDisplay,autoToggleDisplay see
 #' \url{https://github.com/Norkart/Leaflet-MiniMap}
 #' @examples
 #' library(leaflet)

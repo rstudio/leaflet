@@ -11,7 +11,7 @@ addMagnifyingGlass(map, radius = 100, zoomOffset = 3, fixedZoom = -1,
 \arguments{
 \item{map}{a map widget object}
 
-\item{radius,zoomOffset,fixedZoom,fixedPosition,latLng,layers;}{see
+\item{radius,zoomOffset,fixedZoom,fixedPosition,latLng,layers}{see
 \url{https://raw.githubusercontent.com/bbecquet/Leaflet.MagnifyingGlass}}
 
 \item{showControlButton}{whether to show a control button or not.}

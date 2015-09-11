@@ -12,10 +12,10 @@ addMiniMap(map, position = "bottomright", width = 150, height = 150,
 \arguments{
 \item{map}{a map widget object}
 
-\item{position,width,height,collapsedWidth,collapsedHeight;}{see
+\item{position,width,height,collapsedWidth,collapsedHeight}{see
 \url{https://github.com/Norkart/Leaflet-MiniMap}}
 
-\item{zoomLevelOffset,zoomLevelFixed,zoomAnimation,toggleDisplay,autoToggleDisplay;}{see
+\item{zoomLevelOffset,zoomLevelFixed,zoomAnimation,toggleDisplay,autoToggleDisplay}{see
 \url{https://github.com/Norkart/Leaflet-MiniMap}}
 }
 \description{

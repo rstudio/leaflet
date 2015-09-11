@@ -14,7 +14,7 @@ leafletMagnifyingGlassDependencies <- function() {
 #'
 #' @param map a map widget object
 #' @param
-#' radius,zoomOffset,fixedZoom,fixedPosition,latLng,layers; see
+#' radius,zoomOffset,fixedZoom,fixedPosition,latLng,layers  see
 #' \url{https://raw.githubusercontent.com/bbecquet/Leaflet.MagnifyingGlass}
 #' @param showControlButton whether to show a control button or not.
 #' @param layerId the layer id
