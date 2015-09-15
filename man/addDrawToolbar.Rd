@@ -41,7 +41,7 @@ Modified map object.
         The input will contain a list with the GeoJSON representation of the
         created, edited or deleted item. In particular the input will be a
         list, the third component of that is a list with components
-        \code{type} and \type(coordinates), so for example to get the
+        \code{type} and \code(coordinates), so for example to get the
         coordinates of a newly created item just use:
         \code{input$drawnItems_create[[3]]$coordinates}.
 }
