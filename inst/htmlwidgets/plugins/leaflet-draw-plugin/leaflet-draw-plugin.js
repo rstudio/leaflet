@@ -52,6 +52,18 @@ LeafletWidget.methods.addDrawToolbar = function(layerID,position,polyline,polygo
       Shiny.onInputChange(layerID +"_deletestart", false );
   });
 
+      this.on('draw:editstart', function () {
+    if (!HTMLWidgets.shinyMode) return;
+      Shiny.onInputChange(layerID +"_editstop", false );
+      Shiny.onInputChange(layerID +"_editstart", true );
+  });
+
+      this.on('draw:editstop', function () {
+    if (!HTMLWidgets.shinyMode) return;
+      Shiny.onInputChange(layerID +"_editstop", true );
+      Shiny.onInputChange(layerID +"_editstart", false );
+  });
+
 };
 
 LeafletWidget.methods.removeDrawToolbar = function(){
