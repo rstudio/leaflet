@@ -32,6 +32,7 @@ leafletDrawDependencies <- function() {
 #' @param circle logical
 #' @param marker logical
 #' @param edit logical
+#' @param remove logical
 #' @return Modified map object.
 #'         If used in a shiny app it will return input on every object created,
 #'         edited or deleted.
@@ -42,7 +43,7 @@ leafletDrawDependencies <- function() {
 #'         The input will contain a list with the GeoJSON representation of the
 #'         created, edited or deleted item. In particular the input will be a
 #'         list, the third component of that is a list with components
-#'         \code{type} and \code(coordinates), so for example to get the
+#'         \code{type} and \code{coordinates}, so for example to get the
 #'         coordinates of a newly created item just use:
 #'         \code{input$drawnItems_create[[3]]$coordinates}.
 #' @export
@@ -54,13 +55,13 @@ addDrawToolbar <- function(map,layerID="drawnItems",
                            position = c('topleft', 'topright', 'bottomleft',
                                         'bottomright'),
                            polyline=TRUE,polygon=TRUE,rectangle=TRUE,
-                           circle=TRUE,marker=TRUE,edit=TRUE) {
+                           circle=TRUE,marker=TRUE,edit=TRUE, remove=TRUE) {
 
   position = match.arg(position)
   map$dependencies <- c(map$dependencies, leafletDrawDependencies())
   map$drawToolbar<-T
   invokeMethod(map,getMapData(map),method =  'addDrawToolbar',layerID,position,
-               polyline,polygon,rectangle,circle,marker,edit)
+               polyline,polygon,rectangle,circle,marker,edit,remove)
 }
 
 #' @describeIn addDrawToolbar

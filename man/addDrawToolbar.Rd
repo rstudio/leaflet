@@ -6,7 +6,7 @@
 \usage{
 addDrawToolbar(map, layerID = "drawnItems", position = c("topleft", "topright", 
     "bottomleft", "bottomright"), polyline = TRUE, polygon = TRUE, rectangle = TRUE, 
-    circle = TRUE, marker = TRUE, edit = TRUE)
+    circle = TRUE, marker = TRUE, edit = TRUE, remove = TRUE)
 
 removeDrawToolbar(map)
 }
@@ -29,6 +29,8 @@ added}
 \item{marker}{logical}
 
 \item{edit}{logical}
+
+\item{remove}{logical}
 }
 \value{
 Modified map object.
@@ -41,7 +43,7 @@ Modified map object.
         The input will contain a list with the GeoJSON representation of the
         created, edited or deleted item. In particular the input will be a
         list, the third component of that is a list with components
-        \code{type} and \code(coordinates), so for example to get the
+        \code{type} and \code{coordinates}, so for example to get the
         coordinates of a newly created item just use:
         \code{input$drawnItems_create[[3]]$coordinates}.
 }

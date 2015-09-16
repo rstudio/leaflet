@@ -1,14 +1,15 @@
-LeafletWidget.methods.addDrawToolbar = function(layerID,position,polyline,polygon,rectangle,circle,marker,edit){
+LeafletWidget.methods.addDrawToolbar = function(layerID,position,polyline,polygon,rectangle,circle,marker,edit,remove){
   if (this.drawControl) {
     this.drawControl.removeFrom(this);
   }
   var drawnItems = new L.FeatureGroup();
-  this.layerManager.addLayer(drawnItems,"drawnItems",layerID);
-  if (edit) {
-    edit = { featureGroup: drawnItems};
-  }
+  this.layerManager.addLayer(drawnItems,"drawnItems",layerID,layerID);
   var drawControl = new L.Control.Draw({
-    edit: edit,
+    edit: {
+      featureGroup: drawnItems,
+      edit: edit,
+      remove: remove
+    },
     position: position,
     draw: {
       polyline: polyline,
@@ -30,18 +31,27 @@ LeafletWidget.methods.addDrawToolbar = function(layerID,position,polyline,polygo
   this.on('draw:edited', function (e) {
     var layers = e.layers;
     if (!HTMLWidgets.shinyMode) return;
-    layers.eachLayer(function (layer) {
-      Shiny.onInputChange(layerID +"_edit", layer.toGeoJSON());
-    });
+    Shiny.onInputChange(layerID +"_edit", layers.toGeoJSON());
   });
 
   this.on('draw:deleted', function (e) {
     var layers = e.layers;
     if (!HTMLWidgets.shinyMode) return;
-    layers.eachLayer(function (layer) {
-      Shiny.onInputChange(layerID +"_delete", layer.toGeoJSON());
-    });
+    Shiny.onInputChange(layerID +"_delete", layers.toGeoJSON());
   });
+
+    this.on('draw:deletestart', function () {
+    if (!HTMLWidgets.shinyMode) return;
+      Shiny.onInputChange(layerID +"_deletestop", false );
+      Shiny.onInputChange(layerID +"_deletestart", true );
+  });
+
+      this.on('draw:deletestop', function () {
+    if (!HTMLWidgets.shinyMode) return;
+      Shiny.onInputChange(layerID +"_deletestop", true );
+      Shiny.onInputChange(layerID +"_deletestart", false );
+  });
+
 };
 
 LeafletWidget.methods.removeDrawToolbar = function(){
