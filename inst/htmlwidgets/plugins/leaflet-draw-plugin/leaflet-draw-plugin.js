@@ -2,8 +2,36 @@ LeafletWidget.methods.addDrawToolbar = function(layerID,position,polyline,polygo
   if (this.drawControl) {
     this.drawControl.removeFrom(this);
   }
-  var drawnItems = new L.FeatureGroup();
-  this.layerManager.addLayer(drawnItems,"drawnItems",layerID,layerID);
+  var drawnItems = this.drawnItems;
+  if (!drawnItems) {
+    drawnItems = this.drawnItems = new L.FeatureGroup();
+    this.layerManager.addLayer(drawnItems,"drawnItems",layerID,layerID);
+  }
+
+  if (typeof(marker) === "object" && marker.icon) {
+    var opts = marker.icon;
+    // Composite options (like points or sizes) are passed from R with each
+    // individual component as its own option. We need to combine them now
+    // into their composite form.
+    if (opts.iconWidth) {
+      opts.iconSize = [opts.iconWidth, opts.iconHeight];
+    }
+    if (opts.shadowWidth) {
+      opts.shadowSize = [opts.shadowWidth, opts.shadowHeight];
+    }
+    if (opts.iconAnchorX) {
+      opts.iconAnchor = [opts.iconAnchorX, opts.iconAnchorY];
+    }
+    if (opts.shadowAnchorX) {
+      opts.shadowAnchor = [opts.shadowAnchorX, opts.shadowAnchorY];
+    }
+    if (opts.popupAnchorX) {
+      opts.popupAnchor = [opts.popupAnchorX, opts.popupAnchorY];
+    }
+
+    marker.icon = new L.Icon(opts);
+  }
+
   var drawControl = new L.Control.Draw({
     edit: {
       featureGroup: drawnItems,
@@ -21,51 +49,49 @@ LeafletWidget.methods.addDrawToolbar = function(layerID,position,polyline,polygo
   });
   this.drawControl = drawControl;
   this.drawControl.addTo(this);
+
+  var prefix = this.id + "_" + layerID + "_";
   this.on('draw:created', function (e) {
-    var layer=e.layer;
+    var layer = e.layer;
 		drawnItems.addLayer(layer);
+		if (e.layerType === "circle") {
+		  e.layer.feature = {properties: {radius: e.layer.getRadius()}};
+		}
     if (!HTMLWidgets.shinyMode) return;
-    Shiny.onInputChange(layerID +"_create", layer.toGeoJSON());
+    Shiny.onInputChange(prefix + "created", layer.toGeoJSON());
+    Shiny.onInputChange(prefix + "features", drawnItems.toGeoJSON());
   });
 
-  this.on('draw:edited', function (e) {
-    var layers = e.layers;
-    if (!HTMLWidgets.shinyMode) return;
-    Shiny.onInputChange(layerID +"_edit", layers.toGeoJSON());
-  });
+  if (HTMLWidgets.shinyMode) {
+    this.on('draw:edited', function (e) {
+      Shiny.onInputChange(prefix + "edited", e.layers.toGeoJSON());
+      Shiny.onInputChange(prefix + "features", drawnItems.toGeoJSON());
+    });
 
-  this.on('draw:deleted', function (e) {
-    var layers = e.layers;
-    if (!HTMLWidgets.shinyMode) return;
-    Shiny.onInputChange(layerID +"_delete", layers.toGeoJSON());
-  });
+    this.on('draw:deleted', function (e) {
+      Shiny.onInputChange(prefix + "deleted", e.layers.toGeoJSON());
+      Shiny.onInputChange(prefix + "features", drawnItems.toGeoJSON());
+    });
 
     this.on('draw:deletestart', function () {
-    if (!HTMLWidgets.shinyMode) return;
-      Shiny.onInputChange(layerID +"_deletestop", false );
-      Shiny.onInputChange(layerID +"_deletestart", true );
-  });
+      Shiny.onInputChange(prefix + "deleting", true);
+    });
 
-      this.on('draw:deletestop', function () {
-    if (!HTMLWidgets.shinyMode) return;
-      Shiny.onInputChange(layerID +"_deletestop", true );
-      Shiny.onInputChange(layerID +"_deletestart", false );
-  });
+    this.on('draw:deletestop', function () {
+      Shiny.onInputChange(prefix + "deleting", null);
+    });
 
-      this.on('draw:editstart', function () {
-    if (!HTMLWidgets.shinyMode) return;
-      Shiny.onInputChange(layerID +"_editstop", false );
-      Shiny.onInputChange(layerID +"_editstart", true );
-  });
+    this.on('draw:editstart', function () {
+      Shiny.onInputChange(prefix + "editing", true);
+    });
 
-      this.on('draw:editstop', function () {
-    if (!HTMLWidgets.shinyMode) return;
-      Shiny.onInputChange(layerID +"_editstop", true );
-      Shiny.onInputChange(layerID +"_editstart", false );
-  });
-
+    this.on('draw:editstop', function () {
+      Shiny.onInputChange(prefix + "editing", null);
+    });
+  }
 };
 
 LeafletWidget.methods.removeDrawToolbar = function(){
   this.drawControl.removeFrom(this);
+  delete this.drawControl;
 }
