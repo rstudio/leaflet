@@ -32,3 +32,17 @@ clearControls = function(map) {
     invokeMethod(map, NULL, 'clearControls')
 }
 
+#' @export
+addScale <- function(
+  map, position = c('bottomleft', 'topleft', 'topright', 'bottomright'),
+  maxWidth = 100, metric = TRUE, imperial = TRUE
+) {
+  position <- match.arg(position)
+  opts <- list(
+    position = position,
+    maxWidth = maxWidth,
+    metric = metric,
+    imperial = imperial
+  )
+  invokeMethod(map, NULL, 'addScale', opts)
+}

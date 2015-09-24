@@ -971,6 +971,10 @@ var dataframe = (function() {
     this.layerManager.clearLayers("topojson");
   };
 
+  methods.addScale = function(options) {
+    L.control.scale(options).addTo(this);
+  };
+
   methods.addControl = function(html, position, layerId, classes) {
     function onAdd(map) {
       var div = L.DomUtil.create('div', classes);
