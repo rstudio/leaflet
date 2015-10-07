@@ -28,7 +28,9 @@ This R package makes it easy to integrate and control Leaflet maps in R.
 To install this R package, run this command at your R prompt:
 
 ```{r eval=FALSE}
-devtools::install_github("rstudio/leaflet")
+install.packages("leaflet")
+# to install the development version from Github, run
+# devtools::install_github("rstudio/leaflet")
 ```
 
 Once installed, you can use this package at the R console, within [R Markdown](http://rmarkdown.rstudio.com/) documents, and within [Shiny](http://shiny.rstudio.com/) applications.
