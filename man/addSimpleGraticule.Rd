@@ -2,7 +2,8 @@
 % Please edit documentation in R/plugin-simplegraticule.R
 \name{addSimpleGraticule}
 \alias{addSimpleGraticule}
-\title{Add a simple Graticule on the map}
+\title{Add a simple Graticule on the map
+see \url{https://github.com/ablakey/Leaflet.SimpleGraticule}}
 \usage{
 addSimpleGraticule(map, interval = 20, showOriginLabel = TRUE,
   redraw = "move", layerId = NULL, group = NULL)
@@ -10,7 +11,11 @@ addSimpleGraticule(map, interval = 20, showOriginLabel = TRUE,
 \arguments{
 \item{map}{a map widget object}
 
-\item{interval,showOriginLabel,redraw}{see \url{https://github.com/ablakey/Leaflet.SimpleGraticule}}
+\item{interval}{The spacing in map units between horizontal and vertical lines.}
+
+\item{showOriginLabel}{true Whether or not to show '(0,0)' at the origin.}
+
+\item{redraw}{on which map event to redraw the graticule. On move is default but moveend can be smoother.}
 
 \item{layerId}{the layer id}
 
@@ -18,6 +23,7 @@ addSimpleGraticule(map, interval = 20, showOriginLabel = TRUE,
 }
 \description{
 Add a simple Graticule on the map
+see \url{https://github.com/ablakey/Leaflet.SimpleGraticule}
 }
 \examples{
 library(leaflet)

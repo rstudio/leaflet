@@ -4,11 +4,68 @@ leafletAwesomeMarkersDependencies <- function() {
       "leaflet-awesomemarkers",
       "2.0.2",
       system.file("htmlwidgets/plugins/Leaflet.awesome-markers", package = "leaflet"),
-      script = c('leaflet.awesome-markers.min.js','bootstrap.min.js'),
-      stylesheet = c('leaflet.awesome-markers.css','bootstrap.min.css',
-                     'font-awesome.min.css','ionicons.min.css')
+      script = c('leaflet.awesome-markers.min.js'),
+      stylesheet = c('leaflet.awesome-markers.css')
     )
   )
+}
+
+leafletAmBootstrapDependencies <- function(map) {
+  list(
+    htmltools::htmlDependency(
+      "awesomemarkers-bootstrap",
+      "3.3.5",
+      system.file("htmlwidgets/plugins/Leaflet.awesome-markers", package = "leaflet"),
+      script = c('bootstrap.min.js'),
+      stylesheet = c('bootstrap.min.css')
+    )
+  )
+}
+
+#' Required for using BootStrap Fonts
+#' @param map the map to add awesome Markers to.
+#' @export
+addBootstrap <- function(map) {
+  map$dependencies <- c(map$dependencies, leafletAmBootstrapDependencies())
+  map
+}
+
+leafletAmFontAwesomeDependencies <- function(map) {
+  list(
+    htmltools::htmlDependency(
+      "awesomemarkers-fontawesome",
+      "4.4.0",
+      system.file("htmlwidgets/plugins/Leaflet.awesome-markers", package = "leaflet"),
+      stylesheet = c('font-awesome.min.css')
+    )
+  )
+}
+
+#' Required for using Font-Awesome Fonts
+#' @param map the map to add awesome Markers to.
+#' @export
+addFontAwesome <- function(map) {
+  map$dependencies <- c(map$dependencies, leafletAmFontAwesomeDependencies())
+  map
+}
+
+leafletAmIonIconDependencies <- function(map) {
+  list(
+    htmltools::htmlDependency(
+      "awesomemarkers-ionicons",
+      "2.0.0",
+      system.file("htmlwidgets/plugins/Leaflet.awesome-markers", package = "leaflet"),
+      stylesheet = c('ionicons.min.css')
+    )
+  )
+}
+
+#' Required for using IonIcon Fonts
+#' @param map the map to add awesome Markers to.
+#' @export
+addIonIcon <- function(map) {
+  map$dependencies <- c(map$dependencies, leafletAmIonIconDependencies())
+  map
 }
 
 #' Make awesome-icon set
@@ -91,14 +148,18 @@ makeAwesomeIcon <- function(
 }
 
 #' Create a list of awesome icon data
+#' see \url{https://github.com/lvoogdt/Leaflet.awesome-markers}
 #'
 #' An icon can be represented as a list of the form \code{list(icon,
 #' prefix, ...)}. This function is vectorized over its arguments to create a
 #' list of icon data. Shorter argument values will be re-cycled. \code{NULL}
 #' values for these arguments will be ignored.
-#' @param
-#' icon,prefix,markerColor,iconColor,spin,extraClasses
-#' see \url{https://github.com/lvoogdt/Leaflet.awesome-markers}
+#' @param icon Name of the icon. Default 'home'
+#' @param prefix Which icon library. Default 'glyphicon' other values 'fa' (fontawesome) or 'ion' (ionicons)
+#' @param markerColor Default 'blue', other values ''red', 'darkred', 'orange', 'green', 'darkgreen', 'blue', 'purple', 'darkpuple', 'cadetblue'
+#' @param iconColor  Default 'white'. 'white', 'black' or css code (hex, rgba etc)
+#' @param spin Make the icon spin. Default 'false' (Font-awesome required)
+#' @param extraClasses Additional css classes. Default ''.
 #' @return A list of awesome-icon data that can be passed to the \code{icon} argument of
 #'   \code{\link{addAwesomeMarkers}()}.
 #' @export

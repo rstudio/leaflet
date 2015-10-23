@@ -8,17 +8,17 @@ makeAwesomeIcon(icon = NULL, prefix = NULL, markerColor = NULL,
   iconColor = NULL, spin = NULL, extraClasses = NULL)
 }
 \arguments{
-\item{icon}{see \url{https://github.com/lvoogdt/Leaflet.awesome-markers}}
+\item{icon}{Name of the icon. Default 'home'}
 
-\item{prefix}{see \url{https://github.com/lvoogdt/Leaflet.awesome-markers}}
+\item{prefix}{Which icon library. Default 'glyphicon' other values 'fa' (fontawesome) or 'ion' (ionicons)}
 
-\item{markerColor}{see \url{https://github.com/lvoogdt/Leaflet.awesome-markers}}
+\item{markerColor}{Default 'blue', other values ''red', 'darkred', 'orange', 'green', 'darkgreen', 'blue', 'purple', 'darkpuple', 'cadetblue'}
 
-\item{iconColor}{see \url{https://github.com/lvoogdt/Leaflet.awesome-markers}}
+\item{iconColor}{Default 'white'. 'white', 'black' or css code (hex, rgba etc)}
 
-\item{spin}{see \url{https://github.com/lvoogdt/Leaflet.awesome-markers}}
+\item{spin}{Make the icon spin. Default 'false' (Font-awesome required)}
 
-\item{extraClasses}{see \url{https://github.com/lvoogdt/Leaflet.awesome-markers}}
+\item{extraClasses}{Additional css classes. Default ''.}
 }
 \description{
 Make Awesome Icon

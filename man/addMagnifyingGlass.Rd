@@ -2,7 +2,8 @@
 % Please edit documentation in R/plugin-magnifyingGlass.R
 \name{addMagnifyingGlass}
 \alias{addMagnifyingGlass}
-\title{Add a Magnifyer on a Map}
+\title{Add a Magnifyer on a Map
+See \url{https://raw.githubusercontent.com/bbecquet/Leaflet.MagnifyingGlass}}
 \usage{
 addMagnifyingGlass(map, radius = 100, zoomOffset = 3, fixedZoom = -1,
   fixedPosition = FALSE, latLng = c(0, 0), layers = NULL,
@@ -11,8 +12,21 @@ addMagnifyingGlass(map, radius = 100, zoomOffset = 3, fixedZoom = -1,
 \arguments{
 \item{map}{a map widget object}
 
-\item{radius,zoomOffset,fixedZoom,fixedPosition,latLng,layers}{see
-\url{https://raw.githubusercontent.com/bbecquet/Leaflet.MagnifyingGlass}}
+\item{radius}{Integer, default 100. radius in pixels.}
+
+\item{zoomOffset}{Integer 3, The zoom level offset between the main map zoom and the magnifying glass.}
+
+\item{fixedZoom}{Integer -1, If different than -1,
+defines a fixed zoom level to always use in the magnifying glass, ignoring the main map zoom and the zoomOffet value.}
+
+\item{fixedPosition}{Boolean, default false,
+If true, the magnifying glass will stay at the same position on the map, not following the mouse cursor.}
+
+\item{latLng}{Default c(0,0)
+The initial position of the magnifying glass, both on the main map and as the center of the magnified view.
+If fixedPosition is true, it will always keep this position.}
+
+\item{layers}{Currently not used}
 
 \item{showControlButton}{whether to show a control button or not.}
 
@@ -22,6 +36,7 @@ addMagnifyingGlass(map, radius = 100, zoomOffset = 3, fixedZoom = -1,
 }
 \description{
 Add a Magnifyer on a Map
+See \url{https://raw.githubusercontent.com/bbecquet/Leaflet.MagnifyingGlass}
 }
 \examples{
 library(leaflet)

@@ -2,13 +2,24 @@
 % Please edit documentation in R/plugin-awesomeMarkers.R
 \name{awesomeIcons}
 \alias{awesomeIcons}
-\title{Create a list of awesome icon data}
+\title{Create a list of awesome icon data
+see \url{https://github.com/lvoogdt/Leaflet.awesome-markers}}
 \usage{
 awesomeIcons(icon = NULL, prefix = NULL, markerColor = NULL,
   iconColor = NULL, spin = NULL, extraClasses = NULL)
 }
 \arguments{
-\item{icon,prefix,markerColor,iconColor,spin,extraClasses}{see \url{https://github.com/lvoogdt/Leaflet.awesome-markers}}
+\item{icon}{Name of the icon. Default 'home'}
+
+\item{prefix}{Which icon library. Default 'glyphicon' other values 'fa' (fontawesome) or 'ion' (ionicons)}
+
+\item{markerColor}{Default 'blue', other values ''red', 'darkred', 'orange', 'green', 'darkgreen', 'blue', 'purple', 'darkpuple', 'cadetblue'}
+
+\item{iconColor}{Default 'white'. 'white', 'black' or css code (hex, rgba etc)}
+
+\item{spin}{Make the icon spin. Default 'false' (Font-awesome required)}
+
+\item{extraClasses}{Additional css classes. Default ''.}
 }
 \value{
 A list of awesome-icon data that can be passed to the \code{icon} argument of
