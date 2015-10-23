@@ -4,26 +4,31 @@ icon.glyphicon <- makeAwesomeIcon(icon= 'flag', markerColor = 'blue',
                                   iconColor = 'black')
 icon.fa <- makeAwesomeIcon(icon = 'flag', markerColor = 'red', prefix='fa',
                            iconColor = 'black')
-icon.ion <- makeAwesomeIcon(icon = 'home', markerColor = 'green', prefix='ion')
+icon.ion <- makeAwesomeIcon(icon = 'home', markerColor = 'green',
+                            prefix='ion')
+
 
 # Marker + Label
 leaflet() %>% addTiles() %>%
   addAwesomeMarkers(
     lng=-118.456554, lat=34.078039,
     label='This is a label',
-    icon = icon.glyphicon)
+    icon = icon.glyphicon) %>%
+  addBootstrap()
 
 leaflet() %>% addTiles() %>%
   addAwesomeMarkers(
     lng=-118.456554, lat=34.078039,
     label='This is a label',
-    icon = icon.fa)
+    icon = icon.fa) %>%
+  addFontAwesome()
 
 leaflet() %>% addTiles() %>%
   addAwesomeMarkers(
     lng=-118.456554, lat=34.078039,
     label='This is a label',
-    icon = icon.ion)
+    icon = icon.ion) %>%
+  addIonIcon()
 
 # Marker + Static Label using custom label options
 leaflet() %>% addTiles() %>%
@@ -31,7 +36,8 @@ leaflet() %>% addTiles() %>%
     lng=-118.456554, lat=34.078039,
     label='This is a static label',
     labelOptions = labelOptions(noHide = T),
-    icon = icon.fa)
+    icon = icon.fa) %>%
+  addFontAwesome()
 
 
 cities <- read.csv(textConnection("
@@ -52,7 +58,9 @@ leaflet(cities) %>% addTiles() %>%
   addAwesomeMarkers(lng = ~Long, lat = ~Lat,
              label = ~City,
              icon = icon.ion
-  )
+  ) %>%
+  addIonIcon()
+
 icon.pop <- awesomeIcons(icon = 'users',
                            markerColor = ifelse(cities$Pop <500000,'blue','red'),
                            prefix='fa',
@@ -62,7 +70,8 @@ leaflet(cities) %>% addTiles() %>%
   addAwesomeMarkers(lng = ~Long, lat = ~Lat,
              label = ~City,
              icon = icon.pop
-  )
+  ) %>%
+  addFontAwesome()
 
 # Make a list of icons. We'll index into it based on name.
 popIcons <- awesomeIconList(
@@ -75,4 +84,5 @@ leaflet(cities) %>% addTiles() %>%
              label = ~City,
              labelOptions = rep(labelOptions(noHide = T),nrow(cities)),
              icon = ~popIcons[PopCat]
-  )
+  ) %>%
+  addFontAwesome()

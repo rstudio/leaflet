@@ -10,11 +10,13 @@ leafletTerminatorDependencies <- function() {
 }
 
 #' Add a daylight layer on top of the map
+#' see \url{https://github.com/joergdietrich/Leaflet.Terminator}
 #'
 #' @param map a map widget object
-#' @param
-#' resolution,time
-#' see \url{https://github.com/joergdietrich/Leaflet.Terminator}
+#' @param resolution the step size at which the terminator points are computed.
+#' The step size is 1°/resolution, i.e. higher resolution values have smaller step sizes and more points in the polygon.
+#' The default value is 2.
+#' @param time Time
 #' @param layerId the layer id
 #' @param group the name of the group this layer belongs to.
 #' @examples
