@@ -1,10 +1,16 @@
 LeafletWidget.methods.addMagnifyingGlass = function(radius, zoomOffset, fixedZoom, fixedPosition,
  latLng, layers, showControlButton, layerId, group) {
   (function() {
+
+    // See comment in MagnifyingGlass-binding.css
+    if (/\bQt\b/.test(window.navigator.userAgent)) {
+      $(this.getContainer()).addClass("qtwebkit");
+    }
+
     if(!layers) {
       layers = [ L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png') ]
     }
-    glass =  L.magnifyingGlass({
+    var glass = L.magnifyingGlass({
         radius: radius,
         zoomOffset: zoomOffset,
         fixedZoom: fixedZoom,
@@ -17,11 +23,11 @@ LeafletWidget.methods.addMagnifyingGlass = function(radius, zoomOffset, fixedZoo
 
     if(showControlButton) {
       if(this.magnifyingGlassControl) {
-        this.magnifyingGlassControl.removeFrom( this );
+        this.magnifyingGlassControl.removeFrom(this);
       }
       this.magnifyingGlassControl = L.control.magnifyingglass(glass,
         {forceSeparateButton: true});
-    this.magnifyingGlassControl.addTo(this);
+      this.magnifyingGlassControl.addTo(this);
     }
   }).call(this);
 };

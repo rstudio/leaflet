@@ -5,7 +5,7 @@ leafletMagnifyingGlassDependencies <- function() {
       "0.1.0",
       system.file("htmlwidgets/plugins/Leaflet.MagnifyingGlass", package = "leaflet"),
       script = c('leaflet.magnifyingglass.js', 'Control.MagnifyingGlass.js', 'MagnifyingGlass-binding.js'),
-      stylesheet = c('leaflet.magnifyingglass.css', 'Control.MagnifyingGlass.css')
+      stylesheet = c('leaflet.magnifyingglass.css', 'Control.MagnifyingGlass.css', 'MagnifyingGlass-binding.css')
     )
   )
 }
