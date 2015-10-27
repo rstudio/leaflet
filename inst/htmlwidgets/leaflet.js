@@ -1175,6 +1175,24 @@ var dataframe = (function() {
     }
   };
 
+  methods.addScaleBar = function(options) {
+
+    var self = this;
+
+    // Only allow one scale bar at a time
+    methods.removeScaleBar.call(this);
+
+    var scaleBar = L.control.scale(options).addTo(this);
+    this.currentScaleBar = scaleBar;
+  };
+
+  methods.removeScaleBar = function() {
+    if (this.currentScaleBar) {
+      this.currentScaleBar.removeFrom(this);
+      this.currentScaleBar = null;
+    }
+  };
+
   methods.hideGroup = function(group) {
     var self = this;
     $.each(asArray(group), function(i, g) {
