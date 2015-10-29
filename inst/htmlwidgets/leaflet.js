@@ -527,6 +527,10 @@ var dataframe = (function() {
       south: bounds.getSouthWest().lat,
       west: bounds.getSouthWest().lng
     });
+    Shiny.onInputChange(id + '_center', {
+      lng: map.getCenter().lng,
+      lat: map.getCenter().lat
+    });
     Shiny.onInputChange(id + '_zoom', map.getZoom());
   }
 
