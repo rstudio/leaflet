@@ -14,8 +14,8 @@ Make awesome-icon set
 }
 \examples{
 iconSet = awesomeIconList(
-  home = makeAwesomeIcon(icon='Home', prefix='fa'),
-  flag = makeAwesomeIcon(icon='Flag', prefix='fa')
+  home = makeAwesomeIcon(icon='Home', library='fa'),
+  flag = makeAwesomeIcon(icon='Flag', library='fa')
 )
 
 iconSet[c('home', 'flag')]
