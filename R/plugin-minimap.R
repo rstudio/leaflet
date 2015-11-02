@@ -4,8 +4,8 @@ leafletMiniMapDependencies <- function() {
       "leaflet-minimap",
       "0.1.0",
       system.file("htmlwidgets/plugins/Leaflet-MiniMap", package = "leaflet"),
-      script = c('Control.Minimap.min.js', 'Minimap-binding.js'),
-      stylesheet = c('Control.Minimap.min.css')
+      script = c('Control.MiniMap.min.js', 'Minimap-binding.js'),
+      stylesheet = c('Control.MiniMap.min.css')
     )
   )
 }

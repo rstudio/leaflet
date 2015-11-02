@@ -10,8 +10,13 @@ leafletMagnifyingGlassDependencies <- function() {
   )
 }
 
-#' Add a Magnifyer on a Map
-#' See \url{https://raw.githubusercontent.com/bbecquet/Leaflet.MagnifyingGlass}
+#' Add a Magnifying glass on a map
+#'
+#' See \url{https://github.com/bbecquet/Leaflet.MagnifyingGlass}
+#'
+#' In most browsers, the magnifying glass will appear as a circle. In some
+#' browsers (including the RStudio Viewer on some platforms) the magnifying
+#' glass will appear as a square, due to missing CSS features.
 #'
 #' @param map a map widget object
 #' @param radius Integer, default 100. radius in pixels.
