@@ -2,8 +2,7 @@
 % Please edit documentation in R/plugin-magnifyingGlass.R
 \name{addMagnifyingGlass}
 \alias{addMagnifyingGlass}
-\title{Add a Magnifyer on a Map
-See \url{https://raw.githubusercontent.com/bbecquet/Leaflet.MagnifyingGlass}}
+\title{Add a Magnifying glass on a map}
 \usage{
 addMagnifyingGlass(map, radius = 100, zoomOffset = 3, fixedZoom = -1,
   fixedPosition = FALSE, latLng = c(0, 0), layers = NULL,
@@ -35,8 +34,12 @@ If fixedPosition is true, it will always keep this position.}
 \item{group}{the name of the group this layer belongs to.}
 }
 \description{
-Add a Magnifyer on a Map
-See \url{https://raw.githubusercontent.com/bbecquet/Leaflet.MagnifyingGlass}
+See \url{https://github.com/bbecquet/Leaflet.MagnifyingGlass}
+}
+\details{
+In most browsers, the magnifying glass will appear as a circle. In some
+browsers (including the RStudio Viewer on some platforms) the magnifying
+glass will appear as a square, due to missing CSS features.
 }
 \examples{
 library(leaflet)

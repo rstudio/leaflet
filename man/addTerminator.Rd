@@ -2,8 +2,7 @@
 % Please edit documentation in R/plugin-terminator.R
 \name{addTerminator}
 \alias{addTerminator}
-\title{Add a daylight layer on top of the map
-see \url{https://github.com/joergdietrich/Leaflet.Terminator}}
+\title{Add a daylight layer on top of the map}
 \usage{
 addTerminator(map, resolution = 2, time = NULL, layerId = NULL,
   group = NULL)
@@ -12,8 +11,8 @@ addTerminator(map, resolution = 2, time = NULL, layerId = NULL,
 \item{map}{a map widget object}
 
 \item{resolution}{the step size at which the terminator points are computed.
-The step size is 1°/resolution, i.e. higher resolution values have smaller step sizes and more points in the polygon.
-The default value is 2.}
+The step size is 1 degree/resolution, i.e. higher resolution values have
+smaller step sizes and more points in the polygon. The default value is 2.}
 
 \item{time}{Time}
 
@@ -22,8 +21,7 @@ The default value is 2.}
 \item{group}{the name of the group this layer belongs to.}
 }
 \description{
-Add a daylight layer on top of the map
-see \url{https://github.com/joergdietrich/Leaflet.Terminator}
+See \url{https://github.com/joergdietrich/Leaflet.Terminator}
 }
 \examples{
 library(leaflet)

@@ -22,9 +22,8 @@ leafletAmBootstrapDependencies <- function(map) {
   )
 }
 
-#' Required for using BootStrap Fonts
-#' @param map the map to add awesome Markers to.
-#' @export
+# Required for using BootStrap Fonts
+# @param map the map to add awesome Markers to.
 addBootstrap <- function(map) {
   map$dependencies <- c(map$dependencies, leafletAmBootstrapDependencies())
   map
@@ -41,9 +40,8 @@ leafletAmFontAwesomeDependencies <- function(map) {
   )
 }
 
-#' Required for using Font-Awesome Fonts
-#' @param map the map to add awesome Markers to.
-#' @export
+# Required for using Font-Awesome Fonts
+# @param map the map to add awesome Markers to.
 addFontAwesome <- function(map) {
   map$dependencies <- c(map$dependencies, leafletAmFontAwesomeDependencies())
   map
@@ -60,9 +58,8 @@ leafletAmIonIconDependencies <- function(map) {
   )
 }
 
-#' Required for using IonIcon Fonts
-#' @param map the map to add awesome Markers to.
-#' @export
+# Required for using IonIcon Fonts
+# @param map the map to add awesome Markers to.
 addIonIcon <- function(map) {
   map$dependencies <- c(map$dependencies, leafletAmIonIconDependencies())
   map
@@ -75,8 +72,8 @@ addIonIcon <- function(map) {
 #' @examples
 #'
 #' iconSet = awesomeIconList(
-#'   home = makeAwesomeIcon(icon='Home', prefix='fa'),
-#'   flag = makeAwesomeIcon(icon='Flag', prefix='fa')
+#'   home = makeAwesomeIcon(icon='Home', library='fa'),
+#'   flag = makeAwesomeIcon(icon='Flag', library='fa')
 #' )
 #'
 #' iconSet[c('home', 'flag')]
@@ -105,9 +102,9 @@ awesomeIconList = function(...) {
 }
 
 awesomeIconSetToAwesomeIcons = function(x) {
-  # c("icon", "prefix", ...)
+  # c("icon", "library", ...)
   cols = names(formals(makeAwesomeIcon))
-  # list(icon = "icon", prefix = "prefix", ...)
+  # list(icon = "icon", library = "library", ...)
   cols = structure(as.list(cols), names = cols)
 
   # Construct an equivalent output to awesomeIcons().
@@ -133,49 +130,69 @@ awesomeIconSetToAwesomeIcons = function(x) {
 #' @inheritParams awesomeIcons
 #' @export
 makeAwesomeIcon <- function(
-  icon = NULL,
-  prefix = NULL,
-  markerColor = NULL,
-  iconColor = NULL,
-  spin = NULL,
+  icon = "home",
+  library = "glyphicon",
+  markerColor = "blue",
+  iconColor = "white",
+  spin = FALSE,
   extraClasses = NULL
 ) {
+  if (!inherits(library, "formula")) {
+    verifyIconLibrary(library)
+  }
+
   icon = filterNULL(list(
-    icon= icon, prefix = prefix, markerColor = markerColor, iconColor = iconColor,
-    spin = spin, extraClasses = extraClasses
+    icon= icon, library = library, markerColor = markerColor,
+    iconColor = iconColor, spin = spin, extraClasses = extraClasses
   ))
   structure(icon, class = "leaflet_awesome_icon")
 }
 
-#' Create a list of awesome icon data
-#' see \url{https://github.com/lvoogdt/Leaflet.awesome-markers}
+#' Create a list of awesome icon data see
+#' \url{https://github.com/lvoogdt/Leaflet.awesome-markers}
 #'
-#' An icon can be represented as a list of the form \code{list(icon,
-#' prefix, ...)}. This function is vectorized over its arguments to create a
-#' list of icon data. Shorter argument values will be re-cycled. \code{NULL}
-#' values for these arguments will be ignored.
-#' @param icon Name of the icon. Default 'home'
-#' @param prefix Which icon library. Default 'glyphicon' other values 'fa' (fontawesome) or 'ion' (ionicons)
-#' @param markerColor Default 'blue', other values ''red', 'darkred', 'orange', 'green', 'darkgreen', 'blue', 'purple', 'darkpuple', 'cadetblue'
-#' @param iconColor  Default 'white'. 'white', 'black' or css code (hex, rgba etc)
-#' @param spin Make the icon spin. Default 'false' (Font-awesome required)
-#' @param extraClasses Additional css classes. Default ''.
-#' @return A list of awesome-icon data that can be passed to the \code{icon} argument of
-#'   \code{\link{addAwesomeMarkers}()}.
+#' An icon can be represented as a list of the form \code{list(icon, library,
+#' ...)}. This function is vectorized over its arguments to create a list of
+#' icon data. Shorter argument values will be re-cycled. \code{NULL} values for
+#' these arguments will be ignored.
+#' @param icon Name of the icon
+#' @param library Which icon library. Default \code{'glyphicon'}, other possible
+#'   values are \code{'fa'} (fontawesome) or \code{'ion'} (ionicons).
+#' @param markerColor Possible values are \code{'red'}, \code{'darkred'},
+#'   \code{'orange'}, \code{'green'}, \code{'darkgreen'}, \code{'blue'},
+#'   \code{'purple'}, \code{'darkpuple'}, \code{'cadetblue'}
+#' @param iconColor The color to use for the icon itself. Use any CSS-valid
+#'   color (hex, rgba, etc.) or a named web color.
+#' @param spin If \code{TRUE}, make the icon spin (only works when \code{library
+#'   = 'fa'})
+#' @param extraClasses Additional css classes to include on the icon.
+#' @return A list of awesome-icon data that can be passed to the \code{icon}
+#'   argument of \code{\link{addAwesomeMarkers}()}.
 #' @export
 awesomeIcons <- function(
-  icon = NULL,
-  prefix = NULL,
-  markerColor = NULL,
-  iconColor = NULL,
-  spin = NULL,
+  icon = "home",
+  library = "glyphicon",
+  markerColor = "blue",
+  iconColor = "white",
+  spin = FALSE,
   extraClasses = NULL
 
 ) {
+  if (!inherits(library, "formula")) {
+    verifyIconLibrary(library)
+  }
+
   filterNULL(list(
-    icon= icon, prefix = prefix, markerColor = markerColor, iconColor = iconColor,
-    spin = spin, extraClasses = extraClasses
+    icon = icon, library = library, markerColor = markerColor,
+    iconColor = iconColor, spin = spin, extraClasses = extraClasses
   ))
+}
+
+verifyIconLibrary <- function(library) {
+  bad <- library[!(library %in% c("glyphicon", "fa", "ion"))]
+  if (length(bad) > 0) {
+    stop("Invalid icon library names: ", paste(unique(bad), collapse = ", "))
+  }
 }
 
 #' Add Awesome Markers
@@ -234,6 +251,18 @@ addAwesomeMarkers = function(
       icon = awesomeIconSetToAwesomeIcons(icon)
     }
     icon = filterNULL(icon)
+    verifyIconLibrary(icon$library)
+    lapply(unique(icon$library), function(lib) {
+      libFunc <- switch(lib,
+        glyphicon = addBootstrap,
+        fa = addFontAwesome,
+        ion = addIonIcon,
+        default = stop("Unknown icon library \"", lib, "\"")
+      )
+      map <<- libFunc(map)
+    })
+    icon$prefix = icon$library
+    icon$library = NULL
   }
 
   if (!is.null(clusterOptions))
