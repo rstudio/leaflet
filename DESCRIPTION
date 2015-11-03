@@ -14,7 +14,8 @@ Authors@R: c(
       person("CloudMade", role = c("cph"), comment = "Leaflet library"),
       person("Leaflet contributors", role = c("ctb"), comment = "Leaflet library"),
       person("Leaflet Providers contributors", role = c("ctb", "cph"), comment = "Leaflet Providers plugin"),
-      person("RStudio", role = c("cph"))
+      person("RStudio", role = c("cph")),
+      person("Kent", "Johnson", role=c("ctb"))
     )
 Maintainer: Joe Cheng <joe@rstudio.com>
 Description: Create and customize interactive maps using the 'Leaflet' JavaScript
