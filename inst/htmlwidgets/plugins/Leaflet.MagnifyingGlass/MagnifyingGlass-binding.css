@@ -1,0 +1,13 @@
+/* QtWebkit (used by RStudio) doesn't support the -webkit-mask-image workaround
+   that leaflet.magnifyingglass.css uses to make the magnifying glass round.
+   Instead, let it be square in qtwebkit. The qtwebkit class is added in
+   JS if the browser is detected to be QtWebkit. */
+
+.qtwebkit .leaflet-magnifying-glass {
+  border-radius: 0 !important;
+}
+
+.qtwebkit .leaflet-magnifying-glass-webkit {
+  border-radius: 0 !important;
+  -webkit-mask-image: none !important;
+}
