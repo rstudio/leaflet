@@ -5,9 +5,36 @@ leaflet 1.0.1
   output, so magrittr chains would break after `fitBounds` was called.
 
 * Add addMeasure()/removeMeasure() functions to allow users to measure lines and
-  areas. (Thanks, Kenton Russell!)
+  areas, via the leaflet-measure plugin by @ljagis. (PR #171. Thanks, Kenton
+  Russell!)
 
 * Add `input${mapid}_center` Shiny event.
+
+* Add support for labels on most layers, that show either statically or on
+  hover. (PR #181. Thanks Bhaskar Karambelkar!)
+
+* Add support for markers with configurable colors and icons, via the
+  Leaflet.awesome-markers plugin by @lvoogdt. See `?addAwesomeMarkers`.
+  (PR #184. Great work, Bhaskar!)
+
+* Add support for the Leaflet.Terminator plugin by @joergdietrich. Overlays
+  day and night regions on a map. See `?addTerminator`. (PR #184, thanks
+  Bhaskar!)
+
+* Add support for Leaflet.SimpleGraticule plugin by @ablakey. See
+  `?addSimpleGraticule`. (PR #184, thanks again Bhaskar!)
+
+* Add support for Leaflet.MagnifyingGlass plugin by @bbecquet. Adds a
+  configurable magnifying glass that displays the area under the cursor at an
+  increased zoom level. See `?addMagnifyingGlass`. (PR #184, still Bhaskar!)
+
+* Add support for Leaflet-MiniMap plugin by @Norkart. Adds a mini map to the
+  corner that can be used to see or change the bounds of the main map. See
+  `?addMiniMap`. (PR #184, Bhaskar again!)
+
+* `addScaleBar` and related functions added, for showing Leaflet's built-in
+  scale bar in one of the corners of the map. (PR #201. Thanks Kent Johnson!)
+
 
 leaflet 1.0.0
 --------------------------------------------------------------------------------
