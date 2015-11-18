@@ -312,6 +312,15 @@ var dataframe = (function() {
   LayerManager.prototype.getLayer = function(category, layerId) {
     return this._byLayerId[this._layerIdKey(category, layerId)];
   };
+  LayerManager.prototype.getLayerId = function(layer) {
+    var stamp = L.Util.stamp(layer);
+    var layerInfo = this._byStamp[stamp];
+    if (!layerInfo) {
+      return layerInfo;
+    } else {
+      return layerInfo.layerId;
+    }
+  };
   LayerManager.prototype.removeLayer = function(category, layerIds) {
     var self = this;
     // Find layer info
@@ -604,6 +613,44 @@ var dataframe = (function() {
     this.layerManager.addLayer(L.tileLayer.wms(baseUrl, options), "tile", layerId, group);
   };
 
+  methods.registerGroupChanges = function(groupName) {
+    var self = this;
+
+    if (!groupName)
+      return;
+
+    if (!this.registeredGroups)
+      this.registeredGroups = {};
+
+    if (this.registeredGroups[groupName])
+      return;
+
+    var group = crosstalk.group(groupName);
+    group.on("selection", function() {
+      var layerGroup = self.layerManager.getLayerGroup(groupName);
+      if (!layerGroup) {
+        return;
+      }
+      var obs = (group.selection() && group.selection().observations) || [];
+      layerGroup.eachLayer(function(layer) {
+        var layerId = self.layerManager.getLayerId(layer);
+        var opacity;
+        if (obs.length === 0 || (layerId && obs.indexOf(layerId) >= 0)) {
+          opacity = 1;
+        } else {
+          opacity = 0.3;
+        }
+        if (layer.setOpacity) {
+          layer.setOpacity(opacity);
+        } else if (layer.setStyle) {
+          layer.setStyle({opacity: opacity, fillOpacity: opacity});
+        }
+      });
+    });
+
+    this.registeredGroups[groupName] = true;
+  };
+
   // Given:
   //   {data: ["a", "b", "c"], index: [0, 1, 0, 2]}
   // returns:
@@ -636,9 +683,11 @@ var dataframe = (function() {
 
       for (var i = 0; i < df.nrow(); i++) {
         (function() {
+          var self = this;
           var marker = markerFunc(df, i);
           var thisId = df.get(i, 'layerId');
           var thisGroup = cluster ? null : df.get(i, 'group');
+          methods.registerGroupChanges.call(this, thisGroup);
           if (cluster) {
             clusterGroup.clusterLayerStore.add(marker, thisId);
           } else {
@@ -662,6 +711,12 @@ var dataframe = (function() {
           marker.on('click', mouseHandler(this.id, thisId, thisGroup, 'marker_click', extraInfo), this);
           marker.on('mouseover', mouseHandler(this.id, thisId, thisGroup, 'marker_mouseover', extraInfo), this);
           marker.on('mouseout', mouseHandler(this.id, thisId, thisGroup, 'marker_mouseout', extraInfo), this);
+          if (thisId && thisGroup) {
+            marker.on('click', function(e) {
+              var group = crosstalk.group(thisGroup);
+              group.toggleSelection(self.getContainer(), thisId);
+            });
+          }
         }).call(this);
       }
 
@@ -1581,7 +1636,8 @@ var dataframe = (function() {
 
       return map;
     },
-    renderValue: function(el, data, map) {
+    renderValue: function(el, data, map, group) {
+      map.leafletr.group = group;
       return this.doRenderValue(el, data, map);
     },
     doRenderValue: function(el, data, map) {

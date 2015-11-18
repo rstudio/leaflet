@@ -25,6 +25,7 @@ URL: http://rstudio.github.io/leaflet/
 BugReports: https://github.com/rstudio/leaflet/issues
 Imports:
     base64enc,
+    crosstalk,
     htmlwidgets,
     htmltools,
     magrittr,

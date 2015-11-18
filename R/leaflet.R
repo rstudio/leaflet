@@ -24,6 +24,13 @@
 #' @example inst/examples/leaflet.R
 #' @export
 leaflet = function(data = NULL, width = NULL, height = NULL, padding = 0) {
+
+  group = if (crosstalk::is.SharedData(data)) {
+    data$groupName()
+  } else {
+    NULL
+  }
+
   htmlwidgets::createWidget(
     'leaflet',
     structure(
@@ -36,7 +43,9 @@ leaflet = function(data = NULL, width = NULL, height = NULL, padding = 0) {
       defaultHeight = 400,
       padding = padding,
       browser.fill = TRUE
-    )
+    ),
+    dependencies = list(crosstalk::dependency),
+    group = group
   )
 }
 
