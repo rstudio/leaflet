@@ -11,6 +11,8 @@
 \alias{clearShapes}
 \alias{clearTiles}
 \alias{clearTopoJSON}
+\alias{closeMarkerPopup}
+\alias{openMarkerPopup}
 \alias{remove}
 \alias{removeControl}
 \alias{removeGeoJSON}
@@ -42,6 +44,10 @@ clearTiles(map)
 removePopup(map, layerId)
 
 clearPopups(map)
+
+openMarkerPopup(map, layerId)
+
+closeMarkerPopup(map, layerId)
 
 removeMarker(map, layerId)
 
