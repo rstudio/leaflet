@@ -6,6 +6,7 @@
 \alias{clearGroup}
 \alias{clearImages}
 \alias{clearMarkerClusters}
+\alias{clearMarkerPopups}
 \alias{clearMarkers}
 \alias{clearPopups}
 \alias{clearShapes}
@@ -25,6 +26,9 @@
 \alias{removeShape}
 \alias{removeTiles}
 \alias{removeTopoJSON}
+\alias{setMarkerPopupContent}
+\alias{toggleMarkerPopup}
+\alias{unbindMarkerPopup}
 \title{Remove elements from a map}
 \usage{
 removeControl(map, layerId)
@@ -48,6 +52,14 @@ clearPopups(map)
 openMarkerPopup(map, layerId)
 
 closeMarkerPopup(map, layerId)
+
+toggleMarkerPopup(map, layerId)
+
+unbindMarkerPopup(map, layerId)
+
+setMarkerPopupContent(map, layerId, content)
+
+clearMarkerPopups(map)
 
 removeMarker(map, layerId)
 
