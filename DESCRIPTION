@@ -1,7 +1,7 @@
 Package: leaflet
 Type: Package
 Title: Create Interactive Web Maps with the JavaScript 'Leaflet' Library
-Version: 1.0.1.9001
+Version: 1.0.1.9002
 Date: 2015-09-11
 Authors@R: c(
       person("Joe", "Cheng", email = "joe@rstudio.com", role = c("aut", "cre")),
@@ -9,13 +9,19 @@ Authors@R: c(
       person("Hadley", "Wickham", role = c("ctb")),
       person("Kenton", "Russell", role = c("ctb")),
       person("Bhaskar", "Karambelkar", role = c("ctb")),
+      person("Kent", "Johnson", role=c("ctb")),
       person("jQuery Foundation and contributors", role = c("ctb", "cph"), comment = "jQuery library"),
       person("Vladimir", "Agafonkin", role = c("ctb", "cph"), comment = "Leaflet library"),
       person("CloudMade", role = c("cph"), comment = "Leaflet library"),
       person("Leaflet contributors", role = c("ctb"), comment = "Leaflet library"),
       person("Leaflet Providers contributors", role = c("ctb", "cph"), comment = "Leaflet Providers plugin"),
-      person("RStudio", role = c("cph")),
-      person("Kent", "Johnson", role=c("ctb"))
+      person("Brandon Copeland", role = c("ctb", "cph"), comment = "leaflet-measure plugin"),
+      person("Jacob Toye", role = c("ctb", "cph"), comment = "Leaflet.label plugin"),
+      person("Joerg Dietrich", role = c("ctb", "cph"), comment = "Leaflet.Terminator plugin"),
+      person("Benjamin Becquet", role = c("ctb", "cph"), comment = "Leaflet.MagnifyingGlass plugin"),
+      person("Norkart AS", role = c("ctb", "cph"), comment = "Leaflet.MiniMap plugin"),
+      person("L. Voogdt", role = c("ctb", "cph"), comment = "Leaflet.awesome-markers plugin"),
+      person("RStudio", role = c("cph"))
     )
 Maintainer: Joe Cheng <joe@rstudio.com>
 Description: Create and customize interactive maps using the 'Leaflet' JavaScript
