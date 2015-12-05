@@ -195,6 +195,16 @@ polygonData.SpatialPolygons = function(obj) {
 polygonData.SpatialPolygonsDataFrame = function(obj) {
   polygonData(sp::polygons(obj))
 }
+polygonData.SpatialMultiPoints = function(obj)
+{
+  lapply(obj@coords, function(points) list(list(lng=points[,'lon'], lat=points[,'lat']))) %>%
+    structure(bbox = obj@bbox)
+}
+polygonData.SpatialMultiPointsDataFrame = function(obj)
+{
+  polygonData(sp::SpatialMultiPoints(obj@coords))
+}
+
 polygonData.map = function(obj) {
   polygonData(cbind(obj$x, obj$y))
 }

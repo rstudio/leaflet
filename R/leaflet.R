@@ -14,8 +14,9 @@
 #'   frames, and spatial objects from the \pkg{sp} package of classes
 #'   \code{SpatialPoints}, \code{SpatialPointsDataFrame}, \code{Polygon},
 #'   \code{Polygons}, \code{SpatialPolygons}, \code{SpatialPolygonsDataFrame},
-#'   \code{Line}, \code{Lines}, \code{SpatialLines}, and
-#'   \code{SpatialLinesDataFrame})
+#'   \code{Line}, \code{Lines}, \code{SpatialLines},
+#'   \code{SpatialLinesDataFrame}, \code{SpatialMultiPoints}
+#'   and \code{SpatialMultiPointsDataFrame})
 #' @param width the width of the map
 #' @param height the height of the map
 #' @param padding the padding of the map
