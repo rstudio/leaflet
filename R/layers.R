@@ -163,6 +163,9 @@ epsg3857 <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y
 #'   coordinates
 #' @param maxBytes the maximum number of bytes to allow for the projected image
 #'   (before base64 encoding); defaults to 4MB.
+#' @param method the method used to interpolate to the leaflet web Mercator
+#'   projection.  Default is 'bilinear'.  'ngd' (nearest neighbor) is better for
+#'   categorical variables.
 #'
 #' @examples
 #' library(raster)
@@ -183,12 +186,13 @@ addRasterImage = function(
   layerId = NULL,
   group = NULL,
   project = TRUE,
-  maxBytes = 4*1024*1024
+  maxBytes = 4*1024*1024,
+  method = "bilinear"
 ) {
   stopifnot(inherits(x, "RasterLayer"))
 
   if (project) {
-    projected <- projectRasterForLeaflet(x)
+    projected <- projectRasterForLeaflet(x, method)
   } else {
     projected <- x
   }
@@ -218,8 +222,10 @@ addRasterImage = function(
 
 #' @rdname addRasterImage
 #' @export
-projectRasterForLeaflet <- function(x) {
-  raster::projectRaster(x, raster::projectExtent(x, crs = sp::CRS(epsg3857)))
+projectRasterForLeaflet <- function(x, method) {
+  if(!raster::crs(x) == sp::CRS(epsg3857)){
+    raster::projectRaster(x, raster::projectExtent(x, crs = sp::CRS(epsg3857), method = 'method'))
+  }
 }
 
 #' @rdname remove
