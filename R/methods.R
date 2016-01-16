@@ -17,18 +17,46 @@
 #' m %>% fitBounds(-72, 40, -70, 43)
 #' m %>% clearBounds()  # world view
 setView = function(map, lng, lat, zoom, options = list()) {
-  map$x$setView = list(c(lat, lng), zoom, options)
-  map$x$fitBounds = NULL
-  map
+  view = evalFormula(list(c(lat, lng), zoom, options))
+
+  dispatch(map,
+    "setView",
+    leaflet = {
+      map$x$setView = view
+      map$x$fitBounds = NULL
+      map
+    },
+    leaflet_proxy = {
+      invokeRemote(map, "setView", view)
+      map
+    }
+  )
 }
 
 #' @describeIn map-methods Set the bounds of a map
 #' @param lng1,lat1,lng2,lat2 the coordinates of the map bounds
 #' @export
 fitBounds = function(map, lng1, lat1, lng2, lat2) {
-  map$x$fitBounds = list(lat1, lng1, lat2, lng2)
-  map$x$setView = NULL
-  map
+  bounds = evalFormula(list(lat1, lng1, lat2, lng2), getMapData(map))
+
+  dispatch(map,
+    "fitBounds",
+    leaflet = {
+      map$x$fitBounds = bounds
+      map$x$setView = NULL
+      map
+    },
+    leaflet_proxy = {
+      invokeRemote(map, "fitBounds", bounds)
+      map
+    }
+  )
+}
+
+#' @describeIn map-methods Restricts the map view to the given bounds
+#' @export
+setMaxBounds = function(map, lng1, lat1, lng2, lat2) {
+  invokeMethod(map, getMapData(map), 'setMaxBounds', lat1, lng1, lat2, lng2)
 }
 
 #' @describeIn map-methods Clear the bounds of a map, and the bounds will be
@@ -36,7 +64,12 @@ fitBounds = function(map, lng1, lat1, lng2, lat2) {
 #'   if available (otherwise the full world view is used)
 #' @export
 clearBounds = function(map) {
-  map$x$fitBounds = NULL
-  map$x$setView = NULL
-  map
+  dispatch(map,
+    "clearBounds",
+    leaflet = {
+      map$x$fitBounds = NULL
+      map$x$setView = NULL
+      map
+    }
+  )
 }

@@ -1,0 +1,67 @@
+{
+  "name": "leaflet-omnivore",
+  "version": "0.3.2",
+  "description": "a geospatial format parser for Leaflet",
+  "main": "index.js",
+  "scripts": {
+    "test": "zuul --local -- test/test.js",
+    "test-remote": "zuul -- test/test.js",
+    "test-headless": "zuul --phantom test/test.js",
+    "build": "browserify -s omnivore index.js > leaflet-omnivore.js && uglifyjs leaflet-omnivore.js -c -m > leaflet-omnivore.min.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:mapbox/leaflet-omnivore.git"
+  },
+  "browserify": {
+    "transform": [
+      "brfs",
+      "hintify"
+    ]
+  },
+  "keywords": [
+    "leaflet",
+    "formats",
+    "kml",
+    "csv",
+    "gpx",
+    "geojson",
+    "kml",
+    "leaflet",
+    "maps",
+    "gpx",
+    "wkt",
+    "osm",
+    "polyline",
+    "topojson",
+    "format",
+    "converter"
+  ],
+  "author": "Tom MacWright",
+  "license": "BSD",
+  "bugs": {
+    "url": "https://github.com/mapbox/leaflet-omnivore/issues"
+  },
+  "homepage": "https://github.com/mapbox/leaflet-omnivore",
+  "dependencies": {
+    "csv2geojson": "~3.6.1",
+    "togeojson": "0.10.1",
+    "corslite": "0.0.6",
+    "wellknown": "0.3.0",
+    "hintify": "~0.1.0",
+    "brfs": "0.2.1",
+    "topojson": "1.6.8",
+    "polyline": "0.0.3"
+  },
+  "devDependencies": {
+    "browserify": "7.0.2",
+    "tape": "2.4.2",
+    "uglify-js": "2.4.16",
+    "jshint": "2.5.0",
+    "mocha": "~1.20.1",
+    "zuul": "~1.7.0",
+    "st": "0.5.1",
+    "mapbox.js": "1.6.4",
+    "phantomjs": "~1.9.7-15"
+  }
+}

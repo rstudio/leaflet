@@ -2,14 +2,15 @@ library(testit)
 
 bw = c("black", "white")
 
-# These currently error, but maybe shouldn't...?
+# Do these cases make sense?
 assert(
-  has_error(colorBin(bw, NULL)(1)),            # Return "#000000"?
-  has_error(colorBin(bw, 1)(1)),               # Return "#000000"?
+  colorBin(bw, NULL)(1) == "#777777",
+  colorBin(bw, 1)(1) == "#FFFFFF",
   TRUE
 )
 
 # Outside of domain? Return na.color
+suppressWarnings(
 assert(
   identical("#808080", colorFactor(bw, letters)("foo")),
   identical("#808080", colorQuantile(bw, 0:1)(-1)),
@@ -28,11 +29,16 @@ assert(
   has_warning(colorNumeric(bw, c(0, 1), na.color = NA)(2)),
   TRUE
 )
+)
 
 assert(
   identical(
     c("#000000", "#7F7F7F", "#FFFFFF"),
     colorNumeric(colorRamp(bw), NULL)(c(0, 0.5, 1))
+  ),
+  identical(
+    c("#000000FF", "#777777FF", "#FFFFFFFF", "#FFFFFF00", "blue"),
+    colorNumeric(c(bw, "#FFFFFF00"), NULL, na.color = "blue", alpha = TRUE)(c(0, 0.25, 0.5, 1, NA))
   )
 )
 
@@ -67,17 +73,17 @@ assert(
 
 assert(
   identical(
-    c("#000000", "#7F7F7F", "#FFFFFF"),
+    c("#000000", "#777777", "#FFFFFF"),
     colorNumeric(bw, NULL)(1:3)
   ),
 
   identical(
-    c("#000000", "#7F7F7F", "#FFFFFF"),
+    c("#000000", "#777777", "#FFFFFF"),
     colorNumeric(bw, c(1:3))(1:3)
   ),
 
   identical(
-    rev(c("#000000", "#7F7F7F", "#FFFFFF")),
+    rev(c("#000000", "#777777", "#FFFFFF")),
     colorNumeric(rev(bw), c(1:3))(1:3)
   ),
 
@@ -88,29 +94,29 @@ assert(
 
   # domain != unique(x)
   identical(
-    c("#000000", "#0A0A0A", "#141414"),
+    c("#000000", "#0E0E0E", "#181818"),
     colorFactor(bw, LETTERS)(LETTERS[1:3])
   ),
 
   # domain == unique(x)
   identical(
-    c("#000000", "#7F7F7F", "#FFFFFF"),
+    c("#000000", "#777777", "#FFFFFF"),
     colorFactor(bw, LETTERS[1:3])(LETTERS[1:3])
   ),
 
   # no domain
   identical(
-    c("#000000", "#7F7F7F", "#FFFFFF"),
+    c("#000000", "#777777", "#FFFFFF"),
     colorFactor(bw, NULL)(LETTERS[1:3])
   ),
 
   # Non-factor domains are sorted unless instructed otherwise
   identical(
-    c("#000000", "#7F7F7F", "#FFFFFF"),
+    c("#000000", "#777777", "#FFFFFF"),
     colorFactor(bw, rev(LETTERS[1:3]))(LETTERS[1:3])
   ),
   identical(
-    rev(c("#000000", "#7F7F7F", "#FFFFFF")),
+    rev(c("#000000", "#777777", "#FFFFFF")),
     colorFactor(bw, rev(LETTERS[1:3]), ordered = TRUE)(LETTERS[1:3])
   ),
 

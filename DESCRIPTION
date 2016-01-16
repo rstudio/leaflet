@@ -1,35 +1,51 @@
 Package: leaflet
 Type: Package
-Title: Create Interactive Web Maps with the JavaScript LeafLet Library
-Version: 0.0.9
-Date: 2014-11-12
-Authors@R: as.person(c(
-    "Joe Cheng [aut, cre] <joe@rstudio.com>",
-    "Yihui Xie [aut]",
-    "Hadley Wickham [ctb]",
-    "jQuery contributors [ctb, cph] (the jQuery library in htmlwidgets/lib)",
-    "Leaflet contributors [ctb, cph] (the Leaflet library in htmlwidgets/lib)",
-    "RStudio [cph]"
-    ))
+Title: Create Interactive Web Maps with the JavaScript 'Leaflet' Library
+Version: 1.0.1.9002
+Date: 2015-09-11
+Authors@R: c(
+      person("Joe", "Cheng", email = "joe@rstudio.com", role = c("aut", "cre")),
+      person("Yihui", "Xie", role = c("aut")),
+      person("Hadley", "Wickham", role = c("ctb")),
+      person("Kenton", "Russell", role = c("ctb")),
+      person("Bhaskar", "Karambelkar", role = c("ctb")),
+      person("Kent", "Johnson", role=c("ctb")),
+      person("jQuery Foundation and contributors", role = c("ctb", "cph"), comment = "jQuery library"),
+      person("Vladimir", "Agafonkin", role = c("ctb", "cph"), comment = "Leaflet library"),
+      person("CloudMade", role = c("cph"), comment = "Leaflet library"),
+      person("Leaflet contributors", role = c("ctb"), comment = "Leaflet library"),
+      person("Leaflet Providers contributors", role = c("ctb", "cph"), comment = "Leaflet Providers plugin"),
+      person("Brandon Copeland", role = c("ctb", "cph"), comment = "leaflet-measure plugin"),
+      person("Jacob Toye", role = c("ctb", "cph"), comment = "Leaflet.label plugin"),
+      person("Joerg Dietrich", role = c("ctb", "cph"), comment = "Leaflet.Terminator plugin"),
+      person("Benjamin Becquet", role = c("ctb", "cph"), comment = "Leaflet.MagnifyingGlass plugin"),
+      person("Norkart AS", role = c("ctb", "cph"), comment = "Leaflet.MiniMap plugin"),
+      person("L. Voogdt", role = c("ctb", "cph"), comment = "Leaflet.awesome-markers plugin"),
+      person("RStudio", role = c("cph"))
+    )
 Maintainer: Joe Cheng <joe@rstudio.com>
-Description: Leaflet is "an open-source JavaScript library for mobile-friendly
-    interactive maps". This package makes it easy to integrate Leaflet maps into
-    HTML applications with R (e.g. Shiny and R Markdown).
-License: GPL-3
-URL: https://github.com/rstudio/leaflet
+Description: Create and customize interactive maps using the 'Leaflet' JavaScript
+    library and the 'htmlwidgets' package. These maps can be used directly from
+    the R console, from 'RStudio', in Shiny apps and R Markdown documents.
+License: GPL-3 | file LICENSE
+URL: http://rstudio.github.io/leaflet/
 BugReports: https://github.com/rstudio/leaflet/issues
 Imports:
+    base64enc,
     htmlwidgets,
     htmltools,
     magrittr,
+    markdown,
+    png,
     RColorBrewer,
-    RJSONIO,
-    grDevices,
-    scales
+    raster,
+    scales (>= 0.2.5),
+    sp
 Suggests:
     knitr,
     maps,
     shiny,
-    sp,
-    testit
-VignetteBuilder: knitr
+    testit (>= 0.4),
+    rgdal,
+    R6,
+    RJSONIO
