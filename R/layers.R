@@ -223,9 +223,7 @@ addRasterImage = function(
 #' @rdname addRasterImage
 #' @export
 projectRasterForLeaflet <- function(x, method) {
-  if(!raster::crs(x) == sp::CRS(epsg3857)){
-    raster::projectRaster(x, raster::projectExtent(x, crs = sp::CRS(epsg3857), method = 'method'))
-  }
+  raster::projectRaster(x, raster::projectExtent(x, crs = sp::CRS(epsg3857), method = method))
 }
 
 #' @rdname remove
