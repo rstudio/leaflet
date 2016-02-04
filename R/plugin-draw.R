@@ -6,7 +6,7 @@ leafletDrawDependencies <- function() {
       "Leaflet.draw",
       "0.2.3",
       system.file("htmlwidgets/lib/Leaflet.draw/dist/", package = "leaflet"),
-      script = "leaflet.draw-src.js",
+      script = "leaflet.draw.js",
       stylesheet="leaflet.draw.css"
     ),
     htmltools::htmlDependency(
