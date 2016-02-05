@@ -1,11 +1,11 @@
-LeafletWidget.methods.addDrawToolbar = function(layerID,position,polyline,polygon,rectangle,circle,marker,edit,remove){
+LeafletWidget.methods.addDrawToolbar = function(layerID,group,position,polyline,polygon,rectangle,circle,marker,edit,remove){
   if (this.drawControl) {
     this.drawControl.removeFrom(this);
   }
   var drawnItems = this.drawnItems;
   if (!drawnItems) {
     drawnItems = this.drawnItems = new L.FeatureGroup();
-    this.layerManager.addLayer(drawnItems,"drawnItems",layerID,layerID);
+    this.layerManager.addLayer(drawnItems,"drawnItems",layerID,group);
   }
 
   if (typeof(marker) === "object" && marker.icon) {

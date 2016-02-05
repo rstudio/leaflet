@@ -6,7 +6,7 @@ leafletDrawDependencies <- function() {
       "Leaflet.draw",
       "0.2.3",
       system.file("htmlwidgets/lib/Leaflet.draw/dist/", package = "leaflet"),
-      script = "leaflet.draw-src.js",
+      script = "leaflet.draw.js",
       stylesheet="leaflet.draw.css"
     ),
     htmltools::htmlDependency(
@@ -53,6 +53,7 @@ leafletDrawDependencies <- function() {
 #' map <- addDrawToolbar(map)
 #' map
 addDrawToolbar <- function(map,layerID="drawnItems",
+                           group = layerID,
                            position = c('topleft', 'topright', 'bottomleft',
                                         'bottomright'),
                            polyline=TRUE,polygon=TRUE,rectangle=TRUE,
@@ -61,7 +62,7 @@ addDrawToolbar <- function(map,layerID="drawnItems",
   position = match.arg(position)
   map$dependencies <- c(map$dependencies, leafletDrawDependencies())
   map$drawToolbar<-T
-  invokeMethod(map,getMapData(map),method =  'addDrawToolbar',layerID,position,
+  invokeMethod(map,getMapData(map),method =  'addDrawToolbar',layerID,group,position,
                polyline,polygon,rectangle,circle,marker,edit,remove)
 }
 
