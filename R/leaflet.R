@@ -70,3 +70,12 @@ mapOptions <- function(map, zoomToLimits = c("always", "first", "never")) {
 
   map
 }
+
+
+
+
+#' @describeIn zoomControlPosition
+#' @export
+zoomControlPosition <- function(map, position){
+  invokeMethod(map, getMapData(map), method =  'zoomControlPosition', position)
+}
