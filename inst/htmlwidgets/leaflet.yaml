@@ -19,5 +19,5 @@ dependencies:
     stylesheet: leaflet.label.css
   - name: leaflet-path-drag
     version: 0.1.10
-    src: "htmlwidgets/plugins/Leaflet.Path.Drag"
+    src: "htmlwidgets/lib/Leaflet.Path.Drag"
     script: L.Path.Drag.js
