@@ -825,14 +825,17 @@ pathOptions = function(
   lineCap = NULL,
   lineJoin = NULL,
   clickable = TRUE,
+  draggable = FALSE,
   pointerEvents = NULL,
   className = ""
 ) {
   list(
     lineCap = lineCap, lineJoin = lineJoin, clickable = clickable,
-    pointerEvents = pointerEvents, className = className
+    pointerEvents = pointerEvents, className = className, draggable = draggable
   )
 }
+
+
 
 #' @describeIn map-layers Add circles to the map
 #' @export
