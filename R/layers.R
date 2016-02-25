@@ -816,6 +816,7 @@ removeMarkerFromCluster = function(map, layerId, clusterId) {
 #' @param lineJoin a string that defines
 #'   \href{https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linejoin}{shape
 #'    to be used at the corners} of the stroke
+#' @param draggable Set to drag path features
 #' @param pointerEvents sets the \code{pointer-events} attribute on the path if
 #'   SVG backend is used
 #' @describeIn map-options Options for vector layers (polylines, polygons,
