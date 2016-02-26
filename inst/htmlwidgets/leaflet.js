@@ -1489,10 +1489,10 @@ var dataframe = (function() {
 
       if (!HTMLWidgets.shinyMode) return map;
 
-      // The map is rendered staticly (no output binding, so no this.getId())
-      if (typeof this.getId === 'undefined') return map;
+      // Check if the map is rendered statically (no output binding)
+      if (!/\bshiny-bound-output\b/.test(el.className)) return map;
 
-      map.id = this.getId(el);
+      map.id = el.id;
 
       // Store the map on the element so we can find it later by ID
       $(el).data("leaflet-map", map);
