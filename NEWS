@@ -1,4 +1,4 @@
-leaflet 1.0.1
+leaflet 1.0.2
 --------------------------------------------------------------------------------
 
 * When used with `leafletProxy`, `fitBounds` did not return its input object as
@@ -34,6 +34,12 @@ leaflet 1.0.1
 
 * `addScaleBar` and related functions added, for showing Leaflet's built-in
   scale bar in one of the corners of the map. (PR #201. Thanks Kent Johnson!)
+
+
+leaflet 1.0.1
+--------------------------------------------------------------------------------
+
+* Fix #242: Compatibility with htmlwidgets 0.6 (thanks byzheng).
 
 
 leaflet 1.0.0
