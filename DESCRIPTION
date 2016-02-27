@@ -23,15 +23,19 @@ URL: http://rstudio.github.io/leaflet/
 BugReports: https://github.com/rstudio/leaflet/issues
 Imports:
     base64enc,
+    grDevices,
     htmlwidgets,
     htmltools,
     magrittr,
     markdown,
+    methods,
     png,
     RColorBrewer,
     raster,
     scales (>= 0.2.5),
-    sp
+    sp,
+    stats,
+    utils
 Suggests:
     knitr,
     maps,
