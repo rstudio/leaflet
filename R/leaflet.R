@@ -1,3 +1,9 @@
+#' @importFrom grDevices col2rgb rgb
+#' @importFrom methods substituteDirect
+#' @importFrom stats na.omit quantile
+#' @importFrom utils getFromNamespace packageVersion
+NULL
+
 #' Create a Leaflet map widget
 #'
 #' This function creates a Leaflet map widget using \pkg{htmlwidgets}. The
