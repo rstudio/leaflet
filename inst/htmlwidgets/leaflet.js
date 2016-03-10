@@ -498,6 +498,25 @@ var dataframe = (function() {
     this._group.clearLayers();
   };
 
+
+  function onDragEnd(mapId, layer, layerId, group, eventName, extraInfo) {
+    return function(e) {
+      if (!HTMLWidgets.shinyMode) return;
+
+      var eventInfo = $.extend(
+        {
+          id: layerId,
+          '.nonce': Math.random()  // force reactivity
+        },
+        group !== null ? {group: group} : null,
+        e.target._latlngs,
+        extraInfo
+      );
+
+      Shiny.onInputChange(mapId + '_' + eventName, eventInfo);
+    };
+  }
+
   function mouseHandler(mapId, layerId, group, eventName, extraInfo) {
     return function(e) {
       if (!HTMLWidgets.shinyMode) return;
@@ -800,6 +819,7 @@ var dataframe = (function() {
         layer.on('click', mouseHandler(this.id, thisId, thisGroup, category + '_click'), this);
         layer.on('mouseover', mouseHandler(this.id, thisId, thisGroup, category + '_mouseover'), this);
         layer.on('mouseout', mouseHandler(this.id, thisId, thisGroup, category + '_mouseout'), this);
+        layer.on('dragend', onDragEnd(this.id, layer, thisId, thisGroup, category + '_dragend'), this);
       }).call(map);
     }
   }
