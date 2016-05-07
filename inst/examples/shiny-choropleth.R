@@ -1,3 +1,14 @@
+# TODO:
+# - convert states from class map to SpatialPolygonsDataFrame
+#   - [kasc2spixdf {adehabitat} | inside-R | A Community Site for R](http://www.inside-r.org/packages/cran/adehabitat/docs/kasc2spixdf)
+#   - https://github.com/rstudio/leaflet/blob/master/R/normalize.R#L195-L200
+# - left_join data and color palette based on column
+# - choropleth examples
+#   - [Creating a Leaflet choropleth map with a pop-up in R](https://rpubs.com/walkerke/leaflet_choropleth)
+#   - [Interactive Mapping with Leaflet in R | R-bloggers](http://www.r-bloggers.com/interactive-mapping-with-leaflet-in-r/)
+# - Herman's [Shiny - Welcome to Shiny](http://shiny.rstudio.com/tutorial/js-lesson1/)
+# - see R/plugin-*.R
+
 library(shiny)
 library(leaflet)
 library(RColorBrewer)
