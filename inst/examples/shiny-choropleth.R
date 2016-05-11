@@ -1,3 +1,5 @@
+# Goal:
+#   replicate http://leafletjs.com/examples/choropleth.html
 # TODO:
 # - convert states from class map to SpatialPolygonsDataFrame
 #   - [kasc2spixdf {adehabitat} | inside-R | A Community Site for R](http://www.inside-r.org/packages/cran/adehabitat/docs/kasc2spixdf)
@@ -8,86 +10,39 @@
 #   - [Interactive Mapping with Leaflet in R | R-bloggers](http://www.r-bloggers.com/interactive-mapping-with-leaflet-in-r/)
 # - Herman's [Shiny - Welcome to Shiny](http://shiny.rstudio.com/tutorial/js-lesson1/)
 # - see R/plugin-*.R
+# - [map_data. ggplot2 2.1.0](http://docs.ggplot2.org/current/map_data.html)
+# - [Spatial Data in R: Vector Data](http://www.nickeubank.com/wp-content/uploads/2015/10/RGIS1_SpatialDataTypes_part1_vectorData.html)
+# - [Robin Lovelace - Basic mapping and attribute joins in R](http://robinlovelace.net/r/2014/11/10/attribute-joins.html)
 
 library(shiny)
+library(RColorBrewer) # TODO: replace with interval
+#library(maps)
+library(rgdal)
+#library(sp)
 library(leaflet)
-library(RColorBrewer)
-library(maps)
-library(sp)
+
+# library(devtools)
+# load_all(leaflet)
 
 # global.R ----
 
-density = c(
-  "Alabama" = 94.65,
-  "Arizona" = 57.05,
-  "Arkansas" = 56.43,
-  "California" = 241.7,
-  "Colorado" = 49.33,
-  "Connecticut" = 739.1,
-  "Delaware" = 464.3,
-  "District of Columbia" = 10065,
-  "Florida" = 353.4,
-  "Georgia" = 169.5,
-  "Idaho" = 19.15,
-  "Illinois" = 231.5,
-  "Indiana" = 181.7,
-  "Iowa" = 54.81,
-  "Kansas" = 35.09,
-  "Kentucky" = 110,
-  "Louisiana" = 105,
-  "Maine" = 43.04,
-  "Maryland" = 596.3,
-  "Massachusetts" = 840.2,
-  "Michigan" = 173.9,
-  "Minnesota" = 67.14,
-  "Mississippi" = 63.50,
-  "Missouri" = 87.26,
-  "Montana" = 6.858,
-  "Nebraska" = 23.97,
-  "Nevada" = 24.80,
-  "New Hampshire" = 147,
-  "New Jersey" = 1189 ,
-  "New Mexico" = 17.16,
-  "New York" = 412.3,
-  "North Carolina" = 198.2,
-  "North Dakota" = 9.916,
-  "Ohio" = 281.9,
-  "Oklahoma" = 55.22,
-  "Oregon" = 40.33,
-  "Pennsylvania" = 284.3,
-  "Rhode Island" = 1006 ,
-  "South Carolina" = 155.4,
-  "South Dakota" = 98.07,
-  "Tennessee" = 88.08,
-  "Texas" = 98.07,
-  "Utah" = 34.30,
-  "Vermont" = 67.73,
-  "Virginia" = 204.5,
-  "Washington" = 102.6,
-  "West Virginia" = 77.06,
-  "Wisconsin" = 105.2,
-  "Wyoming" = 5.851
-)
+# TODO: change to system.file()
+states = readOGR(
+  "/Users/bbest/github/leaflet_bbest/inst/examples/us-states.json", layer = "OGRGeoJSON")
 
-# Breaks we'll use for coloring
-densityBreaks <- c(0, 10, 20, 50, 100, 200, 500, 1000, Inf)
+# setup color palette ----
 
-# Construct break ranges for displaying in the legend
-densityRanges <- data.frame(
-  from = head(densityBreaks, length(densityBreaks)-1),
-  to = tail(densityBreaks, length(densityBreaks)-1)
-)
+# breaks we'll use for coloring
+breaks <- c(0, 10, 20, 50, 100, 200, 500, 1000, Inf)
+nb = length(breaks)
 
-# Eight colors for eight buckets
-palette <- c("#FFEDA0", "#FED976", "#FEB24C", "#FD8D3C",
-             "#FC4E2A", "#E31A1C", "#BD0026", "#800026")
-# Assign colors to states
-colors <- structure(
-  palette[cut(density, densityBreaks)],
-  names = tolower(names(density))
-)
+# construct break ranges for displaying in the legend
+break_labels <- c(
+  sprintf("%d - %d", breaks[1:(nb-2)], breaks[2:(nb-1)]),
+  "1000+")
 
-pal <- colorQuantile("YlOrRd", NULL, n = 8) # display.brewer.all()
+# get colors
+colors = brewer.pal("YlOrRd", n = nb-1)
 
 # The state names that come back from the maps package's state database has
 # state:qualifier format. This function strips off the qualifier.
@@ -95,22 +50,14 @@ getStateName <- function(id) {
   strsplit(id, ":")[[1]][1]
 }
 
-states <- map("state", names(density), plot=FALSE, fill=TRUE)
-
-states_sp = SpatialPolygonsDataFrame(states)
-states_sp = as(states, class('SpatialPolygonsDataFrame'))
-class(states_sp)
-states_sp@data
-
 # ui.R ----
 
 ui <- fluidPage(
 
   # Add a little CSS to make the map background pure white
   tags$head(tags$style("
-                       #showcase-code-position-toggle, #showcase-sxs-code { display: none; }
-                       .floater { background-color: white; padding: 8px; opacity: 0.7; border-radius: 6px; box-shadow: 0 0 15px rgba(0,0,0,0.2); }
-                       ")),
+    showcase-code-position-toggle, #showcase-sxs-code { display: none; }
+    .floater { background-color: white; padding: 8px; opacity: 0.7; border-radius: 6px; box-shadow: 0 0 15px rgba(0,0,0,0.2); }")),
 
   # leafletMap(
   #   "map", "100%", 500,
@@ -132,20 +79,6 @@ ui <- fluidPage(
 
     h4("US Population Density"),
     uiOutput("stateInfo")
-  ),
-
-  absolutePanel(
-    right = 30, top = 280, style = "", class = "floater",
-    tags$table(
-      mapply(function(from, to, color) {
-        tags$tr(
-          tags$td(tags$div(
-            style = sprintf("width: 16px; height: 16px; background-color: %s;", color)
-          )),
-          tags$td(from, "-", to)
-        )
-      }, densityRanges$from, densityRanges$to, palette, SIMPLIFY=FALSE)
-    )
   )
 )
 
@@ -154,37 +87,44 @@ server <- function(input, output, session) {
   # v <- reactiveValues(highlight = c())
   v <- reactiveValues(msg = "")
 
-  #map <- createLeafletMap(session, "map")
   output$map1 <- renderLeaflet({
-    # states <- map("state", fill=TRUE, plot=FALSE)
-    leaflet() %>%
+
+    # draw leaflet map
+    leaflet(states) %>%
+      addProviderTiles("Stamen.TonerLite") %>%
+      setView(-98.58, 39.83, 4) %>%
       addPolygons(
-        data = states,
-        fillColor = ~pal())
+        group = 'states', layerId = states@data$name,
+        smoothFactor = 0.2,
+        stroke = T, color = "white", weight = 3,
+        fillOpacity = 0.7, fillColor = ~colors[cut(density, breaks)]) %>%
+      addLegend(
+        "bottomright", colors = colors, labels = break_labels,
+        opacity = 0.7)
   })
 
   # Draw the given states, with or without highlighting
-  drawStates <- function(stateNames, highlight = FALSE) {
-    states <- map("state", stateNames, plot=FALSE, fill=TRUE)
-    map1$addPolygon(I(states$y), I(states$x), I(states$names),
-                   I(lapply(states$names, function(x) {
-                     x <- strsplit(x, ":")[[1]][1]
-                     list(fillColor = colors[[x]])
-                   })),
-                   I(list(fill=TRUE, fillOpacity=0.7,
-                          stroke=TRUE, opacity=1, color="white", weight=ifelse(highlight, 4, 1)
-                   ))
-    )
-  }
+  # drawStates <- function(stateNames, highlight = FALSE) {
+  #   states <- map("state", stateNames, plot=FALSE, fill=TRUE)
+  #   map1$addPolygon(I(states$y), I(states$x), I(states$names),
+  #                  I(lapply(states$names, function(x) {
+  #                    x <- strsplit(x, ":")[[1]][1]
+  #                    list(fillColor = colors[[x]])
+  #                  })),
+  #                  I(list(fill=TRUE, fillOpacity=0.7,
+  #                         stroke=TRUE, opacity=1, color="white", weight=ifelse(highlight, 4, 1)
+  #                  ))
+  #   )
+  # }
 
-  observe({
-    print(input$map1_zoom)
-    map1$clearShapes()
-    if (!is.null(input$map1_zoom) && input$map1_zoom > 6) {
-      # Get shapes from the maps package
-      drawStates(names(density))
-    }
-  })
+  # observe({
+  #   print(input$map1_zoom)
+  #   map1$clearShapes()
+  #   if (!is.null(input$map1_zoom) && input$map1_zoom > 6) {
+  #     # Get shapes from the maps package
+  #     drawStates(names(density))
+  #   }
+  # })
 
   # input$map1_shape_mouseover gets updated a lot, even if the id doesn't change.
   # We don't want to update the polygons and stateInfo except when the id
@@ -192,50 +132,42 @@ server <- function(input, output, session) {
   # writing to v$highlight doesn't trigger reactivity unless the new value
   # is different than the previous value).
   observe({
-    v$highlight <- input$map1_shape_mouseover$id
+    v$highlighted_state <- input$map1_shape_mouseover$id
   })
 
   # Dynamically render the box in the upper-right
   output$stateInfo <- renderUI({
-    if (is.null(v$highlight)) {
-      return(tags$div("Hover over a state"))
+    if (is.null(v$highlighted_state)) {
+      return(div("Hover over a state"))
     } else {
       # Get a properly formatted state name
-      stateName <- names(density)[getStateName(v$highlight) == tolower(names(density))]
-      return(tags$div(
-        tags$strong(stateName),
-        tags$div(density[stateName], HTML("people/m<sup>2</sup>"))
+      #stateName <- names(density)[getStateName(v$highlight) == tolower(names(density))]
+      return(div(
+        strong(v$highlighted_state), br(),
+        #div(density[stateName], HTML("people/mi<sup>2</sup>"))
+        subset(states@data, name == v$highlighted_state, density), HTML("people/m<sup>2</sup>")
       ))
     }
   })
 
-  lastHighlighted <- c()
+  #lastHighlighted <- c()
   # When v$highlight changes, unhighlight the old state (if any) and
   # highlight the new state
-  observe({
-    if (length(lastHighlighted) > 0)
-      drawStates(getStateName(lastHighlighted), FALSE)
-    lastHighlighted <<- v$highlight
+  # observe({
+  #   if (length(lastHighlighted) > 0)
+  #     drawStates(getStateName(lastHighlighted), FALSE)
+  #   lastHighlighted <<- v$highlight
+  #
+  #   if (is.null(v$highlight))
+  #     return()
+  #
+  #   isolate({
+  #     drawStates(getStateName(v$highlight), TRUE)
+  #   })
+  # })
 
-    if (is.null(v$highlight))
-      return()
-
-    isolate({
-      drawStates(getStateName(v$highlight), TRUE)
-    })
-  })
 
 
-
-  observeEvent(input$map1_geojson_mouseover, {
-    v$msg <- paste("Mouse is over", input$map1_geojson_mouseover$featureId)
-  })
-  observeEvent(input$map1_geojson_mouseout, {
-    v$msg <- ""
-  })
-  observeEvent(input$map1_geojson_click, {
-    v$msg <- paste("Clicked on", input$map1_geojson_click$featureId)
-  })
   observeEvent(input$map1_shape_mouseover, {
     v$msg <- paste("Mouse is over shape", input$map1_shape_mouseover$id)
   })
@@ -258,9 +190,9 @@ server <- function(input, output, session) {
   observeEvent(input$map1_bounds, {
     v$msg <- paste("Bounds changed to", paste(input$map1_bounds, collapse = ", "))
   })
-  observeEvent(input$clearMarkers, {
-    leafletProxy("map1") %>% clearMarkers()
-  })
+  # observeEvent(input$clearMarkers, {
+  #   leafletProxy("map1") %>% clearMarkers()
+  # })
 
   output$message <- renderText(v$msg)
 }
