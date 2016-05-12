@@ -1,4 +1,4 @@
-# Goal here is to replicate this example from leafletjs.com:
+# Goal here is to replicate this choropleth example from leafletjs.com:
 #   [Interactive Choropleth Map](http://leafletjs.com/examples/choropleth.html)
 
 library(shiny)
@@ -7,7 +7,7 @@ library(rgdal)
 library(leaflet)
 
 # load states
-states = readOGR(system.file('examples/us-states.json', package = 'leaflet'), layer = "OGRGeoJSON")
+states = readOGR(system.file("examples/us-states.json", package = 'leaflet'), layer = "OGRGeoJSON")
 
 # setup color palette ----
 
@@ -30,7 +30,7 @@ ui <- fluidPage(
   # Add a little CSS to make the map background pure white
   tags$head(tags$style("
     showcase-code-position-toggle, #showcase-sxs-code { display: none; }
-    .floater { background-color: white; padding: 8px; opacity: 0.7; border-radius: 6px; box-shadow: 0 0 15px rgba(0,0,0,0.2); }")),
+    .floater { background-color: white; padding: 8px; opacity: 0.8; border-radius: 6px; box-shadow: 0 0 15px rgba(0,0,0,0.2); }")),
 
   leafletOutput("map1"),
 
@@ -61,7 +61,7 @@ server <- function(input, output, session) {
         fillOpacity = 0.7, fillColor = ~colors[cut(density, breaks)]) %>%
       addLegend(
         "bottomright", colors = colors, labels = break_labels,
-        opacity = 0.7)
+        opacity = 0.8)
   })
 
   # input$map1_shape_mouseover gets updated a lot, even if the id doesn't change.
@@ -98,7 +98,6 @@ server <- function(input, output, session) {
 
     # clear highlight polygon if null or not same as previous
     if (is.null(v$highlight) || (length(last_highlight) > 0 && !is.null(v$highlight) && last_highlight != v$highlight)){
-      cat(sprintf('clear previous highlight: %s -> %s\n', last_highlight, v$highlight))
       proxy %>% clearGroup("highlight")
     }
 
@@ -123,4 +122,3 @@ server <- function(input, output, session) {
 }
 
 shinyApp(ui, server)
-
