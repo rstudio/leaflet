@@ -7,7 +7,7 @@ library(rgdal)
 library(leaflet)
 
 # load states
-states = readOGR(system.file('inst/examples/us-states.json', package = 'leaflet'), layer = "OGRGeoJSON")
+states = readOGR(system.file('examples/us-states.json', package = 'leaflet'), layer = "OGRGeoJSON")
 
 # setup color palette ----
 
@@ -70,7 +70,7 @@ server <- function(input, output, session) {
   # writing to v$highlight doesn't trigger reactivity unless the new value
   # is different than the previous value).
   observe({
-    v$highlight <- sub("_highlight", "", input$map1_shape_mouseover$id)
+    v$highlight <- sub(" highlight", "", input$map1_shape_mouseover$id)
 
     # nullify highlight if mouseout == mouseover
     if (length(input$map1_shape_mouseout$id) > 0 && input$map1_shape_mouseout$id == input$map1_shape_mouseover$id){
@@ -96,7 +96,7 @@ server <- function(input, output, session) {
   observe({
     proxy <- leafletProxy("map1", data = states)
 
-    # clear highlight if null or not same as previous
+    # clear highlight polygon if null or not same as previous
     if (is.null(v$highlight) || (length(last_highlight) > 0 && !is.null(v$highlight) && last_highlight != v$highlight)){
       cat(sprintf('clear previous highlight: %s -> %s\n', last_highlight, v$highlight))
       proxy %>% clearGroup("highlight")
@@ -105,13 +105,12 @@ server <- function(input, output, session) {
     # record last highlight
     last_highlight <<- v$highlight
 
-    # return if no new highlight
+    # skip adding highlight if no new highlight
     if (length(last_highlight) == 0 || is.null(last_highlight))
       return()
 
     isolate({
-      # highlight state
-      cat(sprintf('highlight state: %s\n', v$highlight))
+      # add highlight polygon
       proxy %>%
         addPolygons(
           data = subset(states, name == v$highlight),
