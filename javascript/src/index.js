@@ -215,19 +215,18 @@ var dataframe = (function() {
     });
   };
   Mipmapper.prototype.reduce = function(img, callback) {
-      var imgDataCanvas = document.createElement("canvas");
-      imgDataCanvas.width = Math.ceil(img.width / 2);
-      imgDataCanvas.height = Math.ceil(img.height / 2);
-      imgDataCanvas.style.display = "none";
-      document.body.appendChild(imgDataCanvas);
-      try {
-        var imgDataCtx = imgDataCanvas.getContext("2d");
-        imgDataCtx.drawImage(img, 0, 0, img.width/2, img.height/2);
-        callback(imgDataCanvas);
-      } finally {
-        document.body.removeChild(imgDataCanvas);
-      }
-
+    var imgDataCanvas = document.createElement("canvas");
+    imgDataCanvas.width = Math.ceil(img.width / 2);
+    imgDataCanvas.height = Math.ceil(img.height / 2);
+    imgDataCanvas.style.display = "none";
+    document.body.appendChild(imgDataCanvas);
+    try {
+      var imgDataCtx = imgDataCanvas.getContext("2d");
+      imgDataCtx.drawImage(img, 0, 0, img.width/2, img.height/2);
+      callback(imgDataCanvas);
+    } finally {
+      document.body.removeChild(imgDataCanvas);
+    }
   };
 
   function LayerManager(map) {
@@ -636,7 +635,7 @@ var dataframe = (function() {
   function addMarkers(map, df, group, clusterOptions, clusterId, markerFunc) {
     (function() {
       var clusterGroup = this.layerManager.getLayer("cluster", clusterId),
-          cluster = clusterOptions !== null;
+        cluster = clusterOptions !== null;
       if (cluster && !clusterGroup) {
         clusterGroup = L.markerClusterGroup(clusterOptions);
         clusterGroup.clusterLayerStore = new ClusterLayerStore(clusterGroup);
@@ -796,7 +795,7 @@ var dataframe = (function() {
           var labelOptions = df.get(i, 'labelOptions');
           if (label !== null) {
             if (labelOptions !== null) {
-                layer.bindLabel(label, labelOptions);
+              layer.bindLabel(label, labelOptions);
             } else {
               layer.bindLabel(label);
             }
@@ -858,9 +857,9 @@ var dataframe = (function() {
       .cbind(options);
 
     addLayers(this, "shape", df, function(df, i) {
-        var shape = df.get(i, 'shapes')[0];
-        shape = HTMLWidgets.dataframeToD3(shape);
-        return L.polyline(shape, df.get(i));
+      var shape = df.get(i, 'shapes')[0];
+      shape = HTMLWidgets.dataframeToD3(shape);
+      return L.polyline(shape, df.get(i));
     });
   };
 
@@ -908,7 +907,8 @@ var dataframe = (function() {
       .cbind(options);
 
     addLayers(this, "shape", df, function(df, i) {
-      return L.rectangle([
+      return L.rectangle(
+        [
           [df.get(i, 'lat1'), df.get(i, 'lng1')],
           [df.get(i, 'lat2'), df.get(i, 'lng2')]
         ],
@@ -1069,9 +1069,9 @@ var dataframe = (function() {
 
     legend.onAdd = function (map) {
       var div = L.DomUtil.create('div', options.className),
-          colors = options.colors,
-          labels = options.labels,
-          legendHTML = '';
+        colors = options.colors,
+        labels = options.labels,
+        legendHTML = '';
       if (options.type === 'numeric') {
         // # Formatting constants.
         var singleBinHeight = 20;  // The distance between tick marks, in px
@@ -1103,7 +1103,7 @@ var dataframe = (function() {
           'margin-top': vMargin + 'px'
         });
         var leftDiv = $('<div/>').css('float', 'left'),
-            rightDiv = $('<div/>').css('float', 'left');
+          rightDiv = $('<div/>').css('float', 'left');
         leftDiv.append(gradSpan);
         $(div).append(leftDiv).append(rightDiv)
           .append($("<br clear='both'/>"));
