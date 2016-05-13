@@ -122,7 +122,7 @@ var DataFrame = function () {
 exports.default = DataFrame;
 
 
-},{"./util":4}],2:[function(require,module,exports){
+},{"./util":5}],2:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -134,6 +134,10 @@ var _dataframe = require("./dataframe");
 
 var _dataframe2 = _interopRequireDefault(_dataframe);
 
+var _mipmapper = require("./mipmapper");
+
+var _mipmapper2 = _interopRequireDefault(_mipmapper);
+
 var _jquery = require("./jquery");
 
 var _jquery2 = _interopRequireDefault(_jquery);
@@ -144,84 +148,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var L = global.L;
 var Shiny = global.Shiny;
 var HTMLWidgets = global.HTMLWidgets;
-var omnivore = global.Omnivore;
 
 (function () {
-  // This class simulates a mipmap, which shrinks images by powers of two. This
-  // stepwise reduction results in "pixel-perfect downscaling" (where every
-  // pixel of the original image has some contribution to the downscaled image)
-  // as opposed to a single-step downscaling which will discard a lot of data
-  // (and with sparse images at small scales can give very surprising results).
-  function Mipmapper(img) {
-    this._layers = [img];
-  }
-  // The various functions on this class take a callback function BUT MAY OR MAY
-  // NOT actually behave asynchronously.
-  Mipmapper.prototype.getBySize = function (desiredWidth, desiredHeight, callback) {
-    var _this = this;
-
-    var i = 0;
-    var lastImg = this._layers[0];
-    var testNext = function testNext() {
-      _this.getByIndex(i, function (img) {
-        // If current image is invalid (i.e. too small to be rendered) or
-        // it's smaller than what we wanted, return the last known good image.
-        if (!img || img.width < desiredWidth || img.height < desiredHeight) {
-          callback(lastImg);
-          return;
-        } else {
-          lastImg = img;
-          i++;
-          testNext();
-          return;
-        }
-      });
-    };
-    testNext();
-  };
-  Mipmapper.prototype.getByIndex = function (i, callback) {
-    var _this2 = this;
-
-    if (this._layers[i]) {
-      callback(this._layers[i]);
-      return;
-    }
-
-    this.getByIndex(i - 1, function (prevImg) {
-      if (!prevImg) {
-        // prevImg could not be calculated (too small, possibly)
-        callback(null);
-        return;
-      }
-      if (prevImg.width < 2 || prevImg.height < 2) {
-        // Can't reduce this image any further
-        callback(null);
-        return;
-      }
-      // If reduce ever becomes truly asynchronous, we should stuff a promise or
-      // something into this._layers[i] before calling this.reduce(), to prevent
-      // redundant reduce operations from happening.
-      _this2.reduce(prevImg, function (reducedImg) {
-        _this2._layers[i] = reducedImg;
-        callback(reducedImg);
-        return;
-      });
-    });
-  };
-  Mipmapper.prototype.reduce = function (img, callback) {
-    var imgDataCanvas = document.createElement("canvas");
-    imgDataCanvas.width = Math.ceil(img.width / 2);
-    imgDataCanvas.height = Math.ceil(img.height / 2);
-    imgDataCanvas.style.display = "none";
-    document.body.appendChild(imgDataCanvas);
-    try {
-      var imgDataCtx = imgDataCanvas.getContext("2d");
-      imgDataCtx.drawImage(img, 0, 0, img.width / 2, img.height / 2);
-      callback(imgDataCanvas);
-    } finally {
-      document.body.removeChild(imgDataCanvas);
-    }
-  };
 
   function LayerManager(map) {
     this._map = map;
@@ -310,18 +238,18 @@ var omnivore = global.Omnivore;
     return this._byLayerId[this._layerIdKey(category, layerId)];
   };
   LayerManager.prototype.removeLayer = function (category, layerIds) {
-    var _this3 = this;
+    var _this = this;
 
     // Find layer info
     _jquery2.default.each((0, _util.asArray)(layerIds), function (i, layerId) {
-      var layer = _this3._byLayerId[_this3._layerIdKey(category, layerId)];
+      var layer = _this._byLayerId[_this._layerIdKey(category, layerId)];
       if (layer) {
-        _this3._removeLayer(layer);
+        _this._removeLayer(layer);
       }
     });
   };
   LayerManager.prototype.clearLayers = function (category) {
-    var _this4 = this;
+    var _this2 = this;
 
     // Find all layers in _byCategory[category]
     var catTable = this._byCategory[category];
@@ -336,7 +264,7 @@ var omnivore = global.Omnivore;
       stamps.push(k);
     });
     _jquery2.default.each(stamps, function (i, stamp) {
-      _this4._removeLayer(stamp);
+      _this2._removeLayer(stamp);
     });
   };
   LayerManager.prototype.getLayerGroup = function (group, ensureExists) {
@@ -353,18 +281,18 @@ var omnivore = global.Omnivore;
     return layerGroup.groupname;
   };
   LayerManager.prototype.getVisibleGroups = function () {
-    var _this5 = this;
+    var _this3 = this;
 
     var result = [];
     _jquery2.default.each(this._groupContainers, function (k, v) {
-      if (_this5._map.hasLayer(v)) {
+      if (_this3._map.hasLayer(v)) {
         result.push(k);
       }
     });
     return result;
   };
   LayerManager.prototype.clearGroup = function (group) {
-    var _this6 = this;
+    var _this4 = this;
 
     // Find all layers in _byGroup[group]
     var groupTable = this._byGroup[group];
@@ -379,7 +307,7 @@ var omnivore = global.Omnivore;
       stamps.push(k);
     });
     _jquery2.default.each(stamps, function (i, stamp) {
-      _this6._removeLayer(stamp);
+      _this4._removeLayer(stamp);
     });
   };
   LayerManager.prototype.clear = function () {
@@ -532,10 +460,10 @@ var omnivore = global.Omnivore;
   var methods = window.LeafletWidget.methods = {};
 
   methods.clearGroup = function (group) {
-    var _this7 = this;
+    var _this5 = this;
 
     _jquery2.default.each((0, _util.asArray)(group), function (i, v) {
-      _this7.layerManager.clearGroup(v);
+      _this5.layerManager.clearGroup(v);
     });
   };
 
@@ -552,7 +480,7 @@ var omnivore = global.Omnivore;
   };
 
   methods.addPopups = function (lat, lng, popup, layerId, group, options) {
-    var _this8 = this;
+    var _this6 = this;
 
     var df = new _dataframe2.default().col("lat", lat).col("lng", lng).col("popup", popup).col("layerId", layerId).col("group", group).cbind(options);
 
@@ -565,7 +493,7 @@ var omnivore = global.Omnivore;
         popup.on("click", mouseHandler(this.id, thisId, thisGroup, "popup_click"), this);
         popup.on("mouseover", mouseHandler(this.id, thisId, thisGroup, "popup_mouseover"), this);
         popup.on("mouseout", mouseHandler(this.id, thisId, thisGroup, "popup_mouseout"), this);
-      }).call(_this8);
+      }).call(_this6);
     };
 
     for (var i = 0; i < df.nrow(); i++) {
@@ -619,7 +547,7 @@ var omnivore = global.Omnivore;
 
   function addMarkers(map, df, group, clusterOptions, clusterId, markerFunc) {
     (function () {
-      var _this9 = this;
+      var _this7 = this;
 
       var clusterGroup = this.layerManager.getLayer("cluster", clusterId),
           cluster = clusterOptions !== null;
@@ -657,7 +585,7 @@ var omnivore = global.Omnivore;
           marker.on("click", mouseHandler(this.id, thisId, thisGroup, "marker_click", extraInfo), this);
           marker.on("mouseover", mouseHandler(this.id, thisId, thisGroup, "marker_mouseover", extraInfo), this);
           marker.on("mouseout", mouseHandler(this.id, thisId, thisGroup, "marker_mouseout", extraInfo), this);
-        }).call(_this9);
+        }).call(_this7);
       };
 
       for (var i = 0; i < df.nrow(); i++) {
@@ -945,7 +873,7 @@ var omnivore = global.Omnivore;
         layer.on("mouseout", mouseHandler(self.id, layerId, group, "topojson_mouseout", extraInfo), this);
       }
     });
-    omnivore.topojson.parse(data, null, gjlayer);
+    global.omnivore.topojson.parse(data, null, gjlayer);
     this.layerManager.addLayer(gjlayer, "topojson", layerId, group);
   };
 
@@ -1105,7 +1033,7 @@ var omnivore = global.Omnivore;
   };
 
   methods.addLayersControl = function (baseGroups, overlayGroups, options) {
-    var _this10 = this;
+    var _this8 = this;
 
     // Only allow one layers control at a time
     methods.removeLayersControl.call(this);
@@ -1113,23 +1041,23 @@ var omnivore = global.Omnivore;
     var firstLayer = true;
     var base = {};
     _jquery2.default.each((0, _util.asArray)(baseGroups), function (i, g) {
-      var layer = _this10.layerManager.getLayerGroup(g, true);
+      var layer = _this8.layerManager.getLayerGroup(g, true);
       if (layer) {
         base[g] = layer;
 
         // Check if >1 base layers are visible; if so, hide all but the first one
-        if (_this10.hasLayer(layer)) {
+        if (_this8.hasLayer(layer)) {
           if (firstLayer) {
             firstLayer = false;
           } else {
-            _this10.removeLayer(layer);
+            _this8.removeLayer(layer);
           }
         }
       }
     });
     var overlay = {};
     _jquery2.default.each((0, _util.asArray)(overlayGroups), function (i, g) {
-      var layer = _this10.layerManager.getLayerGroup(g, true);
+      var layer = _this8.layerManager.getLayerGroup(g, true);
       if (layer) {
         overlay[g] = layer;
       }
@@ -1163,23 +1091,23 @@ var omnivore = global.Omnivore;
   };
 
   methods.hideGroup = function (group) {
-    var _this11 = this;
+    var _this9 = this;
 
     _jquery2.default.each((0, _util.asArray)(group), function (i, g) {
-      var layer = _this11.layerManager.getLayerGroup(g, true);
+      var layer = _this9.layerManager.getLayerGroup(g, true);
       if (layer) {
-        _this11.removeLayer(layer);
+        _this9.removeLayer(layer);
       }
     });
   };
 
   methods.showGroup = function (group) {
-    var _this12 = this;
+    var _this10 = this;
 
     _jquery2.default.each((0, _util.asArray)(group), function (i, g) {
-      var layer = _this12.layerManager.getLayerGroup(g, true);
+      var layer = _this10.layerManager.getLayerGroup(g, true);
       if (layer) {
-        _this12.addLayer(layer);
+        _this10.addLayer(layer);
       }
     });
   };
@@ -1286,7 +1214,7 @@ var omnivore = global.Omnivore;
 
       // Save the image data.
       imgData = imgDataCtx.getImageData(0, 0, w, h).data;
-      imgDataMipMapper = new Mipmapper(img);
+      imgDataMipMapper = new _mipmapper2.default(img);
 
       // Done with the canvas, remove it from the page so it can be gc'd.
       document.body.removeChild(imgDataCanvas);
@@ -1689,7 +1617,7 @@ if (typeof L.Icon.Default.imagePath === "undefined") {
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./dataframe":1,"./jquery":3,"./util":4}],3:[function(require,module,exports){
+},{"./dataframe":1,"./jquery":3,"./mipmapper":4,"./util":5}],3:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -1701,6 +1629,113 @@ exports.default = global.jQuery;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],4:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+// This class simulates a mipmap, which shrinks images by powers of two. This
+// stepwise reduction results in "pixel-perfect downscaling" (where every
+// pixel of the original image has some contribution to the downscaled image)
+// as opposed to a single-step downscaling which will discard a lot of data
+// (and with sparse images at small scales can give very surprising results).
+
+var Mipmapper = function () {
+  function Mipmapper(img) {
+    _classCallCheck(this, Mipmapper);
+
+    this._layers = [img];
+  }
+
+  // The various functions on this class take a callback function BUT MAY OR MAY
+  // NOT actually behave asynchronously.
+
+
+  _createClass(Mipmapper, [{
+    key: "getBySize",
+    value: function getBySize(desiredWidth, desiredHeight, callback) {
+      var _this = this;
+
+      var i = 0;
+      var lastImg = this._layers[0];
+      var testNext = function testNext() {
+        _this.getByIndex(i, function (img) {
+          // If current image is invalid (i.e. too small to be rendered) or
+          // it's smaller than what we wanted, return the last known good image.
+          if (!img || img.width < desiredWidth || img.height < desiredHeight) {
+            callback(lastImg);
+            return;
+          } else {
+            lastImg = img;
+            i++;
+            testNext();
+            return;
+          }
+        });
+      };
+      testNext();
+    }
+  }, {
+    key: "getByIndex",
+    value: function getByIndex(i, callback) {
+      var _this2 = this;
+
+      if (this._layers[i]) {
+        callback(this._layers[i]);
+        return;
+      }
+
+      this.getByIndex(i - 1, function (prevImg) {
+        if (!prevImg) {
+          // prevImg could not be calculated (too small, possibly)
+          callback(null);
+          return;
+        }
+        if (prevImg.width < 2 || prevImg.height < 2) {
+          // Can't reduce this image any further
+          callback(null);
+          return;
+        }
+        // If reduce ever becomes truly asynchronous, we should stuff a promise or
+        // something into this._layers[i] before calling this.reduce(), to prevent
+        // redundant reduce operations from happening.
+        _this2.reduce(prevImg, function (reducedImg) {
+          _this2._layers[i] = reducedImg;
+          callback(reducedImg);
+          return;
+        });
+      });
+    }
+  }, {
+    key: "reduce",
+    value: function reduce(img, callback) {
+      var imgDataCanvas = document.createElement("canvas");
+      imgDataCanvas.width = Math.ceil(img.width / 2);
+      imgDataCanvas.height = Math.ceil(img.height / 2);
+      imgDataCanvas.style.display = "none";
+      document.body.appendChild(imgDataCanvas);
+      try {
+        var imgDataCtx = imgDataCanvas.getContext("2d");
+        imgDataCtx.drawImage(img, 0, 0, img.width / 2, img.height / 2);
+        callback(imgDataCanvas);
+      } finally {
+        document.body.removeChild(imgDataCanvas);
+      }
+    }
+  }]);
+
+  return Mipmapper;
+}();
+
+exports.default = Mipmapper;
+
+
+},{}],5:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {

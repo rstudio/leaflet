@@ -3,86 +3,15 @@ import {
   asArray
 } from "./util";
 import DataFrame from "./dataframe";
+import Mipmapper from "./mipmapper";
 import $ from "./jquery";
 
 // Import globals as locals to make eslint happy
 let L = global.L;
 let Shiny = global.Shiny;
 let HTMLWidgets = global.HTMLWidgets;
-let omnivore = global.Omnivore;
 
 (function() {
-  // This class simulates a mipmap, which shrinks images by powers of two. This
-  // stepwise reduction results in "pixel-perfect downscaling" (where every
-  // pixel of the original image has some contribution to the downscaled image)
-  // as opposed to a single-step downscaling which will discard a lot of data
-  // (and with sparse images at small scales can give very surprising results).
-  function Mipmapper(img) {
-    this._layers = [img];
-  }
-  // The various functions on this class take a callback function BUT MAY OR MAY
-  // NOT actually behave asynchronously.
-  Mipmapper.prototype.getBySize = function(desiredWidth, desiredHeight, callback) {
-    let i = 0;
-    let lastImg = this._layers[0];
-    let testNext = () => {
-      this.getByIndex(i, function(img) {
-        // If current image is invalid (i.e. too small to be rendered) or
-        // it's smaller than what we wanted, return the last known good image.
-        if (!img || img.width < desiredWidth || img.height < desiredHeight) {
-          callback(lastImg);
-          return;
-        } else {
-          lastImg = img;
-          i++;
-          testNext();
-          return;
-        }
-      });
-    };
-    testNext();
-  };
-  Mipmapper.prototype.getByIndex = function(i, callback) {
-    if (this._layers[i]) {
-      callback(this._layers[i]);
-      return;
-    }
-
-    this.getByIndex(i-1, (prevImg) => {
-      if (!prevImg) {
-        // prevImg could not be calculated (too small, possibly)
-        callback(null);
-        return;
-      }
-      if (prevImg.width < 2 || prevImg.height < 2) {
-        // Can't reduce this image any further
-        callback(null);
-        return;
-      }
-      // If reduce ever becomes truly asynchronous, we should stuff a promise or
-      // something into this._layers[i] before calling this.reduce(), to prevent
-      // redundant reduce operations from happening.
-      this.reduce(prevImg, (reducedImg) => {
-        this._layers[i] = reducedImg;
-        callback(reducedImg);
-        return;
-      });
-    });
-  };
-  Mipmapper.prototype.reduce = function(img, callback) {
-    let imgDataCanvas = document.createElement("canvas");
-    imgDataCanvas.width = Math.ceil(img.width / 2);
-    imgDataCanvas.height = Math.ceil(img.height / 2);
-    imgDataCanvas.style.display = "none";
-    document.body.appendChild(imgDataCanvas);
-    try {
-      let imgDataCtx = imgDataCanvas.getContext("2d");
-      imgDataCtx.drawImage(img, 0, 0, img.width/2, img.height/2);
-      callback(imgDataCanvas);
-    } finally {
-      document.body.removeChild(imgDataCanvas);
-    }
-  };
 
   function LayerManager(map) {
     this._map = map;
@@ -863,7 +792,7 @@ let omnivore = global.Omnivore;
         layer.on("mouseout", mouseHandler(self.id, layerId, group, "topojson_mouseout", extraInfo), this);
       }
     });
-    omnivore.topojson.parse(data, null, gjlayer);
+    global.omnivore.topojson.parse(data, null, gjlayer);
     this.layerManager.addLayer(gjlayer, "topojson", layerId, group);
   };
 
