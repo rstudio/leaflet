@@ -1,164 +1,150 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-(function (global){
-'use strict';
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
-// Import globals as locals to make eslint happy
-var $ = global.jQuery;
-var L = global.L;
-var Shiny = global.Shiny;
-var HTMLWidgets = global.HTMLWidgets;
-var omnivore = global.Omnivore;
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-function log(message) {
-  /* eslint-disable no-console */
-  if (console && console.log) console.log(message);
-  /* eslint-enable no-console */
-}
+var _util = require("./util");
 
-function recycle(values, length, inPlace) {
-  if (length === 0 && !inPlace) return [];
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-  if (!(values instanceof Array)) {
-    if (inPlace) {
-      throw new Error("Can't do in-place recycling of a non-Array value");
-    }
-    values = [values];
-  }
-  if (typeof length === 'undefined') length = values.length;
+var DataFrame = function () {
+  function DataFrame() {
+    _classCallCheck(this, DataFrame);
 
-  var dest = inPlace ? values : [];
-  var origLength = values.length;
-  while (dest.length < length) {
-    dest.push(values[dest.length % origLength]);
-  }
-  if (dest.length > length) {
-    dest.splice(length, dest.length - length);
-  }
-  return dest;
-}
-
-function asArray(value) {
-  if (value instanceof Array) return value;else return [value];
-}
-
-var dataframe = function () {
-  var DataFrame = function DataFrame() {
     this.columns = [];
     this.colnames = [];
     this.colstrict = [];
 
     this.effectiveLength = 0;
     this.colindices = {};
-  };
+  }
 
-  DataFrame.prototype._updateCachedProperties = function () {
-    var _this = this;
+  _createClass(DataFrame, [{
+    key: "_updateCachedProperties",
+    value: function _updateCachedProperties() {
+      var _this = this;
 
-    this.effectiveLength = 0;
-    this.colindices = {};
+      this.effectiveLength = 0;
+      this.colindices = {};
 
-    $.each(this.columns, function (i, column) {
-      _this.effectiveLength = Math.max(_this.effectiveLength, column.length);
-      _this.colindices[_this.colnames[i]] = i;
-    });
-  };
-
-  DataFrame.prototype._colIndex = function (colname) {
-    var index = this.colindices[colname];
-    if (typeof index === 'undefined') return -1;
-    return index;
-  };
-
-  DataFrame.prototype.col = function (name, values, strict) {
-    if (typeof name !== 'string') throw new Error('Invalid column name "' + name + '"');
-
-    var index = this._colIndex(name);
-
-    if (arguments.length === 1) {
-      if (index < 0) return null;else return recycle(this.columns[index], this.effectiveLength);
+      this.columns.forEach(function (column, i) {
+        _this.effectiveLength = Math.max(_this.effectiveLength, column.length);
+        _this.colindices[_this.colnames[i]] = i;
+      });
     }
-
-    if (index < 0) {
-      index = this.colnames.length;
-      this.colnames.push(name);
+  }, {
+    key: "_colIndex",
+    value: function _colIndex(colname) {
+      var index = this.colindices[colname];
+      if (typeof index === "undefined") return -1;
+      return index;
     }
-    this.columns[index] = asArray(values);
-    this.colstrict[index] = !!strict;
+  }, {
+    key: "col",
+    value: function col(name, values, strict) {
+      if (typeof name !== "string") throw new Error("Invalid column name \"" + name + "\"");
 
-    // TODO: Validate strictness (ensure lengths match up with other stricts)
+      var index = this._colIndex(name);
 
-    this._updateCachedProperties();
+      if (arguments.length === 1) {
+        if (index < 0) return null;else return (0, _util.recycle)(this.columns[index], this.effectiveLength);
+      }
 
-    return this;
-  };
+      if (index < 0) {
+        index = this.colnames.length;
+        this.colnames.push(name);
+      }
+      this.columns[index] = (0, _util.asArray)(values);
+      this.colstrict[index] = !!strict;
 
-  DataFrame.prototype.cbind = function (obj, strict) {
-    var _this2 = this;
+      // TODO: Validate strictness (ensure lengths match up with other stricts)
 
-    $.each(obj, function (name, coldata) {
-      _this2.col(name, coldata);
-    });
-    return this;
-  };
+      this._updateCachedProperties();
 
-  DataFrame.prototype.get = function (row, col) {
-    var _this3 = this;
-
-    if (row > this.effectiveLength) throw new Error('Row argument was out of bounds: ' + row + ' > ' + this.effectiveLength);
-
-    var colIndex = -1;
-    if (typeof col === 'undefined') {
-      var _ret = function () {
-        var rowData = {};
-        $.each(_this3.colnames, function (i, name) {
-          rowData[name] = _this3.columns[i][row % _this3.columns[i].length];
-        });
-        return {
-          v: rowData
-        };
-      }();
-
-      if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
-    } else if (typeof col === 'string') {
-      colIndex = this._colIndex(col);
-    } else if (typeof col === 'number') {
-      colIndex = col;
+      return this;
     }
-    if (colIndex < 0 || colIndex > this.columns.length) throw new Error('Unknown column index: ' + col);
+  }, {
+    key: "cbind",
+    value: function cbind(obj, strict) {
+      var _this2 = this;
 
-    return this.columns[colIndex][row % this.columns[colIndex].length];
-  };
-
-  DataFrame.prototype.nrow = function () {
-    return this.effectiveLength;
-  };
-
-  // function test() {
-  //   let df = new DataFrame();
-  //   df.col("speed", [4, 4, 7, 7, 8, 9, 10, 10, 10, 11, 11, 12, 12, 12, 12, 13, 13, 13, 13, 14, 14, 14, 14, 15, 15, 15, 16, 16, 17, 17, 17, 18, 18, 18, 18, 19, 19, 19, 20, 20, 20, 20, 20, 22, 23, 24, 24, 24, 24, 25])
-  //     .col("dist", [2, 10, 4, 22, 16, 10, 18, 26, 34, 17, 28, 14, 20, 24, 28, 26, 34, 34, 46, 26, 36, 60, 80, 20, 26, 54, 32, 40, 32, 40, 50, 42, 56, 76, 84, 36, 46, 68, 32, 48, 52, 56, 64, 66, 54, 70, 92, 93, 120, 85])
-  //     .col("color", ["yellow", "red"])
-  //     .cbind({
-  //       "Make" : ["Toyota", "Cadillac", "BMW"],
-  //       "Model" : ["Corolla", "CTS", "435i"]
-  //     })
-  //   ;
-  //   console.log(df.get(9, "speed"));
-  //   console.log(df.get(9, "dist"));
-  //   console.log(df.get(9, "color"));
-  //   console.log(df.get(9, "Make"));
-  //   console.log(df.get(9, "Model"));
-  //   console.log(df.get(9));
-  // }
-
-  return {
-    create: function create() {
-      return new DataFrame();
+      Object.keys(obj).forEach(function (name) {
+        var coldata = obj[name];
+        _this2.col(name, coldata);
+      });
+      return this;
     }
-  };
+  }, {
+    key: "get",
+    value: function get(row, col) {
+      var _this3 = this;
+
+      if (row > this.effectiveLength) throw new Error("Row argument was out of bounds: " + row + " > " + this.effectiveLength);
+
+      var colIndex = -1;
+      if (typeof col === "undefined") {
+        var _ret = function () {
+          var rowData = {};
+          _this3.colnames.forEach(function (name, i) {
+            rowData[name] = _this3.columns[i][row % _this3.columns[i].length];
+          });
+          return {
+            v: rowData
+          };
+        }();
+
+        if ((typeof _ret === "undefined" ? "undefined" : _typeof(_ret)) === "object") return _ret.v;
+      } else if (typeof col === "string") {
+        colIndex = this._colIndex(col);
+      } else if (typeof col === "number") {
+        colIndex = col;
+      }
+      if (colIndex < 0 || colIndex > this.columns.length) throw new Error("Unknown column index: " + col);
+
+      return this.columns[colIndex][row % this.columns[colIndex].length];
+    }
+  }, {
+    key: "nrow",
+    value: function nrow() {
+      return this.effectiveLength;
+    }
+  }]);
+
+  return DataFrame;
 }();
+
+exports.default = DataFrame;
+
+
+},{"./util":4}],2:[function(require,module,exports){
+(function (global){
+"use strict";
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+var _util = require("./util");
+
+var _dataframe = require("./dataframe");
+
+var _dataframe2 = _interopRequireDefault(_dataframe);
+
+var _jquery = require("./jquery");
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// Import globals as locals to make eslint happy
+var L = global.L;
+var Shiny = global.Shiny;
+var HTMLWidgets = global.HTMLWidgets;
+var omnivore = global.Omnivore;
 
 (function () {
   // This class simulates a mipmap, which shrinks images by powers of two. This
@@ -172,12 +158,12 @@ var dataframe = function () {
   // The various functions on this class take a callback function BUT MAY OR MAY
   // NOT actually behave asynchronously.
   Mipmapper.prototype.getBySize = function (desiredWidth, desiredHeight, callback) {
-    var _this4 = this;
+    var _this = this;
 
     var i = 0;
     var lastImg = this._layers[0];
     var testNext = function testNext() {
-      _this4.getByIndex(i, function (img) {
+      _this.getByIndex(i, function (img) {
         // If current image is invalid (i.e. too small to be rendered) or
         // it's smaller than what we wanted, return the last known good image.
         if (!img || img.width < desiredWidth || img.height < desiredHeight) {
@@ -194,7 +180,7 @@ var dataframe = function () {
     testNext();
   };
   Mipmapper.prototype.getByIndex = function (i, callback) {
-    var _this5 = this;
+    var _this2 = this;
 
     if (this._layers[i]) {
       callback(this._layers[i]);
@@ -215,8 +201,8 @@ var dataframe = function () {
       // If reduce ever becomes truly asynchronous, we should stuff a promise or
       // something into this._layers[i] before calling this.reduce(), to prevent
       // redundant reduce operations from happening.
-      _this5.reduce(prevImg, function (reducedImg) {
-        _this5._layers[i] = reducedImg;
+      _this2.reduce(prevImg, function (reducedImg) {
+        _this2._layers[i] = reducedImg;
         callback(reducedImg);
         return;
       });
@@ -324,18 +310,18 @@ var dataframe = function () {
     return this._byLayerId[this._layerIdKey(category, layerId)];
   };
   LayerManager.prototype.removeLayer = function (category, layerIds) {
-    var _this6 = this;
+    var _this3 = this;
 
     // Find layer info
-    $.each(asArray(layerIds), function (i, layerId) {
-      var layer = _this6._byLayerId[_this6._layerIdKey(category, layerId)];
+    _jquery2.default.each((0, _util.asArray)(layerIds), function (i, layerId) {
+      var layer = _this3._byLayerId[_this3._layerIdKey(category, layerId)];
       if (layer) {
-        _this6._removeLayer(layer);
+        _this3._removeLayer(layer);
       }
     });
   };
   LayerManager.prototype.clearLayers = function (category) {
-    var _this7 = this;
+    var _this4 = this;
 
     // Find all layers in _byCategory[category]
     var catTable = this._byCategory[category];
@@ -346,11 +332,11 @@ var dataframe = function () {
     // Remove all layers. Make copy of keys to avoid mutating the collection
     // behind the iterator you're accessing.
     var stamps = [];
-    $.each(catTable, function (k, v) {
+    _jquery2.default.each(catTable, function (k, v) {
       stamps.push(k);
     });
-    $.each(stamps, function (i, stamp) {
-      _this7._removeLayer(stamp);
+    _jquery2.default.each(stamps, function (i, stamp) {
+      _this4._removeLayer(stamp);
     });
   };
   LayerManager.prototype.getLayerGroup = function (group, ensureExists) {
@@ -367,18 +353,18 @@ var dataframe = function () {
     return layerGroup.groupname;
   };
   LayerManager.prototype.getVisibleGroups = function () {
-    var _this8 = this;
+    var _this5 = this;
 
     var result = [];
-    $.each(this._groupContainers, function (k, v) {
-      if (_this8._map.hasLayer(v)) {
+    _jquery2.default.each(this._groupContainers, function (k, v) {
+      if (_this5._map.hasLayer(v)) {
         result.push(k);
       }
     });
     return result;
   };
   LayerManager.prototype.clearGroup = function (group) {
-    var _this9 = this;
+    var _this6 = this;
 
     // Find all layers in _byGroup[group]
     var groupTable = this._byGroup[group];
@@ -389,11 +375,11 @@ var dataframe = function () {
     // Remove all layers. Make copy of keys to avoid mutating the collection
     // behind the iterator you're accessing.
     var stamps = [];
-    $.each(groupTable, function (k, v) {
+    _jquery2.default.each(groupTable, function (k, v) {
       stamps.push(k);
     });
-    $.each(stamps, function (i, stamp) {
-      _this9._removeLayer(stamp);
+    _jquery2.default.each(stamps, function (i, stamp) {
+      _this6._removeLayer(stamp);
     });
   };
   LayerManager.prototype.clear = function () {
@@ -405,9 +391,9 @@ var dataframe = function () {
     this._byCategory = {};
     this._byLayerId = {};
     this._byStamp = {};
-    $.each(this._categoryContainers, clearLayerGroup);
+    _jquery2.default.each(this._categoryContainers, clearLayerGroup);
     this._categoryContainers = {};
-    $.each(this._groupContainers, clearLayerGroup);
+    _jquery2.default.each(this._groupContainers, clearLayerGroup);
     this._groupContainers = {};
   };
   LayerManager.prototype._removeLayer = function (layer) {
@@ -444,7 +430,7 @@ var dataframe = function () {
   }
 
   ControlStore.prototype.add = function (control, id, html) {
-    if (typeof id !== 'undefined' && id !== null) {
+    if (typeof id !== "undefined" && id !== null) {
       if (this._controlsById[id]) {
         this._map.removeControl(this._controlsById[id]);
       }
@@ -483,7 +469,7 @@ var dataframe = function () {
   }
 
   ClusterLayerStore.prototype.add = function (layer, id) {
-    if (typeof id !== 'undefined' && id !== null) {
+    if (typeof id !== "undefined" && id !== null) {
       if (this._layers[id]) {
         this._group.removeLayer(this._layers[id]);
       }
@@ -493,11 +479,11 @@ var dataframe = function () {
   };
 
   ClusterLayerStore.prototype.remove = function (id) {
-    if (typeof id === 'undefined' || id === null) {
+    if (typeof id === "undefined" || id === null) {
       return;
     }
 
-    id = asArray(id);
+    id = (0, _util.asArray)(id);
     for (var i = 0; i < id.length; i++) {
       if (this._layers[id[i]]) {
         this._group.removeLayer(this._layers[id[i]]);
@@ -515,12 +501,12 @@ var dataframe = function () {
     return function (e) {
       if (!HTMLWidgets.shinyMode) return;
 
-      var eventInfo = $.extend({
+      var eventInfo = _jquery2.default.extend({
         id: layerId,
-        '.nonce': Math.random() // force reactivity
+        ".nonce": Math.random() // force reactivity
       }, group !== null ? { group: group } : null, e.target.getLatLng ? e.target.getLatLng() : e.latlng, extraInfo);
 
-      Shiny.onInputChange(mapId + '_' + eventName, eventInfo);
+      Shiny.onInputChange(mapId + "_" + eventName, eventInfo);
     };
   }
 
@@ -529,27 +515,27 @@ var dataframe = function () {
     var id = map.getContainer().id;
     var bounds = map.getBounds();
 
-    Shiny.onInputChange(id + '_bounds', {
+    Shiny.onInputChange(id + "_bounds", {
       north: bounds.getNorthEast().lat,
       east: bounds.getNorthEast().lng,
       south: bounds.getSouthWest().lat,
       west: bounds.getSouthWest().lng
     });
-    Shiny.onInputChange(id + '_center', {
+    Shiny.onInputChange(id + "_center", {
       lng: map.getCenter().lng,
       lat: map.getCenter().lat
     });
-    Shiny.onInputChange(id + '_zoom', map.getZoom());
+    Shiny.onInputChange(id + "_zoom", map.getZoom());
   }
 
   window.LeafletWidget = {};
   var methods = window.LeafletWidget.methods = {};
 
   methods.clearGroup = function (group) {
-    var _this10 = this;
+    var _this7 = this;
 
-    $.each(asArray(group), function (i, v) {
-      _this10.layerManager.clearGroup(v);
+    _jquery2.default.each((0, _util.asArray)(group), function (i, v) {
+      _this7.layerManager.clearGroup(v);
     });
   };
 
@@ -566,20 +552,20 @@ var dataframe = function () {
   };
 
   methods.addPopups = function (lat, lng, popup, layerId, group, options) {
-    var _this11 = this;
+    var _this8 = this;
 
-    var df = dataframe.create().col('lat', lat).col('lng', lng).col('popup', popup).col('layerId', layerId).col('group', group).cbind(options);
+    var df = new _dataframe2.default().col("lat", lat).col("lng", lng).col("popup", popup).col("layerId", layerId).col("group", group).cbind(options);
 
     var _loop = function _loop(i) {
       (function () {
-        var popup = L.popup(df.get(i)).setLatLng([df.get(i, 'lat'), df.get(i, 'lng')]).setContent(df.get(i, 'popup'));
-        var thisId = df.get(i, 'layerId');
-        var thisGroup = df.get(i, 'group');
+        var popup = L.popup(df.get(i)).setLatLng([df.get(i, "lat"), df.get(i, "lng")]).setContent(df.get(i, "popup"));
+        var thisId = df.get(i, "layerId");
+        var thisGroup = df.get(i, "group");
         this.layerManager.addLayer(popup, "popup", thisId, thisGroup);
-        popup.on('click', mouseHandler(this.id, thisId, thisGroup, 'popup_click'), this);
-        popup.on('mouseover', mouseHandler(this.id, thisId, thisGroup, 'popup_mouseover'), this);
-        popup.on('mouseout', mouseHandler(this.id, thisId, thisGroup, 'popup_mouseout'), this);
-      }).call(_this11);
+        popup.on("click", mouseHandler(this.id, thisId, thisGroup, "popup_click"), this);
+        popup.on("mouseover", mouseHandler(this.id, thisId, thisGroup, "popup_mouseover"), this);
+        popup.on("mouseout", mouseHandler(this.id, thisId, thisGroup, "popup_mouseout"), this);
+      }).call(_this8);
     };
 
     for (var i = 0; i < df.nrow(); i++) {
@@ -619,21 +605,21 @@ var dataframe = function () {
     if (!iconset) {
       return iconset;
     }
-    if (typeof iconset.index === 'undefined') {
+    if (typeof iconset.index === "undefined") {
       return iconset;
     }
 
-    iconset.data = asArray(iconset.data);
-    iconset.index = asArray(iconset.index);
+    iconset.data = (0, _util.asArray)(iconset.data);
+    iconset.index = (0, _util.asArray)(iconset.index);
 
-    return $.map(iconset.index, function (e, i) {
+    return _jquery2.default.map(iconset.index, function (e, i) {
       return iconset.data[e];
     });
   }
 
   function addMarkers(map, df, group, clusterOptions, clusterId, markerFunc) {
     (function () {
-      var _this12 = this;
+      var _this9 = this;
 
       var clusterGroup = this.layerManager.getLayer("cluster", clusterId),
           cluster = clusterOptions !== null;
@@ -646,17 +632,17 @@ var dataframe = function () {
       var _loop2 = function _loop2(i) {
         (function () {
           var marker = markerFunc(df, i);
-          var thisId = df.get(i, 'layerId');
-          var thisGroup = cluster ? null : df.get(i, 'group');
+          var thisId = df.get(i, "layerId");
+          var thisGroup = cluster ? null : df.get(i, "group");
           if (cluster) {
             clusterGroup.clusterLayerStore.add(marker, thisId);
           } else {
             this.layerManager.addLayer(marker, "marker", thisId, thisGroup);
           }
-          var popup = df.get(i, 'popup');
+          var popup = df.get(i, "popup");
           if (popup !== null) marker.bindPopup(popup);
-          var label = df.get(i, 'label');
-          var labelOptions = df.get(i, 'labelOptions');
+          var label = df.get(i, "label");
+          var labelOptions = df.get(i, "labelOptions");
           if (label !== null) {
             if (labelOptions !== null) {
               if (labelOptions.noHide) {
@@ -668,10 +654,10 @@ var dataframe = function () {
               marker.bindLabel(label);
             }
           }
-          marker.on('click', mouseHandler(this.id, thisId, thisGroup, 'marker_click', extraInfo), this);
-          marker.on('mouseover', mouseHandler(this.id, thisId, thisGroup, 'marker_mouseover', extraInfo), this);
-          marker.on('mouseout', mouseHandler(this.id, thisId, thisGroup, 'marker_mouseout', extraInfo), this);
-        }).call(_this12);
+          marker.on("click", mouseHandler(this.id, thisId, thisGroup, "marker_click", extraInfo), this);
+          marker.on("mouseover", mouseHandler(this.id, thisId, thisGroup, "marker_mouseover", extraInfo), this);
+          marker.on("mouseout", mouseHandler(this.id, thisId, thisGroup, "marker_mouseout", extraInfo), this);
+        }).call(_this9);
       };
 
       for (var i = 0; i < df.nrow(); i++) {
@@ -697,7 +683,7 @@ var dataframe = function () {
 
       // This cbinds the icon URLs and any other icon options; they're all
       // present on the icon object.
-      icondf = dataframe.create().cbind(icon);
+      icondf = new _dataframe2.default().cbind(icon);
 
       // Constructs an icon from a specified row of the icon dataframe.
       getIcon = function getIcon(i) {
@@ -729,14 +715,14 @@ var dataframe = function () {
       };
     }
 
-    var df = dataframe.create().col('lat', lat).col('lng', lng).col('layerId', layerId).col('group', group).col('popup', popup).col('label', label).col('labelOptions', labelOptions).cbind(options);
+    var df = new _dataframe2.default().col("lat", lat).col("lng", lng).col("layerId", layerId).col("group", group).col("popup", popup).col("label", label).col("labelOptions", labelOptions).cbind(options);
 
     if (icon) icondf.effectiveLength = df.nrow();
 
     addMarkers(this, df, group, clusterOptions, clusterId, function (df, i) {
       var options = df.get(i);
       if (icon) options.icon = getIcon(i);
-      return L.marker([df.get(i, 'lat'), df.get(i, 'lng')], options);
+      return L.marker([df.get(i, "lat"), df.get(i, "lng")], options);
     });
   };
 
@@ -747,7 +733,7 @@ var dataframe = function () {
 
       // This cbinds the icon URLs and any other icon options; they're all
       // present on the icon object.
-      icondf = dataframe.create().cbind(icon);
+      icondf = new _dataframe2.default().cbind(icon);
 
       // Constructs an icon from a specified row of the icon dataframe.
       getIcon = function getIcon(i) {
@@ -760,14 +746,14 @@ var dataframe = function () {
       };
     }
 
-    var df = dataframe.create().col('lat', lat).col('lng', lng).col('layerId', layerId).col('group', group).col('popup', popup).col('label', label).col('labelOptions', labelOptions).cbind(options);
+    var df = new _dataframe2.default().col("lat", lat).col("lng", lng).col("layerId", layerId).col("group", group).col("popup", popup).col("label", label).col("labelOptions", labelOptions).cbind(options);
 
     if (icon) icondf.effectiveLength = df.nrow();
 
     addMarkers(this, df, group, clusterOptions, clusterId, function (df, i) {
       var options = df.get(i);
       if (icon) options.icon = getIcon(i);
-      return L.marker([df.get(i, 'lat'), df.get(i, 'lng')], options);
+      return L.marker([df.get(i, "lat"), df.get(i, "lng")], options);
     });
   };
 
@@ -775,16 +761,16 @@ var dataframe = function () {
     var _loop3 = function _loop3(i) {
       (function () {
         var layer = layerFunc(df, i);
-        var thisId = df.get(i, 'layerId');
-        var thisGroup = df.get(i, 'group');
+        var thisId = df.get(i, "layerId");
+        var thisGroup = df.get(i, "group");
         this.layerManager.addLayer(layer, category, thisId, thisGroup);
         if (layer.bindPopup) {
-          var popup = df.get(i, 'popup');
+          var popup = df.get(i, "popup");
           if (popup !== null) layer.bindPopup(popup);
         }
         if (layer.bindLabel) {
-          var label = df.get(i, 'label');
-          var labelOptions = df.get(i, 'labelOptions');
+          var label = df.get(i, "label");
+          var labelOptions = df.get(i, "labelOptions");
           if (label !== null) {
             if (labelOptions !== null) {
               layer.bindLabel(label, labelOptions);
@@ -793,9 +779,9 @@ var dataframe = function () {
             }
           }
         }
-        layer.on('click', mouseHandler(this.id, thisId, thisGroup, category + '_click'), this);
-        layer.on('mouseover', mouseHandler(this.id, thisId, thisGroup, category + '_mouseover'), this);
-        layer.on('mouseout', mouseHandler(this.id, thisId, thisGroup, category + '_mouseout'), this);
+        layer.on("click", mouseHandler(this.id, thisId, thisGroup, category + "_click"), this);
+        layer.on("mouseover", mouseHandler(this.id, thisId, thisGroup, category + "_mouseover"), this);
+        layer.on("mouseout", mouseHandler(this.id, thisId, thisGroup, category + "_mouseout"), this);
       }).call(map);
     };
 
@@ -805,18 +791,18 @@ var dataframe = function () {
   }
 
   methods.addCircles = function (lat, lng, radius, layerId, group, options, popup, label, labelOptions) {
-    var df = dataframe.create().col('lat', lat).col('lng', lng).col('radius', radius).col('layerId', layerId).col('group', group).col('popup', popup).col('label', label).col('labelOptions', labelOptions).cbind(options);
+    var df = new _dataframe2.default().col("lat", lat).col("lng", lng).col("radius", radius).col("layerId", layerId).col("group", group).col("popup", popup).col("label", label).col("labelOptions", labelOptions).cbind(options);
 
     addLayers(this, "shape", df, function (df, i) {
-      return L.circle([df.get(i, 'lat'), df.get(i, 'lng')], df.get(i, 'radius'), df.get(i));
+      return L.circle([df.get(i, "lat"), df.get(i, "lng")], df.get(i, "radius"), df.get(i));
     });
   };
 
   methods.addCircleMarkers = function (lat, lng, radius, layerId, group, options, clusterOptions, clusterId, popup, label, labelOptions) {
-    var df = dataframe.create().col('lat', lat).col('lng', lng).col('radius', radius).col('layerId', layerId).col('group', group).col('popup', popup).col('label', label).col('labelOptions', labelOptions).cbind(options);
+    var df = new _dataframe2.default().col("lat", lat).col("lng", lng).col("radius", radius).col("layerId", layerId).col("group", group).col("popup", popup).col("label", label).col("labelOptions", labelOptions).cbind(options);
 
     addMarkers(this, df, group, clusterOptions, clusterId, function (df, i) {
-      return L.circleMarker([df.get(i, 'lat'), df.get(i, 'lng')], df.get(i));
+      return L.circleMarker([df.get(i, "lat"), df.get(i, "lng")], df.get(i));
     });
   };
 
@@ -825,10 +811,10 @@ var dataframe = function () {
    * @param lng Array of arrays of longitude coordinates for polylines
    */
   methods.addPolylines = function (polygons, layerId, group, options, popup, label, labelOptions) {
-    var df = dataframe.create().col('shapes', polygons).col('layerId', layerId).col('group', group).col('popup', popup).col('label', label).col('labelOptions', labelOptions).cbind(options);
+    var df = new _dataframe2.default().col("shapes", polygons).col("layerId", layerId).col("group", group).col("popup", popup).col("label", label).col("labelOptions", labelOptions).cbind(options);
 
     addLayers(this, "shape", df, function (df, i) {
-      var shape = df.get(i, 'shapes')[0];
+      var shape = df.get(i, "shapes")[0];
       shape = HTMLWidgets.dataframeToD3(shape);
       return L.polyline(shape, df.get(i));
     });
@@ -865,10 +851,10 @@ var dataframe = function () {
   };
 
   methods.addRectangles = function (lat1, lng1, lat2, lng2, layerId, group, options, popup, label, labelOptions) {
-    var df = dataframe.create().col('lat1', lat1).col('lng1', lng1).col('lat2', lat2).col('lng2', lng2).col('layerId', layerId).col('group', group).col('popup', popup).col('label', label).col('labelOptions', labelOptions).cbind(options);
+    var df = new _dataframe2.default().col("lat1", lat1).col("lng1", lng1).col("lat2", lat2).col("lng2", lng2).col("layerId", layerId).col("group", group).col("popup", popup).col("label", label).col("labelOptions", labelOptions).cbind(options);
 
     addLayers(this, "shape", df, function (df, i) {
-      return L.rectangle([[df.get(i, 'lat1'), df.get(i, 'lng1')], [df.get(i, 'lat2'), df.get(i, 'lng2')]], df.get(i));
+      return L.rectangle([[df.get(i, "lat1"), df.get(i, "lng1")], [df.get(i, "lat2"), df.get(i, "lng2")]], df.get(i));
     });
   };
 
@@ -877,10 +863,10 @@ var dataframe = function () {
    * @param lng Array of arrays of longitude coordinates for polygons
    */
   methods.addPolygons = function (polygons, layerId, group, options, popup, label, labelOptions) {
-    var df = dataframe.create().col('shapes', polygons).col('layerId', layerId).col('group', group).col('popup', popup).col('label', label).col('labelOptions', labelOptions).cbind(options);
+    var df = new _dataframe2.default().col("shapes", polygons).col("layerId", layerId).col("group", group).col("popup", popup).col("label", label).col("labelOptions", labelOptions).cbind(options);
 
     addLayers(this, "shape", df, function (df, i) {
-      var shapes = df.get(i, 'shapes');
+      var shapes = df.get(i, "shapes");
       for (var j = 0; j < shapes.length; j++) {
         shapes[j] = HTMLWidgets.dataframeToD3(shapes[j]);
       }
@@ -896,12 +882,12 @@ var dataframe = function () {
       data = JSON.parse(data);
     }
 
-    var globalStyle = $.extend({}, style, data.style || {});
+    var globalStyle = _jquery2.default.extend({}, style, data.style || {});
 
     var gjlayer = L.geoJson(data, {
       style: function style(feature) {
         if (feature.style || feature.properties.style) {
-          return $.extend({}, globalStyle, feature.style, feature.properties.style);
+          return _jquery2.default.extend({}, globalStyle, feature.style, feature.properties.style);
         } else {
           return globalStyle;
         }
@@ -912,7 +898,7 @@ var dataframe = function () {
           properties: feature.properties
         };
         var popup = feature.properties.popup;
-        if (typeof popup !== 'undefined' && popup !== null) layer.bindPopup(popup);
+        if (typeof popup !== "undefined" && popup !== null) layer.bindPopup(popup);
         layer.on("click", mouseHandler(self.id, layerId, group, "geojson_click", extraInfo), this);
         layer.on("mouseover", mouseHandler(self.id, layerId, group, "geojson_mouseover", extraInfo), this);
         layer.on("mouseout", mouseHandler(self.id, layerId, group, "geojson_mouseout", extraInfo), this);
@@ -937,12 +923,12 @@ var dataframe = function () {
       data = JSON.parse(data);
     }
 
-    var globalStyle = $.extend({}, style, data.style || {});
+    var globalStyle = _jquery2.default.extend({}, style, data.style || {});
 
     var gjlayer = L.geoJson(null, {
       style: function style(feature) {
         if (feature.style || feature.properties.style) {
-          return $.extend({}, globalStyle, feature.style, feature.properties.style);
+          return _jquery2.default.extend({}, globalStyle, feature.style, feature.properties.style);
         } else {
           return globalStyle;
         }
@@ -953,7 +939,7 @@ var dataframe = function () {
           properties: feature.properties
         };
         var popup = feature.properties.popup;
-        if (typeof popup !== 'undefined' && popup !== null) layer.bindPopup(popup);
+        if (typeof popup !== "undefined" && popup !== null) layer.bindPopup(popup);
         layer.on("click", mouseHandler(self.id, layerId, group, "topojson_click", extraInfo), this);
         layer.on("mouseover", mouseHandler(self.id, layerId, group, "topojson_mouseover", extraInfo), this);
         layer.on("mouseout", mouseHandler(self.id, layerId, group, "topojson_mouseout", extraInfo), this);
@@ -973,9 +959,9 @@ var dataframe = function () {
 
   methods.addControl = function (html, position, layerId, classes) {
     function onAdd(map) {
-      var div = L.DomUtil.create('div', classes);
-      if (typeof layerId !== 'undefined' && layerId !== null) {
-        div.setAttribute('id', layerId);
+      var div = L.DomUtil.create("div", classes);
+      if (typeof layerId !== "undefined" && layerId !== null) {
+        div.setAttribute("id", layerId);
       }
       this._div = div;
 
@@ -1021,11 +1007,11 @@ var dataframe = function () {
     var gradSpan = void 0;
 
     legend.onAdd = function (map) {
-      var div = L.DomUtil.create('div', options.className),
+      var div = L.DomUtil.create("div", options.className),
           colors = options.colors,
           labels = options.labels,
-          legendHTML = '';
-      if (options.type === 'numeric') {
+          legendHTML = "";
+      if (options.type === "numeric") {
         (function () {
           // # Formatting constants.
           var singleBinHeight = 20; // The distance between tick marks, in px
@@ -1048,57 +1034,57 @@ var dataframe = function () {
           // of the gradient?
           var tickOffset = singleBinHeight / singleBinPct * options.extra.p_1;
 
-          gradSpan = $('<span/>').css({
-            'background': 'linear-gradient(' + colors + ')',
-            'opacity': options.opacity,
-            'height': totalHeight + 'px',
-            'width': '18px',
-            'display': 'block',
-            'margin-top': vMargin + 'px'
+          gradSpan = (0, _jquery2.default)("<span/>").css({
+            "background": "linear-gradient(" + colors + ")",
+            "opacity": options.opacity,
+            "height": totalHeight + "px",
+            "width": "18px",
+            "display": "block",
+            "margin-top": vMargin + "px"
           });
-          var leftDiv = $('<div/>').css('float', 'left'),
-              rightDiv = $('<div/>').css('float', 'left');
+          var leftDiv = (0, _jquery2.default)("<div/>").css("float", "left"),
+              rightDiv = (0, _jquery2.default)("<div/>").css("float", "left");
           leftDiv.append(gradSpan);
-          $(div).append(leftDiv).append(rightDiv).append($("<br clear='both'/>"));
+          (0, _jquery2.default)(div).append(leftDiv).append(rightDiv).append((0, _jquery2.default)("<br clear=\"both\"/>"));
 
           // Have to attach the div to the body at this early point, so that the
           // svg text getComputedTextLength() actually works, below.
           document.body.appendChild(div);
 
-          var ns = 'http://www.w3.org/2000/svg';
-          var svg = document.createElementNS(ns, 'svg');
+          var ns = "http://www.w3.org/2000/svg";
+          var svg = document.createElementNS(ns, "svg");
           rightDiv.append(svg);
-          var g = document.createElementNS(ns, 'g');
-          $(g).attr("transform", "translate(0, " + vMargin + ")");
+          var g = document.createElementNS(ns, "g");
+          (0, _jquery2.default)(g).attr("transform", "translate(0, " + vMargin + ")");
           svg.appendChild(g);
 
           // max label width needed to set width of svg, and right-justify text
           var maxLblWidth = 0;
 
           // Create tick marks and labels
-          $.each(labels, function (i, label) {
+          _jquery2.default.each(labels, function (i, label) {
             var y = tickOffset + i * singleBinHeight + 0.5;
 
-            var thisLabel = document.createElementNS(ns, 'text');
-            $(thisLabel).text(labels[i]).attr('y', y).attr('dx', labelPadding).attr('dy', '0.5ex');
+            var thisLabel = document.createElementNS(ns, "text");
+            (0, _jquery2.default)(thisLabel).text(labels[i]).attr("y", y).attr("dx", labelPadding).attr("dy", "0.5ex");
             g.appendChild(thisLabel);
             maxLblWidth = Math.max(maxLblWidth, thisLabel.getComputedTextLength());
 
-            var thisTick = document.createElementNS(ns, 'line');
-            $(thisTick).attr('x1', 0).attr('x2', tickWidth).attr('y1', y).attr('y2', y).attr('stroke-width', 1);
+            var thisTick = document.createElementNS(ns, "line");
+            (0, _jquery2.default)(thisTick).attr("x1", 0).attr("x2", tickWidth).attr("y1", y).attr("y2", y).attr("stroke-width", 1);
             g.appendChild(thisTick);
           });
 
           // Now that we know the max label width, we can right-justify
-          $(svg).find('text').attr('dx', labelPadding + maxLblWidth).attr('text-anchor', 'end');
+          (0, _jquery2.default)(svg).find("text").attr("dx", labelPadding + maxLblWidth).attr("text-anchor", "end");
           // Final size for <svg>
-          $(svg).css({
+          (0, _jquery2.default)(svg).css({
             width: maxLblWidth + labelPadding + "px",
             height: totalHeight + vMargin * 2 + "px"
           });
 
           if (options.na_color) {
-            $(div).append('<div><i style="background:' + options.na_color + '"></i> ' + options.na_label + '</div>');
+            (0, _jquery2.default)(div).append("<div><i style=\"background:" + options.na_color + "\"></i> " + options.na_label + "</div>");
           }
         })();
       } else {
@@ -1107,11 +1093,11 @@ var dataframe = function () {
           labels.push(options.na_label);
         }
         for (var i = 0; i < colors.length; i++) {
-          legendHTML += '<i style="background:' + colors[i] + ';opacity:' + options.opacity + '"></i> ' + labels[i] + '<br/>';
+          legendHTML += "<i style=\"background:" + colors[i] + ";opacity:" + options.opacity + "\"></i> " + labels[i] + "<br/>";
         }
         div.innerHTML = legendHTML;
       }
-      if (options.title) $(div).prepend('<div style="margin-bottom:3px"><strong>' + options.title + '</strong></div>');
+      if (options.title) (0, _jquery2.default)(div).prepend("<div style=\"margin-bottom:3px\"><strong>" + options.title + "</strong></div>");
       return div;
     };
 
@@ -1119,31 +1105,31 @@ var dataframe = function () {
   };
 
   methods.addLayersControl = function (baseGroups, overlayGroups, options) {
-    var _this13 = this;
+    var _this10 = this;
 
     // Only allow one layers control at a time
     methods.removeLayersControl.call(this);
 
     var firstLayer = true;
     var base = {};
-    $.each(asArray(baseGroups), function (i, g) {
-      var layer = _this13.layerManager.getLayerGroup(g, true);
+    _jquery2.default.each((0, _util.asArray)(baseGroups), function (i, g) {
+      var layer = _this10.layerManager.getLayerGroup(g, true);
       if (layer) {
         base[g] = layer;
 
         // Check if >1 base layers are visible; if so, hide all but the first one
-        if (_this13.hasLayer(layer)) {
+        if (_this10.hasLayer(layer)) {
           if (firstLayer) {
             firstLayer = false;
           } else {
-            _this13.removeLayer(layer);
+            _this10.removeLayer(layer);
           }
         }
       }
     });
     var overlay = {};
-    $.each(asArray(overlayGroups), function (i, g) {
-      var layer = _this13.layerManager.getLayerGroup(g, true);
+    _jquery2.default.each((0, _util.asArray)(overlayGroups), function (i, g) {
+      var layer = _this10.layerManager.getLayerGroup(g, true);
       if (layer) {
         overlay[g] = layer;
       }
@@ -1177,23 +1163,23 @@ var dataframe = function () {
   };
 
   methods.hideGroup = function (group) {
-    var _this14 = this;
+    var _this11 = this;
 
-    $.each(asArray(group), function (i, g) {
-      var layer = _this14.layerManager.getLayerGroup(g, true);
+    _jquery2.default.each((0, _util.asArray)(group), function (i, g) {
+      var layer = _this11.layerManager.getLayerGroup(g, true);
       if (layer) {
-        _this14.removeLayer(layer);
+        _this11.removeLayer(layer);
       }
     });
   };
 
   methods.showGroup = function (group) {
-    var _this15 = this;
+    var _this12 = this;
 
-    $.each(asArray(group), function (i, g) {
-      var layer = _this15.layerManager.getLayerGroup(g, true);
+    _jquery2.default.each((0, _util.asArray)(group), function (i, g) {
+      var layer = _this12.layerManager.getLayerGroup(g, true);
       if (layer) {
-        _this15.addLayer(layer);
+        _this12.addLayer(layer);
       }
     });
   };
@@ -1323,9 +1309,9 @@ var dataframe = function () {
     canvasTiles.drawTile = function (canvas, tilePoint, zoom) {
       getImageData(function (imgData, w, h, mipmapper) {
         try {
-          var _ret6 = function () {
+          var _ret5 = function () {
             // The Context2D we'll being drawing onto. It's always 256x256.
-            var ctx = canvas.getContext('2d');
+            var ctx = canvas.getContext("2d");
 
             // Convert our image data's top-left and bottom-right locations into
             // x/y tile coordinates. This is essentially doing a spherical mercator
@@ -1447,7 +1433,7 @@ var dataframe = function () {
             }
           }();
 
-          if ((typeof _ret6 === 'undefined' ? 'undefined' : _typeof(_ret6)) === "object") return _ret6.v;
+          if ((typeof _ret5 === "undefined" ? "undefined" : _typeof(_ret5)) === "object") return _ret5.v;
         } finally {
           canvasTiles.tileDrawn(canvas);
         }
@@ -1497,13 +1483,13 @@ var dataframe = function () {
 
     // lastScreen can never be null, but its x and y can.
     var lastScreen = { x: null, y: null };
-    $(document).on("mousewheel DOMMouseScroll", "*", function (e) {
+    (0, _jquery2.default)(document).on("mousewheel DOMMouseScroll", "*", function (e) {
       // Disable zooming (until the mouse moves or click)
       map.scrollWheelZoom.disable();
       // Any mousemove events at this screen position will be ignored.
       lastScreen = { x: e.originalEvent.screenX, y: e.originalEvent.screenY };
     });
-    $(document).on("mousemove", "*", function (e) {
+    (0, _jquery2.default)(document).on("mousemove", "*", function (e) {
       // Did the mouse really move?
       if (lastScreen.x !== null && e.screenX !== lastScreen.x || e.screenY !== lastScreen.y) {
         // It really moved. Enable zooming.
@@ -1511,7 +1497,7 @@ var dataframe = function () {
         lastScreen = { x: null, y: null };
       }
     });
-    $(document).on("mousedown", ".leaflet", function (e) {
+    (0, _jquery2.default)(document).on("mousedown", ".leaflet", function (e) {
       // Clicking always enables zooming.
       map.scrollWheelZoom.enable();
       lastScreen = { x: null, y: null };
@@ -1547,22 +1533,22 @@ var dataframe = function () {
       map.id = el.id;
 
       // Store the map on the element so we can find it later by ID
-      $(el).data("leaflet-map", map);
+      (0, _jquery2.default)(el).data("leaflet-map", map);
 
       // When the map is clicked, send the coordinates back to the app
-      map.on('click', function (e) {
-        Shiny.onInputChange(map.id + '_click', {
+      map.on("click", function (e) {
+        Shiny.onInputChange(map.id + "_click", {
           lat: e.latlng.lat,
           lng: e.latlng.lng,
-          '.nonce': Math.random() // Force reactivity if lat/lng hasn't changed
+          ".nonce": Math.random() // Force reactivity if lat/lng hasn't changed
         });
       });
 
       var groupTimerId = null;
 
-      map.on('moveend', function (e) {
+      map.on("moveend", function (e) {
         updateBounds(e.target);
-      }).on('layeradd layerremove', function (e) {
+      }).on("layeradd layerremove", function (e) {
         // If the layer that's coming or going is a group we created, tell
         // the server.
         if (map.layerManager.getGroupNameFromLayerGroup(e.layer)) {
@@ -1573,7 +1559,7 @@ var dataframe = function () {
           }
           groupTimerId = setTimeout(function () {
             groupTimerId = null;
-            Shiny.onInputChange(map.id + '_groups', map.layerManager.getVisibleGroups());
+            Shiny.onInputChange(map.id + "_groups", map.layerManager.getVisibleGroups());
           }, 100);
         }
       });
@@ -1601,7 +1587,7 @@ var dataframe = function () {
       map.leafletr.pendingRenderData = null;
 
       // Merge data options into defaults
-      var options = $.extend({ zoomToLimits: "always" }, data.options);
+      var options = _jquery2.default.extend({ zoomToLimits: "always" }, data.options);
 
       if (!map.layerManager) {
         map.controls = new ControlStore(map);
@@ -1648,7 +1634,7 @@ var dataframe = function () {
 
       for (var i = 0; data.calls && i < data.calls.length; i++) {
         var call = data.calls[i];
-        if (methods[call.method]) methods[call.method].apply(map, call.args);else log("Unknown method " + call.method);
+        if (methods[call.method]) methods[call.method].apply(map, call.args);else (0, _util.log)("Unknown method " + call.method);
       }
 
       map.leafletr.hasRendered = true;
@@ -1669,12 +1655,12 @@ var dataframe = function () {
 
   if (!HTMLWidgets.shinyMode) return;
 
-  Shiny.addCustomMessageHandler('leaflet-calls', function (data) {
+  Shiny.addCustomMessageHandler("leaflet-calls", function (data) {
     var id = data.id;
     var el = document.getElementById(id);
-    var map = el ? $(el).data('leaflet-map') : null;
+    var map = el ? (0, _jquery2.default)(el).data("leaflet-map") : null;
     if (!map) {
-      log("Couldn't find map with id " + id);
+      (0, _util.log)("Couldn't find map with id " + id);
       return;
     }
 
@@ -1683,7 +1669,7 @@ var dataframe = function () {
       if (call.dependencies) {
         Shiny.renderDependencies(call.dependencies);
       }
-      if (methods[call.method]) methods[call.method].apply(map, call.args);else log("Unknown method " + call.method);
+      if (methods[call.method]) methods[call.method].apply(map, call.args);else (0, _util.log)("Unknown method " + call.method);
     }
   });
 })();
@@ -1703,4 +1689,57 @@ if (typeof L.Icon.Default.imagePath === "undefined") {
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}]},{},[1]);
+},{"./dataframe":1,"./jquery":3,"./util":4}],3:[function(require,module,exports){
+(function (global){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = global.jQuery;
+
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],4:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.log = log;
+exports.recycle = recycle;
+exports.asArray = asArray;
+function log(message) {
+  /* eslint-disable no-console */
+  if (console && console.log) console.log(message);
+  /* eslint-enable no-console */
+}
+
+function recycle(values, length, inPlace) {
+  if (length === 0 && !inPlace) return [];
+
+  if (!(values instanceof Array)) {
+    if (inPlace) {
+      throw new Error("Can't do in-place recycling of a non-Array value");
+    }
+    values = [values];
+  }
+  if (typeof length === "undefined") length = values.length;
+
+  var dest = inPlace ? values : [];
+  var origLength = values.length;
+  while (dest.length < length) {
+    dest.push(values[dest.length % origLength]);
+  }
+  if (dest.length > length) {
+    dest.splice(length, dest.length - length);
+  }
+  return dest;
+}
+
+function asArray(value) {
+  if (value instanceof Array) return value;else return [value];
+}
+
+
+},{}]},{},[2]);

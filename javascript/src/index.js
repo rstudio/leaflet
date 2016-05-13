@@ -1,159 +1,15 @@
+import {
+  log,
+  asArray
+} from "./util";
+import DataFrame from "./dataframe";
+import $ from "./jquery";
+
 // Import globals as locals to make eslint happy
-let $ = global.jQuery;
 let L = global.L;
 let Shiny = global.Shiny;
 let HTMLWidgets = global.HTMLWidgets;
 let omnivore = global.Omnivore;
-
-function log(message) {
-  /* eslint-disable no-console */
-  if (console && console.log) console.log(message);
-  /* eslint-enable no-console */
-}
-
-function recycle(values, length, inPlace) {
-  if (length === 0 && !inPlace)
-    return [];
-
-  if (!(values instanceof Array)) {
-    if (inPlace) {
-      throw new Error("Can't do in-place recycling of a non-Array value");
-    }
-    values = [values];
-  }
-  if (typeof(length) === 'undefined')
-    length = values.length;
-
-  let dest = inPlace ? values : [];
-  let origLength = values.length;
-  while (dest.length < length) {
-    dest.push(values[dest.length % origLength]);
-  }
-  if (dest.length > length) {
-    dest.splice(length, dest.length - length);
-  }
-  return dest;
-}
-
-function asArray(value) {
-  if (value instanceof Array)
-    return value;
-  else
-    return [value];
-}
-
-let dataframe = (function() {
-  let DataFrame = function() {
-    this.columns = [];
-    this.colnames = [];
-    this.colstrict = [];
-
-    this.effectiveLength = 0;
-    this.colindices = {};
-  };
-
-  DataFrame.prototype._updateCachedProperties = function() {
-    this.effectiveLength = 0;
-    this.colindices = {};
-
-    $.each(this.columns, (i, column) => {
-      this.effectiveLength = Math.max(this.effectiveLength, column.length);
-      this.colindices[this.colnames[i]] = i;
-    });
-  };
-
-  DataFrame.prototype._colIndex = function(colname) {
-    let index = this.colindices[colname];
-    if (typeof(index) === 'undefined')
-      return -1;
-    return index;
-  };
-
-  DataFrame.prototype.col = function(name, values, strict) {
-    if (typeof(name) !== 'string')
-      throw new Error('Invalid column name "' + name + '"');
-
-    let index = this._colIndex(name);
-
-    if (arguments.length === 1) {
-      if (index < 0)
-        return null;
-      else
-        return recycle(this.columns[index], this.effectiveLength);
-    }
-
-    if (index < 0) {
-      index = this.colnames.length;
-      this.colnames.push(name);
-    }
-    this.columns[index] = asArray(values);
-    this.colstrict[index] = !!strict;
-
-    // TODO: Validate strictness (ensure lengths match up with other stricts)
-
-    this._updateCachedProperties();
-
-    return this;
-  };
-
-  DataFrame.prototype.cbind = function(obj, strict) {
-    $.each(obj, (name, coldata) => {
-      this.col(name, coldata);
-    });
-    return this;
-  };
-
-  DataFrame.prototype.get = function(row, col) {
-    if (row > this.effectiveLength)
-      throw new Error('Row argument was out of bounds: ' + row + ' > ' + this.effectiveLength);
-
-    let colIndex = -1;
-    if (typeof(col) === 'undefined') {
-      let rowData = {};
-      $.each(this.colnames, (i, name) => {
-        rowData[name] = this.columns[i][row % this.columns[i].length];
-      });
-      return rowData;
-    } else if (typeof(col) === 'string') {
-      colIndex = this._colIndex(col);
-    } else if (typeof(col) === 'number') {
-      colIndex = col;
-    }
-    if (colIndex < 0 || colIndex > this.columns.length)
-      throw new Error('Unknown column index: ' + col);
-
-    return this.columns[colIndex][row % this.columns[colIndex].length];
-  };
-
-  DataFrame.prototype.nrow = function() {
-    return this.effectiveLength;
-  };
-
-  // function test() {
-  //   let df = new DataFrame();
-  //   df.col("speed", [4, 4, 7, 7, 8, 9, 10, 10, 10, 11, 11, 12, 12, 12, 12, 13, 13, 13, 13, 14, 14, 14, 14, 15, 15, 15, 16, 16, 17, 17, 17, 18, 18, 18, 18, 19, 19, 19, 20, 20, 20, 20, 20, 22, 23, 24, 24, 24, 24, 25])
-  //     .col("dist", [2, 10, 4, 22, 16, 10, 18, 26, 34, 17, 28, 14, 20, 24, 28, 26, 34, 34, 46, 26, 36, 60, 80, 20, 26, 54, 32, 40, 32, 40, 50, 42, 56, 76, 84, 36, 46, 68, 32, 48, 52, 56, 64, 66, 54, 70, 92, 93, 120, 85])
-  //     .col("color", ["yellow", "red"])
-  //     .cbind({
-  //       "Make" : ["Toyota", "Cadillac", "BMW"],
-  //       "Model" : ["Corolla", "CTS", "435i"]
-  //     })
-  //   ;
-  //   console.log(df.get(9, "speed"));
-  //   console.log(df.get(9, "dist"));
-  //   console.log(df.get(9, "color"));
-  //   console.log(df.get(9, "Make"));
-  //   console.log(df.get(9, "Model"));
-  //   console.log(df.get(9));
-  // }
-
-  return {
-    create: function() {
-      return new DataFrame();
-    }
-  };
-
-})();
 
 (function() {
   // This class simulates a mipmap, which shrinks images by powers of two. This
@@ -428,7 +284,7 @@ let dataframe = (function() {
   }
 
   ControlStore.prototype.add = function(control, id, html) {
-    if (typeof(id) !== 'undefined' && id !== null) {
+    if (typeof(id) !== "undefined" && id !== null) {
       if (this._controlsById[id]) {
         this._map.removeControl(this._controlsById[id]);
       }
@@ -467,7 +323,7 @@ let dataframe = (function() {
   }
 
   ClusterLayerStore.prototype.add = function(layer, id) {
-    if (typeof(id) !== 'undefined' && id !== null) {
+    if (typeof(id) !== "undefined" && id !== null) {
       if (this._layers[id]) {
         this._group.removeLayer(this._layers[id]);
       }
@@ -477,7 +333,7 @@ let dataframe = (function() {
   };
 
   ClusterLayerStore.prototype.remove = function(id) {
-    if (typeof(id) === 'undefined' || id === null) {
+    if (typeof(id) === "undefined" || id === null) {
       return;
     }
 
@@ -502,14 +358,14 @@ let dataframe = (function() {
       let eventInfo = $.extend(
         {
           id: layerId,
-          '.nonce': Math.random()  // force reactivity
+          ".nonce": Math.random()  // force reactivity
         },
         group !== null ? {group: group} : null,
         e.target.getLatLng ? e.target.getLatLng() : e.latlng,
         extraInfo
       );
 
-      Shiny.onInputChange(mapId + '_' + eventName, eventInfo);
+      Shiny.onInputChange(mapId + "_" + eventName, eventInfo);
     };
   }
 
@@ -518,17 +374,17 @@ let dataframe = (function() {
     let id = map.getContainer().id;
     let bounds = map.getBounds();
 
-    Shiny.onInputChange(id + '_bounds', {
+    Shiny.onInputChange(id + "_bounds", {
       north: bounds.getNorthEast().lat,
       east: bounds.getNorthEast().lng,
       south: bounds.getSouthWest().lat,
       west: bounds.getSouthWest().lng
     });
-    Shiny.onInputChange(id + '_center', {
+    Shiny.onInputChange(id + "_center", {
       lng: map.getCenter().lng,
       lat: map.getCenter().lat
     });
-    Shiny.onInputChange(id + '_zoom', map.getZoom());
+    Shiny.onInputChange(id + "_zoom", map.getZoom());
   }
 
   window.LeafletWidget = {};
@@ -557,25 +413,25 @@ let dataframe = (function() {
   };
 
   methods.addPopups = function(lat, lng, popup, layerId, group, options) {
-    let df = dataframe.create()
-      .col('lat', lat)
-      .col('lng', lng)
-      .col('popup', popup)
-      .col('layerId', layerId)
-      .col('group', group)
+    let df = new DataFrame()
+      .col("lat", lat)
+      .col("lng", lng)
+      .col("popup", popup)
+      .col("layerId", layerId)
+      .col("group", group)
       .cbind(options);
 
     for (let i = 0; i < df.nrow(); i++) {
       (function() {
         let popup = L.popup(df.get(i))
-                     .setLatLng([df.get(i, 'lat'), df.get(i, 'lng')])
-                     .setContent(df.get(i, 'popup'));
-        let thisId = df.get(i, 'layerId');
-        let thisGroup = df.get(i, 'group');
+                     .setLatLng([df.get(i, "lat"), df.get(i, "lng")])
+                     .setContent(df.get(i, "popup"));
+        let thisId = df.get(i, "layerId");
+        let thisGroup = df.get(i, "group");
         this.layerManager.addLayer(popup, "popup", thisId, thisGroup);
-        popup.on('click', mouseHandler(this.id, thisId, thisGroup, 'popup_click'), this);
-        popup.on('mouseover', mouseHandler(this.id, thisId, thisGroup, 'popup_mouseover'), this);
-        popup.on('mouseout', mouseHandler(this.id, thisId, thisGroup, 'popup_mouseout'), this);
+        popup.on("click", mouseHandler(this.id, thisId, thisGroup, "popup_click"), this);
+        popup.on("mouseover", mouseHandler(this.id, thisId, thisGroup, "popup_mouseover"), this);
+        popup.on("mouseout", mouseHandler(this.id, thisId, thisGroup, "popup_mouseout"), this);
       }).call(this);
     }
   };
@@ -612,7 +468,7 @@ let dataframe = (function() {
     if (!iconset) {
       return iconset;
     }
-    if (typeof(iconset.index) === 'undefined') {
+    if (typeof(iconset.index) === "undefined") {
       return iconset;
     }
 
@@ -637,17 +493,17 @@ let dataframe = (function() {
       for (let i = 0; i < df.nrow(); i++) {
         (function() {
           let marker = markerFunc(df, i);
-          let thisId = df.get(i, 'layerId');
-          let thisGroup = cluster ? null : df.get(i, 'group');
+          let thisId = df.get(i, "layerId");
+          let thisGroup = cluster ? null : df.get(i, "group");
           if (cluster) {
             clusterGroup.clusterLayerStore.add(marker, thisId);
           } else {
             this.layerManager.addLayer(marker, "marker", thisId, thisGroup);
           }
-          let popup = df.get(i, 'popup');
+          let popup = df.get(i, "popup");
           if (popup !== null) marker.bindPopup(popup);
-          let label = df.get(i, 'label');
-          let labelOptions = df.get(i, 'labelOptions');
+          let label = df.get(i, "label");
+          let labelOptions = df.get(i, "labelOptions");
           if (label !== null) {
             if (labelOptions !== null) {
               if(labelOptions.noHide) {
@@ -659,9 +515,9 @@ let dataframe = (function() {
               marker.bindLabel(label);
             }
           }
-          marker.on('click', mouseHandler(this.id, thisId, thisGroup, 'marker_click', extraInfo), this);
-          marker.on('mouseover', mouseHandler(this.id, thisId, thisGroup, 'marker_mouseover', extraInfo), this);
-          marker.on('mouseout', mouseHandler(this.id, thisId, thisGroup, 'marker_mouseout', extraInfo), this);
+          marker.on("click", mouseHandler(this.id, thisId, thisGroup, "marker_click", extraInfo), this);
+          marker.on("mouseover", mouseHandler(this.id, thisId, thisGroup, "marker_mouseover", extraInfo), this);
+          marker.on("mouseout", mouseHandler(this.id, thisId, thisGroup, "marker_mouseout", extraInfo), this);
         }).call(this);
       }
 
@@ -685,7 +541,7 @@ let dataframe = (function() {
 
       // This cbinds the icon URLs and any other icon options; they're all
       // present on the icon object.
-      icondf = dataframe.create().cbind(icon);
+      icondf = new DataFrame().cbind(icon);
 
       // Constructs an icon from a specified row of the icon dataframe.
       getIcon = function(i) {
@@ -717,14 +573,14 @@ let dataframe = (function() {
       };
     }
 
-    let df = dataframe.create()
-      .col('lat', lat)
-      .col('lng', lng)
-      .col('layerId', layerId)
-      .col('group', group)
-      .col('popup', popup)
-      .col('label', label)
-      .col('labelOptions', labelOptions)
+    let df = new DataFrame()
+      .col("lat", lat)
+      .col("lng", lng)
+      .col("layerId", layerId)
+      .col("group", group)
+      .col("popup", popup)
+      .col("label", label)
+      .col("labelOptions", labelOptions)
       .cbind(options);
 
     if (icon) icondf.effectiveLength = df.nrow();
@@ -732,7 +588,7 @@ let dataframe = (function() {
     addMarkers(this, df, group, clusterOptions, clusterId, (df, i) => {
       let options = df.get(i);
       if (icon) options.icon = getIcon(i);
-      return L.marker([df.get(i, 'lat'), df.get(i, 'lng')], options);
+      return L.marker([df.get(i, "lat"), df.get(i, "lng")], options);
     });
   };
 
@@ -744,7 +600,7 @@ let dataframe = (function() {
 
       // This cbinds the icon URLs and any other icon options; they're all
       // present on the icon object.
-      icondf = dataframe.create().cbind(icon);
+      icondf = new DataFrame().cbind(icon);
 
       // Constructs an icon from a specified row of the icon dataframe.
       getIcon = function(i) {
@@ -757,14 +613,14 @@ let dataframe = (function() {
       };
     }
 
-    let df = dataframe.create()
-      .col('lat', lat)
-      .col('lng', lng)
-      .col('layerId', layerId)
-      .col('group', group)
-      .col('popup', popup)
-      .col('label', label)
-      .col('labelOptions', labelOptions)
+    let df = new DataFrame()
+      .col("lat", lat)
+      .col("lng", lng)
+      .col("layerId", layerId)
+      .col("group", group)
+      .col("popup", popup)
+      .col("label", label)
+      .col("labelOptions", labelOptions)
       .cbind(options);
 
     if (icon) icondf.effectiveLength = df.nrow();
@@ -772,7 +628,7 @@ let dataframe = (function() {
     addMarkers(this, df, group, clusterOptions, clusterId, function(df, i) {
       let options = df.get(i);
       if (icon) options.icon = getIcon(i);
-      return L.marker([df.get(i, 'lat'), df.get(i, 'lng')], options);
+      return L.marker([df.get(i, "lat"), df.get(i, "lng")], options);
     });
   };
 
@@ -780,16 +636,16 @@ let dataframe = (function() {
     for (let i = 0; i < df.nrow(); i++) {
       (function() {
         let layer = layerFunc(df, i);
-        let thisId = df.get(i, 'layerId');
-        let thisGroup = df.get(i, 'group');
+        let thisId = df.get(i, "layerId");
+        let thisGroup = df.get(i, "group");
         this.layerManager.addLayer(layer, category, thisId, thisGroup);
         if (layer.bindPopup) {
-          let popup = df.get(i, 'popup');
+          let popup = df.get(i, "popup");
           if (popup !== null) layer.bindPopup(popup);
         }
         if (layer.bindLabel) {
-          let label = df.get(i, 'label');
-          let labelOptions = df.get(i, 'labelOptions');
+          let label = df.get(i, "label");
+          let labelOptions = df.get(i, "labelOptions");
           if (label !== null) {
             if (labelOptions !== null) {
               layer.bindLabel(label, labelOptions);
@@ -798,44 +654,44 @@ let dataframe = (function() {
             }
           }
         }
-        layer.on('click', mouseHandler(this.id, thisId, thisGroup, category + '_click'), this);
-        layer.on('mouseover', mouseHandler(this.id, thisId, thisGroup, category + '_mouseover'), this);
-        layer.on('mouseout', mouseHandler(this.id, thisId, thisGroup, category + '_mouseout'), this);
+        layer.on("click", mouseHandler(this.id, thisId, thisGroup, category + "_click"), this);
+        layer.on("mouseover", mouseHandler(this.id, thisId, thisGroup, category + "_mouseover"), this);
+        layer.on("mouseout", mouseHandler(this.id, thisId, thisGroup, category + "_mouseout"), this);
       }).call(map);
     }
   }
 
   methods.addCircles = function(lat, lng, radius, layerId, group, options, popup, label, labelOptions) {
-    let df = dataframe.create()
-      .col('lat', lat)
-      .col('lng', lng)
-      .col('radius', radius)
-      .col('layerId', layerId)
-      .col('group', group)
-      .col('popup', popup)
-      .col('label', label)
-      .col('labelOptions', labelOptions)
+    let df = new DataFrame()
+      .col("lat", lat)
+      .col("lng", lng)
+      .col("radius", radius)
+      .col("layerId", layerId)
+      .col("group", group)
+      .col("popup", popup)
+      .col("label", label)
+      .col("labelOptions", labelOptions)
       .cbind(options);
 
     addLayers(this, "shape", df, function(df, i) {
-      return L.circle([df.get(i, 'lat'), df.get(i, 'lng')], df.get(i, 'radius'), df.get(i));
+      return L.circle([df.get(i, "lat"), df.get(i, "lng")], df.get(i, "radius"), df.get(i));
     });
   };
 
   methods.addCircleMarkers = function(lat, lng, radius, layerId, group, options, clusterOptions, clusterId, popup, label, labelOptions) {
-    let df = dataframe.create()
-      .col('lat', lat)
-      .col('lng', lng)
-      .col('radius', radius)
-      .col('layerId', layerId)
-      .col('group', group)
-      .col('popup', popup)
-      .col('label', label)
-      .col('labelOptions', labelOptions)
+    let df = new DataFrame()
+      .col("lat", lat)
+      .col("lng", lng)
+      .col("radius", radius)
+      .col("layerId", layerId)
+      .col("group", group)
+      .col("popup", popup)
+      .col("label", label)
+      .col("labelOptions", labelOptions)
       .cbind(options);
 
     addMarkers(this, df, group, clusterOptions, clusterId, function(df, i) {
-      return L.circleMarker([df.get(i, 'lat'), df.get(i, 'lng')], df.get(i));
+      return L.circleMarker([df.get(i, "lat"), df.get(i, "lng")], df.get(i));
     });
   };
 
@@ -844,17 +700,17 @@ let dataframe = (function() {
    * @param lng Array of arrays of longitude coordinates for polylines
    */
   methods.addPolylines = function(polygons, layerId, group, options, popup, label, labelOptions) {
-    let df = dataframe.create()
-      .col('shapes', polygons)
-      .col('layerId', layerId)
-      .col('group', group)
-      .col('popup', popup)
-      .col('label', label)
-      .col('labelOptions', labelOptions)
+    let df = new DataFrame()
+      .col("shapes", polygons)
+      .col("layerId", layerId)
+      .col("group", group)
+      .col("popup", popup)
+      .col("label", label)
+      .col("labelOptions", labelOptions)
       .cbind(options);
 
     addLayers(this, "shape", df, function(df, i) {
-      let shape = df.get(i, 'shapes')[0];
+      let shape = df.get(i, "shapes")[0];
       shape = HTMLWidgets.dataframeToD3(shape);
       return L.polyline(shape, df.get(i));
     });
@@ -891,23 +747,23 @@ let dataframe = (function() {
   };
 
   methods.addRectangles = function(lat1, lng1, lat2, lng2, layerId, group, options, popup, label, labelOptions) {
-    let df = dataframe.create()
-      .col('lat1', lat1)
-      .col('lng1', lng1)
-      .col('lat2', lat2)
-      .col('lng2', lng2)
-      .col('layerId', layerId)
-      .col('group', group)
-      .col('popup', popup)
-      .col('label', label)
-      .col('labelOptions', labelOptions)
+    let df = new DataFrame()
+      .col("lat1", lat1)
+      .col("lng1", lng1)
+      .col("lat2", lat2)
+      .col("lng2", lng2)
+      .col("layerId", layerId)
+      .col("group", group)
+      .col("popup", popup)
+      .col("label", label)
+      .col("labelOptions", labelOptions)
       .cbind(options);
 
     addLayers(this, "shape", df, function(df, i) {
       return L.rectangle(
         [
-          [df.get(i, 'lat1'), df.get(i, 'lng1')],
-          [df.get(i, 'lat2'), df.get(i, 'lng2')]
+          [df.get(i, "lat1"), df.get(i, "lng1")],
+          [df.get(i, "lat2"), df.get(i, "lng2")]
         ],
         df.get(i));
     });
@@ -918,17 +774,17 @@ let dataframe = (function() {
    * @param lng Array of arrays of longitude coordinates for polygons
    */
   methods.addPolygons = function(polygons, layerId, group, options, popup, label, labelOptions) {
-    let df = dataframe.create()
-      .col('shapes', polygons)
-      .col('layerId', layerId)
-      .col('group', group)
-      .col('popup', popup)
-      .col('label', label)
-      .col('labelOptions', labelOptions)
+    let df = new DataFrame()
+      .col("shapes", polygons)
+      .col("layerId", layerId)
+      .col("group", group)
+      .col("popup", popup)
+      .col("label", label)
+      .col("labelOptions", labelOptions)
       .cbind(options);
 
     addLayers(this, "shape", df, function(df, i) {
-      let shapes = df.get(i, 'shapes');
+      let shapes = df.get(i, "shapes");
       for (let j = 0; j < shapes.length; j++) {
         shapes[j] = HTMLWidgets.dataframeToD3(shapes[j]);
       }
@@ -960,7 +816,7 @@ let dataframe = (function() {
           properties: feature.properties
         };
         let popup = feature.properties.popup;
-        if (typeof popup !== 'undefined' && popup !== null) layer.bindPopup(popup);
+        if (typeof popup !== "undefined" && popup !== null) layer.bindPopup(popup);
         layer.on("click", mouseHandler(self.id, layerId, group, "geojson_click", extraInfo), this);
         layer.on("mouseover", mouseHandler(self.id, layerId, group, "geojson_mouseover", extraInfo), this);
         layer.on("mouseout", mouseHandler(self.id, layerId, group, "geojson_mouseout", extraInfo), this);
@@ -1001,7 +857,7 @@ let dataframe = (function() {
           properties: feature.properties
         };
         let popup = feature.properties.popup;
-        if (typeof popup !== 'undefined' && popup !== null) layer.bindPopup(popup);
+        if (typeof popup !== "undefined" && popup !== null) layer.bindPopup(popup);
         layer.on("click", mouseHandler(self.id, layerId, group, "topojson_click", extraInfo), this);
         layer.on("mouseover", mouseHandler(self.id, layerId, group, "topojson_mouseover", extraInfo), this);
         layer.on("mouseout", mouseHandler(self.id, layerId, group, "topojson_mouseout", extraInfo), this);
@@ -1021,9 +877,9 @@ let dataframe = (function() {
 
   methods.addControl = function(html, position, layerId, classes) {
     function onAdd(map) {
-      let div = L.DomUtil.create('div', classes);
-      if (typeof layerId !== 'undefined' && layerId !== null) {
-        div.setAttribute('id', layerId);
+      let div = L.DomUtil.create("div", classes);
+      if (typeof layerId !== "undefined" && layerId !== null) {
+        div.setAttribute("id", layerId);
       }
       this._div = div;
 
@@ -1069,11 +925,11 @@ let dataframe = (function() {
     let gradSpan;
 
     legend.onAdd = function (map) {
-      let div = L.DomUtil.create('div', options.className),
+      let div = L.DomUtil.create("div", options.className),
         colors = options.colors,
         labels = options.labels,
-        legendHTML = '';
-      if (options.type === 'numeric') {
+        legendHTML = "";
+      if (options.type === "numeric") {
         // # Formatting constants.
         let singleBinHeight = 20;  // The distance between tick marks, in px
         let vMargin = 8; // If 1st tick mark starts at top of gradient, how
@@ -1095,28 +951,28 @@ let dataframe = (function() {
         // of the gradient?
         let tickOffset = (singleBinHeight / singleBinPct) * options.extra.p_1;
 
-        gradSpan = $('<span/>').css({
-          'background': 'linear-gradient(' + colors + ')',
-          'opacity': options.opacity,
-          'height': totalHeight + 'px',
-          'width': '18px',
-          'display': 'block',
-          'margin-top': vMargin + 'px'
+        gradSpan = $("<span/>").css({
+          "background": "linear-gradient(" + colors + ")",
+          "opacity": options.opacity,
+          "height": totalHeight + "px",
+          "width": "18px",
+          "display": "block",
+          "margin-top": vMargin + "px"
         });
-        let leftDiv = $('<div/>').css('float', 'left'),
-          rightDiv = $('<div/>').css('float', 'left');
+        let leftDiv = $("<div/>").css("float", "left"),
+          rightDiv = $("<div/>").css("float", "left");
         leftDiv.append(gradSpan);
         $(div).append(leftDiv).append(rightDiv)
-          .append($("<br clear='both'/>"));
+          .append($("<br clear=\"both\"/>"));
 
         // Have to attach the div to the body at this early point, so that the
         // svg text getComputedTextLength() actually works, below.
         document.body.appendChild(div);
 
-        let ns = 'http://www.w3.org/2000/svg';
-        let svg = document.createElementNS(ns, 'svg');
+        let ns = "http://www.w3.org/2000/svg";
+        let svg = document.createElementNS(ns, "svg");
         rightDiv.append(svg);
-        let g = document.createElementNS(ns, 'g');
+        let g = document.createElementNS(ns, "g");
         $(g).attr("transform", "translate(0, " + vMargin + ")");
         svg.appendChild(g);
 
@@ -1127,29 +983,29 @@ let dataframe = (function() {
         $.each(labels, function(i, label) {
           let y = tickOffset + i*singleBinHeight + 0.5;
 
-          let thisLabel = document.createElementNS(ns, 'text');
+          let thisLabel = document.createElementNS(ns, "text");
           $(thisLabel)
             .text(labels[i])
-            .attr('y', y)
-            .attr('dx', labelPadding)
-            .attr('dy', '0.5ex');
+            .attr("y", y)
+            .attr("dx", labelPadding)
+            .attr("dy", "0.5ex");
           g.appendChild(thisLabel);
           maxLblWidth = Math.max(maxLblWidth, thisLabel.getComputedTextLength());
 
-          let thisTick = document.createElementNS(ns, 'line');
+          let thisTick = document.createElementNS(ns, "line");
           $(thisTick)
-            .attr('x1', 0)
-            .attr('x2', tickWidth)
-            .attr('y1', y)
-            .attr('y2', y)
-            .attr('stroke-width', 1);
+            .attr("x1", 0)
+            .attr("x2", tickWidth)
+            .attr("y1", y)
+            .attr("y2", y)
+            .attr("stroke-width", 1);
           g.appendChild(thisTick);
         });
 
         // Now that we know the max label width, we can right-justify
-        $(svg).find('text')
-          .attr('dx', labelPadding + maxLblWidth)
-          .attr('text-anchor', 'end');
+        $(svg).find("text")
+          .attr("dx", labelPadding + maxLblWidth)
+          .attr("text-anchor", "end");
         // Final size for <svg>
         $(svg).css({
           width: (maxLblWidth + labelPadding) + "px",
@@ -1157,8 +1013,8 @@ let dataframe = (function() {
         });
 
         if (options.na_color) {
-          $(div).append('<div><i style="background:' + options.na_color +
-                        '"></i> ' + options.na_label + '</div>');
+          $(div).append("<div><i style=\"background:" + options.na_color +
+                        "\"></i> " + options.na_label + "</div>");
         }
       } else {
         if (options.na_color) {
@@ -1166,14 +1022,14 @@ let dataframe = (function() {
           labels.push(options.na_label);
         }
         for (let i = 0; i < colors.length; i++) {
-          legendHTML += '<i style="background:' + colors[i] + ';opacity:' +
-                        options.opacity + '"></i> ' + labels[i] + '<br/>';
+          legendHTML += "<i style=\"background:" + colors[i] + ";opacity:" +
+                        options.opacity + "\"></i> " + labels[i] + "<br/>";
         }
         div.innerHTML = legendHTML;
       }
       if (options.title)
-        $(div).prepend('<div style="margin-bottom:3px"><strong>' +
-                        options.title + '</strong></div>');
+        $(div).prepend("<div style=\"margin-bottom:3px\"><strong>" +
+                        options.title + "</strong></div>");
       return div;
     };
 
@@ -1383,7 +1239,7 @@ let dataframe = (function() {
       getImageData(function(imgData, w, h, mipmapper) {
         try {
           // The Context2D we'll being drawing onto. It's always 256x256.
-          let ctx = canvas.getContext('2d');
+          let ctx = canvas.getContext("2d");
 
           // Convert our image data's top-left and bottom-right locations into
           // x/y tile coordinates. This is essentially doing a spherical mercator
@@ -1610,19 +1466,19 @@ let dataframe = (function() {
       $(el).data("leaflet-map", map);
 
       // When the map is clicked, send the coordinates back to the app
-      map.on('click', function(e) {
-        Shiny.onInputChange(map.id + '_click', {
+      map.on("click", function(e) {
+        Shiny.onInputChange(map.id + "_click", {
           lat: e.latlng.lat,
           lng: e.latlng.lng,
-          '.nonce': Math.random() // Force reactivity if lat/lng hasn't changed
+          ".nonce": Math.random() // Force reactivity if lat/lng hasn't changed
         });
       });
 
       let groupTimerId = null;
 
       map
-        .on('moveend', function(e) { updateBounds(e.target); })
-        .on('layeradd layerremove', function(e) {
+        .on("moveend", function(e) { updateBounds(e.target); })
+        .on("layeradd layerremove", function(e) {
           // If the layer that's coming or going is a group we created, tell
           // the server.
           if (map.layerManager.getGroupNameFromLayerGroup(e.layer)) {
@@ -1633,7 +1489,7 @@ let dataframe = (function() {
             }
             groupTimerId = setTimeout(function() {
               groupTimerId = null;
-              Shiny.onInputChange(map.id + '_groups',
+              Shiny.onInputChange(map.id + "_groups",
                 map.layerManager.getVisibleGroups());
             }, 100);
           }
@@ -1735,10 +1591,10 @@ let dataframe = (function() {
 
   if (!HTMLWidgets.shinyMode) return;
 
-  Shiny.addCustomMessageHandler('leaflet-calls', function(data) {
+  Shiny.addCustomMessageHandler("leaflet-calls", function(data) {
     let id = data.id;
     let el = document.getElementById(id);
-    let map = el ? $(el).data('leaflet-map') : null;
+    let map = el ? $(el).data("leaflet-map") : null;
     if (!map) {
       log("Couldn't find map with id " + id);
       return;

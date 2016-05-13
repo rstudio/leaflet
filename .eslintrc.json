@@ -26,7 +26,6 @@
 
         "no-console": "warn",
         "no-unused-vars": ["error", {"args": "none"}],
-        "quotes": "off",
         "semi": "error",
         "no-extra-semi": "error",
         "indent": ["error", 2]
