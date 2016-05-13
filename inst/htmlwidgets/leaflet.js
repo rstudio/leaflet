@@ -2,6 +2,8 @@
 (function (global){
 'use strict';
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
 // Import globals as locals to make eslint happy
 var $ = global.jQuery;
 var L = global.L;
@@ -108,11 +110,17 @@ var dataframe = function () {
 
     var colIndex = -1;
     if (typeof col === 'undefined') {
-      var rowData = {};
-      $.each(this.colnames, function (i, name) {
-        rowData[name] = _this3.columns[i][row % _this3.columns[i].length];
-      });
-      return rowData;
+      var _ret = function () {
+        var rowData = {};
+        $.each(_this3.colnames, function (i, name) {
+          rowData[name] = _this3.columns[i][row % _this3.columns[i].length];
+        });
+        return {
+          v: rowData
+        };
+      }();
+
+      if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
     } else if (typeof col === 'string') {
       colIndex = this._colIndex(col);
     } else if (typeof col === 'number') {
@@ -128,7 +136,7 @@ var dataframe = function () {
   };
 
   // function test() {
-  //   var df = new DataFrame();
+  //   let df = new DataFrame();
   //   df.col("speed", [4, 4, 7, 7, 8, 9, 10, 10, 10, 11, 11, 12, 12, 12, 12, 13, 13, 13, 13, 14, 14, 14, 14, 15, 15, 15, 16, 16, 17, 17, 17, 18, 18, 18, 18, 19, 19, 19, 20, 20, 20, 20, 20, 22, 23, 24, 24, 24, 24, 25])
   //     .col("dist", [2, 10, 4, 22, 16, 10, 18, 26, 34, 17, 28, 14, 20, 24, 28, 26, 34, 34, 46, 26, 36, 60, 80, 20, 26, 54, 32, 40, 32, 40, 50, 42, 56, 76, 84, 36, 46, 68, 32, 48, 52, 56, 64, 66, 54, 70, 92, 93, 120, 85])
   //     .col("color", ["yellow", "red"])
@@ -264,7 +272,7 @@ var dataframe = function () {
     var stamp = L.Util.stamp(layer);
 
     // This will be the default layer group to add the layer to.
-    // We may overwrite this var before using it (i.e. if a group is assigned).
+    // We may overwrite this let before using it (i.e. if a group is assigned).
     // This one liner creates the _categoryContainers[category] entry if it
     // doesn't already exist.
     var container = this._categoryContainers[category] = this._categoryContainers[category] || L.layerGroup().addTo(this._map);
@@ -403,7 +411,7 @@ var dataframe = function () {
     this._groupContainers = {};
   };
   LayerManager.prototype._removeLayer = function (layer) {
-    var stamp;
+    var stamp = void 0;
     if (typeof layer === "string") {
       stamp = layer;
     } else {
@@ -558,9 +566,11 @@ var dataframe = function () {
   };
 
   methods.addPopups = function (lat, lng, popup, layerId, group, options) {
+    var _this11 = this;
+
     var df = dataframe.create().col('lat', lat).col('lng', lng).col('popup', popup).col('layerId', layerId).col('group', group).cbind(options);
 
-    for (var i = 0; i < df.nrow(); i++) {
+    var _loop = function _loop(i) {
       (function () {
         var popup = L.popup(df.get(i)).setLatLng([df.get(i, 'lat'), df.get(i, 'lng')]).setContent(df.get(i, 'popup'));
         var thisId = df.get(i, 'layerId');
@@ -569,7 +579,11 @@ var dataframe = function () {
         popup.on('click', mouseHandler(this.id, thisId, thisGroup, 'popup_click'), this);
         popup.on('mouseover', mouseHandler(this.id, thisId, thisGroup, 'popup_mouseover'), this);
         popup.on('mouseout', mouseHandler(this.id, thisId, thisGroup, 'popup_mouseout'), this);
-      }).call(this);
+      }).call(_this11);
+    };
+
+    for (var i = 0; i < df.nrow(); i++) {
+      _loop(i);
     }
   };
 
@@ -619,6 +633,8 @@ var dataframe = function () {
 
   function addMarkers(map, df, group, clusterOptions, clusterId, markerFunc) {
     (function () {
+      var _this12 = this;
+
       var clusterGroup = this.layerManager.getLayer("cluster", clusterId),
           cluster = clusterOptions !== null;
       if (cluster && !clusterGroup) {
@@ -627,7 +643,7 @@ var dataframe = function () {
       }
       var extraInfo = cluster ? { clusterId: clusterId } : {};
 
-      for (var i = 0; i < df.nrow(); i++) {
+      var _loop2 = function _loop2(i) {
         (function () {
           var marker = markerFunc(df, i);
           var thisId = df.get(i, 'layerId');
@@ -655,7 +671,11 @@ var dataframe = function () {
           marker.on('click', mouseHandler(this.id, thisId, thisGroup, 'marker_click', extraInfo), this);
           marker.on('mouseover', mouseHandler(this.id, thisId, thisGroup, 'marker_mouseover', extraInfo), this);
           marker.on('mouseout', mouseHandler(this.id, thisId, thisGroup, 'marker_mouseout', extraInfo), this);
-        }).call(this);
+        }).call(_this12);
+      };
+
+      for (var i = 0; i < df.nrow(); i++) {
+        _loop2(i);
       }
 
       if (cluster) {
@@ -665,6 +685,9 @@ var dataframe = function () {
   }
 
   methods.addMarkers = function (lat, lng, icon, layerId, group, options, popup, clusterOptions, clusterId, label, labelOptions) {
+    var icondf = void 0;
+    var getIcon = void 0;
+
     if (icon) {
       // Unpack icons
       icon.iconUrl = unpackStrings(icon.iconUrl);
@@ -674,10 +697,10 @@ var dataframe = function () {
 
       // This cbinds the icon URLs and any other icon options; they're all
       // present on the icon object.
-      var icondf = dataframe.create().cbind(icon);
+      icondf = dataframe.create().cbind(icon);
 
       // Constructs an icon from a specified row of the icon dataframe.
-      var getIcon = function getIcon(i) {
+      getIcon = function getIcon(i) {
         var opts = icondf.get(i);
         if (!opts.iconUrl) {
           return new L.Icon.Default();
@@ -718,14 +741,16 @@ var dataframe = function () {
   };
 
   methods.addAwesomeMarkers = function (lat, lng, icon, layerId, group, options, popup, clusterOptions, clusterId, label, labelOptions) {
+    var icondf = void 0;
+    var getIcon = void 0;
     if (icon) {
 
       // This cbinds the icon URLs and any other icon options; they're all
       // present on the icon object.
-      var icondf = dataframe.create().cbind(icon);
+      icondf = dataframe.create().cbind(icon);
 
       // Constructs an icon from a specified row of the icon dataframe.
-      var getIcon = function getIcon(i) {
+      getIcon = function getIcon(i) {
         var opts = icondf.get(i);
         if (!opts) {
           return new L.AwesomeMarkers.icon();
@@ -746,8 +771,8 @@ var dataframe = function () {
     });
   };
 
-  var addLayers = function addLayers(map, category, df, layerFunc) {
-    for (var i = 0; i < df.nrow(); i++) {
+  function addLayers(map, category, df, layerFunc) {
+    var _loop3 = function _loop3(i) {
       (function () {
         var layer = layerFunc(df, i);
         var thisId = df.get(i, 'layerId');
@@ -772,8 +797,12 @@ var dataframe = function () {
         layer.on('mouseover', mouseHandler(this.id, thisId, thisGroup, category + '_mouseover'), this);
         layer.on('mouseout', mouseHandler(this.id, thisId, thisGroup, category + '_mouseout'), this);
       }).call(map);
+    };
+
+    for (var i = 0; i < df.nrow(); i++) {
+      _loop3(i);
     }
-  };
+  }
 
   methods.addCircles = function (lat, lng, radius, layerId, group, options, popup, label, labelOptions) {
     var df = dataframe.create().col('lat', lat).col('lng', lng).col('radius', radius).col('layerId', layerId).col('group', group).col('popup', popup).col('label', label).col('labelOptions', labelOptions).cbind(options);
@@ -989,7 +1018,7 @@ var dataframe = function () {
 
   methods.addLegend = function (options) {
     var legend = L.control({ position: options.position });
-    var gradSpan;
+    var gradSpan = void 0;
 
     legend.onAdd = function (map) {
       var div = L.DomUtil.create('div', options.className),
@@ -997,79 +1026,81 @@ var dataframe = function () {
           labels = options.labels,
           legendHTML = '';
       if (options.type === 'numeric') {
-        // # Formatting constants.
-        var singleBinHeight = 20; // The distance between tick marks, in px
-        var vMargin = 8; // If 1st tick mark starts at top of gradient, how
-        // many extra px are needed for the top half of the
-        // 1st label? (ditto for last tick mark/label)
-        var tickWidth = 4; // How wide should tick marks be, in px?
-        var labelPadding = 6; // How much distance to reserve for tick mark?
-        // (Must be >= tickWidth)
+        (function () {
+          // # Formatting constants.
+          var singleBinHeight = 20; // The distance between tick marks, in px
+          var vMargin = 8; // If 1st tick mark starts at top of gradient, how
+          // many extra px are needed for the top half of the
+          // 1st label? (ditto for last tick mark/label)
+          var tickWidth = 4; // How wide should tick marks be, in px?
+          var labelPadding = 6; // How much distance to reserve for tick mark?
+          // (Must be >= tickWidth)
 
-        // # Derived formatting parameters.
+          // # Derived formatting parameters.
 
-        // What's the height of a single bin, in percentage (of gradient height)?
-        // It might not just be 1/(n-1), if the gradient extends past the tick
-        // marks (which can be the case for pretty cut points).
-        var singleBinPct = (options.extra.p_n - options.extra.p_1) / (labels.length - 1);
-        // Each bin is `singleBinHeight` high. How tall is the gradient?
-        var totalHeight = 1 / singleBinPct * singleBinHeight + 1;
-        // How far should the first tick be shifted down, relative to the top
-        // of the gradient?
-        var tickOffset = singleBinHeight / singleBinPct * options.extra.p_1;
+          // What's the height of a single bin, in percentage (of gradient height)?
+          // It might not just be 1/(n-1), if the gradient extends past the tick
+          // marks (which can be the case for pretty cut points).
+          var singleBinPct = (options.extra.p_n - options.extra.p_1) / (labels.length - 1);
+          // Each bin is `singleBinHeight` high. How tall is the gradient?
+          var totalHeight = 1 / singleBinPct * singleBinHeight + 1;
+          // How far should the first tick be shifted down, relative to the top
+          // of the gradient?
+          var tickOffset = singleBinHeight / singleBinPct * options.extra.p_1;
 
-        gradSpan = $('<span/>').css({
-          'background': 'linear-gradient(' + colors + ')',
-          'opacity': options.opacity,
-          'height': totalHeight + 'px',
-          'width': '18px',
-          'display': 'block',
-          'margin-top': vMargin + 'px'
-        });
-        var leftDiv = $('<div/>').css('float', 'left'),
-            rightDiv = $('<div/>').css('float', 'left');
-        leftDiv.append(gradSpan);
-        $(div).append(leftDiv).append(rightDiv).append($("<br clear='both'/>"));
+          gradSpan = $('<span/>').css({
+            'background': 'linear-gradient(' + colors + ')',
+            'opacity': options.opacity,
+            'height': totalHeight + 'px',
+            'width': '18px',
+            'display': 'block',
+            'margin-top': vMargin + 'px'
+          });
+          var leftDiv = $('<div/>').css('float', 'left'),
+              rightDiv = $('<div/>').css('float', 'left');
+          leftDiv.append(gradSpan);
+          $(div).append(leftDiv).append(rightDiv).append($("<br clear='both'/>"));
 
-        // Have to attach the div to the body at this early point, so that the
-        // svg text getComputedTextLength() actually works, below.
-        document.body.appendChild(div);
+          // Have to attach the div to the body at this early point, so that the
+          // svg text getComputedTextLength() actually works, below.
+          document.body.appendChild(div);
 
-        var ns = 'http://www.w3.org/2000/svg';
-        var svg = document.createElementNS(ns, 'svg');
-        rightDiv.append(svg);
-        var g = document.createElementNS(ns, 'g');
-        $(g).attr("transform", "translate(0, " + vMargin + ")");
-        svg.appendChild(g);
+          var ns = 'http://www.w3.org/2000/svg';
+          var svg = document.createElementNS(ns, 'svg');
+          rightDiv.append(svg);
+          var g = document.createElementNS(ns, 'g');
+          $(g).attr("transform", "translate(0, " + vMargin + ")");
+          svg.appendChild(g);
 
-        // max label width needed to set width of svg, and right-justify text
-        var maxLblWidth = 0;
+          // max label width needed to set width of svg, and right-justify text
+          var maxLblWidth = 0;
 
-        // Create tick marks and labels
-        $.each(labels, function (i, label) {
-          var y = tickOffset + i * singleBinHeight + 0.5;
+          // Create tick marks and labels
+          $.each(labels, function (i, label) {
+            var y = tickOffset + i * singleBinHeight + 0.5;
 
-          var thisLabel = document.createElementNS(ns, 'text');
-          $(thisLabel).text(labels[i]).attr('y', y).attr('dx', labelPadding).attr('dy', '0.5ex');
-          g.appendChild(thisLabel);
-          maxLblWidth = Math.max(maxLblWidth, thisLabel.getComputedTextLength());
+            var thisLabel = document.createElementNS(ns, 'text');
+            $(thisLabel).text(labels[i]).attr('y', y).attr('dx', labelPadding).attr('dy', '0.5ex');
+            g.appendChild(thisLabel);
+            maxLblWidth = Math.max(maxLblWidth, thisLabel.getComputedTextLength());
 
-          var thisTick = document.createElementNS(ns, 'line');
-          $(thisTick).attr('x1', 0).attr('x2', tickWidth).attr('y1', y).attr('y2', y).attr('stroke-width', 1);
-          g.appendChild(thisTick);
-        });
+            var thisTick = document.createElementNS(ns, 'line');
+            $(thisTick).attr('x1', 0).attr('x2', tickWidth).attr('y1', y).attr('y2', y).attr('stroke-width', 1);
+            g.appendChild(thisTick);
+          });
 
-        // Now that we know the max label width, we can right-justify
-        $(svg).find('text').attr('dx', labelPadding + maxLblWidth).attr('text-anchor', 'end');
-        // Final size for <svg>
-        $(svg).css({
-          width: maxLblWidth + labelPadding + "px",
-          height: totalHeight + vMargin * 2 + "px"
-        });
+          // Now that we know the max label width, we can right-justify
+          $(svg).find('text').attr('dx', labelPadding + maxLblWidth).attr('text-anchor', 'end');
+          // Final size for <svg>
+          $(svg).css({
+            width: maxLblWidth + labelPadding + "px",
+            height: totalHeight + vMargin * 2 + "px"
+          });
 
-        if (options.na_color) {
-          $(div).append('<div><i style="background:' + options.na_color + '"></i> ' + options.na_label + '</div>');
-        }
+          if (options.na_color) {
+            $(div).append('<div><i style="background:' + options.na_color + '"></i> ' + options.na_label + '</div>');
+          }
+        })();
       } else {
         if (options.na_color) {
           colors.push(options.na_color);
@@ -1088,7 +1119,7 @@ var dataframe = function () {
   };
 
   methods.addLayersControl = function (baseGroups, overlayGroups, options) {
-    var _this11 = this;
+    var _this13 = this;
 
     // Only allow one layers control at a time
     methods.removeLayersControl.call(this);
@@ -1096,23 +1127,23 @@ var dataframe = function () {
     var firstLayer = true;
     var base = {};
     $.each(asArray(baseGroups), function (i, g) {
-      var layer = _this11.layerManager.getLayerGroup(g, true);
+      var layer = _this13.layerManager.getLayerGroup(g, true);
       if (layer) {
         base[g] = layer;
 
         // Check if >1 base layers are visible; if so, hide all but the first one
-        if (_this11.hasLayer(layer)) {
+        if (_this13.hasLayer(layer)) {
           if (firstLayer) {
             firstLayer = false;
           } else {
-            _this11.removeLayer(layer);
+            _this13.removeLayer(layer);
           }
         }
       }
     });
     var overlay = {};
     $.each(asArray(overlayGroups), function (i, g) {
-      var layer = _this11.layerManager.getLayerGroup(g, true);
+      var layer = _this13.layerManager.getLayerGroup(g, true);
       if (layer) {
         overlay[g] = layer;
       }
@@ -1146,23 +1177,23 @@ var dataframe = function () {
   };
 
   methods.hideGroup = function (group) {
-    var _this12 = this;
+    var _this14 = this;
 
     $.each(asArray(group), function (i, g) {
-      var layer = _this12.layerManager.getLayerGroup(g, true);
+      var layer = _this14.layerManager.getLayerGroup(g, true);
       if (layer) {
-        _this12.removeLayer(layer);
+        _this14.removeLayer(layer);
       }
     });
   };
 
   methods.showGroup = function (group) {
-    var _this13 = this;
+    var _this15 = this;
 
     $.each(asArray(group), function (i, g) {
-      var layer = _this13.layerManager.getLayerGroup(g, true);
+      var layer = _this15.layerManager.getLayerGroup(g, true);
       if (layer) {
-        _this13.addLayer(layer);
+        _this15.addLayer(layer);
       }
     });
   };
@@ -1292,123 +1323,131 @@ var dataframe = function () {
     canvasTiles.drawTile = function (canvas, tilePoint, zoom) {
       getImageData(function (imgData, w, h, mipmapper) {
         try {
-          // The Context2D we'll being drawing onto. It's always 256x256.
-          var ctx = canvas.getContext('2d');
+          var _ret6 = function () {
+            // The Context2D we'll being drawing onto. It's always 256x256.
+            var ctx = canvas.getContext('2d');
 
-          // Convert our image data's top-left and bottom-right locations into
-          // x/y tile coordinates. This is essentially doing a spherical mercator
-          // projection, then multiplying by 2^zoom.
-          var topLeft = degree2tile(bounds[0][0], bounds[0][1], zoom);
-          var bottomRight = degree2tile(bounds[1][0], bounds[1][1], zoom);
-          // The size of the image in x/y tile coordinates.
-          var extent = { x: bottomRight.x - topLeft.x, y: bottomRight.y - topLeft.y };
+            // Convert our image data's top-left and bottom-right locations into
+            // x/y tile coordinates. This is essentially doing a spherical mercator
+            // projection, then multiplying by 2^zoom.
+            var topLeft = degree2tile(bounds[0][0], bounds[0][1], zoom);
+            var bottomRight = degree2tile(bounds[1][0], bounds[1][1], zoom);
+            // The size of the image in x/y tile coordinates.
+            var extent = { x: bottomRight.x - topLeft.x, y: bottomRight.y - topLeft.y };
 
-          // Short circuit if tile is totally disjoint from image.
-          if (!overlap(tilePoint.x, tilePoint.x + 1, topLeft.x, bottomRight.x)) return;
-          if (!overlap(tilePoint.y, tilePoint.y + 1, topLeft.y, bottomRight.y)) return;
+            // Short circuit if tile is totally disjoint from image.
+            if (!overlap(tilePoint.x, tilePoint.x + 1, topLeft.x, bottomRight.x)) return {
+                v: void 0
+              };
+            if (!overlap(tilePoint.y, tilePoint.y + 1, topLeft.y, bottomRight.y)) return {
+                v: void 0
+              };
 
-          // The linear resolution of the tile we're drawing is always 256px per tile unit.
-          // If the linear resolution (in either direction) of the image is less than 256px
-          // per tile unit, then use nearest neighbor; otherwise, use the canvas's built-in
-          // scaling.
-          var imgRes = {
-            x: w / extent.x,
-            y: h / extent.y
-          };
-
-          // We can do the actual drawing in one of three ways:
-          // - Call drawImage(). This is easy and fast, and results in smooth
-          //   interpolation (bilinear?). This is what we want when we are
-          //   reducing the image from its native size.
-          // - Call drawImage() with imageSmoothingEnabled=false. This is easy
-          //   and fast and gives us nearest-neighbor interpolation, which is what
-          //   we want when enlarging the image. However, it's unsupported on many
-          //   browsers (including QtWebkit).
-          // - Do a manual nearest-neighbor interpolation. This is what we'll fall
-          //   back to when enlarging, and imageSmoothingEnabled isn't supported.
-          //   In theory it's slower, but still pretty fast on my machine, and the
-          //   results look the same AFAICT.
-
-          // Is imageSmoothingEnabled supported? If so, we can let canvas do
-          // nearest-neighbor interpolation for us.
-          var smoothingProperty = getCanvasSmoothingProperty(ctx);
-
-          if (smoothingProperty || imgRes.x >= 256 && imgRes.y >= 256) {
-            // Use built-in scaling
-
-            // Turn off anti-aliasing if necessary
-            if (smoothingProperty) {
-              ctx[smoothingProperty] = imgRes.x >= 256 && imgRes.y >= 256;
-            }
-
-            // Don't necessarily draw with the full-size image; if we're
-            // downscaling, use the mipmapper to get a pre-downscaled image
-            // (see comments on Mipmapper class for why this matters).
-            mipmapper.getBySize(extent.x * 256, extent.y * 256, function (mip) {
-              // It's possible that the image will go off the edge of the canvas--
-              // that's OK, the canvas should clip appropriately.
-              ctx.drawImage(mip,
-              // Convert abs tile coords to rel tile coords, then *256 to convert
-              // to rel pixel coords
-              (topLeft.x - tilePoint.x) * 256, (topLeft.y - tilePoint.y) * 256,
-              // Always draw the whole thing and let canvas clip; so we can just
-              // convert from size in tile coords straight to pixels
-              extent.x * 256, extent.y * 256);
-            });
-          } else {
-            // Use manual nearest-neighbor interpolation
-
-            // Calculate the source image pixel coordinates that correspond with
-            // the top-left and bottom-right of this tile. (If the source image
-            // only partially overlaps the tile, we use max/min to limit the
-            // sourceStart/End to only reflect the overlapping portion.)
-            var sourceStart = {
-              x: Math.max(0, Math.floor((tilePoint.x - topLeft.x) * imgRes.x)),
-              y: Math.max(0, Math.floor((tilePoint.y - topLeft.y) * imgRes.y))
-            };
-            var sourceEnd = {
-              x: Math.min(w, Math.ceil((tilePoint.x + 1 - topLeft.x) * imgRes.x)),
-              y: Math.min(h, Math.ceil((tilePoint.y + 1 - topLeft.y) * imgRes.y))
+            // The linear resolution of the tile we're drawing is always 256px per tile unit.
+            // If the linear resolution (in either direction) of the image is less than 256px
+            // per tile unit, then use nearest neighbor; otherwise, use the canvas's built-in
+            // scaling.
+            var imgRes = {
+              x: w / extent.x,
+              y: h / extent.y
             };
 
-            // The size, in dest pixels, that each source pixel should occupy.
-            // This might be greater or less than 1 (e.g. if x and y resolution
-            // are very different).
-            var pixelSize = {
-              x: 256 / imgRes.x,
-              y: 256 / imgRes.y
-            };
+            // We can do the actual drawing in one of three ways:
+            // - Call drawImage(). This is easy and fast, and results in smooth
+            //   interpolation (bilinear?). This is what we want when we are
+            //   reducing the image from its native size.
+            // - Call drawImage() with imageSmoothingEnabled=false. This is easy
+            //   and fast and gives us nearest-neighbor interpolation, which is what
+            //   we want when enlarging the image. However, it's unsupported on many
+            //   browsers (including QtWebkit).
+            // - Do a manual nearest-neighbor interpolation. This is what we'll fall
+            //   back to when enlarging, and imageSmoothingEnabled isn't supported.
+            //   In theory it's slower, but still pretty fast on my machine, and the
+            //   results look the same AFAICT.
 
-            // For each pixel in the source image that overlaps the tile...
-            for (var row = sourceStart.y; row < sourceEnd.y; row++) {
-              for (var col = sourceStart.x; col < sourceEnd.x; col++) {
-                // ...extract the pixel data...
-                var i = (row * w + col) * 4;
-                var r = imgData[i];
-                var g = imgData[i + 1];
-                var b = imgData[i + 2];
-                var a = imgData[i + 3];
-                ctx.fillStyle = "rgba(" + [r, g, b, a / 255].join(",") + ")";
+            // Is imageSmoothingEnabled supported? If so, we can let canvas do
+            // nearest-neighbor interpolation for us.
+            var smoothingProperty = getCanvasSmoothingProperty(ctx);
 
-                // ...calculate the corresponding pixel coord in the dest image
-                // where it should be drawn...
-                var pixelPos = {
-                  x: (col / imgRes.x + topLeft.x - tilePoint.x) * 256,
-                  y: (row / imgRes.y + topLeft.y - tilePoint.y) * 256
-                };
+            if (smoothingProperty || imgRes.x >= 256 && imgRes.y >= 256) {
+              // Use built-in scaling
 
-                // ...and draw a rectangle there.
-                ctx.fillRect(Math.round(pixelPos.x), Math.round(pixelPos.y),
-                // Looks crazy, but this is necessary to prevent rounding from
-                // causing overlap between this rect and its neighbors. The
-                // minuend is the location of the next pixel, while the
-                // subtrahend is the position of the current pixel (to turn an
-                // absolute coordinate to a width/height). Yes, I had to look
-                // up minuend and subtrahend.
-                Math.round(pixelPos.x + pixelSize.x) - Math.round(pixelPos.x), Math.round(pixelPos.y + pixelSize.y) - Math.round(pixelPos.y));
+              // Turn off anti-aliasing if necessary
+              if (smoothingProperty) {
+                ctx[smoothingProperty] = imgRes.x >= 256 && imgRes.y >= 256;
+              }
+
+              // Don't necessarily draw with the full-size image; if we're
+              // downscaling, use the mipmapper to get a pre-downscaled image
+              // (see comments on Mipmapper class for why this matters).
+              mipmapper.getBySize(extent.x * 256, extent.y * 256, function (mip) {
+                // It's possible that the image will go off the edge of the canvas--
+                // that's OK, the canvas should clip appropriately.
+                ctx.drawImage(mip,
+                // Convert abs tile coords to rel tile coords, then *256 to convert
+                // to rel pixel coords
+                (topLeft.x - tilePoint.x) * 256, (topLeft.y - tilePoint.y) * 256,
+                // Always draw the whole thing and let canvas clip; so we can just
+                // convert from size in tile coords straight to pixels
+                extent.x * 256, extent.y * 256);
+              });
+            } else {
+              // Use manual nearest-neighbor interpolation
+
+              // Calculate the source image pixel coordinates that correspond with
+              // the top-left and bottom-right of this tile. (If the source image
+              // only partially overlaps the tile, we use max/min to limit the
+              // sourceStart/End to only reflect the overlapping portion.)
+              var sourceStart = {
+                x: Math.max(0, Math.floor((tilePoint.x - topLeft.x) * imgRes.x)),
+                y: Math.max(0, Math.floor((tilePoint.y - topLeft.y) * imgRes.y))
+              };
+              var sourceEnd = {
+                x: Math.min(w, Math.ceil((tilePoint.x + 1 - topLeft.x) * imgRes.x)),
+                y: Math.min(h, Math.ceil((tilePoint.y + 1 - topLeft.y) * imgRes.y))
+              };
+
+              // The size, in dest pixels, that each source pixel should occupy.
+              // This might be greater or less than 1 (e.g. if x and y resolution
+              // are very different).
+              var pixelSize = {
+                x: 256 / imgRes.x,
+                y: 256 / imgRes.y
+              };
+
+              // For each pixel in the source image that overlaps the tile...
+              for (var row = sourceStart.y; row < sourceEnd.y; row++) {
+                for (var col = sourceStart.x; col < sourceEnd.x; col++) {
+                  // ...extract the pixel data...
+                  var i = (row * w + col) * 4;
+                  var r = imgData[i];
+                  var g = imgData[i + 1];
+                  var b = imgData[i + 2];
+                  var a = imgData[i + 3];
+                  ctx.fillStyle = "rgba(" + [r, g, b, a / 255].join(",") + ")";
+
+                  // ...calculate the corresponding pixel coord in the dest image
+                  // where it should be drawn...
+                  var pixelPos = {
+                    x: (col / imgRes.x + topLeft.x - tilePoint.x) * 256,
+                    y: (row / imgRes.y + topLeft.y - tilePoint.y) * 256
+                  };
+
+                  // ...and draw a rectangle there.
+                  ctx.fillRect(Math.round(pixelPos.x), Math.round(pixelPos.y),
+                  // Looks crazy, but this is necessary to prevent rounding from
+                  // causing overlap between this rect and its neighbors. The
+                  // minuend is the location of the next pixel, while the
+                  // subtrahend is the position of the current pixel (to turn an
+                  // absolute coordinate to a width/height). Yes, I had to look
+                  // up minuend and subtrahend.
+                  Math.round(pixelPos.x + pixelSize.x) - Math.round(pixelPos.x), Math.round(pixelPos.y + pixelSize.y) - Math.round(pixelPos.y));
+                }
               }
             }
-          }
+          }();
+
+          if ((typeof _ret6 === 'undefined' ? 'undefined' : _typeof(_ret6)) === "object") return _ret6.v;
         } finally {
           canvasTiles.tileDrawn(canvas);
         }

@@ -24,8 +24,8 @@ function recycle(values, length, inPlace) {
   if (typeof(length) === 'undefined')
     length = values.length;
 
-  var dest = inPlace ? values : [];
-  var origLength = values.length;
+  let dest = inPlace ? values : [];
+  let origLength = values.length;
   while (dest.length < length) {
     dest.push(values[dest.length % origLength]);
   }
@@ -42,8 +42,8 @@ function asArray(value) {
     return [value];
 }
 
-var dataframe = (function() {
-  var DataFrame = function() {
+let dataframe = (function() {
+  let DataFrame = function() {
     this.columns = [];
     this.colnames = [];
     this.colstrict = [];
@@ -63,7 +63,7 @@ var dataframe = (function() {
   };
 
   DataFrame.prototype._colIndex = function(colname) {
-    var index = this.colindices[colname];
+    let index = this.colindices[colname];
     if (typeof(index) === 'undefined')
       return -1;
     return index;
@@ -73,7 +73,7 @@ var dataframe = (function() {
     if (typeof(name) !== 'string')
       throw new Error('Invalid column name "' + name + '"');
 
-    var index = this._colIndex(name);
+    let index = this._colIndex(name);
 
     if (arguments.length === 1) {
       if (index < 0)
@@ -107,9 +107,9 @@ var dataframe = (function() {
     if (row > this.effectiveLength)
       throw new Error('Row argument was out of bounds: ' + row + ' > ' + this.effectiveLength);
 
-    var colIndex = -1;
+    let colIndex = -1;
     if (typeof(col) === 'undefined') {
-      var rowData = {};
+      let rowData = {};
       $.each(this.colnames, (i, name) => {
         rowData[name] = this.columns[i][row % this.columns[i].length];
       });
@@ -130,7 +130,7 @@ var dataframe = (function() {
   };
 
   // function test() {
-  //   var df = new DataFrame();
+  //   let df = new DataFrame();
   //   df.col("speed", [4, 4, 7, 7, 8, 9, 10, 10, 10, 11, 11, 12, 12, 12, 12, 13, 13, 13, 13, 14, 14, 14, 14, 15, 15, 15, 16, 16, 17, 17, 17, 18, 18, 18, 18, 19, 19, 19, 20, 20, 20, 20, 20, 22, 23, 24, 24, 24, 24, 25])
   //     .col("dist", [2, 10, 4, 22, 16, 10, 18, 26, 34, 17, 28, 14, 20, 24, 28, 26, 34, 34, 46, 26, 36, 60, 80, 20, 26, 54, 32, 40, 32, 40, 50, 42, 56, 76, 84, 36, 46, 68, 32, 48, 52, 56, 64, 66, 54, 70, 92, 93, 120, 85])
   //     .col("color", ["yellow", "red"])
@@ -167,8 +167,8 @@ var dataframe = (function() {
   // The various functions on this class take a callback function BUT MAY OR MAY
   // NOT actually behave asynchronously.
   Mipmapper.prototype.getBySize = function(desiredWidth, desiredHeight, callback) {
-    var i = 0;
-    var lastImg = this._layers[0];
+    let i = 0;
+    let lastImg = this._layers[0];
     let testNext = () => {
       this.getByIndex(i, function(img) {
         // If current image is invalid (i.e. too small to be rendered) or
@@ -214,13 +214,13 @@ var dataframe = (function() {
     });
   };
   Mipmapper.prototype.reduce = function(img, callback) {
-    var imgDataCanvas = document.createElement("canvas");
+    let imgDataCanvas = document.createElement("canvas");
     imgDataCanvas.width = Math.ceil(img.width / 2);
     imgDataCanvas.height = Math.ceil(img.height / 2);
     imgDataCanvas.style.display = "none";
     document.body.appendChild(imgDataCanvas);
     try {
-      var imgDataCtx = imgDataCanvas.getContext("2d");
+      let imgDataCtx = imgDataCanvas.getContext("2d");
       imgDataCtx.drawImage(img, 0, 0, img.width/2, img.height/2);
       callback(imgDataCanvas);
     } finally {
@@ -257,22 +257,22 @@ var dataframe = (function() {
   }
   LayerManager.prototype.addLayer = function(layer, category, layerId, group) {
     // Was a group provided?
-    var hasId = typeof(layerId) === "string";
-    var grouped = typeof(group) === "string";
+    let hasId = typeof(layerId) === "string";
+    let grouped = typeof(group) === "string";
 
-    var stamp = L.Util.stamp(layer);
+    let stamp = L.Util.stamp(layer);
 
     // This will be the default layer group to add the layer to.
-    // We may overwrite this var before using it (i.e. if a group is assigned).
+    // We may overwrite this let before using it (i.e. if a group is assigned).
     // This one liner creates the _categoryContainers[category] entry if it
     // doesn't already exist.
-    var container = this._categoryContainers[category] =
+    let container = this._categoryContainers[category] =
         this._categoryContainers[category] || L.layerGroup().addTo(this._map);
 
-    var oldLayer = null;
+    let oldLayer = null;
     if (hasId) {
       // First, remove any layer with the same category and layerId
-      var prefixedLayerId = this._layerIdKey(category, layerId);
+      let prefixedLayerId = this._layerIdKey(category, layerId);
       oldLayer = this._byLayerId[prefixedLayerId];
       if (oldLayer) {
         this._removeLayer(oldLayer);
@@ -318,7 +318,7 @@ var dataframe = (function() {
   LayerManager.prototype.removeLayer = function(category, layerIds) {
     // Find layer info
     $.each(asArray(layerIds), (i, layerId) => {
-      var layer = this._byLayerId[this._layerIdKey(category, layerId)];
+      let layer = this._byLayerId[this._layerIdKey(category, layerId)];
       if (layer) {
         this._removeLayer(layer);
       }
@@ -326,14 +326,14 @@ var dataframe = (function() {
   };
   LayerManager.prototype.clearLayers = function(category) {
     // Find all layers in _byCategory[category]
-    var catTable = this._byCategory[category];
+    let catTable = this._byCategory[category];
     if (!catTable) {
       return false;
     }
 
     // Remove all layers. Make copy of keys to avoid mutating the collection
     // behind the iterator you're accessing.
-    var stamps = [];
+    let stamps = [];
     $.each(catTable, (k, v) => {
       stamps.push(k);
     });
@@ -342,7 +342,7 @@ var dataframe = (function() {
     });
   };
   LayerManager.prototype.getLayerGroup = function(group, ensureExists) {
-    var g = this._groupContainers[group];
+    let g = this._groupContainers[group];
     if (ensureExists && !g) {
       this._byGroup[group] = this._byGroup[group] || {};
       g = this._groupContainers[group] = L.layerGroup();
@@ -355,7 +355,7 @@ var dataframe = (function() {
     return layerGroup.groupname;
   };
   LayerManager.prototype.getVisibleGroups = function() {
-    var result = [];
+    let result = [];
     $.each(this._groupContainers, (k, v) => {
       if (this._map.hasLayer(v)) {
         result.push(k);
@@ -365,14 +365,14 @@ var dataframe = (function() {
   };
   LayerManager.prototype.clearGroup = function(group) {
     // Find all layers in _byGroup[group]
-    var groupTable = this._byGroup[group];
+    let groupTable = this._byGroup[group];
     if (!groupTable) {
       return false;
     }
 
     // Remove all layers. Make copy of keys to avoid mutating the collection
     // behind the iterator you're accessing.
-    var stamps = [];
+    let stamps = [];
     $.each(groupTable, (k, v) => {
       stamps.push(k);
     });
@@ -395,14 +395,14 @@ var dataframe = (function() {
     this._groupContainers = {};
   };
   LayerManager.prototype._removeLayer = function(layer) {
-    var stamp;
+    let stamp;
     if (typeof(layer) === "string") {
       stamp = layer;
     } else {
       stamp = L.Util.stamp(layer);
     }
 
-    var layerInfo = this._byStamp[stamp];
+    let layerInfo = this._byStamp[stamp];
     if (!layerInfo) {
       return false;
     }
@@ -441,20 +441,20 @@ var dataframe = (function() {
 
   ControlStore.prototype.remove = function(id) {
     if (this._controlsById[id]) {
-      var control = this._controlsById[id];
+      let control = this._controlsById[id];
       this._map.removeControl(control);
       delete this._controlsById[id];
     }
   };
 
   ControlStore.prototype.clear = function() {
-    for (var i = 0; i < this._controlsNoId.length; i++) {
+    for (let i = 0; i < this._controlsNoId.length; i++) {
       let control = this._controlsNoId[i];
       this._map.removeControl(control);
     }
     this._controlsNoId = [];
 
-    for (var key in this._controlsById) {
+    for (let key in this._controlsById) {
       let control = this._controlsById[key];
       this._map.removeControl(control);
     }
@@ -482,7 +482,7 @@ var dataframe = (function() {
     }
 
     id = asArray(id);
-    for (var i = 0; i < id.length; i++) {
+    for (let i = 0; i < id.length; i++) {
       if (this._layers[id[i]]) {
         this._group.removeLayer(this._layers[id[i]]);
         delete this._layers[id[i]];
@@ -499,7 +499,7 @@ var dataframe = (function() {
     return function(e) {
       if (!HTMLWidgets.shinyMode) return;
 
-      var eventInfo = $.extend(
+      let eventInfo = $.extend(
         {
           id: layerId,
           '.nonce': Math.random()  // force reactivity
@@ -515,8 +515,8 @@ var dataframe = (function() {
 
   // Send updated bounds back to app. Takes a leaflet event object as input.
   function updateBounds(map) {
-    var id = map.getContainer().id;
-    var bounds = map.getBounds();
+    let id = map.getContainer().id;
+    let bounds = map.getBounds();
 
     Shiny.onInputChange(id + '_bounds', {
       north: bounds.getNorthEast().lat,
@@ -532,7 +532,7 @@ var dataframe = (function() {
   }
 
   window.LeafletWidget = {};
-  var methods = window.LeafletWidget.methods = {};
+  let methods = window.LeafletWidget.methods = {};
 
   methods.clearGroup = function(group) {
     $.each(asArray(group), (i, v) => {
@@ -557,7 +557,7 @@ var dataframe = (function() {
   };
 
   methods.addPopups = function(lat, lng, popup, layerId, group, options) {
-    var df = dataframe.create()
+    let df = dataframe.create()
       .col('lat', lat)
       .col('lng', lng)
       .col('popup', popup)
@@ -565,13 +565,13 @@ var dataframe = (function() {
       .col('group', group)
       .cbind(options);
 
-    for (var i = 0; i < df.nrow(); i++) {
+    for (let i = 0; i < df.nrow(); i++) {
       (function() {
-        var popup = L.popup(df.get(i))
+        let popup = L.popup(df.get(i))
                      .setLatLng([df.get(i, 'lat'), df.get(i, 'lng')])
                      .setContent(df.get(i, 'popup'));
-        var thisId = df.get(i, 'layerId');
-        var thisGroup = df.get(i, 'group');
+        let thisId = df.get(i, 'layerId');
+        let thisGroup = df.get(i, 'group');
         this.layerManager.addLayer(popup, "popup", thisId, thisGroup);
         popup.on('click', mouseHandler(this.id, thisId, thisGroup, 'popup_click'), this);
         popup.on('mouseover', mouseHandler(this.id, thisId, thisGroup, 'popup_mouseover'), this);
@@ -626,28 +626,28 @@ var dataframe = (function() {
 
   function addMarkers(map, df, group, clusterOptions, clusterId, markerFunc) {
     (function() {
-      var clusterGroup = this.layerManager.getLayer("cluster", clusterId),
+      let clusterGroup = this.layerManager.getLayer("cluster", clusterId),
         cluster = clusterOptions !== null;
       if (cluster && !clusterGroup) {
         clusterGroup = L.markerClusterGroup(clusterOptions);
         clusterGroup.clusterLayerStore = new ClusterLayerStore(clusterGroup);
       }
-      var extraInfo = cluster ? { clusterId: clusterId } : {};
+      let extraInfo = cluster ? { clusterId: clusterId } : {};
 
-      for (var i = 0; i < df.nrow(); i++) {
+      for (let i = 0; i < df.nrow(); i++) {
         (function() {
-          var marker = markerFunc(df, i);
-          var thisId = df.get(i, 'layerId');
-          var thisGroup = cluster ? null : df.get(i, 'group');
+          let marker = markerFunc(df, i);
+          let thisId = df.get(i, 'layerId');
+          let thisGroup = cluster ? null : df.get(i, 'group');
           if (cluster) {
             clusterGroup.clusterLayerStore.add(marker, thisId);
           } else {
             this.layerManager.addLayer(marker, "marker", thisId, thisGroup);
           }
-          var popup = df.get(i, 'popup');
+          let popup = df.get(i, 'popup');
           if (popup !== null) marker.bindPopup(popup);
-          var label = df.get(i, 'label');
-          var labelOptions = df.get(i, 'labelOptions');
+          let label = df.get(i, 'label');
+          let labelOptions = df.get(i, 'labelOptions');
           if (label !== null) {
             if (labelOptions !== null) {
               if(labelOptions.noHide) {
@@ -673,6 +673,9 @@ var dataframe = (function() {
 
   methods.addMarkers = function(lat, lng, icon, layerId, group, options, popup,
                                 clusterOptions, clusterId, label, labelOptions) {
+    let icondf;
+    let getIcon;
+
     if (icon) {
       // Unpack icons
       icon.iconUrl         = unpackStrings(icon.iconUrl);
@@ -682,11 +685,11 @@ var dataframe = (function() {
 
       // This cbinds the icon URLs and any other icon options; they're all
       // present on the icon object.
-      var icondf = dataframe.create().cbind(icon);
+      icondf = dataframe.create().cbind(icon);
 
       // Constructs an icon from a specified row of the icon dataframe.
-      var getIcon = function(i) {
-        var opts = icondf.get(i);
+      getIcon = function(i) {
+        let opts = icondf.get(i);
         if (!opts.iconUrl) {
           return new L.Icon.Default();
         }
@@ -714,7 +717,7 @@ var dataframe = (function() {
       };
     }
 
-    var df = dataframe.create()
+    let df = dataframe.create()
       .col('lat', lat)
       .col('lng', lng)
       .col('layerId', layerId)
@@ -726,8 +729,8 @@ var dataframe = (function() {
 
     if (icon) icondf.effectiveLength = df.nrow();
 
-    addMarkers(this, df, group, clusterOptions, clusterId, function(df, i) {
-      var options = df.get(i);
+    addMarkers(this, df, group, clusterOptions, clusterId, (df, i) => {
+      let options = df.get(i);
       if (icon) options.icon = getIcon(i);
       return L.marker([df.get(i, 'lat'), df.get(i, 'lng')], options);
     });
@@ -735,15 +738,17 @@ var dataframe = (function() {
 
   methods.addAwesomeMarkers = function(lat, lng, icon, layerId, group, options, popup,
   clusterOptions, clusterId, label, labelOptions) {
+    let icondf;
+    let getIcon;
     if (icon) {
 
       // This cbinds the icon URLs and any other icon options; they're all
       // present on the icon object.
-      var icondf = dataframe.create().cbind(icon);
+      icondf = dataframe.create().cbind(icon);
 
       // Constructs an icon from a specified row of the icon dataframe.
-      var getIcon = function(i) {
-        var opts = icondf.get(i);
+      getIcon = function(i) {
+        let opts = icondf.get(i);
         if (!opts) {
           return new L.AwesomeMarkers.icon();
         }
@@ -752,7 +757,7 @@ var dataframe = (function() {
       };
     }
 
-    var df = dataframe.create()
+    let df = dataframe.create()
       .col('lat', lat)
       .col('lng', lng)
       .col('layerId', layerId)
@@ -765,26 +770,26 @@ var dataframe = (function() {
     if (icon) icondf.effectiveLength = df.nrow();
 
     addMarkers(this, df, group, clusterOptions, clusterId, function(df, i) {
-      var options = df.get(i);
+      let options = df.get(i);
       if (icon) options.icon = getIcon(i);
       return L.marker([df.get(i, 'lat'), df.get(i, 'lng')], options);
     });
   };
 
-  let addLayers = function(map, category, df, layerFunc) {
-    for (var i = 0; i < df.nrow(); i++) {
+  function addLayers(map, category, df, layerFunc) {
+    for (let i = 0; i < df.nrow(); i++) {
       (function() {
-        var layer = layerFunc(df, i);
-        var thisId = df.get(i, 'layerId');
-        var thisGroup = df.get(i, 'group');
+        let layer = layerFunc(df, i);
+        let thisId = df.get(i, 'layerId');
+        let thisGroup = df.get(i, 'group');
         this.layerManager.addLayer(layer, category, thisId, thisGroup);
         if (layer.bindPopup) {
-          var popup = df.get(i, 'popup');
+          let popup = df.get(i, 'popup');
           if (popup !== null) layer.bindPopup(popup);
         }
         if (layer.bindLabel) {
-          var label = df.get(i, 'label');
-          var labelOptions = df.get(i, 'labelOptions');
+          let label = df.get(i, 'label');
+          let labelOptions = df.get(i, 'labelOptions');
           if (label !== null) {
             if (labelOptions !== null) {
               layer.bindLabel(label, labelOptions);
@@ -798,10 +803,10 @@ var dataframe = (function() {
         layer.on('mouseout', mouseHandler(this.id, thisId, thisGroup, category + '_mouseout'), this);
       }).call(map);
     }
-  };
+  }
 
   methods.addCircles = function(lat, lng, radius, layerId, group, options, popup, label, labelOptions) {
-    var df = dataframe.create()
+    let df = dataframe.create()
       .col('lat', lat)
       .col('lng', lng)
       .col('radius', radius)
@@ -818,7 +823,7 @@ var dataframe = (function() {
   };
 
   methods.addCircleMarkers = function(lat, lng, radius, layerId, group, options, clusterOptions, clusterId, popup, label, labelOptions) {
-    var df = dataframe.create()
+    let df = dataframe.create()
       .col('lat', lat)
       .col('lng', lng)
       .col('radius', radius)
@@ -839,7 +844,7 @@ var dataframe = (function() {
    * @param lng Array of arrays of longitude coordinates for polylines
    */
   methods.addPolylines = function(polygons, layerId, group, options, popup, label, labelOptions) {
-    var df = dataframe.create()
+    let df = dataframe.create()
       .col('shapes', polygons)
       .col('layerId', layerId)
       .col('group', group)
@@ -849,7 +854,7 @@ var dataframe = (function() {
       .cbind(options);
 
     addLayers(this, "shape", df, function(df, i) {
-      var shape = df.get(i, 'shapes')[0];
+      let shape = df.get(i, 'shapes')[0];
       shape = HTMLWidgets.dataframeToD3(shape);
       return L.polyline(shape, df.get(i));
     });
@@ -868,7 +873,7 @@ var dataframe = (function() {
   };
 
   methods.removeMarkerFromCluster = function(layerId, clusterId) {
-    var cluster = this.layerManager.getLayer("cluster", clusterId);
+    let cluster = this.layerManager.getLayer("cluster", clusterId);
     if (!cluster) return;
     cluster.clusterLayerStore.remove(layerId);
   };
@@ -886,7 +891,7 @@ var dataframe = (function() {
   };
 
   methods.addRectangles = function(lat1, lng1, lat2, lng2, layerId, group, options, popup, label, labelOptions) {
-    var df = dataframe.create()
+    let df = dataframe.create()
       .col('lat1', lat1)
       .col('lng1', lng1)
       .col('lat2', lat2)
@@ -913,7 +918,7 @@ var dataframe = (function() {
    * @param lng Array of arrays of longitude coordinates for polygons
    */
   methods.addPolygons = function(polygons, layerId, group, options, popup, label, labelOptions) {
-    var df = dataframe.create()
+    let df = dataframe.create()
       .col('shapes', polygons)
       .col('layerId', layerId)
       .col('group', group)
@@ -923,8 +928,8 @@ var dataframe = (function() {
       .cbind(options);
 
     addLayers(this, "shape", df, function(df, i) {
-      var shapes = df.get(i, 'shapes');
-      for (var j = 0; j < shapes.length; j++) {
+      let shapes = df.get(i, 'shapes');
+      for (let j = 0; j < shapes.length; j++) {
         shapes[j] = HTMLWidgets.dataframeToD3(shapes[j]);
       }
       return L.polygon(shapes, df.get(i));
@@ -934,14 +939,14 @@ var dataframe = (function() {
   methods.addGeoJSON = function(data, layerId, group, style) {
     // This time, self is actually needed because the callbacks below need
     // to access both the inner and outer senses of "this"
-    var self = this;
+    let self = this;
     if (typeof(data) === "string") {
       data = JSON.parse(data);
     }
 
-    var globalStyle = $.extend({}, style, data.style || {});
+    let globalStyle = $.extend({}, style, data.style || {});
 
-    var gjlayer = L.geoJson(data, {
+    let gjlayer = L.geoJson(data, {
       style: function(feature) {
         if (feature.style || feature.properties.style) {
           return $.extend({}, globalStyle, feature.style, feature.properties.style);
@@ -950,11 +955,11 @@ var dataframe = (function() {
         }
       },
       onEachFeature: function(feature, layer) {
-        var extraInfo = {
+        let extraInfo = {
           featureId: feature.id,
           properties: feature.properties
         };
-        var popup = feature.properties.popup;
+        let popup = feature.properties.popup;
         if (typeof popup !== 'undefined' && popup !== null) layer.bindPopup(popup);
         layer.on("click", mouseHandler(self.id, layerId, group, "geojson_click", extraInfo), this);
         layer.on("mouseover", mouseHandler(self.id, layerId, group, "geojson_mouseover", extraInfo), this);
@@ -975,14 +980,14 @@ var dataframe = (function() {
   methods.addTopoJSON = function(data, layerId, group, style) {
     // This time, self is actually needed because the callbacks below need
     // to access both the inner and outer senses of "this"
-    var self = this;
+    let self = this;
     if (typeof(data) === "string") {
       data = JSON.parse(data);
     }
 
-    var globalStyle = $.extend({}, style, data.style || {});
+    let globalStyle = $.extend({}, style, data.style || {});
 
-    var gjlayer = L.geoJson(null, {
+    let gjlayer = L.geoJson(null, {
       style: function(feature) {
         if (feature.style || feature.properties.style) {
           return $.extend({}, globalStyle, feature.style, feature.properties.style);
@@ -991,11 +996,11 @@ var dataframe = (function() {
         }
       },
       onEachFeature: function(feature, layer) {
-        var extraInfo = {
+        let extraInfo = {
           featureId: feature.id,
           properties: feature.properties
         };
-        var popup = feature.properties.popup;
+        let popup = feature.properties.popup;
         if (typeof popup !== 'undefined' && popup !== null) layer.bindPopup(popup);
         layer.on("click", mouseHandler(self.id, layerId, group, "topojson_click", extraInfo), this);
         layer.on("mouseover", mouseHandler(self.id, layerId, group, "topojson_mouseover", extraInfo), this);
@@ -1016,7 +1021,7 @@ var dataframe = (function() {
 
   methods.addControl = function(html, position, layerId, classes) {
     function onAdd(map) {
-      var div = L.DomUtil.create('div', classes);
+      let div = L.DomUtil.create('div', classes);
       if (typeof layerId !== 'undefined' && layerId !== null) {
         div.setAttribute('id', layerId);
       }
@@ -1043,7 +1048,7 @@ var dataframe = (function() {
         Shiny.unbindAll(this._div);
       }
     }
-    var Control = L.Control.extend({
+    let Control = L.Control.extend({
       options: {position: position},
       onAdd: onAdd,
       onRemove: onRemove
@@ -1060,22 +1065,22 @@ var dataframe = (function() {
   };
 
   methods.addLegend = function(options) {
-    var legend = L.control({position: options.position});
-    var gradSpan;
+    let legend = L.control({position: options.position});
+    let gradSpan;
 
     legend.onAdd = function (map) {
-      var div = L.DomUtil.create('div', options.className),
+      let div = L.DomUtil.create('div', options.className),
         colors = options.colors,
         labels = options.labels,
         legendHTML = '';
       if (options.type === 'numeric') {
         // # Formatting constants.
-        var singleBinHeight = 20;  // The distance between tick marks, in px
-        var vMargin = 8; // If 1st tick mark starts at top of gradient, how
+        let singleBinHeight = 20;  // The distance between tick marks, in px
+        let vMargin = 8; // If 1st tick mark starts at top of gradient, how
                          // many extra px are needed for the top half of the
                          // 1st label? (ditto for last tick mark/label)
-        var tickWidth = 4;     // How wide should tick marks be, in px?
-        var labelPadding = 6;  // How much distance to reserve for tick mark?
+        let tickWidth = 4;     // How wide should tick marks be, in px?
+        let labelPadding = 6;  // How much distance to reserve for tick mark?
                                // (Must be >= tickWidth)
 
         // # Derived formatting parameters.
@@ -1083,12 +1088,12 @@ var dataframe = (function() {
         // What's the height of a single bin, in percentage (of gradient height)?
         // It might not just be 1/(n-1), if the gradient extends past the tick
         // marks (which can be the case for pretty cut points).
-        var singleBinPct = (options.extra.p_n - options.extra.p_1) / (labels.length - 1);
+        let singleBinPct = (options.extra.p_n - options.extra.p_1) / (labels.length - 1);
         // Each bin is `singleBinHeight` high. How tall is the gradient?
-        var totalHeight = (1 / singleBinPct) * singleBinHeight + 1;
+        let totalHeight = (1 / singleBinPct) * singleBinHeight + 1;
         // How far should the first tick be shifted down, relative to the top
         // of the gradient?
-        var tickOffset = (singleBinHeight / singleBinPct) * options.extra.p_1;
+        let tickOffset = (singleBinHeight / singleBinPct) * options.extra.p_1;
 
         gradSpan = $('<span/>').css({
           'background': 'linear-gradient(' + colors + ')',
@@ -1098,7 +1103,7 @@ var dataframe = (function() {
           'display': 'block',
           'margin-top': vMargin + 'px'
         });
-        var leftDiv = $('<div/>').css('float', 'left'),
+        let leftDiv = $('<div/>').css('float', 'left'),
           rightDiv = $('<div/>').css('float', 'left');
         leftDiv.append(gradSpan);
         $(div).append(leftDiv).append(rightDiv)
@@ -1108,21 +1113,21 @@ var dataframe = (function() {
         // svg text getComputedTextLength() actually works, below.
         document.body.appendChild(div);
 
-        var ns = 'http://www.w3.org/2000/svg';
-        var svg = document.createElementNS(ns, 'svg');
+        let ns = 'http://www.w3.org/2000/svg';
+        let svg = document.createElementNS(ns, 'svg');
         rightDiv.append(svg);
-        var g = document.createElementNS(ns, 'g');
+        let g = document.createElementNS(ns, 'g');
         $(g).attr("transform", "translate(0, " + vMargin + ")");
         svg.appendChild(g);
 
         // max label width needed to set width of svg, and right-justify text
-        var maxLblWidth = 0;
+        let maxLblWidth = 0;
 
         // Create tick marks and labels
         $.each(labels, function(i, label) {
-          var y = tickOffset + i*singleBinHeight + 0.5;
+          let y = tickOffset + i*singleBinHeight + 0.5;
 
-          var thisLabel = document.createElementNS(ns, 'text');
+          let thisLabel = document.createElementNS(ns, 'text');
           $(thisLabel)
             .text(labels[i])
             .attr('y', y)
@@ -1131,7 +1136,7 @@ var dataframe = (function() {
           g.appendChild(thisLabel);
           maxLblWidth = Math.max(maxLblWidth, thisLabel.getComputedTextLength());
 
-          var thisTick = document.createElementNS(ns, 'line');
+          let thisTick = document.createElementNS(ns, 'line');
           $(thisTick)
             .attr('x1', 0)
             .attr('x2', tickWidth)
@@ -1160,7 +1165,7 @@ var dataframe = (function() {
           colors.push(options.na_color);
           labels.push(options.na_label);
         }
-        for (var i = 0; i < colors.length; i++) {
+        for (let i = 0; i < colors.length; i++) {
           legendHTML += '<i style="background:' + colors[i] + ';opacity:' +
                         options.opacity + '"></i> ' + labels[i] + '<br/>';
         }
@@ -1180,10 +1185,10 @@ var dataframe = (function() {
     // Only allow one layers control at a time
     methods.removeLayersControl.call(this);
 
-    var firstLayer = true;
-    var base = {};
+    let firstLayer = true;
+    let base = {};
     $.each(asArray(baseGroups), (i, g) => {
-      var layer = this.layerManager.getLayerGroup(g, true);
+      let layer = this.layerManager.getLayerGroup(g, true);
       if (layer) {
         base[g] = layer;
 
@@ -1197,15 +1202,15 @@ var dataframe = (function() {
         }
       }
     });
-    var overlay = {};
+    let overlay = {};
     $.each(asArray(overlayGroups), (i, g) => {
-      var layer = this.layerManager.getLayerGroup(g, true);
+      let layer = this.layerManager.getLayerGroup(g, true);
       if (layer) {
         overlay[g] = layer;
       }
     });
 
-    var layersControl = L.control.layers(base, overlay, options).addTo(this);
+    let layersControl = L.control.layers(base, overlay, options).addTo(this);
     this.currentLayersControl = layersControl;
   };
 
@@ -1221,7 +1226,7 @@ var dataframe = (function() {
     // Only allow one scale bar at a time
     methods.removeScaleBar.call(this);
 
-    var scaleBar = L.control.scale(options).addTo(this);
+    let scaleBar = L.control.scale(options).addTo(this);
     this.currentScaleBar = scaleBar;
   };
 
@@ -1234,7 +1239,7 @@ var dataframe = (function() {
 
   methods.hideGroup = function(group) {
     $.each(asArray(group), (i, g) => {
-      var layer = this.layerManager.getLayerGroup(g, true);
+      let layer = this.layerManager.getLayerGroup(g, true);
       if (layer) {
         this.removeLayer(layer);
       }
@@ -1243,7 +1248,7 @@ var dataframe = (function() {
 
   methods.showGroup = function(group) {
     $.each(asArray(group), (i, g) => {
-      var layer = this.layerManager.getLayerGroup(g, true);
+      let layer = this.layerManager.getLayerGroup(g, true);
       if (layer) {
         this.addLayer(layer);
       }
@@ -1272,10 +1277,10 @@ var dataframe = (function() {
     // pixel coords, and tile coords all can be scaled linearly.
     function degree2tile(lat, lng, zoom) {
       // See http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames
-      var latRad = lat * Math.PI / 180;
-      var n = Math.pow(2, zoom);
-      var x = (lng + 180) / 360 * n;
-      var y = (1 - Math.log(Math.tan(latRad) + (1 / Math.cos(latRad))) / Math.PI) / 2 * n;
+      let latRad = lat * Math.PI / 180;
+      let n = Math.pow(2, zoom);
+      let x = (lng + 180) / 360 * n;
+      let y = (1 - Math.log(Math.tan(latRad) + (1 / Math.cos(latRad))) / Math.PI) / 2 * n;
       return {x: x, y: y};
     }
 
@@ -1289,9 +1294,9 @@ var dataframe = (function() {
     }
 
     function getCanvasSmoothingProperty(ctx) {
-      var candidates = ["imageSmoothingEnabled", "mozImageSmoothingEnabled",
+      let candidates = ["imageSmoothingEnabled", "mozImageSmoothingEnabled",
           "webkitImageSmoothingEnabled", "msImageSmoothingEnabled"];
-      for (var i = 0; i < candidates.length; i++) {
+      for (let i = 0; i < candidates.length; i++) {
         if (typeof(ctx[candidates[i]]) !== "undefined") {
           return candidates[i];
         }
@@ -1316,14 +1321,14 @@ var dataframe = (function() {
     // it actually draws anything.
 
     // These are the variables that we will populate once the image is loaded.
-    var imgData = null; // 1d row-major array, four [0-255] integers per pixel
-    var imgDataMipMapper = null;
-    var w = null;       // image width in pixels
-    var h = null;       // image height in pixels
+    let imgData = null; // 1d row-major array, four [0-255] integers per pixel
+    let imgDataMipMapper = null;
+    let w = null;       // image width in pixels
+    let h = null;       // image height in pixels
 
     // We'll use this array to store callbacks that need to be invoked once
     // imgData, w, and h have been resolved.
-    var imgDataCallbacks = [];
+    let imgDataCallbacks = [];
 
     // Consumers of imgData, w, and h can call this to be notified when data
     // is available. Unlike most async/promise-based APIs, the callback will
@@ -1336,20 +1341,20 @@ var dataframe = (function() {
       }
     }
 
-    var img = new Image();
+    let img = new Image();
     img.onload = function() {
       // Save size
       w = img.width;
       h = img.height;
 
       // Create a dummy canvas to extract the image data
-      var imgDataCanvas = document.createElement("canvas");
+      let imgDataCanvas = document.createElement("canvas");
       imgDataCanvas.width = w;
       imgDataCanvas.height = h;
       imgDataCanvas.style.display = "none";
       document.body.appendChild(imgDataCanvas);
 
-      var imgDataCtx = imgDataCanvas.getContext("2d");
+      let imgDataCtx = imgDataCanvas.getContext("2d");
       imgDataCtx.drawImage(img, 0, 0);
 
       // Save the image data.
@@ -1360,14 +1365,14 @@ var dataframe = (function() {
       document.body.removeChild(imgDataCanvas);
 
       // Alert any getImageData callers who are waiting.
-      for (var i = 0; i < imgDataCallbacks.length; i++) {
+      for (let i = 0; i < imgDataCallbacks.length; i++) {
         imgDataCallbacks[i](imgData, w, h, imgDataMipMapper);
       }
       imgDataCallbacks = [];
     };
     img.src = uri;
 
-    var canvasTiles = L.tileLayer.canvas({
+    let canvasTiles = L.tileLayer.canvas({
       opacity: opacity,
       attribution: attribution,
       detectRetina: true,
@@ -1378,15 +1383,15 @@ var dataframe = (function() {
       getImageData(function(imgData, w, h, mipmapper) {
         try {
           // The Context2D we'll being drawing onto. It's always 256x256.
-          var ctx = canvas.getContext('2d');
+          let ctx = canvas.getContext('2d');
 
           // Convert our image data's top-left and bottom-right locations into
           // x/y tile coordinates. This is essentially doing a spherical mercator
           // projection, then multiplying by 2^zoom.
-          var topLeft = degree2tile(bounds[0][0], bounds[0][1], zoom);
-          var bottomRight = degree2tile(bounds[1][0], bounds[1][1], zoom);
+          let topLeft = degree2tile(bounds[0][0], bounds[0][1], zoom);
+          let bottomRight = degree2tile(bounds[1][0], bounds[1][1], zoom);
           // The size of the image in x/y tile coordinates.
-          var extent = {x: bottomRight.x - topLeft.x, y: bottomRight.y - topLeft.y};
+          let extent = {x: bottomRight.x - topLeft.x, y: bottomRight.y - topLeft.y};
 
           // Short circuit if tile is totally disjoint from image.
           if (!overlap(tilePoint.x, tilePoint.x + 1, topLeft.x, bottomRight.x))
@@ -1398,7 +1403,7 @@ var dataframe = (function() {
           // If the linear resolution (in either direction) of the image is less than 256px
           // per tile unit, then use nearest neighbor; otherwise, use the canvas's built-in
           // scaling.
-          var imgRes = {
+          let imgRes = {
             x: w / extent.x,
             y: h / extent.y
           };
@@ -1418,7 +1423,7 @@ var dataframe = (function() {
 
           // Is imageSmoothingEnabled supported? If so, we can let canvas do
           // nearest-neighbor interpolation for us.
-          var smoothingProperty = getCanvasSmoothingProperty(ctx);
+          let smoothingProperty = getCanvasSmoothingProperty(ctx);
 
           if (smoothingProperty || imgRes.x >= 256 && imgRes.y >= 256) {
             // Use built-in scaling
@@ -1453,11 +1458,11 @@ var dataframe = (function() {
             // the top-left and bottom-right of this tile. (If the source image
             // only partially overlaps the tile, we use max/min to limit the
             // sourceStart/End to only reflect the overlapping portion.)
-            var sourceStart = {
+            let sourceStart = {
               x: Math.max(0, Math.floor((tilePoint.x - topLeft.x) * imgRes.x)),
               y: Math.max(0, Math.floor((tilePoint.y - topLeft.y) * imgRes.y))
             };
-            var sourceEnd = {
+            let sourceEnd = {
               x: Math.min(w, Math.ceil((tilePoint.x + 1 - topLeft.x) * imgRes.x)),
               y: Math.min(h, Math.ceil((tilePoint.y + 1 - topLeft.y) * imgRes.y))
             };
@@ -1465,25 +1470,25 @@ var dataframe = (function() {
             // The size, in dest pixels, that each source pixel should occupy.
             // This might be greater or less than 1 (e.g. if x and y resolution
             // are very different).
-            var pixelSize = {
+            let pixelSize = {
               x: 256 / imgRes.x,
               y: 256 / imgRes.y
             };
 
             // For each pixel in the source image that overlaps the tile...
-            for (var row = sourceStart.y; row < sourceEnd.y; row++) {
-              for (var col = sourceStart.x; col < sourceEnd.x; col++) {
+            for (let row = sourceStart.y; row < sourceEnd.y; row++) {
+              for (let col = sourceStart.x; col < sourceEnd.x; col++) {
                 // ...extract the pixel data...
-                var i = ((row * w) + col) * 4;
-                var r = imgData[i];
-                var g = imgData[i+1];
-                var b = imgData[i+2];
-                var a = imgData[i+3];
+                let i = ((row * w) + col) * 4;
+                let r = imgData[i];
+                let g = imgData[i+1];
+                let b = imgData[i+2];
+                let a = imgData[i+3];
                 ctx.fillStyle = "rgba(" + [r,g,b,a/255].join(",") + ")";
 
                 // ...calculate the corresponding pixel coord in the dest image
                 // where it should be drawn...
-                var pixelPos = {
+                let pixelPos = {
                   x: (((col / imgRes.x) + topLeft.x) - tilePoint.x) * 256,
                   y: (((row / imgRes.y) + topLeft.y) - tilePoint.y) * 256
                 };
@@ -1551,7 +1556,7 @@ var dataframe = (function() {
     // "true" move.
 
     // lastScreen can never be null, but its x and y can.
-    var lastScreen = {x: null, y: null};
+    let lastScreen = {x: null, y: null};
     $(document).on("mousewheel DOMMouseScroll", "*", function(e) {
       // Disable zooming (until the mouse moves or click)
       map.scrollWheelZoom.disable();
@@ -1579,7 +1584,7 @@ var dataframe = (function() {
     initialize: function(el, width, height) {
       // hard-coding center/zoom here for a non-empty initial view, since there
       // is no way for htmlwidgets to pass initial params to initialize()
-      var map = L.map(el, {
+      let map = L.map(el, {
         center: [51.505, -0.09],
         zoom: 13
       });
@@ -1613,7 +1618,7 @@ var dataframe = (function() {
         });
       });
 
-      var groupTimerId = null;
+      let groupTimerId = null;
 
       map
         .on('moveend', function(e) { updateBounds(e.target); })
@@ -1657,7 +1662,7 @@ var dataframe = (function() {
       map.leafletr.pendingRenderData = null;
 
       // Merge data options into defaults
-      var options = $.extend({ zoomToLimits: "always" }, data.options);
+      let options = $.extend({ zoomToLimits: "always" }, data.options);
 
       if (!map.layerManager) {
         map.controls = new ControlStore(map);
@@ -1667,7 +1672,7 @@ var dataframe = (function() {
         map.layerManager.clear();
       }
 
-      var explicitView = false;
+      let explicitView = false;
       if (data.setView) {
         explicitView = true;
         map.setView.apply(map, data.setView);
@@ -1688,7 +1693,7 @@ var dataframe = (function() {
         if (data.limits) {
           // Use the natural limits of what's being drawn on the map
           // If the size of the bounding box is 0, leaflet gets all weird
-          var pad = 0.006;
+          let pad = 0.006;
           if (data.limits.lat[0] === data.limits.lat[1]) {
             data.limits.lat[0] = data.limits.lat[0] - pad;
             data.limits.lat[1] = data.limits.lat[1] + pad;
@@ -1706,8 +1711,8 @@ var dataframe = (function() {
         }
       }
 
-      for (var i = 0; data.calls && i < data.calls.length; i++) {
-        var call = data.calls[i];
+      for (let i = 0; data.calls && i < data.calls.length; i++) {
+        let call = data.calls[i];
         if (methods[call.method])
           methods[call.method].apply(map, call.args);
         else
@@ -1731,16 +1736,16 @@ var dataframe = (function() {
   if (!HTMLWidgets.shinyMode) return;
 
   Shiny.addCustomMessageHandler('leaflet-calls', function(data) {
-    var id = data.id;
-    var el = document.getElementById(id);
-    var map = el ? $(el).data('leaflet-map') : null;
+    let id = data.id;
+    let el = document.getElementById(id);
+    let map = el ? $(el).data('leaflet-map') : null;
     if (!map) {
       log("Couldn't find map with id " + id);
       return;
     }
 
-    for (var i = 0; i < data.calls.length; i++) {
-      var call = data.calls[i];
+    for (let i = 0; i < data.calls.length; i++) {
+      let call = data.calls[i];
       if (call.dependencies) {
         Shiny.renderDependencies(call.dependencies);
       }
