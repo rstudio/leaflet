@@ -7,6 +7,9 @@ leaflet 1.0.1
 * Add addMeasure()/removeMeasure() functions to allow users to measure lines and
   areas. (Thanks, Kenton Russell!)
 
+* Add heatmap functionality based on modified version of Leaflet.heat plugin.
+  (Thanks, Kenton Russell!)
+
 leaflet 1.0.0
 --------------------------------------------------------------------------------
 
