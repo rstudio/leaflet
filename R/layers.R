@@ -419,6 +419,42 @@ clearPopups = function(map) {
   invokeMethod(map, NULL, 'clearPopups')
 }
 
+#' @rdname remove
+#' @export
+openMarkerPopup = function(map, layerId) {
+  invokeMethod(map, getMapData(map), 'openMarkerPopup', layerId)
+}
+
+#' @rdname remove
+#' @export
+closeMarkerPopup = function(map, layerId) {
+  invokeMethod(map, getMapData(map), 'closeMarkerPopup', layerId)
+}
+
+#' @rdname remove
+#' @export
+toggleMarkerPopup = function(map, layerId) {
+  invokeMethod(map, getMapData(map), 'toggleMarkerPopup', layerId)
+}
+
+#' @rdname remove
+#' @export
+unbindMarkerPopup = function(map, layerId) {
+  invokeMethod(map, getMapData(map), 'unbindMarkerPopup', layerId)
+}
+
+#' @rdname remove
+#' @export
+setMarkerPopupContent = function(map, layerId, content) {
+  invokeMethod(map, getMapData(map), 'setMarkerPopupContent', layerId, content)
+}
+
+#' @rdname remove
+#' @export
+clearMarkerPopups = function(map) {
+  invokeMethod(map, NULL, 'clearMarkerPopups')
+}
+
 # Helper Function to create a safe label
 safeLabel <- function(label, data) {
   if (is.null(label)) {

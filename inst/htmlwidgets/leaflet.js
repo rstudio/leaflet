@@ -322,6 +322,61 @@ var dataframe = (function() {
       }
     });
   };
+  LayerManager.prototype.openPopup = function(category, layerIds) {
+    var self = this;
+    // Find layer info
+    $.each(asArray(layerIds), function(i, layerId) {
+      var layer = self._byLayerId[self._layerIdKey(category, layerId)];
+      if (layer) {
+        self._openPopup(layer);
+      }
+    });
+  };
+  LayerManager.prototype.closePopup = function(category, layerIds) {
+    var self = this;
+    // Find layer info
+    $.each(asArray(layerIds), function(i, layerId) {
+      var layer = self._byLayerId[self._layerIdKey(category, layerId)];
+      if (layer) {
+        self._closePopup(layer);
+      }
+    });
+  };
+  LayerManager.prototype.togglePopup = function(category, layerIds) {
+    var self = this;
+    // Find layer info
+    $.each(asArray(layerIds), function(i, layerId) {
+      var layer = self._byLayerId[self._layerIdKey(category, layerId)];
+      if (layer) {
+        self._togglePopup(layer);
+      }
+    });
+  };
+  LayerManager.prototype.unbindPopup = function(category, layerIds) {
+    var self = this;
+    // Find layer info
+    $.each(asArray(layerIds), function(i, layerId) {
+      var layer = self._byLayerId[self._layerIdKey(category, layerId)];
+      if (layer) {
+        self._unbindPopup(layer);
+      }
+    });
+  };
+  LayerManager.prototype.setPopupContent = function(category, layerIds, content) {
+    var self = this;
+
+    var df = dataframe.create()
+      .col('layerIds', layerIds)
+      .col('content', content);
+
+    // Find layer info
+    for (var i = 0; i < df.nrow(); i++) {
+        var layer = self._byLayerId[self._layerIdKey(category, df.get(i, 'layerIds'))];
+        if (layer) {
+          self._setPopupContent(layer, df.get(i, 'content'));
+        }
+    }
+  };
   LayerManager.prototype.clearLayers = function(category) {
     var self = this;
 
@@ -339,6 +394,25 @@ var dataframe = (function() {
     });
     $.each(stamps, function(i, stamp) {
       self._removeLayer(stamp);
+    });
+  };
+  LayerManager.prototype.clearMarkerPopups = function(category) {
+    var self = this;
+
+    // Find all layers in _byCategory[category]
+    var catTable = this._byCategory[category];
+    if (!catTable) {
+      return false;
+    }
+
+    // Remove all layers. Make copy of keys to avoid mutating the collection
+    // behind the iterator you're accessing.
+    var stamps = [];
+    $.each(catTable, function(k, v) {
+      stamps.push(k);
+    });
+    $.each(stamps, function(i, stamp) {
+      self._closePopup(stamp);
     });
   };
   LayerManager.prototype.getLayerGroup = function(group, ensureExists) {
@@ -419,6 +493,91 @@ var dataframe = (function() {
     }
     delete this._byCategory[layerInfo.category][stamp];
     delete this._byStamp[stamp];
+  };
+  LayerManager.prototype._openPopup = function(layer) {
+    var stamp;
+    if (typeof(layer) === "string") {
+      stamp = layer;
+    } else {
+      stamp = L.Util.stamp(layer);
+    }
+
+    var layerInfo = this._byStamp[stamp];
+    if (!layerInfo) {
+      return false;
+    }
+
+    if (typeof(layerInfo.layerId) === "string") {
+      this._byLayerId[this._layerIdKey(layerInfo.category, layerInfo.layerId)].openPopup();
+    }
+  };
+  LayerManager.prototype._closePopup = function(layer) {
+    var stamp;
+    if (typeof(layer) === "string") {
+      stamp = layer;
+    } else {
+      stamp = L.Util.stamp(layer);
+    }
+
+    var layerInfo = this._byStamp[stamp];
+    if (!layerInfo) {
+      return false;
+    }
+
+    if (typeof(layerInfo.layerId) === "string") {
+      this._byLayerId[this._layerIdKey(layerInfo.category, layerInfo.layerId)].closePopup();
+    }
+  };
+  LayerManager.prototype._togglePopup = function(layer) {
+    var stamp;
+    if (typeof(layer) === "string") {
+      stamp = layer;
+    } else {
+      stamp = L.Util.stamp(layer);
+    }
+
+    var layerInfo = this._byStamp[stamp];
+    if (!layerInfo) {
+      return false;
+    }
+
+    if (typeof(layerInfo.layerId) === "string") {
+      this._byLayerId[this._layerIdKey(layerInfo.category, layerInfo.layerId)].togglePopup();
+    }
+  };
+  LayerManager.prototype._unbindPopup = function(layer) {
+    var stamp;
+    if (typeof(layer) === "string") {
+      stamp = layer;
+    } else {
+      stamp = L.Util.stamp(layer);
+    }
+
+    var layerInfo = this._byStamp[stamp];
+    if (!layerInfo) {
+      return false;
+    }
+
+    if (typeof(layerInfo.layerId) === "string") {
+      this._byLayerId[this._layerIdKey(layerInfo.category, layerInfo.layerId)].unbindPopup();
+    }
+  };
+  LayerManager.prototype._setPopupContent = function(layer, content) {
+    var stamp;
+    if (typeof(layer) === "string") {
+      stamp = layer;
+    } else {
+      stamp = L.Util.stamp(layer);
+    }
+
+    var layerInfo = this._byStamp[stamp];
+    if (!layerInfo) {
+      return false;
+    }
+
+    if (typeof(layerInfo.layerId) === "string") {
+      this._byLayerId[this._layerIdKey(layerInfo.category, layerInfo.layerId)].setPopupContent(content);
+    }
   };
   LayerManager.prototype._layerIdKey = function(category, layerId) {
     return category + "\n" + layerId;
@@ -590,6 +749,30 @@ var dataframe = (function() {
 
   methods.clearPopups = function() {
     this.layerManager.clearLayers("popup");
+  };
+
+  methods.openMarkerPopup = function(layerId) {
+    this.layerManager.openPopup("marker", layerId);
+  };
+
+  methods.closeMarkerPopup = function(layerId) {
+    this.layerManager.closePopup("marker", layerId);
+  };
+
+  methods.clearMarkerPopups = function() {
+    this.layerManager.clearMarkerPopups("marker");
+  };
+
+  methods.toggleMarkerPopup = function(layerId) {
+    this.layerManager.togglePopup("marker", layerId);
+  };
+
+  methods.unbindMarkerPopup = function(layerId) {
+    this.layerManager.unbindPopup("marker", layerId);
+  };
+
+  methods.setMarkerPopupContent = function(layerId, content) {
+    this.layerManager.setPopupContent("marker", layerId, content);
   };
 
   methods.addTiles = function(urlTemplate, layerId, group, options) {
