@@ -432,7 +432,7 @@ var dataframe = (function() {
   function ControlStore(map) {
     this._controlsNoId = [];
     this._controlsById = {};
-    this._map = map
+    this._map = map;
   }
 
   ControlStore.prototype.add = function(control, id, html) {
@@ -442,7 +442,7 @@ var dataframe = (function() {
       }
       this._controlsById[id] = control;
     } else {
-      this._controlsNoId.push(control)
+      this._controlsNoId.push(control);
     }
     this._map.addControl(control);
   };
@@ -459,15 +459,15 @@ var dataframe = (function() {
     for (var i = 0; i < this._controlsNoId.length; i++) {
       let control = this._controlsNoId[i];
       this._map.removeControl(control);
-    };
+    }
     this._controlsNoId = [];
 
     for (var key in this._controlsById) {
       let control = this._controlsById[key];
-      this._map.removeControl(control)
+      this._map.removeControl(control);
     }
-    this._controlsById = {}
-  }
+    this._controlsById = {};
+  };
 
   function ClusterLayerStore(group) {
     this._layers = {};
@@ -807,7 +807,7 @@ var dataframe = (function() {
         layer.on('mouseout', mouseHandler(this.id, thisId, thisGroup, category + '_mouseout'), this);
       }).call(map);
     }
-  }
+  };
 
   methods.addCircles = function(lat, lng, radius, layerId, group, options, popup, label, labelOptions) {
     var df = dataframe.create()
@@ -874,13 +874,13 @@ var dataframe = (function() {
 
   methods.removeMarkerCluster = function(layerId) {
     this.layerManager.removeLayer("cluster", layerId);
-  }
+  };
 
   methods.removeMarkerFromCluster = function(layerId, clusterId) {
     var cluster = this.layerManager.getLayer("cluster", clusterId);
     if (!cluster) return;
     cluster.clusterLayerStore.remove(layerId);
-  }
+  };
 
   methods.clearMarkerClusters = function() {
     this.layerManager.clearLayers("cluster");
@@ -1022,7 +1022,7 @@ var dataframe = (function() {
     function onAdd(map) {
       var div = L.DomUtil.create('div', classes);
       if (typeof layerId !== 'undefined' && layerId !== null) {
-        div.setAttribute('id', layerId)
+        div.setAttribute('id', layerId);
       }
       this._div = div;
 
@@ -1051,7 +1051,7 @@ var dataframe = (function() {
       options: {position: position},
       onAdd: onAdd,
       onRemove: onRemove
-    })
+    });
     this.controls.add(new Control, layerId, html);
   };
 
@@ -1284,8 +1284,8 @@ var dataframe = (function() {
       // See http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames
       var latRad = lat * Math.PI / 180;
       var n = Math.pow(2, zoom);
-      var x = (lng + 180) / 360 * n
-      var y = (1 - Math.log(Math.tan(latRad) + (1 / Math.cos(latRad))) / Math.PI) / 2 * n
+      var x = (lng + 180) / 360 * n;
+      var y = (1 - Math.log(Math.tan(latRad) + (1 / Math.cos(latRad))) / Math.PI) / 2 * n;
       return {x: x, y: y};
     }
 
@@ -1540,10 +1540,10 @@ var dataframe = (function() {
     this.measureControl.addTo(this);
   };
 
-  methods.removeMeasure = function( ){
+  methods.removeMeasure = function() {
     this.measureControl.removeFrom( this );
     delete this.measureControl;
-  }
+  };
 
   function preventUnintendedZoomOnScroll(map) {
     // Prevent unwanted scroll capturing. Similar in purpose to

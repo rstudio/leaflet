@@ -444,7 +444,7 @@ var dataframe = function () {
     for (var i = 0; i < this._controlsNoId.length; i++) {
       var control = this._controlsNoId[i];
       this._map.removeControl(control);
-    };
+    }
     this._controlsNoId = [];
 
     for (var key in this._controlsById) {
