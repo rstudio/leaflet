@@ -1,30 +1,12 @@
-language: c
+language: r
+sudo: required
+cache: packages
 
-sudo: false
+apt_packages:
+  - r-cran-rgdal
+  - libproj-dev
 
-env:
-  - R_PKG="$(basename $TRAVIS_REPO_SLUG)"
-
-addons:
-  apt:
-    sources:
-    - r-packages-precise
-    packages:
-    - r-base-dev
-    - r-recommended
-    - libgdal1-dev
-    - libproj-dev
-
-install:
-  - Rscript -e "if (!require('devtools')) install.packages('devtools')"
-  - Rscript -e "devtools::install_deps(dep = TRUE)"
-
-cache:
-  directories:
-  - $HOME/R
-
-script:
-  - cd ..; rm -f *.tar.gz; R CMD build $R_PKG
-  - R CMD check $R_PKG*.tar.gz --no-manual
-  - cd $R_PKG
-
+notifications:
+  email:
+    on_success: change
+    on_failure: change
