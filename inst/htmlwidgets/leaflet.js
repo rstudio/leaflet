@@ -9,6 +9,12 @@ var Shiny = global.Shiny;
 var HTMLWidgets = global.HTMLWidgets;
 var omnivore = global.Omnivore;
 
+function log(message) {
+  /* eslint-disable no-console */
+  if (console && console.log) console.log(message);
+  /* eslint-enable no-console */
+}
+
 function recycle(values, length, inPlace) {
   if (length === 0 && !inPlace) return [];
 
@@ -46,13 +52,14 @@ var dataframe = function () {
   };
 
   DataFrame.prototype._updateCachedProperties = function () {
-    var self = this;
+    var _this = this;
+
     this.effectiveLength = 0;
     this.colindices = {};
 
     $.each(this.columns, function (i, column) {
-      self.effectiveLength = Math.max(self.effectiveLength, column.length);
-      self.colindices[self.colnames[i]] = i;
+      _this.effectiveLength = Math.max(_this.effectiveLength, column.length);
+      _this.colindices[_this.colnames[i]] = i;
     });
   };
 
@@ -86,16 +93,16 @@ var dataframe = function () {
   };
 
   DataFrame.prototype.cbind = function (obj, strict) {
-    var self = this,
-        name;
+    var _this2 = this;
+
     $.each(obj, function (name, coldata) {
-      self.col(name, coldata);
+      _this2.col(name, coldata);
     });
     return this;
   };
 
   DataFrame.prototype.get = function (row, col) {
-    var self = this;
+    var _this3 = this;
 
     if (row > this.effectiveLength) throw new Error('Row argument was out of bounds: ' + row + ' > ' + this.effectiveLength);
 
@@ -103,7 +110,7 @@ var dataframe = function () {
     if (typeof col === 'undefined') {
       var rowData = {};
       $.each(this.colnames, function (i, name) {
-        rowData[name] = self.columns[i][row % self.columns[i].length];
+        rowData[name] = _this3.columns[i][row % _this3.columns[i].length];
       });
       return rowData;
     } else if (typeof col === 'string') {
@@ -120,19 +127,23 @@ var dataframe = function () {
     return this.effectiveLength;
   };
 
-  function test() {
-    var df = new DataFrame();
-    df.col("speed", [4, 4, 7, 7, 8, 9, 10, 10, 10, 11, 11, 12, 12, 12, 12, 13, 13, 13, 13, 14, 14, 14, 14, 15, 15, 15, 16, 16, 17, 17, 17, 18, 18, 18, 18, 19, 19, 19, 20, 20, 20, 20, 20, 22, 23, 24, 24, 24, 24, 25]).col("dist", [2, 10, 4, 22, 16, 10, 18, 26, 34, 17, 28, 14, 20, 24, 28, 26, 34, 34, 46, 26, 36, 60, 80, 20, 26, 54, 32, 40, 32, 40, 50, 42, 56, 76, 84, 36, 46, 68, 32, 48, 52, 56, 64, 66, 54, 70, 92, 93, 120, 85]).col("color", ["yellow", "red"]).cbind({
-      "Make": ["Toyota", "Cadillac", "BMW"],
-      "Model": ["Corolla", "CTS", "435i"]
-    });
-    console.log(df.get(9, "speed"));
-    console.log(df.get(9, "dist"));
-    console.log(df.get(9, "color"));
-    console.log(df.get(9, "Make"));
-    console.log(df.get(9, "Model"));
-    console.log(df.get(9));
-  }
+  // function test() {
+  //   var df = new DataFrame();
+  //   df.col("speed", [4, 4, 7, 7, 8, 9, 10, 10, 10, 11, 11, 12, 12, 12, 12, 13, 13, 13, 13, 14, 14, 14, 14, 15, 15, 15, 16, 16, 17, 17, 17, 18, 18, 18, 18, 19, 19, 19, 20, 20, 20, 20, 20, 22, 23, 24, 24, 24, 24, 25])
+  //     .col("dist", [2, 10, 4, 22, 16, 10, 18, 26, 34, 17, 28, 14, 20, 24, 28, 26, 34, 34, 46, 26, 36, 60, 80, 20, 26, 54, 32, 40, 32, 40, 50, 42, 56, 76, 84, 36, 46, 68, 32, 48, 52, 56, 64, 66, 54, 70, 92, 93, 120, 85])
+  //     .col("color", ["yellow", "red"])
+  //     .cbind({
+  //       "Make" : ["Toyota", "Cadillac", "BMW"],
+  //       "Model" : ["Corolla", "CTS", "435i"]
+  //     })
+  //   ;
+  //   console.log(df.get(9, "speed"));
+  //   console.log(df.get(9, "dist"));
+  //   console.log(df.get(9, "color"));
+  //   console.log(df.get(9, "Make"));
+  //   console.log(df.get(9, "Model"));
+  //   console.log(df.get(9));
+  // }
 
   return {
     create: function create() {
@@ -153,11 +164,12 @@ var dataframe = function () {
   // The various functions on this class take a callback function BUT MAY OR MAY
   // NOT actually behave asynchronously.
   Mipmapper.prototype.getBySize = function (desiredWidth, desiredHeight, callback) {
-    var self = this;
+    var _this4 = this;
+
     var i = 0;
     var lastImg = this._layers[0];
-    function testNext() {
-      self.getByIndex(i, function (img) {
+    var testNext = function testNext() {
+      _this4.getByIndex(i, function (img) {
         // If current image is invalid (i.e. too small to be rendered) or
         // it's smaller than what we wanted, return the last known good image.
         if (!img || img.width < desiredWidth || img.height < desiredHeight) {
@@ -170,11 +182,12 @@ var dataframe = function () {
           return;
         }
       });
-    }
+    };
     testNext();
   };
   Mipmapper.prototype.getByIndex = function (i, callback) {
-    var self = this;
+    var _this5 = this;
+
     if (this._layers[i]) {
       callback(this._layers[i]);
       return;
@@ -192,10 +205,10 @@ var dataframe = function () {
         return;
       }
       // If reduce ever becomes truly asynchronous, we should stuff a promise or
-      // something into self._layers[i] before calling self.reduce(), to prevent
+      // something into this._layers[i] before calling this.reduce(), to prevent
       // redundant reduce operations from happening.
-      self.reduce(prevImg, function (reducedImg) {
-        self._layers[i] = reducedImg;
+      _this5.reduce(prevImg, function (reducedImg) {
+        _this5._layers[i] = reducedImg;
         callback(reducedImg);
         return;
       });
@@ -303,17 +316,18 @@ var dataframe = function () {
     return this._byLayerId[this._layerIdKey(category, layerId)];
   };
   LayerManager.prototype.removeLayer = function (category, layerIds) {
-    var self = this;
+    var _this6 = this;
+
     // Find layer info
     $.each(asArray(layerIds), function (i, layerId) {
-      var layer = self._byLayerId[self._layerIdKey(category, layerId)];
+      var layer = _this6._byLayerId[_this6._layerIdKey(category, layerId)];
       if (layer) {
-        self._removeLayer(layer);
+        _this6._removeLayer(layer);
       }
     });
   };
   LayerManager.prototype.clearLayers = function (category) {
-    var self = this;
+    var _this7 = this;
 
     // Find all layers in _byCategory[category]
     var catTable = this._byCategory[category];
@@ -328,7 +342,7 @@ var dataframe = function () {
       stamps.push(k);
     });
     $.each(stamps, function (i, stamp) {
-      self._removeLayer(stamp);
+      _this7._removeLayer(stamp);
     });
   };
   LayerManager.prototype.getLayerGroup = function (group, ensureExists) {
@@ -345,17 +359,18 @@ var dataframe = function () {
     return layerGroup.groupname;
   };
   LayerManager.prototype.getVisibleGroups = function () {
-    var self = this;
+    var _this8 = this;
+
     var result = [];
     $.each(this._groupContainers, function (k, v) {
-      if (self._map.hasLayer(v)) {
+      if (_this8._map.hasLayer(v)) {
         result.push(k);
       }
     });
     return result;
   };
   LayerManager.prototype.clearGroup = function (group) {
-    var self = this;
+    var _this9 = this;
 
     // Find all layers in _byGroup[group]
     var groupTable = this._byGroup[group];
@@ -370,7 +385,7 @@ var dataframe = function () {
       stamps.push(k);
     });
     $.each(stamps, function (i, stamp) {
-      self._removeLayer(stamp);
+      _this9._removeLayer(stamp);
     });
   };
   LayerManager.prototype.clear = function () {
@@ -523,9 +538,10 @@ var dataframe = function () {
   var methods = window.LeafletWidget.methods = {};
 
   methods.clearGroup = function (group) {
-    var self = this;
+    var _this10 = this;
+
     $.each(asArray(group), function (i, v) {
-      self.layerManager.clearGroup(v);
+      _this10.layerManager.clearGroup(v);
     });
   };
 
@@ -844,6 +860,8 @@ var dataframe = function () {
   };
 
   methods.addGeoJSON = function (data, layerId, group, style) {
+    // This time, self is actually needed because the callbacks below need
+    // to access both the inner and outer senses of "this"
     var self = this;
     if (typeof data === "string") {
       data = JSON.parse(data);
@@ -883,6 +901,8 @@ var dataframe = function () {
   };
 
   methods.addTopoJSON = function (data, layerId, group, style) {
+    // This time, self is actually needed because the callbacks below need
+    // to access both the inner and outer senses of "this"
     var self = this;
     if (typeof data === "string") {
       data = JSON.parse(data);
@@ -1068,8 +1088,7 @@ var dataframe = function () {
   };
 
   methods.addLayersControl = function (baseGroups, overlayGroups, options) {
-
-    var self = this;
+    var _this11 = this;
 
     // Only allow one layers control at a time
     methods.removeLayersControl.call(this);
@@ -1077,23 +1096,23 @@ var dataframe = function () {
     var firstLayer = true;
     var base = {};
     $.each(asArray(baseGroups), function (i, g) {
-      var layer = self.layerManager.getLayerGroup(g, true);
+      var layer = _this11.layerManager.getLayerGroup(g, true);
       if (layer) {
         base[g] = layer;
 
         // Check if >1 base layers are visible; if so, hide all but the first one
-        if (self.hasLayer(layer)) {
+        if (_this11.hasLayer(layer)) {
           if (firstLayer) {
             firstLayer = false;
           } else {
-            self.removeLayer(layer);
+            _this11.removeLayer(layer);
           }
         }
       }
     });
     var overlay = {};
     $.each(asArray(overlayGroups), function (i, g) {
-      var layer = self.layerManager.getLayerGroup(g, true);
+      var layer = _this11.layerManager.getLayerGroup(g, true);
       if (layer) {
         overlay[g] = layer;
       }
@@ -1112,8 +1131,6 @@ var dataframe = function () {
 
   methods.addScaleBar = function (options) {
 
-    var self = this;
-
     // Only allow one scale bar at a time
     methods.removeScaleBar.call(this);
 
@@ -1129,21 +1146,23 @@ var dataframe = function () {
   };
 
   methods.hideGroup = function (group) {
-    var self = this;
+    var _this12 = this;
+
     $.each(asArray(group), function (i, g) {
-      var layer = self.layerManager.getLayerGroup(g, true);
+      var layer = _this12.layerManager.getLayerGroup(g, true);
       if (layer) {
-        self.removeLayer(layer);
+        _this12.removeLayer(layer);
       }
     });
   };
 
   methods.showGroup = function (group) {
-    var self = this;
+    var _this13 = this;
+
     $.each(asArray(group), function (i, g) {
-      var layer = self.layerManager.getLayerGroup(g, true);
+      var layer = _this13.layerManager.getLayerGroup(g, true);
       if (layer) {
-        self.addLayer(layer);
+        _this13.addLayer(layer);
       }
     });
   };
@@ -1590,7 +1609,7 @@ var dataframe = function () {
 
       for (var i = 0; data.calls && i < data.calls.length; i++) {
         var call = data.calls[i];
-        if (methods[call.method]) methods[call.method].apply(map, call.args);else console.log("Unknown method " + call.method);
+        if (methods[call.method]) methods[call.method].apply(map, call.args);else log("Unknown method " + call.method);
       }
 
       map.leafletr.hasRendered = true;
@@ -1616,7 +1635,7 @@ var dataframe = function () {
     var el = document.getElementById(id);
     var map = el ? $(el).data('leaflet-map') : null;
     if (!map) {
-      console.log("Couldn't find map with id " + id);
+      log("Couldn't find map with id " + id);
       return;
     }
 
@@ -1625,7 +1644,7 @@ var dataframe = function () {
       if (call.dependencies) {
         Shiny.renderDependencies(call.dependencies);
       }
-      if (methods[call.method]) methods[call.method].apply(map, call.args);else console.log("Unknown method " + call.method);
+      if (methods[call.method]) methods[call.method].apply(map, call.args);else log("Unknown method " + call.method);
     }
   });
 })();

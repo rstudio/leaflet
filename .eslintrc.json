@@ -25,11 +25,11 @@
         ],
 
         "no-console": "warn",
-        "no-unused-vars": ["warn", {"args": "none"}],
+        "no-unused-vars": ["error", {"args": "none"}],
         "quotes": "off",
         "semi": "error",
         "no-extra-semi": "error",
-        "indent": ["warn", 2]
+        "indent": ["error", 2]
     },
     "globals": {
         "global": true
