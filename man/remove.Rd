@@ -1,8 +1,9 @@
-% Please edit documentation in R/controls.R, R/layers.R, R/plugin-measure.R, R/plugin-omnivore.R
+% Please edit documentation in R/controls.R, R/layers.R, R/plugin-heatmap.R, R/plugin-measure.R, R/plugin-omnivore.R
 \name{removeControl}
 \alias{clearControls}
 \alias{clearGeoJSON}
 \alias{clearGroup}
+\alias{clearHeatmap}
 \alias{clearImages}
 \alias{clearMarkerClusters}
 \alias{clearMarkers}
@@ -13,6 +14,7 @@
 \alias{remove}
 \alias{removeControl}
 \alias{removeGeoJSON}
+\alias{removeHeatmap}
 \alias{removeImage}
 \alias{removeMarker}
 \alias{removeMarkerCluster}
@@ -59,6 +61,10 @@ clearShapes(map)
 removeGeoJSON(map, layerId)
 
 clearGeoJSON(map)
+
+removeHeatmap(map, layerId = NULL)
+
+clearHeatmap(map)
 
 removeMeasure(map)
 

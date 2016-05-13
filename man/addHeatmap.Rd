@@ -36,7 +36,8 @@ from data)}
 \code{blur=1} means no blur.}
 
 \item{gradient}{palette name from \code{RColorBrewer} or an array of
-of colors to be provided to \link{\code{colorNumeric}}}
+of colors to be provided to \code{\link{colorNumeric}}, or
+a color mapping function returned from \code{colorNumeric}}
 
 \item{layerId}{optional string identifying this layer.  \code{layerId} can
          be helpful in a dynamic/Shiny situation where you might want to
