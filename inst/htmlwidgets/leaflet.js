@@ -927,9 +927,6 @@ methods.addPopups = function (lat, lng, popup, layerId, group, options) {
       var thisId = df.get(i, "layerId");
       var thisGroup = df.get(i, "group");
       this.layerManager.addLayer(popup, "popup", thisId, thisGroup);
-      popup.on("click", mouseHandler(this.id, thisId, thisGroup, "popup_click"), this);
-      popup.on("mouseover", mouseHandler(this.id, thisId, thisGroup, "popup_mouseover"), this);
-      popup.on("mouseout", mouseHandler(this.id, thisId, thisGroup, "popup_mouseout"), this);
     }).call(_this2);
   };
 
