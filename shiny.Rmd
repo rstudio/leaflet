@@ -24,11 +24,11 @@ ui <- fluidPage(
 )
 
 server <- function(input, output, session) {
-  
+
   points <- eventReactive(input$recalc, {
     cbind(rnorm(40) * 2 + 13, rnorm(40) + 48)
   }, ignoreNULL = FALSE)
-  
+
   output$mymap <- renderLeaflet({
     leaflet() %>%
       addProviderTiles("Stamen.TonerLite",
@@ -78,13 +78,13 @@ server <- function(input, output, session) {
   filteredData <- reactive({
     quakes[quakes$mag >= input$range[1] & quakes$mag <= input$range[2],]
   })
-  
+
   # This reactive expression represents the palette function,
   # which changes as the user makes selections in UI.
   colorpal <- reactive({
     colorNumeric(input$colors, quakes$mag)
   })
-  
+
   output$map <- renderLeaflet({
     # Use leaflet() here, and only include aspects of the map that
     # won't need to change dynamically (at least, not unless the
@@ -92,25 +92,25 @@ server <- function(input, output, session) {
     leaflet(quakes) %>% addTiles() %>%
       fitBounds(~min(long), ~min(lat), ~max(long), ~max(lat))
   })
-  
+
   # Incremental changes to the map (in this case, replacing the
   # circles when a new color is chosen) should be performed in
   # an observer. Each independent set of things that can change
   # should be managed in its own observer.
   observe({
     pal <- colorpal()
-    
+
     leafletProxy("map", data = filteredData()) %>%
       clearShapes() %>%
       addCircles(radius = ~10^mag/10, weight = 1, color = "#777777",
         fillColor = ~pal(mag), fillOpacity = 0.7, popup = ~paste(mag)
       )
   })
-  
+
   # Use a separate observer to recreate the legend as needed.
   observe({
     proxy <- leafletProxy("map", data = quakes)
-    
+
     # Remove any existing legend, and only if the legend is
     # enabled, create a new one.
     proxy %>% clearControls()
@@ -160,7 +160,6 @@ Category       | Add functions                                                  
 -------------- | -------------------------------------------------------------- | --------------- | ---------------
 tile           | `addTiles`, `addProviderTiles`                                 | `removeTiles`   | `clearTiles`
 marker         | `addMarkers`, `addCircleMarkers`                               | `removeMarker`  | `clearMarkers`
-popup          | `addPopups`                                                    | `removePopup`   | `clearPopups`
 shape          | `addPolygons`, `addPolylines`, `addCircles`, `addRectangles`   | `removeShape`   | `clearShapes`
 geojson        | `addTopoJSON`                                                  | `removeGeoJSON` | `clearGeoJSON`
 topojson       | `addTopoJSON`                                                  | `removeTopoJSON` | `clearTopoJSON`
@@ -180,7 +179,7 @@ So for a `leafletOutput("mymap")` had a circle on it, clicking on that circle wo
 
 If no shape has ever been clicked on this map, then `input$mymap_shape_click` is null.
 
-Valid values for *OBJCATEGORY* above are `marker`, `popup`, `shape`, `geojson`, and `topojson`. (Tiles and controls don't raise mouse events.) Valid values for *EVENTNAME* are `click`, `mouseover`, and `mouseout`.
+Valid values for *OBJCATEGORY* above are `marker`, `shape`, `geojson`, and `topojson`. (Tiles and controls don't raise mouse events.) Valid values for *EVENTNAME* are `click`, `mouseover`, and `mouseout`.
 
 All of these events are set to either `NULL` if the event has never happened, or a `list()` that includes:
 
@@ -208,4 +207,3 @@ The map itself also has a few input values/events.
 For an extensive example of Shiny and Leaflet working together, take a look at the [SuperZip Explorer](http://shiny.rstudio.com/gallery/superzip-example.html) example app (note the "Get Code" button at the top of the page). (Hint: Try clicking on the bubbles, and also notice that the plots in the sidebar change as you pan and zoom around the map.)
 
 [![Screenshot of SuperZip Explorer example app](images/shiny3.png)](http://shiny.rstudio.com/gallery/superzip-example.html)
-

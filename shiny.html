@@ -53,9 +53,9 @@ code {
   color: inherit;
   background-color: rgba(0, 0, 0, 0.04);
 }
-img { 
-  max-width:100%; 
-  height: auto; 
+img {
+  max-width:100%;
+  height: auto;
 }
 </style>
 <div class="container-fluid main-container">
@@ -141,11 +141,11 @@ ui &lt;- fluidPage(
 )
 
 server &lt;- function(input, output, session) {
-  
+
   points &lt;- eventReactive(input$recalc, {
     cbind(rnorm(40) * 2 + 13, rnorm(40) + 48)
   }, ignoreNULL = FALSE)
-  
+
   output$mymap &lt;- renderLeaflet({
     leaflet() %&gt;%
       addProviderTiles(&quot;Stamen.TonerLite&quot;,
@@ -187,13 +187,13 @@ server &lt;- function(input, output, session) {
   filteredData &lt;- reactive({
     quakes[quakes$mag &gt;= input$range[1] &amp; quakes$mag &lt;= input$range[2],]
   })
-  
+
   # This reactive expression represents the palette function,
   # which changes as the user makes selections in UI.
   colorpal &lt;- reactive({
     colorNumeric(input$colors, quakes$mag)
   })
-  
+
   output$map &lt;- renderLeaflet({
     # Use leaflet() here, and only include aspects of the map that
     # won&#39;t need to change dynamically (at least, not unless the
@@ -201,25 +201,25 @@ server &lt;- function(input, output, session) {
     leaflet(quakes) %&gt;% addTiles() %&gt;%
       fitBounds(~min(long), ~min(lat), ~max(long), ~max(lat))
   })
-  
+
   # Incremental changes to the map (in this case, replacing the
   # circles when a new color is chosen) should be performed in
   # an observer. Each independent set of things that can change
   # should be managed in its own observer.
   observe({
     pal &lt;- colorpal()
-    
+
     leafletProxy(&quot;map&quot;, data = filteredData()) %&gt;%
       clearShapes() %&gt;%
       addCircles(radius = ~10^mag/10, weight = 1, color = &quot;#777777&quot;,
         fillColor = ~pal(mag), fillOpacity = 0.7, popup = ~paste(mag)
       )
   })
-  
+
   # Use a separate observer to recreate the legend as needed.
   observe({
     proxy &lt;- leafletProxy(&quot;map&quot;, data = quakes)
-    
+
     # Remove any existing legend, and only if the legend is
     # enabled, create a new one.
     proxy %&gt;% clearControls()
@@ -278,30 +278,24 @@ proxy %&gt;% clearShapes()</code></pre>
 <td align="left"><code>clearMarkers</code></td>
 </tr>
 <tr class="odd">
-<td align="left">popup</td>
-<td align="left"><code>addPopups</code></td>
-<td align="left"><code>removePopup</code></td>
-<td align="left"><code>clearPopups</code></td>
-</tr>
-<tr class="even">
 <td align="left">shape</td>
 <td align="left"><code>addPolygons</code>, <code>addPolylines</code>, <code>addCircles</code>, <code>addRectangles</code></td>
 <td align="left"><code>removeShape</code></td>
 <td align="left"><code>clearShapes</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">geojson</td>
 <td align="left"><code>addTopoJSON</code></td>
 <td align="left"><code>removeGeoJSON</code></td>
 <td align="left"><code>clearGeoJSON</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">topojson</td>
 <td align="left"><code>addTopoJSON</code></td>
 <td align="left"><code>removeTopoJSON</code></td>
 <td align="left"><code>clearTopoJSON</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">control</td>
 <td align="left"><code>addControl</code></td>
 <td align="left"><code>removeControl</code></td>
@@ -321,7 +315,7 @@ proxy %&gt;% clearShapes()</code></pre>
 </blockquote>
 <p>So for a <code>leafletOutput(&quot;mymap&quot;)</code> had a circle on it, clicking on that circle would update the Shiny input at <code>input$mymap_shape_click</code>. (Note that the layer ID is not part of the name, though it is part of the value.)</p>
 <p>If no shape has ever been clicked on this map, then <code>input$mymap_shape_click</code> is null.</p>
-<p>Valid values for <em>OBJCATEGORY</em> above are <code>marker</code>, <code>popup</code>, <code>shape</code>, <code>geojson</code>, and <code>topojson</code>. (Tiles and controls don’t raise mouse events.) Valid values for <em>EVENTNAME</em> are <code>click</code>, <code>mouseover</code>, and <code>mouseout</code>.</p>
+<p>Valid values for <em>OBJCATEGORY</em> above are <code>marker</code>, <code>shape</code>, <code>geojson</code>, and <code>topojson</code>. (Tiles and controls don’t raise mouse events.) Valid values for <em>EVENTNAME</em> are <code>click</code>, <code>mouseover</code>, and <code>mouseout</code>.</p>
 <p>All of these events are set to either <code>NULL</code> if the event has never happened, or a <code>list()</code> that includes:</p>
 <ul>
 <li><code>lat</code> - The latitude of the object, if available; otherwise, the mouse cursor</li>
