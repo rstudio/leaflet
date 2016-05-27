@@ -353,7 +353,7 @@ require("./fixup-default-icon");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 window.LeafletWidget = {};
-window.LeafletWidget.methods = {};
+var methods = window.LeafletWidget.methods = _jquery2.default.extend({}, _methods2.default);
 
 // Send updated bounds back to app. Takes a leaflet event object as input.
 function updateBounds(map) {
@@ -511,7 +511,7 @@ _htmlwidgets2.default.widget({
     }
     if (data.fitBounds) {
       explicitView = true;
-      _methods2.default.fitBounds.apply(map, data.fitBounds);
+      methods.fitBounds.apply(map, data.fitBounds);
     }
 
     // Returns true if the zoomToLimits option says that the map should be
@@ -541,7 +541,7 @@ _htmlwidgets2.default.widget({
 
     for (var i = 0; data.calls && i < data.calls.length; i++) {
       var call = data.calls[i];
-      if (_methods2.default[call.method]) _methods2.default[call.method].apply(map, call.args);else (0, _util.log)("Unknown method " + call.method);
+      if (methods[call.method]) methods[call.method].apply(map, call.args);else (0, _util.log)("Unknown method " + call.method);
     }
 
     map.leafletr.hasRendered = true;
@@ -575,7 +575,7 @@ if (_htmlwidgets2.default.shinyMode) {
       if (call.dependencies) {
         _shiny2.default.renderDependencies(call.dependencies);
       }
-      if (_methods2.default[call.method]) _methods2.default[call.method].apply(map, call.args);else (0, _util.log)("Unknown method " + call.method);
+      if (methods[call.method]) methods[call.method].apply(map, call.args);else (0, _util.log)("Unknown method " + call.method);
     }
   });
 }

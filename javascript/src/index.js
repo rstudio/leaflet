@@ -8,12 +8,12 @@ import { log } from "./util";
 import ControlStore from "./control-store";
 import LayerManager from "./layer-manager";
 
-import methods from "./methods";
+import defaultMethods from "./methods";
 
 import "./fixup-default-icon";
 
 window.LeafletWidget = {};
-window.LeafletWidget.methods = {};
+let methods = window.LeafletWidget.methods = $.extend({}, defaultMethods);
 
 // Send updated bounds back to app. Takes a leaflet event object as input.
 function updateBounds(map) {
