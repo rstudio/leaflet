@@ -62,7 +62,7 @@ export default class DataFrame {
     return this;
   }
 
-  get(row, col) {
+  get(row, col, missingOK) {
     if (row > this.effectiveLength)
       throw new Error("Row argument was out of bounds: " + row + " > " + this.effectiveLength);
 
@@ -78,8 +78,12 @@ export default class DataFrame {
     } else if (typeof(col) === "number") {
       colIndex = col;
     }
-    if (colIndex < 0 || colIndex > this.columns.length)
-      throw new Error("Unknown column index: " + col);
+    if (colIndex < 0 || colIndex > this.columns.length) {
+      if (missingOK)
+        return void(0);
+      else
+        throw new Error("Unknown column index: " + col);
+    }
 
     return this.columns[colIndex][row % this.columns[colIndex].length];
   }

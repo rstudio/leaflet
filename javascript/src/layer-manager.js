@@ -23,6 +23,8 @@ export default class LayerManager {
     //           }
     // }
     this._byStamp = {};
+    // {<crosstalkGroupName>: {<key>: <stamp>}}
+    this._byCrosstalkGroup = {};
 
     // END layer indices
 
@@ -32,7 +34,7 @@ export default class LayerManager {
     this._groupContainers = {};
   }
 
-  addLayer(layer, category, layerId, group) {
+  addLayer(layer, category, layerId, group, ctGroup, ctKey) {
     // Was a group provided?
     let hasId = typeof(layerId) === "string";
     let grouped = typeof(group) === "string";
@@ -79,15 +81,53 @@ export default class LayerManager {
     this._byStamp[stamp] = {
       layer: layer,
       group: group,
+      ctGroup: ctGroup,
+      ctKey: ctKey,
       layerId: layerId,
       category: category,
-      container: container
+      container: container,
+      hidden: false
     };
+
+    // Update crosstalk group index
+    if (ctGroup) {
+      let ctg = this._byCrosstalkGroup[ctGroup];
+      if (!ctg) {
+        ctg = this._byCrosstalkGroup[ctGroup] = {};
+        let crosstalk = global.crosstalk;
+        let fs = crosstalk.filter.createHandle(crosstalk.group(ctGroup));
+        fs.on("change", (e) => {
+          let selectedKeys = {};
+          for (let i = 0; i < e.value.length; i++) {
+            selectedKeys[e.value[i]] = true;
+          }
+          let groupKeys = Object.keys(ctg);
+          for (let i = 0; i < groupKeys.length; i++) {
+            let key = groupKeys[i];
+            let layerInfo = this._byStamp[ctg[key]];
+            this._setVisibility(layerInfo, selectedKeys[groupKeys[i]]);
+          }
+        });
+      }
+      ctg[ctKey] = stamp;
+    }
 
     // Add to container
     container.addLayer(layer);
 
     return oldLayer;
+  }
+
+  _setVisibility(layerInfo, visible) {
+    if (layerInfo.hidden ^ visible) {
+      return;
+    } else if (visible) {
+      layerInfo.container.addLayer(layerInfo.layer);
+      layerInfo.hidden = false;
+    } else {
+      layerInfo.container.removeLayer(layerInfo.layer);
+      layerInfo.hidden = true;
+    }
   }
 
   getLayer(category, layerId) {
@@ -174,6 +214,7 @@ export default class LayerManager {
     this._byCategory = {};
     this._byLayerId = {};
     this._byStamp = {};
+    this._byCrosstalkGroup = {};
     $.each(this._categoryContainers, clearLayerGroup);
     this._categoryContainers = {};
     $.each(this._groupContainers, clearLayerGroup);
@@ -202,6 +243,9 @@ export default class LayerManager {
     }
     delete this._byCategory[layerInfo.category][stamp];
     delete this._byStamp[stamp];
+    if (layerInfo.ctGroup) {
+      delete this._byCrosstalkGroup[layerInfo.ctGroup][layerInfo.ctKey];
+    }
   }
 
   _layerIdKey(category, layerId) {

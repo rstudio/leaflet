@@ -44,7 +44,18 @@ filterNULL = function(x) {
 #' @rdname dispatch
 #' @export
 invokeMethod = function(map, data, method, ...) {
-  args = evalFormula(list(...), data)
+  crosstalkOptions <- if (crosstalk::is.SharedData(data)) {
+    sd <- data
+    data <- sd$data()
+    list(
+      ctKey = sd$key(),
+      ctGroup = sd$groupName()
+    )
+  } else {
+    NULL
+  }
+
+  args = c(evalFormula(list(...), data), list(crosstalkOptions))
 
   dispatch(map,
     method,
