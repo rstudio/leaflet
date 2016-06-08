@@ -629,7 +629,7 @@ var LayerManager = function () {
     //           }
     // }
     this._byStamp = {};
-    // {<crosstalkGroupName>: {<key>: <stamp>}}
+    // {<crosstalkGroupName>: {<key>: [<stamp>, <stamp>, ...], ...}}
     this._byCrosstalkGroup = {};
 
     // END layer indices
@@ -706,6 +706,9 @@ var LayerManager = function () {
             ctg = _this._byCrosstalkGroup[ctGroup] = {};
             var crosstalk = global.crosstalk;
             var fs = crosstalk.filter.createHandle(crosstalk.group(ctGroup));
+            if (!ctg[ctKey]) ctg[ctKey] = [];
+            ctg[ctKey].push(stamp);
+
             fs.on("change", function (e) {
               var selectedKeys = {};
               for (var i = 0; i < e.value.length; i++) {
@@ -718,8 +721,28 @@ var LayerManager = function () {
                 _this._setVisibility(layerInfo, selectedKeys[groupKeys[_i]]);
               }
             });
+            crosstalk.group(ctGroup).var("selection").on("change", function (e) {
+              if (!e.value) {
+                var groupKeys = Object.keys(ctg);
+                for (var i = 0; i < groupKeys.length; i++) {
+                  var key = groupKeys[i];
+                  var layerInfo = _this._byStamp[ctg[key]];
+                  _this._setOpacity(layerInfo, 1.0);
+                }
+              } else {
+                var selectedKeys = {};
+                for (var _i2 = 0; _i2 < e.value.length; _i2++) {
+                  selectedKeys[e.value[_i2]] = true;
+                }
+                var _groupKeys = Object.keys(ctg);
+                for (var _i3 = 0; _i3 < _groupKeys.length; _i3++) {
+                  var _key = _groupKeys[_i3];
+                  var _layerInfo = _this._byStamp[ctg[_key]];
+                  _this._setOpacity(_layerInfo, selectedKeys[_groupKeys[_i3]] ? 1.0 : 0.2);
+                }
+              }
+            });
           }
-          ctg[ctKey] = stamp;
         })();
       }
 
@@ -739,6 +762,13 @@ var LayerManager = function () {
       } else {
         layerInfo.container.removeLayer(layerInfo.layer);
         layerInfo.hidden = true;
+      }
+    }
+  }, {
+    key: "_setOpacity",
+    value: function _setOpacity(layerInfo, opacity) {
+      if (layerInfo.layer.setOpacity) {
+        layerInfo.layer.setOpacity(opacity);
       }
     }
   }, {
@@ -873,7 +903,16 @@ var LayerManager = function () {
       delete this._byCategory[layerInfo.category][stamp];
       delete this._byStamp[stamp];
       if (layerInfo.ctGroup) {
-        delete this._byCrosstalkGroup[layerInfo.ctGroup][layerInfo.ctKey];
+        var ctGroup = this._byCrosstalkGroup[layerInfo.ctGroup];
+        var layersForKey = ctGroup[layerInfo.ctKey];
+        var idx = layersForKey ? layersForKey.indexOf(stamp) : -1;
+        if (idx >= 0) {
+          if (layersForKey.length === 1) {
+            delete ctGroup[layerInfo.ctKey];
+          } else {
+            layersForKey.splice(idx, 1);
+          }
+        }
       }
     }
   }, {

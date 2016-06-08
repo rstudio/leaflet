@@ -23,7 +23,7 @@ export default class LayerManager {
     //           }
     // }
     this._byStamp = {};
-    // {<crosstalkGroupName>: {<key>: <stamp>}}
+    // {<crosstalkGroupName>: {<key>: [<stamp>, <stamp>, ...], ...}}
     this._byCrosstalkGroup = {};
 
     // END layer indices
@@ -96,6 +96,10 @@ export default class LayerManager {
         ctg = this._byCrosstalkGroup[ctGroup] = {};
         let crosstalk = global.crosstalk;
         let fs = crosstalk.filter.createHandle(crosstalk.group(ctGroup));
+        if (!ctg[ctKey])
+          ctg[ctKey] = [];
+        ctg[ctKey].push(stamp);
+
         fs.on("change", (e) => {
           let selectedKeys = {};
           for (let i = 0; i < e.value.length; i++) {
@@ -108,8 +112,28 @@ export default class LayerManager {
             this._setVisibility(layerInfo, selectedKeys[groupKeys[i]]);
           }
         });
+        crosstalk.group(ctGroup).var("selection").on("change", (e) => {
+          if (!e.value) {
+            let groupKeys = Object.keys(ctg);
+            for (let i = 0; i < groupKeys.length; i++) {
+              let key = groupKeys[i];
+              let layerInfo = this._byStamp[ctg[key]];
+              this._setOpacity(layerInfo, 1.0);
+            }
+          } else {
+            let selectedKeys = {};
+            for (let i = 0; i < e.value.length; i++) {
+              selectedKeys[e.value[i]] = true;
+            }
+            let groupKeys = Object.keys(ctg);
+            for (let i = 0; i < groupKeys.length; i++) {
+              let key = groupKeys[i];
+              let layerInfo = this._byStamp[ctg[key]];
+              this._setOpacity(layerInfo, selectedKeys[groupKeys[i]] ? 1.0 : 0.2);
+            }
+          }
+        });
       }
-      ctg[ctKey] = stamp;
     }
 
     // Add to container
@@ -127,6 +151,12 @@ export default class LayerManager {
     } else {
       layerInfo.container.removeLayer(layerInfo.layer);
       layerInfo.hidden = true;
+    }
+  }
+
+  _setOpacity(layerInfo, opacity) {
+    if (layerInfo.layer.setOpacity) {
+      layerInfo.layer.setOpacity(opacity);
     }
   }
 
@@ -244,7 +274,16 @@ export default class LayerManager {
     delete this._byCategory[layerInfo.category][stamp];
     delete this._byStamp[stamp];
     if (layerInfo.ctGroup) {
-      delete this._byCrosstalkGroup[layerInfo.ctGroup][layerInfo.ctKey];
+      let ctGroup = this._byCrosstalkGroup[layerInfo.ctGroup];
+      let layersForKey = ctGroup[layerInfo.ctKey];
+      let idx = layersForKey ? layersForKey.indexOf(stamp) : -1;
+      if (idx >= 0) {
+        if (layersForKey.length === 1) {
+          delete ctGroup[layerInfo.ctKey];
+        } else {
+          layersForKey.splice(idx, 1);
+        }
+      }
     }
   }
 
