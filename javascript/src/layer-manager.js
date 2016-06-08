@@ -78,7 +78,7 @@ export default class LayerManager {
     this._byCategory[category][stamp] = layer;
 
     // Update stamp index
-    this._byStamp[stamp] = {
+    let layerInfo = this._byStamp[stamp] = {
       layer: layer,
       group: group,
       ctGroup: ctGroup,
@@ -91,28 +91,42 @@ export default class LayerManager {
 
     // Update crosstalk group index
     if (ctGroup) {
+      if (layer.setStyle) {
+        // Need to save this info so we know what to set opacity to later
+        layer.options.origOpacity = typeof(layer.options.opacity) !== "undefined" ? layer.options.opacity : 0.5;
+        layer.options.origFillOpacity = typeof(layer.options.fillOpacity) !== "undefined" ? layer.options.fillOpacity : 0.2;
+      }
+
       let ctg = this._byCrosstalkGroup[ctGroup];
       if (!ctg) {
         ctg = this._byCrosstalkGroup[ctGroup] = {};
         let crosstalk = global.crosstalk;
         let fs = crosstalk.filter.createHandle(crosstalk.group(ctGroup));
-        if (!ctg[ctKey])
-          ctg[ctKey] = [];
-        ctg[ctKey].push(stamp);
 
-        fs.on("change", (e) => {
-          let selectedKeys = {};
-          for (let i = 0; i < e.value.length; i++) {
-            selectedKeys[e.value[i]] = true;
+        let handleFilter = (e) => {
+          if (!e.value) {
+            let groupKeys = Object.keys(ctg);
+            for (let i = 0; i < groupKeys.length; i++) {
+              let key = groupKeys[i];
+              let layerInfo = this._byStamp[ctg[key]];
+              this._setVisibility(layerInfo, true);
+            }
+          } else {
+            let selectedKeys = {};
+            for (let i = 0; i < e.value.length; i++) {
+              selectedKeys[e.value[i]] = true;
+            }
+            let groupKeys = Object.keys(ctg);
+            for (let i = 0; i < groupKeys.length; i++) {
+              let key = groupKeys[i];
+              let layerInfo = this._byStamp[ctg[key]];
+              this._setVisibility(layerInfo, selectedKeys[groupKeys[i]]);
+            }
           }
-          let groupKeys = Object.keys(ctg);
-          for (let i = 0; i < groupKeys.length; i++) {
-            let key = groupKeys[i];
-            let layerInfo = this._byStamp[ctg[key]];
-            this._setVisibility(layerInfo, selectedKeys[groupKeys[i]]);
-          }
-        });
-        crosstalk.group(ctGroup).var("selection").on("change", (e) => {
+        };
+        fs.on("change", handleFilter);
+
+        let handleSelection = (e) => {
           if (!e.value) {
             let groupKeys = Object.keys(ctg);
             for (let i = 0; i < groupKeys.length; i++) {
@@ -132,12 +146,23 @@ export default class LayerManager {
               this._setOpacity(layerInfo, selectedKeys[groupKeys[i]] ? 1.0 : 0.2);
             }
           }
-        });
+        };
+        crosstalk.group(ctGroup).var("selection").on("change", handleSelection);
+
+        setTimeout(() => {
+          handleFilter({value: fs.filteredKeys});
+          handleSelection({value: crosstalk.group(ctGroup).var("selection").get()});
+        }, 100);
       }
+
+      if (!ctg[ctKey])
+        ctg[ctKey] = [];
+      ctg[ctKey].push(stamp);
     }
 
     // Add to container
-    container.addLayer(layer);
+    if (!layerInfo.hidden)
+      container.addLayer(layer);
 
     return oldLayer;
   }
@@ -157,6 +182,11 @@ export default class LayerManager {
   _setOpacity(layerInfo, opacity) {
     if (layerInfo.layer.setOpacity) {
       layerInfo.layer.setOpacity(opacity);
+    } else if (layerInfo.layer.setStyle) {
+      layerInfo.layer.setStyle({
+        opacity: opacity * layerInfo.layer.options.origOpacity,
+        fillOpacity: opacity * layerInfo.layer.options.origFillOpacity
+      });
     }
   }
 
