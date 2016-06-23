@@ -127,7 +127,7 @@ export default class LayerManager {
         fs.on("change", handleFilter);
 
         let handleSelection = (e) => {
-          if (!e.value) {
+          if (!e.value || !e.value.length) {
             let groupKeys = Object.keys(ctg);
             for (let i = 0; i < groupKeys.length; i++) {
               let key = groupKeys[i];

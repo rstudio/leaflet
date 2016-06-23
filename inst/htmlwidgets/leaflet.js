@@ -738,7 +738,7 @@ var LayerManager = function () {
               fs.on("change", handleFilter);
 
               var handleSelection = function handleSelection(e) {
-                if (!e.value) {
+                if (!e.value || !e.value.length) {
                   var groupKeys = Object.keys(ctg);
                   for (var i = 0; i < groupKeys.length; i++) {
                     var key = groupKeys[i];
