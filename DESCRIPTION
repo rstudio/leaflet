@@ -33,6 +33,7 @@ URL: http://rstudio.github.io/leaflet/
 BugReports: https://github.com/rstudio/leaflet/issues
 Imports:
     base64enc,
+    crosstalk,
     htmlwidgets,
     htmltools,
     magrittr,
@@ -50,4 +51,7 @@ Suggests:
     rgdal,
     R6,
     RJSONIO
+Remotes:
+    rstudio/crosstalk,
+    jcheng5/plotly@joe/feature/crosstalk
 RoxygenNote: 5.0.1

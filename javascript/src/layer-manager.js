@@ -23,6 +23,8 @@ export default class LayerManager {
     //           }
     // }
     this._byStamp = {};
+    // {<crosstalkGroupName>: {<key>: [<stamp>, <stamp>, ...], ...}}
+    this._byCrosstalkGroup = {};
 
     // END layer indices
 
@@ -32,7 +34,7 @@ export default class LayerManager {
     this._groupContainers = {};
   }
 
-  addLayer(layer, category, layerId, group) {
+  addLayer(layer, category, layerId, group, ctGroup, ctKey) {
     // Was a group provided?
     let hasId = typeof(layerId) === "string";
     let grouped = typeof(group) === "string";
@@ -76,18 +78,146 @@ export default class LayerManager {
     this._byCategory[category][stamp] = layer;
 
     // Update stamp index
-    this._byStamp[stamp] = {
+    let layerInfo = this._byStamp[stamp] = {
       layer: layer,
       group: group,
+      ctGroup: ctGroup,
+      ctKey: ctKey,
       layerId: layerId,
       category: category,
-      container: container
+      container: container,
+      hidden: false
     };
 
+    // Update crosstalk group index
+    if (ctGroup) {
+      if (layer.setStyle) {
+        // Need to save this info so we know what to set opacity to later
+        layer.options.origOpacity = typeof(layer.options.opacity) !== "undefined" ? layer.options.opacity : 0.5;
+        layer.options.origFillOpacity = typeof(layer.options.fillOpacity) !== "undefined" ? layer.options.fillOpacity : 0.2;
+        layer.options.origColor = typeof(layer.options.color) !== "undefined" ? layer.options.color : "#03F";
+        layer.options.origFillColor = typeof(layer.options.fillColor) !== "undefined" ? layer.options.fillColor : layer.options.origColor;
+      }
+
+      let ctg = this._byCrosstalkGroup[ctGroup];
+      if (!ctg) {
+        ctg = this._byCrosstalkGroup[ctGroup] = {};
+        let crosstalk = global.crosstalk;
+        let fs = crosstalk.filter.createHandle(crosstalk.group(ctGroup));
+
+        let handleFilter = (e) => {
+          if (!e.value) {
+            let groupKeys = Object.keys(ctg);
+            for (let i = 0; i < groupKeys.length; i++) {
+              let key = groupKeys[i];
+              let layerInfo = this._byStamp[ctg[key]];
+              this._setVisibility(layerInfo, true);
+            }
+          } else {
+            let selectedKeys = {};
+            for (let i = 0; i < e.value.length; i++) {
+              selectedKeys[e.value[i]] = true;
+            }
+            let groupKeys = Object.keys(ctg);
+            for (let i = 0; i < groupKeys.length; i++) {
+              let key = groupKeys[i];
+              let layerInfo = this._byStamp[ctg[key]];
+              this._setVisibility(layerInfo, selectedKeys[groupKeys[i]]);
+            }
+          }
+        };
+        fs.on("change", handleFilter);
+
+        let handleSelection = (e) => {
+          if (!e.value || !e.value.length) {
+            let groupKeys = Object.keys(ctg);
+            for (let i = 0; i < groupKeys.length; i++) {
+              let key = groupKeys[i];
+              let layerInfo = this._byStamp[ctg[key]];
+              // reset the crosstalk style params
+              layerInfo.layer.options.ctOpacity = undefined;
+              layerInfo.layer.options.ctFillOpacity = undefined;
+              layerInfo.layer.options.ctColor = undefined;
+              layerInfo.layer.options.ctFillColor = undefined;
+              this._setStyle(layerInfo);
+            }
+          } else {
+            let selectedKeys = {};
+            for (let i = 0; i < e.value.length; i++) {
+              selectedKeys[e.value[i]] = true;
+            }
+            let groupKeys = Object.keys(ctg);
+            // for compatability with plotly's ability to colour selections
+            // https://github.com/jcheng5/plotly/blob/71cf8a/R/crosstalk.R#L96-L100
+            let selectionColour = crosstalk.var("plotlySelectionColour").get();
+            let ctOpts = crosstalk.var("plotlyCrosstalkOpts").get() || {opacityDim: 0.2};
+            let persist = ctOpts.persistent === true;
+            for (let i = 0; i < groupKeys.length; i++) {
+              let key = groupKeys[i];
+              let layerInfo = this._byStamp[ctg[key]];
+              let selected = selectedKeys[groupKeys[i]];
+              let opts = layerInfo.layer.options;
+
+              // remember "old" selection colors if this is persistent selection
+              layerInfo.layer.options.ctColor =
+                selected ? selectionColour :
+                  persist ? opts.ctColor : opts.origColor;
+              layerInfo.layer.options.ctFillColor =
+                selected ? selectionColour :
+                  persist ? opts.ctFillColor : opts.origFillColor;
+
+              layerInfo.layer.options.ctOpacity =
+                  selected ? opts.origOpacity :
+                    (persist && opts.origOpacity == opts.ctOpacity) ? opts.origOpacity :
+                      ctOpts.opacityDim * opts.origOpacity;
+
+              this._setStyle(layerInfo);
+            }
+          }
+        };
+        crosstalk.group(ctGroup).var("selection").on("change", handleSelection);
+
+        setTimeout(() => {
+          handleFilter({value: fs.filteredKeys});
+          handleSelection({value: crosstalk.group(ctGroup).var("selection").get()});
+        }, 100);
+      }
+
+      if (!ctg[ctKey])
+        ctg[ctKey] = [];
+      ctg[ctKey].push(stamp);
+    }
+
     // Add to container
-    container.addLayer(layer);
+    if (!layerInfo.hidden)
+      container.addLayer(layer);
 
     return oldLayer;
+  }
+
+  _setVisibility(layerInfo, visible) {
+    if (layerInfo.hidden ^ visible) {
+      return;
+    } else if (visible) {
+      layerInfo.container.addLayer(layerInfo.layer);
+      layerInfo.hidden = false;
+    } else {
+      layerInfo.container.removeLayer(layerInfo.layer);
+      layerInfo.hidden = true;
+    }
+  }
+
+  _setStyle(layerInfo) {
+    let opts = layerInfo.layer.options;
+    if (!layerInfo.layer.setStyle) {
+      return;
+    }
+    layerInfo.layer.setStyle({
+      opacity: opts.ctOpacity || opts.origOpacity,
+      fillOpacity: opts.ctFillOpacity || opts.origFillOpacity,
+      color: opts.ctColor || opts.origColor,
+      fillColor: opts.ctFillColor || opts.origFillColor
+    });
   }
 
   getLayer(category, layerId) {
@@ -174,6 +304,7 @@ export default class LayerManager {
     this._byCategory = {};
     this._byLayerId = {};
     this._byStamp = {};
+    this._byCrosstalkGroup = {};
     $.each(this._categoryContainers, clearLayerGroup);
     this._categoryContainers = {};
     $.each(this._groupContainers, clearLayerGroup);
@@ -202,6 +333,18 @@ export default class LayerManager {
     }
     delete this._byCategory[layerInfo.category][stamp];
     delete this._byStamp[stamp];
+    if (layerInfo.ctGroup) {
+      let ctGroup = this._byCrosstalkGroup[layerInfo.ctGroup];
+      let layersForKey = ctGroup[layerInfo.ctKey];
+      let idx = layersForKey ? layersForKey.indexOf(stamp) : -1;
+      if (idx >= 0) {
+        if (layersForKey.length === 1) {
+          delete ctGroup[layerInfo.ctKey];
+        } else {
+          layersForKey.splice(idx, 1);
+        }
+      }
+    }
   }
 
   _layerIdKey(category, layerId) {

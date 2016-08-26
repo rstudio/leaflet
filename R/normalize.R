@@ -36,6 +36,10 @@ doResolveFormula.data.frame = function(data, f) {
   eval(f[[2]], data, environment(f))
 }
 
+doResolveFormula.SharedData = function(data, f) {
+  doResolveFormula(data$data(withSelection = TRUE, withFilter = FALSE, withKey = TRUE), f)
+}
+
 doResolveFormula.map = function(data, f) {
   eval(f[[2]], data, environment(f))
 }
@@ -160,6 +164,12 @@ pointData.SpatialPointsDataFrame = function(obj) {
   )
 }
 
+#' @export
+pointData.SharedData = function(obj) {
+  pointData(obj$data(withSelection = FALSE,
+    withFilter = FALSE, withKey = FALSE))
+}
+
 # A simple polygon is a list(lng=numeric(), lat=numeric()). A compound polygon
 # is a list of simple polygons. This function returns a list of compound
 # polygons, so list(list(list(lng=..., lat=...))). There is also a bbox
@@ -219,6 +229,12 @@ polygonData.SpatialLines = function(obj) {
 }
 polygonData.SpatialLinesDataFrame = function(obj) {
   polygonData(sp::SpatialLines(obj@lines))
+}
+
+#' @export
+polygonData.SharedData = function(obj) {
+  polygonData(obj$data(withSelection = FALSE,
+    withFilter = FALSE, withKey = FALSE))
 }
 
 dfbbox = function(df) {
