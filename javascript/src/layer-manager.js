@@ -95,6 +95,8 @@ export default class LayerManager {
         // Need to save this info so we know what to set opacity to later
         layer.options.origOpacity = typeof(layer.options.opacity) !== "undefined" ? layer.options.opacity : 0.5;
         layer.options.origFillOpacity = typeof(layer.options.fillOpacity) !== "undefined" ? layer.options.fillOpacity : 0.2;
+        layer.options.origColor = typeof layer.options.color !== "undefined" ? layer.options.color : "#03F";
+        layer.options.origFillColor = typeof layer.options.fillColor !== "undefined" ? layer.options.fillColor : layer.options.origColor;
       }
 
       let ctg = this._byCrosstalkGroup[ctGroup];
@@ -132,7 +134,11 @@ export default class LayerManager {
             for (let i = 0; i < groupKeys.length; i++) {
               let key = groupKeys[i];
               let layerInfo = this._byStamp[ctg[key]];
+              let opts = layerInfo.layer.options;
+              layerInfo.layer.options.ctColor = opts.origColor;
+              layerInfo.layer.options.ctFillColor = opts.origFillColor;
               this._setOpacity(layerInfo, 1.0);
+
             }
           } else {
             let selectedKeys = {};
@@ -140,10 +146,20 @@ export default class LayerManager {
               selectedKeys[e.value[i]] = true;
             }
             let groupKeys = Object.keys(ctg);
+            // for compatability with plotly's ability to colour selections
+            // https://github.com/jcheng5/plotly/blob/71cf8a/R/crosstalk.R#L96-L100
+            let selectionColour = crosstalk.var("selectionColour").get();
+            console.log(selectionColour);
             for (let i = 0; i < groupKeys.length; i++) {
               let key = groupKeys[i];
               let layerInfo = this._byStamp[ctg[key]];
-              this._setOpacity(layerInfo, selectedKeys[groupKeys[i]] ? 1.0 : 0.2);
+              let opts = layerInfo.layer.options;
+              let selected = selectedKeys[groupKeys[i]];
+              layerInfo.layer.options.ctColor =
+                selected ? selectionColour || opts.origColor : opts.origColor;
+              layerInfo.layer.options.ctFillColor =
+                selected ? selectionColour || opts.origFillColor : opts.origFillColor;
+              this._setOpacity(layerInfo, selected ? 1.0 : 0.2);
             }
           }
         };
@@ -185,7 +201,9 @@ export default class LayerManager {
     } else if (layerInfo.layer.setStyle) {
       layerInfo.layer.setStyle({
         opacity: opacity * layerInfo.layer.options.origOpacity,
-        fillOpacity: opacity * layerInfo.layer.options.origFillOpacity
+        fillOpacity: opacity * layerInfo.layer.options.origFillOpacity,
+        color: layerInfo.layer.options.ctColor,
+        fillColor: layerInfo.layer.options.ctFillColor
       });
     }
   }

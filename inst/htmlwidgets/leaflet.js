@@ -705,6 +705,8 @@ var LayerManager = function () {
             // Need to save this info so we know what to set opacity to later
             layer.options.origOpacity = typeof layer.options.opacity !== "undefined" ? layer.options.opacity : 0.5;
             layer.options.origFillOpacity = typeof layer.options.fillOpacity !== "undefined" ? layer.options.fillOpacity : 0.2;
+            layer.options.origColor = typeof layer.options.color !== "undefined" ? layer.options.color : "#03F";
+            layer.options.origFillColor = typeof layer.options.fillColor !== "undefined" ? layer.options.fillColor : layer.options.origColor;
           }
 
           var ctg = _this._byCrosstalkGroup[ctGroup];
@@ -743,6 +745,9 @@ var LayerManager = function () {
                   for (var i = 0; i < groupKeys.length; i++) {
                     var key = groupKeys[i];
                     var _layerInfo3 = _this._byStamp[ctg[key]];
+                    var opts = _layerInfo3.layer.options;
+                    _layerInfo3.layer.options.ctColor = opts.origColor;
+                    _layerInfo3.layer.options.ctFillColor = opts.origFillColor;
                     _this._setOpacity(_layerInfo3, 1.0);
                   }
                 } else {
@@ -751,10 +756,18 @@ var LayerManager = function () {
                     selectedKeys[e.value[_i3]] = true;
                   }
                   var _groupKeys2 = Object.keys(ctg);
+                  // for compatability with plotly's ability to colour selections
+                  // https://github.com/jcheng5/plotly/blob/71cf8a/R/crosstalk.R#L96-L100
+                  var selectionColour = crosstalk.var("selectionColour").get();
+                  console.log(selectionColour);
                   for (var _i4 = 0; _i4 < _groupKeys2.length; _i4++) {
                     var _key2 = _groupKeys2[_i4];
                     var _layerInfo4 = _this._byStamp[ctg[_key2]];
-                    _this._setOpacity(_layerInfo4, selectedKeys[_groupKeys2[_i4]] ? 1.0 : 0.2);
+                    var _opts = _layerInfo4.layer.options;
+                    var selected = selectedKeys[_groupKeys2[_i4]];
+                    _layerInfo4.layer.options.ctColor = selected ? selectionColour || _opts.origColor : _opts.origColor;
+                    _layerInfo4.layer.options.ctFillColor = selected ? selectionColour || _opts.origFillColor : _opts.origFillColor;
+                    _this._setOpacity(_layerInfo4, selected ? 1.0 : 0.2);
                   }
                 }
               };
@@ -798,7 +811,9 @@ var LayerManager = function () {
       } else if (layerInfo.layer.setStyle) {
         layerInfo.layer.setStyle({
           opacity: opacity * layerInfo.layer.options.origOpacity,
-          fillOpacity: opacity * layerInfo.layer.options.origFillOpacity
+          fillOpacity: opacity * layerInfo.layer.options.origFillOpacity,
+          color: layerInfo.layer.options.ctColor,
+          fillColor: layerInfo.layer.options.ctFillColor
         });
       }
     }
@@ -1971,7 +1986,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 // pixel of the original image has some contribution to the downscaled image)
 // as opposed to a single-step downscaling which will discard a lot of data
 // (and with sparse images at small scales can give very surprising results).
-
 var Mipmapper = function () {
   function Mipmapper(img) {
     _classCallCheck(this, Mipmapper);
