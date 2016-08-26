@@ -95,8 +95,8 @@ export default class LayerManager {
         // Need to save this info so we know what to set opacity to later
         layer.options.origOpacity = typeof(layer.options.opacity) !== "undefined" ? layer.options.opacity : 0.5;
         layer.options.origFillOpacity = typeof(layer.options.fillOpacity) !== "undefined" ? layer.options.fillOpacity : 0.2;
-        layer.options.origColor = typeof layer.options.color !== "undefined" ? layer.options.color : "#03F";
-        layer.options.origFillColor = typeof layer.options.fillColor !== "undefined" ? layer.options.fillColor : layer.options.origColor;
+        layer.options.origColor = typeof(layer.options.color) !== "undefined" ? layer.options.color : "#03F";
+        layer.options.origFillColor = typeof(layer.options.fillColor) !== "undefined" ? layer.options.fillColor : layer.options.origColor;
       }
 
       let ctg = this._byCrosstalkGroup[ctGroup];
@@ -134,11 +134,12 @@ export default class LayerManager {
             for (let i = 0; i < groupKeys.length; i++) {
               let key = groupKeys[i];
               let layerInfo = this._byStamp[ctg[key]];
-              let opts = layerInfo.layer.options;
-              layerInfo.layer.options.ctColor = opts.origColor;
-              layerInfo.layer.options.ctFillColor = opts.origFillColor;
-              this._setOpacity(layerInfo, 1.0);
-
+              // reset the crosstalk style params
+              layerInfo.layer.options.ctOpacity = undefined;
+              layerInfo.layer.options.ctFillOpacity = undefined;
+              layerInfo.layer.options.ctColor = undefined;
+              layerInfo.layer.options.ctFillColor = undefined;
+              this._setStyle(layerInfo);
             }
           } else {
             let selectedKeys = {};
@@ -148,18 +149,29 @@ export default class LayerManager {
             let groupKeys = Object.keys(ctg);
             // for compatability with plotly's ability to colour selections
             // https://github.com/jcheng5/plotly/blob/71cf8a/R/crosstalk.R#L96-L100
-            let selectionColour = crosstalk.var("selectionColour").get();
-            console.log(selectionColour);
+            let selectionColour = crosstalk.var("plotlySelectionColour").get();
+            let ctOpts = crosstalk.var("plotlyCrosstalkOpts").get() || {opacityDim: 0.2};
+            let persist = ctOpts.persistent === true;
             for (let i = 0; i < groupKeys.length; i++) {
               let key = groupKeys[i];
               let layerInfo = this._byStamp[ctg[key]];
-              let opts = layerInfo.layer.options;
               let selected = selectedKeys[groupKeys[i]];
+              let opts = layerInfo.layer.options;
+
+              // remember "old" selection colors if this is persistent selection
               layerInfo.layer.options.ctColor =
-                selected ? selectionColour || opts.origColor : opts.origColor;
+                selected ? selectionColour :
+                  persist ? opts.ctColor : opts.origColor;
               layerInfo.layer.options.ctFillColor =
-                selected ? selectionColour || opts.origFillColor : opts.origFillColor;
-              this._setOpacity(layerInfo, selected ? 1.0 : 0.2);
+                selected ? selectionColour :
+                  persist ? opts.ctFillColor : opts.origFillColor;
+
+              layerInfo.layer.options.ctOpacity =
+                  selected ? opts.origOpacity :
+                    (persist && opts.origOpacity == opts.ctOpacity) ? opts.origOpacity :
+                      ctOpts.opacityDim * opts.origOpacity;
+
+              this._setStyle(layerInfo);
             }
           }
         };
@@ -195,17 +207,17 @@ export default class LayerManager {
     }
   }
 
-  _setOpacity(layerInfo, opacity) {
-    if (layerInfo.layer.setOpacity) {
-      layerInfo.layer.setOpacity(opacity);
-    } else if (layerInfo.layer.setStyle) {
-      layerInfo.layer.setStyle({
-        opacity: opacity * layerInfo.layer.options.origOpacity,
-        fillOpacity: opacity * layerInfo.layer.options.origFillOpacity,
-        color: layerInfo.layer.options.ctColor,
-        fillColor: layerInfo.layer.options.ctFillColor
-      });
+  _setStyle(layerInfo) {
+    let opts = layerInfo.layer.options;
+    if (!layerInfo.layer.setStyle) {
+      return;
     }
+    layerInfo.layer.setStyle({
+      opacity: opts.ctOpacity || opts.origOpacity,
+      fillOpacity: opts.ctFillOpacity || opts.origFillOpacity,
+      color: opts.ctColor || opts.origColor,
+      fillColor: opts.ctFillColor || opts.origFillColor
+    });
   }
 
   getLayer(category, layerId) {

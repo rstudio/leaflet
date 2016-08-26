@@ -745,10 +745,12 @@ var LayerManager = function () {
                   for (var i = 0; i < groupKeys.length; i++) {
                     var key = groupKeys[i];
                     var _layerInfo3 = _this._byStamp[ctg[key]];
-                    var opts = _layerInfo3.layer.options;
-                    _layerInfo3.layer.options.ctColor = opts.origColor;
-                    _layerInfo3.layer.options.ctFillColor = opts.origFillColor;
-                    _this._setOpacity(_layerInfo3, 1.0);
+                    // reset the crosstalk style params
+                    _layerInfo3.layer.options.ctOpacity = undefined;
+                    _layerInfo3.layer.options.ctFillOpacity = undefined;
+                    _layerInfo3.layer.options.ctColor = undefined;
+                    _layerInfo3.layer.options.ctFillColor = undefined;
+                    _this._setStyle(_layerInfo3);
                   }
                 } else {
                   var selectedKeys = {};
@@ -758,16 +760,22 @@ var LayerManager = function () {
                   var _groupKeys2 = Object.keys(ctg);
                   // for compatability with plotly's ability to colour selections
                   // https://github.com/jcheng5/plotly/blob/71cf8a/R/crosstalk.R#L96-L100
-                  var selectionColour = crosstalk.var("selectionColour").get();
-                  console.log(selectionColour);
+                  var selectionColour = crosstalk.var("plotlySelectionColour").get();
+                  var ctOpts = crosstalk.var("plotlyCrosstalkOpts").get() || { opacityDim: 0.2 };
+                  var persist = ctOpts.persistent === true;
                   for (var _i4 = 0; _i4 < _groupKeys2.length; _i4++) {
                     var _key2 = _groupKeys2[_i4];
                     var _layerInfo4 = _this._byStamp[ctg[_key2]];
-                    var _opts = _layerInfo4.layer.options;
                     var selected = selectedKeys[_groupKeys2[_i4]];
-                    _layerInfo4.layer.options.ctColor = selected ? selectionColour || _opts.origColor : _opts.origColor;
-                    _layerInfo4.layer.options.ctFillColor = selected ? selectionColour || _opts.origFillColor : _opts.origFillColor;
-                    _this._setOpacity(_layerInfo4, selected ? 1.0 : 0.2);
+                    var opts = _layerInfo4.layer.options;
+
+                    // remember "old" selection colors if this is persistent selection
+                    _layerInfo4.layer.options.ctColor = selected ? selectionColour : persist ? opts.ctColor : opts.origColor;
+                    _layerInfo4.layer.options.ctFillColor = selected ? selectionColour : persist ? opts.ctFillColor : opts.origFillColor;
+
+                    _layerInfo4.layer.options.ctOpacity = selected ? opts.origOpacity : persist && opts.origOpacity == opts.ctOpacity ? opts.origOpacity : ctOpts.opacityDim * opts.origOpacity;
+
+                    _this._setStyle(_layerInfo4);
                   }
                 }
               };
@@ -804,18 +812,18 @@ var LayerManager = function () {
       }
     }
   }, {
-    key: "_setOpacity",
-    value: function _setOpacity(layerInfo, opacity) {
-      if (layerInfo.layer.setOpacity) {
-        layerInfo.layer.setOpacity(opacity);
-      } else if (layerInfo.layer.setStyle) {
-        layerInfo.layer.setStyle({
-          opacity: opacity * layerInfo.layer.options.origOpacity,
-          fillOpacity: opacity * layerInfo.layer.options.origFillOpacity,
-          color: layerInfo.layer.options.ctColor,
-          fillColor: layerInfo.layer.options.ctFillColor
-        });
+    key: "_setStyle",
+    value: function _setStyle(layerInfo) {
+      var opts = layerInfo.layer.options;
+      if (!layerInfo.layer.setStyle) {
+        return;
       }
+      layerInfo.layer.setStyle({
+        opacity: opts.ctOpacity || opts.origOpacity,
+        fillOpacity: opts.ctFillOpacity || opts.origFillOpacity,
+        color: opts.ctColor || opts.origColor,
+        fillColor: opts.ctFillColor || opts.origFillColor
+      });
     }
   }, {
     key: "getLayer",

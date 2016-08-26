@@ -52,5 +52,6 @@ Suggests:
     R6,
     RJSONIO
 Remotes:
-    rstudio/crosstalk
+    rstudio/crosstalk,
+    jcheng5/plotly@joe/feature/crosstalk
 RoxygenNote: 5.0.1
