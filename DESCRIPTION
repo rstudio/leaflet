@@ -37,6 +37,7 @@ Imports:
     htmltools,
     magrittr,
     markdown,
+    methods,
     png,
     RColorBrewer,
     raster,

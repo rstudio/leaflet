@@ -3,3 +3,4 @@
 .RData
 node_modules
 inst/htmlwidgets/sources
+*.swp
