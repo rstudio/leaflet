@@ -10,6 +10,7 @@
 
 
 
+
 <title>Leaflet for R - Using Leaflet with Shiny</title>
 
 <script src="libs/jquery/jquery.min.js"></script>
@@ -39,6 +40,34 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 
 
 
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
 </head>
 
 <body>
@@ -57,8 +86,31 @@ img {
   max-width:100%;
   height: auto;
 }
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
 </style>
+
+
+
 <div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script src="libs/navigation/tabsets.js"></script>
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
 
 <style type="text/css">
   body {
@@ -121,6 +173,12 @@ img {
   </div>
   <div class="col-sm-9 content-body">
 
+<div class="fluid-row" id="header">
+
+
+
+
+</div>
 
 
 <div id="using-leaflet-with-shiny" class="section level2">
@@ -156,7 +214,10 @@ server &lt;- function(input, output, session) {
 }
 
 shinyApp(ui, server)</code></pre>
-<p><img src="images/shiny1.png" alt="Screenshot of a simple Shiny app" /></p>
+<div class="figure">
+<img src="images/shiny1.png" alt="Screenshot of a simple Shiny app" />
+<p class="caption">Screenshot of a simple Shiny app</p>
+</div>
 <div id="modifying-existing-maps-with-leafletproxy" class="section level3">
 <h3>Modifying Existing Maps with <code>leafletProxy</code></h3>
 <p>This works, but reactive inputs and expressions that affect the <code>renderLeaflet</code> expression will cause the entire map to be redrawn from scratch and reset the map position and zoom level.</p>
@@ -233,7 +294,10 @@ server &lt;- function(input, output, session) {
 }
 
 shinyApp(ui, server)</code></pre>
-<p><img src="images/shiny2.png" alt="Screenshot of a Shiny app" /></p>
+<div class="figure">
+<img src="images/shiny2.png" alt="Screenshot of a Shiny app" />
+<p class="caption">Screenshot of a Shiny app</p>
+</div>
 <p>Besides adding layers, you can set the map bounds, remove specific objects by ID, or clear categories of layers.</p>
 <pre class="r"><code>proxy &lt;- leafletProxy(&quot;mymap&quot;)
 
@@ -256,50 +320,56 @@ proxy %&gt;% clearShapes()</code></pre>
 <p>All layer-adding functions take a <code>layerId</code> argument. Generally this is a vectorized argument; if adding 50 polygons, you’ll need to pass either <code>NULL</code> or a 50-element character vector as your <code>layerId</code> value. (If you use a single-element character vector as your <code>layerId</code>, then all of the 50 polygons will have the same ID, and all but the last polygon will be removed; so don’t do that!)</p>
 <p>Layer IDs are namespaced by category. Layer IDs only need be unique within their category; a call to <code>addCircles</code> will not cause any tile layers to be removed, regardless of layer ID, because circles and tiles are in different categories.</p>
 <table>
+<colgroup>
+<col width="13%" />
+<col width="57%" />
+<col width="14%" />
+<col width="14%" />
+</colgroup>
 <thead>
 <tr class="header">
-<th align="left">Category</th>
-<th align="left">Add functions</th>
-<th align="left">Remove</th>
-<th align="left">Clear</th>
+<th>Category</th>
+<th>Add functions</th>
+<th>Remove</th>
+<th>Clear</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">tile</td>
-<td align="left"><code>addTiles</code>, <code>addProviderTiles</code></td>
-<td align="left"><code>removeTiles</code></td>
-<td align="left"><code>clearTiles</code></td>
+<td>tile</td>
+<td><code>addTiles</code>, <code>addProviderTiles</code></td>
+<td><code>removeTiles</code></td>
+<td><code>clearTiles</code></td>
 </tr>
 <tr class="even">
-<td align="left">marker</td>
-<td align="left"><code>addMarkers</code>, <code>addCircleMarkers</code></td>
-<td align="left"><code>removeMarker</code></td>
-<td align="left"><code>clearMarkers</code></td>
+<td>marker</td>
+<td><code>addMarkers</code>, <code>addCircleMarkers</code></td>
+<td><code>removeMarker</code></td>
+<td><code>clearMarkers</code></td>
 </tr>
 <tr class="odd">
-<td align="left">shape</td>
-<td align="left"><code>addPolygons</code>, <code>addPolylines</code>, <code>addCircles</code>, <code>addRectangles</code></td>
-<td align="left"><code>removeShape</code></td>
-<td align="left"><code>clearShapes</code></td>
+<td>shape</td>
+<td><code>addPolygons</code>, <code>addPolylines</code>, <code>addCircles</code>, <code>addRectangles</code></td>
+<td><code>removeShape</code></td>
+<td><code>clearShapes</code></td>
 </tr>
 <tr class="even">
-<td align="left">geojson</td>
-<td align="left"><code>addTopoJSON</code></td>
-<td align="left"><code>removeGeoJSON</code></td>
-<td align="left"><code>clearGeoJSON</code></td>
+<td>geojson</td>
+<td><code>addTopoJSON</code></td>
+<td><code>removeGeoJSON</code></td>
+<td><code>clearGeoJSON</code></td>
 </tr>
 <tr class="odd">
-<td align="left">topojson</td>
-<td align="left"><code>addTopoJSON</code></td>
-<td align="left"><code>removeTopoJSON</code></td>
-<td align="left"><code>clearTopoJSON</code></td>
+<td>topojson</td>
+<td><code>addTopoJSON</code></td>
+<td><code>removeTopoJSON</code></td>
+<td><code>clearTopoJSON</code></td>
 </tr>
 <tr class="even">
-<td align="left">control</td>
-<td align="left"><code>addControl</code></td>
-<td align="left"><code>removeControl</code></td>
-<td align="left"><code>clearControls</code></td>
+<td>control</td>
+<td><code>addControl</code></td>
+<td><code>removeControl</code></td>
+<td><code>clearControls</code></td>
 </tr>
 </tbody>
 </table>
@@ -355,6 +425,8 @@ Maps &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contr
 
 <a href="https://github.com/rstudio/leaflet"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
 
+
+
 </div>
 
 <script>
@@ -363,6 +435,7 @@ Maps &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contr
 $(document).ready(function () {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
 });
+
 
 </script>
 

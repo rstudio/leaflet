@@ -10,6 +10,7 @@
 
 
 
+
 <title>Leaflet for R - Shapes</title>
 
 <script src="libs/jquery/jquery.min.js"></script>
@@ -22,6 +23,8 @@
 <link href="libs/leaflet/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet/leaflet.js"></script>
 <link href="libs/leafletfix/leafletfix.css" rel="stylesheet" />
+<link href="libs/leaflet-label/leaflet.label.css" rel="stylesheet" />
+<script src="libs/leaflet-label/leaflet.label.js"></script>
 <script src="libs/leaflet-binding/leaflet.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -44,6 +47,34 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 
 
 
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
 </head>
 
 <body>
@@ -58,12 +89,35 @@ code {
   color: inherit;
   background-color: rgba(0, 0, 0, 0.04);
 }
-img { 
-  max-width:100%; 
-  height: auto; 
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
 }
 </style>
+
+
+
 <div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script src="libs/navigation/tabsets.js"></script>
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
 
 <style type="text/css">
   body {
@@ -126,6 +180,12 @@ img {
   </div>
   <div class="col-sm-9 content-body">
 
+<div class="fluid-row" id="header">
+
+
+
+
+</div>
 
 
 <div id="lines-and-shapes" class="section level2">
@@ -156,8 +216,8 @@ leaflet(neStates) %&gt;%
     stroke = FALSE, fillOpacity = 0.5, smoothFactor = 0.5,
     color = ~colorQuantile(&quot;YlOrRd&quot;, states$AWATER)(AWATER)
   )</code></pre>
-<p><div id="htmlwidget-5716" style="width:100%;height:216px;" class="leaflet"></div>
-<script type="application/json" data-for="htmlwidget-5716">{
+<div id="htmlwidget-927ec88a166bf954e46a" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-927ec88a166bf954e46a">{
   "x": {
     "calls": [
       {
@@ -386,6 +446,8 @@ leaflet(neStates) %&gt;%
             "smoothFactor": 0.5,
             "noClip": false
           },
+          null,
+          null,
           null
         ]
       }
@@ -395,8 +457,9 @@ leaflet(neStates) %&gt;%
       "lng": [-80.51979, -66.949895]
     }
   },
-  "evals": []
-}</script></p>
+  "evals": [],
+  "jsHooks": []
+}</script>
 </div>
 <div id="circles" class="section level3">
 <h3>Circles</h3>
@@ -416,8 +479,8 @@ leaflet(cities) %&gt;% addTiles() %&gt;%
   addCircles(lng = ~Long, lat = ~Lat, weight = 1,
     radius = ~sqrt(Pop) * 30, popup = ~City
   )</code></pre>
-<p><div id="htmlwidget-4929" style="width:100%;height:216px;" class="leaflet"></div>
-<script type="application/json" data-for="htmlwidget-4929">{
+<div id="htmlwidget-e2aad06f99e8b55df8d8" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-e2aad06f99e8b55df8d8">{
   "x": {
     "calls": [
       {
@@ -444,7 +507,7 @@ leaflet(cities) %&gt;% addTiles() %&gt;%
             "updateWhenIdle": null,
             "detectRetina": false,
             "reuseTiles": false,
-            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>"
+            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap\u003c/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA\u003c/a>"
           }
         ]
       },
@@ -471,7 +534,9 @@ leaflet(cities) %&gt;% addTiles() %&gt;%
             "fillOpacity": 0.2,
             "dashArray": null
           },
-          ["Boston", "Hartford", "New York City", "Philadelphia", "Pittsburgh", "Providence"]
+          ["Boston", "Hartford", "New York City", "Philadelphia", "Pittsburgh", "Providence"],
+          null,
+          null
         ]
       }
     ],
@@ -480,8 +545,9 @@ leaflet(cities) %&gt;% addTiles() %&gt;%
       "lng": [-79.9764, -71.0589]
     }
   },
-  "evals": []
-}</script></p>
+  "evals": [],
+  "jsHooks": []
+}</script>
 </div>
 <div id="rectangles" class="section level3">
 <h3>Rectangles</h3>
@@ -492,8 +558,8 @@ leaflet(cities) %&gt;% addTiles() %&gt;%
     lng2=-118.436383, lat2=34.062717,
     fillColor = &quot;transparent&quot;
   )</code></pre>
-<p><div id="htmlwidget-7837" style="width:100%;height:192px;" class="leaflet"></div>
-<script type="application/json" data-for="htmlwidget-7837">{
+<div id="htmlwidget-ec9d8b9e435c1a666871" style="width:100%;height:192px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ec9d8b9e435c1a666871">{
   "x": {
     "calls": [
       {
@@ -520,7 +586,7 @@ leaflet(cities) %&gt;% addTiles() %&gt;%
             "updateWhenIdle": null,
             "detectRetina": false,
             "reuseTiles": false,
-            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>"
+            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap\u003c/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA\u003c/a>"
           }
         ]
       },
@@ -550,6 +616,8 @@ leaflet(cities) %&gt;% addTiles() %&gt;%
             "smoothFactor": 1,
             "noClip": false
           },
+          null,
+          null,
           null
         ]
       }
@@ -559,8 +627,9 @@ leaflet(cities) %&gt;% addTiles() %&gt;%
       "lng": [-118.456554, -118.436383]
     }
   },
-  "evals": []
-}</script></p>
+  "evals": [],
+  "jsHooks": []
+}</script>
 </div>
 </div>
 
@@ -576,6 +645,8 @@ Maps &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contr
 
 <a href="https://github.com/rstudio/leaflet"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
 
+
+
 </div>
 
 <script>
@@ -584,6 +655,7 @@ Maps &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contr
 $(document).ready(function () {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
 });
+
 
 </script>
 

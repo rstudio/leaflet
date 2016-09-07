@@ -10,6 +10,7 @@
 
 
 
+
 <title>Leaflet for R - Show/Hide Layers</title>
 
 <script src="libs/jquery/jquery.min.js"></script>
@@ -22,6 +23,8 @@
 <link href="libs/leaflet/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet/leaflet.js"></script>
 <link href="libs/leafletfix/leafletfix.css" rel="stylesheet" />
+<link href="libs/leaflet-label/leaflet.label.css" rel="stylesheet" />
+<script src="libs/leaflet-label/leaflet.label.js"></script>
 <script src="libs/leaflet-binding/leaflet.js"></script>
 <script src="libs/leaflet-providers/leaflet-providers.js"></script>
 <script src="libs/leaflet-providers-plugin/leaflet-providers-plugin.js"></script>
@@ -46,6 +49,34 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 
 
 
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
 </head>
 
 <body>
@@ -60,12 +91,35 @@ code {
   color: inherit;
   background-color: rgba(0, 0, 0, 0.04);
 }
-img { 
-  max-width:100%; 
-  height: auto; 
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
 }
 </style>
+
+
+
 <div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script src="libs/navigation/tabsets.js"></script>
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
 
 <style type="text/css">
   body {
@@ -128,6 +182,12 @@ img {
   </div>
   <div class="col-sm-9 content-body">
 
+<div class="fluid-row" id="header">
+
+
+
+
+</div>
 
 
 <div id="showhide-layers" class="section level2">
@@ -152,7 +212,7 @@ Groups vs. Layer IDs
 <div class="panel-body">
 <p>Groups and <a href="shiny.html#understanding-layer-ids">Layer IDs</a> may appear similar, in that both are used to assign a name to a layer. However, they differ in that layer IDs are used to provide a <em>unique identifier</em> to <em>individual</em> markers and shapes, etc., while groups are used to give <em>shared labels</em> to <em>many</em> items.</p>
 <p>You generally provide one <code>group</code> value for the entire <code>addMarkers</code> call, and you can reuse that same <code>group</code> value in future <code>addXXX</code> calls to add to that group’s membership (as in the example above).</p>
-<code>layerId</code> arguments are <em>always</em> vectorized: when calling e.g. <code>addMarkers</code> you need to provide one layer ID per marker, and they must all be unique. If you add a circle with a layer ID of <code>&quot;foo&quot;</code> and later add a different shape with the same layer ID, the original circle will be removed.
+<p><code>layerId</code> arguments are <em>always</em> vectorized: when calling e.g. <code>addMarkers</code> you need to provide one layer ID per marker, and they must all be unique. If you add a circle with a layer ID of <code>&quot;foo&quot;</code> and later add a different shape with the same layer ID, the original circle will be removed.</p>
 </div>
 </div>
 </div>
@@ -177,8 +237,8 @@ map &lt;- leaflet(quakes) %&gt;%
     options = layersControlOptions(collapsed = FALSE)
   )
 map</code></pre>
-<p><div id="htmlwidget-5716" style="width:100%;height:288px;" class="leaflet"></div>
-<script type="application/json" data-for="htmlwidget-5716">{
+<div id="htmlwidget-927ec88a166bf954e46a" style="width:100%;height:288px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-927ec88a166bf954e46a">{
   "x": {
     "calls": [
       {
@@ -205,7 +265,7 @@ map</code></pre>
             "updateWhenIdle": null,
             "detectRetina": false,
             "reuseTiles": false,
-            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>"
+            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap\u003c/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA\u003c/a>"
           }
         ]
       },
@@ -266,6 +326,8 @@ map</code></pre>
             "fillOpacity": 0.2,
             "dashArray": null
           },
+          null,
+          null,
           null
         ]
       },
@@ -299,6 +361,8 @@ map</code></pre>
             "smoothFactor": 1,
             "noClip": false
           },
+          null,
+          null,
           null
         ]
       },
@@ -320,8 +384,9 @@ map</code></pre>
       "lng": [165.67, 188.13]
     }
   },
-  "evals": []
-}</script></p>
+  "evals": [],
+  "jsHooks": []
+}</script>
 <p>The <code>addLayersControl</code> function distinguishes between <em>base groups</em>, which can only be viewed one group at a time, and <em>overlay groups</em>, which can be individually checked or unchecked.</p>
 <p>Although base groups are generally tile layers, and overlay groups are usually markers and shapes, there is no restriction on what types of layers can be placed in each category.</p>
 <p>Only one layers control can be present on a map at a time. If you call <code>addLayersControl</code> multiple times, the last call will win.</p>
@@ -331,8 +396,8 @@ map</code></pre>
 <p>You can use the <code>showGroup</code> and <code>hideGroup</code> functions to show and hide groups from code. This mostly makes sense in a <a href="shiny.html">Shiny context with <code>leafletProxy</code></a>, where perhaps you might toggle group visibility based on input controls in a sidebar.</p>
 <p>You can also use <code>showGroup</code>/<code>hideGroup</code> in conjuction with <code>addLayersControl</code> to set which groups are checked by default.</p>
 <pre class="r"><code>map %&gt;% hideGroup(&quot;Outline&quot;)</code></pre>
-<p><div id="htmlwidget-4929" style="width:100%;height:216px;" class="leaflet"></div>
-<script type="application/json" data-for="htmlwidget-4929">{
+<div id="htmlwidget-e2aad06f99e8b55df8d8" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-e2aad06f99e8b55df8d8">{
   "x": {
     "calls": [
       {
@@ -359,7 +424,7 @@ map</code></pre>
             "updateWhenIdle": null,
             "detectRetina": false,
             "reuseTiles": false,
-            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>"
+            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap\u003c/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA\u003c/a>"
           }
         ]
       },
@@ -420,6 +485,8 @@ map</code></pre>
             "fillOpacity": 0.2,
             "dashArray": null
           },
+          null,
+          null,
           null
         ]
       },
@@ -453,6 +520,8 @@ map</code></pre>
             "smoothFactor": 1,
             "noClip": false
           },
+          null,
+          null,
           null
         ]
       },
@@ -480,8 +549,9 @@ map</code></pre>
       "lng": [165.67, 188.13]
     }
   },
-  "evals": []
-}</script></p>
+  "evals": [],
+  "jsHooks": []
+}</script>
 <p>Finally, you can remove the layers in a group using <code>clearGroup</code>. Note that this doesn’t just remove the layers from the group, it also removes them from the map. (It does not, however, remove the group itself from the map; it still exists, but is empty.)</p>
 </div>
 </div>
@@ -498,6 +568,8 @@ Maps &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contr
 
 <a href="https://github.com/rstudio/leaflet"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
 
+
+
 </div>
 
 <script>
@@ -506,6 +578,7 @@ Maps &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contr
 $(document).ready(function () {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
 });
+
 
 </script>
 
