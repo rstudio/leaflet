@@ -10,6 +10,7 @@
 
 
 
+
 <title>Leaflet for R - Colors</title>
 
 <script src="libs/jquery/jquery.min.js"></script>
@@ -22,6 +23,8 @@
 <link href="libs/leaflet/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet/leaflet.js"></script>
 <link href="libs/leafletfix/leafletfix.css" rel="stylesheet" />
+<link href="libs/leaflet-label/leaflet.label.css" rel="stylesheet" />
+<script src="libs/leaflet-label/leaflet.label.js"></script>
 <script src="libs/leaflet-binding/leaflet.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -44,6 +47,34 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 
 
 
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
 </head>
 
 <body>
@@ -58,12 +89,35 @@ code {
   color: inherit;
   background-color: rgba(0, 0, 0, 0.04);
 }
-img { 
-  max-width:100%; 
-  height: auto; 
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
 }
 </style>
+
+
+
 <div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script src="libs/navigation/tabsets.js"></script>
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
 
 <style type="text/css">
   body {
@@ -126,6 +180,12 @@ img {
   </div>
   <div class="col-sm-9 content-body">
 
+<div class="fluid-row" id="header">
+
+
+
+
+</div>
 
 
 <div id="colors" class="section level2">
@@ -143,7 +203,7 @@ map &lt;- leaflet(countries)</code></pre>
 <p>We’ve loaded some shape data for countries, including a numeric field <code>gdp_md_est</code> which contains GDP estimates.</p>
 <pre class="r"><code>par(mar = c(5,5,0,0), cex = 0.8)
 hist(countries$gdp_md_est, breaks = 20, main = &quot;&quot;)</code></pre>
-<p><img src="colors_files/figure-html/unnamed-chunk-3-1.png" /></p>
+<p><img src="colors_files/figure-html/unnamed-chunk-3-1.png" /><!-- --></p>
 <div id="continuous-input-continuous-colors-colornumeric" class="section level4">
 <h4>Continuous Input, Continuous Colors (<code>colorNumeric</code>)</h4>
 <p>Let’s start by mapping GDP values directly to the <code>&quot;Blues&quot;</code> palette from <a href="http://colorbrewer2.org">Color Brewer 2</a>. We’ll use the <code>colorNumeric</code> function to create a mapping function. The <code>&quot;Blues&quot;</code> palette only contains nine colors, but <code>colorNumeric</code> interpolates these colors so we get continuous output.</p>
@@ -160,8 +220,8 @@ map %&gt;%
   addPolygons(stroke = FALSE, smoothFactor = 0.2, fillOpacity = 1,
     color = ~pal(gdp_md_est)
   )</code></pre>
-<p><div id="htmlwidget-5716" style="width:100%;height:216px;" class="leaflet"></div>
-<script type="application/json" data-for="htmlwidget-5716">{
+<div id="htmlwidget-927ec88a166bf954e46a" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-927ec88a166bf954e46a">{
   "x": {
     "calls": [
       {
@@ -1690,6 +1750,8 @@ map %&gt;%
             "smoothFactor": 0.2,
             "noClip": false
           },
+          null,
+          null,
           null
         ]
       }
@@ -1699,8 +1761,9 @@ map %&gt;%
       "lng": [-180, 180]
     }
   },
-  "evals": []
-}</script></p>
+  "evals": [],
+  "jsHooks": []
+}</script>
 </div>
 <div id="continuous-input-discrete-colors-colorbin-and-colorquantile" class="section level4">
 <h4>Continuous Input, Discrete Colors (<code>colorBin</code> and <code>colorQuantile</code>)</h4>
@@ -1712,8 +1775,8 @@ map %&gt;%
   addPolygons(stroke = FALSE, smoothFactor = 0.2, fillOpacity = 1,
     color = ~binpal(gdp_md_est)
   )</code></pre>
-<p><div id="htmlwidget-4929" style="width:100%;height:216px;" class="leaflet"></div>
-<script type="application/json" data-for="htmlwidget-4929">{
+<div id="htmlwidget-e2aad06f99e8b55df8d8" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-e2aad06f99e8b55df8d8">{
   "x": {
     "calls": [
       {
@@ -3242,6 +3305,8 @@ map %&gt;%
             "smoothFactor": 0.2,
             "noClip": false
           },
+          null,
+          null,
           null
         ]
       }
@@ -3251,16 +3316,17 @@ map %&gt;%
       "lng": [-180, 180]
     }
   },
-  "evals": []
-}</script></p>
+  "evals": [],
+  "jsHooks": []
+}</script>
 <p><code>colorQuantile</code> maps numeric input data to a fixed number of output colors using quantiles (slicing the input domain into subsets with equal numbers of observations).</p>
 <pre class="r"><code>qpal &lt;- colorQuantile(&quot;Blues&quot;, countries$gdp_md_est, n = 7)
 map %&gt;%
   addPolygons(stroke = FALSE, smoothFactor = 0.2, fillOpacity = 1,
     color = ~qpal(gdp_md_est)
   )</code></pre>
-<p><div id="htmlwidget-7837" style="width:100%;height:216px;" class="leaflet"></div>
-<script type="application/json" data-for="htmlwidget-7837">{
+<div id="htmlwidget-ec9d8b9e435c1a666871" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ec9d8b9e435c1a666871">{
   "x": {
     "calls": [
       {
@@ -4789,6 +4855,8 @@ map %&gt;%
             "smoothFactor": 0.2,
             "noClip": false
           },
+          null,
+          null,
           null
         ]
       }
@@ -4798,8 +4866,9 @@ map %&gt;%
       "lng": [-180, 180]
     }
   },
-  "evals": []
-}</script></p>
+  "evals": [],
+  "jsHooks": []
+}</script>
 </div>
 </div>
 <div id="coloring-categorical-data" class="section level3">
@@ -4815,8 +4884,8 @@ leaflet(countries) %&gt;%
   addPolygons(stroke = FALSE, smoothFactor = 0.2, fillOpacity = 1,
     color = ~factpal(category)
   )</code></pre>
-<p><div id="htmlwidget-3102" style="width:100%;height:216px;" class="leaflet"></div>
-<script type="application/json" data-for="htmlwidget-3102">{
+<div id="htmlwidget-65e60ed4f5440bdab363" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-65e60ed4f5440bdab363">{
   "x": {
     "calls": [
       {
@@ -6335,16 +6404,18 @@ leaflet(countries) %&gt;%
             "pointerEvents": null,
             "className": "",
             "stroke": false,
-            "color": ["#00E5FF", "#4C00FF", "#00E5FF", "#FFFF00", "#004CFF", "#FFFF00", "#00E5FF", "#FFFF00", "#00FF4D", "#FFFF00", "#00E5FF", "#00FF4D", "#FFFF00", "#00FF4D", "#004CFF", "#FFFF00", "#FFFF00", "#FFFF00", "#00FF4D", "#00E5FF", "#00FF4D", "#004CFF", "#004CFF", "#4C00FF", "#00E5FF", "#00E5FF", "#00E5FF", "#004CFF", "#FFFF00", "#4C00FF", "#FFFF00", "#FFFF00", "#004CFF", "#4C00FF", "#FFFF00", "#00FF4D", "#004CFF", "#00FF4D", "#00FF4D", "#00E5FF", "#004CFF", "#4C00FF", "#004CFF", "#4C00FF", "#00E5FF", "#004CFF", "#00FF4D", "#00E5FF", "#00E5FF", "#00E5FF", "#4C00FF", "#00E5FF", "#004CFF", "#FFFF00", "#004CFF", "#FFFF00", "#FFFF00", "#FFFF00", "#4C00FF", "#00E5FF", "#00FF4D", "#4C00FF", "#00FF4D", "#00E5FF", "#4C00FF", "#FFFF00", "#00E5FF", "#FFFF00", "#00E5FF", "#FFFF00", "#004CFF", "#004CFF", "#00E5FF", "#00E5FF", "#4C00FF", "#FFFF00", "#004CFF", "#00FF4D", "#4C00FF", "#00E5FF", "#00E5FF", "#4C00FF", "#004CFF", "#004CFF", "#00FF4D", "#00FF4D", "#004CFF", "#4C00FF", "#004CFF", "#FFFF00", "#00E5FF", "#4C00FF", "#004CFF", "#00FF4D", "#004CFF", "#004CFF", "#00E5FF", "#FFFF00", "#004CFF", "#FFFF00", "#00E5FF", "#4C00FF", "#FFFF00", "#00E5FF", "#FFFF00", "#004CFF", "#004CFF", "#00FF4D", "#4C00FF", "#004CFF", "#004CFF", "#FFFF00", "#004CFF", "#004CFF", "#4C00FF", "#00E5FF", "#4C00FF", "#004CFF", "#004CFF", "#004CFF", "#00E5FF", "#00E5FF", "#4C00FF", "#FFFF00", "#00FF4D", "#FFFF00", "#FFFF00", "#00FF4D", "#00FF4D", "#00E5FF", "#004CFF", "#004CFF", "#00E5FF", "#00E5FF", "#00E5FF", "#00FF4D", "#FFFF00", "#004CFF", "#004CFF", "#00FF4D", "#4C00FF", "#004CFF", "#004CFF", "#00E5FF", "#FFFF00", "#FFFF00", "#FFFF00", "#FFFF00", "#004CFF", "#4C00FF", "#00E5FF", "#00E5FF", "#FFFF00", "#00E5FF", "#FFFF00", "#00E5FF", "#00E5FF", "#00E5FF", "#00E5FF", "#4C00FF", "#00FF4D", "#4C00FF", "#00E5FF", "#004CFF", "#00FF4D", "#FFFF00", "#4C00FF", "#004CFF", "#00FF4D", "#4C00FF", "#00E5FF", "#00E5FF", "#FFFF00", "#004CFF", "#FFFF00", "#00E5FF", "#004CFF"],
+            "color": ["#00E5FF", "#00E5FF", "#00FF4D", "#00E5FF", "#4C00FF", "#00E5FF", "#FFFF00", "#004CFF", "#FFFF00", "#00E5FF", "#FFFF00", "#00FF4D", "#FFFF00", "#00E5FF", "#00FF4D", "#FFFF00", "#00FF4D", "#004CFF", "#FFFF00", "#FFFF00", "#FFFF00", "#00FF4D", "#00E5FF", "#00FF4D", "#004CFF", "#004CFF", "#4C00FF", "#00E5FF", "#00E5FF", "#00E5FF", "#004CFF", "#FFFF00", "#4C00FF", "#FFFF00", "#FFFF00", "#004CFF", "#4C00FF", "#FFFF00", "#00FF4D", "#004CFF", "#00FF4D", "#00FF4D", "#00E5FF", "#004CFF", "#4C00FF", "#004CFF", "#4C00FF", "#00E5FF", "#004CFF", "#00FF4D", "#00E5FF", "#00E5FF", "#00E5FF", "#4C00FF", "#00E5FF", "#004CFF", "#FFFF00", "#004CFF", "#FFFF00", "#FFFF00", "#FFFF00", "#4C00FF", "#00E5FF", "#00FF4D", "#4C00FF", "#00FF4D", "#00E5FF", "#4C00FF", "#FFFF00", "#00E5FF", "#FFFF00", "#00E5FF", "#FFFF00", "#004CFF", "#004CFF", "#00E5FF", "#00E5FF", "#4C00FF", "#FFFF00", "#004CFF", "#00FF4D", "#4C00FF", "#00E5FF", "#00E5FF", "#4C00FF", "#004CFF", "#004CFF", "#00FF4D", "#00FF4D", "#004CFF", "#4C00FF", "#004CFF", "#FFFF00", "#00E5FF", "#4C00FF", "#004CFF", "#00FF4D", "#004CFF", "#004CFF", "#00E5FF", "#FFFF00", "#004CFF", "#FFFF00", "#00E5FF", "#4C00FF", "#FFFF00", "#00E5FF", "#FFFF00", "#004CFF", "#004CFF", "#00FF4D", "#4C00FF", "#004CFF", "#004CFF", "#FFFF00", "#004CFF", "#004CFF", "#4C00FF", "#00E5FF", "#4C00FF", "#004CFF", "#004CFF", "#004CFF", "#00E5FF", "#00E5FF", "#4C00FF", "#FFFF00", "#00FF4D", "#FFFF00", "#FFFF00", "#00FF4D", "#00FF4D", "#00E5FF", "#004CFF", "#004CFF", "#00E5FF", "#00E5FF", "#00E5FF", "#00FF4D", "#FFFF00", "#004CFF", "#004CFF", "#00FF4D", "#4C00FF", "#004CFF", "#004CFF", "#00E5FF", "#FFFF00", "#FFFF00", "#FFFF00", "#FFFF00", "#004CFF", "#4C00FF", "#00E5FF", "#00E5FF", "#FFFF00", "#00E5FF", "#FFFF00", "#00E5FF", "#00E5FF", "#00E5FF", "#00E5FF", "#4C00FF", "#00FF4D", "#4C00FF", "#00E5FF", "#004CFF", "#00FF4D", "#FFFF00", "#4C00FF", "#004CFF", "#00FF4D", "#4C00FF", "#00E5FF", "#00E5FF", "#FFFF00", "#004CFF"],
             "weight": 5,
             "opacity": 0.5,
             "fill": true,
-            "fillColor": ["#00E5FF", "#4C00FF", "#00E5FF", "#FFFF00", "#004CFF", "#FFFF00", "#00E5FF", "#FFFF00", "#00FF4D", "#FFFF00", "#00E5FF", "#00FF4D", "#FFFF00", "#00FF4D", "#004CFF", "#FFFF00", "#FFFF00", "#FFFF00", "#00FF4D", "#00E5FF", "#00FF4D", "#004CFF", "#004CFF", "#4C00FF", "#00E5FF", "#00E5FF", "#00E5FF", "#004CFF", "#FFFF00", "#4C00FF", "#FFFF00", "#FFFF00", "#004CFF", "#4C00FF", "#FFFF00", "#00FF4D", "#004CFF", "#00FF4D", "#00FF4D", "#00E5FF", "#004CFF", "#4C00FF", "#004CFF", "#4C00FF", "#00E5FF", "#004CFF", "#00FF4D", "#00E5FF", "#00E5FF", "#00E5FF", "#4C00FF", "#00E5FF", "#004CFF", "#FFFF00", "#004CFF", "#FFFF00", "#FFFF00", "#FFFF00", "#4C00FF", "#00E5FF", "#00FF4D", "#4C00FF", "#00FF4D", "#00E5FF", "#4C00FF", "#FFFF00", "#00E5FF", "#FFFF00", "#00E5FF", "#FFFF00", "#004CFF", "#004CFF", "#00E5FF", "#00E5FF", "#4C00FF", "#FFFF00", "#004CFF", "#00FF4D", "#4C00FF", "#00E5FF", "#00E5FF", "#4C00FF", "#004CFF", "#004CFF", "#00FF4D", "#00FF4D", "#004CFF", "#4C00FF", "#004CFF", "#FFFF00", "#00E5FF", "#4C00FF", "#004CFF", "#00FF4D", "#004CFF", "#004CFF", "#00E5FF", "#FFFF00", "#004CFF", "#FFFF00", "#00E5FF", "#4C00FF", "#FFFF00", "#00E5FF", "#FFFF00", "#004CFF", "#004CFF", "#00FF4D", "#4C00FF", "#004CFF", "#004CFF", "#FFFF00", "#004CFF", "#004CFF", "#4C00FF", "#00E5FF", "#4C00FF", "#004CFF", "#004CFF", "#004CFF", "#00E5FF", "#00E5FF", "#4C00FF", "#FFFF00", "#00FF4D", "#FFFF00", "#FFFF00", "#00FF4D", "#00FF4D", "#00E5FF", "#004CFF", "#004CFF", "#00E5FF", "#00E5FF", "#00E5FF", "#00FF4D", "#FFFF00", "#004CFF", "#004CFF", "#00FF4D", "#4C00FF", "#004CFF", "#004CFF", "#00E5FF", "#FFFF00", "#FFFF00", "#FFFF00", "#FFFF00", "#004CFF", "#4C00FF", "#00E5FF", "#00E5FF", "#FFFF00", "#00E5FF", "#FFFF00", "#00E5FF", "#00E5FF", "#00E5FF", "#00E5FF", "#4C00FF", "#00FF4D", "#4C00FF", "#00E5FF", "#004CFF", "#00FF4D", "#FFFF00", "#4C00FF", "#004CFF", "#00FF4D", "#4C00FF", "#00E5FF", "#00E5FF", "#FFFF00", "#004CFF", "#FFFF00", "#00E5FF", "#004CFF"],
+            "fillColor": ["#00E5FF", "#00E5FF", "#00FF4D", "#00E5FF", "#4C00FF", "#00E5FF", "#FFFF00", "#004CFF", "#FFFF00", "#00E5FF", "#FFFF00", "#00FF4D", "#FFFF00", "#00E5FF", "#00FF4D", "#FFFF00", "#00FF4D", "#004CFF", "#FFFF00", "#FFFF00", "#FFFF00", "#00FF4D", "#00E5FF", "#00FF4D", "#004CFF", "#004CFF", "#4C00FF", "#00E5FF", "#00E5FF", "#00E5FF", "#004CFF", "#FFFF00", "#4C00FF", "#FFFF00", "#FFFF00", "#004CFF", "#4C00FF", "#FFFF00", "#00FF4D", "#004CFF", "#00FF4D", "#00FF4D", "#00E5FF", "#004CFF", "#4C00FF", "#004CFF", "#4C00FF", "#00E5FF", "#004CFF", "#00FF4D", "#00E5FF", "#00E5FF", "#00E5FF", "#4C00FF", "#00E5FF", "#004CFF", "#FFFF00", "#004CFF", "#FFFF00", "#FFFF00", "#FFFF00", "#4C00FF", "#00E5FF", "#00FF4D", "#4C00FF", "#00FF4D", "#00E5FF", "#4C00FF", "#FFFF00", "#00E5FF", "#FFFF00", "#00E5FF", "#FFFF00", "#004CFF", "#004CFF", "#00E5FF", "#00E5FF", "#4C00FF", "#FFFF00", "#004CFF", "#00FF4D", "#4C00FF", "#00E5FF", "#00E5FF", "#4C00FF", "#004CFF", "#004CFF", "#00FF4D", "#00FF4D", "#004CFF", "#4C00FF", "#004CFF", "#FFFF00", "#00E5FF", "#4C00FF", "#004CFF", "#00FF4D", "#004CFF", "#004CFF", "#00E5FF", "#FFFF00", "#004CFF", "#FFFF00", "#00E5FF", "#4C00FF", "#FFFF00", "#00E5FF", "#FFFF00", "#004CFF", "#004CFF", "#00FF4D", "#4C00FF", "#004CFF", "#004CFF", "#FFFF00", "#004CFF", "#004CFF", "#4C00FF", "#00E5FF", "#4C00FF", "#004CFF", "#004CFF", "#004CFF", "#00E5FF", "#00E5FF", "#4C00FF", "#FFFF00", "#00FF4D", "#FFFF00", "#FFFF00", "#00FF4D", "#00FF4D", "#00E5FF", "#004CFF", "#004CFF", "#00E5FF", "#00E5FF", "#00E5FF", "#00FF4D", "#FFFF00", "#004CFF", "#004CFF", "#00FF4D", "#4C00FF", "#004CFF", "#004CFF", "#00E5FF", "#FFFF00", "#FFFF00", "#FFFF00", "#FFFF00", "#004CFF", "#4C00FF", "#00E5FF", "#00E5FF", "#FFFF00", "#00E5FF", "#FFFF00", "#00E5FF", "#00E5FF", "#00E5FF", "#00E5FF", "#4C00FF", "#00FF4D", "#4C00FF", "#00E5FF", "#004CFF", "#00FF4D", "#FFFF00", "#4C00FF", "#004CFF", "#00FF4D", "#4C00FF", "#00E5FF", "#00E5FF", "#FFFF00", "#004CFF"],
             "fillOpacity": 1,
             "dashArray": null,
             "smoothFactor": 0.2,
             "noClip": false
           },
+          null,
+          null,
           null
         ]
       }
@@ -6354,8 +6425,9 @@ leaflet(countries) %&gt;%
       "lng": [-180, 180]
     }
   },
-  "evals": []
-}</script></p>
+  "evals": [],
+  "jsHooks": []
+}</script>
 </div>
 </div>
 
@@ -6371,6 +6443,8 @@ Maps &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contr
 
 <a href="https://github.com/rstudio/leaflet"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
 
+
+
 </div>
 
 <script>
@@ -6379,6 +6453,7 @@ Maps &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contr
 $(document).ready(function () {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
 });
+
 
 </script>
 

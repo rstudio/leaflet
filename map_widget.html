@@ -10,6 +10,7 @@
 
 
 
+
 <title>Leaflet for R - The Map Widget</title>
 
 <script src="libs/jquery/jquery.min.js"></script>
@@ -22,6 +23,8 @@
 <link href="libs/leaflet/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet/leaflet.js"></script>
 <link href="libs/leafletfix/leafletfix.css" rel="stylesheet" />
+<link href="libs/leaflet-label/leaflet.label.css" rel="stylesheet" />
+<script src="libs/leaflet-label/leaflet.label.js"></script>
 <script src="libs/leaflet-binding/leaflet.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -44,6 +47,34 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 
 
 
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
 </head>
 
 <body>
@@ -58,12 +89,35 @@ code {
   color: inherit;
   background-color: rgba(0, 0, 0, 0.04);
 }
-img { 
-  max-width:100%; 
-  height: auto; 
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
 }
 </style>
+
+
+
 <div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script src="libs/navigation/tabsets.js"></script>
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
 
 <style type="text/css">
   body {
@@ -126,6 +180,12 @@ img {
   </div>
   <div class="col-sm-9 content-body">
 
+<div class="fluid-row" id="header">
+
+
+
+
+</div>
 
 
 <div id="the-map-widget" class="section level2">
@@ -166,7 +226,7 @@ img {
 <p>It is straightforward to derive these variables from <strong>sp</strong> objects since they always represent spatial data in the same way. On the other hand, for a normal matrix or data frame, any numeric column could potentially contain spatial data. So we resort to guessing based on column names:</p>
 <ul>
 <li>the latitude variable is guessed by looking for columns named <code>lat</code> or <code>latitude</code> (case-insensitive)</li>
-<li>the longitude variable is guessed by looking for <code>lng</code>, <code>long</code>, <code>lng</code>, or <code>longitude</code></li>
+<li>the longitude variable is guessed by looking for <code>lng</code>, <code>long</code>, or <code>longitude</code></li>
 </ul>
 <p>You can always explicitly identify latitude/longitude columns by providing <code>lng</code> and <code>lat</code> arguments to the layer function.</p>
 <p>For example, we do not specify the values for the arguments <code>lat</code> and <code>lng</code> in <code>addCircles()</code> below, but the columns <code>Lat</code> and <code>Long</code> in the data frame <code>df</code> will be automatically used:</p>
@@ -180,8 +240,9 @@ leaflet(df) %&gt;% addCircles()</code></pre>
 # or use df in addCircles() only
 leaflet() %&gt;% addCircles(data = df, lat = ~ Lat, lng = ~ Long)</code></pre>
 <p>Below are examples of using <strong>sp</strong> and <strong>maps</strong>, respectively:</p>
-<pre class="r"><code>library(sp)
-Sr1 = Polygon(cbind(c(2, 4, 4, 1, 2), c(2, 3, 5, 4, 2)))
+<pre class="r"><code>library(sp)</code></pre>
+<pre><code>## Loading required package: methods</code></pre>
+<pre class="r"><code>Sr1 = Polygon(cbind(c(2, 4, 4, 1, 2), c(2, 3, 5, 4, 2)))
 Sr2 = Polygon(cbind(c(5, 4, 2, 5), c(2, 3, 2, 2)))
 Sr3 = Polygon(cbind(c(4, 4, 5, 10, 4), c(5, 3, 2, 5, 5)))
 Sr4 = Polygon(cbind(c(5, 6, 6, 5, 5), c(4, 4, 3, 3, 4)), hole = TRUE)
@@ -190,8 +251,8 @@ Srs2 = Polygons(list(Sr2), &quot;s2&quot;)
 Srs3 = Polygons(list(Sr4, Sr3), &quot;s3/4&quot;)
 SpP = SpatialPolygons(list(Srs1, Srs2, Srs3), 1:3)
 leaflet(height = &quot;300px&quot;) %&gt;% addPolygons(data = SpP)</code></pre>
-<p><div id="htmlwidget-5716" style="width:100%;height:300px;" class="leaflet"></div>
-<script type="application/json" data-for="htmlwidget-5716">{
+<div id="htmlwidget-927ec88a166bf954e46a" style="width:100%;height:300px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-927ec88a166bf954e46a">{
   "x": {
     "calls": [
       {
@@ -240,6 +301,8 @@ leaflet(height = &quot;300px&quot;) %&gt;% addPolygons(data = SpP)</code></pre>
             "smoothFactor": 1,
             "noClip": false
           },
+          null,
+          null,
           null
         ]
       }
@@ -249,14 +312,15 @@ leaflet(height = &quot;300px&quot;) %&gt;% addPolygons(data = SpP)</code></pre>
       "lng": [1, 10]
     }
   },
-  "evals": []
-}</script></p>
+  "evals": [],
+  "jsHooks": []
+}</script>
 <pre class="r"><code>library(maps)
 mapStates = map(&quot;state&quot;, fill = TRUE, plot = FALSE)
 leaflet(data = mapStates) %&gt;% addTiles() %&gt;%
   addPolygons(fillColor = topo.colors(10, alpha = NULL), stroke = FALSE)</code></pre>
-<p><div id="htmlwidget-4929" style="width:100%;height:216px;" class="leaflet"></div>
-<script type="application/json" data-for="htmlwidget-4929">{
+<div id="htmlwidget-e2aad06f99e8b55df8d8" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-e2aad06f99e8b55df8d8">{
   "x": {
     "calls": [
       {
@@ -283,7 +347,7 @@ leaflet(data = mapStates) %&gt;% addTiles() %&gt;%
             "updateWhenIdle": null,
             "detectRetina": false,
             "reuseTiles": false,
-            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>"
+            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap\u003c/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA\u003c/a>"
           }
         ]
       },
@@ -689,6 +753,8 @@ leaflet(data = mapStates) %&gt;% addTiles() %&gt;%
             "smoothFactor": 1,
             "noClip": false
           },
+          null,
+          null,
           null
         ]
       }
@@ -698,8 +764,9 @@ leaflet(data = mapStates) %&gt;% addTiles() %&gt;%
       "lng": [-124.681343078613, -67.0074157714844]
     }
   },
-  "evals": []
-}</script></p>
+  "evals": [],
+  "jsHooks": []
+}</script>
 </div>
 <div id="the-formula-interface" class="section level3">
 <h3>The Formula Interface</h3>
@@ -729,6 +796,8 @@ Maps &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contr
 
 <a href="https://github.com/rstudio/leaflet"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
 
+
+
 </div>
 
 <script>
@@ -737,6 +806,7 @@ Maps &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contr
 $(document).ready(function () {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
 });
+
 
 </script>
 

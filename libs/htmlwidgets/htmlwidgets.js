@@ -75,6 +75,45 @@
     target[methodName] = funcSource(superFuncBound);
   }
 
+  // Add a method to delegator that, when invoked, calls
+  // delegatee.methodName. If there is no such method on
+  // the delegatee, but there was one on delegator before
+  // delegateMethod was called, then the original version
+  // is invoked instead.
+  // For example:
+  //
+  // var a = {
+  //   method1: function() { console.log('a1'); }
+  //   method2: function() { console.log('a2'); }
+  // };
+  // var b = {
+  //   method1: function() { console.log('b1'); }
+  // };
+  // delegateMethod(a, b, "method1");
+  // delegateMethod(a, b, "method2");
+  // a.method1();
+  // a.method2();
+  //
+  // The output would be "b1", "a2".
+  function delegateMethod(delegator, delegatee, methodName) {
+    var inherited = delegator[methodName];
+    delegator[methodName] = function() {
+      var target = delegatee;
+      var method = delegatee[methodName];
+
+      // The method doesn't exist on the delegatee. Instead,
+      // call the method on the delegator, if it exists.
+      if (!method) {
+        target = delegator;
+        method = inherited;
+      }
+
+      if (method) {
+        return method.apply(target, arguments);
+      }
+    };
+  }
+
   // Implement a vague facsimilie of jQuery's data method
   function elementData(el, name, value) {
     if (arguments.length == 2) {
@@ -172,6 +211,34 @@
       return sp.viewer;
     } else {
       return sp.browser;
+    }
+  }
+
+  // @param tasks Array of strings (or falsy value, in which case no-op).
+  //   Each element must be a valid JavaScript expression that yields a
+  //   function. Or, can be an array of objects with "code" and "data"
+  //   properties; in this case, the "code" property should be a string
+  //   of JS that's an expr that yields a function, and "data" should be
+  //   an object that will be added as an additional argument when that
+  //   function is called.
+  // @param target The object that will be "this" for each function
+  //   execution.
+  // @param args Array of arguments to be passed to the functions. (The
+  //   same arguments will be passed to all functions.)
+  function evalAndRun(tasks, target, args) {
+    if (tasks) {
+      forEach(tasks, function(task) {
+        var theseArgs = args;
+        if (typeof(task) === "object") {
+          theseArgs = theseArgs.concat([task.data]);
+          task = task.code;
+        }
+        var taskFunc = eval("(" + task + ")");
+        if (typeof(taskFunc) !== "function") {
+          throw new Error("Task must be a function! Source:\n" + task);
+        }
+        taskFunc.apply(target, theseArgs);
+      });
     }
   }
 
@@ -327,6 +394,25 @@
       throw new Error("Unrecognized widget type '" + definition.type + "'");
     }
     // TODO: Verify that .name is a valid CSS classname
+
+    // Support new-style instance-bound definitions. Old-style class-bound
+    // definitions have one widget "object" per widget per type/class of
+    // widget; the renderValue and resize methods on such widget objects
+    // take el and instance arguments, because the widget object can't
+    // store them. New-style instance-bound definitions have one widget
+    // object per widget instance; the definition that's passed in doesn't
+    // provide renderValue or resize methods at all, just the single method
+    //   factory(el, width, height)
+    // which returns an object that has renderValue(x) and resize(w, h).
+    // This enables a far more natural programming style for the widget
+    // author, who can store per-instance state using either OO-style
+    // instance fields or functional-style closure variables (I guess this
+    // is in contrast to what can only be called C-style pseudo-OO which is
+    // what we required before).
+    if (definition.factory) {
+      definition = createLegacyDefinitionAdapter(definition);
+    }
+
     if (!definition.renderValue) {
       throw new Error("Widget must have a renderValue function");
     }
@@ -347,84 +433,102 @@
     window.HTMLWidgets.widgets.push(staticBinding);
 
     if (shinyMode) {
-      // Shiny is running. Register the definition as an output binding.
+      // Shiny is running. Register the definition with an output binding.
+      // The definition itself will not be the output binding, instead
+      // we will make an output binding object that delegates to the
+      // definition. This is because we foolishly used the same method
+      // name (renderValue) for htmlwidgets definition and Shiny bindings
+      // but they actually have quite different semantics (the Shiny
+      // bindings receive data that includes lots of metadata that it
+      // strips off before calling htmlwidgets renderValue). We can't
+      // just ignore the difference because in some widgets it's helpful
+      // to call this.renderValue() from inside of resize(), and if
+      // we're not delegating, then that call will go to the Shiny
+      // version instead of the htmlwidgets version.
 
-      // Merge defaults into the definition; don't mutate the original definition.
-      // The base object is a Shiny output binding if we're running in Shiny mode,
-      // or an empty object if we're not.
-      var shinyBinding = extend(new Shiny.OutputBinding(), defaults, definition);
+      // Merge defaults with definition, without mutating either.
+      var bindingDef = extend({}, defaults, definition);
+
+      // This object will be our actual Shiny binding.
+      var shinyBinding = new Shiny.OutputBinding();
+
+      // With a few exceptions, we'll want to simply use the bindingDef's
+      // version of methods if they are available, otherwise fall back to
+      // Shiny's defaults. NOTE: If Shiny's output bindings gain additional
+      // methods in the future, and we want them to be overrideable by
+      // HTMLWidget binding definitions, then we'll need to add them to this
+      // list.
+      delegateMethod(shinyBinding, bindingDef, "getId");
+      delegateMethod(shinyBinding, bindingDef, "onValueChange");
+      delegateMethod(shinyBinding, bindingDef, "onValueError");
+      delegateMethod(shinyBinding, bindingDef, "renderError");
+      delegateMethod(shinyBinding, bindingDef, "clearError");
+      delegateMethod(shinyBinding, bindingDef, "showProgress");
+
+      // The find, renderValue, and resize are handled differently, because we
+      // want to actually decorate the behavior of the bindingDef methods.
+
+      shinyBinding.find = function(scope) {
+        var results = bindingDef.find(scope);
+
+        // Only return elements that are Shiny outputs, not static ones
+        var dynamicResults = results.filter(".html-widget-output");
+
+        // It's possible that whatever caused Shiny to think there might be
+        // new dynamic outputs, also caused there to be new static outputs.
+        // Since there might be lots of different htmlwidgets bindings, we
+        // schedule execution for later--no need to staticRender multiple
+        // times.
+        if (results.length !== dynamicResults.length)
+          scheduleStaticRender();
+
+        return dynamicResults;
+      };
 
       // Wrap renderValue to handle initialization, which unfortunately isn't
       // supported natively by Shiny at the time of this writing.
 
-      // NB: shinyBinding.initialize may be undefined, as it's optional.
-
-      // Rename initialize to make sure it isn't called by a future version
-      // of Shiny that does support initialize directly.
-      shinyBinding._htmlwidgets_initialize = shinyBinding.initialize;
-      delete shinyBinding.initialize;
-
-      overrideMethod(shinyBinding, "find", function(superfunc) {
-        return function(scope) {
-
-          var results = superfunc(scope);
-
-          // Only return elements that are Shiny outputs, not static ones
-          var dynamicResults = results.filter(".html-widget-output");
-
-          // It's possible that whatever caused Shiny to think there might be
-          // new dynamic outputs, also caused there to be new static outputs.
-          // Since there might be lots of different htmlwidgets bindings, we
-          // schedule execution for later--no need to staticRender multiple
-          // times.
-          if (results.length !== dynamicResults.length)
-            scheduleStaticRender();
-
-          return dynamicResults;
-        };
-      });
-
-      overrideMethod(shinyBinding, "renderValue", function(superfunc) {
-        return function(el, data) {
-          // Resolve strings marked as javascript literals to objects
-          if (!(data.evals instanceof Array)) data.evals = [data.evals];
-          for (var i = 0; data.evals && i < data.evals.length; i++) {
-            window.HTMLWidgets.evaluateStringMember(data.x, data.evals[i]);
+      shinyBinding.renderValue = function(el, data) {
+        // Resolve strings marked as javascript literals to objects
+        if (!(data.evals instanceof Array)) data.evals = [data.evals];
+        for (var i = 0; data.evals && i < data.evals.length; i++) {
+          window.HTMLWidgets.evaluateStringMember(data.x, data.evals[i]);
+        }
+        if (!bindingDef.renderOnNullValue) {
+          if (data.x === null) {
+            el.style.visibility = "hidden";
+            return;
+          } else {
+            el.style.visibility = "inherit";
           }
-          if (!this.renderOnNullValue) {
-            if (data.x === null) {
-              el.style.visibility = "hidden";
-              return;
-            } else {
-              el.style.visibility = "inherit";
-            }
-          }
-          if (!elementData(el, "initialized")) {
-            initSizing(el);
+        }
+        if (!elementData(el, "initialized")) {
+          initSizing(el);
 
-            elementData(el, "initialized", true);
-            if (this._htmlwidgets_initialize) {
-              var result = this._htmlwidgets_initialize(el, el.offsetWidth,
-                el.offsetHeight);
-              elementData(el, "init_result", result);
-            }
+          elementData(el, "initialized", true);
+          if (bindingDef.initialize) {
+            var result = bindingDef.initialize(el, el.offsetWidth,
+              el.offsetHeight);
+            elementData(el, "init_result", result);
           }
-          Shiny.renderDependencies(data.deps);
-          superfunc(el, data.x, elementData(el, "init_result"));
-        };
-      });
+          evalAndRun(data.jsHooks.render, elementData(el, "init_result"), [el, data.x]);
+        }
+        Shiny.renderDependencies(data.deps);
+        bindingDef.renderValue(el, data.x, elementData(el, "init_result"));
+      };
 
-      overrideMethod(shinyBinding, "resize", function(superfunc) {
-        return function(el, width, height) {
+      // Only override resize if bindingDef implements it
+      if (bindingDef.resize) {
+        shinyBinding.resize = function(el, width, height) {
           // Shiny can call resize before initialize/renderValue have been
           // called, which doesn't make sense for widgets.
           if (elementData(el, "initialized")) {
-            superfunc(el, width, height, elementData(el, "init_result"));
+            bindingDef.resize(el, width, height, elementData(el, "init_result"));
           }
         };
-      });
+      }
 
-      Shiny.outputBindings.register(shinyBinding, shinyBinding.name);
+      Shiny.outputBindings.register(shinyBinding, bindingDef.name);
     }
   };
 
@@ -457,6 +561,7 @@
             sizeObj ? sizeObj.getWidth() : el.offsetWidth,
             sizeObj ? sizeObj.getHeight() : el.offsetHeight
           );
+          elementData(el, "init_result", initResult);
         }
 
         if (binding.resize) {
@@ -484,8 +589,14 @@
           // call resize handlers for Shiny outputs, not for static
           // widgets, so we do it ourselves.
           if (window.jQuery) {
-            window.jQuery(document).on("shown", resizeHandler);
-            window.jQuery(document).on("hidden", resizeHandler);
+            window.jQuery(document).on(
+              "shown.htmlwidgets shown.bs.tab.htmlwidgets shown.bs.collapse.htmlwidgets",
+              resizeHandler
+            );
+            window.jQuery(document).on(
+              "hidden.htmlwidgets hidden.bs.tab.htmlwidgets hidden.bs.collapse.htmlwidgets",
+              resizeHandler
+            );
           }
 
           // This is needed for the specific case of ioslides, which
@@ -512,9 +623,12 @@
             window.HTMLWidgets.evaluateStringMember(data.x, data.evals[k]);
           }
           binding.renderValue(el, data.x, initResult);
+          evalAndRun(data.jsHooks.render, initResult, [el, data.x]);
         }
       });
     });
+
+    invokePostRenderHandlers();
   }
 
   // Wait until after the document has loaded to render the widgets.
@@ -571,6 +685,7 @@
   };
 
   window.HTMLWidgets.transposeArray2D = function(array) {
+      if (array.length === 0) return array;
       var newArray = array[0].map(function(col, i) {
           return array.map(function(row) {
               return row[i]
@@ -621,5 +736,101 @@
       }
     }
   };
+
+  // Retrieve the HTMLWidget instance (i.e. the return value of an
+  // HTMLWidget binding's initialize() or factory() function)
+  // associated with an element, or null if none.
+  window.HTMLWidgets.getInstance = function(el) {
+    return elementData(el, "init_result");
+  };
+
+  // Finds the first element in the scope that matches the selector,
+  // and returns the HTMLWidget instance (i.e. the return value of
+  // an HTMLWidget binding's initialize() or factory() function)
+  // associated with that element, if any. If no element matches the
+  // selector, or the first matching element has no HTMLWidget
+  // instance associated with it, then null is returned.
+  //
+  // The scope argument is optional, and defaults to window.document.
+  window.HTMLWidgets.find = function(scope, selector) {
+    if (arguments.length == 1) {
+      selector = scope;
+      scope = document;
+    }
+
+    var el = scope.querySelector(selector);
+    if (el === null) {
+      return null;
+    } else {
+      return window.HTMLWidgets.getInstance(el);
+    }
+  };
+
+  // Finds all elements in the scope that match the selector, and
+  // returns the HTMLWidget instances (i.e. the return values of
+  // an HTMLWidget binding's initialize() or factory() function)
+  // associated with the elements, in an array. If elements that
+  // match the selector don't have an associated HTMLWidget
+  // instance, the returned array will contain nulls.
+  //
+  // The scope argument is optional, and defaults to window.document.
+  window.HTMLWidgets.findAll = function(scope, selector) {
+    if (arguments.length == 1) {
+      selector = scope;
+      scope = document;
+    }
+
+    var nodes = scope.querySelectorAll(selector);
+    var results = [];
+    for (var i = 0; i < nodes.length; i++) {
+      results.push(window.HTMLWidgets.getInstance(nodes[i]));
+    }
+    return results;
+  };
+
+  var postRenderHandlers = [];
+  function invokePostRenderHandlers() {
+    while (postRenderHandlers.length) {
+      var handler = postRenderHandlers.shift();
+      if (handler) {
+        handler();
+      }
+    }
+  }
+
+  // Register the given callback function to be invoked after the
+  // next time static widgets are rendered.
+  window.HTMLWidgets.addPostRenderHandler = function(callback) {
+    postRenderHandlers.push(callback);
+  };
+
+  // Takes a new-style instance-bound definition, and returns an
+  // old-style class-bound definition. This saves us from having
+  // to rewrite all the logic in this file to accomodate both
+  // types of definitions.
+  function createLegacyDefinitionAdapter(defn) {
+    var result = {
+      name: defn.name,
+      type: defn.type,
+      initialize: function(el, width, height) {
+        return defn.factory(el, width, height);
+      },
+      renderValue: function(el, x, instance) {
+        return instance.renderValue(x);
+      },
+      resize: function(el, width, height, instance) {
+        return instance.resize(width, height);
+      }
+    };
+
+    if (defn.find)
+      result.find = defn.find;
+    if (defn.renderError)
+      result.renderError = defn.renderError;
+    if (defn.clearError)
+      result.clearError = defn.clearError;
+
+    return result;
+  }
 })();
 

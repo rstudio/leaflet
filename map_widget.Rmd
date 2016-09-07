@@ -35,7 +35,7 @@ The `data` argument is used to derive spatial data for functions that need it; f
 It is straightforward to derive these variables from **sp** objects since they always represent spatial data in the same way. On the other hand, for a normal matrix or data frame, any numeric column could potentially contain spatial data. So we resort to guessing based on column names:
 
 - the latitude variable is guessed by looking for columns named `lat` or `latitude` (case-insensitive)
-- the longitude variable is guessed by looking for `lng`, `long`, `lng`, or `longitude`
+- the longitude variable is guessed by looking for `lng`, `long`, or `longitude`
 
 You can always explicitly identify latitude/longitude columns by providing `lng` and `lat` arguments to the layer function.
 

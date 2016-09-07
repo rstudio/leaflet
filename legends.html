@@ -10,6 +10,7 @@
 
 
 
+
 <title>Leaflet for R - Legends</title>
 
 <script src="libs/jquery/jquery.min.js"></script>
@@ -22,6 +23,8 @@
 <link href="libs/leaflet/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet/leaflet.js"></script>
 <link href="libs/leafletfix/leafletfix.css" rel="stylesheet" />
+<link href="libs/leaflet-label/leaflet.label.css" rel="stylesheet" />
+<script src="libs/leaflet-label/leaflet.label.js"></script>
 <script src="libs/leaflet-binding/leaflet.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -44,6 +47,34 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 
 
 
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
 </head>
 
 <body>
@@ -58,12 +89,35 @@ code {
   color: inherit;
   background-color: rgba(0, 0, 0, 0.04);
 }
-img { 
-  max-width:100%; 
-  height: auto; 
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
 }
 </style>
+
+
+
 <div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script src="libs/navigation/tabsets.js"></script>
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
 
 <style type="text/css">
   body {
@@ -126,6 +180,12 @@ img {
   </div>
   <div class="col-sm-9 content-body">
 
+<div class="fluid-row" id="header">
+
+
+
+
+</div>
 
 
 <div id="legends" class="section level2">
@@ -155,8 +215,8 @@ map %&gt;%
     labFormat = labelFormat(prefix = &quot;$&quot;),
     opacity = 1
   )</code></pre>
-<p><div id="htmlwidget-5716" style="width:100%;height:264px;" class="leaflet"></div>
-<script type="application/json" data-for="htmlwidget-5716">{
+<div id="htmlwidget-927ec88a166bf954e46a" style="width:100%;height:264px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-927ec88a166bf954e46a">{
   "x": {
     "calls": [
       {
@@ -183,7 +243,7 @@ map %&gt;%
             "updateWhenIdle": null,
             "detectRetina": false,
             "reuseTiles": false,
-            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>"
+            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap\u003c/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA\u003c/a>"
           }
         ]
       },
@@ -1713,6 +1773,8 @@ map %&gt;%
             "smoothFactor": 0.2,
             "noClip": false
           },
+          null,
+          null,
           null
         ]
       },
@@ -1743,8 +1805,9 @@ map %&gt;%
       "lng": [-180, 180]
     }
   },
-  "evals": []
-}</script></p>
+  "evals": [],
+  "jsHooks": []
+}</script>
 <p>The <code>addLegend()</code> function is aware of the different types of palette functions, and will create an appropriate default rendering for each type. For example, contrast the legend created for the <code>colorNumeric</code>-based palette above with the <code>colorQuantile</code>-based palette below. The latter shows probability ranges, with a value range tooltip.</p>
 <pre class="r"><code>qpal &lt;- colorQuantile(&quot;RdYlBu&quot;, countries$gdp_md_est, n = 5)
 map %&gt;%
@@ -1752,8 +1815,8 @@ map %&gt;%
     color = ~qpal(gdp_md_est)
   ) %&gt;%
   addLegend(pal = qpal, values = ~gdp_md_est, opacity = 1)</code></pre>
-<p><div id="htmlwidget-4929" style="width:100%;height:216px;" class="leaflet"></div>
-<script type="application/json" data-for="htmlwidget-4929">{
+<div id="htmlwidget-e2aad06f99e8b55df8d8" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-e2aad06f99e8b55df8d8">{
   "x": {
     "calls": [
       {
@@ -1780,7 +1843,7 @@ map %&gt;%
             "updateWhenIdle": null,
             "detectRetina": false,
             "reuseTiles": false,
-            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>"
+            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap\u003c/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA\u003c/a>"
           }
         ]
       },
@@ -3310,6 +3373,8 @@ map %&gt;%
             "smoothFactor": 0.2,
             "noClip": false
           },
+          null,
+          null,
           null
         ]
       },
@@ -3318,7 +3383,7 @@ map %&gt;%
         "args": [
           {
             "colors": ["#A50026", "#F98F52", "#FFFFBF", "#90C3DD", "#313695"],
-            "labels": ["<span title=\"-99 &ndash; 10,614\">0% &ndash; 20%</span>", "<span title=\"10,614 &ndash; 27,622\">20% &ndash; 40%</span>", "<span title=\"27,622 &ndash; 81,162\">40% &ndash; 60%</span>", "<span title=\"81,162 &ndash; 327,100\">60% &ndash; 80%</span>", "<span title=\"327,100 &ndash; 15,094,000\">80% &ndash; 100%</span>"],
+            "labels": ["<span title=\"-99 &ndash; 10,614\">0% &ndash; 20%\u003c/span>", "<span title=\"10,614 &ndash; 27,622\">20% &ndash; 40%\u003c/span>", "<span title=\"27,622 &ndash; 81,162\">40% &ndash; 60%\u003c/span>", "<span title=\"81,162 &ndash; 327,100\">60% &ndash; 80%\u003c/span>", "<span title=\"327,100 &ndash; 15,094,000\">80% &ndash; 100%\u003c/span>"],
             "na_color": null,
             "na_label": "NA",
             "opacity": 1,
@@ -3337,8 +3402,9 @@ map %&gt;%
       "lng": [-180, 180]
     }
   },
-  "evals": []
-}</script></p>
+  "evals": [],
+  "jsHooks": []
+}</script>
 <p><code>addLegend()</code> has several other parameters that allows you to customize the legend in various ways. Rather than using <code>pal</code> and <code>values</code>, you can explicitly pass in <code>colors</code> and <code>labels</code>. You can change the title and color opacity.</p>
 <p>You can also conveniently customize the label appearance by passing <code>labFormat=labelFormat()</code>. <code>labelFormat()</code> has parameters that customize the separator between ranges, the number of digits to render, and prefix/suffix for each label. If your label formatting needs extend beyond what <code>labelFormat()</code> can provide, you can also use a custom function as the <code>labFormat</code> argument; see the Details section in <code>?addLegend</code> for a description.</p>
 </div>
@@ -3355,6 +3421,8 @@ Maps &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contr
 
 <a href="https://github.com/rstudio/leaflet"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
 
+
+
 </div>
 
 <script>
@@ -3363,6 +3431,7 @@ Maps &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contr
 $(document).ready(function () {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
 });
+
 
 </script>
 
