@@ -45,8 +45,7 @@ leaflet(cities) %>% addTiles() %>%
              radius = ~sqrt(Pop) * 30, label = ~City,
                labelOptions = lapply(1:nrow(cities), function(x) {
                  labelOptions(opacity=0.8)
-               })
-             )
+               }))
 
 # Markers with Label as formula and custom Label options
 leaflet(cities) %>% addTiles() %>%
@@ -54,8 +53,7 @@ leaflet(cities) %>% addTiles() %>%
              label = ~City,
              labelOptions = lapply(1:nrow(cities), function(x) {
                labelOptions(opacity=0.9)
-             })
-             )
+             }))
 
 
 # Circle Markers with static Label as formula and custom Label options
@@ -64,8 +62,7 @@ leaflet(cities) %>% addTiles() %>%
              label = ~City,
              labelOptions = lapply(1:nrow(cities), function(x) {
                labelOptions(opacity=0.9, noHide = T)
-             })
-             )
+             }))
 
 # Markers with Label as HTMLized List and custom Label options
 library(htmltools)
@@ -76,5 +73,4 @@ leaflet(cities) %>% addTiles() %>%
                cities$City, cities$Pop, SIMPLIFY = F),
              labelOptions = lapply(1:nrow(cities), function(x) {
                labelOptions(opacity=0.9)
-             })
-             )
+             }))
