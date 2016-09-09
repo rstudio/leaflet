@@ -52,3 +52,4 @@ Suggests:
     R6,
     RJSONIO
 RoxygenNote: 5.0.1
+LazyData: true
