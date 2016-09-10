@@ -76,3 +76,12 @@ providerTileOptions <- function(errorTileUrl = '', noWrap = FALSE,
 #' @source \url{https://github.com/leaflet-extras/leaflet-providers/blob/master/leaflet-providers.js}
 "providers"
 
+#' Providers Details
+#'
+#' List of all providers with their variations and additional info
+#'
+#' @format A list of lists (JSON)
+#' @source \url{https://github.com/leaflet-extras/leaflet-providers/blob/master/leaflet-providers.js}
+"providers.details"
+
+

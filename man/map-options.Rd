@@ -65,8 +65,7 @@ to map CRS (don't change this if you're not sure what it means)}
 
 \item{clickable}{whether the element emits mouse events}
 
-\item{noHide, direction, offset, }{textSize, textOnly, style
-label options; see \url{https://github.com/Leaflet/Leaflet.label#options}}
+\item{noHide, direction, offset, textsize, textOnly, style}{label options; see \url{https://github.com/Leaflet/Leaflet.label#options}}
 
 \item{draggable, keyboard, title, alt, zIndexOffset, opacity, riseOnHover, riseOffset}{marker options; see \url{http://leafletjs.com/reference.html#marker}}
 
