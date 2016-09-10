@@ -436,7 +436,7 @@ safeLabel <- function(label, data) {
 #' Extra options for marker and polygon labels
 #'
 #' @param
-#' noHide,direction,offset, textSize, textOnly, style
+#' noHide,direction,offset,textsize,textOnly,style
 #' label options; see \url{https://github.com/Leaflet/Leaflet.label#options}
 #' @describeIn map-options Options for labels
 #' @export
@@ -518,6 +518,32 @@ addMarkers = function(
     map, data, 'addMarkers', pts$lat, pts$lng, icon, layerId, group, options, popup,
     clusterOptions, clusterId, safeLabel(label, data), labelOptions
   ) %>% expandLimits(pts$lat, pts$lng)
+}
+
+#' @describeIn map-layers Add Label only markers to the map
+#' @export
+addLabelOnlyMarkers = function(
+  map, lng = NULL, lat = NULL, layerId = NULL, group = NULL,
+  icon = NULL,
+  label = NULL,
+  labelOptions = NULL,
+  options = markerOptions(),
+  clusterOptions = NULL,
+  clusterId = NULL,
+  data = getMapData(map)
+) {
+  addMarkers(map = map, lng = lng, lat = lat, layerId = layerId,
+             group = group,
+             icon = makeIcon(iconUrl =
+                               system.file('htmlwidgets/lib/leaflet/images/1px.png',
+                                           package='leaflet'),
+                             iconWidth = 1, iconHeight = 1),
+             label = label,
+             labelOptions = labelOptions,
+             options = options,
+             clusterOptions = clusterOptions,
+             clusterId = clusterId,
+             data = data)
 }
 
 markerClusterDependencies = function() {
