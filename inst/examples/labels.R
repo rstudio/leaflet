@@ -13,6 +13,31 @@ leaflet() %>% addTiles() %>%
     label='This is a static label',
     labelOptions = labelOptions(noHide = T))
 
+# Change Text Size and text Only and also a custom CSS
+leaflet() %>% addTiles() %>% setView(-118.456554,34.09,13) %>%
+  addMarkers(
+    lng=-118.456554, lat=34.07,
+    label='Default Label',
+    labelOptions = labelOptions(noHide = T)) %>%
+  addMarkers(
+    lng=-118.456554, lat=34.085,
+    label='Label w/o surrounding box',
+    labelOptions = labelOptions(noHide = T, textOnly = TRUE)) %>%
+  addMarkers(
+    lng=-118.456554, lat=34.095,
+    label='label w/ textsize 15px',
+    labelOptions = labelOptions(noHide = T, textsize='15px')) %>%
+  addMarkers(
+    lng=-118.456554, lat=34.11,
+    label='Label w/ custom CSS style',
+    labelOptions = labelOptions(noHide = T, textOnly = FALSE,
+                                style=list(
+                                  'color'='red',
+                                  'font-family'= 'serif',
+                                  'font-style'= 'italic',
+                                  'box-shadow' = '3px 3px grey',
+                                  'font-size' = '12px'
+                                  )))
 # Polygon + HTML Label
 leaflet() %>% addTiles() %>%
   addRectangles(
