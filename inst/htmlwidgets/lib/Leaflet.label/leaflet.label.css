@@ -52,3 +52,18 @@
 .leaflet-label-left:after {
 	content: "";
 }
+
+.leaflet-label.leaflet-label-text-only,
+.leaflet-label.leaflet-label-text-only:before,
+.leaflet-label.leaflet-label-text-only:after {
+	background: none;
+	border: none;
+}
+
+.leaflet-label.leaflet-label-text-only.leaflet-label-left {
+	margin-right: -10px;
+}
+
+.leaflet-label.leaflet-label-text-only.leaflet-label-right {
+	margin-left: -10px;
+}

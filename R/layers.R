@@ -436,7 +436,7 @@ safeLabel <- function(label, data) {
 #' Extra options for marker and polygon labels
 #'
 #' @param
-#' noHide,direction,offset
+#' noHide,direction,offset, textSize, textOnly, style
 #' label options; see \url{https://github.com/Leaflet/Leaflet.label#options}
 #' @describeIn map-options Options for labels
 #' @export
@@ -448,11 +448,15 @@ labelOptions = function(
   #pane = NULL,
   offset = c(12,-15),
   opacity = 1,
+  textsize = "10px",
+  textOnly = FALSE,
+  style = NULL,
   zoomAnimation = TRUE
 ) {
   list(
     clickable = clickable, noHide = noHide, direction = direction,
     opacity = opacity, offset = offset,
+    textsize = textsize, textOnly = textOnly, style = style,
     zoomAnimation = zoomAnimation, className = className
   )
 }

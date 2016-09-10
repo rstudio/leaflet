@@ -26,6 +26,7 @@ popupOptions(maxWidth = 300, minWidth = 50, maxHeight = NULL,
 
 labelOptions(clickable = FALSE, noHide = FALSE, className = "",
   direction = "right", offset = c(12, -15), opacity = 1,
+  textsize = "10px", textOnly = FALSE, style = NULL,
   zoomAnimation = TRUE)
 
 markerOptions(clickable = TRUE, draggable = FALSE, keyboard = TRUE,
@@ -64,7 +65,8 @@ to map CRS (don't change this if you're not sure what it means)}
 
 \item{clickable}{whether the element emits mouse events}
 
-\item{noHide, direction, offset}{label options; see \url{https://github.com/Leaflet/Leaflet.label#options}}
+\item{noHide, direction, offset, }{textSize, textOnly, style
+label options; see \url{https://github.com/Leaflet/Leaflet.label#options}}
 
 \item{draggable, keyboard, title, alt, zIndexOffset, opacity, riseOnHover, riseOffset}{marker options; see \url{http://leafletjs.com/reference.html#marker}}
 
