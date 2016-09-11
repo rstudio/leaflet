@@ -1,9 +1,9 @@
-!function(e){if("object"==typeof exports&&"undefined"!=typeof module)module.exports=e();else if("function"==typeof define&&define.amd)define([],e);else{var o;"undefined"!=typeof window?o=window:"undefined"!=typeof global?o=global:"undefined"!=typeof self&&(o=self),o.omnivore=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.omnivore = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var xhr = require('corslite'),
     csv2geojson = require('csv2geojson'),
     wellknown = require('wellknown'),
     polyline = require('polyline'),
-    topojson = require('topojson/topojson.js'),
+    topojson = require('topojson'),
     toGeoJSON = require('togeojson');
 
 module.exports.polyline = polylineLoad;
@@ -255,99 +255,9 @@ function parseXML(str) {
     }
 }
 
-},{"corslite":5,"csv2geojson":6,"polyline":9,"togeojson":10,"topojson/topojson.js":11,"wellknown":12}],2:[function(require,module,exports){
+},{"corslite":3,"csv2geojson":4,"polyline":6,"togeojson":9,"topojson":10,"wellknown":11}],2:[function(require,module,exports){
 
 },{}],3:[function(require,module,exports){
-module.exports=require(2)
-},{"/Users/tmcw/src/leaflet-omnivore/node_modules/browserify/lib/_empty.js":2}],4:[function(require,module,exports){
-// shim for using process in browser
-
-var process = module.exports = {};
-
-process.nextTick = (function () {
-    var canSetImmediate = typeof window !== 'undefined'
-    && window.setImmediate;
-    var canMutationObserver = typeof window !== 'undefined'
-    && window.MutationObserver;
-    var canPost = typeof window !== 'undefined'
-    && window.postMessage && window.addEventListener
-    ;
-
-    if (canSetImmediate) {
-        return function (f) { return window.setImmediate(f) };
-    }
-
-    var queue = [];
-
-    if (canMutationObserver) {
-        var hiddenDiv = document.createElement("div");
-        var observer = new MutationObserver(function () {
-            var queueList = queue.slice();
-            queue.length = 0;
-            queueList.forEach(function (fn) {
-                fn();
-            });
-        });
-
-        observer.observe(hiddenDiv, { attributes: true });
-
-        return function nextTick(fn) {
-            if (!queue.length) {
-                hiddenDiv.setAttribute('yes', 'no');
-            }
-            queue.push(fn);
-        };
-    }
-
-    if (canPost) {
-        window.addEventListener('message', function (ev) {
-            var source = ev.source;
-            if ((source === window || source === null) && ev.data === 'process-tick') {
-                ev.stopPropagation();
-                if (queue.length > 0) {
-                    var fn = queue.shift();
-                    fn();
-                }
-            }
-        }, true);
-
-        return function nextTick(fn) {
-            queue.push(fn);
-            window.postMessage('process-tick', '*');
-        };
-    }
-
-    return function nextTick(fn) {
-        setTimeout(fn, 0);
-    };
-})();
-
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
-
-// TODO(shtylman)
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-
-},{}],5:[function(require,module,exports){
 function corslite(url, callback, cors) {
     var sent = false;
 
@@ -357,7 +267,7 @@ function corslite(url, callback, cors) {
 
     if (typeof cors === 'undefined') {
         var m = url.match(/^\s*https?:\/\/[^\/]*/);
-        cors = m && (m[0] !== location.protocol + '//' + location.domain +
+        cors = m && (m[0] !== location.protocol + '//' + location.hostname +
                 (location.port ? ':' + location.port : ''));
     }
 
@@ -442,8 +352,8 @@ function corslite(url, callback, cors) {
 
 if (typeof module !== 'undefined') module.exports = corslite;
 
-},{}],6:[function(require,module,exports){
-var dsv = require('dsv'),
+},{}],4:[function(require,module,exports){
+var dsv = require('d3-dsv'),
     sexagesimal = require('sexagesimal');
 
 function isLat(f) { return !!f.match(/(Lat)(itude)?/gi); }
@@ -458,7 +368,7 @@ function autoDelimiter(x) {
     var results = [];
 
     delimiters.forEach(function(delimiter) {
-        var res = dsv(delimiter).parse(x);
+        var res = dsv.dsv(delimiter).parse(x);
         if (res.length >= 1) {
             var count = keyCount(res[0]);
             for (var i = 0; i < res.length; i++) {
@@ -480,10 +390,21 @@ function autoDelimiter(x) {
     }
 }
 
+/**
+ * Silly stopgap for dsv to d3-dsv upgrade
+ *
+ * @param {Array} x dsv output
+ * @returns {Array} array without columns member
+ */
+function deleteColumns(x) {
+    delete x.columns;
+    return x;
+}
+
 function auto(x) {
     var delimiter = autoDelimiter(x);
     if (!delimiter) return null;
-    return dsv(delimiter).parse(x);
+    return deleteColumns(dsv.dsv(delimiter).parse(x));
 }
 
 function csv2geojson(x, options, callback) {
@@ -496,10 +417,15 @@ function csv2geojson(x, options, callback) {
     options.delimiter = options.delimiter || ',';
 
     var latfield = options.latfield || '',
-        lonfield = options.lonfield || '';
+        lonfield = options.lonfield || '',
+        crs = options.crs || '';
 
     var features = [],
         featurecollection = { type: 'FeatureCollection', features: features };
+
+    if (crs !== '') {
+        featurecollection.crs = { type: 'name', properties: { name: crs } };
+    }
 
     if (options.delimiter === 'auto' && typeof x == 'string') {
         options.delimiter = autoDelimiter(x);
@@ -509,7 +435,8 @@ function csv2geojson(x, options, callback) {
         });
     }
 
-    var parsed = (typeof x == 'string') ? dsv(options.delimiter).parse(x) : x;
+    var parsed = (typeof x == 'string') ? 
+        dsv.dsv(options.delimiter).parse(x) : x;
 
     if (!parsed.length) return callback(null, featurecollection);
 
@@ -524,7 +451,7 @@ function csv2geojson(x, options, callback) {
             return callback({
                 type: 'Error',
                 message: 'Latitude and longitude fields not present',
-                data: parsed,
+                data: deleteColumns(parsed),
                 fields: fields
             });
         }
@@ -591,7 +518,15 @@ function toLine(gj) {
     for (var i = 0; i < features.length; i++) {
         line.geometry.coordinates.push(features[i].geometry.coordinates);
     }
-    line.properties = features[0].properties;
+    line.properties = features.reduce(function(aggregatedProperties, newFeature) {
+      for (var key in newFeature.properties) {
+        if (!aggregatedProperties[key]) {
+          aggregatedProperties[key] = [];
+        }
+        aggregatedProperties[key].push(newFeature.properties[key]);
+      }
+      return aggregatedProperties;
+    }, {});
     return {
         type: 'FeatureCollection',
         features: [line]
@@ -610,7 +545,15 @@ function toPolygon(gj) {
     for (var i = 0; i < features.length; i++) {
         poly.geometry.coordinates[0].push(features[i].geometry.coordinates);
     }
-    poly.properties = features[0].properties;
+    poly.properties = features.reduce(function(aggregatedProperties, newFeature) {
+      for (var key in newFeature.properties) {
+        if (!aggregatedProperties[key]) {
+          aggregatedProperties[key] = [];
+        }
+        aggregatedProperties[key].push(newFeature.properties[key]);
+      }
+      return aggregatedProperties;
+    }, {});
     return {
         type: 'FeatureCollection',
         features: [poly]
@@ -620,8 +563,8 @@ function toPolygon(gj) {
 module.exports = {
     isLon: isLon,
     isLat: isLat,
-    csv: dsv.csv.parse,
-    tsv: dsv.tsv.parse,
+    csv: dsv.csvParse,
+    tsv: dsv.tsvParse,
     dsv: dsv,
     auto: auto,
     csv2geojson: csv2geojson,
@@ -629,32 +572,187 @@ module.exports = {
     toPolygon: toPolygon
 };
 
-},{"dsv":7,"sexagesimal":8}],7:[function(require,module,exports){
-var fs = require("fs");
+},{"d3-dsv":5,"sexagesimal":8}],5:[function(require,module,exports){
+(function (global, factory) {
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+  typeof define === 'function' && define.amd ? define(['exports'], factory) :
+  (factory((global.d3_dsv = {})));
+}(this, function (exports) { 'use strict';
 
-module.exports = new Function("dsv.version = \"0.0.3\";\n\ndsv.tsv = dsv(\"\\t\");\ndsv.csv = dsv(\",\");\n\nfunction dsv(delimiter) {\n  var dsv = {},\n      reFormat = new RegExp(\"[\\\"\" + delimiter + \"\\n]\"),\n      delimiterCode = delimiter.charCodeAt(0);\n\n  dsv.parse = function(text, f) {\n    var o;\n    return dsv.parseRows(text, function(row, i) {\n      if (o) return o(row, i - 1);\n      var a = new Function(\"d\", \"return {\" + row.map(function(name, i) {\n        return JSON.stringify(name) + \": d[\" + i + \"]\";\n      }).join(\",\") + \"}\");\n      o = f ? function(row, i) { return f(a(row), i); } : a;\n    });\n  };\n\n  dsv.parseRows = function(text, f) {\n    var EOL = {}, // sentinel value for end-of-line\n        EOF = {}, // sentinel value for end-of-file\n        rows = [], // output rows\n        N = text.length,\n        I = 0, // current character index\n        n = 0, // the current line number\n        t, // the current token\n        eol; // is the current token followed by EOL?\n\n    function token() {\n      if (I >= N) return EOF; // special case: end of file\n      if (eol) return eol = false, EOL; // special case: end of line\n\n      // special case: quotes\n      var j = I;\n      if (text.charCodeAt(j) === 34) {\n        var i = j;\n        while (i++ < N) {\n          if (text.charCodeAt(i) === 34) {\n            if (text.charCodeAt(i + 1) !== 34) break;\n            ++i;\n          }\n        }\n        I = i + 2;\n        var c = text.charCodeAt(i + 1);\n        if (c === 13) {\n          eol = true;\n          if (text.charCodeAt(i + 2) === 10) ++I;\n        } else if (c === 10) {\n          eol = true;\n        }\n        return text.substring(j + 1, i).replace(/\"\"/g, \"\\\"\");\n      }\n\n      // common case: find next delimiter or newline\n      while (I < N) {\n        var c = text.charCodeAt(I++), k = 1;\n        if (c === 10) eol = true; // \\n\n        else if (c === 13) { eol = true; if (text.charCodeAt(I) === 10) ++I, ++k; } // \\r|\\r\\n\n        else if (c !== delimiterCode) continue;\n        return text.substring(j, I - k);\n      }\n\n      // special case: last token before EOF\n      return text.substring(j);\n    }\n\n    while ((t = token()) !== EOF) {\n      var a = [];\n      while (t !== EOL && t !== EOF) {\n        a.push(t);\n        t = token();\n      }\n      if (f && !(a = f(a, n++))) continue;\n      rows.push(a);\n    }\n\n    return rows;\n  };\n\n  dsv.format = function(rows) {\n    if (Array.isArray(rows[0])) return dsv.formatRows(rows); // deprecated; use formatRows\n    var fieldSet = {}, fields = [];\n\n    // Compute unique fields in order of discovery.\n    rows.forEach(function(row) {\n      for (var field in row) {\n        if (!(field in fieldSet)) {\n          fields.push(fieldSet[field] = field);\n        }\n      }\n    });\n\n    return [fields.map(formatValue).join(delimiter)].concat(rows.map(function(row) {\n      return fields.map(function(field) {\n        return formatValue(row[field]);\n      }).join(delimiter);\n    })).join(\"\\n\");\n  };\n\n  dsv.formatRows = function(rows) {\n    return rows.map(formatRow).join(\"\\n\");\n  };\n\n  function formatRow(row) {\n    return row.map(formatValue).join(delimiter);\n  }\n\n  function formatValue(text) {\n    return reFormat.test(text) ? \"\\\"\" + text.replace(/\\\"/g, \"\\\"\\\"\") + \"\\\"\" : text;\n  }\n\n  return dsv;\n}\n" + ";return dsv")();
+  function objectConverter(columns) {
+    return new Function("d", "return {" + columns.map(function(name, i) {
+      return JSON.stringify(name) + ": d[" + i + "]";
+    }).join(",") + "}");
+  }
 
-},{"fs":2}],8:[function(require,module,exports){
-module.exports = function(x, dims) {
-    if (!dims) dims = 'NSEW';
-    if (typeof x !== 'string') return null;
-    var r = /^([0-9.]+)°? *(?:([0-9.]+)['’′‘] *)?(?:([0-9.]+)(?:''|"|”|″) *)?([NSEW])?/,
-        m = x.match(r);
-    if (!m) return null;
-    else if (m[4] && dims.indexOf(m[4]) === -1) return null;
-    else return (((m[1]) ? parseFloat(m[1]) : 0) +
-        ((m[2] ? parseFloat(m[2]) / 60 : 0)) +
-        ((m[3] ? parseFloat(m[3]) / 3600 : 0))) *
-        ((m[4] && m[4] === 'S' || m[4] === 'W') ? -1 : 1);
-};
+  function customConverter(columns, f) {
+    var object = objectConverter(columns);
+    return function(row, i) {
+      return f(object(row), i, columns);
+    };
+  }
 
-},{}],9:[function(require,module,exports){
+  // Compute unique columns in order of discovery.
+  function inferColumns(rows) {
+    var columnSet = Object.create(null),
+        columns = [];
+
+    rows.forEach(function(row) {
+      for (var column in row) {
+        if (!(column in columnSet)) {
+          columns.push(columnSet[column] = column);
+        }
+      }
+    });
+
+    return columns;
+  }
+
+  function dsv(delimiter) {
+    var reFormat = new RegExp("[\"" + delimiter + "\n]"),
+        delimiterCode = delimiter.charCodeAt(0);
+
+    function parse(text, f) {
+      var convert, columns, rows = parseRows(text, function(row, i) {
+        if (convert) return convert(row, i - 1);
+        columns = row, convert = f ? customConverter(row, f) : objectConverter(row);
+      });
+      rows.columns = columns;
+      return rows;
+    }
+
+    function parseRows(text, f) {
+      var EOL = {}, // sentinel value for end-of-line
+          EOF = {}, // sentinel value for end-of-file
+          rows = [], // output rows
+          N = text.length,
+          I = 0, // current character index
+          n = 0, // the current line number
+          t, // the current token
+          eol; // is the current token followed by EOL?
+
+      function token() {
+        if (I >= N) return EOF; // special case: end of file
+        if (eol) return eol = false, EOL; // special case: end of line
+
+        // special case: quotes
+        var j = I, c;
+        if (text.charCodeAt(j) === 34) {
+          var i = j;
+          while (i++ < N) {
+            if (text.charCodeAt(i) === 34) {
+              if (text.charCodeAt(i + 1) !== 34) break;
+              ++i;
+            }
+          }
+          I = i + 2;
+          c = text.charCodeAt(i + 1);
+          if (c === 13) {
+            eol = true;
+            if (text.charCodeAt(i + 2) === 10) ++I;
+          } else if (c === 10) {
+            eol = true;
+          }
+          return text.slice(j + 1, i).replace(/""/g, "\"");
+        }
+
+        // common case: find next delimiter or newline
+        while (I < N) {
+          var k = 1;
+          c = text.charCodeAt(I++);
+          if (c === 10) eol = true; // \n
+          else if (c === 13) { eol = true; if (text.charCodeAt(I) === 10) ++I, ++k; } // \r|\r\n
+          else if (c !== delimiterCode) continue;
+          return text.slice(j, I - k);
+        }
+
+        // special case: last token before EOF
+        return text.slice(j);
+      }
+
+      while ((t = token()) !== EOF) {
+        var a = [];
+        while (t !== EOL && t !== EOF) {
+          a.push(t);
+          t = token();
+        }
+        if (f && (a = f(a, n++)) == null) continue;
+        rows.push(a);
+      }
+
+      return rows;
+    }
+
+    function format(rows, columns) {
+      if (columns == null) columns = inferColumns(rows);
+      return [columns.map(formatValue).join(delimiter)].concat(rows.map(function(row) {
+        return columns.map(function(column) {
+          return formatValue(row[column]);
+        }).join(delimiter);
+      })).join("\n");
+    }
+
+    function formatRows(rows) {
+      return rows.map(formatRow).join("\n");
+    }
+
+    function formatRow(row) {
+      return row.map(formatValue).join(delimiter);
+    }
+
+    function formatValue(text) {
+      return reFormat.test(text) ? "\"" + text.replace(/\"/g, "\"\"") + "\"" : text;
+    }
+
+    return {
+      parse: parse,
+      parseRows: parseRows,
+      format: format,
+      formatRows: formatRows
+    };
+  }
+
+  var csv = dsv(",");
+
+  var csvParse = csv.parse;
+  var csvParseRows = csv.parseRows;
+  var csvFormat = csv.format;
+  var csvFormatRows = csv.formatRows;
+
+  var tsv = dsv("\t");
+
+  var tsvParse = tsv.parse;
+  var tsvParseRows = tsv.parseRows;
+  var tsvFormat = tsv.format;
+  var tsvFormatRows = tsv.formatRows;
+
+  var version = "0.2.0";
+
+  exports.version = version;
+  exports.dsv = dsv;
+  exports.csvParse = csvParse;
+  exports.csvParseRows = csvParseRows;
+  exports.csvFormat = csvFormat;
+  exports.csvFormatRows = csvFormatRows;
+  exports.tsvParse = tsvParse;
+  exports.tsvParseRows = tsvParseRows;
+  exports.tsvFormat = tsvFormat;
+  exports.tsvFormatRows = tsvFormatRows;
+
+}));
+},{}],6:[function(require,module,exports){
+'use strict';
+
+/**
+ * Based off of [the offical Google document](https://developers.google.com/maps/documentation/utilities/polylinealgorithm)
+ *
+ * Some parts from [this implementation](http://facstaff.unca.edu/mcmcclur/GoogleMaps/EncodePolyline/PolylineEncoder.js)
+ * by [Mark McClure](http://facstaff.unca.edu/mcmcclur/)
+ *
+ * @module polyline
+ */
+
 var polyline = {};
-
-// Based off of [the offical Google document](https://developers.google.com/maps/documentation/utilities/polylinealgorithm)
-//
-// Some parts from [this implementation](http://facstaff.unca.edu/mcmcclur/GoogleMaps/EncodePolyline/PolylineEncoder.js)
-// by [Mark McClure](http://facstaff.unca.edu/mcmcclur/)
 
 function encode(coordinate, factor) {
     coordinate = Math.round(coordinate * factor);
@@ -671,8 +769,17 @@ function encode(coordinate, factor) {
     return output;
 }
 
-// This is adapted from the implementation in Project-OSRM
-// https://github.com/DennisOSRM/Project-OSRM-Web/blob/master/WebContent/routing/OSRM.RoutingGeometry.js
+/**
+ * Decodes to a [latitude, longitude] coordinates array.
+ *
+ * This is adapted from the implementation in Project-OSRM.
+ *
+ * @param {String} str
+ * @param {Number} precision
+ * @returns {Array}
+ *
+ * @see https://github.com/Project-OSRM/osrm-frontend/blob/master/WebContent/routing/OSRM.RoutingGeometry.js
+ */
 polyline.decode = function(str, precision) {
     var index = 0,
         lat = 0,
@@ -722,8 +829,15 @@ polyline.decode = function(str, precision) {
     return coordinates;
 };
 
+/**
+ * Encodes the given [latitude, longitude] coordinates array.
+ *
+ * @param {Array.<Array.<Number>>} coordinates
+ * @param {Number} precision
+ * @returns {String}
+ */
 polyline.encode = function(coordinates, precision) {
-    if (!coordinates.length) return '';
+    if (!coordinates.length) { return ''; }
 
     var factor = Math.pow(10, precision || 5),
         output = encode(coordinates[0][0], factor) + encode(coordinates[0][1], factor);
@@ -737,11 +851,303 @@ polyline.encode = function(coordinates, precision) {
     return output;
 };
 
-if (typeof module !== undefined) module.exports = polyline;
+function flipped(coords) {
+    var flipped = [];
+    for (var i = 0; i < coords.length; i++) {
+        flipped.push(coords[i].slice().reverse());
+    }
+    return flipped;
+}
 
-},{}],10:[function(require,module,exports){
+/**
+ * Encodes a GeoJSON LineString feature/geometry.
+ *
+ * @param {Object} geojson
+ * @param {Number} precision
+ * @returns {String}
+ */
+polyline.fromGeoJSON = function(geojson, precision) {
+    if (geojson && geojson.type === 'Feature') {
+        geojson = geojson.geometry;
+    }
+    if (!geojson || geojson.type !== 'LineString') {
+        throw new Error('Input must be a GeoJSON LineString');
+    }
+    return polyline.encode(flipped(geojson.coordinates), precision);
+};
+
+/**
+ * Decodes to a GeoJSON LineString geometry.
+ *
+ * @param {String} str
+ * @param {Number} precision
+ * @returns {Object}
+ */
+polyline.toGeoJSON = function(str, precision) {
+    var coords = polyline.decode(str, precision);
+    return {
+        type: 'LineString',
+        coordinates: flipped(coords)
+    };
+};
+
+if (typeof module === 'object' && module.exports) {
+    module.exports = polyline;
+}
+
+},{}],7:[function(require,module,exports){
+// shim for using process in browser
+var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
+
+},{}],8:[function(require,module,exports){
+module.exports = element;
+module.exports.pair = pair;
+module.exports.format = format;
+module.exports.formatPair = formatPair;
+
+function element(x, dims) {
+    return search(x, dims).val;
+}
+
+function formatPair(x) {
+    return format(x.lat, 'lat') + ' ' + format(x.lon, 'lon');
+}
+
+// Is 0 North or South?
+function format(x, dim) {
+    var dirs = {
+            lat: ['N', 'S'],
+            lon: ['E', 'W']
+        }[dim] || '',
+        dir = dirs[x >= 0 ? 0 : 1],
+        abs = Math.abs(x),
+        whole = Math.floor(abs),
+        fraction = abs - whole,
+        fractionMinutes = fraction * 60,
+        minutes = Math.floor(fractionMinutes),
+        seconds = Math.floor((fractionMinutes - minutes) * 60);
+
+    return whole + '° ' +
+        (minutes ? minutes + "' " : '') +
+        (seconds ? seconds + '" ' : '') + dir;
+}
+
+function search(x, dims, r) {
+    if (!dims) dims = 'NSEW';
+    if (typeof x !== 'string') return { val: null, regex: r };
+    r = r || /[\s\,]*([\-|\—|\―]?[0-9.]+)°? *(?:([0-9.]+)['’′‘] *)?(?:([0-9.]+)(?:''|"|”|″) *)?([NSEW])?/gi;
+    var m = r.exec(x);
+    if (!m) return { val: null, regex: r };
+    else if (m[4] && dims.indexOf(m[4]) === -1) return { val: null, regex: r };
+    else return {
+        val: (((m[1]) ? parseFloat(m[1]) : 0) +
+            ((m[2] ? parseFloat(m[2]) / 60 : 0)) +
+            ((m[3] ? parseFloat(m[3]) / 3600 : 0))) *
+            ((m[4] && m[4] === 'S' || m[4] === 'W') ? -1 : 1),
+        regex: r,
+        raw: m[0],
+        dim: m[4]
+    };
+}
+
+function pair(x, dims) {
+    x = x.trim();
+    var one = search(x, dims);
+    if (one.val === null) return null;
+    var two = search(x, dims, one.regex);
+    if (two.val === null) return null;
+    // null if one/two are not contiguous.
+    if (one.raw + two.raw !== x) return null;
+    if (one.dim) return swapdim(one.val, two.val, one.dim);
+    else return [one.val, two.val];
+}
+
+function swapdim(a, b, dim) {
+    if (dim == 'N' || dim == 'S') return [a, b];
+    if (dim == 'W' || dim == 'E') return [b, a];
+}
+
+},{}],9:[function(require,module,exports){
 (function (process){
-toGeoJSON = (function() {
+var toGeoJSON = (function() {
     'use strict';
 
     var removeSpace = (/\s*/g),
@@ -764,18 +1170,18 @@ toGeoJSON = (function() {
     function norm(el) { if (el.normalize) { el.normalize(); } return el; }
     // cast array x into numbers
     function numarray(x) {
-        for (var j = 0, o = []; j < x.length; j++) o[j] = parseFloat(x[j]);
+        for (var j = 0, o = []; j < x.length; j++) { o[j] = parseFloat(x[j]); }
         return o;
     }
     function clean(x) {
         var o = {};
-        for (var i in x) if (x[i]) o[i] = x[i];
+        for (var i in x) { if (x[i]) { o[i] = x[i]; } }
         return o;
     }
     // get the content of a text node, if any
     function nodeVal(x) {
         if (x) { norm(x); }
-        return (x && x.firstChild && x.firstChild.nodeValue) || '';
+        return (x && x.textContent) || '';
     }
     // get one coordinate from a coordinate array, if any
     function coord1(v) { return numarray(v.replace(removeSpace, '').split(',')); }
@@ -791,11 +1197,20 @@ toGeoJSON = (function() {
     function coordPair(x) {
         var ll = [attrf(x, 'lon'), attrf(x, 'lat')],
             ele = get1(x, 'ele'),
-            time = get1(x, 'time');
-        if (ele) ll.push(parseFloat(nodeVal(ele)));
+            // handle namespaced attribute in browser
+            heartRate = get1(x, 'gpxtpx:hr') || get1(x, 'hr'),
+            time = get1(x, 'time'),
+            e;
+        if (ele) {
+            e = parseFloat(nodeVal(ele));
+            if (!isNaN(e)) {
+                ll.push(e);
+            }
+        }
         return {
             coordinates: ll,
-            time: time ? nodeVal(time) : null
+            time: time ? nodeVal(time) : null,
+            heartRate: heartRate ? parseFloat(nodeVal(heartRate)) : null
         };
     }
 
@@ -809,6 +1224,7 @@ toGeoJSON = (function() {
 
     var serializer;
     if (typeof XMLSerializer !== 'undefined') {
+        /* istanbul ignore next */
         serializer = new XMLSerializer();
     // only require xmldom in a node environment
     } else if (typeof exports === 'object' && typeof process === 'object' && !process.browser) {
@@ -816,6 +1232,8 @@ toGeoJSON = (function() {
     }
     function xml2str(str) {
         // IE9 will create a new XMLSerializer but it'll crash immediately.
+        // This line is ignored because we don't run coverage tests in IE9
+        /* istanbul ignore next */
         if (str.xml !== undefined) return str.xml;
         return serializer.serializeToString(str);
     }
@@ -831,22 +1249,26 @@ toGeoJSON = (function() {
                 geotypes = ['Polygon', 'LineString', 'Point', 'Track', 'gx:Track'],
                 // all root placemarks in the file
                 placemarks = get(doc, 'Placemark'),
-                styles = get(doc, 'Style');
+                styles = get(doc, 'Style'),
+                styleMaps = get(doc, 'StyleMap');
 
             for (var k = 0; k < styles.length; k++) {
                 styleIndex['#' + attr(styles[k], 'id')] = okhash(xml2str(styles[k])).toString(16);
+            }
+            for (var l = 0; l < styleMaps.length; l++) {
+                styleIndex['#' + attr(styleMaps[l], 'id')] = okhash(xml2str(styleMaps[l])).toString(16);
             }
             for (var j = 0; j < placemarks.length; j++) {
                 gj.features = gj.features.concat(getPlacemark(placemarks[j]));
             }
             function kmlColor(v) {
                 var color, opacity;
-                v = v || "";
-                if (v.substr(0, 1) === "#") v = v.substr(1);
-                if (v.length === 6 || v.length === 3) color = v;
+                v = v || '';
+                if (v.substr(0, 1) === '#') { v = v.substr(1); }
+                if (v.length === 6 || v.length === 3) { color = v; }
                 if (v.length === 8) {
                     opacity = parseInt(v.substr(0, 2), 16) / 255;
-                    color = v.substr(2);
+                    color = '#'+v.substr(2);
                 }
                 return [color, isNaN(opacity) ? undefined : opacity];
             }
@@ -856,7 +1278,7 @@ toGeoJSON = (function() {
                 if (elems.length === 0) elems = get(root, 'gx:coord');
                 for (var i = 0; i < elems.length; i++) coords.push(gxCoord(nodeVal(elems[i])));
                 var timeElems = get(root, 'when');
-                for (var i = 0; i < timeElems.length; i++) times.push(nodeVal(timeElems[i]));
+                for (var j = 0; j < timeElems.length; j++) times.push(nodeVal(timeElems[j]));
                 return {
                     coords: coords,
                     times: times
@@ -864,25 +1286,25 @@ toGeoJSON = (function() {
             }
             function getGeometry(root) {
                 var geomNode, geomNodes, i, j, k, geoms = [], coordTimes = [];
-                if (get1(root, 'MultiGeometry')) return getGeometry(get1(root, 'MultiGeometry'));
-                if (get1(root, 'MultiTrack')) return getGeometry(get1(root, 'MultiTrack'));
-                if (get1(root, 'gx:MultiTrack')) return getGeometry(get1(root, 'gx:MultiTrack'));
+                if (get1(root, 'MultiGeometry')) { return getGeometry(get1(root, 'MultiGeometry')); }
+                if (get1(root, 'MultiTrack')) { return getGeometry(get1(root, 'MultiTrack')); }
+                if (get1(root, 'gx:MultiTrack')) { return getGeometry(get1(root, 'gx:MultiTrack')); }
                 for (i = 0; i < geotypes.length; i++) {
                     geomNodes = get(root, geotypes[i]);
                     if (geomNodes) {
                         for (j = 0; j < geomNodes.length; j++) {
                             geomNode = geomNodes[j];
-                            if (geotypes[i] == 'Point') {
+                            if (geotypes[i] === 'Point') {
                                 geoms.push({
                                     type: 'Point',
                                     coordinates: coord1(nodeVal(get1(geomNode, 'coordinates')))
                                 });
-                            } else if (geotypes[i] == 'LineString') {
+                            } else if (geotypes[i] === 'LineString') {
                                 geoms.push({
                                     type: 'LineString',
                                     coordinates: coord(nodeVal(get1(geomNode, 'coordinates')))
                                 });
-                            } else if (geotypes[i] == 'Polygon') {
+                            } else if (geotypes[i] === 'Polygon') {
                                 var rings = get(geomNode, 'LinearRing'),
                                     coords = [];
                                 for (k = 0; k < rings.length; k++) {
@@ -892,8 +1314,8 @@ toGeoJSON = (function() {
                                     type: 'Polygon',
                                     coordinates: coords
                                 });
-                            } else if (geotypes[i] == 'Track' ||
-                                geotypes[i] == 'gx:Track') {
+                            } else if (geotypes[i] === 'Track' ||
+                                geotypes[i] === 'gx:Track') {
                                 var track = gxCoords(geomNode);
                                 geoms.push({
                                     type: 'LineString',
@@ -921,6 +1343,9 @@ toGeoJSON = (function() {
 
                 if (!geomsAndTimes.geoms.length) return [];
                 if (name) properties.name = name;
+                if (styleUrl[0] !== '#') {
+                    styleUrl = '#' + styleUrl;
+                }
                 if (styleUrl && styleIndex[styleUrl]) {
                     properties.styleUrl = styleUrl;
                     properties.styleHash = styleIndex[styleUrl];
@@ -948,8 +1373,8 @@ toGeoJSON = (function() {
                         outline = nodeVal(get1(polyStyle, 'outline'));
                     if (pcolor) properties.fill = pcolor;
                     if (!isNaN(popacity)) properties['fill-opacity'] = popacity;
-                    if (fill) properties['fill-opacity'] = fill === "1" ? 1 : 0;
-                    if (outline) properties['stroke-opacity'] = outline === "1" ? 1 : 0;
+                    if (fill) properties['fill-opacity'] = fill === '1' ? 1 : 0;
+                    if (outline) properties['stroke-opacity'] = outline === '1' ? 1 : 0;
                 }
                 if (extendedData) {
                     var datas = get(extendedData, 'Data'),
@@ -999,29 +1424,40 @@ toGeoJSON = (function() {
                 gj.features.push(getPoint(waypoints[i]));
             }
             function getPoints(node, pointname) {
-                var pts = get(node, pointname), line = [], times = [],
+                var pts = get(node, pointname),
+                    line = [],
+                    times = [],
+                    heartRates = [],
                     l = pts.length;
-                if (l < 2) return;  // Invalid line in GeoJSON
+                if (l < 2) return {};  // Invalid line in GeoJSON
                 for (var i = 0; i < l; i++) {
                     var c = coordPair(pts[i]);
                     line.push(c.coordinates);
                     if (c.time) times.push(c.time);
+                    if (c.heartRate) heartRates.push(c.heartRate);
                 }
                 return {
                     line: line,
-                    times: times
+                    times: times,
+                    heartRates: heartRates
                 };
             }
             function getTrack(node) {
-                var segments = get(node, 'trkseg'), track = [], times = [], line;
+                var segments = get(node, 'trkseg'),
+                    track = [],
+                    times = [],
+                    heartRates = [],
+                    line;
                 for (var i = 0; i < segments.length; i++) {
                     line = getPoints(segments[i], 'trkpt');
                     if (line.line) track.push(line.line);
-                    if (line.times.length) times.push(line.times);
+                    if (line.times && line.times.length) times.push(line.times);
+                    if (line.heartRates && line.heartRates.length) heartRates.push(line.heartRates);
                 }
                 if (track.length === 0) return;
                 var properties = getProperties(node);
                 if (times.length) properties.coordTimes = track.length === 1 ? times[0] : times;
+                if (heartRates.length) properties.heartRates = track.length === 1 ? heartRates[0] : heartRates;
                 return {
                     type: 'Feature',
                     properties: properties,
@@ -1033,16 +1469,15 @@ toGeoJSON = (function() {
             }
             function getRoute(node) {
                 var line = getPoints(node, 'rtept');
-                if (!line) return;
+                if (!line.line) return;
                 var routeObj = {
                     type: 'Feature',
                     properties: getProperties(node),
                     geometry: {
                         type: 'LineString',
-                        coordinates: line
+                        coordinates: line.line
                     }
                 };
-                if (line.times.length) routeObj.geometry.times = line.times;
                 return routeObj;
             }
             function getPoint(node) {
@@ -1076,18 +1511,136 @@ toGeoJSON = (function() {
 if (typeof module !== 'undefined') module.exports = toGeoJSON;
 
 }).call(this,require('_process'))
-},{"_process":4,"xmldom":3}],11:[function(require,module,exports){
-!function() {
-  var topojson = {
-    version: "1.6.8",
-    mesh: function(topology) { return object(topology, meshArcs.apply(this, arguments)); },
-    meshArcs: meshArcs,
-    merge: function(topology) { return object(topology, mergeArcs.apply(this, arguments)); },
-    mergeArcs: mergeArcs,
-    feature: featureOrCollection,
-    neighbors: neighbors,
-    presimplify: presimplify
-  };
+},{"_process":7,"xmldom":2}],10:[function(require,module,exports){
+(function (global, factory) {
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+  typeof define === 'function' && define.amd ? define(['exports'], factory) :
+  (factory((global.topojson = global.topojson || {})));
+}(this, function (exports) { 'use strict';
+
+  function noop() {}
+
+  function transformAbsolute(transform) {
+    if (!transform) return noop;
+    var x0,
+        y0,
+        kx = transform.scale[0],
+        ky = transform.scale[1],
+        dx = transform.translate[0],
+        dy = transform.translate[1];
+    return function(point, i) {
+      if (!i) x0 = y0 = 0;
+      point[0] = (x0 += point[0]) * kx + dx;
+      point[1] = (y0 += point[1]) * ky + dy;
+    };
+  }
+
+  function transformRelative(transform) {
+    if (!transform) return noop;
+    var x0,
+        y0,
+        kx = transform.scale[0],
+        ky = transform.scale[1],
+        dx = transform.translate[0],
+        dy = transform.translate[1];
+    return function(point, i) {
+      if (!i) x0 = y0 = 0;
+      var x1 = Math.round((point[0] - dx) / kx),
+          y1 = Math.round((point[1] - dy) / ky);
+      point[0] = x1 - x0;
+      point[1] = y1 - y0;
+      x0 = x1;
+      y0 = y1;
+    };
+  }
+
+  function reverse(array, n) {
+    var t, j = array.length, i = j - n;
+    while (i < --j) t = array[i], array[i++] = array[j], array[j] = t;
+  }
+
+  function bisect(a, x) {
+    var lo = 0, hi = a.length;
+    while (lo < hi) {
+      var mid = lo + hi >>> 1;
+      if (a[mid] < x) lo = mid + 1;
+      else hi = mid;
+    }
+    return lo;
+  }
+
+  function feature(topology, o) {
+    return o.type === "GeometryCollection" ? {
+      type: "FeatureCollection",
+      features: o.geometries.map(function(o) { return feature$1(topology, o); })
+    } : feature$1(topology, o);
+  }
+
+  function feature$1(topology, o) {
+    var f = {
+      type: "Feature",
+      id: o.id,
+      properties: o.properties || {},
+      geometry: object(topology, o)
+    };
+    if (o.id == null) delete f.id;
+    return f;
+  }
+
+  function object(topology, o) {
+    var absolute = transformAbsolute(topology.transform),
+        arcs = topology.arcs;
+
+    function arc(i, points) {
+      if (points.length) points.pop();
+      for (var a = arcs[i < 0 ? ~i : i], k = 0, n = a.length, p; k < n; ++k) {
+        points.push(p = a[k].slice());
+        absolute(p, k);
+      }
+      if (i < 0) reverse(points, n);
+    }
+
+    function point(p) {
+      p = p.slice();
+      absolute(p, 0);
+      return p;
+    }
+
+    function line(arcs) {
+      var points = [];
+      for (var i = 0, n = arcs.length; i < n; ++i) arc(arcs[i], points);
+      if (points.length < 2) points.push(points[0].slice());
+      return points;
+    }
+
+    function ring(arcs) {
+      var points = line(arcs);
+      while (points.length < 4) points.push(points[0].slice());
+      return points;
+    }
+
+    function polygon(arcs) {
+      return arcs.map(ring);
+    }
+
+    function geometry(o) {
+      var t = o.type;
+      return t === "GeometryCollection" ? {type: t, geometries: o.geometries.map(geometry)}
+          : t in geometryType ? {type: t, coordinates: geometryType[t](o)}
+          : null;
+    }
+
+    var geometryType = {
+      Point: function(o) { return point(o.coordinates); },
+      MultiPoint: function(o) { return o.coordinates.map(point); },
+      LineString: function(o) { return line(o.arcs); },
+      MultiLineString: function(o) { return o.arcs.map(line); },
+      Polygon: function(o) { return polygon(o.arcs); },
+      MultiPolygon: function(o) { return o.arcs.map(polygon); }
+    };
+
+    return geometry(o);
+  }
 
   function stitchArcs(topology, arcs) {
     var stitchedArcs = {},
@@ -1163,30 +1716,34 @@ if (typeof module !== 'undefined') module.exports = toGeoJSON;
     return fragments;
   }
 
+  function mesh(topology) {
+    return object(topology, meshArcs.apply(this, arguments));
+  }
+
   function meshArcs(topology, o, filter) {
     var arcs = [];
+
+    function arc(i) {
+      var j = i < 0 ? ~i : i;
+      (geomsByArc[j] || (geomsByArc[j] = [])).push({i: i, g: geom});
+    }
+
+    function line(arcs) {
+      arcs.forEach(arc);
+    }
+
+    function polygon(arcs) {
+      arcs.forEach(line);
+    }
+
+    function geometry(o) {
+      if (o.type === "GeometryCollection") o.geometries.forEach(geometry);
+      else if (o.type in geometryType) geom = o, geometryType[o.type](o.arcs);
+    }
 
     if (arguments.length > 1) {
       var geomsByArc = [],
           geom;
-
-      function arc(i) {
-        var j = i < 0 ? ~i : i;
-        (geomsByArc[j] || (geomsByArc[j] = [])).push({i: i, g: geom});
-      }
-
-      function line(arcs) {
-        arcs.forEach(arc);
-      }
-
-      function polygon(arcs) {
-        arcs.forEach(line);
-      }
-
-      function geometry(o) {
-        if (o.type === "GeometryCollection") o.geometries.forEach(geometry);
-        else if (o.type in geometryType) geom = o, geometryType[o.type](o.arcs);
-      }
 
       var geometryType = {
         LineString: line,
@@ -1207,6 +1764,31 @@ if (typeof module !== 'undefined') module.exports = toGeoJSON;
     return {type: "MultiLineString", arcs: stitchArcs(topology, arcs)};
   }
 
+  function cartesianTriangleArea(triangle) {
+    var a = triangle[0], b = triangle[1], c = triangle[2];
+    return Math.abs((a[0] - c[0]) * (b[1] - a[1]) - (a[0] - b[0]) * (c[1] - a[1]));
+  }
+
+  function ring(ring) {
+    var i = -1,
+        n = ring.length,
+        a,
+        b = ring[n - 1],
+        area = 0;
+
+    while (++i < n) {
+      a = b;
+      b = ring[i];
+      area += a[0] * b[1] - a[1] * b[0];
+    }
+
+    return area / 2;
+  }
+
+  function merge(topology) {
+    return object(topology, mergeArcs.apply(this, arguments));
+  }
+
   function mergeArcs(topology, objects) {
     var polygonsByArc = {},
         polygons = [],
@@ -1218,16 +1800,16 @@ if (typeof module !== 'undefined') module.exports = toGeoJSON;
     });
 
     function register(polygon) {
-      polygon.forEach(function(ring) {
-        ring.forEach(function(arc) {
+      polygon.forEach(function(ring$$) {
+        ring$$.forEach(function(arc) {
           (polygonsByArc[arc = arc < 0 ? ~arc : arc] || (polygonsByArc[arc] = [])).push(polygon);
         });
       });
       polygons.push(polygon);
     }
 
-    function exterior(ring) {
-      return cartesianRingArea(object(topology, {type: "Polygon", arcs: [ring]}).coordinates[0]) > 0; // TODO allow spherical?
+    function area(ring$$) {
+      return Math.abs(ring(object(topology, {type: "Polygon", arcs: [ring$$]}).coordinates[0]));
     }
 
     polygons.forEach(function(polygon) {
@@ -1238,8 +1820,8 @@ if (typeof module !== 'undefined') module.exports = toGeoJSON;
         components.push(component);
         while (polygon = neighbors.pop()) {
           component.push(polygon);
-          polygon.forEach(function(ring) {
-            ring.forEach(function(arc) {
+          polygon.forEach(function(ring$$) {
+            ring$$.forEach(function(arc) {
               polygonsByArc[arc < 0 ? ~arc : arc].forEach(function(polygon) {
                 if (!polygon._) {
                   polygon._ = 1;
@@ -1259,12 +1841,12 @@ if (typeof module !== 'undefined') module.exports = toGeoJSON;
     return {
       type: "MultiPolygon",
       arcs: components.map(function(polygons) {
-        var arcs = [];
+        var arcs = [], n;
 
         // Extract the exterior (unique) arcs.
         polygons.forEach(function(polygon) {
-          polygon.forEach(function(ring) {
-            ring.forEach(function(arc) {
+          polygon.forEach(function(ring$$) {
+            ring$$.forEach(function(arc) {
               if (polygonsByArc[arc < 0 ? ~arc : arc].length < 2) {
                 arcs.push(arc);
               }
@@ -1277,14 +1859,11 @@ if (typeof module !== 'undefined') module.exports = toGeoJSON;
 
         // If more than one ring is returned,
         // at most one of these rings can be the exterior;
-        // this exterior ring has the same winding order
-        // as any exterior ring in the original polygons.
+        // choose the one with the greatest absolute area.
         if ((n = arcs.length) > 1) {
-          var sgn = exterior(polygons[0][0]);
-          for (var i = 0, t; i < n; ++i) {
-            if (sgn === exterior(arcs[i])) {
-              t = arcs[0], arcs[0] = arcs[i], arcs[i] = t;
-              break;
+          for (var i = 1, k = area(arcs[0]), ki, t; i < n; ++i) {
+            if ((ki = area(arcs[i])) > k) {
+              t = arcs[0], arcs[0] = arcs[i], arcs[i] = t, k = ki;
             }
           }
         }
@@ -1292,93 +1871,6 @@ if (typeof module !== 'undefined') module.exports = toGeoJSON;
         return arcs;
       })
     };
-  }
-
-  function featureOrCollection(topology, o) {
-    return o.type === "GeometryCollection" ? {
-      type: "FeatureCollection",
-      features: o.geometries.map(function(o) { return feature(topology, o); })
-    } : feature(topology, o);
-  }
-
-  function feature(topology, o) {
-    var f = {
-      type: "Feature",
-      id: o.id,
-      properties: o.properties || {},
-      geometry: object(topology, o)
-    };
-    if (o.id == null) delete f.id;
-    return f;
-  }
-
-  function object(topology, o) {
-    var absolute = transformAbsolute(topology.transform),
-        arcs = topology.arcs;
-
-    function arc(i, points) {
-      if (points.length) points.pop();
-      for (var a = arcs[i < 0 ? ~i : i], k = 0, n = a.length, p; k < n; ++k) {
-        points.push(p = a[k].slice());
-        absolute(p, k);
-      }
-      if (i < 0) reverse(points, n);
-    }
-
-    function point(p) {
-      p = p.slice();
-      absolute(p, 0);
-      return p;
-    }
-
-    function line(arcs) {
-      var points = [];
-      for (var i = 0, n = arcs.length; i < n; ++i) arc(arcs[i], points);
-      if (points.length < 2) points.push(points[0].slice());
-      return points;
-    }
-
-    function ring(arcs) {
-      var points = line(arcs);
-      while (points.length < 4) points.push(points[0].slice());
-      return points;
-    }
-
-    function polygon(arcs) {
-      return arcs.map(ring);
-    }
-
-    function geometry(o) {
-      var t = o.type;
-      return t === "GeometryCollection" ? {type: t, geometries: o.geometries.map(geometry)}
-          : t in geometryType ? {type: t, coordinates: geometryType[t](o)}
-          : null;
-    }
-
-    var geometryType = {
-      Point: function(o) { return point(o.coordinates); },
-      MultiPoint: function(o) { return o.coordinates.map(point); },
-      LineString: function(o) { return line(o.arcs); },
-      MultiLineString: function(o) { return o.arcs.map(line); },
-      Polygon: function(o) { return polygon(o.arcs); },
-      MultiPolygon: function(o) { return o.arcs.map(polygon); }
-    };
-
-    return geometry(o);
-  }
-
-  function reverse(array, n) {
-    var t, j = array.length, i = j - n; while (i < --j) t = array[i], array[i++] = array[j], array[j] = t;
-  }
-
-  function bisect(a, x) {
-    var lo = 0, hi = a.length;
-    while (lo < hi) {
-      var mid = lo + hi >>> 1;
-      if (a[mid] < x) lo = mid + 1;
-      else hi = mid;
-    }
-    return lo;
   }
 
   function neighbors(objects) {
@@ -1423,95 +1915,6 @@ if (typeof module !== 'undefined') module.exports = toGeoJSON;
     }
 
     return neighbors;
-  }
-
-  function presimplify(topology, triangleArea) {
-    var absolute = transformAbsolute(topology.transform),
-        relative = transformRelative(topology.transform),
-        heap = minAreaHeap(),
-        maxArea = 0,
-        triangle;
-
-    if (!triangleArea) triangleArea = cartesianTriangleArea;
-
-    topology.arcs.forEach(function(arc) {
-      var triangles = [];
-
-      arc.forEach(absolute);
-
-      for (var i = 1, n = arc.length - 1; i < n; ++i) {
-        triangle = arc.slice(i - 1, i + 2);
-        triangle[1][2] = triangleArea(triangle);
-        triangles.push(triangle);
-        heap.push(triangle);
-      }
-
-      // Always keep the arc endpoints!
-      arc[0][2] = arc[n][2] = Infinity;
-
-      for (var i = 0, n = triangles.length; i < n; ++i) {
-        triangle = triangles[i];
-        triangle.previous = triangles[i - 1];
-        triangle.next = triangles[i + 1];
-      }
-    });
-
-    while (triangle = heap.pop()) {
-      var previous = triangle.previous,
-          next = triangle.next;
-
-      // If the area of the current point is less than that of the previous point
-      // to be eliminated, use the latter's area instead. This ensures that the
-      // current point cannot be eliminated without eliminating previously-
-      // eliminated points.
-      if (triangle[1][2] < maxArea) triangle[1][2] = maxArea;
-      else maxArea = triangle[1][2];
-
-      if (previous) {
-        previous.next = next;
-        previous[2] = triangle[2];
-        update(previous);
-      }
-
-      if (next) {
-        next.previous = previous;
-        next[0] = triangle[0];
-        update(next);
-      }
-    }
-
-    topology.arcs.forEach(function(arc) {
-      arc.forEach(relative);
-    });
-
-    function update(triangle) {
-      heap.remove(triangle);
-      triangle[1][2] = triangleArea(triangle);
-      heap.push(triangle);
-    }
-
-    return topology;
-  };
-
-  function cartesianRingArea(ring) {
-    var i = -1,
-        n = ring.length,
-        a,
-        b = ring[n - 1],
-        area = 0;
-
-    while (++i < n) {
-      a = b;
-      b = ring[i];
-      area += a[0] * b[1] - a[1] * b[0];
-    }
-
-    return area * .5;
-  }
-
-  function cartesianTriangleArea(triangle) {
-    var a = triangle[0], b = triangle[1], c = triangle[2];
-    return Math.abs((a[0] - c[0]) * (b[1] - a[1]) - (a[0] - b[0]) * (c[1] - a[1]));
   }
 
   function compareArea(a, b) {
@@ -1569,296 +1972,361 @@ if (typeof module !== 'undefined') module.exports = toGeoJSON;
     return heap;
   }
 
-  function transformAbsolute(transform) {
-    if (!transform) return noop;
-    var x0,
-        y0,
-        kx = transform.scale[0],
-        ky = transform.scale[1],
-        dx = transform.translate[0],
-        dy = transform.translate[1];
-    return function(point, i) {
-      if (!i) x0 = y0 = 0;
-      point[0] = (x0 += point[0]) * kx + dx;
-      point[1] = (y0 += point[1]) * ky + dy;
-    };
+  function presimplify(topology, triangleArea) {
+    var absolute = transformAbsolute(topology.transform),
+        relative = transformRelative(topology.transform),
+        heap = minAreaHeap();
+
+    if (!triangleArea) triangleArea = cartesianTriangleArea;
+
+    topology.arcs.forEach(function(arc) {
+      var triangles = [],
+          maxArea = 0,
+          triangle,
+          i,
+          n,
+          p;
+
+      // To store each point’s effective area, we create a new array rather than
+      // extending the passed-in point to workaround a Chrome/V8 bug (getting
+      // stuck in smi mode). For midpoints, the initial effective area of
+      // Infinity will be computed in the next step.
+      for (i = 0, n = arc.length; i < n; ++i) {
+        p = arc[i];
+        absolute(arc[i] = [p[0], p[1], Infinity], i);
+      }
+
+      for (i = 1, n = arc.length - 1; i < n; ++i) {
+        triangle = arc.slice(i - 1, i + 2);
+        triangle[1][2] = triangleArea(triangle);
+        triangles.push(triangle);
+        heap.push(triangle);
+      }
+
+      for (i = 0, n = triangles.length; i < n; ++i) {
+        triangle = triangles[i];
+        triangle.previous = triangles[i - 1];
+        triangle.next = triangles[i + 1];
+      }
+
+      while (triangle = heap.pop()) {
+        var previous = triangle.previous,
+            next = triangle.next;
+
+        // If the area of the current point is less than that of the previous point
+        // to be eliminated, use the latter's area instead. This ensures that the
+        // current point cannot be eliminated without eliminating previously-
+        // eliminated points.
+        if (triangle[1][2] < maxArea) triangle[1][2] = maxArea;
+        else maxArea = triangle[1][2];
+
+        if (previous) {
+          previous.next = next;
+          previous[2] = triangle[2];
+          update(previous);
+        }
+
+        if (next) {
+          next.previous = previous;
+          next[0] = triangle[0];
+          update(next);
+        }
+      }
+
+      arc.forEach(relative);
+    });
+
+    function update(triangle) {
+      heap.remove(triangle);
+      triangle[1][2] = triangleArea(triangle);
+      heap.push(triangle);
+    }
+
+    return topology;
   }
 
-  function transformRelative(transform) {
-    if (!transform) return noop;
-    var x0,
-        y0,
-        kx = transform.scale[0],
-        ky = transform.scale[1],
-        dx = transform.translate[0],
-        dy = transform.translate[1];
-    return function(point, i) {
-      if (!i) x0 = y0 = 0;
-      var x1 = (point[0] - dx) / kx | 0,
-          y1 = (point[1] - dy) / ky | 0;
-      point[0] = x1 - x0;
-      point[1] = y1 - y0;
-      x0 = x1;
-      y0 = y1;
-    };
-  }
+  var version = "1.6.26";
 
-  function noop() {}
+  exports.version = version;
+  exports.mesh = mesh;
+  exports.meshArcs = meshArcs;
+  exports.merge = merge;
+  exports.mergeArcs = mergeArcs;
+  exports.feature = feature;
+  exports.neighbors = neighbors;
+  exports.presimplify = presimplify;
 
-  if (typeof define === "function" && define.amd) define(topojson);
-  else if (typeof module === "object" && module.exports) module.exports = topojson;
-  else this.topojson = topojson;
-}();
-
-},{}],12:[function(require,module,exports){
+}));
+},{}],11:[function(require,module,exports){
+/*eslint-disable no-cond-assign */
 module.exports = parse;
 module.exports.parse = parse;
 module.exports.stringify = stringify;
 
-var numberRegexp = /^[-+]?([0-9]*\.[0-9]+|[0-9]+)([eE][-+]?[0-9]+)?/;
+var numberRegexp = /[-+]?([0-9]*\.[0-9]+|[0-9]+)([eE][-+]?[0-9]+)?/;
+// Matches sequences like '100 100' or '100 100 100'.
+var tuples = new RegExp('^' + numberRegexp.source + '(\\s' + numberRegexp.source + '){1,}');
 
- /*
+/*
  * Parse WKT and return GeoJSON.
  *
  * @param {string} _ A WKT geometry
  * @return {?Object} A GeoJSON geometry object
  */
-function parse(_) {
-    var parts = _.split(";"),
-        _ = parts.pop(),
-        srid = (parts.shift() || "").split("=").pop();
+function parse (input) {
+  var parts = input.split(';');
+  var _ = parts.pop();
+  var srid = (parts.shift() || '').split('=').pop();
 
-    var i = 0;
+  var i = 0;
 
-    function $(re) {
-        var match = _.substring(i).match(re);
-        if (!match) return null;
-        else {
-            i += match[0].length;
-            return match[0];
+  function $ (re) {
+    var match = _.substring(i).match(re);
+    if (!match) return null;
+    else {
+      i += match[0].length;
+      return match[0];
+    }
+  }
+
+  function crs (obj) {
+    if (obj && srid.match(/\d+/)) {
+      obj.crs = {
+        type: 'name',
+        properties: {
+          name: 'urn:ogc:def:crs:EPSG::' + srid
         }
+      };
     }
 
-    function crs(obj) {
-        if (obj && srid.match(/\d+/)) {
-            obj.crs = {
-                type: 'name',
-                properties: {
-                    name: 'urn:ogc:def:crs:EPSG::' + srid
-                }
-            };
-        }
+    return obj;
+  }
 
-        return obj;
+  function white () { $(/^\s*/); }
+
+  function multicoords () {
+    white();
+    var depth = 0;
+    var rings = [];
+    var stack = [rings];
+    var pointer = rings;
+    var elem;
+
+    while (elem =
+           $(/^(\()/) ||
+             $(/^(\))/) ||
+               $(/^(\,)/) ||
+                 $(tuples)) {
+      if (elem === '(') {
+        stack.push(pointer);
+        pointer = [];
+        stack[stack.length - 1].push(pointer);
+        depth++;
+      } else if (elem === ')') {
+        // For the case: Polygon(), ...
+        if (pointer.length === 0) return null;
+
+        pointer = stack.pop();
+        // the stack was empty, input was malformed
+        if (!pointer) return null;
+        depth--;
+        if (depth === 0) break;
+      } else if (elem === ',') {
+        pointer = [];
+        stack[stack.length - 1].push(pointer);
+      } else if (!elem.split(/\s/g).some(isNaN)) {
+        Array.prototype.push.apply(pointer, elem.split(/\s/g).map(parseFloat));
+      } else {
+        return null;
+      }
+      white();
     }
 
-    function white() { $(/^\s*/); }
+    if (depth !== 0) return null;
 
-    function multicoords() {
-        white();
-        var depth = 0, rings = [], stack = [rings],
-            pointer = rings, elem;
+    return rings;
+  }
 
-        while (elem =
-            $(/^(\()/) ||
-            $(/^(\))/) ||
-            $(/^(\,)/) ||
-            $(numberRegexp)) {
-            if (elem == '(') {
-                stack.push(pointer);
-                pointer = [];
-                stack[stack.length - 1].push(pointer);
-                depth++;
-            } else if (elem == ')') {
-                pointer = stack.pop();
-                // the stack was empty, input was malformed
-                if (!pointer) return;
-                depth--;
-                if (depth === 0) break;
-            } else if (elem === ',') {
-                pointer = [];
-                stack[stack.length - 1].push(pointer);
-            } else if (!isNaN(parseFloat(elem))) {
-                pointer.push(parseFloat(elem));
-            } else {
-                return null;
-            }
-            white();
-        }
-
-        if (depth !== 0) return null;
-        return rings;
+  function coords () {
+    var list = [];
+    var item;
+    var pt;
+    while (pt =
+           $(tuples) ||
+             $(/^(\,)/)) {
+      if (pt === ',') {
+        list.push(item);
+        item = [];
+      } else if (!pt.split(/\s/g).some(isNaN)) {
+        if (!item) item = [];
+        Array.prototype.push.apply(item, pt.split(/\s/g).map(parseFloat));
+      }
+      white();
     }
 
-    function coords() {
-        var list = [], item, pt;
-        while (pt =
-            $(numberRegexp) ||
-            $(/^(\,)/)) {
-            if (pt == ',') {
-                list.push(item);
-                item = [];
-            } else {
-                if (!item) item = [];
-                item.push(parseFloat(pt));
-            }
-            white();
-        }
-        if (item) list.push(item);
-        return list.length ? list : null;
+    if (item) list.push(item);
+    else return null;
+
+    return list.length ? list : null;
+  }
+
+  function point () {
+    if (!$(/^(point)/i)) return null;
+    white();
+    if (!$(/^(\()/)) return null;
+    var c = coords();
+    if (!c) return null;
+    white();
+    if (!$(/^(\))/)) return null;
+    return {
+      type: 'Point',
+      coordinates: c[0]
+    };
+  }
+
+  function multipoint () {
+    if (!$(/^(multipoint)/i)) return null;
+    white();
+    var newCoordsFormat = _
+      .substring(_.indexOf('(') + 1, _.length - 1)
+      .replace(/\(/g, '')
+      .replace(/\)/g, '');
+    _ = 'MULTIPOINT (' + newCoordsFormat + ')';
+    var c = multicoords();
+    if (!c) return null;
+    white();
+    return {
+      type: 'MultiPoint',
+      coordinates: c
+    };
+  }
+
+  function multilinestring () {
+    if (!$(/^(multilinestring)/i)) return null;
+    white();
+    var c = multicoords();
+    if (!c) return null;
+    white();
+    return {
+      type: 'MultiLineString',
+      coordinates: c
+    };
+  }
+
+  function linestring () {
+    if (!$(/^(linestring)/i)) return null;
+    white();
+    if (!$(/^(\()/)) return null;
+    var c = coords();
+    if (!c) return null;
+    if (!$(/^(\))/)) return null;
+    return {
+      type: 'LineString',
+      coordinates: c
+    };
+  }
+
+  function polygon () {
+    if (!$(/^(polygon)/i)) return null;
+    white();
+    var c = multicoords();
+    if (!c) return null;
+    return {
+      type: 'Polygon',
+      coordinates: c
+    };
+  }
+
+  function multipolygon () {
+    if (!$(/^(multipolygon)/i)) return null;
+    white();
+    var c = multicoords();
+    if (!c) return null;
+    return {
+      type: 'MultiPolygon',
+      coordinates: c
+    };
+  }
+
+  function geometrycollection () {
+    var geometries = [];
+    var geometry;
+
+    if (!$(/^(geometrycollection)/i)) return null;
+    white();
+
+    if (!$(/^(\()/)) return null;
+    while (geometry = root()) {
+      geometries.push(geometry);
+      white();
+      $(/^(\,)/);
+      white();
     }
+    if (!$(/^(\))/)) return null;
 
-    function point() {
-        if (!$(/^(point)/i)) return null;
-        white();
-        if (!$(/^(\()/)) return null;
-        var c = coords();
-        if (!c) return null;
-        white();
-        if (!$(/^(\))/)) return null;
-        return {
-            type: 'Point',
-            coordinates: c[0]
-        };
-    }
+    return {
+      type: 'GeometryCollection',
+      geometries: geometries
+    };
+  }
 
-    function multipoint() {
-        if (!$(/^(multipoint)/i)) return null;
-        white();
-        var c = multicoords();
-        if (!c) return null;
-        white();
-        return {
-            type: 'MultiPoint',
-            coordinates: c
-        };
-    }
+  function root () {
+    return point() ||
+      linestring() ||
+      polygon() ||
+      multipoint() ||
+      multilinestring() ||
+      multipolygon() ||
+      geometrycollection();
+  }
 
-    function multilinestring() {
-        if (!$(/^(multilinestring)/i)) return null;
-        white();
-        var c = multicoords();
-        if (!c) return null;
-        white();
-        return {
-            type: 'MultiLineString',
-            coordinates: c
-        };
-    }
-
-    function linestring() {
-        if (!$(/^(linestring)/i)) return null;
-        white();
-        if (!$(/^(\()/)) return null;
-        var c = coords();
-        if (!c) return null;
-        if (!$(/^(\))/)) return null;
-        return {
-            type: 'LineString',
-            coordinates: c
-        };
-    }
-
-    function polygon() {
-        if (!$(/^(polygon)/i)) return null;
-        white();
-        return {
-            type: 'Polygon',
-            coordinates: multicoords()
-        };
-    }
-
-    function multipolygon() {
-        if (!$(/^(multipolygon)/i)) return null;
-        white();
-        return {
-            type: 'MultiPolygon',
-            coordinates: multicoords()
-        };
-    }
-
-    function geometrycollection() {
-        var geometries = [], geometry;
-
-        if (!$(/^(geometrycollection)/i)) return null;
-        white();
-
-        if (!$(/^(\()/)) return null;
-        while (geometry = root()) {
-            geometries.push(geometry);
-            white();
-            $(/^(\,)/);
-            white();
-        }
-        if (!$(/^(\))/)) return null;
-
-        return {
-            type: 'GeometryCollection',
-            geometries: geometries
-        };
-    }
-
-    function root() {
-        return point() ||
-            linestring() ||
-            polygon() ||
-            multipoint() ||
-            multilinestring() ||
-            multipolygon() ||
-            geometrycollection();
-    }
-
-    return crs(root());
+  return crs(root());
 }
 
 /**
  * Stringifies a GeoJSON object into WKT
  */
-function stringify(gj) {
-    if (gj.type === 'Feature') {
-        gj = gj.geometry;
-    }
+function stringify (gj) {
+  if (gj.type === 'Feature') {
+    gj = gj.geometry;
+  }
 
-    function pairWKT(c) {
-        if (c.length === 2) {
-            return c[0] + ' ' + c[1];
-        } else if (c.length === 3) {
-            return c[0] + ' ' + c[1] + ' ' + c[2];
-        }
-    }
+  function pairWKT (c) {
+    return c.join(' ');
+  }
 
-    function ringWKT(r) {
-        return r.map(pairWKT).join(', ');
-    }
+  function ringWKT (r) {
+    return r.map(pairWKT).join(', ');
+  }
 
-    function ringsWKT(r) {
-        return r.map(ringWKT).map(wrapParens).join(', ');
-    }
+  function ringsWKT (r) {
+    return r.map(ringWKT).map(wrapParens).join(', ');
+  }
 
-    function multiRingsWKT(r) {
-        return r.map(ringsWKT).map(wrapParens).join(', ');
-    }
+  function multiRingsWKT (r) {
+    return r.map(ringsWKT).map(wrapParens).join(', ');
+  }
 
-    function wrapParens(s) { return '(' + s + ')'; }
+  function wrapParens (s) { return '(' + s + ')'; }
 
-    switch (gj.type) {
-        case 'Point':
-            return 'POINT (' + pairWKT(gj.coordinates) + ')';
-        case 'LineString':
-            return 'LINESTRING (' + ringWKT(gj.coordinates) + ')';
-        case 'Polygon':
-            return 'POLYGON (' + ringsWKT(gj.coordinates) + ')';
-        case 'MultiPoint':
-            return 'MULTIPOINT (' + ringWKT(gj.coordinates) + ')';
-        case 'MultiPolygon':
-            return 'MULTIPOLYGON (' + multiRingsWKT(gj.coordinates) + ')';
-        case 'MultiLineString':
-            return 'MULTILINESTRING (' + ringsWKT(gj.coordinates) + ')';
-        case 'GeometryCollection':
-            return 'GEOMETRYCOLLECTION (' + gj.geometries.map(stringify).join(', ') + ')';
-        default:
-            throw new Error('stringify requires a valid GeoJSON Feature or geometry object as input');
-    }
+  switch (gj.type) {
+    case 'Point':
+      return 'POINT (' + pairWKT(gj.coordinates) + ')';
+    case 'LineString':
+      return 'LINESTRING (' + ringWKT(gj.coordinates) + ')';
+    case 'Polygon':
+      return 'POLYGON (' + ringsWKT(gj.coordinates) + ')';
+    case 'MultiPoint':
+      return 'MULTIPOINT (' + ringWKT(gj.coordinates) + ')';
+    case 'MultiPolygon':
+      return 'MULTIPOLYGON (' + multiRingsWKT(gj.coordinates) + ')';
+    case 'MultiLineString':
+      return 'MULTILINESTRING (' + ringsWKT(gj.coordinates) + ')';
+    case 'GeometryCollection':
+      return 'GEOMETRYCOLLECTION (' + gj.geometries.map(stringify).join(', ') + ')';
+    default:
+      throw new Error('stringify requires a valid GeoJSON Feature or geometry object as input');
+  }
 }
 
 },{}]},{},[1])(1)
