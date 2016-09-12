@@ -8,7 +8,9 @@ addMeasure(map, position = "topright", primaryLengthUnit = "feet",
   secondaryLengthUnit = NULL, primaryAreaUnit = "acres",
   secondaryAreaUnit = NULL, activeColor = "#ABE67E",
   completedColor = "#C8F2BE", popupOptions = list(className =
-  "leaflet-measure-resultpopup", autoPanPadding = c(10, 10)))
+  "leaflet-measure-resultpopup", autoPanPadding = c(10, 10)),
+  captureZIndex = 10000, localization = "en", decPoint = ".",
+  thousandsSep = ",")
 }
 \arguments{
 \item{map}{a map widget object}
@@ -73,6 +75,7 @@ leaf \%>\% addMeasure(
   , primaryAreaUnit = "sqmeters"
   , activeColor = "#3D535D"
   , completedColor = "#7D4479"
+  , localization = 'de'
 )
 
 }
