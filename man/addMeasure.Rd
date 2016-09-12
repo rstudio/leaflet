@@ -34,6 +34,20 @@ Value should be a color represented as a hexadecimal string.}
 \item{popupOptions}{\code{list} of ptions applied to the popup
 of the resulting measure feature.
 Properties may be any \href{http://leafletjs.com/reference.html#popup-options}{standard Leaflet popup options}.}
+
+\item{captureZIndex}{Z-index of the marker used to capture measure clicks.
+Set this value higher than the z-index of all other map layers to
+disable click events on other layers while a measurement is active.}
+
+\item{localization}{Locale to translate displayed text.
+Available locales include en (default), cn, de, es, fr, it, nl, pt,
+pt_BR, pt_PT, ru, and tr}
+
+\item{decPoint}{Decimal point used when displaying measurements.
+If not specified, values are defined by the localization.}
+
+\item{thousandsSep}{Thousands separator used when displaying measurements.
+If not specified, values are defined by the localization.}
 }
 \value{
 modified map
