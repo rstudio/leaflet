@@ -2,12 +2,15 @@ library(leaflet)
 # Default
 l <- leaflet() %>% addTiles() %>% setView(0,0,1)
 
+#' Default simple Graticule
 l %>% addSimpleGraticule()
 
-# Custom Params
+#' <br/>
+#' Custom Params
 l %>% addSimpleGraticule(interval = 40, showOriginLabel = F)
 
-# Custom Resolution + Custom Date and on a toggleable Layer
+#' <br/>
+#' Custom Resolution + Custom Date and on a toggleable Layer
 l %>%
   addSimpleGraticule(interval=40,
                 showOriginLabel = F,
