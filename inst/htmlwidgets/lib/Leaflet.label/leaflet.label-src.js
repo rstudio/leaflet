@@ -606,13 +606,15 @@ L.FeatureGroup.include({
 	},
 
 	unbindLabel: function () {
-		return this.invoke('unbindLabel');
+        //return this.invoke('unbindLabel');
+		return this.invoke('hideLabel');
 	},
 
 	updateLabelContent: function (content) {
 		this.invoke('updateLabelContent', content);
 	}
 });
+
 
 	return LeafletLabel;
 }, window));
