@@ -40,6 +40,12 @@ to the zoom of the main map. Can be positive or negative, defaults to -5.}
 the minimap regardless of the main map zoom.
 Set it to any valid zoom level, if unset zoomLevelOffset is used instead.}
 
+\item{centerFixed}{Applies a fixed position to the minimap regardless of
+the main map's view / position. Prevents panning the minimap, but does
+allow zooming (both in the minimap and the main map).
+If the minimap is zoomed, it will always zoom around the centerFixed point.
+You can pass in a LatLng-equivalent object. Defaults to false.}
+
 \item{zoomAnimation}{Sets whether the minimap should have an animated zoom.
 (Will cause it to lag a bit after the movement of the main map.)
 Defaults to false.}
@@ -65,12 +71,6 @@ a Path.Options (\url{http://leafletjs.com/reference.html#path-options}) object.
 
 \item{mapOptions}{Sets Leaflet options for the MiniMap map.
 It does not override the MiniMap default map options but extends them.}
-
-\item{centerFixed:}{Applies a fixed position to the minimap regardless of
-the main map's view / position. Prevents panning the minimap, but does
-allow zooming (both in the minimap and the main map).
-If the minimap is zoomed, it will always zoom around the centerFixed point.
-You can pass in a LatLng-equivalent object. Defaults to false.}
 }
 \description{
 Add a minimap to the Map

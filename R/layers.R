@@ -550,9 +550,9 @@ markerClusterDependencies = function() {
   list(
     htmltools::htmlDependency(
       'leaflet-markercluster',
-      '0.4.0',
+      '0.5.0',
       system.file('htmlwidgets/plugins/Leaflet.markercluster', package = 'leaflet'),
-      script = 'leaflet.markercluster.js',
+      script = c('leaflet.markercluster.js', 'leaflet.markercluster.layersupport-src.js', 'leaflet.markercluster.freezable-src.js'),
       stylesheet = c('MarkerCluster.css', 'MarkerCluster.Default.css')
     )
   )
@@ -747,17 +747,26 @@ markerOptions = function(
 #'   spiderfy it so you can see all of its markers
 #' @param removeOutsideVisibleBounds clusters and markers too far from the
 #'   viewport are removed from the map for performance
+#' @param spiderLegPolylineOptions Allows you to specify PolylineOptions (\url{http://leafletjs.com/reference.html#polyline-options}) to style spider legs. By default, they are { weight: 1.5, color: '#222', opacity: 0.5 }
+#' @param freezeAtZoom Allows you to freeze cluster expansion to a zoom level.
+#' Can be a zoom level e.g. 10, 12 or 'max' or 'maxKeepSpiderify'
+#' See \url{https://github.com/ghybs/Leaflet.MarkerCluster.Freezable#api-reference}
 #' @describeIn map-options Options for marker clusters
 #' @export
 markerClusterOptions = function(
   showCoverageOnHover = TRUE, zoomToBoundsOnClick = TRUE,
-  spiderfyOnMaxZoom = TRUE, removeOutsideVisibleBounds = TRUE, ...
+  spiderfyOnMaxZoom = TRUE, removeOutsideVisibleBounds = TRUE,
+  spiderLegPolylineOptions = list(weight= 1.5, color= '#222', opacity= 0.5),
+  freezeAtZoom = FALSE,
+  ...
 ) {
   list(
     showCoverageOnHover = showCoverageOnHover,
     zoomToBoundsOnClick = zoomToBoundsOnClick,
     spiderfyOnMaxZoom = spiderfyOnMaxZoom,
-    removeOutsideVisibleBounds = removeOutsideVisibleBounds, ...
+    removeOutsideVisibleBounds = removeOutsideVisibleBounds,
+    spiderLegPolylineOptions =  spiderLegPolylineOptions,
+    freezeAtZoom = freezeAtZoom, ...
   )
 }
 

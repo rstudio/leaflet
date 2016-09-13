@@ -29,7 +29,7 @@ leafletMiniMapDependencies <- function() {
 #' @param zoomLevelFixed  Overrides the offset to apply a fixed zoom level to
 #'    the minimap regardless of the main map zoom.
 #'    Set it to any valid zoom level, if unset zoomLevelOffset is used instead.
-#' @param centerFixed: Applies a fixed position to the minimap regardless of
+#' @param centerFixed Applies a fixed position to the minimap regardless of
 #'    the main map's view / position. Prevents panning the minimap, but does
 #'    allow zooming (both in the minimap and the main map).
 #'    If the minimap is zoomed, it will always zoom around the centerFixed point.

@@ -986,7 +986,13 @@ function addMarkers(map, df, group, clusterOptions, clusterId, markerFunc) {
     var clusterGroup = this.layerManager.getLayer("cluster", clusterId),
         cluster = clusterOptions !== null;
     if (cluster && !clusterGroup) {
-      clusterGroup = _leaflet2.default.markerClusterGroup(clusterOptions);
+      //clusterGroup = L.markerClusterGroup(clusterOptions);
+      clusterGroup = _leaflet2.default.markerClusterGroup.layerSupport(clusterOptions);
+      if (clusterOptions.freezeAtZoom) {
+        var freezeAtZoom = clusterOptions.freezeAtZoom;
+        delete clusterOptions.freezeAtZoom;
+        clusterGroup.freezeAtZoom(freezeAtZoom);
+      }
       clusterGroup.clusterLayerStore = new _clusterLayerStore2.default(clusterGroup);
     }
     var extraInfo = cluster ? { clusterId: clusterId } : {};
@@ -1846,7 +1852,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 // pixel of the original image has some contribution to the downscaled image)
 // as opposed to a single-step downscaling which will discard a lot of data
 // (and with sparse images at small scales can give very surprising results).
-
 var Mipmapper = function () {
   function Mipmapper(img) {
     _classCallCheck(this, Mipmapper);
