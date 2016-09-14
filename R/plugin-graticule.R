@@ -14,7 +14,7 @@ leafletGraticuleDependencies <- function() {
 #'
 #' @param map a map widget object
 #' @param interval The spacing in map units between horizontal and vertical lines.
-#' @param style path options for the generated lines. See \link{http://leafletjs.com/reference.html#path-options}
+#' @param style path options for the generated lines. See \url{http://leafletjs.com/reference.html#path-options}
 #' @param layerId the layer id
 #' @param group the name of the group this layer belongs to.
 #' @examples

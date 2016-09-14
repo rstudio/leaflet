@@ -13,7 +13,7 @@ addGraticule(map, interval = 20, style = list(color = "#333", weight = 1),
 
 \item{interval}{The spacing in map units between horizontal and vertical lines.}
 
-\item{style}{path options for the generated lines. See \link{http://leafletjs.com/reference.html#path-options}}
+\item{style}{path options for the generated lines. See \url{http://leafletjs.com/reference.html#path-options}}
 
 \item{layerId}{the layer id}
 

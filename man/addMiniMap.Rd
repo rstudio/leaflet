@@ -17,7 +17,7 @@ addMiniMap(map, tiles = NULL, position = "bottomright", width = 150,
 \arguments{
 \item{map}{a map widget object}
 
-\item{tiles}{URL for tiles or one of the \code{\link{providers}}}
+\item{tiles}{URL for tiles or one of the pre-defined providers.}
 
 \item{position}{The standard Leaflet.Control position parameter,
    used like all the other controls.
@@ -83,5 +83,8 @@ leaf <- leaflet() \%>\%
   addTiles() \%>\%
   addMiniMap()
 
+}
+\seealso{
+\code{\link{providers}}
 }
 

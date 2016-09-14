@@ -1,3 +1,5 @@
+globalVariables(c('providers')) # To make R CMD Check happy
+
 leafletMiniMapDependencies <- function() {
   list(
     htmltools::htmlDependency(
@@ -14,7 +16,7 @@ leafletMiniMapDependencies <- function() {
 #' \url{https://github.com/Norkart/Leaflet-MiniMap}
 #'
 #' @param map a map widget object
-#' @param tiles URL for tiles or one of the \code{\link{providers}}
+#' @param tiles URL for tiles or one of the pre-defined providers.
 #' @param position The standard Leaflet.Control position parameter,
 #'    used like all the other controls.
 #' Defaults to 'bottomright'.
@@ -59,6 +61,7 @@ leafletMiniMapDependencies <- function() {
 #'   addTiles() %>%
 #'   addMiniMap()
 #'
+#' @seealso \code{\link{providers}}
 #' @export
 addMiniMap <- function(
   map,
