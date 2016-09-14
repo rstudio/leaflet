@@ -26,6 +26,7 @@ popupOptions(maxWidth = 300, minWidth = 50, maxHeight = NULL,
 
 labelOptions(clickable = FALSE, noHide = FALSE, className = "",
   direction = "right", offset = c(12, -15), opacity = 1,
+  textsize = "10px", textOnly = FALSE, style = NULL,
   zoomAnimation = TRUE)
 
 markerOptions(clickable = TRUE, draggable = FALSE, keyboard = TRUE,
@@ -33,7 +34,9 @@ markerOptions(clickable = TRUE, draggable = FALSE, keyboard = TRUE,
   riseOnHover = FALSE, riseOffset = 250)
 
 markerClusterOptions(showCoverageOnHover = TRUE, zoomToBoundsOnClick = TRUE,
-  spiderfyOnMaxZoom = TRUE, removeOutsideVisibleBounds = TRUE, ...)
+  spiderfyOnMaxZoom = TRUE, removeOutsideVisibleBounds = TRUE,
+  spiderLegPolylineOptions = list(weight = 1.5, color = "#222", opacity =
+  0.5), freezeAtZoom = FALSE, ...)
 
 pathOptions(lineCap = NULL, lineJoin = NULL, clickable = TRUE,
   pointerEvents = NULL, className = "")
@@ -64,7 +67,7 @@ to map CRS (don't change this if you're not sure what it means)}
 
 \item{clickable}{whether the element emits mouse events}
 
-\item{noHide, direction, offset}{label options; see \url{https://github.com/Leaflet/Leaflet.label#options}}
+\item{noHide, direction, offset, textsize, textOnly, style}{label options; see \url{https://github.com/Leaflet/Leaflet.label#options}}
 
 \item{draggable, keyboard, title, alt, zIndexOffset, opacity, riseOnHover, riseOffset}{marker options; see \url{http://leafletjs.com/reference.html#marker}}
 
@@ -78,6 +81,12 @@ spiderfy it so you can see all of its markers}
 
 \item{removeOutsideVisibleBounds}{clusters and markers too far from the
 viewport are removed from the map for performance}
+
+\item{spiderLegPolylineOptions}{Allows you to specify PolylineOptions (\url{http://leafletjs.com/reference.html#polyline-options}) to style spider legs. By default, they are { weight: 1.5, color: '#222', opacity: 0.5 }}
+
+\item{freezeAtZoom}{Allows you to freeze cluster expansion to a zoom level.
+Can be a zoom level e.g. 10, 12 or 'max' or 'maxKeepSpiderify'
+See \url{https://github.com/ghybs/Leaflet.MarkerCluster.Freezable#api-reference}}
 
 \item{lineCap}{a string that defines
 \href{https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linecap}{shape

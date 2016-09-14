@@ -67,3 +67,21 @@ providerTileOptions <- function(errorTileUrl = '', noWrap = FALSE,
     opts$opacity <- opacity
   opts
 }
+
+#' Providers
+#'
+#' List of all providers with their variations
+#'
+#' @format A list of characters
+#' @source \url{https://github.com/leaflet-extras/leaflet-providers/blob/master/leaflet-providers.js}
+"providers"
+
+#' Providers Details
+#'
+#' List of all providers with their variations and additional info
+#'
+#' @format A list of lists (JSON)
+#' @source \url{https://github.com/leaflet-extras/leaflet-providers/blob/master/leaflet-providers.js}
+"providers.details"
+
+

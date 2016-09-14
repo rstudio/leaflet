@@ -436,7 +436,7 @@ safeLabel <- function(label, data) {
 #' Extra options for marker and polygon labels
 #'
 #' @param
-#' noHide,direction,offset
+#' noHide,direction,offset,textsize,textOnly,style
 #' label options; see \url{https://github.com/Leaflet/Leaflet.label#options}
 #' @describeIn map-options Options for labels
 #' @export
@@ -448,11 +448,15 @@ labelOptions = function(
   #pane = NULL,
   offset = c(12,-15),
   opacity = 1,
+  textsize = "10px",
+  textOnly = FALSE,
+  style = NULL,
   zoomAnimation = TRUE
 ) {
   list(
     clickable = clickable, noHide = noHide, direction = direction,
     opacity = opacity, offset = offset,
+    textsize = textsize, textOnly = textOnly, style = style,
     zoomAnimation = zoomAnimation, className = className
   )
 }
@@ -516,13 +520,39 @@ addMarkers = function(
   ) %>% expandLimits(pts$lat, pts$lng)
 }
 
+#' @describeIn map-layers Add Label only markers to the map
+#' @export
+addLabelOnlyMarkers = function(
+  map, lng = NULL, lat = NULL, layerId = NULL, group = NULL,
+  icon = NULL,
+  label = NULL,
+  labelOptions = NULL,
+  options = markerOptions(),
+  clusterOptions = NULL,
+  clusterId = NULL,
+  data = getMapData(map)
+) {
+  addMarkers(map = map, lng = lng, lat = lat, layerId = layerId,
+             group = group,
+             icon = makeIcon(iconUrl =
+                               system.file('htmlwidgets/lib/leaflet/images/1px.png',
+                                           package='leaflet'),
+                             iconWidth = 1, iconHeight = 1),
+             label = label,
+             labelOptions = labelOptions,
+             options = options,
+             clusterOptions = clusterOptions,
+             clusterId = clusterId,
+             data = data)
+}
+
 markerClusterDependencies = function() {
   list(
     htmltools::htmlDependency(
       'leaflet-markercluster',
-      '0.4.0',
+      '0.5.0',
       system.file('htmlwidgets/plugins/Leaflet.markercluster', package = 'leaflet'),
-      script = 'leaflet.markercluster.js',
+      script = c('leaflet.markercluster.js', 'leaflet.markercluster.layersupport-src.js', 'leaflet.markercluster.freezable-src.js'),
       stylesheet = c('MarkerCluster.css', 'MarkerCluster.Default.css')
     )
   )
@@ -717,17 +747,26 @@ markerOptions = function(
 #'   spiderfy it so you can see all of its markers
 #' @param removeOutsideVisibleBounds clusters and markers too far from the
 #'   viewport are removed from the map for performance
+#' @param spiderLegPolylineOptions Allows you to specify PolylineOptions (\url{http://leafletjs.com/reference.html#polyline-options}) to style spider legs. By default, they are { weight: 1.5, color: '#222', opacity: 0.5 }
+#' @param freezeAtZoom Allows you to freeze cluster expansion to a zoom level.
+#' Can be a zoom level e.g. 10, 12 or 'max' or 'maxKeepSpiderify'
+#' See \url{https://github.com/ghybs/Leaflet.MarkerCluster.Freezable#api-reference}
 #' @describeIn map-options Options for marker clusters
 #' @export
 markerClusterOptions = function(
   showCoverageOnHover = TRUE, zoomToBoundsOnClick = TRUE,
-  spiderfyOnMaxZoom = TRUE, removeOutsideVisibleBounds = TRUE, ...
+  spiderfyOnMaxZoom = TRUE, removeOutsideVisibleBounds = TRUE,
+  spiderLegPolylineOptions = list(weight= 1.5, color= '#222', opacity= 0.5),
+  freezeAtZoom = FALSE,
+  ...
 ) {
   list(
     showCoverageOnHover = showCoverageOnHover,
     zoomToBoundsOnClick = zoomToBoundsOnClick,
     spiderfyOnMaxZoom = spiderfyOnMaxZoom,
-    removeOutsideVisibleBounds = removeOutsideVisibleBounds, ...
+    removeOutsideVisibleBounds = removeOutsideVisibleBounds,
+    spiderLegPolylineOptions =  spiderLegPolylineOptions,
+    freezeAtZoom = freezeAtZoom, ...
   )
 }
 

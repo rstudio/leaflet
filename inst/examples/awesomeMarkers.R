@@ -78,5 +78,4 @@ leaflet(cities) %>% addTiles() %>%
   addAwesomeMarkers(lng = ~Long, lat = ~Lat,
              label = ~City,
              labelOptions = rep(labelOptions(noHide = T),nrow(cities)),
-             icon = ~popIcons[PopCat]
-  )
+             icon = ~popIcons[PopCat] )

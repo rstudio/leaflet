@@ -123,7 +123,13 @@ function addMarkers(map, df, group, clusterOptions, clusterId, markerFunc) {
     let clusterGroup = this.layerManager.getLayer("cluster", clusterId),
       cluster = clusterOptions !== null;
     if (cluster && !clusterGroup) {
-      clusterGroup = L.markerClusterGroup(clusterOptions);
+      //clusterGroup = L.markerClusterGroup(clusterOptions);
+      clusterGroup = L.markerClusterGroup.layerSupport(clusterOptions);
+      if(clusterOptions.freezeAtZoom) {
+        let freezeAtZoom = clusterOptions.freezeAtZoom;
+        delete clusterOptions.freezeAtZoom;
+        clusterGroup.freezeAtZoom(freezeAtZoom);
+      }
       clusterGroup.clusterLayerStore = new ClusterLayerStore(clusterGroup);
     }
     let extraInfo = cluster ? { clusterId: clusterId } : {};
