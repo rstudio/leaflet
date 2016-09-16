@@ -1,5 +1,6 @@
 
 library(leaflet)
+library(sp)
 #' <br/><br/>
 #' The V8 part is simply to read the JSON embeded in the Javascript.<br/>
 #' For a geojson file `jsonlite::fromfromJSON()` or `geojsonio::regeojson_read()` will do
@@ -25,3 +26,18 @@ leaflet() %>% addTiles() %>%
              icon = ~icons[amenity],
              options = markerOptions(riseOnHover = TRUE, opacity = 0.75),
              group = 'pubs')
+
+
+#' <br/><br/>
+#' Another examples this time with polygons
+url <- 'http://www.partners-popdev.org/wp-content/themes/original-child/vendor/Geojson/States/Maharashtra.geojson'
+
+mhSPDF <- geojsonio::geojson_read(url, what="sp")
+
+cols <- colorFactor(topo.colors(nrow(mhSPDF)),mhSPDF$NAME_2)
+
+leaflet() %>% addProviderTiles(providers$Stamen.TonerLite) %>%
+  setView(75.7139, 19.7515, 6) %>%
+  addPolygons(data=mhSPDF, opacity = 5,
+              label=~NAME_2, weight = 1,
+              fillColor = ~cols(NAME_2))
