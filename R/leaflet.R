@@ -19,15 +19,17 @@
 #' @param width the width of the map
 #' @param height the height of the map
 #' @param padding the padding of the map
+#' @param mapOptions the map options
 #' @return A HTML widget object, on which we can add graphics layers using
 #'   \code{\%>\%} (see examples).
 #' @example inst/examples/leaflet.R
 #' @export
-leaflet = function(data = NULL, width = NULL, height = NULL, padding = 0) {
+leaflet = function(data = NULL, width = NULL, height = NULL,
+                   padding = 0, mapOptions = list()) {
   htmlwidgets::createWidget(
     'leaflet',
     structure(
-      list(),
+      list(options = mapOptions),
       leafletData = data
     ),
     width = width, height = height,
@@ -42,6 +44,10 @@ leaflet = function(data = NULL, width = NULL, height = NULL, padding = 0) {
 
 getMapData = function(map) {
   attr(map$x, "leafletData", exact = TRUE)
+}
+
+getMapOptions = function(map) {
+  attr(map$x, "options", exact = TRUE)
 }
 
 #' Set options on a leaflet map object

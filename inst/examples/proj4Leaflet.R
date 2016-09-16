@@ -1,125 +1,134 @@
+#' ---
+#' title: "Leaflet + Proj4Leaflet"
+#' ---
 library(leaflet)
 
-#' h1. Leaflet now with Proj4Leaflet support.
 
-#' This is very very hackish for now.<br/>
-#' <P>But as HTMLWidget's factory/initialize method has no way to pass params,
-#' and the CRS can only be specified at Map creation time (even in 1.0), the only
-#' way to support Proj4Leaflet is by destroying the default map and creating a new one.
-#' I haven't thought all the details here. But this is the first hack at it.
-#' A lot of stuff in the onRender can be moved to R, I just wanted something quick and dirty.
-#' </P><br/><br/>Thoughts/Comments ?<br/><br/>
+#' Default SPherical Mercator Projection specified explicitly
+leaflet(mapOptions=list(crs=list('_class'='L.CRS.EPSG3857'),
+                        center=c(0,0),
+                        zoom=3)) %>% addTiles()
 
-#' The code is adaptation of [this](https://github.com/turban/Leaflet.Graticule/blob/master/examples/mollweide.html) sans the graticule part.<br/><br/>
-extJS <- htmltools::htmlDependency("countries", "1.0.0",
-    src = c(href = "https://cdn.rawgit.com/turban/Leaflet.Graticule/master/examples/lib/"),
-    script = "countries-110m.js"
+#' <br/><br/>Gothenberg, Sweeden in default projection
+leaflet(mapOptions = list(center=c(57.704, 11.965), zoom = 16)) %>%
+          addTiles()
+
+
+#' <br/><br/>Gothenberg, Sweeden in local projection
+leaflet(mapOptions = list(center=c(57.704, 11.965), zoom = 13,
+                           worldCopyJump = FALSE,
+                          crs=list('_class'="L.Proj.CRS", code='EPSG:3006',
+                                   proj4def='+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs',
+                                   options=list(
+                                     resolutions = c(
+                                       8192, 4096, 2048, 1024, 512, 256, 128,
+                                       64, 32, 16, 8, 4, 2, 1, 0.5
+                                     ),
+                                   origin =c(0, 0))))) %>%
+  addTiles(urlTemplate = 'http://api.geosition.com/tile/osm-bright-3006/{z}/{x}/{y}.png',
+           attribution = 'Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>, Imagery &copy; 2013 <a href="http://www.kartena.se/">Kartena</a>',
+           options = tileOptions(minZoom=0,maxZoom=14,continuousWorld = TRUE))
+
+#' <br/><br/>
+#' ## Mollweide Projection
+#' The code is adaptation of [this](https://github.com/turban/Leaflet.Graticule/blob/master/examples/mollweide.html).
+library(sp)
+srcURL <- "https://cdn.rawgit.com/turban/Leaflet.Graticule/master/examples/lib/countries-110m.js"
+v8 <- V8::v8()
+v8$source(srcURL)
+geoJSON <- geojsonio::as.json(v8$get('countries'))
+spdf <- geojsonio::geojson_sp(geoJSON)
+sp::proj4string(spdf) # Look MA no need to reproject
+
+leaflet(mapOptions =
+          list(maxZoom = 5,
+               worldCopyJump = FALSE,
+               crs=list('_class'="L.Proj.CRS", code='ESRI:53009',
+                        proj4def= '+proj=moll +lon_0=0 +x_0=0 +y_0=0 +a=6371000 +b=6371000 +units=m +no_defs',
+                        options=list(
+                          resolutions = c(65536, 32768, 16384, 8192, 4096, 2048)
+                        )))) %>%
+  addGraticule(style= list(color= '#999', weight= 0.5, opacity= 1)) %>%
+  addPolygons(data=spdf, weight = 1, color = "#ff0000")
+
+#' <br/><br/>L.CRS.Simple example.
+#' For now the image is specified via onRender and native JS call
+#' because we haven't coded the L.ImageLayer part yet.
+bounds <- c(0,0,1000,1000)
+leaflet(mapOptions = list(crs=list('_class'='L.CRS.Simple'))) %>%
+  fitBounds(bounds[1], bounds[2], bounds[3], bounds[4]) %>%
+  setMaxBounds(bounds[1], bounds[2], bounds[3], bounds[4]) %>%
+  htmlwidgets::onRender("
+  function(el, t) {
+    var myMap = this.getMap();
+    var bounds = myMap.getBounds();
+  	var image = new L.ImageOverlay(
+                      'http://leafletjs.com/examples/crs-simple/uqm_map_full.png',
+                      bounds);
+    image.addTo(myMap);
+  }")
+
+#' <br/><br/> Albers USA with moved Alaska and Hawaii
+#' with some fancy effects.
+
+
+library(sp)
+library(albersusa)
+spdf <- usa_composite()
+pal <- colorNumeric(
+  palette = "Blues",
+  domain = spdf@data$pop_2014
 )
 
-addExtJS <- function(map) {
-  map$dependencies <- c(map$dependencies, list(extJS))
-  map
-}
-
-leaflet() %>% addTiles() %>%
-  addProj4Leaflet() %>% # Add Proj4Leaflet plugin JSes.
-  addExtJS() %>% # Load external GeoJson File
+bounds <- c(-125, 24 ,-75, 45)
+leaflet(mapOptions =
+          list(worldCopyJump = FALSE,
+               crs=list('_class'="L.Proj.CRS", code='EPSG:2163',
+                        proj4def='+proj=laea +lat_0=45 +lon_0=-100 +x_0=0 +y_0=0 +a=6370997 +b=6370997 +units=m +no_defs',
+                        options=list(
+                          resolutions = c(65536, 32768, 16384, 8192, 4096, 2048,
+                                          1024, 512, 256, 128)
+                        )))) %>%
+  fitBounds(bounds[1], bounds[2], bounds[3], bounds[4]) %>%
+  setMaxBounds(bounds[1], bounds[2], bounds[3], bounds[4]) %>%
+  addPolygons(data=spdf, weight = 1, color = "#000000",
+              fillColor=~pal(pop_2014),
+              fillOpacity=0.7,
+              label=~stringr::str_c(name,' ', pop_2014),
+              labelOptions= labelOptions(direction = 'auto')) %>%
   htmlwidgets::onRender("
-    function(el, x) {
+    function(el, t) {
+      var defaultStyle = {
+        color: '#000000',
+        opacity:0.5,
+        weight: 1,
+        fillOpacity: 0.7,
+      };
+      var highlightStyle = {
+        color: '#ff0000',
+        opacity:1,
+        weight: 3,
+        fillOpacity: 1,
+      };
 
-      // remove the original map
-      var oldMap = this;
-      oldMap.remove();
-
-      // Sphere Mollweide: http://spatialreference.org/ref/esri/53009/
-      var crs = new L.Proj.CRS('ESRI:53009',
-        '+proj=moll +lon_0=0 +x_0=0 +y_0=0 +a=6371000 +b=6371000 +units=m +no_defs',
-        {
-          resolutions: [65536, 32768, 16384, 8192, 4096, 2048]
+      var myMap = this.getMap();
+      var layers = myMap._layers;
+      for(var i in layers) {
+        var layer = layers[i];
+        // need some way to identify our polygons
+        // as each polygon was assigned a Label we use that
+        // as our selection criteria
+        if(layer.label) {
+          layer.on('mouseover',
+            function(e) {
+              this.setStyle(highlightStyle);
+              this.bringToFront();
+            });
+          layer.on('mouseout',
+            function(e) {
+              this.setStyle(defaultStyle);
+              this.bringToBack();
+            });
         }
-      );
-
-      // create a new map in place of old map using new CRS
-      var newMap = L.map(el.id, {
-                        crs: crs,
-                        maxZoom: 5
-                        });
-
-      L.geoJson(countries, {
-        style: {
-                  color: '#000',
-                  weight: 0.5,
-                  opacity: 1,
-                  fillColor: '#fff',
-                  fillOpacity: 1
-                }
-      }).addTo(newMap);
-      newMap.fitWorld();
-
-      //debugger;
-    }
-  ")
-
-leaflet() %>% addTiles() %>%
-  addProj4Leaflet() %>% # Add Proj4Leaflet plugin JSes.
-  addExtJS() %>% # Load external GeoJson File
-  # Graticule not strictly necessary just aesthetics
-  addGraticule(style=
-                 list( color= '#777',
-                       weight= 1, opacity= 0.5)) %>%
-  htmlwidgets::onRender("
-    function(el, x) {
-
-      // remove the original map
-      var oldMap = this;
-      oldMap.remove();
-
-      // Sphere Mollweide: http://spatialreference.org/ref/esri/53009/
-      var crs = new L.Proj.CRS('ESRI:53009',
-        '+proj=moll +lon_0=0 +x_0=0 +y_0=0 +a=6371000 +b=6371000 +units=m +no_defs',
-        {
-          resolutions: [65536, 32768, 16384, 8192, 4096, 2048]
-        }
-      );
-
-      // create a new map in place of old map using new CRS
-      var newMap = L.map(el.id, {
-                        crs: crs,
-                        maxZoom: 5
-                        });
-
-    L.graticule({
-        sphere: true,
-        style: {
-            color: '#777',
-            opacity: 1,
-            fillColor: '#ccf',
-            fillOpacity: 1,
-            weight: 2
-        }
-    }).addTo(newMap);
-
-
-    L.graticule({
-                        style: {
-                        color: '#777',
-                        weight: 1,
-                        opacity: 0.5
-                        }
-                        }).addTo(newMap);
-
-
-      L.geoJson(countries, {
-        style: {
-                  color: '#000',
-                  weight: 0.5,
-                  opacity: 1,
-                  fillColor: '#fff',
-                  fillOpacity: 1
-                }
-      }).addTo(newMap);
-      newMap.fitWorld();
-
-      //debugger;
-    }
-  ")
+      }
+    }")
