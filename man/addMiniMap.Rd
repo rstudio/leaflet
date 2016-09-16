@@ -5,19 +5,17 @@
 \title{Add a minimap to the Map
 \url{https://github.com/Norkart/Leaflet-MiniMap}}
 \usage{
-addMiniMap(map, tiles = NULL, position = "bottomright", width = 150,
-  height = 150, collapsedWidth = 19, collapsedHeight = 19,
-  zoomLevelOffset = -5, zoomLevelFixed = FALSE, centerFixed = FALSE,
-  zoomAnimation = FALSE, toggleDisplay = FALSE, autoToggleDisplay = FALSE,
-  minimized = FALSE, aimingRectOptions = list(color = "#ff7800", weight = 1,
-  clickable = FALSE), shadowRectOptions = list(color = "#000000", weight = 1,
-  clickable = FALSE, opacity = 0, fillOpacity = 0), strings = list(hideText =
-  "Hide MiniMap", showText = "Show MiniMap"), mapOptions = list())
+addMiniMap(map, position = "bottomright", width = 150, height = 150,
+  collapsedWidth = 19, collapsedHeight = 19, zoomLevelOffset = -5,
+  zoomLevelFixed = FALSE, centerFixed = FALSE, zoomAnimation = FALSE,
+  toggleDisplay = FALSE, autoToggleDisplay = FALSE, minimized = FALSE,
+  aimingRectOptions = list(color = "#ff7800", weight = 1, clickable = FALSE),
+  shadowRectOptions = list(color = "#000000", weight = 1, clickable = FALSE,
+  opacity = 0, fillOpacity = 0), strings = list(hideText = "Hide MiniMap",
+  showText = "Show MiniMap"), tiles = NULL, mapOptions = list())
 }
 \arguments{
 \item{map}{a map widget object}
-
-\item{tiles}{URL for tiles or one of the pre-defined providers.}
 
 \item{position}{The standard Leaflet.Control position parameter,
    used like all the other controls.
@@ -68,6 +66,8 @@ a Path.Options (\url{http://leafletjs.com/reference.html#path-options}) object.
 (Clickable will always be overridden and set to false.)}
 
 \item{strings}{Overrides the default strings allowing for translation.}
+
+\item{tiles}{URL for tiles or one of the pre-defined providers.}
 
 \item{mapOptions}{Sets Leaflet options for the MiniMap map.
 It does not override the MiniMap default map options but extends them.}
