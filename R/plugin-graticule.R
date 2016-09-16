@@ -34,12 +34,12 @@ addGraticule <- function(
 ) {
   map$dependencies <- c(map$dependencies, leafletGraticuleDependencies())
   invokeMethod(
-    map
-    , getMapData(map)
-    , 'addGraticule'
-    , interval
-    , style
-    , layerId
-    , group
+    map,
+    getMapData(map),
+    'addGraticule',
+    interval,
+    style,
+    layerId,
+    group
   )
 }

@@ -16,7 +16,6 @@ leafletMiniMapDependencies <- function() {
 #' \url{https://github.com/Norkart/Leaflet-MiniMap}
 #'
 #' @param map a map widget object
-#' @param tiles URL for tiles or one of the pre-defined providers.
 #' @param position The standard Leaflet.Control position parameter,
 #'    used like all the other controls.
 #' Defaults to 'bottomright'.
@@ -52,6 +51,7 @@ leafletMiniMapDependencies <- function() {
 #'    a Path.Options (\url{http://leafletjs.com/reference.html#path-options}) object.
 #'    (Clickable will always be overridden and set to false.)
 #' @param strings Overrides the default strings allowing for translation.
+#' @param tiles URL for tiles or one of the pre-defined providers.
 #' @param mapOptions Sets Leaflet options for the MiniMap map.
 #'    It does not override the MiniMap default map options but extends them.
 #' @examples
@@ -65,7 +65,6 @@ leafletMiniMapDependencies <- function() {
 #' @export
 addMiniMap <- function(
   map,
-  tiles = NULL,
   position = 'bottomright',
   width = 150,
   height = 150,
@@ -82,6 +81,7 @@ addMiniMap <- function(
   shadowRectOptions = list(color= '#000000', weight= 1, clickable= FALSE,
                            opacity= 0, fillOpacity= 0),
   strings = list(hideText= 'Hide MiniMap', showText= 'Show MiniMap'),
+  tiles = NULL,
   mapOptions = list()
 ) {
 
