@@ -7,33 +7,46 @@
 \usage{
 addMiniMap(map, position = "bottomright", width = 150, height = 150,
   collapsedWidth = 19, collapsedHeight = 19, zoomLevelOffset = -5,
-  zoomLevelFixed = NULL, zoomAnimation = FALSE, toggleDisplay = FALSE,
-  autoToggleDisplay = NULL)
+  zoomLevelFixed = FALSE, centerFixed = FALSE, zoomAnimation = FALSE,
+  toggleDisplay = FALSE, autoToggleDisplay = FALSE, minimized = FALSE,
+  aimingRectOptions = list(color = "#ff7800", weight = 1, clickable = FALSE),
+  shadowRectOptions = list(color = "#000000", weight = 1, clickable = FALSE,
+  opacity = 0, fillOpacity = 0), strings = list(hideText = "Hide MiniMap",
+  showText = "Show MiniMap"), tiles = NULL, mapOptions = list())
 }
 \arguments{
 \item{map}{a map widget object}
 
-\item{position}{The standard Leaflet.Control position parameter, used like all the other controls.
+\item{position}{The standard Leaflet.Control position parameter,
+   used like all the other controls.
 Defaults to 'bottomright'.}
 
 \item{width}{The width of the minimap in pixels. Defaults to 150.}
 
 \item{height}{The height of the minimap in pixels. Defaults to 150.}
 
-\item{collapsedWidth}{The width of the toggle marker and the minimap when collapsed, in pixels.
-Defaults to 19.}
+\item{collapsedWidth}{The width of the toggle marker and the minimap
+when collapsed, in pixels. Defaults to 19.}
 
-\item{collapsedHeight}{The height of the toggle marker and the minimap when collapsed, in pixels.
-Defaults to 19.}
+\item{collapsedHeight}{The height of the toggle marker and the minimap
+when collapsed, in pixels. Defaults to 19.}
 
-\item{zoomLevelOffset}{The offset applied to the zoom in the minimap compared to the zoom of the main map.
-Can be positive or negative, defaults to -5.}
+\item{zoomLevelOffset}{The offset applied to the zoom in the minimap compared
+to the zoom of the main map. Can be positive or negative, defaults to -5.}
 
-\item{zoomLevelFixed}{Overrides the offset to apply a fixed zoom level to the minimap regardless of the main map zoom.
+\item{zoomLevelFixed}{Overrides the offset to apply a fixed zoom level to
+the minimap regardless of the main map zoom.
 Set it to any valid zoom level, if unset zoomLevelOffset is used instead.}
 
+\item{centerFixed}{Applies a fixed position to the minimap regardless of
+the main map's view / position. Prevents panning the minimap, but does
+allow zooming (both in the minimap and the main map).
+If the minimap is zoomed, it will always zoom around the centerFixed point.
+You can pass in a LatLng-equivalent object. Defaults to false.}
+
 \item{zoomAnimation}{Sets whether the minimap should have an animated zoom.
-(Will cause it to lag a bit after the movement of the main map.) Defaults to false.}
+(Will cause it to lag a bit after the movement of the main map.)
+Defaults to false.}
 
 \item{toggleDisplay}{Sets whether the minimap should have a button to minimise it.
 Defaults to false.}
@@ -41,6 +54,23 @@ Defaults to false.}
 \item{autoToggleDisplay}{Sets whether the minimap should hide automatically,
 if the parent map bounds does not fit within the minimap bounds.
 Especially useful when 'zoomLevelFixed' is set.}
+
+\item{minimized}{Sets whether the minimap should start in a minimized position.}
+
+\item{aimingRectOptions}{Sets the style of the aiming rectangle by passing in
+a Path.Options (\url{http://leafletjs.com/reference.html#path-options}) object.
+(Clickable will always be overridden and set to false.)}
+
+\item{shadowRectOptions}{Sets the style of the aiming shadow rectangle by passing in
+a Path.Options (\url{http://leafletjs.com/reference.html#path-options}) object.
+(Clickable will always be overridden and set to false.)}
+
+\item{strings}{Overrides the default strings allowing for translation.}
+
+\item{tiles}{URL for tiles or one of the pre-defined providers.}
+
+\item{mapOptions}{Sets Leaflet options for the MiniMap map.
+It does not override the MiniMap default map options but extends them.}
 }
 \description{
 Add a minimap to the Map
@@ -53,5 +83,8 @@ leaf <- leaflet() \%>\%
   addTiles() \%>\%
   addMiniMap()
 
+}
+\seealso{
+\code{\link{providers}}
 }
 

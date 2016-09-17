@@ -8,7 +8,9 @@ addMeasure(map, position = "topright", primaryLengthUnit = "feet",
   secondaryLengthUnit = NULL, primaryAreaUnit = "acres",
   secondaryAreaUnit = NULL, activeColor = "#ABE67E",
   completedColor = "#C8F2BE", popupOptions = list(className =
-  "leaflet-measure-resultpopup", autoPanPadding = c(10, 10)))
+  "leaflet-measure-resultpopup", autoPanPadding = c(10, 10)),
+  captureZIndex = 10000, localization = "en", decPoint = ".",
+  thousandsSep = ",")
 }
 \arguments{
 \item{map}{a map widget object}
@@ -34,6 +36,20 @@ Value should be a color represented as a hexadecimal string.}
 \item{popupOptions}{\code{list} of ptions applied to the popup
 of the resulting measure feature.
 Properties may be any \href{http://leafletjs.com/reference.html#popup-options}{standard Leaflet popup options}.}
+
+\item{captureZIndex}{Z-index of the marker used to capture measure clicks.
+Set this value higher than the z-index of all other map layers to
+disable click events on other layers while a measurement is active.}
+
+\item{localization}{Locale to translate displayed text.
+Available locales include en (default), cn, de, es, fr, it, nl, pt,
+pt_BR, pt_PT, ru, and tr}
+
+\item{decPoint}{Decimal point used when displaying measurements.
+If not specified, values are defined by the localization.}
+
+\item{thousandsSep}{Thousands separator used when displaying measurements.
+If not specified, values are defined by the localization.}
 }
 \value{
 modified map
@@ -59,6 +75,7 @@ leaf \%>\% addMeasure(
   , primaryAreaUnit = "sqmeters"
   , activeColor = "#3D535D"
   , completedColor = "#7D4479"
+  , localization = 'de'
 )
 
 }

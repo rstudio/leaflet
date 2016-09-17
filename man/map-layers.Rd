@@ -5,6 +5,7 @@
 \alias{addCircles}
 \alias{addControl}
 \alias{addGeoJSON}
+\alias{addLabelOnlyMarkers}
 \alias{addMarkers}
 \alias{addPolygons}
 \alias{addPolylines}
@@ -32,6 +33,11 @@ addPopups(map, lng = NULL, lat = NULL, popup, layerId = NULL,
 
 addMarkers(map, lng = NULL, lat = NULL, layerId = NULL, group = NULL,
   icon = NULL, popup = NULL, label = NULL, labelOptions = NULL,
+  options = markerOptions(), clusterOptions = NULL, clusterId = NULL,
+  data = getMapData(map))
+
+addLabelOnlyMarkers(map, lng = NULL, lat = NULL, layerId = NULL,
+  group = NULL, icon = NULL, label = NULL, labelOptions = NULL,
   options = markerOptions(), clusterOptions = NULL, clusterId = NULL,
   data = getMapData(map))
 
@@ -196,6 +202,8 @@ Add graphics elements and layers to the map widget.
 \item \code{addPopups}: Add popups to the map
 
 \item \code{addMarkers}: Add markders to the map
+
+\item \code{addLabelOnlyMarkers}: Add Label only markers to the map
 
 \item \code{addCircleMarkers}: Add circle markers to the map
 
