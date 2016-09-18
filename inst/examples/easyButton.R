@@ -1,7 +1,7 @@
 library(leaflet)
 
-#' Add two easy buttons
-#' first to set zoom level to 1
+#' Add two easy buttons.
+#' first to set zoom level to 1,
 #' second to find your self
 leaflet() %>% addTiles() %>%
   addEasyButton(easyButton(
@@ -11,7 +11,7 @@ leaflet() %>% addTiles() %>%
     icon='fa-crosshairs', title='Locate Me',
     onClick=JS("function(btn, map){ map.locate({setView: true});}")))
 
-
+#' <br/><br/>Toggle Button to freeze/unfreeze clustering at a zoom level.
 leaflet() %>% addTiles() %>%
   addMarkers(data=quakes,
              clusterOptions = markerClusterOptions(),
@@ -47,7 +47,7 @@ leaflet() %>% addTiles() %>%
     )
   ))
 
-#' Add two easy buttons in a bar
+#' <br/><br/>Add two easy buttons in a bar
 #' first to set zoom level to 1
 #' second to find your self
 leaflet() %>% addTiles() %>%

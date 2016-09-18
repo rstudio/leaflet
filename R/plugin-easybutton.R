@@ -58,7 +58,7 @@ easyButtonStateList <- function(...) {
 #' @param states the states
 #' @export
 easyButton <- function(
-  icon = htmltools::span(class='easy-button','•'),
+  icon = htmltools::span(class='easy-button','!'),
   title = "Easy Button",
   onClick = JS("function(btn, map){alert('That was easy!');}"),
   position = "topleft",
@@ -162,10 +162,10 @@ addEasyButton <- function(
 #'   addEasyButtonBar(easyButtonList(
 #'    easyButton(
 #'      icon = htmltools::span(class='star','&starf;'),
-#'      onClick = JS("function(btn, map){ alert("Button 1");}")),
+#'      onClick = JS("function(btn, map){ alert('Button 1');}")),
 #'    easyButton(
 #'      icon = htmltools::span(class='star','&target;'),
-#'      onClick = JS("function(btn, map){ alert("Button 2");}"))))
+#'      onClick = JS("function(btn, map){ alert('Button 2');}"))))
 #'
 #'
 #' @export
