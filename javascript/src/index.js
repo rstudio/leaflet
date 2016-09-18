@@ -96,7 +96,7 @@ HTMLWidgets.widget({
           let crs = L.CRS.EPSG3857; // Default Spherical Mercator
           let crsOptions = data.options.crs;
 
-          switch(crsOptions._class) {
+          switch(crsOptions.crsClass) {
           case "L.CRS.EPSG3857":
             crs = L.CRS.EPSG3857;
             break;

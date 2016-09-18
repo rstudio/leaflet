@@ -5,9 +5,8 @@ library(leaflet)
 
 
 #' Default SPherical Mercator Projection specified explicitly
-leaflet(mapOptions=list(crs=list('_class'='L.CRS.EPSG3857'),
-                        center=c(0,0),
-                        zoom=3)) %>% addTiles()
+leaflet(mapOptions=list(crs=crs(crsClass='L.CRS.EPSG3857'),
+                        center=c(0,0), zoom=3)) %>% addTiles()
 
 #' <br/><br/>Gothenberg, Sweeden in default projection
 leaflet(mapOptions = list(center=c(57.704, 11.965), zoom = 16)) %>%
@@ -17,14 +16,13 @@ leaflet(mapOptions = list(center=c(57.704, 11.965), zoom = 16)) %>%
 #' <br/><br/>Gothenberg, Sweeden in local projection
 leaflet(mapOptions = list(center=c(57.704, 11.965), zoom = 13,
                            worldCopyJump = FALSE,
-                          crs=list('_class'="L.Proj.CRS", code='EPSG:3006',
+                          crs=crs(crsClass="L.Proj.CRS", code='EPSG:3006',
                                    proj4def='+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs',
-                                   options=list(
-                                     resolutions = c(
-                                       8192, 4096, 2048, 1024, 512, 256, 128,
-                                       64, 32, 16, 8, 4, 2, 1, 0.5
-                                     ),
-                                   origin =c(0, 0))))) %>%
+                                   resolutions = c(
+                                     8192, 4096, 2048, 1024, 512, 256, 128,
+                                     64, 32, 16, 8, 4, 2, 1, 0.5
+                                   ),
+                                   origin =c(0, 0)))) %>%
   addTiles(urlTemplate = 'http://api.geosition.com/tile/osm-bright-3006/{z}/{x}/{y}.png',
            attribution = 'Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>, Imagery &copy; 2013 <a href="http://www.kartena.se/">Kartena</a>',
            options = tileOptions(minZoom=0,maxZoom=14,continuousWorld = TRUE))
@@ -42,20 +40,19 @@ sp::proj4string(spdf) # Look MA no need to reproject
 
 leaflet(mapOptions =
           list(maxZoom = 5,
-               worldCopyJump = FALSE,
-               crs=list('_class'="L.Proj.CRS", code='ESRI:53009',
+               crs=crs(crsClass="L.Proj.CRS", code='ESRI:53009',
                         proj4def= '+proj=moll +lon_0=0 +x_0=0 +y_0=0 +a=6371000 +b=6371000 +units=m +no_defs',
-                        options=list(
-                          resolutions = c(65536, 32768, 16384, 8192, 4096, 2048)
-                        )))) %>%
+                        resolutions = c(65536, 32768, 16384, 8192, 4096, 2048)
+                       ))) %>%
   addGraticule(style= list(color= '#999', weight= 0.5, opacity= 1)) %>%
+  addGraticule(sphere = TRUE, style= list(color= '#777', weight= 1, opacity= 0.25)) %>%
   addPolygons(data=spdf, weight = 1, color = "#ff0000")
 
 #' <br/><br/>L.CRS.Simple example.
 #' For now the image is specified via onRender and native JS call
 #' because we haven't coded the L.ImageLayer part yet.
-bounds <- c(0,0,1000,1000)
-leaflet(mapOptions = list(crs=list('_class'='L.CRS.Simple'))) %>%
+bounds <- c(-26.5,-25, 1021.5,1023)
+leaflet(mapOptions = list(crs=crs(crsClass='L.CRS.Simple'), minZoom= -5)) %>%
   fitBounds(bounds[1], bounds[2], bounds[3], bounds[4]) %>%
   setMaxBounds(bounds[1], bounds[2], bounds[3], bounds[4]) %>%
   htmlwidgets::onRender("
@@ -81,14 +78,14 @@ pal <- colorNumeric(
 )
 
 bounds <- c(-125, 24 ,-75, 45)
+
 leaflet(mapOptions =
           list(worldCopyJump = FALSE,
-               crs=list('_class'="L.Proj.CRS", code='EPSG:2163',
+               crs=crs(crsClass="L.Proj.CRS", code='EPSG:2163',
                         proj4def='+proj=laea +lat_0=45 +lon_0=-100 +x_0=0 +y_0=0 +a=6370997 +b=6370997 +units=m +no_defs',
-                        options=list(
-                          resolutions = c(65536, 32768, 16384, 8192, 4096, 2048,
-                                          1024, 512, 256, 128)
-                        )))) %>%
+                        resolutions = c(65536, 32768, 16384, 8192, 4096, 2048,
+                                        1024, 512, 256, 128)
+                        ))) %>%
   fitBounds(bounds[1], bounds[2], bounds[3], bounds[4]) %>%
   setMaxBounds(bounds[1], bounds[2], bounds[3], bounds[4]) %>%
   addPolygons(data=spdf, weight = 1, color = "#000000",

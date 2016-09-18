@@ -450,7 +450,7 @@ _htmlwidgets2.default.widget({
           var crs = _leaflet2.default.CRS.EPSG3857; // Default Spherical Mercator
           var crsOptions = data.options.crs;
 
-          switch (crsOptions._class) {
+          switch (crsOptions.crsClass) {
             case "L.CRS.EPSG3857":
               crs = _leaflet2.default.CRS.EPSG3857;
               break;
