@@ -28,10 +28,10 @@ leaf <- leaflet() \%>\%
   addEasyButtonBar(easyButtonList(
    easyButton(
      icon = htmltools::span(class='star','&starf;'),
-     onClick = JS("function(btn, map){ alert("Button 1");}")),
+     onClick = JS("function(btn, map){ alert('Button 1');}")),
    easyButton(
      icon = htmltools::span(class='star','&target;'),
-     onClick = JS("function(btn, map){ alert("Button 2");}"))))
+     onClick = JS("function(btn, map){ alert('Button 2');}"))))
 
 
 }
