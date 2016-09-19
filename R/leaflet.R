@@ -45,9 +45,28 @@ leaflet = function(data = NULL, width = NULL, height = NULL,
       defaultHeight = 400,
       padding = padding,
       browser.fill = TRUE
-    )
+    ),
+    preRenderHook = function(widget) {
+      if (!is.null(widget$jsHooks$render)) {
+        widget$jsHooks$render <- lapply(widget$jsHooks$render, function(hook) {
+          if (is.list(hook)) {
+            hook$code <- sprintf(hookWrapperTemplate, paste(hook$code, collapse = "\n"))
+          } else if (is.character(hook)) {
+            hook <- sprintf(hookWrapperTemplate, paste(hook, collapse = "\n"))
+          } else {
+            stop("Unknown hook class ", class(hook))
+          }
+          hook
+        })
+      }
+      widget
+    }
   )
 }
+
+hookWrapperTemplate <- "function(el, x, data) {
+  return (%s).call(this.getMap(), el, x, data);
+}"
 
 getMapData = function(map) {
   attr(map$x, "leafletData", exact = TRUE)

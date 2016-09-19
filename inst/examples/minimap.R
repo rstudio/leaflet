@@ -34,7 +34,7 @@ m %>%
              toggleDisplay = T) %>%
   htmlwidgets::onRender("
     function(el, x) {
-      var myMap = this.getMap();
+      var myMap = this;
       myMap.on('baselayerchange',
         function (e) {
           myMap.minimap.changeLayer(L.tileLayer.provider(e.name));
@@ -72,7 +72,7 @@ leaflet() %>% addTiles() %>%
   addMiniMap() %>%
   htmlwidgets::onRender("
     function(el, t) {
-      var myMap = this.getMap();
+      var myMap = this;
 
       var pubs = myMap.layerManager._byGroup.pubs;
       var pubs2 = new L.FeatureGroup();
@@ -106,7 +106,7 @@ m %>%
              toggleDisplay = T) %>%
   htmlwidgets::onRender("
     function(el, t) {
-      var myMap = this.getMap();
+      var myMap = this;
 
       var pubs = myMap.layerManager._byGroup.pubs;
       var pubs2 = new L.FeatureGroup();

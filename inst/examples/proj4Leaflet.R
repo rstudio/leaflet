@@ -57,7 +57,7 @@ leaflet(mapOptions = list(crs=crs(crsClass='L.CRS.Simple'), minZoom= -5)) %>%
   setMaxBounds(bounds[1], bounds[2], bounds[3], bounds[4]) %>%
   htmlwidgets::onRender("
   function(el, t) {
-    var myMap = this.getMap();
+    var myMap = this;
     var bounds = myMap.getBounds();
   	var image = new L.ImageOverlay(
                       'http://leafletjs.com/examples/crs-simple/uqm_map_full.png',
@@ -108,7 +108,7 @@ leaflet(mapOptions =
         fillOpacity: 1,
       };
 
-      var myMap = this.getMap();
+      var myMap = this;
       var layers = myMap._layers;
       for(var i in layers) {
         var layer = layers[i];
