@@ -242,6 +242,7 @@ clearImages = function(map) {
 #' minZoom,maxZoom,maxNativeZoom,tileSize,subdomains,errorTileUrl,tms,continuousWorld,noWrap,zoomOffset,zoomReverse,zIndex,unloadInvisibleTiles,updateWhenIdle,detectRetina,reuseTiles
 #' the tile layer options; see
 #' \url{http://leafletjs.com/reference.html#tilelayer}
+#' @param ... extra options passed to underlying Javascript object constructor.
 #' @describeIn map-options Options for tile layers
 #' @export
 tileOptions = function(
@@ -261,8 +262,8 @@ tileOptions = function(
   unloadInvisibleTiles = NULL,
   updateWhenIdle = NULL,
   detectRetina = FALSE,
-  reuseTiles = FALSE
-  # bounds = TODO
+  reuseTiles = FALSE,
+  ...
 ) {
   list(
     minZoom = minZoom, maxZoom = maxZoom, maxNativeZoom = maxNativeZoom,
@@ -271,7 +272,8 @@ tileOptions = function(
     zoomOffset = zoomOffset, zoomReverse = zoomReverse, opacity = opacity,
     zIndex = zIndex, unloadInvisibleTiles = unloadInvisibleTiles,
     updateWhenIdle = updateWhenIdle, detectRetina = detectRetina,
-    reuseTiles = reuseTiles
+    reuseTiles = reuseTiles,
+    ...
   )
 }
 
@@ -333,8 +335,6 @@ addWMSTiles = function(
 #' @param version version of the WMS service to use
 #' @param crs Coordinate Reference System to use for the WMS requests, defaults
 #'   to map CRS (don't change this if you're not sure what it means)
-#' @param ... other tile options for \code{WMSTileOptions()} (all arguments of
-#'   \code{tileOptions()} can be used)
 #' @describeIn map-options Options for WMS tile layers
 #' @export
 WMSTileOptions = function(
@@ -398,12 +398,13 @@ popupOptions = function(
   # autoPanPadding = TODO,
   zoomAnimation = TRUE,
   closeOnClick = NULL,
-  className = ""
+  className = "",
+  ...
 ) {
   list(
     maxWidth = maxWidth, minWidth = minWidth, maxHeight = maxHeight,
     autoPan = autoPan, keepInView = keepInView, closeButton = closeButton,
-    zoomAnimation = zoomAnimation, closeOnClick = closeOnClick, className = className
+    zoomAnimation = zoomAnimation, closeOnClick = closeOnClick, className = className, ...
   )
 }
 
@@ -451,13 +452,14 @@ labelOptions = function(
   textsize = "10px",
   textOnly = FALSE,
   style = NULL,
-  zoomAnimation = TRUE
+  zoomAnimation = TRUE,
+  ...
 ) {
   list(
     clickable = clickable, noHide = noHide, direction = direction,
     opacity = opacity, offset = offset,
     textsize = textsize, textOnly = textOnly, style = style,
-    zoomAnimation = zoomAnimation, className = className
+    zoomAnimation = zoomAnimation, className = className, ...
   )
 }
 
@@ -731,12 +733,13 @@ markerOptions = function(
   zIndexOffset = 0,
   opacity = 1.0,
   riseOnHover = FALSE,
-  riseOffset = 250
+  riseOffset = 250,
+  ...
 ) {
   list(
     clickable = clickable, draggable = draggable, keyboard = keyboard,
     title = title, alt = alt, zIndexOffset = zIndexOffset, opacity = opacity,
-    riseOnHover = riseOnHover, riseOffset = riseOffset
+    riseOnHover = riseOnHover, riseOffset = riseOffset, ...
   )
 }
 
@@ -865,11 +868,12 @@ pathOptions = function(
   lineJoin = NULL,
   clickable = TRUE,
   pointerEvents = NULL,
-  className = ""
+  className = "",
+  ...
 ) {
   list(
     lineCap = lineCap, lineJoin = lineJoin, clickable = clickable,
-    pointerEvents = pointerEvents, className = className
+    pointerEvents = pointerEvents, className = className, ...
   )
 }
 
@@ -1094,9 +1098,10 @@ addLayersControl = function(map,
 #'   to have the layers control always appear in its expanded state.
 #' @param autoZIndex if \code{TRUE}, the control will automatically maintain
 #'   the z-order of its various groups as overlays are switched on and off.
+#' @param ... other options for \code{layersControlOptions()}
 #' @export
-layersControlOptions = function(collapsed = TRUE, autoZIndex = TRUE) {
-  list(collapsed = collapsed, autoZIndex = autoZIndex)
+layersControlOptions = function(collapsed = TRUE, autoZIndex = TRUE, ...) {
+  list(collapsed = collapsed, autoZIndex = autoZIndex, ...)
 }
 
 #' @rdname addLayersControl

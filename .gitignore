@@ -4,3 +4,5 @@
 node_modules
 inst/htmlwidgets/sources
 *.swp
+inst/examples/rsconnect
+inst/examples/*.html

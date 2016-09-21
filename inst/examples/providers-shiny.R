@@ -2,12 +2,23 @@ library(shiny)
 library(leaflet)
 
 ui <- fluidPage(
-  selectInput("providerName", "Tile set", c(
-    "Stamen.Toner",
-    "Stamen.TonerLite",
-    "Stamen.Watercolor"
-  )),
-  leafletOutput("map")
+  fluidRow(
+    column(
+      3,
+      selectInput(
+        "providerName",
+        "Tile set",
+        c("Stamen.Toner",
+          "Stamen.TonerLite",
+          "Stamen.Watercolor")
+        )
+    ),
+    column(
+      9,
+      leafletOutput("map")
+
+    )
+  )
 )
 
 server <- function(input, output, session) {

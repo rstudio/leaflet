@@ -59,7 +59,7 @@ var ClusterLayerStore = function () {
 exports.default = ClusterLayerStore;
 
 
-},{"./util":13}],2:[function(require,module,exports){
+},{"./util":14}],2:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -248,7 +248,7 @@ var DataFrame = function () {
 exports.default = DataFrame;
 
 
-},{"./util":13}],4:[function(require,module,exports){
+},{"./util":14}],4:[function(require,module,exports){
 "use strict";
 
 var _leaflet = require("./global/leaflet");
@@ -311,11 +311,22 @@ exports.default = global.L;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = global.Shiny;
+exports.default = global.L.Proj;
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],9:[function(require,module,exports){
+(function (global){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = global.Shiny;
+
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],10:[function(require,module,exports){
 "use strict";
 
 var _jquery = require("./global/jquery");
@@ -325,6 +336,10 @@ var _jquery2 = _interopRequireDefault(_jquery);
 var _leaflet = require("./global/leaflet");
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
+
+var _proj4leaflet = require("./global/proj4leaflet");
+
+var _proj4leaflet2 = _interopRequireDefault(_proj4leaflet);
 
 var _shiny = require("./global/shiny");
 
@@ -412,151 +427,207 @@ function preventUnintendedZoomOnScroll(map) {
 }
 
 _htmlwidgets2.default.widget({
+
   name: "leaflet",
   type: "output",
-  initialize: function initialize(el, width, height) {
-    // hard-coding center/zoom here for a non-empty initial view, since there
-    // is no way for htmlwidgets to pass initial params to initialize()
-    var map = _leaflet2.default.map(el, {
-      center: [51.505, -0.09],
-      zoom: 13
-    });
+  factory: function factory(el, width, height) {
 
-    preventUnintendedZoomOnScroll(map);
+    var map = null;
 
-    // Store some state in the map object
-    map.leafletr = {
-      // Has the map ever rendered successfully?
-      hasRendered: false,
-      // Data to be rendered when resize is called with area != 0
-      pendingRenderData: null
+    return {
+
+      // we need to store our map in our returned object.
+      getMap: function getMap() {
+        return map;
+      },
+
+      renderValue: function renderValue(data) {
+
+        // Create an appropriate CRS Object if specified
+
+        if (data && data.options && data.options.crs) {
+
+          var crs = _leaflet2.default.CRS.EPSG3857; // Default Spherical Mercator
+          var crsOptions = data.options.crs;
+
+          switch (crsOptions.crsClass) {
+            case "L.CRS.EPSG3857":
+              crs = _leaflet2.default.CRS.EPSG3857;
+              break;
+            case "L.CRS.EPSG4326":
+              crs = _leaflet2.default.CRS.EPSG4326;
+              break;
+            case "L.CRS.EPSG3395":
+              crs = _leaflet2.default.CRS.EPSG3395;
+              break;
+            case "L.CRS.Simple":
+              crs = _leaflet2.default.CRS.Simple;
+              break;
+            case "L.Proj.CRS":
+              if (crsOptions.options && crsOptions.options.bounds) {
+                crsOptions.options.bounds = _leaflet2.default.bounds(crsOptions.options.bounds);
+              }
+              crs = new _proj4leaflet2.default.CRS(crsOptions.code, crsOptions.proj4def, crsOptions.options);
+              break;
+            case "L.Proj.CRS.TMS":
+              if (crsOptions.options && crsOptions.options.bounds) {
+                crsOptions.options.bounds = _leaflet2.default.bounds(crsOptions.options.bounds);
+              }
+              crs = new _proj4leaflet2.default.CRS.TMS(crsOptions.code, crsOptions.proj4def, crsOptions.projectedBounds, crsOptions.options);
+              break;
+          }
+          data.options.crs = crs;
+        }
+
+        // As per https://github.com/rstudio/leaflet/pull/294#discussion_r79584810
+        if (map) {
+          map.remove();
+          map = function () {
+            return;
+          }(); // undefine map
+        }
+
+        map = _leaflet2.default.map(el, data.options);
+
+        preventUnintendedZoomOnScroll(map);
+
+        // Store some state in the map object
+        map.leafletr = {
+          // Has the map ever rendered successfully?
+          hasRendered: false,
+          // Data to be rendered when resize is called with area != 0
+          pendingRenderData: null
+        };
+
+        // Check if the map is rendered statically (no output binding)
+        if (_htmlwidgets2.default.shinyMode && /\bshiny-bound-output\b/.test(el.className)) {
+          (function () {
+
+            map.id = el.id;
+
+            // Store the map on the element so we can find it later by ID
+            (0, _jquery2.default)(el).data("leaflet-map", map);
+
+            // When the map is clicked, send the coordinates back to the app
+            map.on("click", function (e) {
+              _shiny2.default.onInputChange(map.id + "_click", {
+                lat: e.latlng.lat,
+                lng: e.latlng.lng,
+                ".nonce": Math.random() // Force reactivity if lat/lng hasn't changed
+              });
+            });
+
+            var groupTimerId = null;
+
+            map.on("moveend", function (e) {
+              updateBounds(e.target);
+            }).on("layeradd layerremove", function (e) {
+              // If the layer that's coming or going is a group we created, tell
+              // the server.
+              if (map.layerManager.getGroupNameFromLayerGroup(e.layer)) {
+                // But to avoid chattiness, coalesce events
+                if (groupTimerId) {
+                  clearTimeout(groupTimerId);
+                  groupTimerId = null;
+                }
+                groupTimerId = setTimeout(function () {
+                  groupTimerId = null;
+                  _shiny2.default.onInputChange(map.id + "_groups", map.layerManager.getVisibleGroups());
+                }, 100);
+              }
+            });
+          })();
+        }
+        this.doRenderValue(data, map);
+      },
+      doRenderValue: function doRenderValue(data, map) {
+        // Leaflet does not behave well when you set up a bunch of layers when
+        // the map is not visible (width/height == 0). Popups get misaligned
+        // relative to their owning markers, and the fitBounds calculations
+        // are off. Therefore we wait until the map is actually showing to
+        // render the value (we rely on the resize() callback being invoked
+        // at the appropriate time).
+        //
+        // There may be an issue with leafletProxy() calls being made while
+        // the map is not being viewed--not sure what the right solution is
+        // there.
+        if (el.offsetWidth === 0 || el.offsetHeight === 0) {
+          map.leafletr.pendingRenderData = data;
+          return;
+        }
+        map.leafletr.pendingRenderData = null;
+
+        // Merge data options into defaults
+        var options = _jquery2.default.extend({ zoomToLimits: "always" }, data.options);
+
+        if (!map.layerManager) {
+          map.controls = new _controlStore2.default(map);
+          map.layerManager = new _layerManager2.default(map);
+        } else {
+          map.controls.clear();
+          map.layerManager.clear();
+        }
+
+        var explicitView = false;
+        if (data.setView) {
+          explicitView = true;
+          map.setView.apply(map, data.setView);
+        }
+        if (data.fitBounds) {
+          explicitView = true;
+          methods.fitBounds.apply(map, data.fitBounds);
+        }
+        if (data.options.center) {
+          explicitView = true;
+        }
+
+        // Returns true if the zoomToLimits option says that the map should be
+        // zoomed to map elements.
+        function needsZoom() {
+          return options.zoomToLimits === "always" || options.zoomToLimits === "first" && !map.leafletr.hasRendered;
+        }
+
+        if (!explicitView && needsZoom() && !map.getZoom()) {
+          if (data.limits) {
+            // Use the natural limits of what's being drawn on the map
+            // If the size of the bounding box is 0, leaflet gets all weird
+            var pad = 0.006;
+            if (data.limits.lat[0] === data.limits.lat[1]) {
+              data.limits.lat[0] = data.limits.lat[0] - pad;
+              data.limits.lat[1] = data.limits.lat[1] + pad;
+            }
+            if (data.limits.lng[0] === data.limits.lng[1]) {
+              data.limits.lng[0] = data.limits.lng[0] - pad;
+              data.limits.lng[1] = data.limits.lng[1] + pad;
+            }
+            map.fitBounds([[data.limits.lat[0], data.limits.lng[0]], [data.limits.lat[1], data.limits.lng[1]]]);
+          } else {
+            map.fitWorld();
+          }
+        }
+
+        for (var i = 0; data.calls && i < data.calls.length; i++) {
+          var call = data.calls[i];
+          if (methods[call.method]) methods[call.method].apply(map, call.args);else (0, _util.log)("Unknown method " + call.method);
+        }
+
+        map.leafletr.hasRendered = true;
+
+        if (_htmlwidgets2.default.shinyMode) {
+          setTimeout(function () {
+            updateBounds(map);
+          }, 1);
+        }
+      },
+      resize: function resize(width, height) {
+        if (map) {
+          map.invalidateSize();
+          if (map.leafletr.pendingRenderData) {
+            this.doRenderValue(map.leafletr.pendingRenderData, map);
+          }
+        }
+      }
     };
-
-    if (!_htmlwidgets2.default.shinyMode) return map;
-
-    // Check if the map is rendered statically (no output binding)
-    if (!/\bshiny-bound-output\b/.test(el.className)) return map;
-
-    map.id = el.id;
-
-    // Store the map on the element so we can find it later by ID
-    (0, _jquery2.default)(el).data("leaflet-map", map);
-
-    // When the map is clicked, send the coordinates back to the app
-    map.on("click", function (e) {
-      _shiny2.default.onInputChange(map.id + "_click", {
-        lat: e.latlng.lat,
-        lng: e.latlng.lng,
-        ".nonce": Math.random() // Force reactivity if lat/lng hasn't changed
-      });
-    });
-
-    var groupTimerId = null;
-
-    map.on("moveend", function (e) {
-      updateBounds(e.target);
-    }).on("layeradd layerremove", function (e) {
-      // If the layer that's coming or going is a group we created, tell
-      // the server.
-      if (map.layerManager.getGroupNameFromLayerGroup(e.layer)) {
-        // But to avoid chattiness, coalesce events
-        if (groupTimerId) {
-          clearTimeout(groupTimerId);
-          groupTimerId = null;
-        }
-        groupTimerId = setTimeout(function () {
-          groupTimerId = null;
-          _shiny2.default.onInputChange(map.id + "_groups", map.layerManager.getVisibleGroups());
-        }, 100);
-      }
-    });
-
-    return map;
-  },
-  renderValue: function renderValue(el, data, map) {
-    return this.doRenderValue(el, data, map);
-  },
-  doRenderValue: function doRenderValue(el, data, map) {
-    // Leaflet does not behave well when you set up a bunch of layers when
-    // the map is not visible (width/height == 0). Popups get misaligned
-    // relative to their owning markers, and the fitBounds calculations
-    // are off. Therefore we wait until the map is actually showing to
-    // render the value (we rely on the resize() callback being invoked
-    // at the appropriate time).
-    //
-    // There may be an issue with leafletProxy() calls being made while
-    // the map is not being viewed--not sure what the right solution is
-    // there.
-    if (el.offsetWidth === 0 || el.offsetHeight === 0) {
-      map.leafletr.pendingRenderData = data;
-      return;
-    }
-    map.leafletr.pendingRenderData = null;
-
-    // Merge data options into defaults
-    var options = _jquery2.default.extend({ zoomToLimits: "always" }, data.options);
-
-    if (!map.layerManager) {
-      map.controls = new _controlStore2.default(map);
-      map.layerManager = new _layerManager2.default(map);
-    } else {
-      map.controls.clear();
-      map.layerManager.clear();
-    }
-
-    var explicitView = false;
-    if (data.setView) {
-      explicitView = true;
-      map.setView.apply(map, data.setView);
-    }
-    if (data.fitBounds) {
-      explicitView = true;
-      methods.fitBounds.apply(map, data.fitBounds);
-    }
-
-    // Returns true if the zoomToLimits option says that the map should be
-    // zoomed to map elements.
-    function needsZoom() {
-      return options.zoomToLimits === "always" || options.zoomToLimits === "first" && !map.leafletr.hasRendered;
-    }
-
-    if (!explicitView && needsZoom()) {
-      if (data.limits) {
-        // Use the natural limits of what's being drawn on the map
-        // If the size of the bounding box is 0, leaflet gets all weird
-        var pad = 0.006;
-        if (data.limits.lat[0] === data.limits.lat[1]) {
-          data.limits.lat[0] = data.limits.lat[0] - pad;
-          data.limits.lat[1] = data.limits.lat[1] + pad;
-        }
-        if (data.limits.lng[0] === data.limits.lng[1]) {
-          data.limits.lng[0] = data.limits.lng[0] - pad;
-          data.limits.lng[1] = data.limits.lng[1] + pad;
-        }
-        map.fitBounds([[data.limits.lat[0], data.limits.lng[0]], [data.limits.lat[1], data.limits.lng[1]]]);
-      } else {
-        map.fitWorld();
-      }
-    }
-
-    for (var i = 0; data.calls && i < data.calls.length; i++) {
-      var call = data.calls[i];
-      if (methods[call.method]) methods[call.method].apply(map, call.args);else (0, _util.log)("Unknown method " + call.method);
-    }
-
-    map.leafletr.hasRendered = true;
-
-    if (!_htmlwidgets2.default.shinyMode) return;
-
-    setTimeout(function () {
-      updateBounds(map);
-    }, 1);
-  },
-  resize: function resize(el, width, height, map) {
-    map.invalidateSize();
-    if (map.leafletr.pendingRenderData) {
-      this.doRenderValue(el, map.leafletr.pendingRenderData, map);
-    }
   }
 });
 
@@ -581,7 +652,7 @@ if (_htmlwidgets2.default.shinyMode) {
 }
 
 
-},{"./control-store":2,"./fixup-default-icon":4,"./global/htmlwidgets":5,"./global/jquery":6,"./global/leaflet":7,"./global/shiny":8,"./layer-manager":10,"./methods":11,"./util":13}],10:[function(require,module,exports){
+},{"./control-store":2,"./fixup-default-icon":4,"./global/htmlwidgets":5,"./global/jquery":6,"./global/leaflet":7,"./global/proj4leaflet":8,"./global/shiny":9,"./layer-manager":11,"./methods":12,"./util":14}],11:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -837,7 +908,7 @@ var LayerManager = function () {
 exports.default = LayerManager;
 
 
-},{"./global/jquery":6,"./global/leaflet":7,"./util":13}],11:[function(require,module,exports){
+},{"./global/jquery":6,"./global/leaflet":7,"./util":14}],12:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -1836,7 +1907,7 @@ methods.removeMeasure = function () {
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./cluster-layer-store":1,"./dataframe":3,"./global/htmlwidgets":5,"./global/jquery":6,"./global/leaflet":7,"./global/shiny":8,"./mipmapper":12,"./util":13}],12:[function(require,module,exports){
+},{"./cluster-layer-store":1,"./dataframe":3,"./global/htmlwidgets":5,"./global/jquery":6,"./global/leaflet":7,"./global/shiny":9,"./mipmapper":13,"./util":14}],13:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1942,7 +2013,7 @@ var Mipmapper = function () {
 exports.default = Mipmapper;
 
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1984,4 +2055,4 @@ function asArray(value) {
 }
 
 
-},{}]},{},[9]);
+},{}]},{},[10]);
