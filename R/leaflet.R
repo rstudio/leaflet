@@ -68,6 +68,9 @@ hookWrapperTemplate <- "function(el, x, data) {
   return (%s).call(this.getMap(), el, x, data);
 }"
 
+#' returns the map's data
+#' @param map the map
+#' @export
 getMapData = function(map) {
   attr(map$x, "leafletData", exact = TRUE)
 }
