@@ -95,10 +95,8 @@ polarmaps[[5]]
 polarmaps[[6]]
 
 #' ## Antartica
-#' ### NOT YET WORKING
 #' Code adapted from
 #' https://github.com/nasa-gibs/gibs-web-examples/blob/release/examples/leaflet/antarctic-epsg3031.js <br/>
-#' This should work in theory but not working yet.
 
 resolutions <- c(8192, 4096, 2048, 1024, 512, 256)
 center <- c(-90,0)
@@ -120,7 +118,6 @@ leaflet(options= list(
   crs=crsAntartica,
   zoom=zoom, maxZoom=maxZoom, center= center,
   continuousWorld = TRUE, worldCopyJump = FALSE)) %>%
-  setView(-90,0,0) %>%
   addTiles(urlTemplate = antarticaTilesURL,
            layerId = "antartica_tiles",
            attribution = "<a href='https://earthdata.nasa.gov/gibs'> NASA EOSDIS GIBS</a>&nbsp;&nbsp;&nbsp; <a href='https://github.com/nasa-gibs/web-examples/blob/release/leaflet/js/antarctic-epsg3031.js'> View Source </a>",
@@ -131,6 +128,7 @@ leaflet(options= list(
              continuousWorld = TRUE,
              format = "image%2Fjpeg"
            )) %>%
+  addGraticule() %>%
   htmlwidgets::onRender(
     "function(el, t){
        var myMap = this;
