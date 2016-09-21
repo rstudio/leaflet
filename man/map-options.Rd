@@ -15,23 +15,23 @@ tileOptions(minZoom = 0, maxZoom = 18, maxNativeZoom = NULL,
   continuousWorld = FALSE, noWrap = FALSE, zoomOffset = 0,
   zoomReverse = FALSE, opacity = 1, zIndex = NULL,
   unloadInvisibleTiles = NULL, updateWhenIdle = NULL,
-  detectRetina = FALSE, reuseTiles = FALSE)
+  detectRetina = FALSE, reuseTiles = FALSE, ...)
 
 WMSTileOptions(styles = "", format = "image/jpeg", transparent = FALSE,
   version = "1.1.1", crs = NULL, ...)
 
 popupOptions(maxWidth = 300, minWidth = 50, maxHeight = NULL,
   autoPan = TRUE, keepInView = FALSE, closeButton = TRUE,
-  zoomAnimation = TRUE, closeOnClick = NULL, className = "")
+  zoomAnimation = TRUE, closeOnClick = NULL, className = "", ...)
 
 labelOptions(clickable = FALSE, noHide = FALSE, className = "",
   direction = "right", offset = c(12, -15), opacity = 1,
   textsize = "10px", textOnly = FALSE, style = NULL,
-  zoomAnimation = TRUE)
+  zoomAnimation = TRUE, ...)
 
 markerOptions(clickable = TRUE, draggable = FALSE, keyboard = TRUE,
   title = "", alt = "", zIndexOffset = 0, opacity = 1,
-  riseOnHover = FALSE, riseOffset = 250)
+  riseOnHover = FALSE, riseOffset = 250, ...)
 
 markerClusterOptions(showCoverageOnHover = TRUE, zoomToBoundsOnClick = TRUE,
   spiderfyOnMaxZoom = TRUE, removeOutsideVisibleBounds = TRUE,
@@ -39,11 +39,13 @@ markerClusterOptions(showCoverageOnHover = TRUE, zoomToBoundsOnClick = TRUE,
   0.5), freezeAtZoom = FALSE, ...)
 
 pathOptions(lineCap = NULL, lineJoin = NULL, clickable = TRUE,
-  pointerEvents = NULL, className = "")
+  pointerEvents = NULL, className = "", ...)
 }
 \arguments{
 \item{minZoom, maxZoom, maxNativeZoom, tileSize, subdomains, errorTileUrl, tms, continuousWorld, noWrap, zoomOffset, zoomReverse, zIndex, unloadInvisibleTiles, updateWhenIdle, detectRetina, reuseTiles}{the tile layer options; see
 \url{http://leafletjs.com/reference.html#tilelayer}}
+
+\item{...}{extra options passed to underlying Javascript object constructor.}
 
 \item{styles}{comma-separated list of WMS styles}
 
@@ -57,9 +59,6 @@ transparency}
 
 \item{crs}{Coordinate Reference System to use for the WMS requests, defaults
 to map CRS (don't change this if you're not sure what it means)}
-
-\item{...}{other tile options for \code{WMSTileOptions()} (all arguments of
-\code{tileOptions()} can be used)}
 
 \item{maxWidth, minWidth, maxHeight, autoPan, keepInView, closeButton, zoomAnimation, closeOnClick}{popup options; see \url{http://leafletjs.com/reference.html#popup}}
 

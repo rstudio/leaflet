@@ -19,24 +19,24 @@
 #' @param width the width of the map
 #' @param height the height of the map
 #' @param padding the padding of the map
-#' @param mapOptions the map options
+#' @param options the map options
 #' @return A HTML widget object, on which we can add graphics layers using
 #'   \code{\%>\%} (see examples).
 #' @example inst/examples/leaflet.R
 #' @export
 leaflet = function(data = NULL, width = NULL, height = NULL,
-                   padding = 0, mapOptions = list()) {
+                   padding = 0, options = list()) {
 
   # Validate the CRS if specified
-  if(!is.null(mapOptions[['crs']]) &&
-     !inherits(mapOptions[['crs']], 'leaflet_crs')) {
-    stop("CRS in mapOptions should be a return value of crs() function")
+  if(!is.null(options[['crs']]) &&
+     !inherits(options[['crs']], 'leaflet_crs')) {
+    stop("CRS in mapOptions should be a return value of leafletCRS() function")
   }
 
   htmlwidgets::createWidget(
     'leaflet',
     structure(
-      list(options = mapOptions),
+      list(options = options),
       leafletData = data
     ),
     width = width, height = height,
@@ -70,10 +70,6 @@ hookWrapperTemplate <- "function(el, x, data) {
 
 getMapData = function(map) {
   attr(map$x, "leafletData", exact = TRUE)
-}
-
-getMapOptions = function(map) {
-  attr(map$x, "options", exact = TRUE)
 }
 
 #' Set options on a leaflet map object
@@ -126,7 +122,7 @@ crsClasses <- list( 'L.CRS.EPSG3857', 'L.CRS.EPSG4326', 'L.CRS.EPSG3395',
 #' @param tileSize Tile size, in pixels, to use in this CRS (Default 256)
 #'    Only needed when crsClass = 'L.Proj.CRS.TMS'
 #' @export
-crs <- function(
+leafletCRS <- function(
   crsClass = 'L.CRS.EPSG3857',
   code = NULL,
   proj4def = NULL,

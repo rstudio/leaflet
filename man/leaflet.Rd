@@ -5,7 +5,7 @@
 \title{Create a Leaflet map widget}
 \usage{
 leaflet(data = NULL, width = NULL, height = NULL, padding = 0,
-  mapOptions = list())
+  options = list())
 }
 \arguments{
 \item{data}{a data object (currently supported objects are matrices, data
@@ -21,7 +21,7 @@ frames, and spatial objects from the \pkg{sp} package of classes
 
 \item{padding}{the padding of the map}
 
-\item{mapOptions}{the map options}
+\item{options}{the map options}
 }
 \value{
 A HTML widget object, on which we can add graphics layers using

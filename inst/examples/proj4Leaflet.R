@@ -5,18 +5,18 @@ library(leaflet)
 
 
 #' Default SPherical Mercator Projection specified explicitly
-leaflet(mapOptions=list(crs=crs(crsClass='L.CRS.EPSG3857'),
+leaflet(options = list(crs=leafletCRS(crsClass='L.CRS.EPSG3857'),
                         center=c(0,0), zoom=3)) %>% addTiles()
 
 #' <br/><br/>Gothenberg, Sweeden in default projection
-leaflet(mapOptions = list(center=c(57.704, 11.965), zoom = 16)) %>%
+leaflet(options = list(center=c(57.704, 11.965), zoom = 16)) %>%
           addTiles()
 
 
 #' <br/><br/>Gothenberg, Sweeden in local projection
-leaflet(mapOptions = list(center=c(57.704, 11.965), zoom = 13,
+leaflet(options = list(center=c(57.704, 11.965), zoom = 13,
                            worldCopyJump = FALSE,
-                          crs=crs(crsClass="L.Proj.CRS", code='EPSG:3006',
+                          crs=leafletCRS(crsClass="L.Proj.CRS", code='EPSG:3006',
                                    proj4def='+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs',
                                    resolutions = c(
                                      8192, 4096, 2048, 1024, 512, 256, 128,
@@ -38,9 +38,9 @@ geoJSON <- geojsonio::as.json(v8$get('countries'))
 spdf <- geojsonio::geojson_sp(geoJSON)
 sp::proj4string(spdf) # Look MA no need to reproject
 
-leaflet(mapOptions =
+leaflet(options =
           list(maxZoom = 5,
-               crs=crs(crsClass="L.Proj.CRS", code='ESRI:53009',
+               crs=leafletCRS(crsClass="L.Proj.CRS", code='ESRI:53009',
                         proj4def= '+proj=moll +lon_0=0 +x_0=0 +y_0=0 +a=6371000 +b=6371000 +units=m +no_defs',
                         resolutions = c(65536, 32768, 16384, 8192, 4096, 2048)
                        ))) %>%
@@ -52,7 +52,7 @@ leaflet(mapOptions =
 #' For now the image is specified via onRender and native JS call
 #' because we haven't coded the L.ImageLayer part yet.
 bounds <- c(-26.5,-25, 1021.5,1023)
-leaflet(mapOptions = list(crs=crs(crsClass='L.CRS.Simple'), minZoom= -5)) %>%
+leaflet(options= list(crs=leafletCRS(crsClass='L.CRS.Simple'), minZoom= -5)) %>%
   fitBounds(bounds[1], bounds[2], bounds[3], bounds[4]) %>%
   setMaxBounds(bounds[1], bounds[2], bounds[3], bounds[4]) %>%
   htmlwidgets::onRender("
@@ -79,13 +79,14 @@ pal <- colorNumeric(
 
 bounds <- c(-125, 24 ,-75, 45)
 
-leaflet(mapOptions =
+leaflet(options=
           list(worldCopyJump = FALSE,
-               crs=crs(crsClass="L.Proj.CRS", code='EPSG:2163',
-                        proj4def='+proj=laea +lat_0=45 +lon_0=-100 +x_0=0 +y_0=0 +a=6370997 +b=6370997 +units=m +no_defs',
-                        resolutions = c(65536, 32768, 16384, 8192, 4096, 2048,
-                                        1024, 512, 256, 128)
-                        ))) %>%
+               crs=leafletCRS(
+                 crsClass="L.Proj.CRS", code='EPSG:2163',
+                 proj4def='+proj=laea +lat_0=45 +lon_0=-100 +x_0=0 +y_0=0 +a=6370997 +b=6370997 +units=m +no_defs',
+                 resolutions = c(65536, 32768, 16384, 8192, 4096, 2048,
+                                 1024, 512, 256, 128)
+               ))) %>%
   fitBounds(bounds[1], bounds[2], bounds[3], bounds[4]) %>%
   setMaxBounds(bounds[1], bounds[2], bounds[3], bounds[4]) %>%
   addPolygons(data=spdf, weight = 1, color = "#000000",
