@@ -25,7 +25,7 @@
 #' @example inst/examples/leaflet.R
 #' @export
 leaflet = function(data = NULL, width = NULL, height = NULL,
-                   padding = 0, options = list()) {
+                   padding = 0, options = leafletOptions()) {
 
   # Validate the CRS if specified
   if(!is.null(options[['crs']]) &&
@@ -99,9 +99,35 @@ mapOptions <- function(map, zoomToLimits = c("always", "first", "never")) {
   map
 }
 
+#' Options for Map creation
+#' @param  minZoom Minimum zoom level of the map. Overrides any minZoom set on map layers.
+#' @param  maxZoom Maximum zoom level of the map. This overrides any maxZoom set on map layers.
+#' @param  crs Coordinate Reference System to use. Don't change this if you're not sure what it means.
+#' @seealso \code{\link{leafletCRS}} for creating a custom CRS.
+#' @param  worldCopyJump With this option enabled, the map tracks when you pan to another "copy" of the world and seamlessly jumps to the original one so that all overlays like markers and vector layers are still visible.
+#' @param ... other options.
+#' @describeIn leaflet Options for map creation
+#' @seealso \url{http://leafletjs.com/reference.html#map-options} for details.
+#' @export
+leafletOptions <- function(
+  minZoom = NULL,
+  maxZoom = NULL,
+  crs = leafletCRS(),
+  worldCopyJump = NULL,
+  ...) {
+  filterNULL(
+    list(
+      minZoom = minZoom,
+      maxZoom = maxZoom,
+      crs = crs,
+      worldCopyJump = worldCopyJump,
+      ...)
+  )
+}
+
 # CRS classes supported
-crsClasses <- list( 'L.CRS.EPSG3857', 'L.CRS.EPSG4326', 'L.CRS.EPSG3395',
-                    'L.CRS.Simple', 'L.Proj.CRS', 'L.Proj.CRS.TMS' )
+crsClasses <- list('L.CRS.EPSG3857', 'L.CRS.EPSG4326', 'L.CRS.EPSG3395',
+                   'L.CRS.Simple', 'L.Proj.CRS', 'L.Proj.CRS.TMS')
 
 #' creates a custom CRS
 #' Refer to \url{https://kartena.github.io/Proj4Leaflet/api/} for details.
@@ -121,6 +147,7 @@ crsClasses <- list( 'L.CRS.EPSG3857', 'L.CRS.EPSG4326', 'L.CRS.EPSG3395',
 #'    defaulting to Leaflet's default CRS size
 #' @param tileSize Tile size, in pixels, to use in this CRS (Default 256)
 #'    Only needed when crsClass = 'L.Proj.CRS.TMS'
+#' @describeIn leaflet class to create a custom CRS
 #' @export
 leafletCRS <- function(
   crsClass = 'L.CRS.EPSG3857',

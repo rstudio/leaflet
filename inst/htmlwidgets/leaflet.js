@@ -59,7 +59,7 @@ var ClusterLayerStore = function () {
 exports.default = ClusterLayerStore;
 
 
-},{"./util":14}],2:[function(require,module,exports){
+},{"./util":15}],2:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -125,6 +125,58 @@ exports.default = ControlStore;
 
 
 },{}],3:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getCRS = getCRS;
+
+var _leaflet = require("./global/leaflet");
+
+var _leaflet2 = _interopRequireDefault(_leaflet);
+
+var _proj4leaflet = require("./global/proj4leaflet");
+
+var _proj4leaflet2 = _interopRequireDefault(_proj4leaflet);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// Helper function to instanciate a ICRS instance.
+function getCRS(crsOptions) {
+  var crs = _leaflet2.default.CRS.EPSG3857; // Default Spherical Mercator
+
+  switch (crsOptions.crsClass) {
+    case "L.CRS.EPSG3857":
+      crs = _leaflet2.default.CRS.EPSG3857;
+      break;
+    case "L.CRS.EPSG4326":
+      crs = _leaflet2.default.CRS.EPSG4326;
+      break;
+    case "L.CRS.EPSG3395":
+      crs = _leaflet2.default.CRS.EPSG3395;
+      break;
+    case "L.CRS.Simple":
+      crs = _leaflet2.default.CRS.Simple;
+      break;
+    case "L.Proj.CRS":
+      if (crsOptions.options && crsOptions.options.bounds) {
+        crsOptions.options.bounds = _leaflet2.default.bounds(crsOptions.options.bounds);
+      }
+      crs = new _proj4leaflet2.default.CRS(crsOptions.code, crsOptions.proj4def, crsOptions.options);
+      break;
+    case "L.Proj.CRS.TMS":
+      if (crsOptions.options && crsOptions.options.bounds) {
+        crsOptions.options.bounds = _leaflet2.default.bounds(crsOptions.options.bounds);
+      }
+      crs = new _proj4leaflet2.default.CRS.TMS(crsOptions.code, crsOptions.proj4def, crsOptions.projectedBounds, crsOptions.options);
+      break;
+  }
+  return crs;
+}
+
+
+},{"./global/leaflet":8,"./global/proj4leaflet":9}],4:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -248,7 +300,7 @@ var DataFrame = function () {
 exports.default = DataFrame;
 
 
-},{"./util":14}],4:[function(require,module,exports){
+},{"./util":15}],5:[function(require,module,exports){
 "use strict";
 
 var _leaflet = require("./global/leaflet");
@@ -271,7 +323,7 @@ if (typeof _leaflet2.default.Icon.Default.imagePath === "undefined") {
 }
 
 
-},{"./global/leaflet":7}],5:[function(require,module,exports){
+},{"./global/leaflet":8}],6:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -282,7 +334,7 @@ exports.default = global.HTMLWidgets;
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -293,7 +345,7 @@ exports.default = global.jQuery;
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -304,7 +356,7 @@ exports.default = global.L;
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -315,7 +367,7 @@ exports.default = global.L.Proj;
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -326,7 +378,7 @@ exports.default = global.Shiny;
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 "use strict";
 
 var _jquery = require("./global/jquery");
@@ -337,10 +389,6 @@ var _leaflet = require("./global/leaflet");
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
-var _proj4leaflet = require("./global/proj4leaflet");
-
-var _proj4leaflet2 = _interopRequireDefault(_proj4leaflet);
-
 var _shiny = require("./global/shiny");
 
 var _shiny2 = _interopRequireDefault(_shiny);
@@ -350,6 +398,8 @@ var _htmlwidgets = require("./global/htmlwidgets");
 var _htmlwidgets2 = _interopRequireDefault(_htmlwidgets);
 
 var _util = require("./util");
+
+var _crs_utils = require("./crs_utils");
 
 var _controlStore = require("./control-store");
 
@@ -446,37 +496,7 @@ _htmlwidgets2.default.widget({
         // Create an appropriate CRS Object if specified
 
         if (data && data.options && data.options.crs) {
-
-          var crs = _leaflet2.default.CRS.EPSG3857; // Default Spherical Mercator
-          var crsOptions = data.options.crs;
-
-          switch (crsOptions.crsClass) {
-            case "L.CRS.EPSG3857":
-              crs = _leaflet2.default.CRS.EPSG3857;
-              break;
-            case "L.CRS.EPSG4326":
-              crs = _leaflet2.default.CRS.EPSG4326;
-              break;
-            case "L.CRS.EPSG3395":
-              crs = _leaflet2.default.CRS.EPSG3395;
-              break;
-            case "L.CRS.Simple":
-              crs = _leaflet2.default.CRS.Simple;
-              break;
-            case "L.Proj.CRS":
-              if (crsOptions.options && crsOptions.options.bounds) {
-                crsOptions.options.bounds = _leaflet2.default.bounds(crsOptions.options.bounds);
-              }
-              crs = new _proj4leaflet2.default.CRS(crsOptions.code, crsOptions.proj4def, crsOptions.options);
-              break;
-            case "L.Proj.CRS.TMS":
-              if (crsOptions.options && crsOptions.options.bounds) {
-                crsOptions.options.bounds = _leaflet2.default.bounds(crsOptions.options.bounds);
-              }
-              crs = new _proj4leaflet2.default.CRS.TMS(crsOptions.code, crsOptions.proj4def, crsOptions.projectedBounds, crsOptions.options);
-              break;
-          }
-          data.options.crs = crs;
+          data.options.crs = (0, _crs_utils.getCRS)(data.options.crs);
         }
 
         // As per https://github.com/rstudio/leaflet/pull/294#discussion_r79584810
@@ -652,7 +672,7 @@ if (_htmlwidgets2.default.shinyMode) {
 }
 
 
-},{"./control-store":2,"./fixup-default-icon":4,"./global/htmlwidgets":5,"./global/jquery":6,"./global/leaflet":7,"./global/proj4leaflet":8,"./global/shiny":9,"./layer-manager":11,"./methods":12,"./util":14}],11:[function(require,module,exports){
+},{"./control-store":2,"./crs_utils":3,"./fixup-default-icon":5,"./global/htmlwidgets":6,"./global/jquery":7,"./global/leaflet":8,"./global/shiny":10,"./layer-manager":12,"./methods":13,"./util":15}],12:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -908,7 +928,7 @@ var LayerManager = function () {
 exports.default = LayerManager;
 
 
-},{"./global/jquery":6,"./global/leaflet":7,"./util":14}],12:[function(require,module,exports){
+},{"./global/jquery":7,"./global/leaflet":8,"./util":15}],13:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -935,6 +955,8 @@ var _htmlwidgets = require("./global/htmlwidgets");
 var _htmlwidgets2 = _interopRequireDefault(_htmlwidgets);
 
 var _util = require("./util");
+
+var _crs_utils = require("./crs_utils");
 
 var _dataframe = require("./dataframe");
 
@@ -1027,6 +1049,9 @@ methods.clearTiles = function () {
 };
 
 methods.addWMSTiles = function (baseUrl, layerId, group, options) {
+  if (options && options.crs) {
+    options.crs = (0, _crs_utils.getCRS)(options.crs);
+  }
   this.layerManager.addLayer(_leaflet2.default.tileLayer.wms(baseUrl, options), "tile", layerId, group);
 };
 
@@ -1907,7 +1932,7 @@ methods.removeMeasure = function () {
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./cluster-layer-store":1,"./dataframe":3,"./global/htmlwidgets":5,"./global/jquery":6,"./global/leaflet":7,"./global/shiny":9,"./mipmapper":13,"./util":14}],13:[function(require,module,exports){
+},{"./cluster-layer-store":1,"./crs_utils":3,"./dataframe":4,"./global/htmlwidgets":6,"./global/jquery":7,"./global/leaflet":8,"./global/shiny":10,"./mipmapper":14,"./util":15}],14:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2013,7 +2038,7 @@ var Mipmapper = function () {
 exports.default = Mipmapper;
 
 
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2055,4 +2080,4 @@ function asArray(value) {
 }
 
 
-},{}]},{},[10]);
+},{}]},{},[11]);

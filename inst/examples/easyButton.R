@@ -17,7 +17,7 @@ leaflet() %>% addTiles() %>%
              clusterOptions = markerClusterOptions(),
              clusterId = 'quakesCluster') %>%
   addEasyButton(easyButton(
-    states = easyButtonStateList(
+    states = list(
       easyButtonState(
         stateName='unfrozen-markers',
         icon='ion-toggle',
@@ -51,11 +51,11 @@ leaflet() %>% addTiles() %>%
 #' first to set zoom level to 1
 #' second to find your self
 leaflet() %>% addTiles() %>%
-  addEasyButtonBar(easyButtonList(
+  addEasyButtonBar(
     easyButton(
       icon='fa-globe', title='Zoom to Level 1',
       onClick=JS("function(btn, map){ map.setZoom(1);}")),
     easyButton(
       icon='fa-crosshairs', title='Locate Me',
       onClick=JS("function(btn, map){ map.locate({setView: true});}"))
-  ))
+  )

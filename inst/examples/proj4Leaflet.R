@@ -3,29 +3,34 @@
 #' ---
 library(leaflet)
 
-
 #' Default SPherical Mercator Projection specified explicitly
-leaflet(options = list(crs=leafletCRS(crsClass='L.CRS.EPSG3857'),
-                        center=c(0,0), zoom=3)) %>% addTiles()
+leaflet(
+  options =
+    leafletOptions(crs=leafletCRS(crsClass='L.CRS.EPSG3857'))) %>% addTiles()
 
 #' <br/><br/>Gothenberg, Sweeden in default projection
-leaflet(options = list(center=c(57.704, 11.965), zoom = 16)) %>%
-          addTiles()
+leaflet() %>%
+  addTiles() %>% setView(11.965, 57.704, 16)
 
 
 #' <br/><br/>Gothenberg, Sweeden in local projection
-leaflet(options = list(center=c(57.704, 11.965), zoom = 13,
-                           worldCopyJump = FALSE,
-                          crs=leafletCRS(crsClass="L.Proj.CRS", code='EPSG:3006',
-                                   proj4def='+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs',
-                                   resolutions = c(
-                                     8192, 4096, 2048, 1024, 512, 256, 128,
-                                     64, 32, 16, 8, 4, 2, 1, 0.5
-                                   ),
-                                   origin =c(0, 0)))) %>%
-  addTiles(urlTemplate = 'http://api.geosition.com/tile/osm-bright-3006/{z}/{x}/{y}.png',
-           attribution = 'Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>, Imagery &copy; 2013 <a href="http://www.kartena.se/">Kartena</a>',
-           options = tileOptions(minZoom=0,maxZoom=14,continuousWorld = TRUE))
+leaflet(
+  options =
+    leafletOptions(
+      worldCopyJump = FALSE,
+      crs=leafletCRS(
+        crsClass="L.Proj.CRS",
+        code='EPSG:3006',
+        proj4def='+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs',
+        resolutions = c(
+          8192, 4096, 2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5 ),
+        origin =c(0, 0))
+      )) %>%
+  addTiles(
+    urlTemplate = 'http://api.geosition.com/tile/osm-bright-3006/{z}/{x}/{y}.png',
+    attribution = 'Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>, Imagery &copy; 2013 <a href="http://www.kartena.se/">Kartena</a>',
+    options = tileOptions(minZoom=0,maxZoom=14,continuousWorld = TRUE)) %>%
+  setView(11.965, 57.704, 13)
 
 #' <br/><br/>
 #' ## Mollweide Projection
@@ -36,10 +41,11 @@ v8 <- V8::v8()
 v8$source(srcURL)
 geoJSON <- geojsonio::as.json(v8$get('countries'))
 spdf <- geojsonio::geojson_sp(geoJSON)
-sp::proj4string(spdf) # Look MA no need to reproject
+sp::proj4string(spdf) # We need our data to be in WGS84 a.k.a EPSG4326 i.e. just latlong
 
+# Leaflet will project the polygons/lines/markers to the target CRS before it maps them.
 leaflet(options =
-          list(maxZoom = 5,
+          leafletOptions(maxZoom = 5,
                crs=leafletCRS(crsClass="L.Proj.CRS", code='ESRI:53009',
                         proj4def= '+proj=moll +lon_0=0 +x_0=0 +y_0=0 +a=6371000 +b=6371000 +units=m +no_defs',
                         resolutions = c(65536, 32768, 16384, 8192, 4096, 2048)
@@ -52,7 +58,10 @@ leaflet(options =
 #' For now the image is specified via onRender and native JS call
 #' because we haven't coded the L.ImageLayer part yet.
 bounds <- c(-26.5,-25, 1021.5,1023)
-leaflet(options= list(crs=leafletCRS(crsClass='L.CRS.Simple'), minZoom= -5)) %>%
+leaflet(options= leafletOptions(
+  crs=leafletCRS(crsClass='L.CRS.Simple'),
+  minZoom= -5,
+  maxZoom = 5)) %>%
   fitBounds(bounds[1], bounds[2], bounds[3], bounds[4]) %>%
   setMaxBounds(bounds[1], bounds[2], bounds[3], bounds[4]) %>%
   htmlwidgets::onRender("
@@ -67,6 +76,7 @@ leaflet(options= list(crs=leafletCRS(crsClass='L.CRS.Simple'), minZoom= -5)) %>%
 
 #' <br/><br/> Albers USA with moved Alaska and Hawaii
 #' with some fancy effects.
+#' You need albersusa for this. `devtools::install_github('hrbrmstr/albersusa')`
 
 
 library(sp)
@@ -79,14 +89,16 @@ pal <- colorNumeric(
 
 bounds <- c(-125, 24 ,-75, 45)
 
-leaflet(options=
-          list(worldCopyJump = FALSE,
-               crs=leafletCRS(
-                 crsClass="L.Proj.CRS", code='EPSG:2163',
-                 proj4def='+proj=laea +lat_0=45 +lon_0=-100 +x_0=0 +y_0=0 +a=6370997 +b=6370997 +units=m +no_defs',
-                 resolutions = c(65536, 32768, 16384, 8192, 4096, 2048,
-                                 1024, 512, 256, 128)
-               ))) %>%
+leaflet(
+  options=
+    leafletOptions(
+      worldCopyJump = FALSE,
+      crs=leafletCRS(
+        crsClass="L.Proj.CRS",
+        code='EPSG:2163',
+        proj4def='+proj=laea +lat_0=45 +lon_0=-100 +x_0=0 +y_0=0 +a=6370997 +b=6370997 +units=m +no_defs',
+        resolutions = c(65536, 32768, 16384, 8192, 4096, 2048,1024, 512, 256, 128)
+      ))) %>%
   fitBounds(bounds[1], bounds[2], bounds[3], bounds[4]) %>%
   setMaxBounds(bounds[1], bounds[2], bounds[3], bounds[4]) %>%
   addPolygons(data=spdf, weight = 1, color = "#000000",

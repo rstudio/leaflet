@@ -1,6 +1,8 @@
 leaflet 1.1
 --------------------------------------------------------------------------------
 
+* Added 2 new plugins Proj4Leaflet (PR #294) and EasyButton (PR #295).
+
 * Upgraded existing plugins to their respective latest versions and added missing/new functionality from those plugins. (PR #293)
 
 * Added Graticule plugin (PR #293)

@@ -11,10 +11,9 @@ leafletEasyButtonDependencies <- function() {
 }
 
 #' Create an easyButton statestate
-#' @param stateName the name of the state
-#' @param icon the button icon
-#' @param title text to show on hover
-#' @param onClick the action to take
+#' @param stateName a unique name for the state
+#' @seealso \code{\link{easyButton}}
+#' @describeIn easyButton state of an easyButton.
 #' @export
 easyButtonState <- function(
    stateName,
@@ -34,22 +33,8 @@ easyButtonState <- function(
       class='leaflet_easybutton_state')
 }
 
-#' Create a list of easyButton states.
-#' @param ... states created from \code{\link{easyButtonState}()}
-#' @export
-easyButtonStateList <- function(...) {
-  res = structure(
-    list(...),
-    class = "leaflet_easybutton_state_list"
-  )
-  cls = unlist(lapply(res, inherits, 'leaflet_easybutton_state'))
-  if (any(!cls))
-    stop('Arguments passed to easyButtonStateList() must be icon objects returned from easyButtonState()')
-  res
-}
-
 #' Creates an easy button.
-#' see \url{https://github.com/CliffCloud/Leaflet.EasyButton}
+#' @seealso \url{https://github.com/CliffCloud/Leaflet.EasyButton}
 #' @param icon the button icon
 #' @param title text to show on hover
 #' @param onClick the action to take
@@ -68,8 +53,10 @@ easyButton <- function(
   if(!inherits(onClick,'JS_EVAL')) {
     stop("onClick needs to be a returned value from a JS() call")
   }
-  if(!is.null(states) && !inherits(states,'leaflet_easybutton_state_list')) {
-    stop("states needs to be a returned value from a easyButtonStateList() call")
+  if(!is.null(states) && ! (
+    inherits(states,'list') &&
+    all(sapply(states,function(x) inherits(x,'leaflet_easybutton_state'))))) {
+    stop("states needs to be a list() of easyButton instances")
   }
   structure(list(
     icon = as.character(icon),
@@ -80,20 +67,6 @@ easyButton <- function(
     states = states
   ),
       class='leaflet_easybutton')
-}
-
-#' Creates a list of easy buttons.
-#' @param ... icons created from \code{\link{easyButton}()}
-#' @export
-easyButtonList = function(...) {
-  res = structure(
-    list(...),
-    class = "leaflet_easybutton_list"
-  )
-  cls = unlist(lapply(res, inherits, 'leaflet_easybutton'))
-  if (any(!cls))
-    stop('Arguments passed to easyButtonList() must be icon objects returned from easyButton()')
-  res
 }
 
 #' Add a EasyButton on the map
@@ -110,6 +83,7 @@ easyButtonList = function(...) {
 #'      icon = htmltools::span(class='star','&starf;'),
 #'      onClick = JS("function(btn, map){ map.setZoom(1);}")))
 #'
+#' @describeIn easyButton add an EasyButton to the map
 #' @export
 addEasyButton <- function(
   map,
@@ -150,33 +124,34 @@ addEasyButton <- function(
 #' Add a easyButton bar on the map
 #' see \url{https://github.com/CliffCloud/Leaflet.EasyButton}
 #'
-#' @param map a map widget object
-#' @param buttons the buttons object created with \code{\link{easyButtonList}}
-#' @param position topleft|topright|bottomleft|bottomright
-#' @param id id for the button bar
+#' @param ... a list of buttons created with \code{\link{easyButton}}
+#' @seealso \code{\link{addEasyButton}}
 #' @examples
 #' library(leaflet)
 #'
 #' leaf <- leaflet() %>%
 #'   addTiles() %>%
-#'   addEasyButtonBar(easyButtonList(
+#'   addEasyButtonBar(
 #'    easyButton(
 #'      icon = htmltools::span(class='star','&starf;'),
 #'      onClick = JS("function(btn, map){ alert('Button 1');}")),
 #'    easyButton(
 #'      icon = htmltools::span(class='star','&target;'),
-#'      onClick = JS("function(btn, map){ alert('Button 2');}"))))
+#'      onClick = JS("function(btn, map){ alert('Button 2');}")))
 #'
 #'
+#' @describeIn easyButton add an EasyButton to the map
 #' @export
 addEasyButtonBar <- function(
   map,
-  buttons,
+  ...,
   position = 'topleft',
   id = NULL
 ) {
-  if(!inherits(buttons,'leaflet_easybutton_list')) {
-    stop('button should be created with easyButtonList()')
+  buttons <- list(...)
+  if(!length(buttons) >= 1 ||
+    !all(sapply(buttons,function(x) inherits(x,'leaflet_easybutton')))) {
+    stop('need buttons created with easyButton()')
   }
 
   map$dependencies <- c(map$dependencies, leafletEasyButtonDependencies())
@@ -209,4 +184,3 @@ addEasyButtonBar <- function(
     id
   )
 }
-

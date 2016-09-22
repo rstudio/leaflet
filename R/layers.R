@@ -333,7 +333,8 @@ addWMSTiles = function(
 #' @param transparent if \code{TRUE}, the WMS service will return images with
 #'   transparency
 #' @param version version of the WMS service to use
-#' @param crs Coordinate Reference System to use for the WMS requests, defaults
+#' @param crs Coordinate Reference System to use for the WMS requests, defaults.
+#' @seealso \code{\link{leafletCRS}}
 #'   to map CRS (don't change this if you're not sure what it means)
 #' @describeIn map-options Options for WMS tile layers
 #' @export

@@ -1,10 +1,10 @@
 import $ from "./global/jquery";
 import L from "./global/leaflet";
-import Proj4Leaflet from "./global/proj4leaflet";
 import Shiny from "./global/shiny";
 import HTMLWidgets from "./global/htmlwidgets";
 
 import { log } from "./util";
+import { getCRS } from "./crs_utils";
 
 import ControlStore from "./control-store";
 import LayerManager from "./layer-manager";
@@ -92,39 +92,7 @@ HTMLWidgets.widget({
         // Create an appropriate CRS Object if specified
 
         if(data && data.options && data.options.crs) {
-
-          let crs = L.CRS.EPSG3857; // Default Spherical Mercator
-          let crsOptions = data.options.crs;
-
-          switch(crsOptions.crsClass) {
-          case "L.CRS.EPSG3857":
-            crs = L.CRS.EPSG3857;
-            break;
-          case "L.CRS.EPSG4326":
-            crs = L.CRS.EPSG4326;
-            break;
-          case "L.CRS.EPSG3395":
-            crs = L.CRS.EPSG3395;
-            break;
-          case "L.CRS.Simple":
-            crs =L.CRS.Simple;
-            break;
-          case "L.Proj.CRS":
-            if(crsOptions.options && crsOptions.options.bounds) {
-              crsOptions.options.bounds = L.bounds(crsOptions.options.bounds);
-            }
-            crs = new Proj4Leaflet.CRS(crsOptions.code, crsOptions.proj4def,
-                             crsOptions.options);
-            break;
-          case "L.Proj.CRS.TMS":
-            if(crsOptions.options && crsOptions.options.bounds) {
-              crsOptions.options.bounds = L.bounds(crsOptions.options.bounds);
-            }
-            crs = new Proj4Leaflet.CRS.TMS(crsOptions.code, crsOptions.proj4def,
-                                 crsOptions.projectedBounds, crsOptions.options);
-            break;
-          }
-          data.options.crs = crs;
+          data.options.crs = getCRS(data.options.crs);
         }
 
         // As per https://github.com/rstudio/leaflet/pull/294#discussion_r79584810

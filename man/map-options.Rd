@@ -57,8 +57,7 @@ transparency}
 
 \item{version}{version of the WMS service to use}
 
-\item{crs}{Coordinate Reference System to use for the WMS requests, defaults
-to map CRS (don't change this if you're not sure what it means)}
+\item{crs}{Coordinate Reference System to use for the WMS requests, defaults.}
 
 \item{maxWidth, minWidth, maxHeight, autoPan, keepInView, closeButton, zoomAnimation, closeOnClick}{popup options; see \url{http://leafletjs.com/reference.html#popup}}
 
@@ -121,4 +120,8 @@ Extra options for marker and polygon labels
 \item \code{pathOptions}: Options for vector layers (polylines, polygons,
 rectangles, and circles, etc)
 }}
+\seealso{
+\code{\link{leafletCRS}}
+  to map CRS (don't change this if you're not sure what it means)
+}
 
