@@ -22,12 +22,30 @@ export function getCRS(crsOptions) {
     if(crsOptions.options && crsOptions.options.bounds) {
       crsOptions.options.bounds = L.bounds(crsOptions.options.bounds);
     }
+    if(crsOptions.options && crsOptions.options.transformation) {
+      crsOptions.options.transformation =
+        L.Transformation(
+          crsOptions.options.transformation[0],
+          crsOptions.options.transformation[1],
+          crsOptions.options.transformation[2],
+          crsOptions.options.transformation[3]
+        );
+    }
     crs = new Proj4Leaflet.CRS(crsOptions.code, crsOptions.proj4def,
                      crsOptions.options);
     break;
   case "L.Proj.CRS.TMS":
     if(crsOptions.options && crsOptions.options.bounds) {
       crsOptions.options.bounds = L.bounds(crsOptions.options.bounds);
+    }
+    if(crsOptions.options && crsOptions.options.transformation) {
+      crsOptions.options.transformation =
+        L.Transformation(
+          crsOptions.options.transformation[0],
+          crsOptions.options.transformation[1],
+          crsOptions.options.transformation[2],
+          crsOptions.options.transformation[3]
+        );
     }
     crs = new Proj4Leaflet.CRS.TMS(crsOptions.code, crsOptions.proj4def,
                          crsOptions.projectedBounds, crsOptions.options);
