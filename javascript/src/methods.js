@@ -182,6 +182,8 @@ function addMarkers(map, df, group, clusterOptions, clusterId, markerFunc) {
   }).call(map);
 }
 
+methods.addGenericMarkers = addMarkers;
+
 methods.addMarkers = function(lat, lng, icon, layerId, group, options, popup, popupOptions,
                               clusterOptions, clusterId, label, labelOptions) {
   let icondf;
@@ -1063,4 +1065,8 @@ methods.addMeasure = function(options){
 methods.removeMeasure = function() {
   this.measureControl.removeFrom( this );
   delete this.measureControl;
+};
+
+methods.newDataFrame = function() {
+  return new DataFrame();
 };
