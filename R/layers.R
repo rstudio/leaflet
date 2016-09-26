@@ -484,6 +484,7 @@ addMarkers = function(
   map, lng = NULL, lat = NULL, layerId = NULL, group = NULL,
   icon = NULL,
   popup = NULL,
+  popupOptions = NULL,
   label = NULL,
   labelOptions = NULL,
   options = markerOptions(),
@@ -518,8 +519,9 @@ addMarkers = function(
 
   pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addMarkers")
   invokeMethod(
-    map, data, 'addMarkers', pts$lat, pts$lng, icon, layerId, group, options, popup,
-    clusterOptions, clusterId, safeLabel(label, data), labelOptions
+    map, data, 'addMarkers', pts$lat, pts$lng, icon, layerId, group, options,
+    popup, popupOptions, clusterOptions, clusterId,
+    safeLabel(label, data), labelOptions
   ) %>% expandLimits(pts$lat, pts$lng)
 }
 
@@ -802,6 +804,7 @@ addCircleMarkers = function(
   fillOpacity = 0.2,
   dashArray = NULL,
   popup = NULL,
+  popupOptions = NULL,
   label = NULL,
   labelOptions = NULL,
   options = pathOptions(),
@@ -818,7 +821,8 @@ addCircleMarkers = function(
     map$dependencies = c(map$dependencies, markerClusterDependencies())
   pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addCircleMarkers")
   invokeMethod(map, data, 'addCircleMarkers', pts$lat, pts$lng, radius,
-      layerId, group, options, clusterOptions, clusterId, popup, safeLabel(label, data), labelOptions) %>%
+               layerId, group, options, clusterOptions, clusterId,
+               popup, popupOptions, safeLabel(label, data), labelOptions) %>%
     expandLimits(pts$lat, pts$lng)
 }
 
@@ -891,6 +895,7 @@ addCircles = function(
   fillOpacity = 0.2,
   dashArray = NULL,
   popup = NULL,
+  popupOptions = NULL,
   label = NULL,
   labelOptions = NULL,
   options = pathOptions(),
@@ -902,7 +907,8 @@ addCircles = function(
     dashArray = dashArray
   ))
   pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addCircles")
-  invokeMethod(map, data, 'addCircles', pts$lat, pts$lng, radius, layerId, group, options, popup, safeLabel(label, data), labelOptions) %>%
+  invokeMethod(map, data, 'addCircles', pts$lat, pts$lng, radius, layerId, group, options,
+               popup, popupOptions, safeLabel(label, data), labelOptions) %>%
     expandLimits(pts$lat, pts$lng)
 }
 
@@ -924,6 +930,7 @@ addPolylines = function(
   smoothFactor = 1.0,
   noClip = FALSE,
   popup = NULL,
+  popupOptions = NULL,
   label = NULL,
   labelOptions = NULL,
   options = pathOptions(),
@@ -935,7 +942,8 @@ addPolylines = function(
     dashArray = dashArray, smoothFactor = smoothFactor, noClip = noClip
   ))
   pgons = derivePolygons(data, lng, lat, missing(lng), missing(lat), "addPolylines")
-  invokeMethod(map, data, 'addPolylines', pgons, layerId, group, options, popup, safeLabel(label, data), labelOptions) %>%
+  invokeMethod(map, data, 'addPolylines', pgons, layerId, group, options,
+               popup, popupOptions, safeLabel(label, data), labelOptions) %>%
     expandLimitsBbox(pgons)
 }
 
@@ -956,6 +964,7 @@ addRectangles = function(
   smoothFactor = 1.0,
   noClip = FALSE,
   popup = NULL,
+  popupOptions = NULL,
   label = NULL,
   labelOptions = NULL,
   options = pathOptions(),
@@ -970,7 +979,7 @@ addRectangles = function(
   lat1 = resolveFormula(lat1, data)
   lng2 = resolveFormula(lng2, data)
   lat2 = resolveFormula(lat2, data)
-  invokeMethod(map, data, 'addRectangles',lat1, lng1, lat2, lng2, layerId, group, options, popup, safeLabel(label, data), labelOptions) %>%
+  invokeMethod(map, data, 'addRectangles',lat1, lng1, lat2, lng2, layerId, group, options, popup, popupOptions, safeLabel(label, data), labelOptions) %>%
     expandLimits(c(lat1, lat2), c(lng1, lng2))
 }
 
@@ -989,6 +998,7 @@ addPolygons = function(
   smoothFactor = 1.0,
   noClip = FALSE,
   popup = NULL,
+  popupOptions = NULL,
   label = NULL,
   labelOptions = NULL,
   options = pathOptions(),
@@ -1000,7 +1010,7 @@ addPolygons = function(
     dashArray = dashArray, smoothFactor = smoothFactor, noClip = noClip
   ))
   pgons = derivePolygons(data, lng, lat, missing(lng), missing(lat), "addPolygons")
-  invokeMethod(map, data, 'addPolygons', pgons, layerId, group, options, popup, safeLabel(label, data), labelOptions) %>%
+  invokeMethod(map, data, 'addPolygons', pgons, layerId, group, options, popup, popupOptions, safeLabel(label, data), labelOptions) %>%
     expandLimitsBbox(pgons)
 }
 
