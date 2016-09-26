@@ -9,12 +9,10 @@
 \usage{
 easyButtonState(stateName, icon, title, onClick)
 
-easyButton(icon = htmltools::span(class = "easy-button", "!"),
-  title = "Easy Button",
-  onClick = JS("function(btn, map){alert('That was easy!');}"),
-  position = "topleft", id = NULL, states = NULL)
+easyButton(icon, title = NULL, onClick, position = "topleft", id = NULL,
+  states = NULL)
 
-addEasyButton(map, button = easyButton())
+addEasyButton(map, button)
 
 addEasyButtonBar(map, ..., position = "topleft", id = NULL)
 }

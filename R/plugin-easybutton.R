@@ -43,9 +43,9 @@ easyButtonState <- function(
 #' @param states the states
 #' @export
 easyButton <- function(
-  icon = htmltools::span(class='easy-button','!'),
-  title = "Easy Button",
-  onClick = JS("function(btn, map){alert('That was easy!');}"),
+  icon,
+  title = NULL,
+  onClick,
   position = "topleft",
   id = NULL,
   states = NULL
@@ -87,7 +87,7 @@ easyButton <- function(
 #' @export
 addEasyButton <- function(
   map,
-  button = easyButton()
+  button
 ) {
 
   if(!inherits(button,'leaflet_easybutton')) {
