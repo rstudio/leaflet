@@ -4,6 +4,7 @@ import Shiny from "./global/shiny";
 import HTMLWidgets from "./global/htmlwidgets";
 
 import { log } from "./util";
+import { getCRS } from "./crs_utils";
 
 import ControlStore from "./control-store";
 import LayerManager from "./layer-manager";
@@ -72,157 +73,181 @@ function preventUnintendedZoomOnScroll(map) {
 }
 
 HTMLWidgets.widget({
+
   name: "leaflet",
   type: "output",
-  initialize: function(el, width, height) {
-    // hard-coding center/zoom here for a non-empty initial view, since there
-    // is no way for htmlwidgets to pass initial params to initialize()
-    let map = L.map(el, {
-      center: [51.505, -0.09],
-      zoom: 13
-    });
+  factory: function(el, width, height) {
 
-    preventUnintendedZoomOnScroll(map);
+    let map = null;
 
-    // Store some state in the map object
-    map.leafletr = {
-      // Has the map ever rendered successfully?
-      hasRendered: false,
-      // Data to be rendered when resize is called with area != 0
-      pendingRenderData: null
-    };
+    return {
 
-    if (!HTMLWidgets.shinyMode) return map;
+      // we need to store our map in our returned object.
+      getMap: function() {
+        return map;
+      } ,
 
-    // Check if the map is rendered statically (no output binding)
-    if (!/\bshiny-bound-output\b/.test(el.className)) return map;
+      renderValue: function(data) {
 
-    map.id = el.id;
+        // Create an appropriate CRS Object if specified
 
-    // Store the map on the element so we can find it later by ID
-    $(el).data("leaflet-map", map);
+        if(data && data.options && data.options.crs) {
+          data.options.crs = getCRS(data.options.crs);
+        }
 
-    // When the map is clicked, send the coordinates back to the app
-    map.on("click", function(e) {
-      Shiny.onInputChange(map.id + "_click", {
-        lat: e.latlng.lat,
-        lng: e.latlng.lng,
-        ".nonce": Math.random() // Force reactivity if lat/lng hasn't changed
-      });
-    });
+        // As per https://github.com/rstudio/leaflet/pull/294#discussion_r79584810
+        if(map) {
+          map.remove();
+          map = (function () { return; })(); // undefine map
+        }
 
-    let groupTimerId = null;
+        map = L.map(el, data.options);
 
-    map
-      .on("moveend", function(e) { updateBounds(e.target); })
-      .on("layeradd layerremove", function(e) {
-        // If the layer that's coming or going is a group we created, tell
-        // the server.
-        if (map.layerManager.getGroupNameFromLayerGroup(e.layer)) {
-          // But to avoid chattiness, coalesce events
-          if (groupTimerId) {
-            clearTimeout(groupTimerId);
-            groupTimerId = null;
+        preventUnintendedZoomOnScroll(map);
+
+        // Store some state in the map object
+        map.leafletr = {
+          // Has the map ever rendered successfully?
+          hasRendered: false,
+          // Data to be rendered when resize is called with area != 0
+          pendingRenderData: null
+        };
+
+        // Check if the map is rendered statically (no output binding)
+        if (HTMLWidgets.shinyMode &&
+          /\bshiny-bound-output\b/.test(el.className)) {
+
+          map.id = el.id;
+
+          // Store the map on the element so we can find it later by ID
+          $(el).data("leaflet-map", map);
+
+          // When the map is clicked, send the coordinates back to the app
+          map.on("click", function(e) {
+            Shiny.onInputChange(map.id + "_click", {
+              lat: e.latlng.lat,
+              lng: e.latlng.lng,
+              ".nonce": Math.random() // Force reactivity if lat/lng hasn't changed
+            });
+          });
+
+          let groupTimerId = null;
+
+          map
+            .on("moveend", function(e) { updateBounds(e.target); })
+            .on("layeradd layerremove", function(e) {
+              // If the layer that's coming or going is a group we created, tell
+              // the server.
+              if (map.layerManager.getGroupNameFromLayerGroup(e.layer)) {
+                // But to avoid chattiness, coalesce events
+                if (groupTimerId) {
+                  clearTimeout(groupTimerId);
+                  groupTimerId = null;
+                }
+                groupTimerId = setTimeout(function() {
+                  groupTimerId = null;
+                  Shiny.onInputChange(map.id + "_groups",
+                    map.layerManager.getVisibleGroups());
+                }, 100);
+              }
+            });
+        }
+        this.doRenderValue(data, map);
+      },
+      doRenderValue: function(data, map) {
+        // Leaflet does not behave well when you set up a bunch of layers when
+        // the map is not visible (width/height == 0). Popups get misaligned
+        // relative to their owning markers, and the fitBounds calculations
+        // are off. Therefore we wait until the map is actually showing to
+        // render the value (we rely on the resize() callback being invoked
+        // at the appropriate time).
+        //
+        // There may be an issue with leafletProxy() calls being made while
+        // the map is not being viewed--not sure what the right solution is
+        // there.
+        if (el.offsetWidth === 0 || el.offsetHeight === 0) {
+          map.leafletr.pendingRenderData = data;
+          return;
+        }
+        map.leafletr.pendingRenderData = null;
+
+        // Merge data options into defaults
+        let options = $.extend({ zoomToLimits: "always" }, data.options);
+
+        if (!map.layerManager) {
+          map.controls = new ControlStore(map);
+          map.layerManager = new LayerManager(map);
+        } else {
+          map.controls.clear();
+          map.layerManager.clear();
+        }
+
+        let explicitView = false;
+        if (data.setView) {
+          explicitView = true;
+          map.setView.apply(map, data.setView);
+        }
+        if (data.fitBounds) {
+          explicitView = true;
+          methods.fitBounds.apply(map, data.fitBounds);
+        }
+        if(data.options.center) {
+          explicitView = true;
+        }
+
+        // Returns true if the zoomToLimits option says that the map should be
+        // zoomed to map elements.
+        function needsZoom() {
+          return options.zoomToLimits === "always" ||
+                 (options.zoomToLimits === "first" && !map.leafletr.hasRendered);
+        }
+
+        if (!explicitView && needsZoom() && !map.getZoom()) {
+          if (data.limits) {
+            // Use the natural limits of what's being drawn on the map
+            // If the size of the bounding box is 0, leaflet gets all weird
+            let pad = 0.006;
+            if (data.limits.lat[0] === data.limits.lat[1]) {
+              data.limits.lat[0] = data.limits.lat[0] - pad;
+              data.limits.lat[1] = data.limits.lat[1] + pad;
+            }
+            if (data.limits.lng[0] === data.limits.lng[1]) {
+              data.limits.lng[0] = data.limits.lng[0] - pad;
+              data.limits.lng[1] = data.limits.lng[1] + pad;
+            }
+            map.fitBounds([
+              [ data.limits.lat[0], data.limits.lng[0] ],
+              [ data.limits.lat[1], data.limits.lng[1] ]
+            ]);
+          } else {
+            map.fitWorld();
           }
-          groupTimerId = setTimeout(function() {
-            groupTimerId = null;
-            Shiny.onInputChange(map.id + "_groups",
-              map.layerManager.getVisibleGroups());
-          }, 100);
         }
-      });
 
-    return map;
-  },
-  renderValue: function(el, data, map) {
-    return this.doRenderValue(el, data, map);
-  },
-  doRenderValue: function(el, data, map) {
-    // Leaflet does not behave well when you set up a bunch of layers when
-    // the map is not visible (width/height == 0). Popups get misaligned
-    // relative to their owning markers, and the fitBounds calculations
-    // are off. Therefore we wait until the map is actually showing to
-    // render the value (we rely on the resize() callback being invoked
-    // at the appropriate time).
-    //
-    // There may be an issue with leafletProxy() calls being made while
-    // the map is not being viewed--not sure what the right solution is
-    // there.
-    if (el.offsetWidth === 0 || el.offsetHeight === 0) {
-      map.leafletr.pendingRenderData = data;
-      return;
-    }
-    map.leafletr.pendingRenderData = null;
-
-    // Merge data options into defaults
-    let options = $.extend({ zoomToLimits: "always" }, data.options);
-
-    if (!map.layerManager) {
-      map.controls = new ControlStore(map);
-      map.layerManager = new LayerManager(map);
-    } else {
-      map.controls.clear();
-      map.layerManager.clear();
-    }
-
-    let explicitView = false;
-    if (data.setView) {
-      explicitView = true;
-      map.setView.apply(map, data.setView);
-    }
-    if (data.fitBounds) {
-      explicitView = true;
-      methods.fitBounds.apply(map, data.fitBounds);
-    }
-
-    // Returns true if the zoomToLimits option says that the map should be
-    // zoomed to map elements.
-    function needsZoom() {
-      return options.zoomToLimits === "always" ||
-             (options.zoomToLimits === "first" && !map.leafletr.hasRendered);
-    }
-
-    if (!explicitView && needsZoom()) {
-      if (data.limits) {
-        // Use the natural limits of what's being drawn on the map
-        // If the size of the bounding box is 0, leaflet gets all weird
-        let pad = 0.006;
-        if (data.limits.lat[0] === data.limits.lat[1]) {
-          data.limits.lat[0] = data.limits.lat[0] - pad;
-          data.limits.lat[1] = data.limits.lat[1] + pad;
+        for (let i = 0; data.calls && i < data.calls.length; i++) {
+          let call = data.calls[i];
+          if (methods[call.method])
+            methods[call.method].apply(map, call.args);
+          else
+            log("Unknown method " + call.method);
         }
-        if (data.limits.lng[0] === data.limits.lng[1]) {
-          data.limits.lng[0] = data.limits.lng[0] - pad;
-          data.limits.lng[1] = data.limits.lng[1] + pad;
+
+        map.leafletr.hasRendered = true;
+
+        if (HTMLWidgets.shinyMode){
+          setTimeout(function() { updateBounds(map); }, 1);
         }
-        map.fitBounds([
-          [ data.limits.lat[0], data.limits.lng[0] ],
-          [ data.limits.lat[1], data.limits.lng[1] ]
-        ]);
-      } else {
-        map.fitWorld();
+
+      },
+      resize: function(width, height) {
+        if(map) {
+          map.invalidateSize();
+          if (map.leafletr.pendingRenderData) {
+            this.doRenderValue(map.leafletr.pendingRenderData, map);
+          }
+        }
       }
-    }
-
-    for (let i = 0; data.calls && i < data.calls.length; i++) {
-      let call = data.calls[i];
-      if (methods[call.method])
-        methods[call.method].apply(map, call.args);
-      else
-        log("Unknown method " + call.method);
-    }
-
-    map.leafletr.hasRendered = true;
-
-    if (!HTMLWidgets.shinyMode) return;
-
-    setTimeout(function() { updateBounds(map); }, 1);
-  },
-  resize: function(el, width, height, map) {
-    map.invalidateSize();
-    if (map.leafletr.pendingRenderData) {
-      this.doRenderValue(el, map.leafletr.pendingRenderData, map);
-    }
+    };
   }
 });
 

@@ -5,13 +5,15 @@
 \title{Add a Graticule on the map
 see \url{https://github.com/turban/Leaflet.Graticule}}
 \usage{
-addGraticule(map, interval = 20, style = list(color = "#333", weight = 1),
-  layerId = NULL, group = NULL)
+addGraticule(map, interval = 20, sphere = FALSE, style = list(color =
+  "#333", weight = 1), layerId = NULL, group = NULL)
 }
 \arguments{
 \item{map}{a map widget object}
 
 \item{interval}{The spacing in map units between horizontal and vertical lines.}
+
+\item{sphere}{boolean. Default FALSE}
 
 \item{style}{path options for the generated lines. See \url{http://leafletjs.com/reference.html#path-options}}
 

@@ -4,6 +4,7 @@ import Shiny from "./global/shiny";
 import HTMLWidgets from "./global/htmlwidgets";
 
 import { asArray } from "./util";
+import { getCRS } from "./crs_utils";
 
 import DataFrame from "./dataframe";
 import ClusterLayerStore from "./cluster-layer-store";
@@ -95,6 +96,9 @@ methods.clearTiles = function() {
 };
 
 methods.addWMSTiles = function(baseUrl, layerId, group, options) {
+  if(options && options.crs) {
+    options.crs = getCRS(options.crs);
+  }
   this.layerManager.addLayer(L.tileLayer.wms(baseUrl, options), "tile", layerId, group);
 };
 

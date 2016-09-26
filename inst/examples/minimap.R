@@ -32,13 +32,14 @@ m %>%
   addMiniMap(
              tiles = esri[[1]],
              toggleDisplay = T) %>%
-  htmlwidgets::onRender("function(el, x) {
-                            var myMap = this;
-                            this.on('baselayerchange',
-                                    function (e) {
-                                        myMap.minimap.changeLayer(L.tileLayer.provider(e.name));
-                                    })
-                        }")
+  htmlwidgets::onRender("
+    function(el, x) {
+      var myMap = this;
+      myMap.on('baselayerchange',
+        function (e) {
+          myMap.minimap.changeLayer(L.tileLayer.provider(e.name));
+        })
+    }")
 
 #' <br/><br/>
 #' Another advanced use case
@@ -69,33 +70,27 @@ leaflet() %>% addTiles() %>%
              options = markerOptions(riseOnHover = TRUE, opacity = 0.75),
              group = 'pubs') %>%
   addMiniMap() %>%
-  htmlwidgets::onRender("function(el, t) {
-                             var myMap = this;
+  htmlwidgets::onRender("
+    function(el, t) {
+      var myMap = this;
 
-                             var pubs = myMap.layerManager._byGroup.pubs;
-                             var pubs2 = new L.FeatureGroup();
+      var pubs = myMap.layerManager._byGroup.pubs;
+      var pubs2 = new L.FeatureGroup();
 
-                             for(pub in pubs) {
-                                 var m = new L.CircleMarker(pubs[pub]._latlng,
-                                                            {radius: 2});
-                                 pubs2.addLayer(m);
-
-                             }
-                             var layers = new L.LayerGroup([myMap.minimap._layer, pubs2]);
-
-                             myMap.minimap.changeLayer(layers);
-                        }")
+      for(pub in pubs) {
+        var m = new L.CircleMarker(pubs[pub]._latlng, {radius: 2});
+        pubs2.addLayer(m);
+      }
+      var layers = new L.LayerGroup([myMap.minimap._layer, pubs2]);
+      myMap.minimap.changeLayer(layers);
+    }")
 
 #' <br/><br/>
 #' Finally combine the approaches in last 2 examples
 #' Minimap w/ changable layers and circle markers.
 m <- leaflet()
-esri <- providers %>%
-  purrr::keep(~ grepl('^Esri',.))
-
 esri %>%
   purrr::walk(function(x) m <<- m %>% addProviderTiles(x,group=x))
-
 m %>%
   setView(10.758276373601069, 59.92448055859924, 13) %>%
   addAwesomeMarkers(data=spdf,
@@ -109,27 +104,24 @@ m %>%
   ) %>%
   addMiniMap(tiles = esri[[1]],
              toggleDisplay = T) %>%
-  htmlwidgets::onRender("function(el, t) {
-                             var myMap = this;
+  htmlwidgets::onRender("
+    function(el, t) {
+      var myMap = this;
 
-                             var pubs = myMap.layerManager._byGroup.pubs;
-                             var pubs2 = new L.FeatureGroup();
+      var pubs = myMap.layerManager._byGroup.pubs;
+      var pubs2 = new L.FeatureGroup();
 
-                             for(pub in pubs) {
-                                 var m = new L.CircleMarker(pubs[pub]._latlng,
-                                                            {radius: 2});
-                                 pubs2.addLayer(m);
+      for(pub in pubs) {
+        var m = new L.CircleMarker(pubs[pub]._latlng, {radius: 2});
+        pubs2.addLayer(m);
+      }
+      var layers = new L.LayerGroup([myMap.minimap._layer, pubs2]);
 
-                             }
-                             var layers = new L.LayerGroup([myMap.minimap._layer, pubs2]);
+      myMap.minimap.changeLayer(layers);
 
-                             myMap.minimap.changeLayer(layers);
-
-                             myMap.on('baselayerchange',
-                                      function (e) {
-                                          debugger;
-                                          myMap.minimap.changeLayer(
-                                             new L.LayerGroup([L.tileLayer.provider(e.name),
-                                                pubs2]));
-                                      });
-                        }")
+      myMap.on('baselayerchange',
+        function (e) {
+          myMap.minimap.changeLayer(
+            new L.LayerGroup([L.tileLayer.provider(e.name), pubs2]));
+        });
+    }")
