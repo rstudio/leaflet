@@ -32,9 +32,9 @@ addPopups(map, lng = NULL, lat = NULL, popup, layerId = NULL,
   group = NULL, options = popupOptions(), data = getMapData(map))
 
 addMarkers(map, lng = NULL, lat = NULL, layerId = NULL, group = NULL,
-  icon = NULL, popup = NULL, label = NULL, labelOptions = NULL,
-  options = markerOptions(), clusterOptions = NULL, clusterId = NULL,
-  data = getMapData(map))
+  icon = NULL, popup = NULL, popupOptions = NULL, label = NULL,
+  labelOptions = NULL, options = markerOptions(), clusterOptions = NULL,
+  clusterId = NULL, data = getMapData(map))
 
 addLabelOnlyMarkers(map, lng = NULL, lat = NULL, layerId = NULL,
   group = NULL, icon = NULL, label = NULL, labelOptions = NULL,
@@ -44,33 +44,37 @@ addLabelOnlyMarkers(map, lng = NULL, lat = NULL, layerId = NULL,
 addCircleMarkers(map, lng = NULL, lat = NULL, radius = 10,
   layerId = NULL, group = NULL, stroke = TRUE, color = "#03F",
   weight = 5, opacity = 0.5, fill = TRUE, fillColor = color,
-  fillOpacity = 0.2, dashArray = NULL, popup = NULL, label = NULL,
-  labelOptions = NULL, options = pathOptions(), clusterOptions = NULL,
-  clusterId = NULL, data = getMapData(map))
+  fillOpacity = 0.2, dashArray = NULL, popup = NULL,
+  popupOptions = NULL, label = NULL, labelOptions = NULL,
+  options = pathOptions(), clusterOptions = NULL, clusterId = NULL,
+  data = getMapData(map))
 
 addCircles(map, lng = NULL, lat = NULL, radius = 10, layerId = NULL,
   group = NULL, stroke = TRUE, color = "#03F", weight = 5,
   opacity = 0.5, fill = TRUE, fillColor = color, fillOpacity = 0.2,
-  dashArray = NULL, popup = NULL, label = NULL, labelOptions = NULL,
-  options = pathOptions(), data = getMapData(map))
+  dashArray = NULL, popup = NULL, popupOptions = NULL, label = NULL,
+  labelOptions = NULL, options = pathOptions(), data = getMapData(map))
 
 addPolylines(map, lng = NULL, lat = NULL, layerId = NULL, group = NULL,
   stroke = TRUE, color = "#03F", weight = 5, opacity = 0.5,
   fill = FALSE, fillColor = color, fillOpacity = 0.2, dashArray = NULL,
-  smoothFactor = 1, noClip = FALSE, popup = NULL, label = NULL,
-  labelOptions = NULL, options = pathOptions(), data = getMapData(map))
+  smoothFactor = 1, noClip = FALSE, popup = NULL, popupOptions = NULL,
+  label = NULL, labelOptions = NULL, options = pathOptions(),
+  data = getMapData(map))
 
 addRectangles(map, lng1, lat1, lng2, lat2, layerId = NULL, group = NULL,
   stroke = TRUE, color = "#03F", weight = 5, opacity = 0.5,
   fill = TRUE, fillColor = color, fillOpacity = 0.2, dashArray = NULL,
-  smoothFactor = 1, noClip = FALSE, popup = NULL, label = NULL,
-  labelOptions = NULL, options = pathOptions(), data = getMapData(map))
+  smoothFactor = 1, noClip = FALSE, popup = NULL, popupOptions = NULL,
+  label = NULL, labelOptions = NULL, options = pathOptions(),
+  data = getMapData(map))
 
 addPolygons(map, lng = NULL, lat = NULL, layerId = NULL, group = NULL,
   stroke = TRUE, color = "#03F", weight = 5, opacity = 0.5,
   fill = TRUE, fillColor = color, fillOpacity = 0.2, dashArray = NULL,
-  smoothFactor = 1, noClip = FALSE, popup = NULL, label = NULL,
-  labelOptions = NULL, options = pathOptions(), data = getMapData(map))
+  smoothFactor = 1, noClip = FALSE, popup = NULL, popupOptions = NULL,
+  label = NULL, labelOptions = NULL, options = pathOptions(),
+  data = getMapData(map))
 
 addGeoJSON(map, geojson, layerId = NULL, group = NULL, stroke = TRUE,
   color = "#03F", weight = 5, opacity = 0.5, fill = TRUE,
@@ -127,8 +131,7 @@ argument; the names \code{lat} and \code{latitude} are used when guessing
 the latitude column from \code{data})}
 
 \item{popup}{a character vector of the HTML content for the popups (you are
-recommended to escape the text using \code{\link[htmltools]{htmlEscape}()}
-for security reasons)}
+recommended to escape the text using \code{\link[htmltools]{htmlEscape}()}}
 
 \item{icon}{the icon(s) for markers; an icon is represented by an R list of
 the form \code{list(iconUrl = '?', iconSize = c(x, y))}, and you can use
@@ -136,6 +139,9 @@ the form \code{list(iconUrl = '?', iconSize = c(x, y))}, and you can use
 that contains images as local files, these local image files will be base64
 encoded into the HTML page so the icon images will still be available even
 when you publish the map elsewhere}
+
+\item{popupOptions}{A Vector of \code{\link{popupOptions}} to provide popups
+for security reasons)}
 
 \item{label}{a character vector of the HTML content for the labels}
 

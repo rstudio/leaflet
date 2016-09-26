@@ -358,6 +358,7 @@ WMSTileOptions = function(
 #'   the latitude column from \code{data})
 #' @param popup a character vector of the HTML content for the popups (you are
 #'   recommended to escape the text using \code{\link[htmltools]{htmlEscape}()}
+#' @param popupOptions A Vector of \code{\link{popupOptions}} to provide popups
 #'   for security reasons)
 #' @param layerId the layer id
 #' @param group the name of the group the newly created layers should belong to
@@ -380,6 +381,7 @@ addPopups = function(
     expandLimits(pts$lat, pts$lng)
 }
 
+#' options for specify popup realted options
 #' @param className a CSS class name set on an element
 #' @param
 #' maxWidth,minWidth,maxHeight,autoPan,keepInView,closeButton,zoomAnimation,closeOnClick

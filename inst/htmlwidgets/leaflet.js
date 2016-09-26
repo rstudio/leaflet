@@ -1110,7 +1110,14 @@ function addMarkers(map, df, group, clusterOptions, clusterId, markerFunc) {
           this.layerManager.addLayer(marker, "marker", thisId, thisGroup);
         }
         var popup = df.get(i, "popup");
-        if (popup !== null) marker.bindPopup(popup);
+        var popupOptions = df.get(i, "popupOptions");
+        if (popup !== null) {
+          if (popupOptions !== null) {
+            marker.bindPopup(popup, popupOptions);
+          } else {
+            marker.bindPopup(popup);
+          }
+        }
         var label = df.get(i, "label");
         var labelOptions = df.get(i, "labelOptions");
         if (label !== null) {
@@ -1140,7 +1147,7 @@ function addMarkers(map, df, group, clusterOptions, clusterId, markerFunc) {
   }).call(map);
 }
 
-methods.addMarkers = function (lat, lng, icon, layerId, group, options, popup, clusterOptions, clusterId, label, labelOptions) {
+methods.addMarkers = function (lat, lng, icon, layerId, group, options, popup, popupOptions, clusterOptions, clusterId, label, labelOptions) {
   var icondf = void 0;
   var getIcon = void 0;
 
@@ -1185,7 +1192,7 @@ methods.addMarkers = function (lat, lng, icon, layerId, group, options, popup, c
     };
   }
 
-  var df = new _dataframe2.default().col("lat", lat).col("lng", lng).col("layerId", layerId).col("group", group).col("popup", popup).col("label", label).col("labelOptions", labelOptions).cbind(options);
+  var df = new _dataframe2.default().col("lat", lat).col("lng", lng).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).cbind(options);
 
   if (icon) icondf.effectiveLength = df.nrow();
 
@@ -1196,7 +1203,7 @@ methods.addMarkers = function (lat, lng, icon, layerId, group, options, popup, c
   });
 };
 
-methods.addAwesomeMarkers = function (lat, lng, icon, layerId, group, options, popup, clusterOptions, clusterId, label, labelOptions) {
+methods.addAwesomeMarkers = function (lat, lng, icon, layerId, group, options, popup, popupOptions, clusterOptions, clusterId, label, labelOptions) {
   var icondf = void 0;
   var getIcon = void 0;
   if (icon) {
@@ -1216,7 +1223,7 @@ methods.addAwesomeMarkers = function (lat, lng, icon, layerId, group, options, p
     };
   }
 
-  var df = new _dataframe2.default().col("lat", lat).col("lng", lng).col("layerId", layerId).col("group", group).col("popup", popup).col("label", label).col("labelOptions", labelOptions).cbind(options);
+  var df = new _dataframe2.default().col("lat", lat).col("lng", lng).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).cbind(options);
 
   if (icon) icondf.effectiveLength = df.nrow();
 
@@ -1236,7 +1243,14 @@ function addLayers(map, category, df, layerFunc) {
       this.layerManager.addLayer(layer, category, thisId, thisGroup);
       if (layer.bindPopup) {
         var popup = df.get(i, "popup");
-        if (popup !== null) layer.bindPopup(popup);
+        var popupOptions = df.get(i, "popupOptions");
+        if (popup !== null) {
+          if (popupOptions !== null) {
+            layer.bindPopup(popup, popupOptions);
+          } else {
+            layer.bindPopup(popup);
+          }
+        }
       }
       if (layer.bindLabel) {
         var label = df.get(i, "label");
@@ -1260,16 +1274,16 @@ function addLayers(map, category, df, layerFunc) {
   }
 }
 
-methods.addCircles = function (lat, lng, radius, layerId, group, options, popup, label, labelOptions) {
-  var df = new _dataframe2.default().col("lat", lat).col("lng", lng).col("radius", radius).col("layerId", layerId).col("group", group).col("popup", popup).col("label", label).col("labelOptions", labelOptions).cbind(options);
+methods.addCircles = function (lat, lng, radius, layerId, group, options, popup, popupOptions, label, labelOptions) {
+  var df = new _dataframe2.default().col("lat", lat).col("lng", lng).col("radius", radius).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).cbind(options);
 
   addLayers(this, "shape", df, function (df, i) {
     return _leaflet2.default.circle([df.get(i, "lat"), df.get(i, "lng")], df.get(i, "radius"), df.get(i));
   });
 };
 
-methods.addCircleMarkers = function (lat, lng, radius, layerId, group, options, clusterOptions, clusterId, popup, label, labelOptions) {
-  var df = new _dataframe2.default().col("lat", lat).col("lng", lng).col("radius", radius).col("layerId", layerId).col("group", group).col("popup", popup).col("label", label).col("labelOptions", labelOptions).cbind(options);
+methods.addCircleMarkers = function (lat, lng, radius, layerId, group, options, clusterOptions, clusterId, popup, popupOptions, label, labelOptions) {
+  var df = new _dataframe2.default().col("lat", lat).col("lng", lng).col("radius", radius).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).cbind(options);
 
   addMarkers(this, df, group, clusterOptions, clusterId, function (df, i) {
     return _leaflet2.default.circleMarker([df.get(i, "lat"), df.get(i, "lng")], df.get(i));
@@ -1280,8 +1294,8 @@ methods.addCircleMarkers = function (lat, lng, radius, layerId, group, options, 
  * @param lat Array of arrays of latitude coordinates for polylines
  * @param lng Array of arrays of longitude coordinates for polylines
  */
-methods.addPolylines = function (polygons, layerId, group, options, popup, label, labelOptions) {
-  var df = new _dataframe2.default().col("shapes", polygons).col("layerId", layerId).col("group", group).col("popup", popup).col("label", label).col("labelOptions", labelOptions).cbind(options);
+methods.addPolylines = function (polygons, layerId, group, options, popup, popupOptions, label, labelOptions) {
+  var df = new _dataframe2.default().col("shapes", polygons).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).cbind(options);
 
   addLayers(this, "shape", df, function (df, i) {
     var shape = df.get(i, "shapes")[0];
@@ -1320,8 +1334,8 @@ methods.clearShapes = function () {
   this.layerManager.clearLayers("shape");
 };
 
-methods.addRectangles = function (lat1, lng1, lat2, lng2, layerId, group, options, popup, label, labelOptions) {
-  var df = new _dataframe2.default().col("lat1", lat1).col("lng1", lng1).col("lat2", lat2).col("lng2", lng2).col("layerId", layerId).col("group", group).col("popup", popup).col("label", label).col("labelOptions", labelOptions).cbind(options);
+methods.addRectangles = function (lat1, lng1, lat2, lng2, layerId, group, options, popup, popupOptions, label, labelOptions) {
+  var df = new _dataframe2.default().col("lat1", lat1).col("lng1", lng1).col("lat2", lat2).col("lng2", lng2).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).cbind(options);
 
   addLayers(this, "shape", df, function (df, i) {
     return _leaflet2.default.rectangle([[df.get(i, "lat1"), df.get(i, "lng1")], [df.get(i, "lat2"), df.get(i, "lng2")]], df.get(i));
@@ -1332,8 +1346,8 @@ methods.addRectangles = function (lat1, lng1, lat2, lng2, layerId, group, option
  * @param lat Array of arrays of latitude coordinates for polygons
  * @param lng Array of arrays of longitude coordinates for polygons
  */
-methods.addPolygons = function (polygons, layerId, group, options, popup, label, labelOptions) {
-  var df = new _dataframe2.default().col("shapes", polygons).col("layerId", layerId).col("group", group).col("popup", popup).col("label", label).col("labelOptions", labelOptions).cbind(options);
+methods.addPolygons = function (polygons, layerId, group, options, popup, popupOptions, label, labelOptions) {
+  var df = new _dataframe2.default().col("shapes", polygons).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).cbind(options);
 
   addLayers(this, "shape", df, function (df, i) {
     var shapes = df.get(i, "shapes");

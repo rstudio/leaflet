@@ -149,7 +149,7 @@ function addMarkers(map, df, group, clusterOptions, clusterId, markerFunc) {
           this.layerManager.addLayer(marker, "marker", thisId, thisGroup);
         }
         let popup = df.get(i, "popup");
-        let popupOptions = df.get(i, 'popupOptions');
+        let popupOptions = df.get(i, "popupOptions");
         if (popup !== null) {
           if (popupOptions !== null){
             marker.bindPopup(popup, popupOptions);
@@ -298,7 +298,7 @@ function addLayers(map, category, df, layerFunc) {
       this.layerManager.addLayer(layer, category, thisId, thisGroup);
       if (layer.bindPopup) {
         let popup = df.get(i, "popup");
-        let popupOptions = df.get(i, 'popupOptions');
+        let popupOptions = df.get(i, "popupOptions");
         if (popup !== null) {
           if (popupOptions !== null){
             layer.bindPopup(popup, popupOptions);
