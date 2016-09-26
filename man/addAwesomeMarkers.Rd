@@ -5,9 +5,9 @@
 \title{Add Awesome Markers}
 \usage{
 addAwesomeMarkers(map, lng = NULL, lat = NULL, layerId = NULL,
-  group = NULL, icon = NULL, popup = NULL, label = NULL,
-  labelOptions = NULL, options = markerOptions(), clusterOptions = NULL,
-  clusterId = NULL, data = getMapData(map))
+  group = NULL, icon = NULL, popup = NULL, popupOptions = NULL,
+  label = NULL, labelOptions = NULL, options = markerOptions(),
+  clusterOptions = NULL, clusterId = NULL, data = getMapData(map))
 }
 \arguments{
 \item{map}{the map to add awesome Markers to.}
@@ -33,7 +33,9 @@ layers (e.g. markers and polygons) can share the same group name.}
 \item{icon}{the icon(s) for markers;}
 
 \item{popup}{a character vector of the HTML content for the popups (you are
-recommended to escape the text using \code{\link[htmltools]{htmlEscape}()}
+recommended to escape the text using \code{\link[htmltools]{htmlEscape}()}}
+
+\item{popupOptions}{A Vector of \code{\link{popupOptions}} to provide popups
 for security reasons)}
 
 \item{label}{a character vector of the HTML content for the labels}
