@@ -327,6 +327,8 @@ function addLayers(map, category, df, layerFunc) {
   }
 }
 
+methods.addGenericLayers = addLayers;
+
 methods.addCircles = function(lat, lng, radius, layerId, group, options, popup, popupOptions, label, labelOptions) {
   let df = new DataFrame()
     .col("lat", lat)
@@ -1065,8 +1067,4 @@ methods.addMeasure = function(options){
 methods.removeMeasure = function() {
   this.measureControl.removeFrom( this );
   delete this.measureControl;
-};
-
-methods.newDataFrame = function() {
-  return new DataFrame();
 };

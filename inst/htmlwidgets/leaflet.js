@@ -421,10 +421,15 @@ var _methods2 = _interopRequireDefault(_methods);
 
 require("./fixup-default-icon");
 
+var _dataframe = require("./dataframe");
+
+var _dataframe2 = _interopRequireDefault(_dataframe);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 window.LeafletWidget = {};
 var methods = window.LeafletWidget.methods = _jquery2.default.extend({}, _methods2.default);
+window.LeafletWidget.DataFrame = _dataframe2.default;
 
 // Send updated bounds back to app. Takes a leaflet event object as input.
 function updateBounds(map) {
@@ -678,7 +683,7 @@ if (_htmlwidgets2.default.shinyMode) {
 }
 
 
-},{"./control-store":2,"./crs_utils":3,"./fixup-default-icon":5,"./global/htmlwidgets":6,"./global/jquery":7,"./global/leaflet":8,"./global/shiny":10,"./layer-manager":12,"./methods":13,"./util":15}],12:[function(require,module,exports){
+},{"./control-store":2,"./crs_utils":3,"./dataframe":4,"./fixup-default-icon":5,"./global/htmlwidgets":6,"./global/jquery":7,"./global/leaflet":8,"./global/shiny":10,"./layer-manager":12,"./methods":13,"./util":15}],12:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1275,6 +1280,8 @@ function addLayers(map, category, df, layerFunc) {
     _loop3(i);
   }
 }
+
+methods.addGenericLayers = addLayers;
 
 methods.addCircles = function (lat, lng, radius, layerId, group, options, popup, popupOptions, label, labelOptions) {
   var df = new _dataframe2.default().col("lat", lat).col("lng", lng).col("radius", radius).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).cbind(options);
@@ -1950,10 +1957,6 @@ methods.addMeasure = function (options) {
 methods.removeMeasure = function () {
   this.measureControl.removeFrom(this);
   delete this.measureControl;
-};
-
-methods.newDataFrame = function () {
-  return new _dataframe2.default();
 };
 
 
