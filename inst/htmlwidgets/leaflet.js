@@ -1000,6 +1000,8 @@ function mouseHandler(mapId, layerId, group, eventName, extraInfo) {
   };
 }
 
+methods.mouseHandler = mouseHandler;
+
 methods.clearGroup = function (group) {
   var _this = this;
 

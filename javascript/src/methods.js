@@ -32,6 +32,8 @@ function mouseHandler(mapId, layerId, group, eventName, extraInfo) {
   };
 }
 
+methods.mouseHandler = mouseHandler;
+
 methods.clearGroup = function(group) {
   $.each(asArray(group), (i, v) => {
     this.layerManager.clearGroup(v);
