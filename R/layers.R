@@ -1,5 +1,8 @@
-# Evaluate list members that are formulae, using the map data as the environment
-# (if provided, otherwise the formula environment)
+#' Evaluate list members that are formulae, using the map data as the environment
+#' (if provided, otherwise the formula environment)
+#' @param list with members as formulae
+#' @param data map data
+#' @export
 evalFormula = function(list, data) {
   evalAll = function(x) {
     if (is.list(x)) {
@@ -15,9 +18,13 @@ evalFormula = function(list, data) {
 # polygon lists (returned from polygonData()) use `attr(x, "bbox")` (though at
 # least they are the same shape as the Spatial bounding boxes).
 
-# Notifies the map of new latitude/longitude of items of interest on the map, so
-# that we can expand the limits (i.e. bounding box). We will use this as the
+#' Notifies the map of new latitude/longitude of items of interest on the map
+# So that we can expand the limits (i.e. bounding box). We will use this as the
 # initial view if the user doesn't explicitly specify bounds using fitBounds.
+#' @param map map object
+#' @param lat vector of latitudes
+#' @param lng vector of longitudes
+#' @export
 expandLimits = function(map, lat, lng) {
   if (is.null(map$x$limits)) map$x$limits = list()
 
@@ -33,8 +40,11 @@ expandLimits = function(map, lat, lng) {
   map
 }
 
-# Same as expandLimits, but takes a polygon (that presumably has a bbox attr)
-# rather than lat/lng.
+#' Same as expandLimits, but takes a polygon (that presumably has a bbox attr)
+#' rather than lat/lng.
+#' @param map map object
+#' @param poly A spatial object representing a polygon.
+#' @export
 expandLimitsBbox = function(map, poly) {
   bbox = attr(poly, "bbox", exact = TRUE)
   if (is.null(bbox)) stop("Polygon data had no bbox")
@@ -423,7 +433,9 @@ clearPopups = function(map) {
   invokeMethod(map, NULL, 'clearPopups')
 }
 
-# Helper Function to create a safe label
+#' Helper Function to create a safe label
+#' @describeIn map-layers Create a label with sanitized text/html
+#' @export
 safeLabel <- function(label, data) {
   if (is.null(label)) {
     return(label)
@@ -553,6 +565,9 @@ addLabelOnlyMarkers = function(
              data = data)
 }
 
+#' Adds marker-cluster-plugin HTML dependency
+#' @export
+#' @describeIn map-layers add maker cluster plugin
 markerClusterDependencies = function() {
   list(
     htmltools::htmlDependency(

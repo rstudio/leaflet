@@ -14,6 +14,8 @@
 \alias{addTiles}
 \alias{addTopoJSON}
 \alias{addWMSTiles}
+\alias{markerClusterDependencies}
+\alias{safeLabel}
 \title{Graphics elements and layers}
 \usage{
 addControl(map, html, position = c("topleft", "topright", "bottomleft",
@@ -31,6 +33,8 @@ addWMSTiles(map, baseUrl, layerId = NULL, group = NULL,
 addPopups(map, lng = NULL, lat = NULL, popup, layerId = NULL,
   group = NULL, options = popupOptions(), data = getMapData(map))
 
+safeLabel(label, data)
+
 addMarkers(map, lng = NULL, lat = NULL, layerId = NULL, group = NULL,
   icon = NULL, popup = NULL, popupOptions = NULL, label = NULL,
   labelOptions = NULL, options = markerOptions(), clusterOptions = NULL,
@@ -40,6 +44,8 @@ addLabelOnlyMarkers(map, lng = NULL, lat = NULL, layerId = NULL,
   group = NULL, icon = NULL, label = NULL, labelOptions = NULL,
   options = markerOptions(), clusterOptions = NULL, clusterId = NULL,
   data = getMapData(map))
+
+markerClusterDependencies()
 
 addCircleMarkers(map, lng = NULL, lat = NULL, radius = 10,
   layerId = NULL, group = NULL, stroke = TRUE, color = "#03F",
@@ -133,6 +139,8 @@ the latitude column from \code{data})}
 \item{popup}{a character vector of the HTML content for the popups (you are
 recommended to escape the text using \code{\link[htmltools]{htmlEscape}()}}
 
+\item{label}{a character vector of the HTML content for the labels}
+
 \item{icon}{the icon(s) for markers; an icon is represented by an R list of
 the form \code{list(iconUrl = '?', iconSize = c(x, y))}, and you can use
 \code{\link{icons}()} to create multiple icons; note when you use an R list
@@ -142,8 +150,6 @@ when you publish the map elsewhere}
 
 \item{popupOptions}{A Vector of \code{\link{popupOptions}} to provide popups
 for security reasons)}
-
-\item{label}{a character vector of the HTML content for the labels}
 
 \item{labelOptions}{A Vector of \code{\link{labelOptions}} to provide label
 options for each label. Default \code{NULL}}
@@ -196,6 +202,10 @@ the new \code{map} object
 }
 \description{
 Add graphics elements and layers to the map widget.
+
+Helper Function to create a safe label
+
+Adds marker-cluster-plugin HTML dependency
 }
 \section{Functions}{
 \itemize{
@@ -207,9 +217,13 @@ Add graphics elements and layers to the map widget.
 
 \item \code{addPopups}: Add popups to the map
 
+\item \code{safeLabel}: Create a label with sanitized text/html
+
 \item \code{addMarkers}: Add markders to the map
 
 \item \code{addLabelOnlyMarkers}: Add Label only markers to the map
+
+\item \code{markerClusterDependencies}: add maker cluster plugin
 
 \item \code{addCircleMarkers}: Add circle markers to the map
 
