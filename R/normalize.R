@@ -50,9 +50,16 @@ doResolveFormula.SpatialPointsDataFrame = function(data, f) {
   doResolveFormula(data@data, f)
 }
 
-# Given a data object and lng/lat arguments (which may be NULL [meaning infer
-# from data], formula [which should be evaluated with respect to the data], or
-# vector data [which should be used as-is]) return a lng/lat data frame.
+#' Given a data object and lng/lat arguments (which may be NULL [meaning infer
+#' from data], formula [which should be evaluated with respect to the data], or
+#' vector data [which should be used as-is]) return a lng/lat data frame.
+#' @param data map data
+#' @param lng longitude
+#' @param lat latitude
+#' @param missingLng whether lng is missing
+#' @param missingLat whether lat is missing
+#' @param funcName Name of calling function (for logging)
+#' @export
 derivePoints = function(data, lng, lat, missingLng, missingLat, funcName) {
   if (missingLng || missingLat) {
     if (is.null(data)) {
@@ -78,6 +85,16 @@ derivePoints = function(data, lng, lat, missingLng, missingLat, funcName) {
   data.frame(lng = lng, lat = lat)
 }
 
+#' Given a data object and lng/lat arguments (which may be NULL [meaning infer
+#' from data], formula [which should be evaluated with respect to the data], or
+#' vector data [which should be used as-is]) return a spatial object
+#' @param data map data
+#' @param lng longitude
+#' @param lat latitude
+#' @param missingLng whether lng is missing
+#' @param missingLat whether lat is missing
+#' @param funcName Name of calling function (for logging)
+#' @export
 derivePolygons = function(data, lng, lat, missingLng, missingLat, funcName) {
   if (missingLng != missingLat) {
     stop(funcName, " must be called with both lng and lat, or with neither.")

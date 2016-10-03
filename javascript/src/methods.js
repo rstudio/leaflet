@@ -32,6 +32,8 @@ function mouseHandler(mapId, layerId, group, eventName, extraInfo) {
   };
 }
 
+methods.mouseHandler = mouseHandler;
+
 methods.clearGroup = function(group) {
   $.each(asArray(group), (i, v) => {
     this.layerManager.clearGroup(v);
@@ -149,7 +151,14 @@ function addMarkers(map, df, group, clusterOptions, clusterId, markerFunc) {
           this.layerManager.addLayer(marker, "marker", thisId, thisGroup);
         }
         let popup = df.get(i, "popup");
-        if (popup !== null) marker.bindPopup(popup);
+        let popupOptions = df.get(i, "popupOptions");
+        if (popup !== null) {
+          if (popupOptions !== null){
+            marker.bindPopup(popup, popupOptions);
+          } else {
+            marker.bindPopup(popup);
+          }
+        }
         let label = df.get(i, "label");
         let labelOptions = df.get(i, "labelOptions");
         if (label !== null) {
@@ -175,7 +184,9 @@ function addMarkers(map, df, group, clusterOptions, clusterId, markerFunc) {
   }).call(map);
 }
 
-methods.addMarkers = function(lat, lng, icon, layerId, group, options, popup,
+methods.addGenericMarkers = addMarkers;
+
+methods.addMarkers = function(lat, lng, icon, layerId, group, options, popup, popupOptions,
                               clusterOptions, clusterId, label, labelOptions) {
   let icondf;
   let getIcon;
@@ -227,6 +238,7 @@ methods.addMarkers = function(lat, lng, icon, layerId, group, options, popup,
     .col("layerId", layerId)
     .col("group", group)
     .col("popup", popup)
+    .col("popupOptions", popupOptions)
     .col("label", label)
     .col("labelOptions", labelOptions)
     .cbind(options);
@@ -240,7 +252,7 @@ methods.addMarkers = function(lat, lng, icon, layerId, group, options, popup,
   });
 };
 
-methods.addAwesomeMarkers = function(lat, lng, icon, layerId, group, options, popup,
+methods.addAwesomeMarkers = function(lat, lng, icon, layerId, group, options, popup, popupOptions,
 clusterOptions, clusterId, label, labelOptions) {
   let icondf;
   let getIcon;
@@ -267,6 +279,7 @@ clusterOptions, clusterId, label, labelOptions) {
     .col("layerId", layerId)
     .col("group", group)
     .col("popup", popup)
+    .col("popupOptions", popupOptions)
     .col("label", label)
     .col("labelOptions", labelOptions)
     .cbind(options);
@@ -289,7 +302,14 @@ function addLayers(map, category, df, layerFunc) {
       this.layerManager.addLayer(layer, category, thisId, thisGroup);
       if (layer.bindPopup) {
         let popup = df.get(i, "popup");
-        if (popup !== null) layer.bindPopup(popup);
+        let popupOptions = df.get(i, "popupOptions");
+        if (popup !== null) {
+          if (popupOptions !== null){
+            layer.bindPopup(popup, popupOptions);
+          } else {
+            layer.bindPopup(popup);
+          }
+        }
       }
       if (layer.bindLabel) {
         let label = df.get(i, "label");
@@ -309,7 +329,9 @@ function addLayers(map, category, df, layerFunc) {
   }
 }
 
-methods.addCircles = function(lat, lng, radius, layerId, group, options, popup, label, labelOptions) {
+methods.addGenericLayers = addLayers;
+
+methods.addCircles = function(lat, lng, radius, layerId, group, options, popup, popupOptions, label, labelOptions) {
   let df = new DataFrame()
     .col("lat", lat)
     .col("lng", lng)
@@ -317,6 +339,7 @@ methods.addCircles = function(lat, lng, radius, layerId, group, options, popup, 
     .col("layerId", layerId)
     .col("group", group)
     .col("popup", popup)
+    .col("popupOptions", popupOptions)
     .col("label", label)
     .col("labelOptions", labelOptions)
     .cbind(options);
@@ -326,7 +349,7 @@ methods.addCircles = function(lat, lng, radius, layerId, group, options, popup, 
   });
 };
 
-methods.addCircleMarkers = function(lat, lng, radius, layerId, group, options, clusterOptions, clusterId, popup, label, labelOptions) {
+methods.addCircleMarkers = function(lat, lng, radius, layerId, group, options, clusterOptions, clusterId, popup, popupOptions, label, labelOptions) {
   let df = new DataFrame()
     .col("lat", lat)
     .col("lng", lng)
@@ -334,6 +357,7 @@ methods.addCircleMarkers = function(lat, lng, radius, layerId, group, options, c
     .col("layerId", layerId)
     .col("group", group)
     .col("popup", popup)
+    .col("popupOptions", popupOptions)
     .col("label", label)
     .col("labelOptions", labelOptions)
     .cbind(options);
@@ -347,12 +371,13 @@ methods.addCircleMarkers = function(lat, lng, radius, layerId, group, options, c
  * @param lat Array of arrays of latitude coordinates for polylines
  * @param lng Array of arrays of longitude coordinates for polylines
  */
-methods.addPolylines = function(polygons, layerId, group, options, popup, label, labelOptions) {
+methods.addPolylines = function(polygons, layerId, group, options, popup, popupOptions, label, labelOptions) {
   let df = new DataFrame()
     .col("shapes", polygons)
     .col("layerId", layerId)
     .col("group", group)
     .col("popup", popup)
+    .col("popupOptions", popupOptions)
     .col("label", label)
     .col("labelOptions", labelOptions)
     .cbind(options);
@@ -394,7 +419,7 @@ methods.clearShapes = function() {
   this.layerManager.clearLayers("shape");
 };
 
-methods.addRectangles = function(lat1, lng1, lat2, lng2, layerId, group, options, popup, label, labelOptions) {
+methods.addRectangles = function(lat1, lng1, lat2, lng2, layerId, group, options, popup, popupOptions, label, labelOptions) {
   let df = new DataFrame()
     .col("lat1", lat1)
     .col("lng1", lng1)
@@ -403,6 +428,7 @@ methods.addRectangles = function(lat1, lng1, lat2, lng2, layerId, group, options
     .col("layerId", layerId)
     .col("group", group)
     .col("popup", popup)
+    .col("popupOptions", popupOptions)
     .col("label", label)
     .col("labelOptions", labelOptions)
     .cbind(options);
@@ -421,12 +447,13 @@ methods.addRectangles = function(lat1, lng1, lat2, lng2, layerId, group, options
  * @param lat Array of arrays of latitude coordinates for polygons
  * @param lng Array of arrays of longitude coordinates for polygons
  */
-methods.addPolygons = function(polygons, layerId, group, options, popup, label, labelOptions) {
+methods.addPolygons = function(polygons, layerId, group, options, popup, popupOptions, label, labelOptions) {
   let df = new DataFrame()
     .col("shapes", polygons)
     .col("layerId", layerId)
     .col("group", group)
     .col("popup", popup)
+    .col("popupOptions", popupOptions)
     .col("label", label)
     .col("labelOptions", labelOptions)
     .cbind(options);

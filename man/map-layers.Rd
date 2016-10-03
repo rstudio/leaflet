@@ -14,6 +14,8 @@
 \alias{addTiles}
 \alias{addTopoJSON}
 \alias{addWMSTiles}
+\alias{markerClusterDependencies}
+\alias{safeLabel}
 \title{Graphics elements and layers}
 \usage{
 addControl(map, html, position = c("topleft", "topright", "bottomleft",
@@ -31,46 +33,54 @@ addWMSTiles(map, baseUrl, layerId = NULL, group = NULL,
 addPopups(map, lng = NULL, lat = NULL, popup, layerId = NULL,
   group = NULL, options = popupOptions(), data = getMapData(map))
 
+safeLabel(label, data)
+
 addMarkers(map, lng = NULL, lat = NULL, layerId = NULL, group = NULL,
-  icon = NULL, popup = NULL, label = NULL, labelOptions = NULL,
-  options = markerOptions(), clusterOptions = NULL, clusterId = NULL,
-  data = getMapData(map))
+  icon = NULL, popup = NULL, popupOptions = NULL, label = NULL,
+  labelOptions = NULL, options = markerOptions(), clusterOptions = NULL,
+  clusterId = NULL, data = getMapData(map))
 
 addLabelOnlyMarkers(map, lng = NULL, lat = NULL, layerId = NULL,
   group = NULL, icon = NULL, label = NULL, labelOptions = NULL,
   options = markerOptions(), clusterOptions = NULL, clusterId = NULL,
   data = getMapData(map))
 
+markerClusterDependencies()
+
 addCircleMarkers(map, lng = NULL, lat = NULL, radius = 10,
   layerId = NULL, group = NULL, stroke = TRUE, color = "#03F",
   weight = 5, opacity = 0.5, fill = TRUE, fillColor = color,
-  fillOpacity = 0.2, dashArray = NULL, popup = NULL, label = NULL,
-  labelOptions = NULL, options = pathOptions(), clusterOptions = NULL,
-  clusterId = NULL, data = getMapData(map))
+  fillOpacity = 0.2, dashArray = NULL, popup = NULL,
+  popupOptions = NULL, label = NULL, labelOptions = NULL,
+  options = pathOptions(), clusterOptions = NULL, clusterId = NULL,
+  data = getMapData(map))
 
 addCircles(map, lng = NULL, lat = NULL, radius = 10, layerId = NULL,
   group = NULL, stroke = TRUE, color = "#03F", weight = 5,
   opacity = 0.5, fill = TRUE, fillColor = color, fillOpacity = 0.2,
-  dashArray = NULL, popup = NULL, label = NULL, labelOptions = NULL,
-  options = pathOptions(), data = getMapData(map))
+  dashArray = NULL, popup = NULL, popupOptions = NULL, label = NULL,
+  labelOptions = NULL, options = pathOptions(), data = getMapData(map))
 
 addPolylines(map, lng = NULL, lat = NULL, layerId = NULL, group = NULL,
   stroke = TRUE, color = "#03F", weight = 5, opacity = 0.5,
   fill = FALSE, fillColor = color, fillOpacity = 0.2, dashArray = NULL,
-  smoothFactor = 1, noClip = FALSE, popup = NULL, label = NULL,
-  labelOptions = NULL, options = pathOptions(), data = getMapData(map))
+  smoothFactor = 1, noClip = FALSE, popup = NULL, popupOptions = NULL,
+  label = NULL, labelOptions = NULL, options = pathOptions(),
+  data = getMapData(map))
 
 addRectangles(map, lng1, lat1, lng2, lat2, layerId = NULL, group = NULL,
   stroke = TRUE, color = "#03F", weight = 5, opacity = 0.5,
   fill = TRUE, fillColor = color, fillOpacity = 0.2, dashArray = NULL,
-  smoothFactor = 1, noClip = FALSE, popup = NULL, label = NULL,
-  labelOptions = NULL, options = pathOptions(), data = getMapData(map))
+  smoothFactor = 1, noClip = FALSE, popup = NULL, popupOptions = NULL,
+  label = NULL, labelOptions = NULL, options = pathOptions(),
+  data = getMapData(map))
 
 addPolygons(map, lng = NULL, lat = NULL, layerId = NULL, group = NULL,
   stroke = TRUE, color = "#03F", weight = 5, opacity = 0.5,
   fill = TRUE, fillColor = color, fillOpacity = 0.2, dashArray = NULL,
-  smoothFactor = 1, noClip = FALSE, popup = NULL, label = NULL,
-  labelOptions = NULL, options = pathOptions(), data = getMapData(map))
+  smoothFactor = 1, noClip = FALSE, popup = NULL, popupOptions = NULL,
+  label = NULL, labelOptions = NULL, options = pathOptions(),
+  data = getMapData(map))
 
 addGeoJSON(map, geojson, layerId = NULL, group = NULL, stroke = TRUE,
   color = "#03F", weight = 5, opacity = 0.5, fill = TRUE,
@@ -127,8 +137,9 @@ argument; the names \code{lat} and \code{latitude} are used when guessing
 the latitude column from \code{data})}
 
 \item{popup}{a character vector of the HTML content for the popups (you are
-recommended to escape the text using \code{\link[htmltools]{htmlEscape}()}
-for security reasons)}
+recommended to escape the text using \code{\link[htmltools]{htmlEscape}()}}
+
+\item{label}{a character vector of the HTML content for the labels}
 
 \item{icon}{the icon(s) for markers; an icon is represented by an R list of
 the form \code{list(iconUrl = '?', iconSize = c(x, y))}, and you can use
@@ -137,7 +148,8 @@ that contains images as local files, these local image files will be base64
 encoded into the HTML page so the icon images will still be available even
 when you publish the map elsewhere}
 
-\item{label}{a character vector of the HTML content for the labels}
+\item{popupOptions}{A Vector of \code{\link{popupOptions}} to provide popups
+for security reasons)}
 
 \item{labelOptions}{A Vector of \code{\link{labelOptions}} to provide label
 options for each label. Default \code{NULL}}
@@ -190,6 +202,10 @@ the new \code{map} object
 }
 \description{
 Add graphics elements and layers to the map widget.
+
+Helper Function to create a safe label
+
+Adds marker-cluster-plugin HTML dependency
 }
 \section{Functions}{
 \itemize{
@@ -201,9 +217,13 @@ Add graphics elements and layers to the map widget.
 
 \item \code{addPopups}: Add popups to the map
 
+\item \code{safeLabel}: Create a label with sanitized text/html
+
 \item \code{addMarkers}: Add markders to the map
 
 \item \code{addLabelOnlyMarkers}: Add Label only markers to the map
+
+\item \code{markerClusterDependencies}: add maker cluster plugin
 
 \item \code{addCircleMarkers}: Add circle markers to the map
 
