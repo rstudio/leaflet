@@ -4,6 +4,7 @@
 \alias{addCircleMarkers}
 \alias{addCircles}
 \alias{addControl}
+\alias{addFeatureGeoJSON}
 \alias{addGeoJSON}
 \alias{addLabelOnlyMarkers}
 \alias{addMarkers}
@@ -15,7 +16,9 @@
 \alias{addTopoJSON}
 \alias{addWMSTiles}
 \alias{markerClusterDependencies}
+\alias{removeFeatureGeoJSON}
 \alias{safeLabel}
+\alias{styleFeatureGeoJSON}
 \title{Graphics elements and layers}
 \usage{
 addControl(map, html, position = c("topleft", "topright", "bottomleft",
@@ -86,6 +89,12 @@ addGeoJSON(map, geojson, layerId = NULL, group = NULL, stroke = TRUE,
   color = "#03F", weight = 5, opacity = 0.5, fill = TRUE,
   fillColor = color, fillOpacity = 0.2, dashArray = NULL,
   smoothFactor = 1, noClip = FALSE, options = pathOptions())
+
+styleFeatureGeoJSON(map, layerId = NULL, featureId = NULL, style = NULL)
+
+removeFeatureGeoJSON(map, layerId = NULL, featureId = NULL)
+
+addFeatureGeoJSON(map, geojson = NULL, layerId = NULL)
 
 addTopoJSON(map, topojson, layerId = NULL, group = NULL, stroke = TRUE,
   color = "#03F", weight = 5, opacity = 0.5, fill = TRUE,
@@ -195,6 +204,10 @@ north-east corners of rectangles}
 
 \item{geojson}{a GeoJSON list, or character vector of length 1}
 
+\item{featureId}{must be available in geojson$features$id}
+
+\item{style}{a JSON string or list}
+
 \item{topojson}{a TopoJSON list, or character vector of length 1}
 }
 \value{
@@ -236,6 +249,12 @@ Adds marker-cluster-plugin HTML dependency
 \item \code{addPolygons}: Add polygons to the map
 
 \item \code{addGeoJSON}: Add GeoJSON layers to the map
+
+\item \code{styleFeatureGeoJSON}: change style of GeoJSON feature
+
+\item \code{removeFeatureGeoJSON}: change style of GeoJSON feature
+
+\item \code{addFeatureGeoJSON}: add feature to GeoJSON layer
 
 \item \code{addTopoJSON}: Add TopoJSON layers to the map
 }}

@@ -1067,6 +1067,42 @@ addGeoJSON = function(map, geojson, layerId = NULL, group = NULL,
   invokeMethod(map, getMapData(map), 'addGeoJSON', geojson, layerId, group, options)
 }
 
+#' @param style a JSON string or list
+#' @describeIn map-layers change style of GeoJSON feature
+#' @export
+styleFeatureGeoJSON = function(map, layerId = NULL, featureId = NULL, style = NULL) {
+  if(!is.character(layerId) || length(layerId) != 1) {
+    stop("Missing layerId string")
+  }
+  if(!is.character(featureId) || length(featureId) != 1) {
+    stop("Missing featureId string")
+  }
+  invokeMethod(map, getMapData(map), 'styleFeatureGeoJSON', layerId, featureId, style)
+}
+
+#' @param featureId must be available in geojson$features$id
+#' @describeIn map-layers change style of GeoJSON feature
+#' @export
+removeFeatureGeoJSON = function(map, layerId = NULL, featureId = NULL) {
+  if(!is.character(layerId) || length(layerId) != 1) {
+    stop("Missing layerId string")
+  }
+  if(!is.character(featureId) || length(featureId) != 1) {
+    stop("Missing featureId string")
+  }
+  invokeMethod(map, getMapData(map), 'removeFeatureGeoJSON', layerId, featureId)
+}
+
+
+#' @describeIn map-layers add feature to GeoJSON layer
+#' @export
+addFeatureGeoJSON = function(map, geojson = NULL, layerId = NULL) {
+  if(!is.character(layerId) || length(layerId) != 1) {
+    stop("Missing layerId string")
+  }
+  invokeMethod(map, getMapData(map), 'addFeatureGeoJSON', geojson, layerId)
+}
+
 #' @rdname remove
 #' @export
 removeGeoJSON = function(map, layerId) {
