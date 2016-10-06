@@ -88,7 +88,8 @@ invokeMethod = function(map, data, method, ...) {
 #' execute on the live Leaflet map instance.
 #'
 #' @param mapId single-element character vector indicating the output ID of the
-#'   map to modify
+#'   map to modify (if invoked from a Shiny module, the namespace will be added
+#'   automatically)
 #' @param session the Shiny session object to which the map belongs; usually the
 #'   default value will suffice
 #' @param data a data object; see Details under the \code{\link{leaflet}} help
@@ -130,6 +131,21 @@ leafletProxy <- function(mapId, session = shiny::getDefaultReactiveDomain(),
 
   if (is.null(session)) {
     stop("leafletProxy must be called from the server function of a Shiny app")
+  }
+
+  # If this is a new enough version of Shiny that it supports modules, and
+  # we're in a module (nzchar(session$ns(NULL))), and the mapId doesn't begin
+  # with the current namespace, then add the namespace.
+  #
+  # We could also have unconditionally done `mapId <- session$ns(mapId)`, but
+  # older versions of Leaflet would have broken unless the user did session$ns
+  # themselves, and we hate to break their code unnecessarily.
+  #
+  # This won't be necessary in future versions of Shiny, as session$ns (and
+  # other forms of ns()) will be smart enough to only namespace un-namespaced
+  # IDs.
+  if (!is.null(session$ns) && nzchar(session$ns(NULL)) && !startsWith(mapId, session$ns(""))) {
+    mapId <- session$ns(mapId)
   }
 
   structure(
