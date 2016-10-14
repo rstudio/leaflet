@@ -21,6 +21,7 @@
 .leaflet-container {
 	overflow: hidden;
 	-ms-touch-action: none;
+	touch-action: none;
 	}
 .leaflet-tile,
 .leaflet-marker-icon,
@@ -70,7 +71,7 @@
 	height: 1px;
 	}
 .lvml {
-	behavior: url/**/(#default#VML);
+	behavior: url(#default#VML);
 	display: inline-block;
 	position: absolute;
 	}

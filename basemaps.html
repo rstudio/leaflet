@@ -25,6 +25,8 @@
 <link href="libs/leafletfix/leafletfix.css" rel="stylesheet" />
 <link href="libs/leaflet-label/leaflet.label.css" rel="stylesheet" />
 <script src="libs/leaflet-label/leaflet.label.js"></script>
+<script src="libs/Proj4Leaflet/proj4-compressed.js"></script>
+<script src="libs/Proj4Leaflet/proj4leaflet.js"></script>
 <script src="libs/leaflet-binding/leaflet.js"></script>
 <script src="libs/leaflet-providers/leaflet-providers.js"></script>
 <script src="libs/leaflet-providers-plugin/leaflet-providers-plugin.js"></script>
@@ -162,7 +164,7 @@ $(document).ready(function () {
       <a class="list-group-item" href="map_widget.html">The Map Widget</a>
       <a class="list-group-item" href="basemaps.html">Basemaps</a>
       <a class="list-group-item" href="markers.html">Markers</a>
-      <a class="list-group-item" href="popups.html">Popups</a>
+      <a class="list-group-item" href="popups.html">Popups and Labels</a>
       <a class="list-group-item" href="shapes.html">Lines and Shapes</a>
       <a class="list-group-item" href="json.html">JSON</a>
       <a class="list-group-item" href="raster.html">Raster Images</a>
@@ -201,6 +203,15 @@ m %&gt;% addTiles() </code></pre>
 <div id="htmlwidget-927ec88a166bf954e46a" style="width:100%;height:240px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-927ec88a166bf954e46a">{
   "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
     "setView": [
       [42.3601, -71.0589],
       12,
@@ -244,10 +255,20 @@ m %&gt;% addTiles() </code></pre>
 <div id="third-party-tiles" class="section level3">
 <h3>Third-Party Tiles</h3>
 <p>Alternatively, many popular free third-party basemaps can be added using the <code>addProviderTiles()</code> function, which is implemented using the <a href="https://github.com/leaflet-extras/leaflet-providers">leaflet-providers plugin</a>. See <a href="http://leaflet-extras.github.io/leaflet-providers/preview/index.html">here</a> for the complete set. Note that some tile set providers require you to register; see the <a href="https://github.com/leaflet-extras/leaflet-providers">project page</a> for more information.</p>
-<pre class="r"><code>m %&gt;% addProviderTiles(&quot;Stamen.Toner&quot;)</code></pre>
+<p>For convenience leaflet provides a <code>provideres</code> list, pre-populated with all the third-party tile providers supported by the leaflet-providers plugin. This enables you to use auto-completion feature of your favorite R IDE (like RStudio) and not have to remember or look up supported tile providers.</p>
+<pre class="r"><code>m %&gt;% addProviderTiles(providers$Stamen.Toner)</code></pre>
 <div id="htmlwidget-e2aad06f99e8b55df8d8" style="width:100%;height:120px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-e2aad06f99e8b55df8d8">{
   "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
     "setView": [
       [42.3601, -71.0589],
       12,
@@ -276,42 +297,19 @@ m %&gt;% addTiles() </code></pre>
   "evals": [],
   "jsHooks": []
 }</script>
-<pre class="r"><code>m %&gt;% addProviderTiles(&quot;Acetate.terrain&quot;)</code></pre>
+<pre class="r"><code>m %&gt;% addProviderTiles(providers$CartoDB.Positron)</code></pre>
 <div id="htmlwidget-ec9d8b9e435c1a666871" style="width:100%;height:120px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-ec9d8b9e435c1a666871">{
   "x": {
-    "setView": [
-      [42.3601, -71.0589],
-      12,
-      []
-    ],
-    "calls": [
-      {
-        "method": "addProviderTiles",
-        "args": [
-          "Acetate.terrain",
-          null,
-          null,
-          {
-            "errorTileUrl": "",
-            "noWrap": false,
-            "zIndex": null,
-            "unloadInvisibleTiles": null,
-            "updateWhenIdle": null,
-            "detectRetina": false,
-            "reuseTiles": false
-          }
-        ]
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
       }
-    ]
-  },
-  "evals": [],
-  "jsHooks": []
-}</script>
-<pre class="r"><code>m %&gt;% addProviderTiles(&quot;CartoDB.Positron&quot;)</code></pre>
-<div id="htmlwidget-65e60ed4f5440bdab363" style="width:100%;height:120px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-65e60ed4f5440bdab363">{
-  "x": {
+    },
     "setView": [
       [42.3601, -71.0589],
       12,
@@ -340,6 +338,48 @@ m %&gt;% addTiles() </code></pre>
   "evals": [],
   "jsHooks": []
 }</script>
+<pre class="r"><code>m %&gt;% addProviderTiles(providers$Esri.NatGeoWorldMap)</code></pre>
+<div id="htmlwidget-65e60ed4f5440bdab363" style="width:100%;height:120px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-65e60ed4f5440bdab363">{
+  "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
+    "setView": [
+      [42.3601, -71.0589],
+      12,
+      []
+    ],
+    "calls": [
+      {
+        "method": "addProviderTiles",
+        "args": [
+          "Esri.NatGeoWorldMap",
+          null,
+          null,
+          {
+            "errorTileUrl": "",
+            "noWrap": false,
+            "zIndex": null,
+            "unloadInvisibleTiles": null,
+            "updateWhenIdle": null,
+            "detectRetina": false,
+            "reuseTiles": false
+          }
+        ]
+      }
+    ]
+  },
+  "evals": [],
+  "jsHooks": []
+}</script>
+<p>To see a list of all supported tile providers see <code>names(providers)</code>. You can pass additional parameters to the tile provider by populating the <code>options</code> argument using <code>providerTileOptions()</code> function. This can for example be used to pass in API access token/key required by certain providers.</p>
 </div>
 <div id="custom-tile-url-template" class="section level3">
 <h3>Custom Tile URL Template</h3>
@@ -358,6 +398,15 @@ m %&gt;% addTiles() </code></pre>
 <div id="htmlwidget-c6a36a601760297b5cca" style="width:100%;height:240px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-c6a36a601760297b5cca">{
   "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
     "calls": [
       {
         "method": "addTiles",
@@ -418,14 +467,22 @@ m %&gt;% addTiles() </code></pre>
 <div id="combining-tile-layers" class="section level3">
 <h3>Combining Tile Layers</h3>
 <p>You aren’t restricted to using a single basemap on a map; you can stack them by adding multiple tile layers. This generally only makes sense if the front tiles consist of semi transparent tiles, or have an adjusted opacity via the <code>options</code> argument.</p>
-<pre class="r"><code>m %&gt;% addProviderTiles(&quot;MtbMap&quot;) %&gt;%
-  addProviderTiles(&quot;Stamen.TonerLines&quot;,
-    options = providerTileOptions(opacity = 0.35)
-  ) %&gt;%
-  addProviderTiles(&quot;Stamen.TonerLabels&quot;)</code></pre>
+<pre class="r"><code>m %&gt;% addProviderTiles(providers$MtbMap) %&gt;%
+  addProviderTiles(providers$Stamen.TonerLines,
+    options = providerTileOptions(opacity = 0.35)) %&gt;%
+  addProviderTiles(providers$Stamen.TonerLabels)</code></pre>
 <div id="htmlwidget-6d8788299161dc56faef" style="width:100%;height:168px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-6d8788299161dc56faef">{
   "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
     "setView": [
       [42.3601, -71.0589],
       12,

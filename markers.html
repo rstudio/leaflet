@@ -25,10 +25,17 @@
 <link href="libs/leafletfix/leafletfix.css" rel="stylesheet" />
 <link href="libs/leaflet-label/leaflet.label.css" rel="stylesheet" />
 <script src="libs/leaflet-label/leaflet.label.js"></script>
+<script src="libs/Proj4Leaflet/proj4-compressed.js"></script>
+<script src="libs/Proj4Leaflet/proj4leaflet.js"></script>
 <script src="libs/leaflet-binding/leaflet.js"></script>
+<link href="libs/leaflet-awesomemarkers/leaflet.awesome-markers.css" rel="stylesheet" />
+<script src="libs/leaflet-awesomemarkers/leaflet.awesome-markers.min.js"></script>
+<link href="libs/awesomemarkers-ionicons/ionicons.min.css" rel="stylesheet" />
 <link href="libs/leaflet-markercluster/MarkerCluster.css" rel="stylesheet" />
 <link href="libs/leaflet-markercluster/MarkerCluster.Default.css" rel="stylesheet" />
 <script src="libs/leaflet-markercluster/leaflet.markercluster.js"></script>
+<script src="libs/leaflet-markercluster/leaflet.markercluster.layersupport-src.js"></script>
+<script src="libs/leaflet-markercluster/leaflet.markercluster.freezable-src.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <link rel="stylesheet"
@@ -163,7 +170,7 @@ $(document).ready(function () {
       <a class="list-group-item" href="map_widget.html">The Map Widget</a>
       <a class="list-group-item" href="basemaps.html">Basemaps</a>
       <a class="list-group-item" href="markers.html">Markers</a>
-      <a class="list-group-item" href="popups.html">Popups</a>
+      <a class="list-group-item" href="popups.html">Popups and Labels</a>
       <a class="list-group-item" href="shapes.html">Lines and Shapes</a>
       <a class="list-group-item" href="json.html">JSON</a>
       <a class="list-group-item" href="raster.html">Raster Images</a>
@@ -194,18 +201,27 @@ $(document).ready(function () {
 <div id="markers" class="section level2">
 <h2>Markers</h2>
 <p>Use markers to call out points on the map. Marker locations are expressed in latitude/longitude coordinates, and can either appear as icons or as circles. You can use <code>SpatialPoints</code>, <code>SpatialPointsDataFrame</code>, or a two-column numeric matrix (first column is longitude, second column is latitude) as data objects.</p>
-<p>You can also use a data frame with latitude and longitude columns. You can explicitly tell the marker function which columns contain the coorinate data (e.g. <code>addMarker(lng = ~Longitude, lat = ~Latitude)</code>), or let the function look for columns named <code>lat</code>/<code>latitude</code> and <code>lon</code>/<code>lng</code>/<code>long</code>/<code>longitude</code> (case insensitive).</p>
+<p>You can also use a data frame with latitude and longitude columns. You can explicitly tell the marker function which columns contain the coorinate data (e.g. <code>addMarkers(lng = ~Longitude, lat = ~Latitude)</code>), or let the function look for columns named <code>lat</code>/<code>latitude</code> and <code>lon</code>/<code>lng</code>/<code>long</code>/<code>longitude</code> (case insensitive).</p>
 <div id="icon-markers" class="section level3">
 <h3>Icon Markers</h3>
-<p>Icon markers are added using the <code>addMarker</code> function. Their default appearance is a dropped pin. As with most layer functions, the <code>popup</code> argument can be used to add a message to be displayed on click.</p>
+<p>Icon markers are added using the <code>addMarkers</code> or the <code>addAwesomeMarkers</code> functions. Their default appearance is a dropped pin. As with most layer functions, the <code>popup</code> argument can be used to add a message to be displayed on click, and the <code>label</code> option can be used to display a text label either on hover or statically.</p>
 <pre class="r"><code>data(quakes)
 
 # Show first 20 rows from the `quakes` dataset
 leaflet(data = quakes[1:20,]) %&gt;% addTiles() %&gt;%
-  addMarkers(~long, ~lat, popup = ~as.character(mag))</code></pre>
+  addMarkers(~long, ~lat, popup = ~as.character(mag), label = ~as.character(mag))</code></pre>
 <div id="htmlwidget-927ec88a166bf954e46a" style="width:100%;height:216px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-927ec88a166bf954e46a">{
   "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
     "calls": [
       {
         "method": "addTiles",
@@ -258,6 +274,7 @@ leaflet(data = quakes[1:20,]) %&gt;% addTiles() %&gt;%
           null,
           null,
           null,
+          ["4.8", "4.2", "5.4", "4.1", "4", "4", "4.8", "4.4", "4.7", "4.3", "4.4", "4.6", "4.4", "4.4", "6.1", "4.3", "6", "4.5", "4.4", "4.4"],
           null
         ]
       }
@@ -275,10 +292,10 @@ leaflet(data = quakes[1:20,]) %&gt;% addTiles() %&gt;%
 <p>You can provide custom markers in one of several ways, depending on the scenario. For each of these ways, the icon can be provided as either a URL or as a file path.</p>
 <p>For the simple case of applying a single icon to a set of markers, use <code>makeIcon()</code>.</p>
 <pre class="r"><code>greenLeafIcon &lt;- makeIcon(
-  iconUrl = &quot;http://leafletjs.com/docs/images/leaf-green.png&quot;,
+  iconUrl = &quot;http://leafletjs.com/examples/custom-icons/leaf-green.png&quot;,
   iconWidth = 38, iconHeight = 95,
   iconAnchorX = 22, iconAnchorY = 94,
-  shadowUrl = &quot;http://leafletjs.com/docs/images/leaf-shadow.png&quot;,
+  shadowUrl = &quot;http://leafletjs.com/examples/custom-icons/leaf-shadow.png&quot;,
   shadowWidth = 50, shadowHeight = 64,
   shadowAnchorX = 4, shadowAnchorY = 62
 )
@@ -288,6 +305,15 @@ leaflet(data = quakes[1:4,]) %&gt;% addTiles() %&gt;%
 <div id="htmlwidget-e2aad06f99e8b55df8d8" style="width:100%;height:168px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-e2aad06f99e8b55df8d8">{
   "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
     "calls": [
       {
         "method": "addTiles",
@@ -324,7 +350,7 @@ leaflet(data = quakes[1:4,]) %&gt;% addTiles() %&gt;%
           [181.62, 181.03, 184.1, 181.66],
           {
             "iconUrl": {
-              "data": "http://leafletjs.com/docs/images/leaf-green.png",
+              "data": "http://leafletjs.com/examples/custom-icons/leaf-green.png",
               "index": 0
             },
             "iconWidth": 38,
@@ -332,7 +358,7 @@ leaflet(data = quakes[1:4,]) %&gt;% addTiles() %&gt;%
             "iconAnchorX": 22,
             "iconAnchorY": 94,
             "shadowUrl": {
-              "data": "http://leafletjs.com/docs/images/leaf-shadow.png",
+              "data": "http://leafletjs.com/examples/custom-icons/leaf-shadow.png",
               "index": 0
             },
             "shadowWidth": 50,
@@ -357,6 +383,7 @@ leaflet(data = quakes[1:4,]) %&gt;% addTiles() %&gt;%
           null,
           null,
           null,
+          null,
           null
         ]
       }
@@ -374,12 +401,12 @@ leaflet(data = quakes[1:4,]) %&gt;% addTiles() %&gt;%
 
 leafIcons &lt;- icons(
   iconUrl = ifelse(quakes1$mag &lt; 4.6,
-    &quot;http://leafletjs.com/docs/images/leaf-green.png&quot;,
-    &quot;http://leafletjs.com/docs/images/leaf-red.png&quot;
+    &quot;http://leafletjs.com/examples/custom-icons/leaf-green.png&quot;,
+    &quot;http://leafletjs.com/examples/custom-icons/leaf-red.png&quot;
   ),
   iconWidth = 38, iconHeight = 95,
   iconAnchorX = 22, iconAnchorY = 94,
-  shadowUrl = &quot;http://leafletjs.com/docs/images/leaf-shadow.png&quot;,
+  shadowUrl = &quot;http://leafletjs.com/examples/custom-icons/leaf-shadow.png&quot;,
   shadowWidth = 50, shadowHeight = 64,
   shadowAnchorX = 4, shadowAnchorY = 62
 )
@@ -389,6 +416,15 @@ leaflet(data = quakes1) %&gt;% addTiles() %&gt;%
 <div id="htmlwidget-ec9d8b9e435c1a666871" style="width:100%;height:192px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-ec9d8b9e435c1a666871">{
   "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
     "calls": [
       {
         "method": "addTiles",
@@ -425,7 +461,7 @@ leaflet(data = quakes1) %&gt;% addTiles() %&gt;%
           [181.62, 181.03, 184.1, 181.66, 181.96, 184.31, 166.1, 181.93, 181.74, 179.59],
           {
             "iconUrl": {
-              "data": ["http://leafletjs.com/docs/images/leaf-red.png", "http://leafletjs.com/docs/images/leaf-green.png"],
+              "data": ["http://leafletjs.com/examples/custom-icons/leaf-red.png", "http://leafletjs.com/examples/custom-icons/leaf-green.png"],
               "index": [0, 1, 0, 1, 1, 1, 0, 1, 0, 1]
             },
             "iconWidth": 38,
@@ -433,7 +469,7 @@ leaflet(data = quakes1) %&gt;% addTiles() %&gt;%
             "iconAnchorX": 22,
             "iconAnchorY": 94,
             "shadowUrl": {
-              "data": "http://leafletjs.com/docs/images/leaf-shadow.png",
+              "data": "http://leafletjs.com/examples/custom-icons/leaf-shadow.png",
               "index": 0
             },
             "shadowWidth": 50,
@@ -454,6 +490,7 @@ leaflet(data = quakes1) %&gt;% addTiles() %&gt;%
             "riseOnHover": false,
             "riseOffset": 250
           },
+          null,
           null,
           null,
           null,
@@ -495,6 +532,15 @@ leaflet(df) %&gt;% addTiles() %&gt;%
 <div id="htmlwidget-65e60ed4f5440bdab363" style="width:100%;height:168px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-65e60ed4f5440bdab363">{
   "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
     "calls": [
       {
         "method": "addTiles",
@@ -558,6 +604,7 @@ leaflet(df) %&gt;% addTiles() %&gt;%
           null,
           null,
           null,
+          null,
           null
         ]
       }
@@ -571,15 +618,137 @@ leaflet(df) %&gt;% addTiles() %&gt;%
   "jsHooks": []
 }</script>
 </div>
+<div id="awesome-icons" class="section level4">
+<h4>Awesome Icons</h4>
+<p>Leaflet supports even more customizable makers using the <a href="https://github.com/lvoogdt/Leaflet.awesome-markers">awesome markers</a> leaflet plugin.</p>
+<p>The <code>addAwesomeMarkers()</code> function is similar to <code>addMarkers()</code> function but additionally allows you to specify custom colors for the markers as well as icons from the <a href="http://fontawesome.io/icons/">Font Awesome</a>, <a href="https://getbootstrap.com/components/">Bootstrap Glyphicons</a>, and <a href="http://ionicons.com/">Ion icons</a> icon libraries.</p>
+<p>Similar to the <code>makeIcon</code>, <code>icons</code>, and <code>iconList</code> functions described above, you have <code>makeAwesomeIcon</code>, <code>awesomeIcons</code> and <code>awesomeIconList</code> functions, which enable you to add awesome icons.</p>
+<pre class="r"><code># first 20 quakes
+df.20 &lt;- quakes[1:20,]
+
+getColor &lt;- function(quakes) {
+  sapply(quakes$mag, function(mag) {
+  if(mag &lt;= 4) {
+    &quot;green&quot;
+  } else if(mag &lt;= 5) {
+    &quot;orange&quot;
+  } else {
+    &quot;red&quot;
+  } })
+}
+
+icons &lt;- awesomeIcons(
+  icon = &#39;ios-close&#39;,
+  iconColor = &#39;black&#39;,
+  library = &#39;ion&#39;,
+  markerColor = getColor(df.20)
+)
+
+leaflet(df.20) %&gt;% addTiles() %&gt;%
+  addAwesomeMarkers(~long, ~lat, icon=icons, label=~as.character(mag))</code></pre>
+<div id="htmlwidget-c6a36a601760297b5cca" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-c6a36a601760297b5cca">{
+  "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
+    "calls": [
+      {
+        "method": "addTiles",
+        "args": [
+          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          null,
+          null,
+          {
+            "minZoom": 0,
+            "maxZoom": 18,
+            "maxNativeZoom": null,
+            "tileSize": 256,
+            "subdomains": "abc",
+            "errorTileUrl": "",
+            "tms": false,
+            "continuousWorld": false,
+            "noWrap": false,
+            "zoomOffset": 0,
+            "zoomReverse": false,
+            "opacity": 1,
+            "zIndex": null,
+            "unloadInvisibleTiles": null,
+            "updateWhenIdle": null,
+            "detectRetina": false,
+            "reuseTiles": false,
+            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap\u003c/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA\u003c/a>"
+          }
+        ]
+      },
+      {
+        "method": "addAwesomeMarkers",
+        "args": [
+          [-20.42, -20.62, -26, -17.97, -20.42, -19.68, -11.7, -28.11, -28.74, -17.47, -21.44, -12.26, -18.54, -21, -20.7, -15.94, -13.64, -17.83, -23.5, -22.63],
+          [181.62, 181.03, 184.1, 181.66, 181.96, 184.31, 166.1, 181.93, 181.74, 179.59, 180.69, 167, 182.11, 181.66, 169.92, 184.95, 165.96, 181.5, 179.78, 180.31],
+          {
+            "icon": "ios-close",
+            "markerColor": ["orange", "orange", "red", "orange", "green", "green", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "red", "orange", "red", "orange", "orange", "orange"],
+            "iconColor": "black",
+            "spin": false,
+            "prefix": "ion"
+          },
+          null,
+          null,
+          {
+            "clickable": true,
+            "draggable": false,
+            "keyboard": true,
+            "title": "",
+            "alt": "",
+            "zIndexOffset": 0,
+            "opacity": 1,
+            "riseOnHover": false,
+            "riseOffset": 250
+          },
+          null,
+          null,
+          null,
+          null,
+          ["4.8", "4.2", "5.4", "4.1", "4", "4", "4.8", "4.4", "4.7", "4.3", "4.4", "4.6", "4.4", "4.4", "6.1", "4.3", "6", "4.5", "4.4", "4.4"],
+          null
+        ]
+      }
+    ],
+    "limits": {
+      "lat": [-28.74, -11.7],
+      "lng": [165.96, 184.95]
+    }
+  },
+  "evals": [],
+  "jsHooks": []
+}</script>
+<p>The <code>library</code> argument has to be one of ‘ion’, ‘fa’, or ‘glyphicon’. The <code>icon</code> argument needs to be the name of any valid icon supported by the the respective library (w/o the prefix of the library name).</p>
+</div>
 <div id="marker-clusters" class="section level4">
 <h4>Marker Clusters</h4>
 <p>When there are a large number of markers on a map, you can cluster them using the <a href="https://github.com/Leaflet/Leaflet.markercluster">Leaflet.markercluster</a> plug-in. To enable this plug-in, you can provide a list of options to the argument <code>clusterOptions</code>, e.g.</p>
 <pre class="r"><code>leaflet(quakes) %&gt;% addTiles() %&gt;% addMarkers(
   clusterOptions = markerClusterOptions()
 )</code></pre>
-<div id="htmlwidget-c6a36a601760297b5cca" style="width:100%;height:240px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-c6a36a601760297b5cca">{
+<div id="htmlwidget-6d8788299161dc56faef" style="width:100%;height:240px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-6d8788299161dc56faef">{
   "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
     "calls": [
       {
         "method": "addTiles",
@@ -629,11 +798,18 @@ leaflet(df) %&gt;% addTiles() %&gt;%
             "riseOffset": 250
           },
           null,
+          null,
           {
             "showCoverageOnHover": true,
             "zoomToBoundsOnClick": true,
             "spiderfyOnMaxZoom": true,
-            "removeOutsideVisibleBounds": true
+            "removeOutsideVisibleBounds": true,
+            "spiderLegPolylineOptions": {
+              "weight": 1.5,
+              "color": "#222",
+              "opacity": 0.5
+            },
+            "freezeAtZoom": false
           },
           null,
           null,
@@ -649,6 +825,7 @@ leaflet(df) %&gt;% addTiles() %&gt;%
   "evals": [],
   "jsHooks": []
 }</script>
+<p>Using the <code>freezeAtZoom</code> argument of the <code>markerClusterOptions()</code> function, you can set the clustering to freeze as a specific zoom level e.g. <code>markerClusterOptions(freezeAtZoom = 5)</code> will freeze the cluster at zoom level 5 regardless of which zoom level the user is browsing the map at.</p>
 </div>
 </div>
 <div id="circle-markers" class="section level3">
@@ -656,9 +833,18 @@ leaflet(df) %&gt;% addTiles() %&gt;%
 <p>Circle markers are much like regular circles (see <a href="shapes.html">Lines and Shapes</a>), except that their radius in onscreen pixels stays constant regardless of zoom level.</p>
 <p>You can use their default appearance:</p>
 <pre class="r"><code>leaflet(df) %&gt;% addTiles() %&gt;% addCircleMarkers()</code></pre>
-<div id="htmlwidget-6d8788299161dc56faef" style="width:100%;height:168px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-6d8788299161dc56faef">{
+<div id="htmlwidget-e90b79b122bd7002e299" style="width:100%;height:168px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-e90b79b122bd7002e299">{
   "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
     "calls": [
       {
         "method": "addTiles",
@@ -715,6 +901,7 @@ leaflet(df) %&gt;% addTiles() %&gt;%
           null,
           null,
           null,
+          null,
           null
         ]
       }
@@ -737,9 +924,18 @@ leaflet(df) %&gt;% addTiles() %&gt;%
     color = ~pal(type),
     stroke = FALSE, fillOpacity = 0.5
   )</code></pre>
-<div id="htmlwidget-e90b79b122bd7002e299" style="width:100%;height:168px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-e90b79b122bd7002e299">{
+<div id="htmlwidget-fb93f5535b798302ff62" style="width:100%;height:168px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-fb93f5535b798302ff62">{
   "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
     "calls": [
       {
         "method": "addTiles",
@@ -792,6 +988,7 @@ leaflet(df) %&gt;% addTiles() %&gt;%
             "fillOpacity": 0.5,
             "dashArray": null
           },
+          null,
           null,
           null,
           null,

@@ -22,6 +22,8 @@ This R package makes it easy to integrate and control Leaflet maps in R.
 * Embed maps in [knitr](http://yihui.name/knitr/)/[R Markdown](http://rmarkdown.rstudio.com/) documents and [Shiny](http://shiny.rstudio.com/) apps
 * Easily render `Spatial` objects from the `sp` package, or data frames with latitude/longitude columns
 * Use map bounds and mouse events to drive Shiny logic
+* Display maps in non spherical mercator projections.
+* Augment map features using [plugins](http://leafletjs.com/plugins).
 
 ### Installation
 

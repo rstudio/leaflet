@@ -25,6 +25,8 @@
 <link href="libs/leafletfix/leafletfix.css" rel="stylesheet" />
 <link href="libs/leaflet-label/leaflet.label.css" rel="stylesheet" />
 <script src="libs/leaflet-label/leaflet.label.js"></script>
+<script src="libs/Proj4Leaflet/proj4-compressed.js"></script>
+<script src="libs/Proj4Leaflet/proj4leaflet.js"></script>
 <script src="libs/leaflet-binding/leaflet.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -160,7 +162,7 @@ $(document).ready(function () {
       <a class="list-group-item" href="map_widget.html">The Map Widget</a>
       <a class="list-group-item" href="basemaps.html">Basemaps</a>
       <a class="list-group-item" href="markers.html">Markers</a>
-      <a class="list-group-item" href="popups.html">Popups</a>
+      <a class="list-group-item" href="popups.html">Popups and Labels</a>
       <a class="list-group-item" href="shapes.html">Lines and Shapes</a>
       <a class="list-group-item" href="json.html">JSON</a>
       <a class="list-group-item" href="raster.html">Raster Images</a>
@@ -223,6 +225,15 @@ map %&gt;%
 <div id="htmlwidget-927ec88a166bf954e46a" style="width:100%;height:216px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-927ec88a166bf954e46a">{
   "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
     "calls": [
       {
         "method": "addPolygons",
@@ -1752,6 +1763,7 @@ map %&gt;%
           },
           null,
           null,
+          null,
           null
         ]
       }
@@ -1778,6 +1790,15 @@ map %&gt;%
 <div id="htmlwidget-e2aad06f99e8b55df8d8" style="width:100%;height:216px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-e2aad06f99e8b55df8d8">{
   "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
     "calls": [
       {
         "method": "addPolygons",
@@ -3307,6 +3328,7 @@ map %&gt;%
           },
           null,
           null,
+          null,
           null
         ]
       }
@@ -3328,6 +3350,15 @@ map %&gt;%
 <div id="htmlwidget-ec9d8b9e435c1a666871" style="width:100%;height:216px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-ec9d8b9e435c1a666871">{
   "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
     "calls": [
       {
         "method": "addPolygons",
@@ -4857,6 +4888,7 @@ map %&gt;%
           },
           null,
           null,
+          null,
           null
         ]
       }
@@ -4887,6 +4919,15 @@ leaflet(countries) %&gt;%
 <div id="htmlwidget-65e60ed4f5440bdab363" style="width:100%;height:216px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-65e60ed4f5440bdab363">{
   "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
     "calls": [
       {
         "method": "addPolygons",
@@ -6414,6 +6455,7 @@ leaflet(countries) %&gt;%
             "smoothFactor": 0.2,
             "noClip": false
           },
+          null,
           null,
           null,
           null

@@ -25,6 +25,8 @@
 <link href="libs/leafletfix/leafletfix.css" rel="stylesheet" />
 <link href="libs/leaflet-label/leaflet.label.css" rel="stylesheet" />
 <script src="libs/leaflet-label/leaflet.label.js"></script>
+<script src="libs/Proj4Leaflet/proj4-compressed.js"></script>
+<script src="libs/Proj4Leaflet/proj4leaflet.js"></script>
 <script src="libs/leaflet-binding/leaflet.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -160,7 +162,7 @@ $(document).ready(function () {
       <a class="list-group-item" href="map_widget.html">The Map Widget</a>
       <a class="list-group-item" href="basemaps.html">Basemaps</a>
       <a class="list-group-item" href="markers.html">Markers</a>
-      <a class="list-group-item" href="popups.html">Popups</a>
+      <a class="list-group-item" href="popups.html">Popups and Labels</a>
       <a class="list-group-item" href="shapes.html">Lines and Shapes</a>
       <a class="list-group-item" href="json.html">JSON</a>
       <a class="list-group-item" href="raster.html">Raster Images</a>
@@ -204,6 +206,15 @@ $(document).ready(function () {
 <div id="htmlwidget-927ec88a166bf954e46a" style="width:100%;height:216px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-927ec88a166bf954e46a">{
   "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
     "calls": [
       {
         "method": "addTiles",
@@ -263,6 +274,7 @@ $(document).ready(function () {
           null,
           null,
           null,
+          null,
           null
         ]
       },
@@ -309,6 +321,15 @@ $(document).ready(function () {
 <div id="htmlwidget-e2aad06f99e8b55df8d8" style="width:100%;height:216px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-e2aad06f99e8b55df8d8">{
   "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
     "calls": [
       {
         "method": "addTiles",
@@ -362,6 +383,15 @@ m %&gt;% addCircles(rand_lng(50), rand_lat(50), radius = runif(50, 10, 200))</co
 <div id="htmlwidget-ec9d8b9e435c1a666871" style="width:100%;height:216px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-ec9d8b9e435c1a666871">{
   "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
     "calls": [
       {
         "method": "addTiles",
@@ -416,6 +446,7 @@ m %&gt;% addCircles(rand_lng(50), rand_lat(50), radius = runif(50, 10, 200))</co
           },
           null,
           null,
+          null,
           null
         ]
       }
@@ -433,6 +464,15 @@ m %&gt;% addCircleMarkers(rand_lng(50), rand_lat(50), color = &#39;#ff0000&#39;)
 <div id="htmlwidget-65e60ed4f5440bdab363" style="width:100%;height:216px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-65e60ed4f5440bdab363">{
   "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
     "calls": [
       {
         "method": "addTiles",
@@ -489,6 +529,7 @@ m %&gt;% addCircleMarkers(rand_lng(50), rand_lat(50), color = &#39;#ff0000&#39;)
           null,
           null,
           null,
+          null,
           null
         ]
       }
@@ -505,6 +546,15 @@ m %&gt;% addCircleMarkers(rand_lng(50), rand_lat(50), color = &#39;#ff0000&#39;)
 <div id="htmlwidget-c6a36a601760297b5cca" style="width:100%;height:216px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-c6a36a601760297b5cca">{
   "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
     "calls": [
       {
         "method": "addTiles",
@@ -561,6 +611,7 @@ m %&gt;% addCircleMarkers(rand_lng(50), rand_lat(50), color = &#39;#ff0000&#39;)
           null,
           null,
           null,
+          null,
           null
         ]
       }
@@ -581,6 +632,15 @@ m %&gt;% addRectangles(
 <div id="htmlwidget-6d8788299161dc56faef" style="width:100%;height:216px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-6d8788299161dc56faef">{
   "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
     "calls": [
       {
         "method": "addTiles",
@@ -638,6 +698,7 @@ m %&gt;% addRectangles(
           },
           null,
           null,
+          null,
           null
         ]
       }
@@ -655,6 +716,15 @@ m %&gt;% addPolylines(rand_lng(50), rand_lat(50), fill = FALSE)</code></pre>
 <div id="htmlwidget-e90b79b122bd7002e299" style="width:100%;height:216px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-e90b79b122bd7002e299">{
   "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
     "calls": [
       {
         "method": "addTiles",
@@ -716,6 +786,7 @@ m %&gt;% addPolylines(rand_lng(50), rand_lat(50), fill = FALSE)</code></pre>
           },
           null,
           null,
+          null,
           null
         ]
       }
@@ -737,6 +808,15 @@ m %&gt;% addPolygons(
 <div id="htmlwidget-fb93f5535b798302ff62" style="width:100%;height:216px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-fb93f5535b798302ff62">{
   "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
     "calls": [
       {
         "method": "addTiles",
@@ -810,6 +890,7 @@ m %&gt;% addPolygons(
           },
           null,
           null,
+          null,
           null
         ]
       }
@@ -867,6 +948,15 @@ m %&gt;% addGeoJSON(shapes)</code></pre>
 <div id="htmlwidget-a81d84882e3b64c1a840" style="width:100%;height:216px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-a81d84882e3b64c1a840">{
   "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
     "calls": [
       {
         "method": "addCircles",
@@ -892,6 +982,7 @@ m %&gt;% addGeoJSON(shapes)</code></pre>
             "dashArray": null
           },
           ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"],
+          null,
           null,
           null
         ]

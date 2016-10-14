@@ -511,10 +511,10 @@
               el.offsetHeight);
             elementData(el, "init_result", result);
           }
-          evalAndRun(data.jsHooks.render, elementData(el, "init_result"), [el, data.x]);
         }
         Shiny.renderDependencies(data.deps);
         bindingDef.renderValue(el, data.x, elementData(el, "init_result"));
+        evalAndRun(data.jsHooks.render, elementData(el, "init_result"), [el, data.x]);
       };
 
       // Only override resize if bindingDef implements it

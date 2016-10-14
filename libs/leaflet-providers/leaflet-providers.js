@@ -1,4 +1,15 @@
-(function () {
+(function (root, factory) {
+	if (typeof define === 'function' && define.amd) {
+		// AMD. Register as an anonymous module.
+		define(['leaflet'], factory);
+	} else if (typeof modules === 'object' && module.exports) {
+		// define a Common JS module that relies on 'leaflet'
+		module.exports = factory(require('leaflet'));
+	} else {
+		// Assume Leaflet is loaded into global object L already
+		factory(L);
+	}
+}(this, function (L) {
 	'use strict';
 
 	L.TileLayer.Provider = L.TileLayer.extend({
@@ -37,13 +48,24 @@
 					url: variant.url || provider.url,
 					options: L.Util.extend({}, provider.options, variantOptions)
 				};
-			} else if (typeof provider.url === 'function') {
-				provider.url = provider.url(parts.splice(1, parts.length - 1).join('.'));
 			}
 
 			var forceHTTP = window.location.protocol === 'file:' || provider.options.forceHTTP;
 			if (provider.url.indexOf('//') === 0 && forceHTTP) {
 				provider.url = 'http:' + provider.url;
+			}
+
+			// If retina option is set
+			if (provider.options.retina) {
+				// Check retina screen
+				if (options.detectRetina && L.Browser.retina) {
+					// The retina option will be active now
+					// But we need to prevent Leaflet retina mode
+					options.detectRetina = false;
+				} else {
+					// No retina, remove option
+					provider.options.retina = '';
+				}
 			}
 
 			// replace attribution placeholders with their values from toplevel provider attribution,
@@ -75,19 +97,33 @@
 		OpenStreetMap: {
 			url: '//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 			options: {
+				maxZoom: 19,
 				attribution:
 					'&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 			},
 			variants: {
 				Mapnik: {},
 				BlackAndWhite: {
-					url: 'http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png'
+					url: 'http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png',
+					options: {
+						maxZoom: 18
+					}
 				},
 				DE: {
-					url: 'http://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png'
+					url: 'http://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png',
+					options: {
+						maxZoom: 18
+					}
+				},
+				France: {
+					url: '//{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png',
+					options: {
+						maxZoom: 20,
+						attribution: '&copy; Openstreetmap France | {attribution.OpenStreetMap}'
+					}
 				},
 				HOT: {
-					url: 'http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
+					url: '//{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
 					options: {
 						attribution: '{attribution.OpenStreetMap}, Tiles courtesy of <a href="http://hot.openstreetmap.org/" target="_blank">Humanitarian OpenStreetMap Team</a>'
 					}
@@ -103,7 +139,7 @@
 		OpenTopoMap: {
 			url: '//{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
 			options: {
-				maxZoom: 16,
+				maxZoom: 17,
 				attribution: 'Map data: {attribution.OpenStreetMap}, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
 			}
 		},
@@ -111,21 +147,37 @@
 			url: '//{s}.tile.thunderforest.com/{variant}/{z}/{x}/{y}.png',
 			options: {
 				attribution:
-					'&copy; <a href="http://www.opencyclemap.org">OpenCycleMap</a>, {attribution.OpenStreetMap}',
+					'&copy; <a href="http://www.thunderforest.com/">Thunderforest</a>, {attribution.OpenStreetMap}',
 				variant: 'cycle'
 			},
 			variants: {
 				OpenCycleMap: 'cycle',
-				Transport: 'transport',
-				TransportDark: 'transport-dark',
+				Transport: {
+					options: {
+						variant: 'transport',
+						maxZoom: 19
+					}
+				},
+				TransportDark: {
+					options: {
+						variant: 'transport-dark',
+						maxZoom: 19
+					}
+				},
+				SpinalMap: {
+					options: {
+						variant: 'spinal-map',
+						maxZoom: 11
+					}
+				},
 				Landscape: 'landscape',
-				Outdoors: 'outdoors'
+				Outdoors: 'outdoors',
+				Pioneer: 'pioneer'
 			}
 		},
 		OpenMapSurfer: {
-			url: 'http://openmapsurfer.uni-hd.de/tiles/{variant}/x={x}&y={y}&z={z}',
+			url: 'http://korona.geog.uni-heidelberg.de/tiles/{variant}/x={x}&y={y}&z={z}',
 			options: {
-				minZoom: 0,
 				maxZoom: 20,
 				variant: 'roads',
 				attribution: 'Imagery from <a href="http://giscience.uni-hd.de/">GIScience Research Group @ University of Heidelberg</a> &mdash; Map data {attribution.OpenStreetMap}'
@@ -147,10 +199,8 @@
 			}
 		},
 		Hydda: {
-			url: 'http://{s}.tile.openstreetmap.se/hydda/{variant}/{z}/{x}/{y}.png',
+			url: '//{s}.tile.openstreetmap.se/hydda/{variant}/{z}/{x}/{y}.png',
 			options: {
-				minZoom: 0,
-				maxZoom: 18,
 				variant: 'full',
 				attribution: 'Tiles courtesy of <a href="http://openstreetmap.se/" target="_blank">OpenStreetMap Sweden</a> &mdash; Map data {attribution.OpenStreetMap}'
 			},
@@ -160,43 +210,8 @@
 				RoadsAndLabels: 'roads_and_labels'
 			}
 		},
-		MapQuestOpen: {
-			/* Mapquest does support https, but with a different subdomain:
-			 * https://otile{s}-s.mqcdn.com/tiles/1.0.0/{type}/{z}/{x}/{y}.{ext}
-			 * which makes implementing protocol relativity impossible.
-			 */
-			url: 'http://otile{s}.mqcdn.com/tiles/1.0.0/{type}/{z}/{x}/{y}.{ext}',
-			options: {
-				type: 'map',
-				ext: 'jpg',
-				attribution:
-					'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; ' +
-					'Map data {attribution.OpenStreetMap}',
-				subdomains: '1234'
-			},
-			variants: {
-				OSM: {},
-				Aerial: {
-					options: {
-						type: 'sat',
-						attribution:
-							'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; ' +
-							'Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency'
-					}
-				},
-				HybridOverlay: {
-					options: {
-						type: 'hyb',
-						ext: 'png',
-						opacity: 0.9
-					}
-				}
-			}
-		},
 		MapBox: {
-			url: function (id) {
-				return '//{s}.tiles.mapbox.com/v3/' + id + '/{z}/{x}/{y}.png';
-			},
+			url: '//api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}',
 			options: {
 				attribution:
 					'Imagery from <a href="http://mapbox.com/about/maps/">MapBox</a> &mdash; ' +
@@ -205,7 +220,7 @@
 			}
 		},
 		Stamen: {
-			url: 'http://{s}.tile.stamen.com/{variant}/{z}/{x}/{y}.{ext}',
+			url: '//stamen-tiles-{s}.a.ssl.fastly.net/{variant}/{z}/{x}/{y}.{ext}',
 			options: {
 				attribution:
 					'Map tiles by <a href="http://stamen.com">Stamen Design</a>, ' +
@@ -234,17 +249,15 @@
 				Terrain: {
 					options: {
 						variant: 'terrain',
-						minZoom: 4,
-						maxZoom: 18,
-						bounds: [[22, -132], [70, -56]]
+						minZoom: 0,
+						maxZoom: 18
 					}
 				},
 				TerrainBackground: {
 					options: {
 						variant: 'terrain-background',
-						minZoom: 4,
-						maxZoom: 18,
-						bounds: [[22, -132], [70, -56]]
+						minZoom: 0,
+						maxZoom: 18
 					}
 				},
 				TopOSMRelief: {
@@ -350,6 +363,7 @@
 		OpenWeatherMap: {
 			url: 'http://{s}.tile.openweathermap.org/map/{variant}/{z}/{x}/{y}.png',
 			options: {
+				maxZoom: 19,
 				attribution: 'Map data &copy; <a href="http://openweathermap.org">OpenWeatherMap</a>',
 				opacity: 0.5
 			},
@@ -379,8 +393,8 @@
 			 */
 			url:
 				'//{s}.{base}.maps.cit.api.here.com/maptile/2.1/' +
-				'maptile/{mapID}/{variant}/{z}/{x}/{y}/256/png8?' +
-				'app_id={app_id}&app_code={app_code}',
+				'{type}/{mapID}/{variant}/{z}/{x}/{y}/{size}/{format}?' +
+				'app_id={app_id}&app_code={app_code}&lg={language}',
 			options: {
 				attribution:
 					'Map &copy; 1987-2014 <a href="http://developer.here.com">HERE</a>',
@@ -390,8 +404,11 @@
 				'app_code': '<insert your app_code here>',
 				base: 'base',
 				variant: 'normal.day',
-				minZoom: 0,
-				maxZoom: 20
+				maxZoom: 20,
+				type: 'maptile',
+				language: 'eng',
+				format: 'png8',
+				size: '256'
 			},
 			variants: {
 				normalDay: 'normal.day',
@@ -406,6 +423,23 @@
 				normalNightGrey: 'normal.night.grey',
 				normalNightGreyMobile: 'normal.night.grey.mobile',
 
+				basicMap: {
+					options: {
+						type: 'basetile'
+					}
+				},
+				mapLabels: {
+					options: {
+						type: 'labeltile',
+						format: 'png'
+					}
+				},
+				trafficFlow: {
+					options: {
+						base: 'traffic',
+						type: 'flowtile'
+					}
+				},
 				carnavDayGrey: 'carnav.day.grey',
 				hybridDay: {
 					options: {
@@ -441,32 +475,13 @@
 				}
 			}
 		},
-		Acetate: {
-			url: 'http://a{s}.acetate.geoiq.com/tiles/{variant}/{z}/{x}/{y}.png',
-			options: {
-				attribution:
-					'&copy;2012 Esri & Stamen, Data from OSM and Natural Earth',
-				subdomains: '0123',
-				minZoom: 2,
-				maxZoom: 18,
-				variant: 'acetate-base'
-			},
-			variants: {
-				basemap: 'acetate-base',
-				terrain: 'terrain',
-				all: 'acetate-hillshading',
-				foreground: 'acetate-fg',
-				roads: 'acetate-roads',
-				labels: 'acetate-labels',
-				hillshading: 'hillshading'
-			}
-		},
 		FreeMapSK: {
-			url: 'http://{s}.freemap.sk/T/{z}/{x}/{y}.jpeg',
+			url: 'http://t{s}.freemap.sk/T/{z}/{x}/{y}.jpeg',
 			options: {
 				minZoom: 8,
 				maxZoom: 16,
-				subdomains: ['t1', 't2', 't3', 't4'],
+				subdomains: '1234',
+				bounds: [[47.204642, 15.996093], [49.830896, 22.576904]],
 				attribution:
 					'{attribution.OpenStreetMap}, vizualization CC-By-SA 2.0 <a href="http://freemap.sk">Freemap.sk</a>'
 			}
@@ -483,53 +498,53 @@
 			options: {
 				attribution: '{attribution.OpenStreetMap} &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
 				subdomains: 'abcd',
-				minZoom: 0,
-				maxZoom: 18,
+				maxZoom: 19,
 				variant: 'light_all'
 			},
 			variants: {
 				Positron: 'light_all',
 				PositronNoLabels: 'light_nolabels',
+				PositronOnlyLabels: 'light_only_labels',
 				DarkMatter: 'dark_all',
-				DarkMatterNoLabels: 'dark_nolabels'
+				DarkMatterNoLabels: 'dark_nolabels',
+				DarkMatterOnlyLabels: 'dark_only_labels'
 			}
 		},
 		HikeBike: {
-			url: 'http://{s}.tiles.wmflabs.org/hikebike/{z}/{x}/{y}.png',
+			url: 'http://{s}.tiles.wmflabs.org/{variant}/{z}/{x}/{y}.png',
 			options: {
-				attribution: '{attribution.OpenStreetMap}'
+				maxZoom: 19,
+				attribution: '{attribution.OpenStreetMap}',
+				variant: 'hikebike'
+			},
+			variants: {
+				HikeBike: {},
+				HillShading: {
+					options: {
+						maxZoom: 15,
+						variant: 'hillshading'
+					}
+				}
 			}
 		},
 		BasemapAT: {
 			url: '//maps{s}.wien.gv.at/basemap/{variant}/normal/google3857/{z}/{y}/{x}.{format}',
 			options: {
+				maxZoom: 19,
 				attribution: 'Datenquelle: <a href="www.basemap.at">basemap.at</a>',
 				subdomains: ['', '1', '2', '3', '4'],
-				bounds: [[46.358770, 8.782379], [49.037872, 17.189532]]
+				format: 'png',
+				bounds: [[46.358770, 8.782379], [49.037872, 17.189532]],
+				variant: 'geolandbasemap'
 			},
 			variants: {
-				basemap: {
-					options: {
-						variant: 'geolandbasemap',
-						format: 'jpeg'
-					}
-				},
+				basemap: 'geolandbasemap',
+				grau: 'bmapgrau',
+				overlay: 'bmapoverlay',
 				highdpi: {
 					options: {
 						variant: 'bmaphidpi',
 						format: 'jpeg'
-					}
-				},
-				grau: {
-					options: {
-						variant: 'bmapgrau',
-						format: 'png'
-					}
-				},
-				overlay: {
-					options: {
-						variant: 'bmapoverlay',
-						format: 'png'
 					}
 				},
 				orthofoto: {
@@ -595,10 +610,30 @@
 					}
 				}
 			}
+		},
+		NLS: {
+			// NLS maps are copyright National library of Scotland.
+			// http://maps.nls.uk/projects/api/index.html
+			// Please contact NLS for anything other than non-commercial low volume usage
+			//
+			// Map sources: Ordnance Survey 1:1m to 1:63K, 1920s-1940s
+			//   z0-9  - 1:1m
+			//  z10-11 - quarter inch (1:253440)
+			//  z12-18 - one inch (1:63360)
+			url: '//nls-{s}.tileserver.com/nls/{z}/{x}/{y}.jpg',
+			options: {
+				attribution: '<a href="http://geo.nls.uk/maps/">National Library of Scotland Historic Maps</a>',
+				bounds: [[49.6, -12], [61.7, 3]],
+				minZoom: 1,
+				maxZoom: 18,
+				subdomains: '0123',
+			}
 		}
 	};
 
 	L.tileLayer.provider = function (provider, options) {
 		return new L.TileLayer.Provider(provider, options);
 	};
-}());
+
+	return L;
+}));

@@ -25,6 +25,8 @@
 <link href="libs/leafletfix/leafletfix.css" rel="stylesheet" />
 <link href="libs/leaflet-label/leaflet.label.css" rel="stylesheet" />
 <script src="libs/leaflet-label/leaflet.label.js"></script>
+<script src="libs/Proj4Leaflet/proj4-compressed.js"></script>
+<script src="libs/Proj4Leaflet/proj4leaflet.js"></script>
 <script src="libs/leaflet-binding/leaflet.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -160,7 +162,7 @@ $(document).ready(function () {
       <a class="list-group-item" href="map_widget.html">The Map Widget</a>
       <a class="list-group-item" href="basemaps.html">Basemaps</a>
       <a class="list-group-item" href="markers.html">Markers</a>
-      <a class="list-group-item" href="popups.html">Popups</a>
+      <a class="list-group-item" href="popups.html">Popups and Labels</a>
       <a class="list-group-item" href="shapes.html">Lines and Shapes</a>
       <a class="list-group-item" href="json.html">JSON</a>
       <a class="list-group-item" href="raster.html">Raster Images</a>
@@ -191,6 +193,13 @@ $(document).ready(function () {
 <div id="the-map-widget" class="section level2">
 <h2>The Map Widget</h2>
 <p>The function <code>leaflet()</code> returns a Leaflet map widget, which stores a list of objects that can be modified or updated later. Most functions in this package have an argument <code>map</code> as their first argument, which makes it easy to use the pipe operator <code>%&gt;%</code> in the <strong>magrittr</strong> package, as you have seen from the example in the <a href="./">Introduction</a>.</p>
+<div id="initializing-options" class="section level3">
+<h3>Initializing Options</h3>
+<p>The map widget can initialized with certain parameters. This is achieved by populating the <code>options</code> argument as shown below.</p>
+<pre class="r"><code># Set value for the minZoom and maxZoom settings.
+leaflet(options = leafletOptions(minZoom = 0, maxZoom = 18))</code></pre>
+<p>The <code>leafletOptions()</code> can be passed any option described in the leaflet <a href="http://leafletjs.com/reference-1.0.0.html#map-option">reference document</a>. Using the <code>leafletOptions()</code>, you can set a custom <a href="https://en.wikipedia.org/wiki/Spatial_reference_system">CRS</a> and have your map displayed in a non spherical mercator projection as described in <a href="projections.html">projections</a>.</p>
+</div>
 <div id="map-methods" class="section level3">
 <h3>Map Methods</h3>
 <p>You can manipulate the attributes of the map widget using a series of methods. Please see the help page <code>?setView</code> for details.</p>
@@ -237,7 +246,6 @@ leaflet(df) %&gt;% addCircles()</code></pre>
 <pre class="r"><code>leaflet(df) %&gt;% addCircles(lng = ~Long, lat = ~Lat)</code></pre>
 <p>A map layer may use a different data object to override the data provided in <code>leaflet()</code>. We can rewrite the above example as:</p>
 <pre class="r"><code>leaflet() %&gt;% addCircles(data = df)
-# or use df in addCircles() only
 leaflet() %&gt;% addCircles(data = df, lat = ~ Lat, lng = ~ Long)</code></pre>
 <p>Below are examples of using <strong>sp</strong> and <strong>maps</strong>, respectively:</p>
 <pre class="r"><code>library(sp)</code></pre>
@@ -254,6 +262,15 @@ leaflet(height = &quot;300px&quot;) %&gt;% addPolygons(data = SpP)</code></pre>
 <div id="htmlwidget-927ec88a166bf954e46a" style="width:100%;height:300px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-927ec88a166bf954e46a">{
   "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
     "calls": [
       {
         "method": "addPolygons",
@@ -303,6 +320,7 @@ leaflet(height = &quot;300px&quot;) %&gt;% addPolygons(data = SpP)</code></pre>
           },
           null,
           null,
+          null,
           null
         ]
       }
@@ -322,6 +340,15 @@ leaflet(data = mapStates) %&gt;% addTiles() %&gt;%
 <div id="htmlwidget-e2aad06f99e8b55df8d8" style="width:100%;height:216px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-e2aad06f99e8b55df8d8">{
   "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
     "calls": [
       {
         "method": "addTiles",
@@ -753,6 +780,7 @@ leaflet(data = mapStates) %&gt;% addTiles() %&gt;%
             "smoothFactor": 1,
             "noClip": false
           },
+          null,
           null,
           null,
           null

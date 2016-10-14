@@ -25,6 +25,8 @@
 <link href="libs/leafletfix/leafletfix.css" rel="stylesheet" />
 <link href="libs/leaflet-label/leaflet.label.css" rel="stylesheet" />
 <script src="libs/leaflet-label/leaflet.label.js"></script>
+<script src="libs/Proj4Leaflet/proj4-compressed.js"></script>
+<script src="libs/Proj4Leaflet/proj4leaflet.js"></script>
 <script src="libs/leaflet-binding/leaflet.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -160,7 +162,7 @@ $(document).ready(function () {
       <a class="list-group-item" href="map_widget.html">The Map Widget</a>
       <a class="list-group-item" href="basemaps.html">Basemaps</a>
       <a class="list-group-item" href="markers.html">Markers</a>
-      <a class="list-group-item" href="popups.html">Popups</a>
+      <a class="list-group-item" href="popups.html">Popups and Labels</a>
       <a class="list-group-item" href="shapes.html">Lines and Shapes</a>
       <a class="list-group-item" href="json.html">JSON</a>
       <a class="list-group-item" href="raster.html">Raster Images</a>
@@ -209,6 +211,8 @@ $(document).ready(function () {
 <li>Embed maps in <a href="http://yihui.name/knitr/">knitr</a>/<a href="http://rmarkdown.rstudio.com/">R Markdown</a> documents and <a href="http://shiny.rstudio.com/">Shiny</a> apps</li>
 <li>Easily render <code>Spatial</code> objects from the <code>sp</code> package, or data frames with latitude/longitude columns</li>
 <li>Use map bounds and mouse events to drive Shiny logic</li>
+<li>Display maps in non spherical mercator projections.</li>
+<li>Augment map features using <a href="http://leafletjs.com/plugins">plugins</a>.</li>
 </ul>
 </div>
 <div id="installation" class="section level3">
@@ -238,6 +242,15 @@ m  # Print the map</code></pre>
 <div id="htmlwidget-927ec88a166bf954e46a" style="width:100%;height:216px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-927ec88a166bf954e46a">{
   "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
     "calls": [
       {
         "method": "addTiles",
@@ -287,6 +300,7 @@ m  # Print the map</code></pre>
             "riseOffset": 250
           },
           "The birthplace of R",
+          null,
           null,
           null,
           null,

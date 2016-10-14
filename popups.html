@@ -11,7 +11,7 @@
 
 
 
-<title>Leaflet for R - Popups</title>
+<title>Leaflet for R - Popups and Labels</title>
 
 <script src="libs/jquery/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -25,6 +25,8 @@
 <link href="libs/leafletfix/leafletfix.css" rel="stylesheet" />
 <link href="libs/leaflet-label/leaflet.label.css" rel="stylesheet" />
 <script src="libs/leaflet-label/leaflet.label.js"></script>
+<script src="libs/Proj4Leaflet/proj4-compressed.js"></script>
+<script src="libs/Proj4Leaflet/proj4leaflet.js"></script>
 <script src="libs/leaflet-binding/leaflet.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -160,7 +162,7 @@ $(document).ready(function () {
       <a class="list-group-item" href="map_widget.html">The Map Widget</a>
       <a class="list-group-item" href="basemaps.html">Basemaps</a>
       <a class="list-group-item" href="markers.html">Markers</a>
-      <a class="list-group-item" href="popups.html">Popups</a>
+      <a class="list-group-item" href="popups.html">Popups and Labels</a>
       <a class="list-group-item" href="shapes.html">Lines and Shapes</a>
       <a class="list-group-item" href="json.html">JSON</a>
       <a class="list-group-item" href="raster.html">Raster Images</a>
@@ -205,6 +207,15 @@ leaflet() %&gt;% addTiles() %&gt;%
 <div id="htmlwidget-927ec88a166bf954e46a" style="width:100%;height:216px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-927ec88a166bf954e46a">{
   "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
     "calls": [
       {
         "method": "addTiles",
@@ -279,6 +290,15 @@ leaflet(df) %&gt;% addTiles() %&gt;%
 <div id="htmlwidget-e2aad06f99e8b55df8d8" style="width:100%;height:216px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-e2aad06f99e8b55df8d8">{
   "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
     "calls": [
       {
         "method": "addTiles",
@@ -331,6 +351,7 @@ leaflet(df) %&gt;% addTiles() %&gt;%
           null,
           null,
           null,
+          null,
           null
         ]
       }
@@ -344,6 +365,342 @@ leaflet(df) %&gt;% addTiles() %&gt;%
   "jsHooks": []
 }</script>
 <p>In the preceding example, <code>htmltools::htmlEscape</code> was used to santize any characters in the name that might be interpreted as HTML. While it wasn’t necessary for this example (as the restaurant names contained no HTML markup), doing so is important in any situation where the data may come from a file or database, or from the user.</p>
+<p>In addition to markers you can also add popups on shapes like lines, circles and other polygons.</p>
+</div>
+<div id="labels" class="section level2">
+<h2>Labels</h2>
+<p>Labels are elemets either text or HTML content that can be shown on markers, shapes either on hover or statically. Unlike popups you don’t need to click a marker/polygon for the label to be shown.</p>
+<pre class="r"><code>library(htmltools)
+
+df &lt;- read.csv(textConnection(
+&quot;Name,Lat,Long
+Samurai Noodle,47.597131,-122.327298
+Kukai Ramen,47.6154,-122.327157
+Tsukushinbo,47.59987,-122.326726&quot;))
+
+leaflet(df) %&gt;% addTiles() %&gt;%
+  addMarkers(~Long, ~Lat, label = ~htmlEscape(Name))</code></pre>
+<div id="htmlwidget-ec9d8b9e435c1a666871" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ec9d8b9e435c1a666871">{
+  "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
+    "calls": [
+      {
+        "method": "addTiles",
+        "args": [
+          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          null,
+          null,
+          {
+            "minZoom": 0,
+            "maxZoom": 18,
+            "maxNativeZoom": null,
+            "tileSize": 256,
+            "subdomains": "abc",
+            "errorTileUrl": "",
+            "tms": false,
+            "continuousWorld": false,
+            "noWrap": false,
+            "zoomOffset": 0,
+            "zoomReverse": false,
+            "opacity": 1,
+            "zIndex": null,
+            "unloadInvisibleTiles": null,
+            "updateWhenIdle": null,
+            "detectRetina": false,
+            "reuseTiles": false,
+            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap\u003c/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA\u003c/a>"
+          }
+        ]
+      },
+      {
+        "method": "addMarkers",
+        "args": [
+          [47.597131, 47.6154, 47.59987],
+          [-122.327298, -122.327157, -122.326726],
+          null,
+          null,
+          null,
+          {
+            "clickable": true,
+            "draggable": false,
+            "keyboard": true,
+            "title": "",
+            "alt": "",
+            "zIndexOffset": 0,
+            "opacity": 1,
+            "riseOnHover": false,
+            "riseOffset": 250
+          },
+          null,
+          null,
+          null,
+          null,
+          ["Samurai Noodle", "Kukai Ramen", "Tsukushinbo"],
+          null
+        ]
+      }
+    ],
+    "limits": {
+      "lat": [47.597131, 47.6154],
+      "lng": [-122.327298, -122.326726]
+    }
+  },
+  "evals": [],
+  "jsHooks": []
+}</script>
+<div id="customizing-marker-labels" class="section level4">
+<h4>Customizing Marker Labels</h4>
+<p>You can customize maker labels using the <code>labelOptions</code> argument of the <code>addMarkers</code> function. The <code>labelOptions</code> argument can be populated using the <code>labelOptions()</code> function. If <code>noHide</code> is false (the default) then the label is displayed only when you hover the mouse over the marker, if <code>noHide</code> is set to true, then the label is displayed statically.</p>
+<pre class="r"><code># Change Text Size and text Only and also a custom CSS
+leaflet() %&gt;% addTiles() %&gt;% setView(-118.456554,34.09,13) %&gt;%
+  addMarkers(
+    lng=-118.456554, lat=34.07,
+    label=&#39;Default Label&#39;,
+    labelOptions = labelOptions(noHide = T)) %&gt;%
+  addMarkers(
+    lng=-118.456554, lat=34.085,
+    label=&#39;Label w/o surrounding box&#39;,
+    labelOptions = labelOptions(noHide = T, textOnly = TRUE)) %&gt;%
+  addMarkers(
+    lng=-118.456554, lat=34.095,
+    label=&#39;label w/ textsize 15px&#39;,
+    labelOptions = labelOptions(noHide = T, textsize=&#39;15px&#39;)) %&gt;%
+  addMarkers(
+    lng=-118.456554, lat=34.11,
+    label=&#39;Label w/ custom CSS style&#39;,
+    labelOptions = labelOptions(noHide = T, textOnly = FALSE,
+                                style=list(
+                                  &#39;color&#39;=&#39;red&#39;,
+                                  &#39;font-family&#39;= &#39;serif&#39;,
+                                  &#39;font-style&#39;= &#39;italic&#39;,
+                                  &#39;box-shadow&#39; = &#39;3px 3px rgba(0,0,0,0.25)&#39;,
+                                  &#39;font-size&#39; = &#39;12px&#39;,
+                                  &#39;border-color&#39; = &#39;rgba(0,0,0,0.5)&#39;
+                                  )))</code></pre>
+<div id="htmlwidget-65e60ed4f5440bdab363" style="width:100%;height:384px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-65e60ed4f5440bdab363">{
+  "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
+    "calls": [
+      {
+        "method": "addTiles",
+        "args": [
+          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          null,
+          null,
+          {
+            "minZoom": 0,
+            "maxZoom": 18,
+            "maxNativeZoom": null,
+            "tileSize": 256,
+            "subdomains": "abc",
+            "errorTileUrl": "",
+            "tms": false,
+            "continuousWorld": false,
+            "noWrap": false,
+            "zoomOffset": 0,
+            "zoomReverse": false,
+            "opacity": 1,
+            "zIndex": null,
+            "unloadInvisibleTiles": null,
+            "updateWhenIdle": null,
+            "detectRetina": false,
+            "reuseTiles": false,
+            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap\u003c/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA\u003c/a>"
+          }
+        ]
+      },
+      {
+        "method": "addMarkers",
+        "args": [
+          34.07,
+          -118.456554,
+          null,
+          null,
+          null,
+          {
+            "clickable": true,
+            "draggable": false,
+            "keyboard": true,
+            "title": "",
+            "alt": "",
+            "zIndexOffset": 0,
+            "opacity": 1,
+            "riseOnHover": false,
+            "riseOffset": 250
+          },
+          null,
+          null,
+          null,
+          null,
+          "Default Label",
+          {
+            "clickable": false,
+            "noHide": true,
+            "direction": "right",
+            "opacity": 1,
+            "offset": [12, -15],
+            "textsize": "10px",
+            "textOnly": false,
+            "style": null,
+            "zoomAnimation": true,
+            "className": ""
+          }
+        ]
+      },
+      {
+        "method": "addMarkers",
+        "args": [
+          34.085,
+          -118.456554,
+          null,
+          null,
+          null,
+          {
+            "clickable": true,
+            "draggable": false,
+            "keyboard": true,
+            "title": "",
+            "alt": "",
+            "zIndexOffset": 0,
+            "opacity": 1,
+            "riseOnHover": false,
+            "riseOffset": 250
+          },
+          null,
+          null,
+          null,
+          null,
+          "Label w/o surrounding box",
+          {
+            "clickable": false,
+            "noHide": true,
+            "direction": "right",
+            "opacity": 1,
+            "offset": [12, -15],
+            "textsize": "10px",
+            "textOnly": true,
+            "style": null,
+            "zoomAnimation": true,
+            "className": ""
+          }
+        ]
+      },
+      {
+        "method": "addMarkers",
+        "args": [
+          34.095,
+          -118.456554,
+          null,
+          null,
+          null,
+          {
+            "clickable": true,
+            "draggable": false,
+            "keyboard": true,
+            "title": "",
+            "alt": "",
+            "zIndexOffset": 0,
+            "opacity": 1,
+            "riseOnHover": false,
+            "riseOffset": 250
+          },
+          null,
+          null,
+          null,
+          null,
+          "label w/ textsize 15px",
+          {
+            "clickable": false,
+            "noHide": true,
+            "direction": "right",
+            "opacity": 1,
+            "offset": [12, -15],
+            "textsize": "15px",
+            "textOnly": false,
+            "style": null,
+            "zoomAnimation": true,
+            "className": ""
+          }
+        ]
+      },
+      {
+        "method": "addMarkers",
+        "args": [
+          34.11,
+          -118.456554,
+          null,
+          null,
+          null,
+          {
+            "clickable": true,
+            "draggable": false,
+            "keyboard": true,
+            "title": "",
+            "alt": "",
+            "zIndexOffset": 0,
+            "opacity": 1,
+            "riseOnHover": false,
+            "riseOffset": 250
+          },
+          null,
+          null,
+          null,
+          null,
+          "Label w/ custom CSS style",
+          {
+            "clickable": false,
+            "noHide": true,
+            "direction": "right",
+            "opacity": 1,
+            "offset": [12, -15],
+            "textsize": "10px",
+            "textOnly": false,
+            "style": {
+              "color": "red",
+              "font-family": "serif",
+              "font-style": "italic",
+              "box-shadow": "3px 3px rgba(0,0,0,0.25)",
+              "font-size": "12px",
+              "border-color": "rgba(0,0,0,0.5)"
+            },
+            "zoomAnimation": true,
+            "className": ""
+          }
+        ]
+      }
+    ],
+    "setView": [
+      [34.09, -118.456554],
+      13,
+      []
+    ],
+    "limits": {
+      "lat": [34.07, 34.11],
+      "lng": [-118.456554, -118.456554]
+    }
+  },
+  "evals": [],
+  "jsHooks": []
+}</script>
+</div>
 </div>
 
 <footer>
