@@ -232,24 +232,28 @@ methods.addMarkers = function(lat, lng, icon, layerId, group, options, popup, po
     };
   }
 
-  let df = new DataFrame()
-    .col("lat", lat)
-    .col("lng", lng)
-    .col("layerId", layerId)
-    .col("group", group)
-    .col("popup", popup)
-    .col("popupOptions", popupOptions)
-    .col("label", label)
-    .col("labelOptions", labelOptions)
-    .cbind(options);
+  if(!($.isEmptyObject(lat) || $.isEmptyObject(lng))) {
 
-  if (icon) icondf.effectiveLength = df.nrow();
+    let df = new DataFrame()
+      .col("lat", lat)
+      .col("lng", lng)
+      .col("layerId", layerId)
+      .col("group", group)
+      .col("popup", popup)
+      .col("popupOptions", popupOptions)
+      .col("label", label)
+      .col("labelOptions", labelOptions)
+      .cbind(options);
 
-  addMarkers(this, df, group, clusterOptions, clusterId, (df, i) => {
-    let options = df.get(i);
-    if (icon) options.icon = getIcon(i);
-    return L.marker([df.get(i, "lat"), df.get(i, "lng")], options);
-  });
+    if (icon) icondf.effectiveLength = df.nrow();
+
+    addMarkers(this, df, group, clusterOptions, clusterId, (df, i) => {
+      let options = df.get(i);
+      if (icon) options.icon = getIcon(i);
+      return L.marker([df.get(i, "lat"), df.get(i, "lng")], options);
+    });
+
+  }
 };
 
 methods.addAwesomeMarkers = function(lat, lng, icon, layerId, group, options, popup, popupOptions,
@@ -273,24 +277,27 @@ clusterOptions, clusterId, label, labelOptions) {
     };
   }
 
-  let df = new DataFrame()
-    .col("lat", lat)
-    .col("lng", lng)
-    .col("layerId", layerId)
-    .col("group", group)
-    .col("popup", popup)
-    .col("popupOptions", popupOptions)
-    .col("label", label)
-    .col("labelOptions", labelOptions)
-    .cbind(options);
+  if(!($.isEmptyObject(lat) || $.isEmptyObject(lng))) {
 
-  if (icon) icondf.effectiveLength = df.nrow();
+    let df = new DataFrame()
+      .col("lat", lat)
+      .col("lng", lng)
+      .col("layerId", layerId)
+      .col("group", group)
+      .col("popup", popup)
+      .col("popupOptions", popupOptions)
+      .col("label", label)
+      .col("labelOptions", labelOptions)
+      .cbind(options);
 
-  addMarkers(this, df, group, clusterOptions, clusterId, function(df, i) {
-    let options = df.get(i);
-    if (icon) options.icon = getIcon(i);
-    return L.marker([df.get(i, "lat"), df.get(i, "lng")], options);
-  });
+    if (icon) icondf.effectiveLength = df.nrow();
+
+    addMarkers(this, df, group, clusterOptions, clusterId, function(df, i) {
+      let options = df.get(i);
+      if (icon) options.icon = getIcon(i);
+      return L.marker([df.get(i, "lat"), df.get(i, "lng")], options);
+    });
+  }
 };
 
 function addLayers(map, category, df, layerFunc) {
@@ -332,39 +339,43 @@ function addLayers(map, category, df, layerFunc) {
 methods.addGenericLayers = addLayers;
 
 methods.addCircles = function(lat, lng, radius, layerId, group, options, popup, popupOptions, label, labelOptions) {
-  let df = new DataFrame()
-    .col("lat", lat)
-    .col("lng", lng)
-    .col("radius", radius)
-    .col("layerId", layerId)
-    .col("group", group)
-    .col("popup", popup)
-    .col("popupOptions", popupOptions)
-    .col("label", label)
-    .col("labelOptions", labelOptions)
-    .cbind(options);
+  if(!($.isEmptyObject(lat) || $.isEmptyObject(lng))) {
+    let df = new DataFrame()
+      .col("lat", lat)
+      .col("lng", lng)
+      .col("radius", radius)
+      .col("layerId", layerId)
+      .col("group", group)
+      .col("popup", popup)
+      .col("popupOptions", popupOptions)
+      .col("label", label)
+      .col("labelOptions", labelOptions)
+      .cbind(options);
 
-  addLayers(this, "shape", df, function(df, i) {
-    return L.circle([df.get(i, "lat"), df.get(i, "lng")], df.get(i, "radius"), df.get(i));
-  });
+    addLayers(this, "shape", df, function(df, i) {
+      return L.circle([df.get(i, "lat"), df.get(i, "lng")], df.get(i, "radius"), df.get(i));
+    });
+  }
 };
 
 methods.addCircleMarkers = function(lat, lng, radius, layerId, group, options, clusterOptions, clusterId, popup, popupOptions, label, labelOptions) {
-  let df = new DataFrame()
-    .col("lat", lat)
-    .col("lng", lng)
-    .col("radius", radius)
-    .col("layerId", layerId)
-    .col("group", group)
-    .col("popup", popup)
-    .col("popupOptions", popupOptions)
-    .col("label", label)
-    .col("labelOptions", labelOptions)
-    .cbind(options);
+  if(!($.isEmptyObject(lat) || $.isEmptyObject(lng))) {
+    let df = new DataFrame()
+      .col("lat", lat)
+      .col("lng", lng)
+      .col("radius", radius)
+      .col("layerId", layerId)
+      .col("group", group)
+      .col("popup", popup)
+      .col("popupOptions", popupOptions)
+      .col("label", label)
+      .col("labelOptions", labelOptions)
+      .cbind(options);
 
-  addMarkers(this, df, group, clusterOptions, clusterId, function(df, i) {
-    return L.circleMarker([df.get(i, "lat"), df.get(i, "lng")], df.get(i));
-  });
+    addMarkers(this, df, group, clusterOptions, clusterId, function(df, i) {
+      return L.circleMarker([df.get(i, "lat"), df.get(i, "lng")], df.get(i));
+    });
+  }
 };
 
 /*
