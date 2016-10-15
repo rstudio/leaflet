@@ -551,18 +551,19 @@ addLabelOnlyMarkers = function(
   clusterId = NULL,
   data = getMapData(map)
 ) {
-  addMarkers(map = map, lng = lng, lat = lat, layerId = layerId,
-             group = group,
-             icon = makeIcon(iconUrl =
-                               system.file('htmlwidgets/lib/leaflet/images/1px.png',
-                                           package='leaflet'),
-                             iconWidth = 1, iconHeight = 1),
-             label = label,
-             labelOptions = labelOptions,
-             options = options,
-             clusterOptions = clusterOptions,
-             clusterId = clusterId,
-             data = data)
+  do.call(addMarkers, filterNULL(list(
+    map = map, lng = lng, lat = lat, layerId = layerId,
+    group = group,
+    icon = makeIcon(
+      iconUrl = system.file('htmlwidgets/lib/leaflet/images/1px.png', package='leaflet'),
+      iconWidth = 1, iconHeight = 1),
+      label = label,
+      labelOptions = labelOptions,
+      options = options,
+      clusterOptions = clusterOptions,
+      clusterId = clusterId,
+      data = data
+  )))
 }
 
 #' Adds marker-cluster-plugin HTML dependency
