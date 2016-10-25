@@ -82,6 +82,23 @@ derivePoints = function(data, lng, lat, missingLng, missingLat, funcName) {
     stop(funcName, " requires non-NULL latitude values")
   }
 
+  if (!is.numeric(lng) && !is.numeric(lat)) {
+    stop(funcName, " requires numeric longitude/latitude values")
+  } else if (!is.numeric(lng)) {
+    stop(funcName, " requires numeric longitude values")
+  } else if (!is.numeric(lat)) {
+    stop(funcName, " requires numeric latitude values")
+  }
+
+  complete <- ifelse(
+    is.na(lat) | is.null(lat) | is.na(lng) | is.null(lng) |
+      !is.numeric(lat) | !is.numeric(lng),
+    FALSE, TRUE)
+
+  if(any(!complete)) {
+    warning(sprintf("Data contains %s rows with either missing or invalid lat/lon values and will be ignored",sum(!complete)))
+  }
+
   data.frame(lng = lng, lat = lat)
 }
 
@@ -123,6 +140,14 @@ derivePolygons = function(data, lng, lat, missingLng, missingLat, funcName) {
     stop(funcName, " requires numeric longitude values")
   } else if (!is.numeric(lat)) {
     stop(funcName, " requires numeric latitude values")
+  }
+  complete <- ifelse(
+    is.na(lat) | is.null(lat) | is.na(lng) | is.null(lng) |
+      !is.numeric(lat) | !is.numeric(lng),
+    FALSE, TRUE)
+
+  if(any(!complete)) {
+    warning(sprintf("Data contains %s rows with either missing or invalid lat/lon values and will be ignored",sum(!complete)))
   }
 
   polygonData(cbind(lng, lat))
@@ -210,7 +235,13 @@ polygonData.SpatialPolygons = function(obj) {
     structure(bbox = obj@bbox)
 }
 polygonData.SpatialPolygonsDataFrame = function(obj) {
-  polygonData(sp::polygons(obj))
+  #polygonData(sp::polygons(obj))
+  if(length(obj@polygons)>0) {
+    polygonData(sp::SpatialPolygons(obj@polygons))
+  } else {
+    warning("Empty SpatialLinesDataFrame object passed and will be skipped")
+    structure(list(), bbox=obj@bbox)
+  }
 }
 polygonData.map = function(obj) {
   polygonData(cbind(obj$x, obj$y))
@@ -235,7 +266,12 @@ polygonData.SpatialLines = function(obj) {
     structure(bbox = obj@bbox)
 }
 polygonData.SpatialLinesDataFrame = function(obj) {
-  polygonData(sp::SpatialLines(obj@lines))
+  if(length(obj@lines)>0) {
+    polygonData(sp::SpatialLines(obj@lines))
+  } else {
+    warning("Empty SpatialLinesDataFrame object passed and will be skipped")
+    structure(list(), bbox=obj@bbox)
+  }
 }
 
 dfbbox = function(df) {
