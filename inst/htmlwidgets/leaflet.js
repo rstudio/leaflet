@@ -1205,7 +1205,7 @@ methods.addMarkers = function (lat, lng, icon, layerId, group, options, popup, p
     };
   }
 
-  if (!(_jquery2.default.isEmptyObject(lat) || _jquery2.default.isEmptyObject(lng))) {
+  if (!(_jquery2.default.isEmptyObject(lat) || _jquery2.default.isEmptyObject(lng)) || _jquery2.default.isNumeric(lat) && _jquery2.default.isNumeric(lng)) {
 
     var df = new _dataframe2.default().col("lat", lat).col("lng", lng).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).cbind(options);
 
@@ -1239,7 +1239,7 @@ methods.addAwesomeMarkers = function (lat, lng, icon, layerId, group, options, p
     };
   }
 
-  if (!(_jquery2.default.isEmptyObject(lat) || _jquery2.default.isEmptyObject(lng))) {
+  if (!(_jquery2.default.isEmptyObject(lat) || _jquery2.default.isEmptyObject(lng)) || _jquery2.default.isNumeric(lat) && _jquery2.default.isNumeric(lng)) {
 
     var df = new _dataframe2.default().col("lat", lat).col("lng", lng).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).cbind(options);
 
@@ -1298,7 +1298,7 @@ function addLayers(map, category, df, layerFunc) {
 methods.addGenericLayers = addLayers;
 
 methods.addCircles = function (lat, lng, radius, layerId, group, options, popup, popupOptions, label, labelOptions) {
-  if (!(_jquery2.default.isEmptyObject(lat) || _jquery2.default.isEmptyObject(lng))) {
+  if (!(_jquery2.default.isEmptyObject(lat) || _jquery2.default.isEmptyObject(lng)) || _jquery2.default.isNumeric(lat) && _jquery2.default.isNumeric(lng)) {
     var df = new _dataframe2.default().col("lat", lat).col("lng", lng).col("radius", radius).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).cbind(options);
 
     addLayers(this, "shape", df, function (df, i) {
@@ -1312,7 +1312,7 @@ methods.addCircles = function (lat, lng, radius, layerId, group, options, popup,
 };
 
 methods.addCircleMarkers = function (lat, lng, radius, layerId, group, options, clusterOptions, clusterId, popup, popupOptions, label, labelOptions) {
-  if (!(_jquery2.default.isEmptyObject(lat) || _jquery2.default.isEmptyObject(lng))) {
+  if (!(_jquery2.default.isEmptyObject(lat) || _jquery2.default.isEmptyObject(lng)) || _jquery2.default.isNumeric(lat) && _jquery2.default.isNumeric(lng)) {
     var df = new _dataframe2.default().col("lat", lat).col("lng", lng).col("radius", radius).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).cbind(options);
 
     addMarkers(this, df, group, clusterOptions, clusterId, function (df, i) {

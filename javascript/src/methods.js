@@ -236,7 +236,8 @@ methods.addMarkers = function(lat, lng, icon, layerId, group, options, popup, po
     };
   }
 
-  if(!($.isEmptyObject(lat) || $.isEmptyObject(lng))) {
+  if(!($.isEmptyObject(lat) || $.isEmptyObject(lng)) ||
+      ($.isNumeric(lat) && $.isNumeric(lng))) {
 
     let df = new DataFrame()
       .col("lat", lat)
@@ -281,7 +282,8 @@ clusterOptions, clusterId, label, labelOptions) {
     };
   }
 
-  if(!($.isEmptyObject(lat) || $.isEmptyObject(lng))) {
+  if(!($.isEmptyObject(lat) || $.isEmptyObject(lng)) ||
+      ($.isNumeric(lat) && $.isNumeric(lng))) {
 
     let df = new DataFrame()
       .col("lat", lat)
@@ -345,7 +347,8 @@ function addLayers(map, category, df, layerFunc) {
 methods.addGenericLayers = addLayers;
 
 methods.addCircles = function(lat, lng, radius, layerId, group, options, popup, popupOptions, label, labelOptions) {
-  if(!($.isEmptyObject(lat) || $.isEmptyObject(lng))) {
+  if(!($.isEmptyObject(lat) || $.isEmptyObject(lng)) ||
+      ($.isNumeric(lat) && $.isNumeric(lng))) {
     let df = new DataFrame()
       .col("lat", lat)
       .col("lng", lng)
@@ -370,7 +373,8 @@ methods.addCircles = function(lat, lng, radius, layerId, group, options, popup, 
 };
 
 methods.addCircleMarkers = function(lat, lng, radius, layerId, group, options, clusterOptions, clusterId, popup, popupOptions, label, labelOptions) {
-  if(!($.isEmptyObject(lat) || $.isEmptyObject(lng))) {
+  if(!($.isEmptyObject(lat) || $.isEmptyObject(lng)) ||
+      ($.isNumeric(lat) && $.isNumeric(lng))) {
     let df = new DataFrame()
       .col("lat", lat)
       .col("lng", lng)
