@@ -206,7 +206,7 @@ HTMLWidgets.widget({
         }
 
         if (!explicitView && needsZoom() && !map.getZoom()) {
-          if (data.limits) {
+          if (data.limits && ! $.isEmptyObject(data.limits)) {
             // Use the natural limits of what's being drawn on the map
             // If the size of the bounding box is 0, leaflet gets all weird
             let pad = 0.006;

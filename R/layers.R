@@ -997,7 +997,11 @@ addRectangles = function(
   lat1 = resolveFormula(lat1, data)
   lng2 = resolveFormula(lng2, data)
   lat2 = resolveFormula(lat2, data)
-  invokeMethod(map, data, 'addRectangles',lat1, lng1, lat2, lng2, layerId, group, options, popup, popupOptions, safeLabel(label, data), labelOptions) %>%
+
+  df1 <- validateCoords(lng1, lat1, "addRectangles")
+  df2 <- validateCoords(lng2, lat2, "addRectangles")
+
+  invokeMethod(map, data, 'addRectangles',df1$lat, df1$lng, df2$lat, df2$lng, layerId, group, options, popup, popupOptions, safeLabel(label, data), labelOptions) %>%
     expandLimits(c(lat1, lat2), c(lng1, lng2))
 }
 
