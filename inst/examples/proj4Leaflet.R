@@ -81,7 +81,7 @@ leaflet(options= leafletOptions(
 
 library(sp)
 library(albersusa)
-spdf <- usa_composite()
+spdf <- rmapshaper::ms_simplify(usa_composite())
 pal <- colorNumeric(
   palette = "Blues",
   domain = spdf@data$pop_2014
@@ -105,40 +105,7 @@ leaflet(
               fillColor=~pal(pop_2014),
               fillOpacity=0.7,
               label=~stringr::str_c(name,' ', pop_2014),
-              labelOptions= labelOptions(direction = 'auto')) %>%
-  htmlwidgets::onRender("
-    function(el, t) {
-      var defaultStyle = {
-        color: '#000000',
-        opacity:0.5,
-        weight: 1,
-        fillOpacity: 0.7,
-      };
-      var highlightStyle = {
-        color: '#ff0000',
-        opacity:1,
-        weight: 3,
-        fillOpacity: 1,
-      };
-
-      var myMap = this;
-      var layers = myMap._layers;
-      for(var i in layers) {
-        var layer = layers[i];
-        // need some way to identify our polygons
-        // as each polygon was assigned a Label we use that
-        // as our selection criteria
-        if(layer.label) {
-          layer.on('mouseover',
-            function(e) {
-              this.setStyle(highlightStyle);
-              this.bringToFront();
-            });
-          layer.on('mouseout',
-            function(e) {
-              this.setStyle(defaultStyle);
-              this.bringToBack();
-            });
-        }
-      }
-    }")
+              labelOptions= labelOptions(direction = 'auto'),
+              highlightOptions = highlightOptions(
+                color='#00ff00', opacity = 1, weight = 2, fillOpacity = 1,
+                bringToFront = TRUE, sendToBack = TRUE) )

@@ -14,6 +14,7 @@
 \alias{addTiles}
 \alias{addTopoJSON}
 \alias{addWMSTiles}
+\alias{highlightOptions}
 \alias{markerClusterDependencies}
 \alias{safeLabel}
 \title{Graphics elements and layers}
@@ -55,32 +56,37 @@ addCircleMarkers(map, lng = NULL, lat = NULL, radius = 10,
   options = pathOptions(), clusterOptions = NULL, clusterId = NULL,
   data = getMapData(map))
 
+highlightOptions(stroke = NULL, color = NULL, weight = NULL,
+  opacity = NULL, fill = NULL, fillColor = NULL, fillOpacity = NULL,
+  dashArray = NULL, bringToFront = NULL, sendToBack = NULL)
+
 addCircles(map, lng = NULL, lat = NULL, radius = 10, layerId = NULL,
   group = NULL, stroke = TRUE, color = "#03F", weight = 5,
   opacity = 0.5, fill = TRUE, fillColor = color, fillOpacity = 0.2,
   dashArray = NULL, popup = NULL, popupOptions = NULL, label = NULL,
-  labelOptions = NULL, options = pathOptions(), data = getMapData(map))
+  labelOptions = NULL, options = pathOptions(), highlightOptions = NULL,
+  data = getMapData(map))
 
 addPolylines(map, lng = NULL, lat = NULL, layerId = NULL, group = NULL,
   stroke = TRUE, color = "#03F", weight = 5, opacity = 0.5,
   fill = FALSE, fillColor = color, fillOpacity = 0.2, dashArray = NULL,
   smoothFactor = 1, noClip = FALSE, popup = NULL, popupOptions = NULL,
   label = NULL, labelOptions = NULL, options = pathOptions(),
-  data = getMapData(map))
+  highlightOptions = NULL, data = getMapData(map))
 
 addRectangles(map, lng1, lat1, lng2, lat2, layerId = NULL, group = NULL,
   stroke = TRUE, color = "#03F", weight = 5, opacity = 0.5,
   fill = TRUE, fillColor = color, fillOpacity = 0.2, dashArray = NULL,
   smoothFactor = 1, noClip = FALSE, popup = NULL, popupOptions = NULL,
   label = NULL, labelOptions = NULL, options = pathOptions(),
-  data = getMapData(map))
+  highlightOptions = NULL, data = getMapData(map))
 
 addPolygons(map, lng = NULL, lat = NULL, layerId = NULL, group = NULL,
   stroke = TRUE, color = "#03F", weight = 5, opacity = 0.5,
   fill = TRUE, fillColor = color, fillOpacity = 0.2, dashArray = NULL,
   smoothFactor = 1, noClip = FALSE, popup = NULL, popupOptions = NULL,
   label = NULL, labelOptions = NULL, options = pathOptions(),
-  data = getMapData(map))
+  highlightOptions = NULL, data = getMapData(map))
 
 addGeoJSON(map, geojson, layerId = NULL, group = NULL, stroke = TRUE,
   color = "#03F", weight = 5, opacity = 0.5, fill = TRUE,
@@ -185,6 +191,12 @@ circles)}
 \href{https://developer.mozilla.org/en/SVG/Attribute/stroke-dasharray}{dash
 pattern}}
 
+\item{bringToFront}{Whether the shape should be brought to front on hover.}
+
+\item{sendToBack}{whether the shape should be sent to back on mouse out.}
+
+\item{highlightOptions}{Options for highlighting the shape on mouse over.}
+
 \item{smoothFactor}{how much to simplify the polyline on each zoom level
 (more means better performance and less accurate representation)}
 
@@ -206,6 +218,8 @@ Add graphics elements and layers to the map widget.
 Helper Function to create a safe label
 
 Adds marker-cluster-plugin HTML dependency
+
+Options to highlight shapes (polylines/polygons/circles/rectangles)
 }
 \section{Functions}{
 \itemize{
@@ -226,6 +240,8 @@ Adds marker-cluster-plugin HTML dependency
 \item \code{markerClusterDependencies}: add maker cluster plugin
 
 \item \code{addCircleMarkers}: Add circle markers to the map
+
+\item \code{highlightOptions}: Options to highligh a shape on hover
 
 \item \code{addCircles}: Add circles to the map
 

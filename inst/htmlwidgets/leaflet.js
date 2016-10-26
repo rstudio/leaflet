@@ -1256,36 +1256,68 @@ methods.addAwesomeMarkers = function (lat, lng, icon, layerId, group, options, p
 function addLayers(map, category, df, layerFunc) {
   var _loop3 = function _loop3(i) {
     (function () {
+      var _this4 = this;
+
       var layer = layerFunc(df, i);
       if (!_jquery2.default.isEmptyObject(layer)) {
-        var thisId = df.get(i, "layerId");
-        var thisGroup = df.get(i, "group");
-        this.layerManager.addLayer(layer, category, thisId, thisGroup);
-        if (layer.bindPopup) {
-          var popup = df.get(i, "popup");
-          var popupOptions = df.get(i, "popupOptions");
-          if (popup !== null) {
-            if (popupOptions !== null) {
-              layer.bindPopup(popup, popupOptions);
-            } else {
-              layer.bindPopup(popup);
+        (function () {
+          var thisId = df.get(i, "layerId");
+          var thisGroup = df.get(i, "group");
+          _this4.layerManager.addLayer(layer, category, thisId, thisGroup);
+          if (layer.bindPopup) {
+            var popup = df.get(i, "popup");
+            var popupOptions = df.get(i, "popupOptions");
+            if (popup !== null) {
+              if (popupOptions !== null) {
+                layer.bindPopup(popup, popupOptions);
+              } else {
+                layer.bindPopup(popup);
+              }
             }
           }
-        }
-        if (layer.bindLabel) {
-          var label = df.get(i, "label");
-          var labelOptions = df.get(i, "labelOptions");
-          if (label !== null) {
-            if (labelOptions !== null) {
-              layer.bindLabel(label, labelOptions);
-            } else {
-              layer.bindLabel(label);
+          if (layer.bindLabel) {
+            var label = df.get(i, "label");
+            var labelOptions = df.get(i, "labelOptions");
+            if (label !== null) {
+              if (labelOptions !== null) {
+                layer.bindLabel(label, labelOptions);
+              } else {
+                layer.bindLabel(label);
+              }
             }
           }
-        }
-        layer.on("click", mouseHandler(this.id, thisId, thisGroup, category + "_click"), this);
-        layer.on("mouseover", mouseHandler(this.id, thisId, thisGroup, category + "_mouseover"), this);
-        layer.on("mouseout", mouseHandler(this.id, thisId, thisGroup, category + "_mouseout"), this);
+          layer.on("click", mouseHandler(_this4.id, thisId, thisGroup, category + "_click"), _this4);
+          layer.on("mouseover", mouseHandler(_this4.id, thisId, thisGroup, category + "_mouseover"), _this4);
+          layer.on("mouseout", mouseHandler(_this4.id, thisId, thisGroup, category + "_mouseout"), _this4);
+          var highlightStyle = df.get(i, "highlightOptions");
+
+          if (!_jquery2.default.isEmptyObject(highlightStyle)) {
+            (function () {
+
+              var defaultStyle = {};
+              _jquery2.default.each(highlightStyle, function (k, v) {
+                if (k != "bringToFront" && k != "sendToBack") {
+                  if (df.get(i, k)) {
+                    defaultStyle[k] = df.get(i, k);
+                  }
+                }
+              });
+
+              layer.on("mouseover", function (e) {
+                this.setStyle(highlightStyle);
+                if (highlightStyle.bringToFront) {
+                  this.bringToFront();
+                }
+              });
+              layer.on("mouseout", function (e) {
+                this.setStyle(defaultStyle);
+                if (highlightStyle.sendToBack) {
+                  this.bringToBack();
+                }
+              });
+            })();
+          }
+        })();
       }
     }).call(map);
   };
@@ -1297,9 +1329,9 @@ function addLayers(map, category, df, layerFunc) {
 
 methods.addGenericLayers = addLayers;
 
-methods.addCircles = function (lat, lng, radius, layerId, group, options, popup, popupOptions, label, labelOptions) {
+methods.addCircles = function (lat, lng, radius, layerId, group, options, popup, popupOptions, label, labelOptions, highlightOptions) {
   if (!(_jquery2.default.isEmptyObject(lat) || _jquery2.default.isEmptyObject(lng)) || _jquery2.default.isNumeric(lat) && _jquery2.default.isNumeric(lng)) {
-    var df = new _dataframe2.default().col("lat", lat).col("lng", lng).col("radius", radius).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).cbind(options);
+    var df = new _dataframe2.default().col("lat", lat).col("lng", lng).col("radius", radius).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).col("highlightOptions", highlightOptions).cbind(options);
 
     addLayers(this, "shape", df, function (df, i) {
       if (_jquery2.default.isNumeric(df.get(i, "lat")) && _jquery2.default.isNumeric(df.get(i, "lng")) && _jquery2.default.isNumeric(df.get(i, "radius"))) {
@@ -1325,9 +1357,9 @@ methods.addCircleMarkers = function (lat, lng, radius, layerId, group, options, 
  * @param lat Array of arrays of latitude coordinates for polylines
  * @param lng Array of arrays of longitude coordinates for polylines
  */
-methods.addPolylines = function (polygons, layerId, group, options, popup, popupOptions, label, labelOptions) {
+methods.addPolylines = function (polygons, layerId, group, options, popup, popupOptions, label, labelOptions, highlightOptions) {
   if (polygons.length > 0) {
-    var df = new _dataframe2.default().col("shapes", polygons).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).cbind(options);
+    var df = new _dataframe2.default().col("shapes", polygons).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).col("highlightOptions", highlightOptions).cbind(options);
 
     addLayers(this, "shape", df, function (df, i) {
       var shape = df.get(i, "shapes")[0];
@@ -1367,8 +1399,8 @@ methods.clearShapes = function () {
   this.layerManager.clearLayers("shape");
 };
 
-methods.addRectangles = function (lat1, lng1, lat2, lng2, layerId, group, options, popup, popupOptions, label, labelOptions) {
-  var df = new _dataframe2.default().col("lat1", lat1).col("lng1", lng1).col("lat2", lat2).col("lng2", lng2).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).cbind(options);
+methods.addRectangles = function (lat1, lng1, lat2, lng2, layerId, group, options, popup, popupOptions, label, labelOptions, highlightOptions) {
+  var df = new _dataframe2.default().col("lat1", lat1).col("lng1", lng1).col("lat2", lat2).col("lng2", lng2).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).col("highlightOptions", highlightOptions).cbind(options);
 
   addLayers(this, "shape", df, function (df, i) {
     if (_jquery2.default.isNumeric(df.get(i, "lat1")) && _jquery2.default.isNumeric(df.get(i, "lng1")) && _jquery2.default.isNumeric(df.get(i, "lat2")) && _jquery2.default.isNumeric(df.get(i, "lng2"))) {
@@ -1383,9 +1415,9 @@ methods.addRectangles = function (lat1, lng1, lat2, lng2, layerId, group, option
  * @param lat Array of arrays of latitude coordinates for polygons
  * @param lng Array of arrays of longitude coordinates for polygons
  */
-methods.addPolygons = function (polygons, layerId, group, options, popup, popupOptions, label, labelOptions) {
+methods.addPolygons = function (polygons, layerId, group, options, popup, popupOptions, label, labelOptions, highlightOptions) {
   if (polygons.length > 0) {
-    var df = new _dataframe2.default().col("shapes", polygons).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).cbind(options);
+    var df = new _dataframe2.default().col("shapes", polygons).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).col("highlightOptions", highlightOptions).cbind(options);
 
     addLayers(this, "shape", df, function (df, i) {
       var shapes = df.get(i, "shapes");
@@ -1632,7 +1664,7 @@ methods.addLegend = function (options) {
 };
 
 methods.addLayersControl = function (baseGroups, overlayGroups, options) {
-  var _this4 = this;
+  var _this5 = this;
 
   // Only allow one layers control at a time
   methods.removeLayersControl.call(this);
@@ -1640,23 +1672,23 @@ methods.addLayersControl = function (baseGroups, overlayGroups, options) {
   var firstLayer = true;
   var base = {};
   _jquery2.default.each((0, _util.asArray)(baseGroups), function (i, g) {
-    var layer = _this4.layerManager.getLayerGroup(g, true);
+    var layer = _this5.layerManager.getLayerGroup(g, true);
     if (layer) {
       base[g] = layer;
 
       // Check if >1 base layers are visible; if so, hide all but the first one
-      if (_this4.hasLayer(layer)) {
+      if (_this5.hasLayer(layer)) {
         if (firstLayer) {
           firstLayer = false;
         } else {
-          _this4.removeLayer(layer);
+          _this5.removeLayer(layer);
         }
       }
     }
   });
   var overlay = {};
   _jquery2.default.each((0, _util.asArray)(overlayGroups), function (i, g) {
-    var layer = _this4.layerManager.getLayerGroup(g, true);
+    var layer = _this5.layerManager.getLayerGroup(g, true);
     if (layer) {
       overlay[g] = layer;
     }
@@ -1690,23 +1722,23 @@ methods.removeScaleBar = function () {
 };
 
 methods.hideGroup = function (group) {
-  var _this5 = this;
-
-  _jquery2.default.each((0, _util.asArray)(group), function (i, g) {
-    var layer = _this5.layerManager.getLayerGroup(g, true);
-    if (layer) {
-      _this5.removeLayer(layer);
-    }
-  });
-};
-
-methods.showGroup = function (group) {
   var _this6 = this;
 
   _jquery2.default.each((0, _util.asArray)(group), function (i, g) {
     var layer = _this6.layerManager.getLayerGroup(g, true);
     if (layer) {
-      _this6.addLayer(layer);
+      _this6.removeLayer(layer);
+    }
+  });
+};
+
+methods.showGroup = function (group) {
+  var _this7 = this;
+
+  _jquery2.default.each((0, _util.asArray)(group), function (i, g) {
+    var layer = _this7.layerManager.getLayerGroup(g, true);
+    if (layer) {
+      _this7.addLayer(layer);
     }
   });
 };
@@ -1836,7 +1868,7 @@ methods.addRasterImage = function (uri, bounds, opacity, attribution, layerId, g
   canvasTiles.drawTile = function (canvas, tilePoint, zoom) {
     getImageData(function (imgData, w, h, mipmapper) {
       try {
-        var _ret5 = function () {
+        var _ret7 = function () {
           // The Context2D we'll being drawing onto. It's always 256x256.
           var ctx = canvas.getContext("2d");
 
@@ -1960,7 +1992,7 @@ methods.addRasterImage = function (uri, bounds, opacity, attribution, layerId, g
           }
         }();
 
-        if ((typeof _ret5 === "undefined" ? "undefined" : _typeof(_ret5)) === "object") return _ret5.v;
+        if ((typeof _ret7 === "undefined" ? "undefined" : _typeof(_ret7)) === "object") return _ret7.v;
       } finally {
         canvasTiles.tileDrawn(canvas);
       }
