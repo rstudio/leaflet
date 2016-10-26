@@ -233,3 +233,37 @@ makeListFun = function(list) {
 "%||%" = function(a, b) {
   if (!is.null(a)) a else b
 }
+
+#' Utility function to check if a coordinates is valid
+#' @param lng vector with longitude values
+#' @param lat vector with latitude values
+#' @param warn A boolean. Whether to generate a warning message if there are rows with missing/invalid data
+#' @export
+validateCoords <- function(lng, lat, funcName, warn=T) {
+  if (is.null(lng) && is.null(lat)) {
+    stop(funcName, " requires non-NULL longitude/latitude values")
+  } else if (is.null(lng)) {
+    stop(funcName, " requires non-NULL longitude values")
+  } else if (is.null(lat)) {
+    stop(funcName, " requires non-NULL latitude values")
+  }
+
+  if (!is.numeric(lng) && !is.numeric(lat)) {
+    stop(funcName, " requires numeric longitude/latitude values")
+  } else if (!is.numeric(lng)) {
+    stop(funcName, " requires numeric longitude values")
+  } else if (!is.numeric(lat)) {
+    stop(funcName, " requires numeric latitude values")
+  }
+  complete <- ifelse(
+    is.na(lat) | is.null(lat) | is.na(lng) | is.null(lng) |
+      !is.numeric(lat) | !is.numeric(lng),
+    FALSE, TRUE)
+
+  if(any(!complete)) {
+    warning(sprintf("Data contains %s rows with either missing or invalid lat/lon values and will be ignored",sum(!complete)))
+  }
+
+  data.frame(lng=lng,lat=lat)
+
+}

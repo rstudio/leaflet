@@ -998,18 +998,10 @@ addRectangles = function(
   lng2 = resolveFormula(lng2, data)
   lat2 = resolveFormula(lat2, data)
 
-  complete <- ifelse(
-    is.na(lat1) | is.null(lat1) | is.na(lng1) | is.null(lng1) |
-      !is.numeric(lat1) | !is.numeric(lng1) |
-      is.na(lat2) | is.null(lat2) | is.na(lng2) | is.null(lng2) |
-      !is.numeric(lat2) | !is.numeric(lng2),
-    FALSE, TRUE)
+  df1 <- validateCoords(lng1, lat1, "addRectangles")
+  df2 <- validateCoords(lng2, lat2, "addRectangles")
 
-  if(any(!complete)) {
-    warning(sprintf("Data contains %s rows with either missing or invalid lat/lon values and will be ignored",sum(!complete)))
-  }
-
-  invokeMethod(map, data, 'addRectangles',lat1, lng1, lat2, lng2, layerId, group, options, popup, popupOptions, safeLabel(label, data), labelOptions) %>%
+  invokeMethod(map, data, 'addRectangles',df1$lat, df1$lng, df2$lat, df2$lng, layerId, group, options, popup, popupOptions, safeLabel(label, data), labelOptions) %>%
     expandLimits(c(lat1, lat2), c(lng1, lng2))
 }
 

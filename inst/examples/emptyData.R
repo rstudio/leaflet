@@ -39,6 +39,4 @@ sp_lines_df %>% leaflet() %>% addPolylines()
 # Subset the data to get SpatialLinesDataFrame without data
 sub_df <- sp_lines_df[sp_lines_df$x > 1,]
 
-# The following fails with:
-# - Error in bb[1, ] : incorrect number of dimensions
 sub_df %>% leaflet() %>% addPolylines()
