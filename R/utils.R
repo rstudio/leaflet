@@ -237,6 +237,7 @@ makeListFun = function(list) {
 #' Utility function to check if a coordinates is valid
 #' @param lng vector with longitude values
 #' @param lat vector with latitude values
+#' @param funcName Name of calling function
 #' @param warn A boolean. Whether to generate a warning message if there are rows with missing/invalid data
 #' @export
 validateCoords <- function(lng, lat, funcName, warn=T) {

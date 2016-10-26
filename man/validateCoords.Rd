@@ -11,6 +11,8 @@ validateCoords(lng, lat, funcName, warn = T)
 
 \item{lat}{vector with latitude values}
 
+\item{funcName}{Name of calling function}
+
 \item{warn}{A boolean. Whether to generate a warning message if there are rows with missing/invalid data}
 }
 \description{
