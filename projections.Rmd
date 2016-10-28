@@ -1,0 +1,117 @@
+---
+pagetitle: Leaflet for R - Using Projections
+---
+
+## Using Different Projections in Leaflet
+
+If you are new to the concept of map projections, start by reading the [Wikipedia](https://en.wikipedia.org/wiki/Map_projection) entry for it. In short a map projection is a mathematical way to transform (project) a 3 dimensional earth on to a two dimensional space.
+
+Leaflet expects the points, paths, and shapes data to be specified in latitude and longitude; this is known as the [EPSG:4326](http://epsg.io/4326) projection. Leaflet internally re-projects this data to [shperical or web mercator](https://en.wikipedia.org/wiki/Web_Mercator) projection a.k.a. [EPSG:3857](http://epsg.io/3857) before plotting it on screen. For [basemap tiles](basemaps.html) leaflet expects the tiles to use the web mercator projection (EPSG:3857).
+
+Starting with ver. 1.1 we have incorporated the [Proj4Leaflet](https://github.com/kartena/Proj4Leaflet) leaflet plugin, which allows you to display data in various other projections besides the default web mercator. This is useful in various scenarios listed below
+
+- You have tiles in non web mercator projection that you want to display using leaflet
+- You want to use a more appropriate local projection for a particular part of the earth. Remember, all projections distort one or more attributes of your data (shape, area, direction, bearing, angle), but certain projections are more suitable for certain sections of the earth. Check [projection wizzard](http://projectionwizard.org/) for determining which projection is appropriate for which areas.
+- You have non geo data like map tiles for a game map or other such unprojected tile or raster data.
+
+For such situations as listed above, you can use `leafletCRS` function to create a custom projection and pass it to the `leafletOption` function to be passed to the `leaflet` function. See `?leaflet::leafletCRS` in your R console for details of the function.
+
+#### Tiles in a custom projection
+
+Below we show Gothenberg, Sweeden in [EPSG:3006](http://epsg.io/3006) projection, which is more suitable for the nordic country than web mercator.
+```{r}
+leaflet(
+  options =
+    leafletOptions(
+      worldCopyJump = FALSE,
+      crs=leafletCRS(
+        crsClass="L.Proj.CRS",
+        code='EPSG:3006',
+        proj4def='+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs',
+        resolutions = c(
+          8192, 4096, 2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5 ),
+        origin =c(0, 0))
+      )) %>%
+  addTiles(
+    urlTemplate = 'http://api.geosition.com/tile/osm-bright-3006/{z}/{x}/{y}.png',
+    attribution = 'Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>, Imagery &copy; 2013 <a href="http://www.kartena.se/">Kartena</a>',
+    options = tileOptions(minZoom=0,maxZoom=14,continuousWorld = TRUE)) %>%
+  setView(11.965, 57.704, 13)
+
+```
+
+What is critical here to remember is that for basemap tiles, leaflet expects the tiles to be in the projection that is specified in the `leafletCRS` function. It does not do any translation of tile data, which means you can't use spherical mercator tiles (the default openstreetmap tiles) and a non shperical mercator projection. In this case the api.geosition.com server does indeed uses EPSG:3006 for its tiles. This is a very important point to take into consideration when working with projections.
+
+#### Points, lines, shapes in custom projection
+
+Again an important point to remeber here is that unlike the tiles which leaflet expects to be in the same projection as used in the `leafletCRS` function, for points, lines, and shapes leaflet still expects the data in latitude and longitude (EPSG:4326). So for example if you wanted to plot some points on the Gothenberg Sweeden plot below, you would still need to specify them using latitude/longitude and not EPSG:3006. Leaflet will internally convert them to EPSG:3006 before plotting on screen.
+
+Below we show U.S.A. using [EPSG:2163](http://epsg.io/2163) a.k.a. 'US National Atlas Equal Area projection'. What's more the dataset we use has Alaska and Hawaii moved closer to main land US as well as rotated and resized accordingly.
+
+```{r}
+library(sp)
+
+if(!suppressWarnings(requireNamespace('albersusa', quietly = TRUE))) {
+    devtools::install_github('hrbrmstr/albersusa')
+}
+library(albersusa)
+
+
+spdf <- usa_composite()
+pal <- colorNumeric(
+  palette = "Blues",
+  domain = spdf@data$pop_2014
+)
+
+bounds <- c(-125, 24 ,-75, 45)
+
+leaflet(
+  options=
+    leafletOptions(
+      worldCopyJump = FALSE,
+      crs=leafletCRS(
+        crsClass="L.Proj.CRS",
+        code='EPSG:2163',
+        proj4def='+proj=laea +lat_0=45 +lon_0=-100 +x_0=0 +y_0=0 +a=6370997 +b=6370997 +units=m +no_defs',
+        resolutions = c(65536, 32768, 16384, 8192, 4096, 2048,1024, 512, 256, 128)
+      ))) %>%
+  fitBounds(bounds[1], bounds[2], bounds[3], bounds[4]) %>%
+  setMaxBounds(bounds[1], bounds[2], bounds[3], bounds[4]) %>%
+  addPolygons(data=spdf, weight = 1, color = "#000000",
+              fillColor=~pal(pop_2014),
+              fillOpacity=0.7,
+              label=~stringr::str_c(name,' ', pop_2014),
+              labelOptions= labelOptions(direction = 'auto'))
+```
+
+#### Plotting non geo data in Leaflet
+
+If you have non geo data for example a game map, you can use `L.CRS.Simple` as your leaflet projection. Here we reproduce the [original](http://leafletjs.com/examples/crs-simple/crs-simple.html) example from the Leafletjs.com page.
+
+```{r}
+bounds <- c(-26.5,-25, 1021.5,1023)
+leaflet(options= leafletOptions(
+  crs=leafletCRS(crsClass='L.CRS.Simple'),
+  minZoom= -5,
+  maxZoom = 5)) %>%
+  fitBounds(bounds[1], bounds[2], bounds[3], bounds[4]) %>%
+  setMaxBounds(bounds[1], bounds[2], bounds[3], bounds[4]) %>%
+  htmlwidgets::onRender("
+  function(el, t) {
+    var myMap = this;
+    var bounds = myMap.getBounds();
+  	var image = new L.ImageOverlay(
+                      'http://leafletjs.com/examples/crs-simple/uqm_map_full.png',
+                      bounds);
+    image.addTo(myMap);
+  }")
+```
+
+**NOTE** : We used `htmlwidgets::onRender` function to specify our image file as we don't have a R equivalent for the `L.ImageOverlay` javascript function.
+
+There is a lot more you can do with the projection support, see the [examples](examples.html) page for more sample code using projections support.
+
+### Points to remember
+
+- Leaflet always expects the point, path, shape data (`addMarkers`, `addPolyLines`, `addPolygons`) to be in latitude and longitude (EPSG:4326) regardless of which projection is used. Internally it reprojects the data to the target project (EPSG:3857 a.k.a. web-mercator by default or whatever is the specified projection in `leafletCRS` function) before plotting.
+- Leaflet always expects tiles to be in the target projection and will not work correctly if you specify a different target projection than the projection used by your tiles.

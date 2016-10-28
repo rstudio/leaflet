@@ -6,6 +6,16 @@ pagetitle: Leaflet for R - The Map Widget
 
 The function `leaflet()` returns a Leaflet map widget, which stores a list of objects that can be modified or updated later. Most functions in this package have an argument `map` as their first argument, which makes it easy to use the pipe operator `%>%` in the **magrittr** package, as you have seen from the example in the [Introduction](./).
 
+### Initializing Options
+The map widget can initialized with certain parameters. This is achieved by populating the `options` argument as shown below.
+
+```{r eval=FALSE}
+# Set value for the minZoom and maxZoom settings.
+leaflet(options = leafletOptions(minZoom = 0, maxZoom = 18))
+```
+
+The `leafletOptions()` can be passed any option described in the leaflet [reference document](http://leafletjs.com/reference-1.0.0.html#map-option). Using the `leafletOptions()`, you can set a custom [CRS](https://en.wikipedia.org/wiki/Spatial_reference_system) and have your map displayed in a non spherical mercator projection as described in [projections](projections.html).
+
 ### Map Methods
 
 You can manipulate the attributes of the map widget using a series of methods. Please see the help page `?setView` for details.
@@ -57,7 +67,6 @@ A map layer may use a different data object to override the data provided in `le
 
 ```{r eval=FALSE}
 leaflet() %>% addCircles(data = df)
-# or use df in addCircles() only
 leaflet() %>% addCircles(data = df, lat = ~ Lat, lng = ~ Long)
 ```
 
