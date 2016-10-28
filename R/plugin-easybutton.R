@@ -43,14 +43,14 @@ easyButtonState <- function(
 #' @param states the states
 #' @export
 easyButton <- function(
-  icon,
+  icon = NULL,
   title = NULL,
-  onClick,
+  onClick = NULL,
   position = "topleft",
   id = NULL,
   states = NULL
 ) {
-  if(!inherits(onClick,'JS_EVAL')) {
+  if(!missing(onClick) && !inherits(onClick,'JS_EVAL')) {
     stop("onClick needs to be a returned value from a JS() call")
   }
   if(!is.null(states) && ! (
@@ -58,14 +58,14 @@ easyButton <- function(
     all(sapply(states,function(x) inherits(x,'leaflet_easybutton_state'))))) {
     stop("states needs to be a list() of easyButton instances")
   }
-  structure(list(
+  structure(filterNULL(list(
     icon = as.character(icon),
     title = as.character(title),
     onClick = onClick,
     position = position,
     id = id,
     states = states
-  ),
+  )),
       class='leaflet_easybutton')
 }
 
