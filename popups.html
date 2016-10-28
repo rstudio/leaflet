@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Leaflet for R - Popups and Labels</title>
+
+<script src="libs/jquery/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap/css/flatly.min.css" rel="stylesheet" />
+<script src="libs/bootstrap/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap/shim/respond.min.js"></script>
+<script src="libs/navigation/tabsets.js"></script>
+<link href="libs/highlightjs/default.css" rel="stylesheet" />
+<script src="libs/highlightjs/highlight.js"></script>
+<script src="libs/htmlwidgets/htmlwidgets.js"></script>
+<link href="libs/leaflet/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet/leaflet.js"></script>
+<link href="libs/leafletfix/leafletfix.css" rel="stylesheet" />
+<link href="libs/leaflet-label/leaflet.label.css" rel="stylesheet" />
+<script src="libs/leaflet-label/leaflet.label.js"></script>
+<script src="libs/Proj4Leaflet/proj4-compressed.js"></script>
+<script src="libs/Proj4Leaflet/proj4leaflet.js"></script>
+<script src="libs/leaflet-binding/leaflet.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+<style type="text/css">
+  body {
+    padding-top: 20px;
+  }
+  .navbar-brand {
+    font-weight: bold;
+  }
+  footer {
+    border-top: 1px solid #CCC;
+    margin-top: 60px;
+    margin-bottom: 48px;
+    opacity: 0.75;
+  }
+  .content-body>:first-child, .content-body>:first-child>:first-child {
+    margin-top: 0 !important;
+  }
+  p code {
+    white-space: inherit;
+  }
+</style>
+
+<div class="fluid-row">
+  <div class="col-sm-12">
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <a class="navbar-brand" href="./">Leaflet for R</a>
+        </div>
+      </div>
+    </nav>
+  </div>
+</div>
+
+<div class="fluid-row">
+  <div class="col-sm-3">
+    <div class="list-group">
+      <a class="list-group-item" href="./">Introduction</a>
+      <a class="list-group-item" href="map_widget.html">The Map Widget</a>
+      <a class="list-group-item" href="basemaps.html">Basemaps</a>
+      <a class="list-group-item" href="markers.html">Markers</a>
+      <a class="list-group-item" href="popups.html">Popups and Labels</a>
+      <a class="list-group-item" href="shapes.html">Lines and Shapes</a>
+      <a class="list-group-item" href="json.html">GeoJSON and TopoJSON</a>
+      <a class="list-group-item" href="raster.html">Raster Images</a>
+      <a class="list-group-item" href="shiny.html">Shiny Integration</a>
+      <a class="list-group-item" href="colors.html">Colors</a>
+      <a class="list-group-item" href="legends.html">Legends</a>
+      <a class="list-group-item" href="showhide.html">Show/Hide Layers</a>
+      <a class="list-group-item" href="projections.html">Projections</a>
+      <a class="list-group-item" href="morefeatures.html">More Features</a>
+      <a class="list-group-item" href="extending.html">Extending Leaflet</a>
+      <a class="list-group-item" href="examples.html">Detailed Examples</a>
+    </div>
+    <script>
+      // manage active state of toc based on current page
+      var href = window.location.pathname;
+      href = href.substr(href.lastIndexOf('/') + 1);
+      if (href === "" || href === "index.html")
+        href = "./";
+      $('a.list-group-item[href="' + href + '"]').addClass('active');
+    </script>
+  </div>
+  <div class="col-sm-9 content-body">
+
+<div class="fluid-row" id="header">
+
+
+
+
+</div>
+
+
+<div id="popups" class="section level2">
+<h2>Popups</h2>
+<p>Popups are small boxes containing arbitrary HTML, that point to a specific point on the map.</p>
+<p>Use the <code>addPopups()</code> function to add standalone popup to the map.</p>
+<pre class="r"><code>content &lt;- paste(sep = &quot;&lt;br/&gt;&quot;,
+  &quot;&lt;b&gt;&lt;a href=&#39;http://www.samurainoodle.com&#39;&gt;Samurai Noodle&lt;/a&gt;&lt;/b&gt;&quot;,
+  &quot;606 5th Ave. S&quot;,
+  &quot;Seattle, WA 98138&quot;
+)
+
+leaflet() %&gt;% addTiles() %&gt;%
+  addPopups(-122.327298, 47.597131, content,
+    options = popupOptions(closeButton = FALSE)
+  )</code></pre>
+<div id="htmlwidget-927ec88a166bf954e46a" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-927ec88a166bf954e46a">{
+  "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
+    "calls": [
+      {
+        "method": "addTiles",
+        "args": [
+          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          null,
+          null,
+          {
+            "minZoom": 0,
+            "maxZoom": 18,
+            "maxNativeZoom": null,
+            "tileSize": 256,
+            "subdomains": "abc",
+            "errorTileUrl": "",
+            "tms": false,
+            "continuousWorld": false,
+            "noWrap": false,
+            "zoomOffset": 0,
+            "zoomReverse": false,
+            "opacity": 1,
+            "zIndex": null,
+            "unloadInvisibleTiles": null,
+            "updateWhenIdle": null,
+            "detectRetina": false,
+            "reuseTiles": false,
+            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap\u003c/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA\u003c/a>"
+          }
+        ]
+      },
+      {
+        "method": "addPopups",
+        "args": [
+          47.597131,
+          -122.327298,
+          "<b><a href='http://www.samurainoodle.com'>Samurai Noodle\u003c/a>\u003c/b><br/>606 5th Ave. S<br/>Seattle, WA 98138",
+          null,
+          null,
+          {
+            "maxWidth": 300,
+            "minWidth": 50,
+            "maxHeight": null,
+            "autoPan": true,
+            "keepInView": false,
+            "closeButton": false,
+            "zoomAnimation": true,
+            "closeOnClick": null,
+            "className": ""
+          }
+        ]
+      }
+    ],
+    "limits": {
+      "lat": [47.597131, 47.597131],
+      "lng": [-122.327298, -122.327298]
+    }
+  },
+  "evals": [],
+  "jsHooks": []
+}</script>
+<p>A common use for popups is to have them appear when markers or shapes are clicked. Marker and shape functions in the Leaflet package take a <code>popup</code> argument, where you can pass in HTML to easily attach a simple popup.</p>
+<pre class="r"><code>library(htmltools)
+
+df &lt;- read.csv(textConnection(
+&quot;Name,Lat,Long
+Samurai Noodle,47.597131,-122.327298
+Kukai Ramen,47.6154,-122.327157
+Tsukushinbo,47.59987,-122.326726&quot;
+))
+
+leaflet(df) %&gt;% addTiles() %&gt;%
+  addMarkers(~Long, ~Lat, popup = ~htmlEscape(Name))</code></pre>
+<div id="htmlwidget-e2aad06f99e8b55df8d8" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-e2aad06f99e8b55df8d8">{
+  "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
+    "calls": [
+      {
+        "method": "addTiles",
+        "args": [
+          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          null,
+          null,
+          {
+            "minZoom": 0,
+            "maxZoom": 18,
+            "maxNativeZoom": null,
+            "tileSize": 256,
+            "subdomains": "abc",
+            "errorTileUrl": "",
+            "tms": false,
+            "continuousWorld": false,
+            "noWrap": false,
+            "zoomOffset": 0,
+            "zoomReverse": false,
+            "opacity": 1,
+            "zIndex": null,
+            "unloadInvisibleTiles": null,
+            "updateWhenIdle": null,
+            "detectRetina": false,
+            "reuseTiles": false,
+            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap\u003c/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA\u003c/a>"
+          }
+        ]
+      },
+      {
+        "method": "addMarkers",
+        "args": [
+          [47.597131, 47.6154, 47.59987],
+          [-122.327298, -122.327157, -122.326726],
+          null,
+          null,
+          null,
+          {
+            "clickable": true,
+            "draggable": false,
+            "keyboard": true,
+            "title": "",
+            "alt": "",
+            "zIndexOffset": 0,
+            "opacity": 1,
+            "riseOnHover": false,
+            "riseOffset": 250
+          },
+          ["Samurai Noodle", "Kukai Ramen", "Tsukushinbo"],
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      }
+    ],
+    "limits": {
+      "lat": [47.597131, 47.6154],
+      "lng": [-122.327298, -122.326726]
+    }
+  },
+  "evals": [],
+  "jsHooks": []
+}</script>
+<p>In the preceding example, <code>htmltools::htmlEscape</code> was used to santize any characters in the name that might be interpreted as HTML. While it wasn’t necessary for this example (as the restaurant names contained no HTML markup), doing so is important in any situation where the data may come from a file or database, or from the user.</p>
+<p>In addition to markers you can also add popups on shapes like lines, circles and other polygons.</p>
+</div>
+<div id="labels" class="section level2">
+<h2>Labels</h2>
+<p>A label is a textual or HTML content that can attached to markers and shapes to be always displayed or displayed on mouse over. Unlike popups you don’t need to click a marker/polygon for the label to be shown.</p>
+<pre class="r"><code>library(htmltools)
+
+df &lt;- read.csv(textConnection(
+&quot;Name,Lat,Long
+Samurai Noodle,47.597131,-122.327298
+Kukai Ramen,47.6154,-122.327157
+Tsukushinbo,47.59987,-122.326726&quot;))
+
+leaflet(df) %&gt;% addTiles() %&gt;%
+  addMarkers(~Long, ~Lat, label = ~htmlEscape(Name))</code></pre>
+<div id="htmlwidget-ec9d8b9e435c1a666871" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ec9d8b9e435c1a666871">{
+  "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
+    "calls": [
+      {
+        "method": "addTiles",
+        "args": [
+          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          null,
+          null,
+          {
+            "minZoom": 0,
+            "maxZoom": 18,
+            "maxNativeZoom": null,
+            "tileSize": 256,
+            "subdomains": "abc",
+            "errorTileUrl": "",
+            "tms": false,
+            "continuousWorld": false,
+            "noWrap": false,
+            "zoomOffset": 0,
+            "zoomReverse": false,
+            "opacity": 1,
+            "zIndex": null,
+            "unloadInvisibleTiles": null,
+            "updateWhenIdle": null,
+            "detectRetina": false,
+            "reuseTiles": false,
+            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap\u003c/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA\u003c/a>"
+          }
+        ]
+      },
+      {
+        "method": "addMarkers",
+        "args": [
+          [47.597131, 47.6154, 47.59987],
+          [-122.327298, -122.327157, -122.326726],
+          null,
+          null,
+          null,
+          {
+            "clickable": true,
+            "draggable": false,
+            "keyboard": true,
+            "title": "",
+            "alt": "",
+            "zIndexOffset": 0,
+            "opacity": 1,
+            "riseOnHover": false,
+            "riseOffset": 250
+          },
+          null,
+          null,
+          null,
+          null,
+          ["Samurai Noodle", "Kukai Ramen", "Tsukushinbo"],
+          null
+        ]
+      }
+    ],
+    "limits": {
+      "lat": [47.597131, 47.6154],
+      "lng": [-122.327298, -122.326726]
+    }
+  },
+  "evals": [],
+  "jsHooks": []
+}</script>
+<div id="customizing-marker-labels" class="section level4">
+<h4>Customizing Marker Labels</h4>
+<p>You can customize marker labels using the <code>labelOptions</code> argument of the <code>addMarkers</code> function. The <code>labelOptions</code> argument can be populated using the <code>labelOptions()</code> function. If <code>noHide</code> is false (the default) then the label is displayed only when you hover the mouse over the marker; if <code>noHide</code> is set to true then the label is always displayed.</p>
+<pre class="r"><code># Change Text Size and text Only and also a custom CSS
+leaflet() %&gt;% addTiles() %&gt;% setView(-118.456554,34.09,13) %&gt;%
+  addMarkers(
+    lng=-118.456554, lat=34.07,
+    label=&#39;Default Label&#39;,
+    labelOptions = labelOptions(noHide = T)) %&gt;%
+  addMarkers(
+    lng=-118.456554, lat=34.085,
+    label=&#39;Label w/o surrounding box&#39;,
+    labelOptions = labelOptions(noHide = T, textOnly = TRUE)) %&gt;%
+  addMarkers(
+    lng=-118.456554, lat=34.095,
+    label=&#39;label w/ textsize 15px&#39;,
+    labelOptions = labelOptions(noHide = T, textsize=&#39;15px&#39;)) %&gt;%
+  addMarkers(
+    lng=-118.456554, lat=34.11,
+    label=&#39;Label w/ custom CSS style&#39;,
+    labelOptions = labelOptions(noHide = T, textOnly = FALSE,
+                                style=list(
+                                  &#39;color&#39;=&#39;red&#39;,
+                                  &#39;font-family&#39;= &#39;serif&#39;,
+                                  &#39;font-style&#39;= &#39;italic&#39;,
+                                  &#39;box-shadow&#39; = &#39;3px 3px rgba(0,0,0,0.25)&#39;,
+                                  &#39;font-size&#39; = &#39;12px&#39;,
+                                  &#39;border-color&#39; = &#39;rgba(0,0,0,0.5)&#39;
+                                  )))</code></pre>
+<div id="htmlwidget-65e60ed4f5440bdab363" style="width:100%;height:384px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-65e60ed4f5440bdab363">{
+  "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
+    "calls": [
+      {
+        "method": "addTiles",
+        "args": [
+          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          null,
+          null,
+          {
+            "minZoom": 0,
+            "maxZoom": 18,
+            "maxNativeZoom": null,
+            "tileSize": 256,
+            "subdomains": "abc",
+            "errorTileUrl": "",
+            "tms": false,
+            "continuousWorld": false,
+            "noWrap": false,
+            "zoomOffset": 0,
+            "zoomReverse": false,
+            "opacity": 1,
+            "zIndex": null,
+            "unloadInvisibleTiles": null,
+            "updateWhenIdle": null,
+            "detectRetina": false,
+            "reuseTiles": false,
+            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap\u003c/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA\u003c/a>"
+          }
+        ]
+      },
+      {
+        "method": "addMarkers",
+        "args": [
+          34.07,
+          -118.456554,
+          null,
+          null,
+          null,
+          {
+            "clickable": true,
+            "draggable": false,
+            "keyboard": true,
+            "title": "",
+            "alt": "",
+            "zIndexOffset": 0,
+            "opacity": 1,
+            "riseOnHover": false,
+            "riseOffset": 250
+          },
+          null,
+          null,
+          null,
+          null,
+          "Default Label",
+          {
+            "clickable": false,
+            "noHide": true,
+            "direction": "right",
+            "opacity": 1,
+            "offset": [12, -15],
+            "textsize": "10px",
+            "textOnly": false,
+            "style": null,
+            "zoomAnimation": true,
+            "className": ""
+          }
+        ]
+      },
+      {
+        "method": "addMarkers",
+        "args": [
+          34.085,
+          -118.456554,
+          null,
+          null,
+          null,
+          {
+            "clickable": true,
+            "draggable": false,
+            "keyboard": true,
+            "title": "",
+            "alt": "",
+            "zIndexOffset": 0,
+            "opacity": 1,
+            "riseOnHover": false,
+            "riseOffset": 250
+          },
+          null,
+          null,
+          null,
+          null,
+          "Label w/o surrounding box",
+          {
+            "clickable": false,
+            "noHide": true,
+            "direction": "right",
+            "opacity": 1,
+            "offset": [12, -15],
+            "textsize": "10px",
+            "textOnly": true,
+            "style": null,
+            "zoomAnimation": true,
+            "className": ""
+          }
+        ]
+      },
+      {
+        "method": "addMarkers",
+        "args": [
+          34.095,
+          -118.456554,
+          null,
+          null,
+          null,
+          {
+            "clickable": true,
+            "draggable": false,
+            "keyboard": true,
+            "title": "",
+            "alt": "",
+            "zIndexOffset": 0,
+            "opacity": 1,
+            "riseOnHover": false,
+            "riseOffset": 250
+          },
+          null,
+          null,
+          null,
+          null,
+          "label w/ textsize 15px",
+          {
+            "clickable": false,
+            "noHide": true,
+            "direction": "right",
+            "opacity": 1,
+            "offset": [12, -15],
+            "textsize": "15px",
+            "textOnly": false,
+            "style": null,
+            "zoomAnimation": true,
+            "className": ""
+          }
+        ]
+      },
+      {
+        "method": "addMarkers",
+        "args": [
+          34.11,
+          -118.456554,
+          null,
+          null,
+          null,
+          {
+            "clickable": true,
+            "draggable": false,
+            "keyboard": true,
+            "title": "",
+            "alt": "",
+            "zIndexOffset": 0,
+            "opacity": 1,
+            "riseOnHover": false,
+            "riseOffset": 250
+          },
+          null,
+          null,
+          null,
+          null,
+          "Label w/ custom CSS style",
+          {
+            "clickable": false,
+            "noHide": true,
+            "direction": "right",
+            "opacity": 1,
+            "offset": [12, -15],
+            "textsize": "10px",
+            "textOnly": false,
+            "style": {
+              "color": "red",
+              "font-family": "serif",
+              "font-style": "italic",
+              "box-shadow": "3px 3px rgba(0,0,0,0.25)",
+              "font-size": "12px",
+              "border-color": "rgba(0,0,0,0.5)"
+            },
+            "zoomAnimation": true,
+            "className": ""
+          }
+        ]
+      }
+    ],
+    "setView": [
+      [34.09, -118.456554],
+      13,
+      []
+    ],
+    "limits": {
+      "lat": [34.07, 34.11],
+      "lng": [-118.456554, -118.456554]
+    }
+  },
+  "evals": [],
+  "jsHooks": []
+}</script>
+</div>
+<div id="labels-without-markers" class="section level4">
+<h4>Labels without markers</h4>
+<p>You can create labels without the accompanying markers using the <code>addLabelOnlyMarkers</code> function.</p>
+</div>
+</div>
+
+<footer>
+<p><small>The "leaflet" R package is copyright &copy; 2014-2016 RStudio, Inc.<br/>
+The Leaflet JavaScript library is &copy; 2010–2016 <a href="http://agafonkin.com/en">Vladimir Agafonkin</a>, 2010–2011 <a href="http://cloudmade.com">CloudMade</a>.<br/>
+Maps &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors unless otherwise noted.
+</small></p>
+</footer>
+
+  </div>
+</div>
+
+<a href="https://github.com/rstudio/leaflet"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
