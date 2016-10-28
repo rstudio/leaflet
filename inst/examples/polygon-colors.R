@@ -1,3 +1,5 @@
+library(magrittr)
+
 fName <- 'https://raw.githubusercontent.com/MinnPost/simple-map-d3/master/example-data/world-population.geo.json'
 
 readGeoJson_ <- function(fName) {
