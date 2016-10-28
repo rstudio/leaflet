@@ -43,7 +43,7 @@ In addition to markers you can also add popups on shapes like lines, circles and
 
 ## Labels
 
-Labels are elemets either text or HTML content that can be shown on markers, shapes either on hover or statically. Unlike popups you don't need to click a marker/polygon for the label to be shown.
+A label is a textual or HTML content that can attached to markers and shapes to be always displayed or displayed on mouse over. Unlike popups you don't need to click a marker/polygon for the label to be shown.
 
 ```{r}
 library(htmltools)
@@ -60,7 +60,7 @@ leaflet(df) %>% addTiles() %>%
 
 #### Customizing Marker Labels
 
-You can customize maker labels using the `labelOptions` argument of the `addMarkers` function. The `labelOptions` argument can be populated using the `labelOptions()` function. If `noHide` is false (the default) then the label is displayed only when you hover the mouse over the marker, if `noHide` is set to true, then the label is displayed statically.
+You can customize marker labels using the `labelOptions` argument of the `addMarkers` function. The `labelOptions` argument can be populated using the `labelOptions()` function. If `noHide` is false (the default) then the label is displayed only when you hover the mouse over the marker; if `noHide` is set to true then the label is always displayed.
 
 ```{r, fig.height=4}
 # Change Text Size and text Only and also a custom CSS
@@ -91,3 +91,7 @@ leaflet() %>% addTiles() %>% setView(-118.456554,34.09,13) %>%
                                   )))
 ```
 
+
+#### Labels without markers
+
+You can create labels without the accompanying markers using the `addLabelOnlyMarkers` function.

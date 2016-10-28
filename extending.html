@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Leaflet for R - Extending Leaflet</title>
+
+<script src="libs/jquery/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap/css/flatly.min.css" rel="stylesheet" />
+<script src="libs/bootstrap/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap/shim/respond.min.js"></script>
+<script src="libs/navigation/tabsets.js"></script>
+<link href="libs/highlightjs/default.css" rel="stylesheet" />
+<script src="libs/highlightjs/highlight.js"></script>
+<script src="libs/htmlwidgets/htmlwidgets.js"></script>
+<link href="libs/leaflet/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet/leaflet.js"></script>
+<link href="libs/leafletfix/leafletfix.css" rel="stylesheet" />
+<link href="libs/leaflet-label/leaflet.label.css" rel="stylesheet" />
+<script src="libs/leaflet-label/leaflet.label.js"></script>
+<script src="libs/Proj4Leaflet/proj4-compressed.js"></script>
+<script src="libs/Proj4Leaflet/proj4leaflet.js"></script>
+<script src="libs/leaflet-binding/leaflet.js"></script>
+<script src="libs/leaflet.plugins/Bing.min.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+<style type="text/css">
+  body {
+    padding-top: 20px;
+  }
+  .navbar-brand {
+    font-weight: bold;
+  }
+  footer {
+    border-top: 1px solid #CCC;
+    margin-top: 60px;
+    margin-bottom: 48px;
+    opacity: 0.75;
+  }
+  .content-body>:first-child, .content-body>:first-child>:first-child {
+    margin-top: 0 !important;
+  }
+  p code {
+    white-space: inherit;
+  }
+</style>
+
+<div class="fluid-row">
+  <div class="col-sm-12">
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <a class="navbar-brand" href="./">Leaflet for R</a>
+        </div>
+      </div>
+    </nav>
+  </div>
+</div>
+
+<div class="fluid-row">
+  <div class="col-sm-3">
+    <div class="list-group">
+      <a class="list-group-item" href="./">Introduction</a>
+      <a class="list-group-item" href="map_widget.html">The Map Widget</a>
+      <a class="list-group-item" href="basemaps.html">Basemaps</a>
+      <a class="list-group-item" href="markers.html">Markers</a>
+      <a class="list-group-item" href="popups.html">Popups and Labels</a>
+      <a class="list-group-item" href="shapes.html">Lines and Shapes</a>
+      <a class="list-group-item" href="json.html">GeoJSON and TopoJSON</a>
+      <a class="list-group-item" href="raster.html">Raster Images</a>
+      <a class="list-group-item" href="shiny.html">Shiny Integration</a>
+      <a class="list-group-item" href="colors.html">Colors</a>
+      <a class="list-group-item" href="legends.html">Legends</a>
+      <a class="list-group-item" href="showhide.html">Show/Hide Layers</a>
+      <a class="list-group-item" href="projections.html">Projections</a>
+      <a class="list-group-item" href="morefeatures.html">More Features</a>
+      <a class="list-group-item" href="extending.html">Extending Leaflet</a>
+      <a class="list-group-item" href="examples.html">Detailed Examples</a>
+    </div>
+    <script>
+      // manage active state of toc based on current page
+      var href = window.location.pathname;
+      href = href.substr(href.lastIndexOf('/') + 1);
+      if (href === "" || href === "index.html")
+        href = "./";
+      $('a.list-group-item[href="' + href + '"]').addClass('active');
+    </script>
+  </div>
+  <div class="col-sm-9 content-body">
+
+<div class="fluid-row" id="header">
+
+
+
+
+</div>
+
+
+<div id="extending-leaflet-package" class="section level2">
+<h2>Extending Leaflet package</h2>
+<p>The Leaflet Javascript library has a plethora of <a href="leafletjs.com/plugins">plugins</a> available that extend the functionality of the core package. We have incorporated a chosen few in the R package. It may be desirable to use plugins availble outside of what are supported by this pakage.</p>
+<p>The way to achieve that is by extending the Leaflet package. By extending we mean writing your own code/package that incorporate your desired leaflet plugins and hook into the leaflet package.</p>
+<p>Certain functions have been made available for you to use in your code while extending Leaflet.</p>
+<div id="derivepointsderivepolygons" class="section level4">
+<h4>derivePoints/derivePolygons</h4>
+<p>These functions can be used to extract point or shape (polygon/line/circle/rectangle) data from a <code>data.frame</code> or a spatial object from the <code>sp</code> package. It tries to auto determine the latitude/longitude colnames if not specified or use user supplied column mappings.</p>
+</div>
+<div id="evalformula" class="section level4">
+<h4>evalFormula</h4>
+<p><code>evalFormula</code> is used to evaluate a formula on a given data and return the results. e.g. <code>leaflet(some.data.frame) %&gt;% addMarkers(label=~name)</code> internally uses <code>evalFormula</code> to calculate the correct label values from the data using the <code>~name</code> formula.</p>
+</div>
+<div id="expandlimits" class="section level4">
+<h4>expandLimits</h4>
+<p>You can call <code>expandLimits</code> to make sure that your map’s view is just enough to show every point/shape in your data. This way you don’t have to determine the exact bounds for your map.</p>
+</div>
+<div id="filternull" class="section level4">
+<h4>filterNULL</h4>
+<p>Often when passing a list from R to Javascript it is desirable to remove any null elements, and that’s exactly what <code>filterNULL</code> does.</p>
+</div>
+<div id="getmapdata" class="section level4">
+<h4>getMapData</h4>
+<p>Accesses the data object passed when calling <code>leaflet()</code> funtion.</p>
+</div>
+<div id="invokemethod" class="section level4">
+<h4>invokeMethod</h4>
+<p>The glue between the R code and Javascript code. Requires a corresponding method on the Javascript side.</p>
+</div>
+<div id="example" class="section level3">
+<h3>Example</h3>
+<p>Here is a small example which shows how you can integrate the Bing.com basemap layer <a href="https://github.com/shramov/leaflet-plugins">plugin</a></p>
+<pre class="r"><code>library(leaflet)
+library(htmltools)
+library(htmlwidgets)
+
+bingPlugin &lt;- htmlDependency(
+  &quot;leaflet.plugins&quot;, &quot;2.0.0&quot;,
+  src = normalizePath(&quot;./js&quot;),
+  script = &quot;Bing.min.js&quot;
+)
+
+registerPlugin &lt;- function(map, plugin) {
+  map$dependencies &lt;- c(map$dependencies, list(plugin))
+  map
+}
+
+leaflet() %&gt;% setView(-122.23, 37.75, zoom = 10) %&gt;%
+  registerPlugin(bingPlugin) %&gt;%
+  onRender(&quot;function(el, x) { 
+    var imagerySet = &#39;Aerial&#39;;
+    var bing = new L.BingLayer(&#39;LfO3DMI9S6GnXD7d0WGs~bq2DRVkmIAzSOFdodzZLvw~Arx8dclDxmZA0Y38tHIJlJfnMbGq5GXeYmrGOUIbS2VLFzRKCK0Yv_bAl6oe-DOc&#39;,
+         {type: imagerySet});
+     this.addLayer(bing);
+ }&quot;)</code></pre>
+<div id="htmlwidget-927ec88a166bf954e46a" style="width:100%;height:384px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-927ec88a166bf954e46a">{
+  "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
+    "setView": [
+      [37.75, -122.23],
+      10,
+      []
+    ]
+  },
+  "evals": [],
+  "jsHooks": {
+    "render": [
+      {
+        "code": "function(el, x, data) {\n  return (function(el, x) { \n    var imagerySet = 'Aerial';\n    var bing = new L.BingLayer('LfO3DMI9S6GnXD7d0WGs~bq2DRVkmIAzSOFdodzZLvw~Arx8dclDxmZA0Y38tHIJlJfnMbGq5GXeYmrGOUIbS2VLFzRKCK0Yv_bAl6oe-DOc',\n         {type: imagerySet});\n     this.addLayer(bing);\n }).call(this.getMap(), el, x, data);\n}",
+        "data": null
+      }
+    ]
+  }
+}</script>
+</div>
+</div>
+
+<footer>
+<p><small>The "leaflet" R package is copyright &copy; 2014-2016 RStudio, Inc.<br/>
+The Leaflet JavaScript library is &copy; 2010–2016 <a href="http://agafonkin.com/en">Vladimir Agafonkin</a>, 2010–2011 <a href="http://cloudmade.com">CloudMade</a>.<br/>
+Maps &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors unless otherwise noted.
+</small></p>
+</footer>
+
+  </div>
+</div>
+
+<a href="https://github.com/rstudio/leaflet"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

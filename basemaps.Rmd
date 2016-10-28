@@ -19,7 +19,7 @@ m %>% addTiles()
 
 Alternatively, many popular free third-party basemaps can be added using the `addProviderTiles()` function, which is implemented using the [leaflet-providers plugin](https://github.com/leaflet-extras/leaflet-providers). See [here](http://leaflet-extras.github.io/leaflet-providers/preview/index.html) for the complete set. Note that some tile set providers require you to register; see the [project page](https://github.com/leaflet-extras/leaflet-providers) for more information.
 
-For convenience leaflet provides a `provideres` list, pre-populated with all the third-party tile providers supported by the leaflet-providers plugin. This enables you to use auto-completion feature of your favorite R IDE (like RStudio) and not have to remember or look up supported tile  providers.
+For convenience leaflet provides a `providers` list, prepopulated with all the third-party tile providers supported by the leaflet-providers plugin. This enables you to use auto-completion feature of your favorite R IDE (like RStudio) and not have to remember or look up supported tile  providers.
 
 ```{r fig.height=1.25}
 m %>% addProviderTiles(providers$Stamen.Toner)

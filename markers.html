@@ -19,6 +19,9 @@
 <script src="libs/bootstrap/js/bootstrap.min.js"></script>
 <script src="libs/bootstrap/shim/html5shiv.min.js"></script>
 <script src="libs/bootstrap/shim/respond.min.js"></script>
+<script src="libs/navigation/tabsets.js"></script>
+<link href="libs/highlightjs/default.css" rel="stylesheet" />
+<script src="libs/highlightjs/highlight.js"></script>
 <script src="libs/htmlwidgets/htmlwidgets.js"></script>
 <link href="libs/leaflet/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet/leaflet.js"></script>
@@ -38,10 +41,6 @@
 <script src="libs/leaflet-markercluster/leaflet.markercluster.freezable-src.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
-<link rel="stylesheet"
-      href="libs/highlight/default.css"
-      type="text/css" />
-<script src="libs/highlight/highlight.js"></script>
 <style type="text/css">
   pre:not([class]) {
     background-color: white;
@@ -116,7 +115,6 @@ button.code-folding-btn:focus {
 <div class="container-fluid main-container">
 
 <!-- tabsets -->
-<script src="libs/navigation/tabsets.js"></script>
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
@@ -172,12 +170,16 @@ $(document).ready(function () {
       <a class="list-group-item" href="markers.html">Markers</a>
       <a class="list-group-item" href="popups.html">Popups and Labels</a>
       <a class="list-group-item" href="shapes.html">Lines and Shapes</a>
-      <a class="list-group-item" href="json.html">JSON</a>
+      <a class="list-group-item" href="json.html">GeoJSON and TopoJSON</a>
       <a class="list-group-item" href="raster.html">Raster Images</a>
       <a class="list-group-item" href="shiny.html">Shiny Integration</a>
       <a class="list-group-item" href="colors.html">Colors</a>
       <a class="list-group-item" href="legends.html">Legends</a>
       <a class="list-group-item" href="showhide.html">Show/Hide Layers</a>
+      <a class="list-group-item" href="projections.html">Projections</a>
+      <a class="list-group-item" href="morefeatures.html">More Features</a>
+      <a class="list-group-item" href="extending.html">Extending Leaflet</a>
+      <a class="list-group-item" href="examples.html">Detailed Examples</a>
     </div>
     <script>
       // manage active state of toc based on current page
@@ -201,7 +203,7 @@ $(document).ready(function () {
 <div id="markers" class="section level2">
 <h2>Markers</h2>
 <p>Use markers to call out points on the map. Marker locations are expressed in latitude/longitude coordinates, and can either appear as icons or as circles. You can use <code>SpatialPoints</code>, <code>SpatialPointsDataFrame</code>, or a two-column numeric matrix (first column is longitude, second column is latitude) as data objects.</p>
-<p>You can also use a data frame with latitude and longitude columns. You can explicitly tell the marker function which columns contain the coorinate data (e.g. <code>addMarkers(lng = ~Longitude, lat = ~Latitude)</code>), or let the function look for columns named <code>lat</code>/<code>latitude</code> and <code>lon</code>/<code>lng</code>/<code>long</code>/<code>longitude</code> (case insensitive).</p>
+<p>You can also use a data frame with latitude and longitude columns. You can explicitly tell the marker function which columns contain the coordinate data (e.g. <code>addMarkers(lng = ~Longitude, lat = ~Latitude)</code>), or let the function look for columns named <code>lat</code>/<code>latitude</code> and <code>lon</code>/<code>lng</code>/<code>long</code>/<code>longitude</code> (case insensitive).</p>
 <div id="icon-markers" class="section level3">
 <h3>Icon Markers</h3>
 <p>Icon markers are added using the <code>addMarkers</code> or the <code>addAwesomeMarkers</code> functions. Their default appearance is a dropped pin. As with most layer functions, the <code>popup</code> argument can be used to add a message to be displayed on click, and the <code>label</code> option can be used to display a text label either on hover or statically.</p>
@@ -620,7 +622,7 @@ leaflet(df) %&gt;% addTiles() %&gt;%
 </div>
 <div id="awesome-icons" class="section level4">
 <h4>Awesome Icons</h4>
-<p>Leaflet supports even more customizable makers using the <a href="https://github.com/lvoogdt/Leaflet.awesome-markers">awesome markers</a> leaflet plugin.</p>
+<p>Leaflet supports even more customizable markers using the <a href="https://github.com/lvoogdt/Leaflet.awesome-markers">awesome markers</a> leaflet plugin.</p>
 <p>The <code>addAwesomeMarkers()</code> function is similar to <code>addMarkers()</code> function but additionally allows you to specify custom colors for the markers as well as icons from the <a href="http://fontawesome.io/icons/">Font Awesome</a>, <a href="https://getbootstrap.com/components/">Bootstrap Glyphicons</a>, and <a href="http://ionicons.com/">Ion icons</a> icon libraries.</p>
 <p>Similar to the <code>makeIcon</code>, <code>icons</code>, and <code>iconList</code> functions described above, you have <code>makeAwesomeIcon</code>, <code>awesomeIcons</code> and <code>awesomeIconList</code> functions, which enable you to add awesome icons.</p>
 <pre class="r"><code># first 20 quakes
@@ -825,7 +827,7 @@ leaflet(df.20) %&gt;% addTiles() %&gt;%
   "evals": [],
   "jsHooks": []
 }</script>
-<p>Using the <code>freezeAtZoom</code> argument of the <code>markerClusterOptions()</code> function, you can set the clustering to freeze as a specific zoom level e.g. <code>markerClusterOptions(freezeAtZoom = 5)</code> will freeze the cluster at zoom level 5 regardless of which zoom level the user is browsing the map at.</p>
+<p>Using the <code>freezeAtZoom</code> argument of the <code>markerClusterOptions()</code> function you can set the clustering to freeze as a specific zoom level. For example <code>markerClusterOptions(freezeAtZoom = 5)</code> will freeze the cluster at zoom level 5 regardless of the user’s actual zoom level.</p>
 </div>
 </div>
 <div id="circle-markers" class="section level3">
@@ -1009,8 +1011,8 @@ leaflet(df) %&gt;% addTiles() %&gt;%
 </div>
 
 <footer>
-<p><small>The "leaflet" R package is copyright &copy; 2014-2015 RStudio, Inc.<br/>
-The Leaflet JavaScript library is &copy; 2010–2014 <a href="http://agafonkin.com/en">Vladimir Agafonkin</a>, 2010–2011 <a href="http://cloudmade.com">CloudMade</a>.<br/>
+<p><small>The "leaflet" R package is copyright &copy; 2014-2016 RStudio, Inc.<br/>
+The Leaflet JavaScript library is &copy; 2010–2016 <a href="http://agafonkin.com/en">Vladimir Agafonkin</a>, 2010–2011 <a href="http://cloudmade.com">CloudMade</a>.<br/>
 Maps &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors unless otherwise noted.
 </small></p>
 </footer>

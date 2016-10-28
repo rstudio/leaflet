@@ -19,6 +19,9 @@
 <script src="libs/bootstrap/js/bootstrap.min.js"></script>
 <script src="libs/bootstrap/shim/html5shiv.min.js"></script>
 <script src="libs/bootstrap/shim/respond.min.js"></script>
+<script src="libs/navigation/tabsets.js"></script>
+<link href="libs/highlightjs/default.css" rel="stylesheet" />
+<script src="libs/highlightjs/highlight.js"></script>
 <script src="libs/htmlwidgets/htmlwidgets.js"></script>
 <link href="libs/leaflet/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet/leaflet.js"></script>
@@ -30,10 +33,6 @@
 <script src="libs/leaflet-binding/leaflet.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
-<link rel="stylesheet"
-      href="libs/highlight/default.css"
-      type="text/css" />
-<script src="libs/highlight/highlight.js"></script>
 <style type="text/css">
   pre:not([class]) {
     background-color: white;
@@ -108,7 +107,6 @@ button.code-folding-btn:focus {
 <div class="container-fluid main-container">
 
 <!-- tabsets -->
-<script src="libs/navigation/tabsets.js"></script>
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
@@ -164,12 +162,16 @@ $(document).ready(function () {
       <a class="list-group-item" href="markers.html">Markers</a>
       <a class="list-group-item" href="popups.html">Popups and Labels</a>
       <a class="list-group-item" href="shapes.html">Lines and Shapes</a>
-      <a class="list-group-item" href="json.html">JSON</a>
+      <a class="list-group-item" href="json.html">GeoJSON and TopoJSON</a>
       <a class="list-group-item" href="raster.html">Raster Images</a>
       <a class="list-group-item" href="shiny.html">Shiny Integration</a>
       <a class="list-group-item" href="colors.html">Colors</a>
       <a class="list-group-item" href="legends.html">Legends</a>
       <a class="list-group-item" href="showhide.html">Show/Hide Layers</a>
+      <a class="list-group-item" href="projections.html">Projections</a>
+      <a class="list-group-item" href="morefeatures.html">More Features</a>
+      <a class="list-group-item" href="extending.html">Extending Leaflet</a>
+      <a class="list-group-item" href="examples.html">Detailed Examples</a>
     </div>
     <script>
       // manage active state of toc based on current page
@@ -211,8 +213,8 @@ $(document).ready(function () {
 <li>Embed maps in <a href="http://yihui.name/knitr/">knitr</a>/<a href="http://rmarkdown.rstudio.com/">R Markdown</a> documents and <a href="http://shiny.rstudio.com/">Shiny</a> apps</li>
 <li>Easily render <code>Spatial</code> objects from the <code>sp</code> package, or data frames with latitude/longitude columns</li>
 <li>Use map bounds and mouse events to drive Shiny logic</li>
-<li>Display maps in non spherical mercator projections.</li>
-<li>Augment map features using <a href="http://leafletjs.com/plugins">plugins</a>.</li>
+<li>Display maps in non spherical mercator projections</li>
+<li>Augment map features using chosen plugins from <a href="http://leafletjs.com/plugins">leaflet plugins repository</a></li>
 </ul>
 </div>
 <div id="installation" class="section level3">
@@ -330,8 +332,8 @@ m</code></pre>
 </div>
 
 <footer>
-<p><small>The "leaflet" R package is copyright &copy; 2014-2015 RStudio, Inc.<br/>
-The Leaflet JavaScript library is &copy; 2010–2014 <a href="http://agafonkin.com/en">Vladimir Agafonkin</a>, 2010–2011 <a href="http://cloudmade.com">CloudMade</a>.<br/>
+<p><small>The "leaflet" R package is copyright &copy; 2014-2016 RStudio, Inc.<br/>
+The Leaflet JavaScript library is &copy; 2010–2016 <a href="http://agafonkin.com/en">Vladimir Agafonkin</a>, 2010–2011 <a href="http://cloudmade.com">CloudMade</a>.<br/>
 Maps &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors unless otherwise noted.
 </small></p>
 </footer>

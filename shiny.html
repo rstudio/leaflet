@@ -19,12 +19,11 @@
 <script src="libs/bootstrap/js/bootstrap.min.js"></script>
 <script src="libs/bootstrap/shim/html5shiv.min.js"></script>
 <script src="libs/bootstrap/shim/respond.min.js"></script>
+<script src="libs/navigation/tabsets.js"></script>
+<link href="libs/highlightjs/default.css" rel="stylesheet" />
+<script src="libs/highlightjs/highlight.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
-<link rel="stylesheet"
-      href="libs/highlight/default.css"
-      type="text/css" />
-<script src="libs/highlight/highlight.js"></script>
 <style type="text/css">
   pre:not([class]) {
     background-color: white;
@@ -99,7 +98,6 @@ button.code-folding-btn:focus {
 <div class="container-fluid main-container">
 
 <!-- tabsets -->
-<script src="libs/navigation/tabsets.js"></script>
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
@@ -155,12 +153,16 @@ $(document).ready(function () {
       <a class="list-group-item" href="markers.html">Markers</a>
       <a class="list-group-item" href="popups.html">Popups and Labels</a>
       <a class="list-group-item" href="shapes.html">Lines and Shapes</a>
-      <a class="list-group-item" href="json.html">JSON</a>
+      <a class="list-group-item" href="json.html">GeoJSON and TopoJSON</a>
       <a class="list-group-item" href="raster.html">Raster Images</a>
       <a class="list-group-item" href="shiny.html">Shiny Integration</a>
       <a class="list-group-item" href="colors.html">Colors</a>
       <a class="list-group-item" href="legends.html">Legends</a>
       <a class="list-group-item" href="showhide.html">Show/Hide Layers</a>
+      <a class="list-group-item" href="projections.html">Projections</a>
+      <a class="list-group-item" href="morefeatures.html">More Features</a>
+      <a class="list-group-item" href="extending.html">Extending Leaflet</a>
+      <a class="list-group-item" href="examples.html">Detailed Examples</a>
     </div>
     <script>
       // manage active state of toc based on current page
@@ -206,7 +208,7 @@ server &lt;- function(input, output, session) {
 
   output$mymap &lt;- renderLeaflet({
     leaflet() %&gt;%
-      addProviderTiles(&quot;Stamen.TonerLite&quot;,
+      addProviderTiles(providers$Stamen.TonerLite,
         options = providerTileOptions(noWrap = TRUE)
       ) %&gt;%
       addMarkers(data = points())
@@ -355,7 +357,7 @@ proxy %&gt;% clearShapes()</code></pre>
 </tr>
 <tr class="even">
 <td>geojson</td>
-<td><code>addTopoJSON</code></td>
+<td><code>addGeoJSON</code></td>
 <td><code>removeGeoJSON</code></td>
 <td><code>clearGeoJSON</code></td>
 </tr>
@@ -414,8 +416,8 @@ proxy %&gt;% clearShapes()</code></pre>
 </div>
 
 <footer>
-<p><small>The "leaflet" R package is copyright &copy; 2014-2015 RStudio, Inc.<br/>
-The Leaflet JavaScript library is &copy; 2010–2014 <a href="http://agafonkin.com/en">Vladimir Agafonkin</a>, 2010–2011 <a href="http://cloudmade.com">CloudMade</a>.<br/>
+<p><small>The "leaflet" R package is copyright &copy; 2014-2016 RStudio, Inc.<br/>
+The Leaflet JavaScript library is &copy; 2010–2016 <a href="http://agafonkin.com/en">Vladimir Agafonkin</a>, 2010–2011 <a href="http://cloudmade.com">CloudMade</a>.<br/>
 Maps &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors unless otherwise noted.
 </small></p>
 </footer>

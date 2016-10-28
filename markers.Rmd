@@ -6,7 +6,7 @@ pagetitle: Leaflet for R - Markers
 
 Use markers to call out points on the map. Marker locations are expressed in latitude/longitude coordinates, and can either appear as icons or as circles. You can use `SpatialPoints`, `SpatialPointsDataFrame`, or a two-column numeric matrix (first column is longitude, second column is latitude) as data objects.
 
-You can also use a data frame with latitude and longitude columns. You can explicitly tell the marker function which columns contain the coorinate data (e.g. `addMarkers(lng = ~Longitude, lat = ~Latitude)`), or let the function look for columns named `lat`/`latitude` and `lon`/`lng`/`long`/`longitude` (case insensitive).
+You can also use a data frame with latitude and longitude columns. You can explicitly tell the marker function which columns contain the coordinate data (e.g. `addMarkers(lng = ~Longitude, lat = ~Latitude)`), or let the function look for columns named `lat`/`latitude` and `lon`/`lng`/`long`/`longitude` (case insensitive).
 
 ### Icon Markers
 
@@ -89,7 +89,7 @@ leaflet(df) %>% addTiles() %>%
 
 #### Awesome Icons
  
-Leaflet supports even more customizable makers using the [awesome markers](https://github.com/lvoogdt/Leaflet.awesome-markers) leaflet plugin.
+Leaflet supports even more customizable markers using the [awesome markers](https://github.com/lvoogdt/Leaflet.awesome-markers) leaflet plugin.
 
 
 The `addAwesomeMarkers()` function is similar to `addMarkers()` function but additionally allows you to specify custom colors for the markers as well as icons from the [Font Awesome](http://fontawesome.io/icons/), [Bootstrap Glyphicons](https://getbootstrap.com/components/), and [Ion icons](http://ionicons.com/) icon libraries.
@@ -135,7 +135,7 @@ leaflet(quakes) %>% addTiles() %>% addMarkers(
 )
 ```
 
-Using the `freezeAtZoom` argument of the `markerClusterOptions()` function, you can set the clustering to freeze as a specific zoom level e.g. `markerClusterOptions(freezeAtZoom = 5)` will freeze the cluster at zoom level 5 regardless of which zoom level the user is browsing the map at.
+Using the `freezeAtZoom` argument of the `markerClusterOptions()` function you can set the clustering to freeze as a specific zoom level. For example `markerClusterOptions(freezeAtZoom = 5)` will freeze the cluster at zoom level 5 regardless of the user's actual zoom level.
 
 ### Circle Markers
 

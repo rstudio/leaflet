@@ -45,8 +45,8 @@ outline <- quakes[chull(quakes$long, quakes$lat),]
 map <- leaflet(quakes) %>%
   # Base groups
   addTiles(group = "OSM (default)") %>%
-  addProviderTiles("Stamen.Toner", group = "Toner") %>%
-  addProviderTiles("Stamen.TonerLite", group = "Toner Lite") %>%
+  addProviderTiles(providers$Stamen.Toner, group = "Toner") %>%
+  addProviderTiles(providers$Stamen.TonerLite, group = "Toner Lite") %>%
   # Overlay groups
   addCircles(~long, ~lat, ~10^mag/5, stroke = F, group = "Quakes") %>%
   addPolygons(data = outline, lng = ~long, lat = ~lat,
@@ -77,3 +77,40 @@ map %>% hideGroup("Outline")
 ```
 
 Finally, you can remove the layers in a group using `clearGroup`. Note that this doesn't just remove the layers from the group, it also removes them from the map. (It does not, however, remove the group itself from the map; it still exists, but is empty.)
+
+## With Marker Clusters
+
+If markers are addeded to different groups, and when using marker clustering as described in the [marker](markers.html) page, leaflet will generate different sets of clusters for differnet groups. This allows showing/hiding of marker clusters belonging to a group independenly of other marker clusers in other groups.
+
+```{r}
+
+quakes <- quakes %>%
+  dplyr::mutate(mag.level = cut(mag,c(3,4,5,6),
+                                labels = c('>3 & <=4', '>4 & <=5', '>5 & <=6')))
+
+quakes.df <- split(quakes, quakes$mag.level)
+
+l <- leaflet() %>% addTiles()
+
+names(quakes.df) %>%
+  purrr::walk( function(df) {
+    l <<- l %>%
+      addMarkers(data=quakes.df[[df]],
+                          lng=~long, lat=~lat,
+                          label=~as.character(mag),
+                          popup=~as.character(mag),
+                          group = df,
+                          clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
+                          labelOptions = labelOptions(noHide = F,
+                                                       direction = 'auto'))
+  })
+
+l %>%
+  addLayersControl(
+    overlayGroups = names(quakes.df),
+    options = layersControlOptions(collapsed = FALSE)
+  )
+
+```
+
+

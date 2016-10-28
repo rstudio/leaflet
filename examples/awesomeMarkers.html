@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title></title>
+
+<script src="libs/jquery-1.12.4/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<link href="libs/highlightjs-1.1/default.css" rel="stylesheet" />
+<script src="libs/highlightjs-1.1/highlight.js"></script>
+<script src="libs/htmlwidgets-0.7/htmlwidgets.js"></script>
+<link href="libs/leaflet-0.7.7/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-0.7.7/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<link href="libs/leaflet-label-0.2.2/leaflet.label.css" rel="stylesheet" />
+<script src="libs/leaflet-label-0.2.2/leaflet.label.js"></script>
+<script src="libs/Proj4Leaflet-0.7.2/proj4-compressed.js"></script>
+<script src="libs/Proj4Leaflet-0.7.2/proj4leaflet.js"></script>
+<script src="libs/leaflet-binding-1.0.2.9003/leaflet.js"></script>
+<link href="libs/leaflet-awesomemarkers-2.0.2/leaflet.awesome-markers.css" rel="stylesheet" />
+<script src="libs/leaflet-awesomemarkers-2.0.2/leaflet.awesome-markers.min.js"></script>
+<link href="libs/awesomemarkers-bootstrap-3.3.5/bootstrap.min.css" rel="stylesheet" />
+<script src="libs/awesomemarkers-bootstrap-3.3.5/bootstrap.min.js"></script>
+<link href="libs/awesomemarkers-fontawesome-4.4.0/font-awesome.min.css" rel="stylesheet" />
+<link href="libs/awesomemarkers-ionicons-2.0.0/ionicons.min.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+<style type="text/css">
+  body {
+    padding-top: 20px;
+  }
+  .navbar-brand {
+    font-weight: bold;
+  }
+  footer {
+    border-top: 1px solid #CCC;
+    margin-top: 60px;
+    margin-bottom: 48px;
+    opacity: 0.75;
+  }
+  .content-body>:first-child, .content-body>:first-child>:first-child {
+    margin-top: 0 !important;
+  }
+  p code {
+    white-space: inherit;
+  }
+</style>
+
+<div class="fluid-row">
+  <div class="col-sm-12">
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <a class="navbar-brand" href="./">Leaflet for R</a>
+        </div>
+      </div>
+    </nav>
+  </div>
+</div>
+
+<div class="fluid-row">
+  <div class="col-sm-3">
+    <div class="list-group">
+      <a class="list-group-item" href="./">Introduction</a>
+      <a class="list-group-item" href="map_widget.html">The Map Widget</a>
+      <a class="list-group-item" href="basemaps.html">Basemaps</a>
+      <a class="list-group-item" href="markers.html">Markers</a>
+      <a class="list-group-item" href="popups.html">Popups and Labels</a>
+      <a class="list-group-item" href="shapes.html">Lines and Shapes</a>
+      <a class="list-group-item" href="json.html">GeoJSON and TopoJSON</a>
+      <a class="list-group-item" href="raster.html">Raster Images</a>
+      <a class="list-group-item" href="shiny.html">Shiny Integration</a>
+      <a class="list-group-item" href="colors.html">Colors</a>
+      <a class="list-group-item" href="legends.html">Legends</a>
+      <a class="list-group-item" href="showhide.html">Show/Hide Layers</a>
+      <a class="list-group-item" href="projections.html">Projections</a>
+      <a class="list-group-item" href="morefeatures.html">More Features</a>
+      <a class="list-group-item" href="extending.html">Extending Leaflet</a>
+      <a class="list-group-item" href="examples.html">Detailed Examples</a>
+    </div>
+    <script>
+      // manage active state of toc based on current page
+      var href = window.location.pathname;
+      href = href.substr(href.lastIndexOf('/') + 1);
+      if (href === "" || href === "index.html")
+        href = "./";
+      $('a.list-group-item[href="' + href + '"]').addClass('active');
+    </script>
+  </div>
+  <div class="col-sm-9 content-body">
+
+<div class="fluid-row" id="header">
+
+
+
+
+</div>
+
+
+<pre class="r"><code>library(leaflet)
+
+icon.glyphicon &lt;- makeAwesomeIcon(icon= &#39;flag&#39;, markerColor = &#39;blue&#39;,
+                                  iconColor = &#39;black&#39;, library = &#39;glyphicon&#39;)
+icon.fa &lt;- makeAwesomeIcon(icon = &#39;flag&#39;, markerColor = &#39;red&#39;, library=&#39;fa&#39;,
+                           iconColor = &#39;black&#39;)
+icon.ion &lt;- makeAwesomeIcon(icon = &#39;home&#39;, markerColor = &#39;green&#39;,
+                            library=&#39;ion&#39;)
+
+
+# Marker + Label
+leaflet() %&gt;% addTiles() %&gt;%
+  addAwesomeMarkers(
+    lng=-118.456554, lat=34.078039,
+    label=&#39;This is a label&#39;,
+    icon = icon.glyphicon)</code></pre>
+<div id="htmlwidget-927ec88a166bf954e46a" style="width:100%;height:336px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-927ec88a166bf954e46a">{
+  "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
+    "calls": [
+      {
+        "method": "addTiles",
+        "args": [
+          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          null,
+          null,
+          {
+            "minZoom": 0,
+            "maxZoom": 18,
+            "maxNativeZoom": null,
+            "tileSize": 256,
+            "subdomains": "abc",
+            "errorTileUrl": "",
+            "tms": false,
+            "continuousWorld": false,
+            "noWrap": false,
+            "zoomOffset": 0,
+            "zoomReverse": false,
+            "opacity": 1,
+            "zIndex": null,
+            "unloadInvisibleTiles": null,
+            "updateWhenIdle": null,
+            "detectRetina": false,
+            "reuseTiles": false,
+            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap\u003c/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA\u003c/a>"
+          }
+        ]
+      },
+      {
+        "method": "addAwesomeMarkers",
+        "args": [
+          34.078039,
+          -118.456554,
+          {
+            "icon": "flag",
+            "markerColor": "blue",
+            "iconColor": "black",
+            "spin": false,
+            "prefix": "glyphicon"
+          },
+          null,
+          null,
+          {
+            "clickable": true,
+            "draggable": false,
+            "keyboard": true,
+            "title": "",
+            "alt": "",
+            "zIndexOffset": 0,
+            "opacity": 1,
+            "riseOnHover": false,
+            "riseOffset": 250
+          },
+          null,
+          null,
+          null,
+          null,
+          "This is a label",
+          null
+        ]
+      }
+    ],
+    "limits": {
+      "lat": [34.078039, 34.078039],
+      "lng": [-118.456554, -118.456554]
+    }
+  },
+  "evals": [],
+  "jsHooks": []
+}</script>
+<pre class="r"><code>leaflet() %&gt;% addTiles() %&gt;%
+  addAwesomeMarkers(
+    lng=-118.456554, lat=34.078039,
+    label=&#39;This is a label&#39;,
+    icon = icon.fa)</code></pre>
+<div id="htmlwidget-e2aad06f99e8b55df8d8" style="width:100%;height:336px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-e2aad06f99e8b55df8d8">{
+  "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
+    "calls": [
+      {
+        "method": "addTiles",
+        "args": [
+          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          null,
+          null,
+          {
+            "minZoom": 0,
+            "maxZoom": 18,
+            "maxNativeZoom": null,
+            "tileSize": 256,
+            "subdomains": "abc",
+            "errorTileUrl": "",
+            "tms": false,
+            "continuousWorld": false,
+            "noWrap": false,
+            "zoomOffset": 0,
+            "zoomReverse": false,
+            "opacity": 1,
+            "zIndex": null,
+            "unloadInvisibleTiles": null,
+            "updateWhenIdle": null,
+            "detectRetina": false,
+            "reuseTiles": false,
+            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap\u003c/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA\u003c/a>"
+          }
+        ]
+      },
+      {
+        "method": "addAwesomeMarkers",
+        "args": [
+          34.078039,
+          -118.456554,
+          {
+            "icon": "flag",
+            "markerColor": "red",
+            "iconColor": "black",
+            "spin": false,
+            "prefix": "fa"
+          },
+          null,
+          null,
+          {
+            "clickable": true,
+            "draggable": false,
+            "keyboard": true,
+            "title": "",
+            "alt": "",
+            "zIndexOffset": 0,
+            "opacity": 1,
+            "riseOnHover": false,
+            "riseOffset": 250
+          },
+          null,
+          null,
+          null,
+          null,
+          "This is a label",
+          null
+        ]
+      }
+    ],
+    "limits": {
+      "lat": [34.078039, 34.078039],
+      "lng": [-118.456554, -118.456554]
+    }
+  },
+  "evals": [],
+  "jsHooks": []
+}</script>
+<pre class="r"><code>leaflet() %&gt;% addTiles() %&gt;%
+  addAwesomeMarkers(
+    lng=-118.456554, lat=34.078039,
+    label=&#39;This is a label&#39;,
+    icon = icon.ion)</code></pre>
+<div id="htmlwidget-ec9d8b9e435c1a666871" style="width:100%;height:336px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ec9d8b9e435c1a666871">{
+  "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
+    "calls": [
+      {
+        "method": "addTiles",
+        "args": [
+          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          null,
+          null,
+          {
+            "minZoom": 0,
+            "maxZoom": 18,
+            "maxNativeZoom": null,
+            "tileSize": 256,
+            "subdomains": "abc",
+            "errorTileUrl": "",
+            "tms": false,
+            "continuousWorld": false,
+            "noWrap": false,
+            "zoomOffset": 0,
+            "zoomReverse": false,
+            "opacity": 1,
+            "zIndex": null,
+            "unloadInvisibleTiles": null,
+            "updateWhenIdle": null,
+            "detectRetina": false,
+            "reuseTiles": false,
+            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap\u003c/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA\u003c/a>"
+          }
+        ]
+      },
+      {
+        "method": "addAwesomeMarkers",
+        "args": [
+          34.078039,
+          -118.456554,
+          {
+            "icon": "home",
+            "markerColor": "green",
+            "iconColor": "white",
+            "spin": false,
+            "prefix": "ion"
+          },
+          null,
+          null,
+          {
+            "clickable": true,
+            "draggable": false,
+            "keyboard": true,
+            "title": "",
+            "alt": "",
+            "zIndexOffset": 0,
+            "opacity": 1,
+            "riseOnHover": false,
+            "riseOffset": 250
+          },
+          null,
+          null,
+          null,
+          null,
+          "This is a label",
+          null
+        ]
+      }
+    ],
+    "limits": {
+      "lat": [34.078039, 34.078039],
+      "lng": [-118.456554, -118.456554]
+    }
+  },
+  "evals": [],
+  "jsHooks": []
+}</script>
+<pre class="r"><code># Marker + Static Label using custom label options
+leaflet() %&gt;% addTiles() %&gt;%
+  addAwesomeMarkers(
+    lng=-118.456554, lat=34.078039,
+    label=&#39;This is a static label&#39;,
+    labelOptions = labelOptions(noHide = T),
+    icon = icon.fa)</code></pre>
+<div id="htmlwidget-65e60ed4f5440bdab363" style="width:100%;height:336px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-65e60ed4f5440bdab363">{
+  "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
+    "calls": [
+      {
+        "method": "addTiles",
+        "args": [
+          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          null,
+          null,
+          {
+            "minZoom": 0,
+            "maxZoom": 18,
+            "maxNativeZoom": null,
+            "tileSize": 256,
+            "subdomains": "abc",
+            "errorTileUrl": "",
+            "tms": false,
+            "continuousWorld": false,
+            "noWrap": false,
+            "zoomOffset": 0,
+            "zoomReverse": false,
+            "opacity": 1,
+            "zIndex": null,
+            "unloadInvisibleTiles": null,
+            "updateWhenIdle": null,
+            "detectRetina": false,
+            "reuseTiles": false,
+            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap\u003c/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA\u003c/a>"
+          }
+        ]
+      },
+      {
+        "method": "addAwesomeMarkers",
+        "args": [
+          34.078039,
+          -118.456554,
+          {
+            "icon": "flag",
+            "markerColor": "red",
+            "iconColor": "black",
+            "spin": false,
+            "prefix": "fa"
+          },
+          null,
+          null,
+          {
+            "clickable": true,
+            "draggable": false,
+            "keyboard": true,
+            "title": "",
+            "alt": "",
+            "zIndexOffset": 0,
+            "opacity": 1,
+            "riseOnHover": false,
+            "riseOffset": 250
+          },
+          null,
+          null,
+          null,
+          null,
+          "This is a static label",
+          {
+            "clickable": false,
+            "noHide": true,
+            "direction": "right",
+            "opacity": 1,
+            "offset": [12, -15],
+            "textsize": "10px",
+            "textOnly": false,
+            "style": null,
+            "zoomAnimation": true,
+            "className": ""
+          }
+        ]
+      }
+    ],
+    "limits": {
+      "lat": [34.078039, 34.078039],
+      "lng": [-118.456554, -118.456554]
+    }
+  },
+  "evals": [],
+  "jsHooks": []
+}</script>
+<pre class="r"><code>cities &lt;- read.csv(textConnection(&quot;
+City,Lat,Long,Pop
+Boston,42.3601,-71.0589,645966
+Hartford,41.7627,-72.6743,125017
+New York City,40.7127,-74.0059,8406000
+Philadelphia,39.9500,-75.1667,1553000
+Pittsburgh,40.4397,-79.9764,305841
+Providence,41.8236,-71.4222,177994
+&quot;))
+
+library(dplyr)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>cities &lt;- cities %&gt;% mutate(PopCat=ifelse(Pop &lt;500000,&#39;blue&#39;,&#39;red&#39;))
+
+
+leaflet(cities) %&gt;% addTiles() %&gt;%
+  addAwesomeMarkers(lng = ~Long, lat = ~Lat,
+             label = ~City,
+             icon = icon.ion
+  )</code></pre>
+<div id="htmlwidget-c6a36a601760297b5cca" style="width:100%;height:336px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-c6a36a601760297b5cca">{
+  "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
+    "calls": [
+      {
+        "method": "addTiles",
+        "args": [
+          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          null,
+          null,
+          {
+            "minZoom": 0,
+            "maxZoom": 18,
+            "maxNativeZoom": null,
+            "tileSize": 256,
+            "subdomains": "abc",
+            "errorTileUrl": "",
+            "tms": false,
+            "continuousWorld": false,
+            "noWrap": false,
+            "zoomOffset": 0,
+            "zoomReverse": false,
+            "opacity": 1,
+            "zIndex": null,
+            "unloadInvisibleTiles": null,
+            "updateWhenIdle": null,
+            "detectRetina": false,
+            "reuseTiles": false,
+            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap\u003c/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA\u003c/a>"
+          }
+        ]
+      },
+      {
+        "method": "addAwesomeMarkers",
+        "args": [
+          [42.3601, 41.7627, 40.7127, 39.95, 40.4397, 41.8236],
+          [-71.0589, -72.6743, -74.0059, -75.1667, -79.9764, -71.4222],
+          {
+            "icon": "home",
+            "markerColor": "green",
+            "iconColor": "white",
+            "spin": false,
+            "prefix": "ion"
+          },
+          null,
+          null,
+          {
+            "clickable": true,
+            "draggable": false,
+            "keyboard": true,
+            "title": "",
+            "alt": "",
+            "zIndexOffset": 0,
+            "opacity": 1,
+            "riseOnHover": false,
+            "riseOffset": 250
+          },
+          null,
+          null,
+          null,
+          null,
+          ["Boston", "Hartford", "New York City", "Philadelphia", "Pittsburgh", "Providence"],
+          null
+        ]
+      }
+    ],
+    "limits": {
+      "lat": [39.95, 42.3601],
+      "lng": [-79.9764, -71.0589]
+    }
+  },
+  "evals": [],
+  "jsHooks": []
+}</script>
+<pre class="r"><code>icon.pop &lt;- awesomeIcons(icon = &#39;users&#39;,
+                           markerColor = ifelse(cities$Pop &lt;500000,&#39;blue&#39;,&#39;red&#39;),
+                           library = &#39;fa&#39;,
+                           iconColor = &#39;black&#39;)
+
+leaflet(cities) %&gt;% addTiles() %&gt;%
+  addAwesomeMarkers(lng = ~Long, lat = ~Lat,
+             label = ~City,
+             icon = icon.pop
+  )</code></pre>
+<div id="htmlwidget-6d8788299161dc56faef" style="width:100%;height:336px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-6d8788299161dc56faef">{
+  "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
+    "calls": [
+      {
+        "method": "addTiles",
+        "args": [
+          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          null,
+          null,
+          {
+            "minZoom": 0,
+            "maxZoom": 18,
+            "maxNativeZoom": null,
+            "tileSize": 256,
+            "subdomains": "abc",
+            "errorTileUrl": "",
+            "tms": false,
+            "continuousWorld": false,
+            "noWrap": false,
+            "zoomOffset": 0,
+            "zoomReverse": false,
+            "opacity": 1,
+            "zIndex": null,
+            "unloadInvisibleTiles": null,
+            "updateWhenIdle": null,
+            "detectRetina": false,
+            "reuseTiles": false,
+            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap\u003c/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA\u003c/a>"
+          }
+        ]
+      },
+      {
+        "method": "addAwesomeMarkers",
+        "args": [
+          [42.3601, 41.7627, 40.7127, 39.95, 40.4397, 41.8236],
+          [-71.0589, -72.6743, -74.0059, -75.1667, -79.9764, -71.4222],
+          {
+            "icon": "users",
+            "markerColor": ["red", "blue", "red", "red", "blue", "blue"],
+            "iconColor": "black",
+            "spin": false,
+            "prefix": "fa"
+          },
+          null,
+          null,
+          {
+            "clickable": true,
+            "draggable": false,
+            "keyboard": true,
+            "title": "",
+            "alt": "",
+            "zIndexOffset": 0,
+            "opacity": 1,
+            "riseOnHover": false,
+            "riseOffset": 250
+          },
+          null,
+          null,
+          null,
+          null,
+          ["Boston", "Hartford", "New York City", "Philadelphia", "Pittsburgh", "Providence"],
+          null
+        ]
+      }
+    ],
+    "limits": {
+      "lat": [39.95, 42.3601],
+      "lng": [-79.9764, -71.0589]
+    }
+  },
+  "evals": [],
+  "jsHooks": []
+}</script>
+<pre class="r"><code># Make a list of icons (from two different icon libraries).
+# We&#39;ll index into it based on name.
+popIcons &lt;- awesomeIconList(
+  blue = makeAwesomeIcon(icon=&#39;user&#39;, library=&#39;glyphicon&#39;, markerColor = &#39;blue&#39;),
+  red = makeAwesomeIcon(icon=&#39;users&#39;, library=&#39;fa&#39;, markerColor = &#39;red&#39;)
+)
+
+leaflet(cities) %&gt;% addTiles() %&gt;%
+  addAwesomeMarkers(lng = ~Long, lat = ~Lat,
+             label = ~City,
+             labelOptions = rep(labelOptions(noHide = T),nrow(cities)),
+             icon = ~popIcons[PopCat] )</code></pre>
+<div id="htmlwidget-e90b79b122bd7002e299" style="width:100%;height:336px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-e90b79b122bd7002e299">{
+  "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
+    "calls": [
+      {
+        "method": "addTiles",
+        "args": [
+          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          null,
+          null,
+          {
+            "minZoom": 0,
+            "maxZoom": 18,
+            "maxNativeZoom": null,
+            "tileSize": 256,
+            "subdomains": "abc",
+            "errorTileUrl": "",
+            "tms": false,
+            "continuousWorld": false,
+            "noWrap": false,
+            "zoomOffset": 0,
+            "zoomReverse": false,
+            "opacity": 1,
+            "zIndex": null,
+            "unloadInvisibleTiles": null,
+            "updateWhenIdle": null,
+            "detectRetina": false,
+            "reuseTiles": false,
+            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap\u003c/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA\u003c/a>"
+          }
+        ]
+      },
+      {
+        "method": "addAwesomeMarkers",
+        "args": [
+          [42.3601, 41.7627, 40.7127, 39.95, 40.4397, 41.8236],
+          [-71.0589, -72.6743, -74.0059, -75.1667, -79.9764, -71.4222],
+          {
+            "icon": ["users", "user", "users", "users", "user", "user"],
+            "markerColor": ["red", "blue", "red", "red", "blue", "blue"],
+            "iconColor": "white",
+            "spin": false,
+            "prefix": ["fa", "glyphicon", "fa", "fa", "glyphicon", "glyphicon"]
+          },
+          null,
+          null,
+          {
+            "clickable": true,
+            "draggable": false,
+            "keyboard": true,
+            "title": "",
+            "alt": "",
+            "zIndexOffset": 0,
+            "opacity": 1,
+            "riseOnHover": false,
+            "riseOffset": 250
+          },
+          null,
+          null,
+          null,
+          null,
+          ["Boston", "Hartford", "New York City", "Philadelphia", "Pittsburgh", "Providence"],
+          {
+            "clickable": false,
+            "noHide": true,
+            "direction": "right",
+            "opacity": 1,
+            "offset": [12, -15],
+            "textsize": "10px",
+            "textOnly": false,
+            "style": null,
+            "zoomAnimation": true,
+            "className": "",
+            "clickable.1": false,
+            "noHide.1": true,
+            "direction.1": "right",
+            "opacity.1": 1,
+            "offset.1": [12, -15],
+            "textsize.1": "10px",
+            "textOnly.1": false,
+            "style.1": null,
+            "zoomAnimation.1": true,
+            "className.1": "",
+            "clickable.2": false,
+            "noHide.2": true,
+            "direction.2": "right",
+            "opacity.2": 1,
+            "offset.2": [12, -15],
+            "textsize.2": "10px",
+            "textOnly.2": false,
+            "style.2": null,
+            "zoomAnimation.2": true,
+            "className.2": "",
+            "clickable.3": false,
+            "noHide.3": true,
+            "direction.3": "right",
+            "opacity.3": 1,
+            "offset.3": [12, -15],
+            "textsize.3": "10px",
+            "textOnly.3": false,
+            "style.3": null,
+            "zoomAnimation.3": true,
+            "className.3": "",
+            "clickable.4": false,
+            "noHide.4": true,
+            "direction.4": "right",
+            "opacity.4": 1,
+            "offset.4": [12, -15],
+            "textsize.4": "10px",
+            "textOnly.4": false,
+            "style.4": null,
+            "zoomAnimation.4": true,
+            "className.4": "",
+            "clickable.5": false,
+            "noHide.5": true,
+            "direction.5": "right",
+            "opacity.5": 1,
+            "offset.5": [12, -15],
+            "textsize.5": "10px",
+            "textOnly.5": false,
+            "style.5": null,
+            "zoomAnimation.5": true,
+            "className.5": ""
+          }
+        ]
+      }
+    ],
+    "limits": {
+      "lat": [39.95, 42.3601],
+      "lng": [-79.9764, -71.0589]
+    }
+  },
+  "evals": [],
+  "jsHooks": []
+}</script>
+
+<footer>
+<p><small>The "leaflet" R package is copyright &copy; 2014-2016 RStudio, Inc.<br/>
+The Leaflet JavaScript library is &copy; 2010–2016 <a href="http://agafonkin.com/en">Vladimir Agafonkin</a>, 2010–2011 <a href="http://cloudmade.com">CloudMade</a>.<br/>
+Maps &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors unless otherwise noted.
+</small></p>
+</footer>
+
+  </div>
+</div>
+
+<a href="https://github.com/rstudio/leaflet"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

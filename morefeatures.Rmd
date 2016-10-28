@@ -1,0 +1,93 @@
+---
+pagetitle: Leaflet for R - More features
+---
+
+## Add-on and Advanced Features
+
+## Add-ons
+
+These are various utility functions that you can use to augment your map with additional elements. Each of the utility function give below supports options of customization, be sure to check the help files for details.
+
+#### Leaflet Measure
+
+`addMeasure` functions adds a control on the map that you can use to measure distance/area on your map.
+
+```{r, fig.height=3}
+library(leaflet)
+leaflet() %>% addTiles() %>%
+  # central park
+  fitBounds(-73.9, 40.75, -73.95,40.8) %>%
+  addMeasure()
+```
+
+#### Adding a Graticule
+
+```{r}
+leaflet() %>% 
+  addTiles() %>%
+  setView(0,0,2) %>% 
+  addGraticule(interval = 20,
+               style = list(color='#000000', weight=1))
+```
+
+#### Adding a Day/Night indicator
+
+```{r}
+leaflet() %>% setView(0,0,1) %>%
+  addTiles() %>% addTerminator(resolution=1)
+```
+
+#### Adding a Minimap
+
+```{r, fig.height=3}
+leaflet() %>% setView(0,0,3) %>%
+  addProviderTiles(providers$Esri.WorldStreetMap) %>%
+  addMiniMap(tiles = providers$Esri.WorldStreetMap,
+             toggleDisplay = T)
+```
+
+#### Custom buttons and Toolbars
+
+There are two functions `addEasyButton` and `addEasyButtonBar` which allow you to add your own functions and define the actions to execute when clicked. Here we show a simple example to reset the map to specific view.
+
+```{r}
+leaflet() %>% setView(-74.0059,40.7128,10) %>% addTiles() %>%
+  addEasyButton(easyButton(
+    icon='fa-globe', title='Zoom to Level 5',
+    onClick=JS("function(btn, map){ map.setZoom(5);}")))
+```
+
+## Advanced Features
+
+#### htmlwidget's onRender function
+
+The `htmlwidget::onRender` function can be used to add custom behavior to the leaflet map using native Javascript. This is a some what advanced use case and requires you to know Javascript. Using `onRender` you can customize your map's behavior using any of the APIs as defined in the leafletJS [documentation](leafletjs.com/reference.html).
+
+Below is an example where we sync the base layer of the mini-map with the baselayer of the main map, using the 'baselayerchange' event.
+
+```{r, fig.height=4}
+l <- leaflet() %>% setView(0,0,3)
+
+esri <- providers %>%
+  purrr::keep(~ grepl('^Esri',.))
+
+esri %>%
+  purrr::walk(function(x) l <<- l %>% addProviderTiles(x,group=x))
+
+l %>%
+  addLayersControl(
+    baseGroups = names(esri),
+    options = layersControlOptions(collapsed = FALSE)
+  ) %>%
+  addMiniMap(tiles = esri[[1]],
+             toggleDisplay = T, position = 'bottomleft') %>%
+  htmlwidgets::onRender("
+    function(el, x) {
+      var myMap = this;
+      myMap.on('baselayerchange',
+        function (e) {
+          myMap.minimap.changeLayer(L.tileLayer.provider(e.name));
+        })
+    }")
+```
+

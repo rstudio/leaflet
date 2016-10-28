@@ -4,7 +4,9 @@ pagetitle: Leaflet for R - Working with GeoJSON & TopoJSON
 
 ## Working with GeoJSON & TopoJSON
 
-If your data is in GeoJSON or TopoJSON format, you can either convert it into `sp` classes using `rgdal::readOGR` or [geojsonio](http://cran.r-project.org/web/packages/geojsonio/index.html) ([docs](https://github.com/ropensci/geojsonio)) and then use the [marker](markers.html) and [shape](shapes.html) functions to add them; or use the `addGeoJSON()` and `addTopoJSON()` functions, for more convenient but less expressive handling.
+For working with GeoJSON/TopoJSON data you have two options, either convert it into `sp` classes; or use the `addGeoJSON()` and `addTopoJSON()` functions. Of the two approaches we recommend the first one as it allows you to handle your data in a way that is more expressive and idiomatic to R; but the second way is perhaps easier and avoids the need to convert your data from GeoJSON/TopoJSON to R's sp classes.
+
+For the more preferable way, use `rgdal::readOGR` or [geojsonio](http://cran.r-project.org/web/packages/geojsonio/index.html) ([docs](https://github.com/ropensci/geojsonio)) to convert from GeoJSON/TopoJSON to `sp` classes and then use the [marker](markers.html) and [shape](shapes.html) functions to display them in leaflet. This document is about the second way. 
 
 The `addGeoJSON()` and `addTopoJSON()` functions accept GeoJSON data in either parsed (nested lists) or stringified (single-element character vector) format.
 

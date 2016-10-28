@@ -31,7 +31,7 @@ server <- function(input, output, session) {
 
   output$mymap <- renderLeaflet({
     leaflet() %>%
-      addProviderTiles("Stamen.TonerLite",
+      addProviderTiles(providers$Stamen.TonerLite,
         options = providerTileOptions(noWrap = TRUE)
       ) %>%
       addMarkers(data = points())
@@ -161,7 +161,7 @@ Category       | Add functions                                                  
 tile           | `addTiles`, `addProviderTiles`                                 | `removeTiles`   | `clearTiles`
 marker         | `addMarkers`, `addCircleMarkers`                               | `removeMarker`  | `clearMarkers`
 shape          | `addPolygons`, `addPolylines`, `addCircles`, `addRectangles`   | `removeShape`   | `clearShapes`
-geojson        | `addTopoJSON`                                                  | `removeGeoJSON` | `clearGeoJSON`
+geojson        | `addGeoJSON`                                                  | `removeGeoJSON` | `clearGeoJSON`
 topojson       | `addTopoJSON`                                                  | `removeTopoJSON` | `clearTopoJSON`
 control        | `addControl`                                                   | `removeControl` | `clearControls`
 
