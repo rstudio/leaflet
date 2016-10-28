@@ -619,7 +619,7 @@ _htmlwidgets2.default.widget({
         }
 
         if (!explicitView && needsZoom() && !map.getZoom()) {
-          if (data.limits) {
+          if (data.limits && !_jquery2.default.isEmptyObject(data.limits)) {
             // Use the natural limits of what's being drawn on the map
             // If the size of the bounding box is 0, leaflet gets all weird
             var pad = 0.006;
@@ -1028,12 +1028,14 @@ methods.addPopups = function (lat, lng, popup, layerId, group, options) {
   var df = new _dataframe2.default().col("lat", lat).col("lng", lng).col("popup", popup).col("layerId", layerId).col("group", group).cbind(options);
 
   var _loop = function _loop(i) {
-    (function () {
-      var popup = _leaflet2.default.popup(df.get(i)).setLatLng([df.get(i, "lat"), df.get(i, "lng")]).setContent(df.get(i, "popup"));
-      var thisId = df.get(i, "layerId");
-      var thisGroup = df.get(i, "group");
-      this.layerManager.addLayer(popup, "popup", thisId, thisGroup);
-    }).call(_this2);
+    if (_jquery2.default.isNumeric(df.get(i, "lat")) && _jquery2.default.isNumeric(df.get(i, "lng"))) {
+      (function () {
+        var popup = _leaflet2.default.popup(df.get(i)).setLatLng([df.get(i, "lat"), df.get(i, "lng")]).setContent(df.get(i, "popup"));
+        var thisId = df.get(i, "layerId");
+        var thisGroup = df.get(i, "group");
+        this.layerManager.addLayer(popup, "popup", thisId, thisGroup);
+      }).call(_this2);
+    }
   };
 
   for (var i = 0; i < df.nrow(); i++) {
@@ -1107,41 +1109,43 @@ function addMarkers(map, df, group, clusterOptions, clusterId, markerFunc) {
     var extraInfo = cluster ? { clusterId: clusterId } : {};
 
     var _loop2 = function _loop2(i) {
-      (function () {
-        var marker = markerFunc(df, i);
-        var thisId = df.get(i, "layerId");
-        var thisGroup = cluster ? null : df.get(i, "group");
-        if (cluster) {
-          clusterGroup.clusterLayerStore.add(marker, thisId);
-        } else {
-          this.layerManager.addLayer(marker, "marker", thisId, thisGroup);
-        }
-        var popup = df.get(i, "popup");
-        var popupOptions = df.get(i, "popupOptions");
-        if (popup !== null) {
-          if (popupOptions !== null) {
-            marker.bindPopup(popup, popupOptions);
+      if (_jquery2.default.isNumeric(df.get(i, "lat")) && _jquery2.default.isNumeric(df.get(i, "lng"))) {
+        (function () {
+          var marker = markerFunc(df, i);
+          var thisId = df.get(i, "layerId");
+          var thisGroup = cluster ? null : df.get(i, "group");
+          if (cluster) {
+            clusterGroup.clusterLayerStore.add(marker, thisId);
           } else {
-            marker.bindPopup(popup);
+            this.layerManager.addLayer(marker, "marker", thisId, thisGroup);
           }
-        }
-        var label = df.get(i, "label");
-        var labelOptions = df.get(i, "labelOptions");
-        if (label !== null) {
-          if (labelOptions !== null) {
-            if (labelOptions.noHide) {
-              marker.bindLabel(label, labelOptions).showLabel();
+          var popup = df.get(i, "popup");
+          var popupOptions = df.get(i, "popupOptions");
+          if (popup !== null) {
+            if (popupOptions !== null) {
+              marker.bindPopup(popup, popupOptions);
             } else {
-              marker.bindLabel(label, labelOptions);
+              marker.bindPopup(popup);
             }
-          } else {
-            marker.bindLabel(label);
           }
-        }
-        marker.on("click", mouseHandler(this.id, thisId, thisGroup, "marker_click", extraInfo), this);
-        marker.on("mouseover", mouseHandler(this.id, thisId, thisGroup, "marker_mouseover", extraInfo), this);
-        marker.on("mouseout", mouseHandler(this.id, thisId, thisGroup, "marker_mouseout", extraInfo), this);
-      }).call(_this3);
+          var label = df.get(i, "label");
+          var labelOptions = df.get(i, "labelOptions");
+          if (label !== null) {
+            if (labelOptions !== null) {
+              if (labelOptions.noHide) {
+                marker.bindLabel(label, labelOptions).showLabel();
+              } else {
+                marker.bindLabel(label, labelOptions);
+              }
+            } else {
+              marker.bindLabel(label);
+            }
+          }
+          marker.on("click", mouseHandler(this.id, thisId, thisGroup, "marker_click", extraInfo), this);
+          marker.on("mouseover", mouseHandler(this.id, thisId, thisGroup, "marker_mouseover", extraInfo), this);
+          marker.on("mouseout", mouseHandler(this.id, thisId, thisGroup, "marker_mouseout", extraInfo), this);
+        }).call(_this3);
+      }
     };
 
     for (var i = 0; i < df.nrow(); i++) {
@@ -1201,15 +1205,18 @@ methods.addMarkers = function (lat, lng, icon, layerId, group, options, popup, p
     };
   }
 
-  var df = new _dataframe2.default().col("lat", lat).col("lng", lng).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).cbind(options);
+  if (!(_jquery2.default.isEmptyObject(lat) || _jquery2.default.isEmptyObject(lng)) || _jquery2.default.isNumeric(lat) && _jquery2.default.isNumeric(lng)) {
 
-  if (icon) icondf.effectiveLength = df.nrow();
+    var df = new _dataframe2.default().col("lat", lat).col("lng", lng).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).cbind(options);
 
-  addMarkers(this, df, group, clusterOptions, clusterId, function (df, i) {
-    var options = df.get(i);
-    if (icon) options.icon = getIcon(i);
-    return _leaflet2.default.marker([df.get(i, "lat"), df.get(i, "lng")], options);
-  });
+    if (icon) icondf.effectiveLength = df.nrow();
+
+    addMarkers(this, df, group, clusterOptions, clusterId, function (df, i) {
+      var options = df.get(i);
+      if (icon) options.icon = getIcon(i);
+      return _leaflet2.default.marker([df.get(i, "lat"), df.get(i, "lng")], options);
+    });
+  }
 };
 
 methods.addAwesomeMarkers = function (lat, lng, icon, layerId, group, options, popup, popupOptions, clusterOptions, clusterId, label, labelOptions) {
@@ -1232,49 +1239,86 @@ methods.addAwesomeMarkers = function (lat, lng, icon, layerId, group, options, p
     };
   }
 
-  var df = new _dataframe2.default().col("lat", lat).col("lng", lng).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).cbind(options);
+  if (!(_jquery2.default.isEmptyObject(lat) || _jquery2.default.isEmptyObject(lng)) || _jquery2.default.isNumeric(lat) && _jquery2.default.isNumeric(lng)) {
 
-  if (icon) icondf.effectiveLength = df.nrow();
+    var df = new _dataframe2.default().col("lat", lat).col("lng", lng).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).cbind(options);
 
-  addMarkers(this, df, group, clusterOptions, clusterId, function (df, i) {
-    var options = df.get(i);
-    if (icon) options.icon = getIcon(i);
-    return _leaflet2.default.marker([df.get(i, "lat"), df.get(i, "lng")], options);
-  });
+    if (icon) icondf.effectiveLength = df.nrow();
+
+    addMarkers(this, df, group, clusterOptions, clusterId, function (df, i) {
+      var options = df.get(i);
+      if (icon) options.icon = getIcon(i);
+      return _leaflet2.default.marker([df.get(i, "lat"), df.get(i, "lng")], options);
+    });
+  }
 };
 
 function addLayers(map, category, df, layerFunc) {
   var _loop3 = function _loop3(i) {
     (function () {
+      var _this4 = this;
+
       var layer = layerFunc(df, i);
-      var thisId = df.get(i, "layerId");
-      var thisGroup = df.get(i, "group");
-      this.layerManager.addLayer(layer, category, thisId, thisGroup);
-      if (layer.bindPopup) {
-        var popup = df.get(i, "popup");
-        var popupOptions = df.get(i, "popupOptions");
-        if (popup !== null) {
-          if (popupOptions !== null) {
-            layer.bindPopup(popup, popupOptions);
-          } else {
-            layer.bindPopup(popup);
+      if (!_jquery2.default.isEmptyObject(layer)) {
+        (function () {
+          var thisId = df.get(i, "layerId");
+          var thisGroup = df.get(i, "group");
+          _this4.layerManager.addLayer(layer, category, thisId, thisGroup);
+          if (layer.bindPopup) {
+            var popup = df.get(i, "popup");
+            var popupOptions = df.get(i, "popupOptions");
+            if (popup !== null) {
+              if (popupOptions !== null) {
+                layer.bindPopup(popup, popupOptions);
+              } else {
+                layer.bindPopup(popup);
+              }
+            }
           }
-        }
-      }
-      if (layer.bindLabel) {
-        var label = df.get(i, "label");
-        var labelOptions = df.get(i, "labelOptions");
-        if (label !== null) {
-          if (labelOptions !== null) {
-            layer.bindLabel(label, labelOptions);
-          } else {
-            layer.bindLabel(label);
+          if (layer.bindLabel) {
+            var label = df.get(i, "label");
+            var labelOptions = df.get(i, "labelOptions");
+            if (label !== null) {
+              if (labelOptions !== null) {
+                layer.bindLabel(label, labelOptions);
+              } else {
+                layer.bindLabel(label);
+              }
+            }
           }
-        }
+          layer.on("click", mouseHandler(_this4.id, thisId, thisGroup, category + "_click"), _this4);
+          layer.on("mouseover", mouseHandler(_this4.id, thisId, thisGroup, category + "_mouseover"), _this4);
+          layer.on("mouseout", mouseHandler(_this4.id, thisId, thisGroup, category + "_mouseout"), _this4);
+          var highlightStyle = df.get(i, "highlightOptions");
+
+          if (!_jquery2.default.isEmptyObject(highlightStyle)) {
+            (function () {
+
+              var defaultStyle = {};
+              _jquery2.default.each(highlightStyle, function (k, v) {
+                if (k != "bringToFront" && k != "sendToBack") {
+                  if (df.get(i, k)) {
+                    defaultStyle[k] = df.get(i, k);
+                  }
+                }
+              });
+
+              layer.on("mouseover", function (e) {
+                this.setStyle(highlightStyle);
+                if (highlightStyle.bringToFront) {
+                  this.bringToFront();
+                }
+              });
+              layer.on("mouseout", function (e) {
+                this.setStyle(defaultStyle);
+                if (highlightStyle.sendToBack) {
+                  this.bringToBack();
+                }
+              });
+            })();
+          }
+        })();
       }
-      layer.on("click", mouseHandler(this.id, thisId, thisGroup, category + "_click"), this);
-      layer.on("mouseover", mouseHandler(this.id, thisId, thisGroup, category + "_mouseover"), this);
-      layer.on("mouseout", mouseHandler(this.id, thisId, thisGroup, category + "_mouseout"), this);
     }).call(map);
   };
 
@@ -1285,34 +1329,44 @@ function addLayers(map, category, df, layerFunc) {
 
 methods.addGenericLayers = addLayers;
 
-methods.addCircles = function (lat, lng, radius, layerId, group, options, popup, popupOptions, label, labelOptions) {
-  var df = new _dataframe2.default().col("lat", lat).col("lng", lng).col("radius", radius).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).cbind(options);
+methods.addCircles = function (lat, lng, radius, layerId, group, options, popup, popupOptions, label, labelOptions, highlightOptions) {
+  if (!(_jquery2.default.isEmptyObject(lat) || _jquery2.default.isEmptyObject(lng)) || _jquery2.default.isNumeric(lat) && _jquery2.default.isNumeric(lng)) {
+    var df = new _dataframe2.default().col("lat", lat).col("lng", lng).col("radius", radius).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).col("highlightOptions", highlightOptions).cbind(options);
 
-  addLayers(this, "shape", df, function (df, i) {
-    return _leaflet2.default.circle([df.get(i, "lat"), df.get(i, "lng")], df.get(i, "radius"), df.get(i));
-  });
+    addLayers(this, "shape", df, function (df, i) {
+      if (_jquery2.default.isNumeric(df.get(i, "lat")) && _jquery2.default.isNumeric(df.get(i, "lng")) && _jquery2.default.isNumeric(df.get(i, "radius"))) {
+        return _leaflet2.default.circle([df.get(i, "lat"), df.get(i, "lng")], df.get(i, "radius"), df.get(i));
+      } else {
+        return null;
+      }
+    });
+  }
 };
 
 methods.addCircleMarkers = function (lat, lng, radius, layerId, group, options, clusterOptions, clusterId, popup, popupOptions, label, labelOptions) {
-  var df = new _dataframe2.default().col("lat", lat).col("lng", lng).col("radius", radius).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).cbind(options);
+  if (!(_jquery2.default.isEmptyObject(lat) || _jquery2.default.isEmptyObject(lng)) || _jquery2.default.isNumeric(lat) && _jquery2.default.isNumeric(lng)) {
+    var df = new _dataframe2.default().col("lat", lat).col("lng", lng).col("radius", radius).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).cbind(options);
 
-  addMarkers(this, df, group, clusterOptions, clusterId, function (df, i) {
-    return _leaflet2.default.circleMarker([df.get(i, "lat"), df.get(i, "lng")], df.get(i));
-  });
+    addMarkers(this, df, group, clusterOptions, clusterId, function (df, i) {
+      return _leaflet2.default.circleMarker([df.get(i, "lat"), df.get(i, "lng")], df.get(i));
+    });
+  }
 };
 
 /*
  * @param lat Array of arrays of latitude coordinates for polylines
  * @param lng Array of arrays of longitude coordinates for polylines
  */
-methods.addPolylines = function (polygons, layerId, group, options, popup, popupOptions, label, labelOptions) {
-  var df = new _dataframe2.default().col("shapes", polygons).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).cbind(options);
+methods.addPolylines = function (polygons, layerId, group, options, popup, popupOptions, label, labelOptions, highlightOptions) {
+  if (polygons.length > 0) {
+    var df = new _dataframe2.default().col("shapes", polygons).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).col("highlightOptions", highlightOptions).cbind(options);
 
-  addLayers(this, "shape", df, function (df, i) {
-    var shape = df.get(i, "shapes")[0];
-    shape = _htmlwidgets2.default.dataframeToD3(shape);
-    return _leaflet2.default.polyline(shape, df.get(i));
-  });
+    addLayers(this, "shape", df, function (df, i) {
+      var shape = df.get(i, "shapes")[0];
+      shape = _htmlwidgets2.default.dataframeToD3(shape);
+      return _leaflet2.default.polyline(shape, df.get(i));
+    });
+  }
 };
 
 methods.removeMarker = function (layerId) {
@@ -1345,11 +1399,15 @@ methods.clearShapes = function () {
   this.layerManager.clearLayers("shape");
 };
 
-methods.addRectangles = function (lat1, lng1, lat2, lng2, layerId, group, options, popup, popupOptions, label, labelOptions) {
-  var df = new _dataframe2.default().col("lat1", lat1).col("lng1", lng1).col("lat2", lat2).col("lng2", lng2).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).cbind(options);
+methods.addRectangles = function (lat1, lng1, lat2, lng2, layerId, group, options, popup, popupOptions, label, labelOptions, highlightOptions) {
+  var df = new _dataframe2.default().col("lat1", lat1).col("lng1", lng1).col("lat2", lat2).col("lng2", lng2).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).col("highlightOptions", highlightOptions).cbind(options);
 
   addLayers(this, "shape", df, function (df, i) {
-    return _leaflet2.default.rectangle([[df.get(i, "lat1"), df.get(i, "lng1")], [df.get(i, "lat2"), df.get(i, "lng2")]], df.get(i));
+    if (_jquery2.default.isNumeric(df.get(i, "lat1")) && _jquery2.default.isNumeric(df.get(i, "lng1")) && _jquery2.default.isNumeric(df.get(i, "lat2")) && _jquery2.default.isNumeric(df.get(i, "lng2"))) {
+      return _leaflet2.default.rectangle([[df.get(i, "lat1"), df.get(i, "lng1")], [df.get(i, "lat2"), df.get(i, "lng2")]], df.get(i));
+    } else {
+      return null;
+    }
   });
 };
 
@@ -1357,16 +1415,18 @@ methods.addRectangles = function (lat1, lng1, lat2, lng2, layerId, group, option
  * @param lat Array of arrays of latitude coordinates for polygons
  * @param lng Array of arrays of longitude coordinates for polygons
  */
-methods.addPolygons = function (polygons, layerId, group, options, popup, popupOptions, label, labelOptions) {
-  var df = new _dataframe2.default().col("shapes", polygons).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).cbind(options);
+methods.addPolygons = function (polygons, layerId, group, options, popup, popupOptions, label, labelOptions, highlightOptions) {
+  if (polygons.length > 0) {
+    var df = new _dataframe2.default().col("shapes", polygons).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).col("highlightOptions", highlightOptions).cbind(options);
 
-  addLayers(this, "shape", df, function (df, i) {
-    var shapes = df.get(i, "shapes");
-    for (var j = 0; j < shapes.length; j++) {
-      shapes[j] = _htmlwidgets2.default.dataframeToD3(shapes[j]);
-    }
-    return _leaflet2.default.polygon(shapes, df.get(i));
-  });
+    addLayers(this, "shape", df, function (df, i) {
+      var shapes = df.get(i, "shapes");
+      for (var j = 0; j < shapes.length; j++) {
+        shapes[j] = _htmlwidgets2.default.dataframeToD3(shapes[j]);
+      }
+      return _leaflet2.default.polygon(shapes, df.get(i));
+    });
+  }
 };
 
 methods.addGeoJSON = function (data, layerId, group, style) {
@@ -1489,6 +1549,10 @@ methods.addControl = function (html, position, layerId, classes) {
   this.controls.add(new Control(), layerId, html);
 };
 
+methods.addCustomControl = function (control, layerId) {
+  this.controls.add(control, layerId);
+};
+
 methods.removeControl = function (layerId) {
   this.controls.remove(layerId);
 };
@@ -1600,7 +1664,7 @@ methods.addLegend = function (options) {
 };
 
 methods.addLayersControl = function (baseGroups, overlayGroups, options) {
-  var _this4 = this;
+  var _this5 = this;
 
   // Only allow one layers control at a time
   methods.removeLayersControl.call(this);
@@ -1608,23 +1672,23 @@ methods.addLayersControl = function (baseGroups, overlayGroups, options) {
   var firstLayer = true;
   var base = {};
   _jquery2.default.each((0, _util.asArray)(baseGroups), function (i, g) {
-    var layer = _this4.layerManager.getLayerGroup(g, true);
+    var layer = _this5.layerManager.getLayerGroup(g, true);
     if (layer) {
       base[g] = layer;
 
       // Check if >1 base layers are visible; if so, hide all but the first one
-      if (_this4.hasLayer(layer)) {
+      if (_this5.hasLayer(layer)) {
         if (firstLayer) {
           firstLayer = false;
         } else {
-          _this4.removeLayer(layer);
+          _this5.removeLayer(layer);
         }
       }
     }
   });
   var overlay = {};
   _jquery2.default.each((0, _util.asArray)(overlayGroups), function (i, g) {
-    var layer = _this4.layerManager.getLayerGroup(g, true);
+    var layer = _this5.layerManager.getLayerGroup(g, true);
     if (layer) {
       overlay[g] = layer;
     }
@@ -1658,23 +1722,23 @@ methods.removeScaleBar = function () {
 };
 
 methods.hideGroup = function (group) {
-  var _this5 = this;
-
-  _jquery2.default.each((0, _util.asArray)(group), function (i, g) {
-    var layer = _this5.layerManager.getLayerGroup(g, true);
-    if (layer) {
-      _this5.removeLayer(layer);
-    }
-  });
-};
-
-methods.showGroup = function (group) {
   var _this6 = this;
 
   _jquery2.default.each((0, _util.asArray)(group), function (i, g) {
     var layer = _this6.layerManager.getLayerGroup(g, true);
     if (layer) {
-      _this6.addLayer(layer);
+      _this6.removeLayer(layer);
+    }
+  });
+};
+
+methods.showGroup = function (group) {
+  var _this7 = this;
+
+  _jquery2.default.each((0, _util.asArray)(group), function (i, g) {
+    var layer = _this7.layerManager.getLayerGroup(g, true);
+    if (layer) {
+      _this7.addLayer(layer);
     }
   });
 };
@@ -1804,7 +1868,7 @@ methods.addRasterImage = function (uri, bounds, opacity, attribution, layerId, g
   canvasTiles.drawTile = function (canvas, tilePoint, zoom) {
     getImageData(function (imgData, w, h, mipmapper) {
       try {
-        var _ret5 = function () {
+        var _ret7 = function () {
           // The Context2D we'll being drawing onto. It's always 256x256.
           var ctx = canvas.getContext("2d");
 
@@ -1928,7 +1992,7 @@ methods.addRasterImage = function (uri, bounds, opacity, attribution, layerId, g
           }
         }();
 
-        if ((typeof _ret5 === "undefined" ? "undefined" : _typeof(_ret5)) === "object") return _ret5.v;
+        if ((typeof _ret7 === "undefined" ? "undefined" : _typeof(_ret7)) === "object") return _ret7.v;
       } finally {
         canvasTiles.tileDrawn(canvas);
       }

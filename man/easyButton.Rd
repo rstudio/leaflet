@@ -9,8 +9,8 @@
 \usage{
 easyButtonState(stateName, icon, title, onClick)
 
-easyButton(icon, title = NULL, onClick, position = "topleft", id = NULL,
-  states = NULL)
+easyButton(icon = NULL, title = NULL, onClick = NULL,
+  position = "topleft", id = NULL, states = NULL)
 
 addEasyButton(map, button)
 

@@ -900,6 +900,37 @@ pathOptions = function(
   )
 }
 
+#' Options to highlight shapes (polylines/polygons/circles/rectangles)
+#' @param bringToFront Whether the shape should be brought to front on hover.
+#' @param sendToBack whether the shape should be sent to back on mouse out.
+#' @describeIn map-layers Options to highligh a shape on hover
+#' @export
+highlightOptions <- function(
+  stroke = NULL,
+  color = NULL,
+  weight = NULL,
+  opacity = NULL,
+  fill = NULL,
+  fillColor = NULL,
+  fillOpacity = NULL,
+  dashArray = NULL,
+  bringToFront = NULL,
+  sendToBack = NULL
+) {
+  filterNULL(list(
+    stroke = stroke,
+    color = color,
+    weight = weight,
+    opacity = opacity,
+    fill = fill,
+    fillColor = fillColor,
+    fillOpacity = fillOpacity,
+    dashArray = dashArray,
+    bringToFront = bringToFront,
+    sendToBack = sendToBack
+  ))
+}
+
 #' @describeIn map-layers Add circles to the map
 #' @export
 addCircles = function(
@@ -917,6 +948,7 @@ addCircles = function(
   label = NULL,
   labelOptions = NULL,
   options = pathOptions(),
+  highlightOptions = NULL,
   data = getMapData(map)
 ) {
   options = c(options, list(
@@ -926,12 +958,13 @@ addCircles = function(
   ))
   pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addCircles")
   invokeMethod(map, data, 'addCircles', pts$lat, pts$lng, radius, layerId, group, options,
-               popup, popupOptions, safeLabel(label, data), labelOptions) %>%
+               popup, popupOptions, safeLabel(label, data), labelOptions, highlightOptions) %>%
     expandLimits(pts$lat, pts$lng)
 }
 
 #' @param smoothFactor how much to simplify the polyline on each zoom level
 #'   (more means better performance and less accurate representation)
+#' @param highlightOptions Options for highlighting the shape on mouse over.
 #' @param noClip whether to disable polyline clipping
 #' @describeIn map-layers Add polylines to the map
 #' @export
@@ -952,6 +985,7 @@ addPolylines = function(
   label = NULL,
   labelOptions = NULL,
   options = pathOptions(),
+  highlightOptions = NULL,
   data = getMapData(map)
 ) {
   options = c(options, list(
@@ -961,7 +995,7 @@ addPolylines = function(
   ))
   pgons = derivePolygons(data, lng, lat, missing(lng), missing(lat), "addPolylines")
   invokeMethod(map, data, 'addPolylines', pgons, layerId, group, options,
-               popup, popupOptions, safeLabel(label, data), labelOptions) %>%
+               popup, popupOptions, safeLabel(label, data), labelOptions, highlightOptions) %>%
     expandLimitsBbox(pgons)
 }
 
@@ -986,6 +1020,7 @@ addRectangles = function(
   label = NULL,
   labelOptions = NULL,
   options = pathOptions(),
+  highlightOptions = NULL,
   data = getMapData(map)
 ) {
   options = c(options, list(
@@ -997,7 +1032,11 @@ addRectangles = function(
   lat1 = resolveFormula(lat1, data)
   lng2 = resolveFormula(lng2, data)
   lat2 = resolveFormula(lat2, data)
-  invokeMethod(map, data, 'addRectangles',lat1, lng1, lat2, lng2, layerId, group, options, popup, popupOptions, safeLabel(label, data), labelOptions) %>%
+
+  df1 <- validateCoords(lng1, lat1, "addRectangles")
+  df2 <- validateCoords(lng2, lat2, "addRectangles")
+
+  invokeMethod(map, data, 'addRectangles',df1$lat, df1$lng, df2$lat, df2$lng, layerId, group, options, popup, popupOptions, safeLabel(label, data), labelOptions, highlightOptions) %>%
     expandLimits(c(lat1, lat2), c(lng1, lng2))
 }
 
@@ -1020,6 +1059,7 @@ addPolygons = function(
   label = NULL,
   labelOptions = NULL,
   options = pathOptions(),
+  highlightOptions = NULL,
   data = getMapData(map)
 ) {
   options = c(options, list(
@@ -1028,7 +1068,7 @@ addPolygons = function(
     dashArray = dashArray, smoothFactor = smoothFactor, noClip = noClip
   ))
   pgons = derivePolygons(data, lng, lat, missing(lng), missing(lat), "addPolygons")
-  invokeMethod(map, data, 'addPolygons', pgons, layerId, group, options, popup, popupOptions, safeLabel(label, data), labelOptions) %>%
+  invokeMethod(map, data, 'addPolygons', pgons, layerId, group, options, popup, popupOptions, safeLabel(label, data), labelOptions, highlightOptions) %>%
     expandLimitsBbox(pgons)
 }
 

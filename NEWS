@@ -1,7 +1,13 @@
 leaflet 1.1
 --------------------------------------------------------------------------------
 
-* Fixed Issues #288, #261, #283
+* Added option to highlight polygons on hover.
+
+* Fixed all isses due to missing or NA data.
+
+* Made the package extensible.
+
+* Fixed Issues #288, #261, #283.
 
 * Added 2 new plugins Proj4Leaflet (PR #294) and EasyButton (PR #295).
 
