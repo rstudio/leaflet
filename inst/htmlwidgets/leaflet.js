@@ -755,7 +755,14 @@ var LayerManager = function () {
                 } else {
                   var selectedKeys = {};
                   for (var _i3 = 0; _i3 < e.value.length; _i3++) {
-                    selectedKeys[e.value[_i3]] = true;
+                    var val = e.value[_i3];
+                    // support 2D arrays (nested keys)
+                    if (Array.isArray(val)) {
+                      for (var j = 0; j < val.length; j++) {
+                        selectedKeys[val[j]] = true;
+                      }
+                    }
+                    selectedKeys[val] = true;
                   }
                   var _groupKeys2 = Object.keys(ctg);
                   // for compatability with plotly's ability to colour selections

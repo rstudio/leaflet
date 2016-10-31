@@ -144,7 +144,14 @@ export default class LayerManager {
           } else {
             let selectedKeys = {};
             for (let i = 0; i < e.value.length; i++) {
-              selectedKeys[e.value[i]] = true;
+              let val = e.value[i];
+              // support 2D arrays (nested keys)
+              if (Array.isArray(val)) {
+                for (let j = 0; j < val.length; j++) {
+                  selectedKeys[val[j]] = true;
+                }
+              }
+              selectedKeys[val] = true;
             }
             let groupKeys = Object.keys(ctg);
             // for compatability with plotly's ability to colour selections
