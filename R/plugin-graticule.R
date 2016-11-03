@@ -18,6 +18,7 @@ leafletGraticuleDependencies <- function() {
 #' @param style path options for the generated lines. See \url{http://leafletjs.com/reference.html#path-options}
 #' @param layerId the layer id
 #' @param group the name of the group this layer belongs to.
+#' @param options the path options for the graticule
 #' @examples
 #' library(leaflet)
 #'
@@ -32,7 +33,8 @@ addGraticule <- function(
   sphere = FALSE,
   style = list(color= '#333', weight= 1),
   layerId = NULL,
-  group=NULL
+  group=NULL,
+  options = pathOptions(pointerEvents=FALSE) # Default unclickable
 ) {
   map$dependencies <- c(map$dependencies, leafletGraticuleDependencies())
   invokeMethod(
@@ -43,6 +45,7 @@ addGraticule <- function(
     sphere,
     style,
     layerId,
-    group
+    group,
+    options
   )
 }

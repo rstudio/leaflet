@@ -343,7 +343,7 @@ function addLayers(map, category, df, layerFunc) {
 
         if(!$.isEmptyObject(highlightStyle)) {
 
-        
+
           let defaultStyle = {};
           $.each(highlightStyle, function (k, v) {
             if(k != "bringToFront" && k != "sendToBack"){
@@ -543,6 +543,43 @@ methods.addGeoJSON = function(data, layerId, group, style) {
   if (typeof(data) === "string") {
     data = JSON.parse(data);
   }
+  let popupProperty = style.popupProperty;
+  let labelProperty = style.labelProperty;
+  delete style.popupProperty;
+  delete style.labelProperty;
+  let popupOptions = style.popupOptions;
+  let labelOptions = style.labelOptions;
+  delete style.popupOptions;
+  delete style.labelOptions;
+
+  let defaultStyle = {};
+  let highlightStyle = style.highlightOptions;
+  delete style.highlightOptions;
+  if(!$.isEmptyObject(highlightStyle)) {
+
+    $.each(highlightStyle, function (k, v) {
+      if(k != "bringToFront" && k != "sendToBack"){
+        if(style[k]) {
+          defaultStyle[k] = style[k];
+        }
+      }
+    });
+  }
+
+  function highlightFeature(e) {
+    var layer = e.target;
+    layer.setStyle(highlightStyle);
+    if(highlightStyle.bringToFront) {
+      layer.bringToFront();
+    }
+  }
+  function resetFeature(e){
+    var layer = e.target;
+    layer.setStyle(defaultStyle);
+    if(highlightStyle.sendToBack) {
+      layer.bringToBack();
+    }
+  }
 
   let globalStyle = $.extend({}, style, data.style || {});
 
@@ -559,8 +596,55 @@ methods.addGeoJSON = function(data, layerId, group, style) {
         featureId: feature.id,
         properties: feature.properties
       };
-      let popup = feature.properties.popup;
-      if (typeof popup !== "undefined" && popup !== null) layer.bindPopup(popup);
+      //let popup = feature.properties.popup;
+      //if (typeof popup !== "undefined" && popup !== null) layer.bindPopup(popup);
+
+      if (typeof popupProperty !== "undefined" && popupProperty !== null) {
+        if(typeof popupProperty == "string") {
+          if(!$.isEmptyObject(popupOptions)) {
+            layer.bindPopup(feature.properties[popupProperty], popupOptions);
+          } else {
+            layer.bindPopup(feature.properties[popupProperty]);
+          }
+        } else if(typeof popupProperty == "function") {
+          if(!$.isEmptyObject(popupOptions)) {
+            layer.bindPopup(popupProperty(feature), popupOptions);
+          } else {
+            layer.bindPopup(popupProperty(feature));
+          }
+        }
+      }
+
+      if (typeof labelProperty !== "undefined" && labelProperty !== null) {
+        if(typeof labelProperty == "string") {
+          if(!$.isEmptyObject(labelOptions)) {
+            if(labelOptions.noHide) {
+              layer.bindLabel(feature.properties[labelProperty], labelOptions).showLabel();
+            } else {
+              layer.bindLabel(feature.properties[labelProperty], labelOptions);
+            }
+          } else {
+            layer.bindLabel(feature.properties[labelProperty]);
+          }
+        } else if(typeof labelProperty == "function") {
+          if(!$.isEmptyObject(labelOptions)) {
+            if(labelOptions.noHide) {
+              layer.bindLabel(labelProperty(feature), labelOptions).showLabel();
+            } else {
+              layer.bindLabel(labelProperty(feature), labelOptions);
+            }
+          } else {
+            layer.bindLabel(labelProperty(feature));
+          }
+        }
+      }
+
+      if(!$.isEmptyObject(highlightStyle)) {
+        layer.on({
+          "mouseover": highlightFeature,
+          "mouseout": resetFeature});
+      }
+
       layer.on("click", mouseHandler(self.id, layerId, group, "geojson_click", extraInfo), this);
       layer.on("mouseover", mouseHandler(self.id, layerId, group, "geojson_mouseover", extraInfo), this);
       layer.on("mouseout", mouseHandler(self.id, layerId, group, "geojson_mouseout", extraInfo), this);
@@ -585,6 +669,44 @@ methods.addTopoJSON = function(data, layerId, group, style) {
     data = JSON.parse(data);
   }
 
+  let popupProperty = style.popupProperty;
+  let labelProperty = style.labelProperty;
+  delete style.popupProperty;
+  delete style.labelProperty;
+  let popupOptions = style.popupOptions;
+  let labelOptions = style.labelOptions;
+  delete style.popupOptions;
+  delete style.labelOptions;
+
+  let defaultStyle = {};
+  let highlightStyle = style.highlightOptions;
+  delete style.highlightOptions;
+  if(!$.isEmptyObject(highlightStyle)) {
+
+    $.each(highlightStyle, function (k, v) {
+      if(k != "bringToFront" && k != "sendToBack"){
+        if(style[k]) {
+          defaultStyle[k] = style[k];
+        }
+      }
+    });
+  }
+
+  function highlightFeature(e) {
+    var layer = e.target;
+    layer.setStyle(highlightStyle);
+    if(highlightStyle.bringToFront) {
+      layer.bringToFront();
+    }
+  }
+  function resetFeature(e){
+    var layer = e.target;
+    layer.setStyle(defaultStyle);
+    if(highlightStyle.sendToBack) {
+      layer.bringToBack();
+    }
+  }
+
   let globalStyle = $.extend({}, style, data.style || {});
 
   let gjlayer = L.geoJson(null, {
@@ -600,8 +722,55 @@ methods.addTopoJSON = function(data, layerId, group, style) {
         featureId: feature.id,
         properties: feature.properties
       };
-      let popup = feature.properties.popup;
-      if (typeof popup !== "undefined" && popup !== null) layer.bindPopup(popup);
+      //let popup = feature.properties.popup;
+      //if (typeof popup !== "undefined" && popup !== null) layer.bindPopup(popup);
+
+      if (typeof popupProperty !== "undefined" && popupProperty !== null) {
+        if(typeof popupProperty == "string") {
+          if(!$.isEmptyObject(popupOptions)) {
+            layer.bindPopup(feature.properties[popupProperty], popupOptions);
+          } else {
+            layer.bindPopup(feature.properties[popupProperty]);
+          }
+        } else if(typeof popupProperty == "function") {
+          if(!$.isEmptyObject(popupOptions)) {
+            layer.bindPopup(popupProperty(feature), popupOptions);
+          } else {
+            layer.bindPopup(popupProperty(feature));
+          }
+        }
+      }
+
+      if (typeof labelProperty !== "undefined" && labelProperty !== null) {
+        if(typeof labelProperty == "string") {
+          if(!$.isEmptyObject(labelOptions)) {
+            if(labelOptions.noHide) {
+              layer.bindLabel(feature.properties[labelProperty], labelOptions).showLabel();
+            } else {
+              layer.bindLabel(feature.properties[labelProperty], labelOptions);
+            }
+          } else {
+            layer.bindLabel(feature.properties[labelProperty]);
+          }
+        } else if(typeof labelProperty == "function") {
+          if(!$.isEmptyObject(labelOptions)) {
+            if(labelOptions.noHide) {
+              layer.bindLabel(labelProperty(feature), labelOptions).showLabel();
+            } else {
+              layer.bindLabel(labelProperty(feature), labelOptions);
+            }
+          } else {
+            layer.bindLabel(labelProperty(feature));
+          }
+        }
+      }
+
+      if(!$.isEmptyObject(highlightStyle)) {
+        layer.on({
+          "mouseover": highlightFeature,
+          "mouseout": resetFeature});
+      }
+
       layer.on("click", mouseHandler(self.id, layerId, group, "topojson_click", extraInfo), this);
       layer.on("mouseover", mouseHandler(self.id, layerId, group, "topojson_mouseover", extraInfo), this);
       layer.on("mouseout", mouseHandler(self.id, layerId, group, "topojson_mouseout", extraInfo), this);
