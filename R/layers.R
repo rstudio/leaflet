@@ -566,9 +566,7 @@ addLabelOnlyMarkers = function(
   )))
 }
 
-#' Adds marker-cluster-plugin HTML dependency
-#' @export
-#' @describeIn map-layers add maker cluster plugin
+# Adds marker-cluster-plugin HTML dependency
 markerClusterDependencies = function() {
   list(
     htmltools::htmlDependency(
