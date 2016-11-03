@@ -1086,6 +1086,8 @@ clearShapes = function(map) {
 
 #' @param geojson a GeoJSON list, or character vector of length 1
 #' @describeIn map-layers Add GeoJSON layers to the map
+#' @param popupProperty The property to use for popup content
+#' @param labelProperty The property to use for the label.
 #' @export
 addGeoJSON = function(map, geojson, layerId = NULL, group = NULL,
   stroke = TRUE,
@@ -1098,12 +1100,18 @@ addGeoJSON = function(map, geojson, layerId = NULL, group = NULL,
   dashArray = NULL,
   smoothFactor = 1.0,
   noClip = FALSE,
-  options = pathOptions()
+  options = pathOptions(),
+  labelProperty = NULL, labelOptions = leaflet::labelOptions(),
+  popupProperty = NULL, popupOptions = leaflet::popupOptions(),
+  highlightOptions = NULL
 ) {
   options = c(options, list(
     stroke = stroke, color = color, weight = weight, opacity = opacity,
     fill = fill, fillColor = fillColor, fillOpacity = fillOpacity,
-    dashArray = dashArray, smoothFactor = smoothFactor, noClip = noClip
+    dashArray = dashArray, smoothFactor = smoothFactor, noClip = noClip,
+    labelProperty=labelProperty, labelOptions=labelOptions,
+    popupProperty=popupProperty, popupOptions=popupOptions,
+    highlightOptions = highlightOptions
   ))
   invokeMethod(map, getMapData(map), 'addGeoJSON', geojson, layerId, group, options)
 }
