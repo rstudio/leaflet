@@ -1,3 +1,6 @@
+#' Adds leaflet-omnivore plugin HTML dependency
+#' @export
+#' @describeIn map-layers  leaflet-omnivore plugin HTML dependency
 leafletOmnivoreDependencies <- function() {
   list(
     htmltools::htmlDependency(
@@ -24,13 +27,19 @@ addTopoJSON = function(map, topojson, layerId = NULL, group = NULL,
   dashArray = NULL,
   smoothFactor = 1.0,
   noClip = FALSE,
-  options = pathOptions()
+  options = pathOptions(),
+  labelProperty = NULL, labelOptions = leaflet::labelOptions(),
+  popupProperty = NULL, popupOptions = leaflet::popupOptions(),
+  highlightOptions = NULL
 ) {
   map$dependencies <- c(map$dependencies, leafletOmnivoreDependencies())
   options = c(options, list(
     stroke = stroke, color = color, weight = weight, opacity = opacity,
     fill = fill, fillColor = fillColor, fillOpacity = fillOpacity,
-    dashArray = dashArray, smoothFactor = smoothFactor, noClip = noClip
+    dashArray = dashArray, smoothFactor = smoothFactor, noClip = noClip,
+    labelProperty=labelProperty, labelOptions=labelOptions,
+    popupProperty=popupProperty, popupOptions=popupOptions,
+    highlightOptions = highlightOptions
   ))
   invokeMethod(map, getMapData(map), 'addTopoJSON', topojson, layerId, group, options)
 }

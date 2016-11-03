@@ -10,6 +10,14 @@ leafletAwesomeMarkersDependencies <- function() {
   )
 }
 
+#' Adds leaflet-awesomemarkers plugin HTML dependency
+#' @export
+#' @describeIn map-layers add leaflet-awesomemarkers plugin HTML dependency
+addAwesomeMarkersDependency <- function(map) {
+  map$dependencies <- c(map$dependencies, leafletAwesomeMarkersDependencies())
+  map
+}
+
 leafletAmBootstrapDependencies <- function(map) {
   list(
     htmltools::htmlDependency(
@@ -22,8 +30,9 @@ leafletAmBootstrapDependencies <- function(map) {
   )
 }
 
-# Required for using BootStrap Fonts
-# @param map the map to add awesome Markers to.
+#' Adds bootstrap HTML dependency
+#' @export
+#' @describeIn map-layers add bootstrap HTML dependency
 addBootstrap <- function(map) {
   map$dependencies <- c(map$dependencies, leafletAmBootstrapDependencies())
   map
@@ -40,8 +49,9 @@ leafletAmFontAwesomeDependencies <- function(map) {
   )
 }
 
-# Required for using Font-Awesome Fonts
-# @param map the map to add awesome Markers to.
+#' Adds FontAwesome HTML dependency
+#' @export
+#' @describeIn map-layers add FontAwesome HTML dependency
 addFontAwesome <- function(map) {
   map$dependencies <- c(map$dependencies, leafletAmFontAwesomeDependencies())
   map
@@ -58,8 +68,9 @@ leafletAmIonIconDependencies <- function(map) {
   )
 }
 
-# Required for using IonIcon Fonts
-# @param map the map to add awesome Markers to.
+#' Adds IonIcon HTML dependency
+#' @export
+#' @describeIn map-layers add IonIcon HTML dependency
 addIonIcon <- function(map) {
   map$dependencies <- c(map$dependencies, leafletAmIonIconDependencies())
   map

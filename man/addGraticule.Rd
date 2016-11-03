@@ -6,7 +6,8 @@
 see \url{https://github.com/turban/Leaflet.Graticule}}
 \usage{
 addGraticule(map, interval = 20, sphere = FALSE, style = list(color =
-  "#333", weight = 1), layerId = NULL, group = NULL)
+  "#333", weight = 1), layerId = NULL, group = NULL,
+  options = pathOptions(pointerEvents = FALSE))
 }
 \arguments{
 \item{map}{a map widget object}
@@ -20,6 +21,8 @@ addGraticule(map, interval = 20, sphere = FALSE, style = list(color =
 \item{layerId}{the layer id}
 
 \item{group}{the name of the group this layer belongs to.}
+
+\item{options}{the path options for the graticule}
 }
 \description{
 Add a Graticule on the map
