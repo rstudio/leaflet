@@ -425,11 +425,16 @@ var _dataframe = require("./dataframe");
 
 var _dataframe2 = _interopRequireDefault(_dataframe);
 
+var _clusterLayerStore = require("./cluster-layer-store");
+
+var _clusterLayerStore2 = _interopRequireDefault(_clusterLayerStore);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 window.LeafletWidget = {};
 var methods = window.LeafletWidget.methods = _jquery2.default.extend({}, _methods2.default);
 window.LeafletWidget.DataFrame = _dataframe2.default;
+window.LeafletWidget.ClusterLayerStore = _clusterLayerStore2.default;
 
 // Send updated bounds back to app. Takes a leaflet event object as input.
 function updateBounds(map) {
@@ -683,7 +688,7 @@ if (_htmlwidgets2.default.shinyMode) {
 }
 
 
-},{"./control-store":2,"./crs_utils":3,"./dataframe":4,"./fixup-default-icon":5,"./global/htmlwidgets":6,"./global/jquery":7,"./global/leaflet":8,"./global/shiny":10,"./layer-manager":12,"./methods":13,"./util":15}],12:[function(require,module,exports){
+},{"./cluster-layer-store":1,"./control-store":2,"./crs_utils":3,"./dataframe":4,"./fixup-default-icon":5,"./global/htmlwidgets":6,"./global/jquery":7,"./global/leaflet":8,"./global/shiny":10,"./layer-manager":12,"./methods":13,"./util":15}],12:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
