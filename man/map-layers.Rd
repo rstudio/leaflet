@@ -15,7 +15,6 @@
 \alias{addTopoJSON}
 \alias{addWMSTiles}
 \alias{highlightOptions}
-\alias{markerClusterDependencies}
 \alias{safeLabel}
 \title{Graphics elements and layers}
 \usage{
@@ -45,8 +44,6 @@ addLabelOnlyMarkers(map, lng = NULL, lat = NULL, layerId = NULL,
   group = NULL, icon = NULL, label = NULL, labelOptions = NULL,
   options = markerOptions(), clusterOptions = NULL, clusterId = NULL,
   data = getMapData(map))
-
-markerClusterDependencies()
 
 addCircleMarkers(map, lng = NULL, lat = NULL, radius = 10,
   layerId = NULL, group = NULL, stroke = TRUE, color = "#03F",
@@ -217,8 +214,6 @@ Add graphics elements and layers to the map widget.
 
 Helper Function to create a safe label
 
-Adds marker-cluster-plugin HTML dependency
-
 Options to highlight shapes (polylines/polygons/circles/rectangles)
 }
 \section{Functions}{
@@ -236,8 +231,6 @@ Options to highlight shapes (polylines/polygons/circles/rectangles)
 \item \code{addMarkers}: Add markders to the map
 
 \item \code{addLabelOnlyMarkers}: Add Label only markers to the map
-
-\item \code{markerClusterDependencies}: add maker cluster plugin
 
 \item \code{addCircleMarkers}: Add circle markers to the map
 
