@@ -58,18 +58,29 @@ LeafletWidget.methods.addDrawToolbar = function(layerID,group,position,polyline,
 		  e.layer.feature = {properties: {radius: e.layer.getRadius()}};
 		}
     if (!HTMLWidgets.shinyMode) return;
-    Shiny.onInputChange(prefix + "created", layer.toGeoJSON());
+	var id = L.stamp(layer);
+    Shiny.onInputChange(prefix + "created", {id: id, json: layer.toGeoJSON()});
     Shiny.onInputChange(prefix + "features", drawnItems.toGeoJSON());
   });
 
   if (HTMLWidgets.shinyMode) {
     this.on('draw:edited', function (e) {
-      Shiny.onInputChange(prefix + "edited", e.layers.toGeoJSON());
+	  var editArray = [];
+		e.layers.eachLayer(function(layer) {
+		  var id = L.stamp(layer);
+		  editArray.push(id);
+		});
+      Shiny.onInputChange(prefix + "edited", {id: editArray, json: e.layers.toGeoJSON()});
       Shiny.onInputChange(prefix + "features", drawnItems.toGeoJSON());
     });
 
     this.on('draw:deleted', function (e) {
-      Shiny.onInputChange(prefix + "deleted", e.layers.toGeoJSON());
+      var delArray = [];
+		e.layers.eachLayer(function(layer) {
+		  var id = L.stamp(layer);
+		  delArray.push(id);
+		});
+	  Shiny.onInputChange(prefix + "deleted", {id: delArray, json: e.layers.toGeoJSON()});
       Shiny.onInputChange(prefix + "features", drawnItems.toGeoJSON());
     });
 
