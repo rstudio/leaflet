@@ -6,7 +6,7 @@
           resolution: resolution,
           time: time,
           group: group
-        }), options || {}),
+        }, options || {})),
         'shape', layerId, group);
     }).call(this);
   };

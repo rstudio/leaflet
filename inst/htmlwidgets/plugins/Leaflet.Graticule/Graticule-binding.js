@@ -6,7 +6,7 @@
           interval: interval,
           sphere: sphere,
           style: style
-        }), options || {}),
+        }, options || {})),
         'shape', layerId, group);
     }).call(this);
   };
