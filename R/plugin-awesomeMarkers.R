@@ -207,6 +207,7 @@ verifyIconLibrary <- function(library) {
 #'   the latitude column from \code{data})
 #' @param popup a character vector of the HTML content for the popups (you are
 #'   recommended to escape the text using \code{\link[htmltools]{htmlEscape}()}
+#' @param popupOptions A Vector of \code{\link{popupOptions}} to provide popups
 #'   for security reasons)
 #' @param layerId the layer id
 #' @param group the name of the group the newly created layers should belong to
@@ -233,6 +234,7 @@ addAwesomeMarkers = function(
   map, lng = NULL, lat = NULL, layerId = NULL, group = NULL,
   icon = NULL,
   popup = NULL,
+  popupOptions = NULL,
   label = NULL,
   labelOptions = NULL,
   options = markerOptions(),
@@ -270,7 +272,8 @@ addAwesomeMarkers = function(
 
   pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addAwesomeMarkers")
   invokeMethod(
-    map, data, 'addAwesomeMarkers', pts$lat, pts$lng, icon, layerId, group, options, popup,
+    map, data, 'addAwesomeMarkers', pts$lat, pts$lng, icon, layerId,
+    group, options, popup, popupOptions,
     clusterOptions, clusterId, safeLabel(label, data), labelOptions
   ) %>% expandLimits(pts$lat, pts$lng)
 }

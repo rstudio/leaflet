@@ -1,5 +1,8 @@
-# Evaluate list members that are formulae, using the map data as the environment
-# (if provided, otherwise the formula environment)
+#' Evaluate list members that are formulae, using the map data as the environment
+#' (if provided, otherwise the formula environment)
+#' @param list with members as formulae
+#' @param data map data
+#' @export
 evalFormula = function(list, data) {
   evalAll = function(x) {
     if (is.list(x)) {
@@ -15,9 +18,13 @@ evalFormula = function(list, data) {
 # polygon lists (returned from polygonData()) use `attr(x, "bbox")` (though at
 # least they are the same shape as the Spatial bounding boxes).
 
-# Notifies the map of new latitude/longitude of items of interest on the map, so
-# that we can expand the limits (i.e. bounding box). We will use this as the
+#' Notifies the map of new latitude/longitude of items of interest on the map
+# So that we can expand the limits (i.e. bounding box). We will use this as the
 # initial view if the user doesn't explicitly specify bounds using fitBounds.
+#' @param map map object
+#' @param lat vector of latitudes
+#' @param lng vector of longitudes
+#' @export
 expandLimits = function(map, lat, lng) {
   if (is.null(map$x$limits)) map$x$limits = list()
 
@@ -33,8 +40,11 @@ expandLimits = function(map, lat, lng) {
   map
 }
 
-# Same as expandLimits, but takes a polygon (that presumably has a bbox attr)
-# rather than lat/lng.
+#' Same as expandLimits, but takes a polygon (that presumably has a bbox attr)
+#' rather than lat/lng.
+#' @param map map object
+#' @param poly A spatial object representing a polygon.
+#' @export
 expandLimitsBbox = function(map, poly) {
   bbox = attr(poly, "bbox", exact = TRUE)
   if (is.null(bbox)) stop("Polygon data had no bbox")
@@ -242,6 +252,7 @@ clearImages = function(map) {
 #' minZoom,maxZoom,maxNativeZoom,tileSize,subdomains,errorTileUrl,tms,continuousWorld,noWrap,zoomOffset,zoomReverse,zIndex,unloadInvisibleTiles,updateWhenIdle,detectRetina,reuseTiles
 #' the tile layer options; see
 #' \url{http://leafletjs.com/reference.html#tilelayer}
+#' @param ... extra options passed to underlying Javascript object constructor.
 #' @describeIn map-options Options for tile layers
 #' @export
 tileOptions = function(
@@ -261,8 +272,8 @@ tileOptions = function(
   unloadInvisibleTiles = NULL,
   updateWhenIdle = NULL,
   detectRetina = FALSE,
-  reuseTiles = FALSE
-  # bounds = TODO
+  reuseTiles = FALSE,
+  ...
 ) {
   list(
     minZoom = minZoom, maxZoom = maxZoom, maxNativeZoom = maxNativeZoom,
@@ -271,7 +282,8 @@ tileOptions = function(
     zoomOffset = zoomOffset, zoomReverse = zoomReverse, opacity = opacity,
     zIndex = zIndex, unloadInvisibleTiles = unloadInvisibleTiles,
     updateWhenIdle = updateWhenIdle, detectRetina = detectRetina,
-    reuseTiles = reuseTiles
+    reuseTiles = reuseTiles,
+    ...
   )
 }
 
@@ -331,10 +343,9 @@ addWMSTiles = function(
 #' @param transparent if \code{TRUE}, the WMS service will return images with
 #'   transparency
 #' @param version version of the WMS service to use
-#' @param crs Coordinate Reference System to use for the WMS requests, defaults
+#' @param crs Coordinate Reference System to use for the WMS requests, defaults.
+#' @seealso \code{\link{leafletCRS}}
 #'   to map CRS (don't change this if you're not sure what it means)
-#' @param ... other tile options for \code{WMSTileOptions()} (all arguments of
-#'   \code{tileOptions()} can be used)
 #' @describeIn map-options Options for WMS tile layers
 #' @export
 WMSTileOptions = function(
@@ -357,6 +368,7 @@ WMSTileOptions = function(
 #'   the latitude column from \code{data})
 #' @param popup a character vector of the HTML content for the popups (you are
 #'   recommended to escape the text using \code{\link[htmltools]{htmlEscape}()}
+#' @param popupOptions A Vector of \code{\link{popupOptions}} to provide popups
 #'   for security reasons)
 #' @param layerId the layer id
 #' @param group the name of the group the newly created layers should belong to
@@ -379,6 +391,7 @@ addPopups = function(
     expandLimits(pts$lat, pts$lng)
 }
 
+#' options for specify popup realted options
 #' @param className a CSS class name set on an element
 #' @param
 #' maxWidth,minWidth,maxHeight,autoPan,keepInView,closeButton,zoomAnimation,closeOnClick
@@ -398,12 +411,13 @@ popupOptions = function(
   # autoPanPadding = TODO,
   zoomAnimation = TRUE,
   closeOnClick = NULL,
-  className = ""
+  className = "",
+  ...
 ) {
   list(
     maxWidth = maxWidth, minWidth = minWidth, maxHeight = maxHeight,
     autoPan = autoPan, keepInView = keepInView, closeButton = closeButton,
-    zoomAnimation = zoomAnimation, closeOnClick = closeOnClick, className = className
+    zoomAnimation = zoomAnimation, closeOnClick = closeOnClick, className = className, ...
   )
 }
 
@@ -419,7 +433,9 @@ clearPopups = function(map) {
   invokeMethod(map, NULL, 'clearPopups')
 }
 
-# Helper Function to create a safe label
+#' Helper Function to create a safe label
+#' @describeIn map-layers Create a label with sanitized text/html
+#' @export
 safeLabel <- function(label, data) {
   if (is.null(label)) {
     return(label)
@@ -436,7 +452,7 @@ safeLabel <- function(label, data) {
 #' Extra options for marker and polygon labels
 #'
 #' @param
-#' noHide,direction,offset
+#' noHide,direction,offset,textsize,textOnly,style
 #' label options; see \url{https://github.com/Leaflet/Leaflet.label#options}
 #' @describeIn map-options Options for labels
 #' @export
@@ -448,12 +464,17 @@ labelOptions = function(
   #pane = NULL,
   offset = c(12,-15),
   opacity = 1,
-  zoomAnimation = TRUE
+  textsize = "10px",
+  textOnly = FALSE,
+  style = NULL,
+  zoomAnimation = TRUE,
+  ...
 ) {
   list(
     clickable = clickable, noHide = noHide, direction = direction,
     opacity = opacity, offset = offset,
-    zoomAnimation = zoomAnimation, className = className
+    textsize = textsize, textOnly = textOnly, style = style,
+    zoomAnimation = zoomAnimation, className = className, ...
   )
 }
 
@@ -477,6 +498,7 @@ addMarkers = function(
   map, lng = NULL, lat = NULL, layerId = NULL, group = NULL,
   icon = NULL,
   popup = NULL,
+  popupOptions = NULL,
   label = NULL,
   labelOptions = NULL,
   options = markerOptions(),
@@ -511,18 +533,49 @@ addMarkers = function(
 
   pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addMarkers")
   invokeMethod(
-    map, data, 'addMarkers', pts$lat, pts$lng, icon, layerId, group, options, popup,
-    clusterOptions, clusterId, safeLabel(label, data), labelOptions
+    map, data, 'addMarkers', pts$lat, pts$lng, icon, layerId, group, options,
+    popup, popupOptions, clusterOptions, clusterId,
+    safeLabel(label, data), labelOptions
   ) %>% expandLimits(pts$lat, pts$lng)
 }
 
+#' @describeIn map-layers Add Label only markers to the map
+#' @export
+addLabelOnlyMarkers = function(
+  map, lng = NULL, lat = NULL, layerId = NULL, group = NULL,
+  icon = NULL,
+  label = NULL,
+  labelOptions = NULL,
+  options = markerOptions(),
+  clusterOptions = NULL,
+  clusterId = NULL,
+  data = getMapData(map)
+) {
+  do.call(addMarkers, filterNULL(list(
+    map = map, lng = lng, lat = lat, layerId = layerId,
+    group = group,
+    icon = makeIcon(
+      iconUrl = system.file('htmlwidgets/lib/leaflet/images/1px.png', package='leaflet'),
+      iconWidth = 1, iconHeight = 1),
+      label = label,
+      labelOptions = labelOptions,
+      options = options,
+      clusterOptions = clusterOptions,
+      clusterId = clusterId,
+      data = data
+  )))
+}
+
+#' Adds marker-cluster-plugin HTML dependency
+#' @export
+#' @describeIn map-layers add maker cluster plugin
 markerClusterDependencies = function() {
   list(
     htmltools::htmlDependency(
       'leaflet-markercluster',
-      '0.4.0',
+      '0.5.0',
       system.file('htmlwidgets/plugins/Leaflet.markercluster', package = 'leaflet'),
-      script = 'leaflet.markercluster.js',
+      script = c('leaflet.markercluster.js', 'leaflet.markercluster.layersupport-src.js', 'leaflet.markercluster.freezable-src.js'),
       stylesheet = c('MarkerCluster.css', 'MarkerCluster.Default.css')
     )
   )
@@ -701,12 +754,13 @@ markerOptions = function(
   zIndexOffset = 0,
   opacity = 1.0,
   riseOnHover = FALSE,
-  riseOffset = 250
+  riseOffset = 250,
+  ...
 ) {
   list(
     clickable = clickable, draggable = draggable, keyboard = keyboard,
     title = title, alt = alt, zIndexOffset = zIndexOffset, opacity = opacity,
-    riseOnHover = riseOnHover, riseOffset = riseOffset
+    riseOnHover = riseOnHover, riseOffset = riseOffset, ...
   )
 }
 
@@ -717,17 +771,26 @@ markerOptions = function(
 #'   spiderfy it so you can see all of its markers
 #' @param removeOutsideVisibleBounds clusters and markers too far from the
 #'   viewport are removed from the map for performance
+#' @param spiderLegPolylineOptions Allows you to specify PolylineOptions (\url{http://leafletjs.com/reference.html#polyline-options}) to style spider legs. By default, they are { weight: 1.5, color: '#222', opacity: 0.5 }
+#' @param freezeAtZoom Allows you to freeze cluster expansion to a zoom level.
+#' Can be a zoom level e.g. 10, 12 or 'max' or 'maxKeepSpiderify'
+#' See \url{https://github.com/ghybs/Leaflet.MarkerCluster.Freezable#api-reference}
 #' @describeIn map-options Options for marker clusters
 #' @export
 markerClusterOptions = function(
   showCoverageOnHover = TRUE, zoomToBoundsOnClick = TRUE,
-  spiderfyOnMaxZoom = TRUE, removeOutsideVisibleBounds = TRUE, ...
+  spiderfyOnMaxZoom = TRUE, removeOutsideVisibleBounds = TRUE,
+  spiderLegPolylineOptions = list(weight= 1.5, color= '#222', opacity= 0.5),
+  freezeAtZoom = FALSE,
+  ...
 ) {
   list(
     showCoverageOnHover = showCoverageOnHover,
     zoomToBoundsOnClick = zoomToBoundsOnClick,
     spiderfyOnMaxZoom = spiderfyOnMaxZoom,
-    removeOutsideVisibleBounds = removeOutsideVisibleBounds, ...
+    removeOutsideVisibleBounds = removeOutsideVisibleBounds,
+    spiderLegPolylineOptions =  spiderLegPolylineOptions,
+    freezeAtZoom = freezeAtZoom, ...
   )
 }
 
@@ -759,6 +822,7 @@ addCircleMarkers = function(
   fillOpacity = 0.2,
   dashArray = NULL,
   popup = NULL,
+  popupOptions = NULL,
   label = NULL,
   labelOptions = NULL,
   options = pathOptions(),
@@ -775,7 +839,8 @@ addCircleMarkers = function(
     map$dependencies = c(map$dependencies, markerClusterDependencies())
   pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addCircleMarkers")
   invokeMethod(map, data, 'addCircleMarkers', pts$lat, pts$lng, radius,
-      layerId, group, options, clusterOptions, clusterId, popup, safeLabel(label, data), labelOptions) %>%
+               layerId, group, options, clusterOptions, clusterId,
+               popup, popupOptions, safeLabel(label, data), labelOptions) %>%
     expandLimits(pts$lat, pts$lng)
 }
 
@@ -816,7 +881,6 @@ removeMarkerFromCluster = function(map, layerId, clusterId) {
 #' @param lineJoin a string that defines
 #'   \href{https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linejoin}{shape
 #'    to be used at the corners} of the stroke
-#' @param draggable Set to drag path features
 #' @param pointerEvents sets the \code{pointer-events} attribute on the path if
 #'   SVG backend is used
 #' @describeIn map-options Options for vector layers (polylines, polygons,
@@ -826,17 +890,46 @@ pathOptions = function(
   lineCap = NULL,
   lineJoin = NULL,
   clickable = TRUE,
-  draggable = FALSE,
   pointerEvents = NULL,
-  className = ""
+  className = "",
+  ...
 ) {
   list(
     lineCap = lineCap, lineJoin = lineJoin, clickable = clickable,
-    pointerEvents = pointerEvents, className = className, draggable = draggable
+    pointerEvents = pointerEvents, className = className, ...
   )
 }
 
-
+#' Options to highlight shapes (polylines/polygons/circles/rectangles)
+#' @param bringToFront Whether the shape should be brought to front on hover.
+#' @param sendToBack whether the shape should be sent to back on mouse out.
+#' @describeIn map-layers Options to highligh a shape on hover
+#' @export
+highlightOptions <- function(
+  stroke = NULL,
+  color = NULL,
+  weight = NULL,
+  opacity = NULL,
+  fill = NULL,
+  fillColor = NULL,
+  fillOpacity = NULL,
+  dashArray = NULL,
+  bringToFront = NULL,
+  sendToBack = NULL
+) {
+  filterNULL(list(
+    stroke = stroke,
+    color = color,
+    weight = weight,
+    opacity = opacity,
+    fill = fill,
+    fillColor = fillColor,
+    fillOpacity = fillOpacity,
+    dashArray = dashArray,
+    bringToFront = bringToFront,
+    sendToBack = sendToBack
+  ))
+}
 
 #' @describeIn map-layers Add circles to the map
 #' @export
@@ -851,9 +944,11 @@ addCircles = function(
   fillOpacity = 0.2,
   dashArray = NULL,
   popup = NULL,
+  popupOptions = NULL,
   label = NULL,
   labelOptions = NULL,
   options = pathOptions(),
+  highlightOptions = NULL,
   data = getMapData(map)
 ) {
   options = c(options, list(
@@ -862,12 +957,14 @@ addCircles = function(
     dashArray = dashArray
   ))
   pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addCircles")
-  invokeMethod(map, data, 'addCircles', pts$lat, pts$lng, radius, layerId, group, options, popup, safeLabel(label, data), labelOptions) %>%
+  invokeMethod(map, data, 'addCircles', pts$lat, pts$lng, radius, layerId, group, options,
+               popup, popupOptions, safeLabel(label, data), labelOptions, highlightOptions) %>%
     expandLimits(pts$lat, pts$lng)
 }
 
 #' @param smoothFactor how much to simplify the polyline on each zoom level
 #'   (more means better performance and less accurate representation)
+#' @param highlightOptions Options for highlighting the shape on mouse over.
 #' @param noClip whether to disable polyline clipping
 #' @describeIn map-layers Add polylines to the map
 #' @export
@@ -884,9 +981,11 @@ addPolylines = function(
   smoothFactor = 1.0,
   noClip = FALSE,
   popup = NULL,
+  popupOptions = NULL,
   label = NULL,
   labelOptions = NULL,
   options = pathOptions(),
+  highlightOptions = NULL,
   data = getMapData(map)
 ) {
   options = c(options, list(
@@ -895,7 +994,8 @@ addPolylines = function(
     dashArray = dashArray, smoothFactor = smoothFactor, noClip = noClip
   ))
   pgons = derivePolygons(data, lng, lat, missing(lng), missing(lat), "addPolylines")
-  invokeMethod(map, data, 'addPolylines', pgons, layerId, group, options, popup, safeLabel(label, data), labelOptions) %>%
+  invokeMethod(map, data, 'addPolylines', pgons, layerId, group, options,
+               popup, popupOptions, safeLabel(label, data), labelOptions, highlightOptions) %>%
     expandLimitsBbox(pgons)
 }
 
@@ -916,9 +1016,11 @@ addRectangles = function(
   smoothFactor = 1.0,
   noClip = FALSE,
   popup = NULL,
+  popupOptions = NULL,
   label = NULL,
   labelOptions = NULL,
   options = pathOptions(),
+  highlightOptions = NULL,
   data = getMapData(map)
 ) {
   options = c(options, list(
@@ -930,7 +1032,11 @@ addRectangles = function(
   lat1 = resolveFormula(lat1, data)
   lng2 = resolveFormula(lng2, data)
   lat2 = resolveFormula(lat2, data)
-  invokeMethod(map, data, 'addRectangles',lat1, lng1, lat2, lng2, layerId, group, options, popup, safeLabel(label, data), labelOptions) %>%
+
+  df1 <- validateCoords(lng1, lat1, "addRectangles")
+  df2 <- validateCoords(lng2, lat2, "addRectangles")
+
+  invokeMethod(map, data, 'addRectangles',df1$lat, df1$lng, df2$lat, df2$lng, layerId, group, options, popup, popupOptions, safeLabel(label, data), labelOptions, highlightOptions) %>%
     expandLimits(c(lat1, lat2), c(lng1, lng2))
 }
 
@@ -949,9 +1055,11 @@ addPolygons = function(
   smoothFactor = 1.0,
   noClip = FALSE,
   popup = NULL,
+  popupOptions = NULL,
   label = NULL,
   labelOptions = NULL,
   options = pathOptions(),
+  highlightOptions = NULL,
   data = getMapData(map)
 ) {
   options = c(options, list(
@@ -960,7 +1068,7 @@ addPolygons = function(
     dashArray = dashArray, smoothFactor = smoothFactor, noClip = noClip
   ))
   pgons = derivePolygons(data, lng, lat, missing(lng), missing(lat), "addPolygons")
-  invokeMethod(map, data, 'addPolygons', pgons, layerId, group, options, popup, safeLabel(label, data), labelOptions) %>%
+  invokeMethod(map, data, 'addPolygons', pgons, layerId, group, options, popup, popupOptions, safeLabel(label, data), labelOptions, highlightOptions) %>%
     expandLimitsBbox(pgons)
 }
 
@@ -1059,9 +1167,10 @@ addLayersControl = function(map,
 #'   to have the layers control always appear in its expanded state.
 #' @param autoZIndex if \code{TRUE}, the control will automatically maintain
 #'   the z-order of its various groups as overlays are switched on and off.
+#' @param ... other options for \code{layersControlOptions()}
 #' @export
-layersControlOptions = function(collapsed = TRUE, autoZIndex = TRUE) {
-  list(collapsed = collapsed, autoZIndex = autoZIndex)
+layersControlOptions = function(collapsed = TRUE, autoZIndex = TRUE, ...) {
+  list(collapsed = collapsed, autoZIndex = autoZIndex, ...)
 }
 
 #' @rdname addLayersControl

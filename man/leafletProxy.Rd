@@ -8,7 +8,8 @@ leafletProxy(mapId, session = shiny::getDefaultReactiveDomain(), data = NULL,
 }
 \arguments{
 \item{mapId}{single-element character vector indicating the output ID of the
-map to modify}
+map to modify (if invoked from a Shiny module, the namespace will be added
+automatically)}
 
 \item{session}{the Shiny session object to which the map belongs; usually the
 default value will suffice}

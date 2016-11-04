@@ -6,3 +6,10 @@
 \.bower\.json$
 \.bowerrc$
 ^docs/
+^\.eslintrc\.json$
+^Gruntfile\.js$
+^javascript$
+^package\.json$
+^node_modules$
+
+^data-raw$

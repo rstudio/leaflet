@@ -50,9 +50,16 @@ doResolveFormula.SpatialPointsDataFrame = function(data, f) {
   doResolveFormula(data@data, f)
 }
 
-# Given a data object and lng/lat arguments (which may be NULL [meaning infer
-# from data], formula [which should be evaluated with respect to the data], or
-# vector data [which should be used as-is]) return a lng/lat data frame.
+#' Given a data object and lng/lat arguments (which may be NULL [meaning infer
+#' from data], formula [which should be evaluated with respect to the data], or
+#' vector data [which should be used as-is]) return a lng/lat data frame.
+#' @param data map data
+#' @param lng longitude
+#' @param lat latitude
+#' @param missingLng whether lng is missing
+#' @param missingLat whether lat is missing
+#' @param funcName Name of calling function (for logging)
+#' @export
 derivePoints = function(data, lng, lat, missingLng, missingLat, funcName) {
   if (missingLng || missingLat) {
     if (is.null(data)) {
@@ -67,17 +74,19 @@ derivePoints = function(data, lng, lat, missingLng, missingLat, funcName) {
   lng = resolveFormula(lng, data)
   lat = resolveFormula(lat, data)
 
-  if (is.null(lng) && is.null(lat)) {
-    stop(funcName, " requires non-NULL longitude/latitude values")
-  } else if (is.null(lng)) {
-    stop(funcName, " requires non-NULL longitude values")
-  } else if (is.null(lat)) {
-    stop(funcName, " requires non-NULL latitude values")
-  }
-
-  data.frame(lng = lng, lat = lat)
+  validateCoords(lng, lat, funcName)
 }
 
+#' Given a data object and lng/lat arguments (which may be NULL [meaning infer
+#' from data], formula [which should be evaluated with respect to the data], or
+#' vector data [which should be used as-is]) return a spatial object
+#' @param data map data
+#' @param lng longitude
+#' @param lat latitude
+#' @param missingLng whether lng is missing
+#' @param missingLat whether lat is missing
+#' @param funcName Name of calling function (for logging)
+#' @export
 derivePolygons = function(data, lng, lat, missingLng, missingLat, funcName) {
   if (missingLng != missingLat) {
     stop(funcName, " must be called with both lng and lat, or with neither.")
@@ -92,23 +101,8 @@ derivePolygons = function(data, lng, lat, missingLng, missingLat, funcName) {
   lng = resolveFormula(lng, data)
   lat = resolveFormula(lat, data)
 
-  if (is.null(lng) && is.null(lat)) {
-    stop(funcName, " requires non-NULL longitude/latitude values")
-  } else if (is.null(lng)) {
-    stop(funcName, " requires non-NULL longitude values")
-  } else if (is.null(lat)) {
-    stop(funcName, " requires non-NULL latitude values")
-  }
-
-  if (!is.numeric(lng) && !is.numeric(lat)) {
-    stop(funcName, " requires numeric longitude/latitude values")
-  } else if (!is.numeric(lng)) {
-    stop(funcName, " requires numeric longitude values")
-  } else if (!is.numeric(lat)) {
-    stop(funcName, " requires numeric latitude values")
-  }
-
-  polygonData(cbind(lng, lat))
+  df <- validateCoords(lng, lat, funcName)
+  polygonData(cbind(df$lng, df$lat))
 }
 
 # TODO: Add tests
@@ -193,7 +187,13 @@ polygonData.SpatialPolygons = function(obj) {
     structure(bbox = obj@bbox)
 }
 polygonData.SpatialPolygonsDataFrame = function(obj) {
-  polygonData(sp::polygons(obj))
+  #polygonData(sp::polygons(obj))
+  if(length(obj@polygons)>0) {
+    polygonData(sp::SpatialPolygons(obj@polygons))
+  } else {
+    warning("Empty SpatialLinesDataFrame object passed and will be skipped")
+    structure(list(), bbox=obj@bbox)
+  }
 }
 polygonData.map = function(obj) {
   polygonData(cbind(obj$x, obj$y))
@@ -218,7 +218,12 @@ polygonData.SpatialLines = function(obj) {
     structure(bbox = obj@bbox)
 }
 polygonData.SpatialLinesDataFrame = function(obj) {
-  polygonData(sp::SpatialLines(obj@lines))
+  if(length(obj@lines)>0) {
+    polygonData(sp::SpatialLines(obj@lines))
+  } else {
+    warning("Empty SpatialLinesDataFrame object passed and will be skipped")
+    structure(list(), bbox=obj@bbox)
+  }
 }
 
 dfbbox = function(df) {

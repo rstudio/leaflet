@@ -6,7 +6,7 @@
   "scripts": {
     "test": "zuul --local -- test/test.js",
     "test-remote": "zuul -- test/test.js",
-    "test-headless": "zuul --phantom test/test.js",
+    "test-headless": "zuul --phantom -- test/test.js",
     "build": "browserify -s omnivore index.js > leaflet-omnivore.js && uglifyjs leaflet-omnivore.js -c -m > leaflet-omnivore.min.js"
   },
   "repository": {
@@ -15,8 +15,7 @@
   },
   "browserify": {
     "transform": [
-      "brfs",
-      "hintify"
+      "brfs"
     ]
   },
   "keywords": [
@@ -38,30 +37,29 @@
     "converter"
   ],
   "author": "Tom MacWright",
-  "license": "BSD",
+  "license": "BSD-3-Clause",
   "bugs": {
     "url": "https://github.com/mapbox/leaflet-omnivore/issues"
   },
   "homepage": "https://github.com/mapbox/leaflet-omnivore",
   "dependencies": {
-    "csv2geojson": "~3.6.1",
-    "togeojson": "0.10.1",
-    "corslite": "0.0.6",
-    "wellknown": "0.3.0",
-    "hintify": "~0.1.0",
-    "brfs": "0.2.1",
-    "topojson": "1.6.8",
-    "polyline": "0.0.3"
+    "csv2geojson": "~5.0.0",
+    "togeojson": "0.13.0",
+    "corslite": "0.0.7",
+    "wellknown": "0.4.2",
+    "brfs": "1.4.3",
+    "topojson": "1.6.26",
+    "polyline": "0.2.0"
   },
   "devDependencies": {
-    "browserify": "7.0.2",
-    "tape": "2.4.2",
-    "uglify-js": "2.4.16",
-    "jshint": "2.5.0",
-    "mocha": "~1.20.1",
-    "zuul": "~1.7.0",
-    "st": "0.5.1",
-    "mapbox.js": "1.6.4",
-    "phantomjs": "~1.9.7-15"
+    "browserify": "13.0.1",
+    "tape": "4.5.1",
+    "uglify-js": "^2.6.2",
+    "jshint": "2.9.2",
+    "mocha": "~2.5.3",
+    "zuul": "~3.10.1",
+    "st": "1.1.0",
+    "mapbox.js": "2.4.0",
+    "phantomjs-prebuilt": "2.1.7"
   }
 }

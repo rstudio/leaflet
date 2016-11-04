@@ -9,7 +9,7 @@ addLayersControl(map, baseGroups = character(0), overlayGroups = character(0),
     position = c("topright", "bottomright", "bottomleft", "topleft"), 
     options = layersControlOptions())
 
-layersControlOptions(collapsed = TRUE, autoZIndex = TRUE)
+layersControlOptions(collapsed = TRUE, autoZIndex = TRUE, ...)
 
 removeLayersControl(map)
 }
@@ -35,6 +35,8 @@ to have the layers control always appear in its expanded state.}
 
 \item{autoZIndex}{if \code{TRUE}, the control will automatically maintain
 the z-order of its various groups as overlays are switched on and off.}
+
+\item{...}{other options for \code{layersControlOptions()}}
 }
 \description{
 Uses Leaflet's built-in
