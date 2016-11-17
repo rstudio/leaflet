@@ -20,6 +20,7 @@ leafletTerminatorDependencies <- function() {
 #' @param time Time
 #' @param layerId the layer id
 #' @param group the name of the group this layer belongs to.
+#' @param options the path options for the daynight layer
 #' @examples
 #' library(leaflet)
 #'
@@ -33,16 +34,18 @@ addTerminator <- function(
   resolution = 2,
   time = NULL,
   layerId = NULL,
-  group=NULL
+  group=NULL,
+  options = pathOptions(pointerEvents="none", clickable=FALSE) # Default unclickable
 ) {
   map$dependencies <- c(map$dependencies, leafletTerminatorDependencies())
   invokeMethod(
-    map
-    , getMapData(map)
-    , 'addTerminator'
-    , resolution
-    , time
-    , layerId
-    , group
+    map,
+    getMapData(map),
+    'addTerminator',
+    resolution,
+    time,
+    layerId,
+    group,
+    options
   )
 }

@@ -14,10 +14,12 @@ import defaultMethods from "./methods";
 import "./fixup-default-icon";
 
 import DataFrame from "./dataframe";
+import ClusterLayerStore from "./cluster-layer-store";
 
 window.LeafletWidget = {};
 let methods = window.LeafletWidget.methods = $.extend({}, defaultMethods);
 window.LeafletWidget.DataFrame = DataFrame;
+window.LeafletWidget.ClusterLayerStore = ClusterLayerStore;
 
 // Send updated bounds back to app. Takes a leaflet event object as input.
 function updateBounds(map) {
