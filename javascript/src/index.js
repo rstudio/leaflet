@@ -17,9 +17,11 @@ import DataFrame from "./dataframe";
 import ClusterLayerStore from "./cluster-layer-store";
 
 window.LeafletWidget = {};
+window.LeafletWidget.utils = {};
 let methods = window.LeafletWidget.methods = $.extend({}, defaultMethods);
 window.LeafletWidget.DataFrame = DataFrame;
 window.LeafletWidget.ClusterLayerStore = ClusterLayerStore;
+window.LeafletWidget.utils.getCRS = getCRS;
 
 // Send updated bounds back to app. Takes a leaflet event object as input.
 function updateBounds(map) {

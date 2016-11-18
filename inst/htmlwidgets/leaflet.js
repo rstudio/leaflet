@@ -432,9 +432,11 @@ var _clusterLayerStore2 = _interopRequireDefault(_clusterLayerStore);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 window.LeafletWidget = {};
+window.LeafletWidget.utils = {};
 var methods = window.LeafletWidget.methods = _jquery2.default.extend({}, _methods2.default);
 window.LeafletWidget.DataFrame = _dataframe2.default;
 window.LeafletWidget.ClusterLayerStore = _clusterLayerStore2.default;
+window.LeafletWidget.utils.getCRS = _crs_utils.getCRS;
 
 // Send updated bounds back to app. Takes a leaflet event object as input.
 function updateBounds(map) {

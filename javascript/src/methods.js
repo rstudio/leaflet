@@ -899,7 +899,7 @@ methods.addRasterImage = function(uri, bounds, opacity, attribution, layerId, gr
 
   function getCanvasSmoothingProperty(ctx) {
     let candidates = ["imageSmoothingEnabled", "mozImageSmoothingEnabled",
-        "webkitImageSmoothingEnabled", "msImageSmoothingEnabled"];
+      "webkitImageSmoothingEnabled", "msImageSmoothingEnabled"];
     for (let i = 0; i < candidates.length; i++) {
       if (typeof(ctx[candidates[i]]) !== "undefined") {
         return candidates[i];
