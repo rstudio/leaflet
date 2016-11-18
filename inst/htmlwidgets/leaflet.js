@@ -847,7 +847,7 @@ var LayerManager = function () {
       var g = this._groupContainers[group];
       if (ensureExists && !g) {
         this._byGroup[group] = this._byGroup[group] || {};
-        g = this._groupContainers[group] = _leaflet2.default.layerGroup();
+        g = this._groupContainers[group] = _leaflet2.default.featureGroup();
         g.groupname = group;
         g.addTo(this._map);
       }
