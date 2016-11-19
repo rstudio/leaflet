@@ -525,7 +525,11 @@ _htmlwidgets2.default.widget({
           }(); // undefine map
         }
 
-        map = _leaflet2.default.map(el, data.options);
+        if (data.options.mapFactory && typeof data.options.mapFactory === "function") {
+          map = data.options.mapFactory(el, data.options);
+        } else {
+          map = _leaflet2.default.map(el, data.options);
+        }
 
         preventUnintendedZoomOnScroll(map);
 

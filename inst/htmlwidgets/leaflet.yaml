@@ -23,4 +23,7 @@ dependencies:
     script:
       - proj4-compressed.js
       - proj4leaflet.js
-
+  - name: lodash
+    version: 4.17.2
+    src: "htmlwidgets/lib/lodash"
+    script: lodash.js

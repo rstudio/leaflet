@@ -108,7 +108,11 @@ HTMLWidgets.widget({
           map = (function () { return; })(); // undefine map
         }
 
-        map = L.map(el, data.options);
+        if(data.options.mapFactory && typeof data.options.mapFactory === "function") {
+          map = data.options.mapFactory(el, data.options);
+        } else {
+          map = L.map(el, data.options);
+        }
 
         preventUnintendedZoomOnScroll(map);
 
