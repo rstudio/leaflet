@@ -1,7 +1,7 @@
 leaflet 1.1
 --------------------------------------------------------------------------------
 
-* Added a way for the Map instance to be instanciated via a factory
+* Added a way for the Map instance to be instantiated via a factory.
 
 * Added option to highlight polygons on hover.
 
