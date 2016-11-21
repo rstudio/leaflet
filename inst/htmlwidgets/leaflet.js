@@ -525,7 +525,11 @@ _htmlwidgets2.default.widget({
           }(); // undefine map
         }
 
-        map = _leaflet2.default.map(el, data.options);
+        if (data.options.mapFactory && typeof data.options.mapFactory === "function") {
+          map = data.options.mapFactory(el, data.options);
+        } else {
+          map = _leaflet2.default.map(el, data.options);
+        }
 
         preventUnintendedZoomOnScroll(map);
 
@@ -847,7 +851,7 @@ var LayerManager = function () {
       var g = this._groupContainers[group];
       if (ensureExists && !g) {
         this._byGroup[group] = this._byGroup[group] || {};
-        g = this._groupContainers[group] = _leaflet2.default.layerGroup();
+        g = this._groupContainers[group] = _leaflet2.default.featureGroup();
         g.groupname = group;
         g.addTo(this._map);
       }

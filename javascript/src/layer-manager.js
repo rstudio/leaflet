@@ -126,7 +126,7 @@ export default class LayerManager {
     let g = this._groupContainers[group];
     if (ensureExists && !g) {
       this._byGroup[group] = this._byGroup[group] || {};
-      g = this._groupContainers[group] = L.layerGroup();
+      g = this._groupContainers[group] = L.featureGroup();
       g.groupname = group;
       g.addTo(this._map);
     }
