@@ -20,7 +20,7 @@
 #'
 #' if (interactive()) print(app)}
 leafletOutput = function(outputId, width = "100%", height = 400) {
-  htmlwidgets::shinyWidgetOutput(outputId, "leaflet", width, height, "leaflet")
+  htmlwidgets::shinyWidgetOutput(outputId, "leaflet", width, height, package="leaflet")
 }
 
 #' @rdname map-shiny
