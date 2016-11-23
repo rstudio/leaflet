@@ -1108,7 +1108,6 @@ function addMarkers(map, df, group, clusterOptions, clusterId, markerFunc) {
     var clusterGroup = this.layerManager.getLayer("cluster", clusterId),
         cluster = clusterOptions !== null;
     if (cluster && !clusterGroup) {
-      //clusterGroup = L.markerClusterGroup(clusterOptions);
       clusterGroup = _leaflet2.default.markerClusterGroup.layerSupport(clusterOptions);
       if (clusterOptions.freezeAtZoom) {
         var freezeAtZoom = clusterOptions.freezeAtZoom;
@@ -1373,9 +1372,15 @@ methods.addPolylines = function (polygons, layerId, group, options, popup, popup
     var df = new _dataframe2.default().col("shapes", polygons).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).col("highlightOptions", highlightOptions).cbind(options);
 
     addLayers(this, "shape", df, function (df, i) {
-      var shape = df.get(i, "shapes")[0];
-      shape = _htmlwidgets2.default.dataframeToD3(shape);
-      return _leaflet2.default.polyline(shape, df.get(i));
+      var shapes = df.get(i, "shapes");
+      for (var j = 0; j < shapes.length; j++) {
+        shapes[j] = _htmlwidgets2.default.dataframeToD3(shapes[j]);
+      }
+      if (shapes.length > 1) {
+        return _leaflet2.default.multiPolyline(shapes, df.get(i));
+      } else {
+        return _leaflet2.default.polyline(shapes[0], df.get(i));
+      }
     });
   }
 };

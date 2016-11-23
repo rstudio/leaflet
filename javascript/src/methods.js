@@ -131,7 +131,6 @@ function addMarkers(map, df, group, clusterOptions, clusterId, markerFunc) {
     let clusterGroup = this.layerManager.getLayer("cluster", clusterId),
       cluster = clusterOptions !== null;
     if (cluster && !clusterGroup) {
-      //clusterGroup = L.markerClusterGroup(clusterOptions);
       clusterGroup = L.markerClusterGroup.layerSupport(clusterOptions);
       if(clusterOptions.freezeAtZoom) {
         let freezeAtZoom = clusterOptions.freezeAtZoom;
@@ -342,7 +341,6 @@ function addLayers(map, category, df, layerFunc) {
         let highlightStyle = df.get(i,"highlightOptions");
 
         if(!$.isEmptyObject(highlightStyle)) {
-
         
           let defaultStyle = {};
           $.each(highlightStyle, function (k, v) {
@@ -367,7 +365,6 @@ function addLayers(map, category, df, layerFunc) {
                 this.bringToBack();
               }
             });
-
         }
       }
     }).call(map);
@@ -442,9 +439,15 @@ methods.addPolylines = function(polygons, layerId, group, options, popup, popupO
       .cbind(options);
 
     addLayers(this, "shape", df, function(df, i) {
-      let shape = df.get(i, "shapes")[0];
-      shape = HTMLWidgets.dataframeToD3(shape);
-      return L.polyline(shape, df.get(i));
+      let shapes = df.get(i, "shapes");
+      for (let j = 0; j < shapes.length; j++) {
+        shapes[j] = HTMLWidgets.dataframeToD3(shapes[j]);
+      }
+      if(shapes.length>1) {
+        return L.multiPolyline(shapes, df.get(i));
+      } else {
+        return L.polyline(shapes[0], df.get(i));
+      }
     });
   }
 };
