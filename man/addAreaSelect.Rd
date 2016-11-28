@@ -21,11 +21,11 @@ removeAreaSelect(map)
 
 \item{width}{Width in pixels.}
 
+\item{height}{Height in pixels.}
+
 \item{keepAspectRatio}{if set to TRUE the aspect ratio of the selection box can be changed.}
 
 \item{position}{The position of the control button.}
-
-\item{heigth}{Height in pixels.}
 }
 \description{
 Adds a resizable centered box on top of the map letting users select a square area (bounding box).

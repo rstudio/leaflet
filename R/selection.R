@@ -25,7 +25,7 @@ locationFilterDependencies <- function() {
 #' Adds a resizable centered box on top of the map letting users select a square area (bounding box).
 #' @param map The map widget.
 #' @param width Width in pixels.
-#' @param heigth Height in pixels.
+#' @param height Height in pixels.
 #' @param keepAspectRatio if set to TRUE the aspect ratio of the selection box can be changed.
 #' @export
 addAreaSelect <- function(map, width = 200, height = 300, keepAspectRatio = FALSE) {

@@ -43,7 +43,8 @@ Imports:
     RColorBrewer,
     raster,
     scales (>= 0.2.5),
-    sp
+    sp,
+    jsonlite
 Suggests:
     knitr,
     maps,
