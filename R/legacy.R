@@ -17,7 +17,7 @@ createLeafletMap <- function(session, outputId) {
   # method parameter indicates what leaflet operation we want to perform,
   # and the other arguments will be serialized to JS objects and used as
   # client side function args.
-  send = function(method, func, msg) {
+  send <- function(method, func, msg) {
 
     msg = msg[names(formals(func))]
     names(msg) = NULL
@@ -42,7 +42,7 @@ createLeafletMap <- function(session, outputId) {
   #     list(setView = function(lat, lng, zoom, forceReset = FALSE) {
   #       send("setView", sys.function(), as.list(environment()))
   #     })
-  stub = function(p) {
+  stub <- function(p) {
     # The function name is the first element
     name = as.character(p[[1]])
 

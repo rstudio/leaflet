@@ -77,7 +77,7 @@ addIonIcon <- function(map) {
 #' )
 #'
 #' iconSet[c('home', 'flag')]
-awesomeIconList = function(...) {
+awesomeIconList <- function(...) {
   res = structure(
     list(...),
     class = "leaflet_awesome_icon_set"
@@ -89,7 +89,7 @@ awesomeIconList = function(...) {
 }
 
 #' @export
-`[.leaflet_awesome_icon_set` = function(x, i) {
+`[.leaflet_awesome_icon_set` <- function(x, i) {
   if (is.factor(i)) {
     i = as.character(i)
   }
@@ -101,7 +101,7 @@ awesomeIconList = function(...) {
   structure(.subset(x, i), class = "leaflet_awesome_icon_set")
 }
 
-awesomeIconSetToAwesomeIcons = function(x) {
+awesomeIconSetToAwesomeIcons <- function(x) {
   # c("icon", "library", ...)
   cols = names(formals(makeAwesomeIcon))
   # list(icon = "icon", library = "library", ...)
@@ -230,7 +230,7 @@ verifyIconLibrary <- function(library) {
 #' @param options a list of extra options for tile layers, popups, paths
 #'   (circles, rectangles, polygons, ...), or other map elements
 #' @export
-addAwesomeMarkers = function(
+addAwesomeMarkers <- function(
   map, lng = NULL, lat = NULL, layerId = NULL, group = NULL,
   icon = NULL,
   popup = NULL,
