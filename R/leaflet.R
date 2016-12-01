@@ -33,7 +33,7 @@ leaflet = function(data = NULL, width = NULL, height = NULL,
     stop("CRS in mapOptions should be a return value of leafletCRS() function")
   }
 
-  htmlwidgets::createWidget(
+  map <- htmlwidgets::createWidget(
     'leaflet',
     structure(
       list(options = options),
@@ -62,6 +62,12 @@ leaflet = function(data = NULL, width = NULL, height = NULL,
       widget
     }
   )
+
+  if (crosstalk::is.SharedData(data)) {
+    map <- addSelect(map)
+  }
+
+  map
 }
 
 hookWrapperTemplate <- "function(el, x, data) {

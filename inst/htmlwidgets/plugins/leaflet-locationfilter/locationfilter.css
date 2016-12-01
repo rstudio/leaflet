@@ -1,9 +1,18 @@
+.location-filter {
+    z-index: 999999 !important;
+}
 div.leaflet-marker-icon.location-filter.resize-marker {
-    background: url( img/resize-handle.png ) no-repeat;  
+    background: url( img/resize-handle.png ) no-repeat;
     cursor: move;
 }
+div.leaflet-marker-icon.location-filter.resize-marker.nesw {
+    cursor: nesw-resize;
+}
+div.leaflet-marker-icon.location-filter.resize-marker.nwse {
+    cursor: nwse-resize;
+}
 div.leaflet-marker-icon.location-filter.move-marker {
-    background: url( img/move-handle.png ) no-repeat;  
+    background: url( img/move-handle.png ) no-repeat;
     cursor: move;
 }
 
@@ -28,7 +37,7 @@ div.location-filter.button-container {
     border-radius: 3px;
     -webkit-box-shadow: inset rgba(255,255,255,0.75) 0 1px 1px;
     -moz-box-shadow: inset rgba(255,255,255,0.75) 0 1px 1px;
-    box-shadow: inset rgba(255,255,255,0.75) 0 1px 1px;    
+    box-shadow: inset rgba(255,255,255,0.75) 0 1px 1px;
     background: #c4e3b9;
     background: rgba(218, 252, 205, 0.9);
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(218, 252, 205, 0.9)), color-stop(100%, rgba(173, 226, 176, 0.9)));

@@ -150,7 +150,7 @@ function addMarkers(map, df, group, clusterOptions, clusterId, markerFunc) {
           if (cluster) {
             clusterGroup.clusterLayerStore.add(marker, thisId);
           } else {
-            this.layerManager.addLayer(marker, "marker", thisId, thisGroup);
+            this.layerManager.addLayer(marker, "marker", thisId, thisGroup, df.get(i, "ctGroup", true), df.get(i, "ctKey", true));
           }
           let popup = df.get(i, "popup");
           let popupOptions = df.get(i, "popupOptions");
@@ -190,7 +190,7 @@ function addMarkers(map, df, group, clusterOptions, clusterId, markerFunc) {
 methods.addGenericMarkers = addMarkers;
 
 methods.addMarkers = function(lat, lng, icon, layerId, group, options, popup, popupOptions,
-                              clusterOptions, clusterId, label, labelOptions) {
+                              clusterOptions, clusterId, label, labelOptions, crosstalkOptions) {
   let icondf;
   let getIcon;
 
@@ -247,7 +247,8 @@ methods.addMarkers = function(lat, lng, icon, layerId, group, options, popup, po
       .col("popupOptions", popupOptions)
       .col("label", label)
       .col("labelOptions", labelOptions)
-      .cbind(options);
+      .cbind(options)
+      .cbind(crosstalkOptions || {});
 
     if (icon) icondf.effectiveLength = df.nrow();
 
@@ -341,7 +342,7 @@ function addLayers(map, category, df, layerFunc) {
         let highlightStyle = df.get(i,"highlightOptions");
 
         if(!$.isEmptyObject(highlightStyle)) {
-        
+
           let defaultStyle = {};
           $.each(highlightStyle, function (k, v) {
             if(k != "bringToFront" && k != "sendToBack"){
@@ -1145,4 +1146,71 @@ methods.addMeasure = function(options){
 methods.removeMeasure = function() {
   this.measureControl.removeFrom( this );
   delete this.measureControl;
+};
+
+methods.addSelect = function(crosstalkOptions) {
+  methods.removeSelect.call(this);
+
+  this._selectButton = L.easyButton({
+    states: [
+      {
+        stateName: "select-inactive",
+        icon: "ion-qr-scanner",
+        title: "Make a selection",
+        onClick: (btn, map) => {
+          btn.state("select-active");
+          this._locationFilter = new L.LocationFilter2();
+
+          if (crosstalkOptions.ctGroup) {
+            let selectionHandle = new global.crosstalk.SelectionHandle(crosstalkOptions.ctGroup);
+            selectionHandle.on("change", (e) => {
+              if (e.sender !== selectionHandle) {
+                if (this._locationFilter) {
+                  this._locationFilter.disable();
+                  btn.state("select-inactive");
+                }
+              }
+            });
+            let handler = (e) => {
+              this.layerManager.brush(this._locationFilter.getBounds(),
+                {sender: selectionHandle}
+              );
+            };
+            this._locationFilter.on("enabled", handler);
+            this._locationFilter.on("change", handler);
+            this._locationFilter.on("disabled", () => {
+              selectionHandle.close();
+              this._locationFilter = null;
+            });
+          }
+
+          this._locationFilter.addTo(map);
+        }
+      },
+      {
+        stateName: "select-active",
+        icon: "ion-qr-scanner",
+        title: "Dismiss selection",
+        onClick: (btn, map) => {
+          btn.state("select-inactive");
+          this._locationFilter.disable();
+          // If explicitly dismissed, clear the crosstalk selections
+          this.layerManager.unbrush();
+        }
+      }
+    ]
+  });
+
+  this._selectButton.addTo(this);
+};
+
+methods.removeSelect = function(crosstalkOptions) {
+  if (this._locationFilter) {
+    this._locationFilter.disable();
+  }
+
+  if (this._selectButton) {
+    this.removeControl(this._selectButton);
+    this._selectButton = null;
+  }
 };
