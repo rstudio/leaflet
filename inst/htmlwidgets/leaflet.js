@@ -2244,7 +2244,7 @@ methods.addSelect = function (crosstalkOptions) {
       }
     }, {
       stateName: "select-active",
-      icon: "ion-qr-scanner",
+      icon: "ion-close-round",
       title: "Dismiss selection",
       onClick: function onClick(btn, map) {
         btn.state("select-inactive");
