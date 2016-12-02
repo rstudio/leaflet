@@ -22,6 +22,14 @@ L.LatLngBounds.prototype.modify = function(map, amount) {
     return new L.LatLngBounds(sw, ne);
 };
 
+L.Marker.prototype.getXY = function(map) {
+    return map.latLngToLayerPoint(this.getLatLng());
+};
+
+L.Marker.prototype.setXY = function(map, point) {
+    this.setLatLng(map.layerPointToLatLng(point));
+};
+
 L.LocationFilter2 = L.Class.extend({
     includes: L.Mixin.Events,
 
@@ -157,30 +165,30 @@ L.LocationFilter2 = L.Class.extend({
     _setupResizeMarkerTracking: function(marker, options) {
         var that = this;
         marker.on('drag', function(e) {
-            var curPosition = marker.getLatLng(),
-                latMarker = options.moveAlong.lat,
-                lngMarker = options.moveAlong.lng;
+            var curPosition = marker.getXY(that._map),
+                yMarker = options.moveAlong.lat,
+                xMarker = options.moveAlong.lng;
             // Keep the marker inside the map
-            marker.setLatLng(curPosition);
+            marker.setLatLng(marker.getLatLng());
             // Move follower markers when this marker is moved
-            latMarker.setLatLng(new L.LatLng(curPosition.lat, latMarker.getLatLng().lng, true));
-            lngMarker.setLatLng(new L.LatLng(lngMarker.getLatLng().lat, curPosition.lng, true));
+            yMarker.setXY(that._map, L.point(curPosition.x, yMarker.getXY(that._map).y));
+            xMarker.setXY(that._map, L.point(xMarker.getXY(that._map).x, curPosition.y));
             // Sort marker positions in nw, ne, sw, se order
-            var corners = [that._nwMarker.getLatLng(),
-                           that._neMarker.getLatLng(),
-                           that._swMarker.getLatLng(),
-                           that._seMarker.getLatLng()];
+            var corners = [that._nwMarker.getXY(that._map),
+                           that._neMarker.getXY(that._map),
+                           that._swMarker.getXY(that._map),
+                           that._seMarker.getXY(that._map)];
             corners.sort(function(a, b) {
-                if (a.lat != b.lat)
-                    return b.lat-a.lat;
+                if (a.y != b.y)
+                    return a.y-b.y;
                 else
-                    return a.lng-b.lng;
+                    return a.x-b.x;
             });
             // Update corner points and redraw everything except the resize markers
-            that._nw = corners[0];
-            that._ne = corners[1];
-            that._sw = corners[2];
-            that._se = corners[3];
+            that._nw = that._map.layerPointToLatLng(corners[0]);
+            that._ne = that._map.layerPointToLatLng(corners[1]);
+            that._sw = that._map.layerPointToLatLng(corners[2]);
+            that._se = that._map.layerPointToLatLng(corners[3]);
             that._draw({repositionResizeMarkers: false});
         });
         this._setupDragendListener(marker);
@@ -242,10 +250,10 @@ L.LocationFilter2 = L.Class.extend({
         });
 
         // Create resize markers
-        this._nwMarker = this._drawResizeMarker(this._nw, "nwse");
-        this._neMarker = this._drawResizeMarker(this._ne, "nesw");
-        this._swMarker = this._drawResizeMarker(this._sw, "nesw");
-        this._seMarker = this._drawResizeMarker(this._se, "nwse");
+        this._nwMarker = this._drawResizeMarker(this._nw, "nwse nw");
+        this._neMarker = this._drawResizeMarker(this._ne, "nesw ne");
+        this._swMarker = this._drawResizeMarker(this._sw, "nesw sw");
+        this._seMarker = this._drawResizeMarker(this._se, "nwse se");
 
         // Setup tracking of resize markers. Each marker has pair of
         // follower markers that must be moved whenever the marker is
@@ -318,10 +326,19 @@ L.LocationFilter2 = L.Class.extend({
             );
         }
         this._map.invalidateSize();
-        this._nw = bounds.getNorthWest();
-        this._ne = bounds.getNorthEast();
-        this._sw = bounds.getSouthWest();
-        this._se = bounds.getSouthEast();
+        var nw = bounds.getNorthWest();
+        var se = bounds.getSouthEast();
+
+        var nwPx = this._map.latLngToLayerPoint(nw);
+        var sePx = this._map.latLngToLayerPoint(se);
+
+        var topLeft = L.point(Math.min(nwPx.x, sePx.x), Math.min(nwPx.y, sePx.y));
+        var bottomRight = L.point(Math.max(nwPx.x, sePx.x), Math.max(nwPx.y, sePx.y));
+
+        this._nw = this._map.layerPointToLatLng(topLeft);
+        this._se = this._map.layerPointToLatLng(bottomRight);
+        this._ne = this._map.layerPointToLatLng(L.point(bottomRight.x, topLeft.y));
+        this._sw = this._map.layerPointToLatLng(L.point(topLeft.x, bottomRight.y));
 
         // Draw filter
         this._initialDraw();

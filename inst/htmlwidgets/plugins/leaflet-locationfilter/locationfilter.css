@@ -11,6 +11,18 @@ div.leaflet-marker-icon.location-filter.resize-marker.nesw {
 div.leaflet-marker-icon.location-filter.resize-marker.nwse {
     cursor: nwse-resize;
 }
+div.leaflet-marker-icon.location-filter.resize-marker.nw {
+    background-color: red;
+}
+div.leaflet-marker-icon.location-filter.resize-marker.ne {
+    background-color: green;
+}
+div.leaflet-marker-icon.location-filter.resize-marker.se {
+    background-color: blue;
+}
+div.leaflet-marker-icon.location-filter.resize-marker.sw {
+    background-color: yellow;
+}
 div.leaflet-marker-icon.location-filter.move-marker {
     background: url( img/move-handle.png ) no-repeat;
     cursor: move;

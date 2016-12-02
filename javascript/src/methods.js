@@ -1161,7 +1161,7 @@ methods.addSelect = function(crosstalkOptions) {
           btn.state("select-active");
           this._locationFilter = new L.LocationFilter2();
 
-          if (crosstalkOptions.ctGroup) {
+          if (crosstalkOptions && crosstalkOptions.ctGroup) {
             let selectionHandle = new global.crosstalk.SelectionHandle(crosstalkOptions.ctGroup);
             selectionHandle.on("change", (e) => {
               if (e.sender !== selectionHandle) {
@@ -1189,7 +1189,7 @@ methods.addSelect = function(crosstalkOptions) {
       },
       {
         stateName: "select-active",
-        icon: "ion-close-round",
+        icon: "ion-close",
         title: "Dismiss selection",
         onClick: (btn, map) => {
           btn.state("select-inactive");
