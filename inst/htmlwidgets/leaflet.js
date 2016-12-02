@@ -2217,7 +2217,7 @@ methods.addSelect = function (crosstalkOptions) {
         btn.state("select-active");
         _this8._locationFilter = new _leaflet2.default.LocationFilter2();
 
-        if (crosstalkOptions.ctGroup) {
+        if (crosstalkOptions && crosstalkOptions.ctGroup) {
           (function () {
             var selectionHandle = new global.crosstalk.SelectionHandle(crosstalkOptions.ctGroup);
             selectionHandle.on("change", function (e) {
