@@ -108,7 +108,7 @@ Version: 1.0
 }
 
 .awesome-marker-icon-white {
-  background-position: -574px 0;
+  background-position: -576px 0;
 }
 
 .awesome-marker-icon-gray {
@@ -121,4 +121,8 @@ Version: 1.0
 
 .awesome-marker-icon-black {
   background-position: -682px 0;
+}
+
+.awesome-marker-square {
+  background-position-y: -46px;
 }
