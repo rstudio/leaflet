@@ -14,9 +14,10 @@ makeAwesomeIcon(icon = "home", library = "glyphicon",
 \item{library}{Which icon library. Default \code{'glyphicon'}, other possible
 values are \code{'fa'} (fontawesome) or \code{'ion'} (ionicons).}
 
-\item{markerColor}{Possible values are \code{'red'}, \code{'darkred'},
-\code{'orange'}, \code{'green'}, \code{'darkgreen'}, \code{'blue'},
-\code{'purple'}, \code{'darkpuple'}, \code{'cadetblue'}}
+\item{markerColor}{Possible values are \code{'red'}, \code{'darkred'}, \code{'lightred'}, \code{'orange'},
+\code{'beige'}, \code{'green'}, \code{'darkgreen'}, \code{'lightgreen'}, \code{'blue'}, 
+\code{'darkblue'}, \code{'lightblue'}, \code{'purple'}, \code{'darkpurple'}, \code{'pink'}, 
+\code{'cadetblue'}, \code{'white'}, \code{'gray'}, \code{'lightgray'}, \code{'black'}}
 
 \item{iconColor}{The color to use for the icon itself. Use any CSS-valid
 color (hex, rgba, etc.) or a named web color.}
