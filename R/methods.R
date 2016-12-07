@@ -16,7 +16,7 @@
 #' m  # the RStudio 'headquarter'
 #' m %>% fitBounds(-72, 40, -70, 43)
 #' m %>% clearBounds()  # world view
-setView = function(map, lng, lat, zoom, options = list()) {
+setView <- function(map, lng, lat, zoom, options = list()) {
   view = evalFormula(list(c(lat, lng), zoom, options))
 
   dispatch(map,
@@ -36,7 +36,7 @@ setView = function(map, lng, lat, zoom, options = list()) {
 #' @describeIn map-methods Set the bounds of a map
 #' @param lng1,lat1,lng2,lat2 the coordinates of the map bounds
 #' @export
-fitBounds = function(map, lng1, lat1, lng2, lat2) {
+fitBounds <- function(map, lng1, lat1, lng2, lat2) {
   bounds = evalFormula(list(lat1, lng1, lat2, lng2), getMapData(map))
 
   dispatch(map,
@@ -55,7 +55,7 @@ fitBounds = function(map, lng1, lat1, lng2, lat2) {
 
 #' @describeIn map-methods Restricts the map view to the given bounds
 #' @export
-setMaxBounds = function(map, lng1, lat1, lng2, lat2) {
+setMaxBounds <- function(map, lng1, lat1, lng2, lat2) {
   invokeMethod(map, getMapData(map), 'setMaxBounds', lat1, lng1, lat2, lng2)
 }
 
@@ -63,7 +63,7 @@ setMaxBounds = function(map, lng1, lat1, lng2, lat2) {
 #'   automatically determined from latitudes and longitudes of the map elements
 #'   if available (otherwise the full world view is used)
 #' @export
-clearBounds = function(map) {
+clearBounds <- function(map) {
   dispatch(map,
     "clearBounds",
     leaflet = {

@@ -18,7 +18,7 @@
 #' }
 #'
 #' @export
-addScaleBar = function(map,
+addScaleBar <- function(map,
   position = c('topright', 'bottomright', 'bottomleft', 'topleft'),
   options = scaleBarOptions()) {
 
@@ -36,7 +36,7 @@ addScaleBar = function(map,
 #' up-to-date (updated on \code{move}). If \code{TRUE}, the control is updated
 #' on \code{moveend}.
 #' @export
-scaleBarOptions = function(maxWidth = 100, metric = TRUE, imperial = TRUE,
+scaleBarOptions <- function(maxWidth = 100, metric = TRUE, imperial = TRUE,
 	updateWhenIdle = TRUE) {
 	list(maxWidth=maxWidth, metric=metric, imperial=imperial,
 		updateWhenIdle=updateWhenIdle)
@@ -44,6 +44,6 @@ scaleBarOptions = function(maxWidth = 100, metric = TRUE, imperial = TRUE,
 
 #' @rdname addScaleBar
 #' @export
-removeScaleBar = function(map) {
+removeScaleBar <- function(map) {
   invokeMethod(map, NULL, 'removeScaleBar')
 }
