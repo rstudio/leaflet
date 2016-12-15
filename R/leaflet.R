@@ -24,7 +24,7 @@
 #'   \code{\%>\%} (see examples).
 #' @example inst/examples/leaflet.R
 #' @export
-leaflet = function(data = NULL, width = NULL, height = NULL,
+leaflet <- function(data = NULL, width = NULL, height = NULL,
                    padding = 0, options = leafletOptions()) {
 
   # Validate the CRS if specified
@@ -77,7 +77,7 @@ hookWrapperTemplate <- "function(el, x, data) {
 #' returns the map's data
 #' @param map the map
 #' @export
-getMapData = function(map) {
+getMapData <- function(map) {
   attr(map$x, "leafletData", exact = TRUE)
 }
 
