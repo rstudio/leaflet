@@ -44,7 +44,6 @@ Imports:
     raster,
     scales (>= 0.2.5),
     sp,
-    jsonlite,
     crosstalk
 Suggests:
     knitr,

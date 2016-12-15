@@ -535,8 +535,17 @@ addMarkers = function(
   invokeMethod(
     map, data, 'addMarkers', pts$lat, pts$lng, icon, layerId, group, options,
     popup, popupOptions, clusterOptions, clusterId,
-    safeLabel(label, data), labelOptions
+    safeLabel(label, data), labelOptions,
+    getCrosstalkOptions(data)
   ) %>% expandLimits(pts$lat, pts$lng)
+}
+
+getCrosstalkOptions <- function(data) {
+  if (is.SharedData(data)) {
+    list(ctKey = data$key(), ctGroup = data$groupName())
+  } else {
+    NULL
+  }
 }
 
 #' @describeIn map-layers Add Label only markers to the map
@@ -838,7 +847,8 @@ addCircleMarkers = function(
   pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addCircleMarkers")
   invokeMethod(map, data, 'addCircleMarkers', pts$lat, pts$lng, radius,
                layerId, group, options, clusterOptions, clusterId,
-               popup, popupOptions, safeLabel(label, data), labelOptions) %>%
+               popup, popupOptions, safeLabel(label, data), labelOptions,
+               getCrosstalkOptions(data)) %>%
     expandLimits(pts$lat, pts$lng)
 }
 

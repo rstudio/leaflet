@@ -262,7 +262,7 @@ methods.addMarkers = function(lat, lng, icon, layerId, group, options, popup, po
 };
 
 methods.addAwesomeMarkers = function(lat, lng, icon, layerId, group, options, popup, popupOptions,
-clusterOptions, clusterId, label, labelOptions) {
+clusterOptions, clusterId, label, labelOptions, crosstalkOptions) {
   let icondf;
   let getIcon;
   if (icon) {
@@ -294,7 +294,8 @@ clusterOptions, clusterId, label, labelOptions) {
       .col("popupOptions", popupOptions)
       .col("label", label)
       .col("labelOptions", labelOptions)
-      .cbind(options);
+      .cbind(options)
+      .cbind(crosstalkOptions || {});
 
     if (icon) icondf.effectiveLength = df.nrow();
 
@@ -401,7 +402,7 @@ methods.addCircles = function(lat, lng, radius, layerId, group, options, popup, 
   }
 };
 
-methods.addCircleMarkers = function(lat, lng, radius, layerId, group, options, clusterOptions, clusterId, popup, popupOptions, label, labelOptions) {
+methods.addCircleMarkers = function(lat, lng, radius, layerId, group, options, clusterOptions, clusterId, popup, popupOptions, label, labelOptions, crosstalkOptions) {
   if(!($.isEmptyObject(lat) || $.isEmptyObject(lng)) ||
       ($.isNumeric(lat) && $.isNumeric(lng))) {
     let df = new DataFrame()
@@ -414,6 +415,7 @@ methods.addCircleMarkers = function(lat, lng, radius, layerId, group, options, c
       .col("popupOptions", popupOptions)
       .col("label", label)
       .col("labelOptions", labelOptions)
+      .cbind(crosstalkOptions || {})
       .cbind(options);
 
     addMarkers(this, df, group, clusterOptions, clusterId, function(df, i) {
@@ -1148,7 +1150,7 @@ methods.removeMeasure = function() {
   delete this.measureControl;
 };
 
-methods.addSelect = function(crosstalkOptions) {
+methods.addSelect = function(ctGroup) {
   methods.removeSelect.call(this);
 
   this._selectButton = L.easyButton({
@@ -1161,8 +1163,8 @@ methods.addSelect = function(crosstalkOptions) {
           btn.state("select-active");
           this._locationFilter = new L.LocationFilter2();
 
-          if (crosstalkOptions && crosstalkOptions.ctGroup) {
-            let selectionHandle = new global.crosstalk.SelectionHandle(crosstalkOptions.ctGroup);
+          if (ctGroup) {
+            let selectionHandle = new global.crosstalk.SelectionHandle(ctGroup);
             selectionHandle.on("change", (e) => {
               if (e.sender !== selectionHandle) {
                 if (this._locationFilter) {
@@ -1204,7 +1206,7 @@ methods.addSelect = function(crosstalkOptions) {
   this._selectButton.addTo(this);
 };
 
-methods.removeSelect = function(crosstalkOptions) {
+methods.removeSelect = function() {
   if (this._locationFilter) {
     this._locationFilter.disable();
   }

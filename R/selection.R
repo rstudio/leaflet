@@ -10,17 +10,17 @@ locationFilter2Dependencies <- function() {
   )
 }
 
-#' @export
-addSelect <- function(map) {
+addSelect <- function(map, data = getMapData(map)) {
   map$dependencies <- c(map$dependencies,
     leafletEasyButtonDependencies(),
     locationFilter2Dependencies())
   map <- addIonIcon(map)
 
-  invokeMethod(map, getMapData(map), "addSelect")
+  invokeMethod(map, data, "addSelect",
+    getCrosstalkOptions(data)[["ctGroup"]]
+  )
 }
 
-#' @export
 removeSelect <- function(map) {
   invokeMethod(map, NULL, "removeSelect")
 }
