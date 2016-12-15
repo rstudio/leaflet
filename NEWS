@@ -1,6 +1,8 @@
 leaflet 1.1
 --------------------------------------------------------------------------------
 
+* Added support for Crosstalk (https://rstudio.github.io/crosstalk/).
+
 * Added ability to select rectangular region in a map.
 
 * Added a way for the Map instance to be instantiated via a factory.
