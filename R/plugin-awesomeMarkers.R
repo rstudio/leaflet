@@ -275,7 +275,8 @@ addAwesomeMarkers <- function(
   invokeMethod(
     map, data, 'addAwesomeMarkers', pts$lat, pts$lng, icon, layerId,
     group, options, popup, popupOptions,
-    clusterOptions, clusterId, safeLabel(label, data), labelOptions
+    clusterOptions, clusterId, safeLabel(label, data), labelOptions,
+    getCrosstalkOptions(data)
   ) %>% expandLimits(pts$lat, pts$lng)
 }
 

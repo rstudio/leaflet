@@ -43,7 +43,8 @@ Imports:
     RColorBrewer,
     raster,
     scales (>= 0.2.5),
-    sp
+    sp,
+    crosstalk
 Suggests:
     knitr,
     maps,
@@ -53,5 +54,7 @@ Suggests:
     R6,
     RJSONIO,
     purrr
+Remotes:
+    rstudio/crosstalk
 RoxygenNote: 5.0.1
 LazyData: true

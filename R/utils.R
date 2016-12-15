@@ -44,8 +44,16 @@ filterNULL <- function(x) {
 #' @param method the name of the JavaScript method to invoke
 #' @param ... unnamed arguments to be passed to the JavaScript method
 #' @rdname dispatch
+#' @import crosstalk
 #' @export
 invokeMethod <- function(map, data, method, ...) {
+  if (crosstalk::is.SharedData(data)) {
+    map$dependencies <- c(map$dependencies, crosstalk::crosstalkLibs())
+    data <- data$data()
+  } else {
+    NULL
+  }
+
   args = evalFormula(list(...), data)
 
   dispatch(map,
