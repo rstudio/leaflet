@@ -159,7 +159,7 @@ pointData.SpatialPointsDataFrame <- function(obj) {
 }
 
 #' @export
-pointData.SharedData = function(obj) {
+pointData.SharedData <- function(obj) {
   pointData(obj$data(withSelection = FALSE,
     withFilter = FALSE, withKey = FALSE))
 }

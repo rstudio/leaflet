@@ -314,7 +314,7 @@ function addLayers(map, category, df, layerFunc) {
       if(!$.isEmptyObject(layer)) {
         let thisId = df.get(i, "layerId");
         let thisGroup = df.get(i, "group");
-        this.layerManager.addLayer(layer, category, thisId, thisGroup);
+        this.layerManager.addLayer(layer, category, thisId, thisGroup, df.get(i, "ctGroup", true), df.get(i, "ctKey", true));
         if (layer.bindPopup) {
           let popup = df.get(i, "popup");
           let popupOptions = df.get(i, "popupOptions");
@@ -375,7 +375,7 @@ function addLayers(map, category, df, layerFunc) {
 
 methods.addGenericLayers = addLayers;
 
-methods.addCircles = function(lat, lng, radius, layerId, group, options, popup, popupOptions, label, labelOptions, highlightOptions) {
+methods.addCircles = function(lat, lng, radius, layerId, group, options, popup, popupOptions, label, labelOptions, highlightOptions, crosstalkOptions) {
   if(!($.isEmptyObject(lat) || $.isEmptyObject(lng)) ||
       ($.isNumeric(lat) && $.isNumeric(lng))) {
     let df = new DataFrame()
@@ -389,7 +389,8 @@ methods.addCircles = function(lat, lng, radius, layerId, group, options, popup, 
       .col("label", label)
       .col("labelOptions", labelOptions)
       .col("highlightOptions", highlightOptions)
-      .cbind(options);
+      .cbind(options)
+      .cbind(crosstalkOptions || {});
 
     addLayers(this, "shape", df, function(df, i) {
       if($.isNumeric(df.get(i, "lat")) && $.isNumeric(df.get(i, "lng")) &&

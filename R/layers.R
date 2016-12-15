@@ -966,7 +966,8 @@ addCircles <- function(
   ))
   pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addCircles")
   invokeMethod(map, data, 'addCircles', pts$lat, pts$lng, radius, layerId, group, options,
-               popup, popupOptions, safeLabel(label, data), labelOptions, highlightOptions) %>%
+               popup, popupOptions, safeLabel(label, data), labelOptions, highlightOptions,
+               getCrosstalkOptions(data)) %>%
     expandLimits(pts$lat, pts$lng)
 }
 

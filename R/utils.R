@@ -47,7 +47,7 @@ filterNULL <- function(x) {
 #' @import crosstalk
 #' @export
 invokeMethod <- function(map, data, method, ...) {
-  crosstalkOptions <- if (crosstalk::is.SharedData(data)) {
+  if (crosstalk::is.SharedData(data)) {
     map$dependencies <- c(map$dependencies, crosstalk::crosstalkLibs())
     data <- data$data()
   } else {
