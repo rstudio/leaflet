@@ -49,15 +49,18 @@
 #' @param layerId the ID of the legend; subsequent calls to \code{addLegend}
 #'   or \code{addControl} with the same \code{layerId} will replace this
 #'   legend. The ID can also be used with \code{removeControl}.
+#' @param orientation a string specifying the orientation of the legend. Default:
+#'   "vertical".
 #' @example inst/examples/legend.R
 #' @export
 addLegend <- function(
   map, position = c('topright', 'bottomright', 'bottomleft', 'topleft'),
   pal, values, na.label = 'NA', bins = 7, colors, opacity = 0.5, labels,
   labFormat = labelFormat(), title = NULL, className = "info legend",
-  layerId = NULL
+  layerId = NULL, orientation = c( "vertical", "horizontal" )
 ) {
-  position = match.arg(position)
+    position = match.arg(position)
+    orientation = match.arg(orientation)
   type = 'unknown'; na.color = NULL
   extra = NULL  # only used for numeric palettes to store extra info
 
@@ -107,7 +110,7 @@ addLegend <- function(
       # color2 p2%, ..., colorn pn%, end-color])
       p = c('', paste0(100 * p, '%'), '')
       colors = pal(c(r[1], cuts, r[2]))
-      colors = paste(colors, p, sep = ' ', collapse = ', ')
+        colors = paste(colors, p, sep = ' ', collapse = ', ')
       labels = labFormat(type = 'numeric', cuts)
 
     } else if (type == 'bin') {
@@ -147,7 +150,7 @@ addLegend <- function(
     colors = I(unname(colors)), labels = I(unname(labels)),
     na_color = na.color, na_label = na.label, opacity = opacity,
     position = position, type = type, title = title, extra = extra,
-    layerId = layerId, className = className
+    layerId = layerId, className = className, orientation = orientation
   )
   invokeMethod(map, getMapData(map), "addLegend", legend)
 }
