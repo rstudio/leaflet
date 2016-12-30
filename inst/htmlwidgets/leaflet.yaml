@@ -23,4 +23,3 @@ dependencies:
     script:
       - proj4-compressed.js
       - proj4leaflet.js
-

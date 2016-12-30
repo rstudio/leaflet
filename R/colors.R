@@ -30,7 +30,7 @@
 #'   \code{alpha=TRUE} in which case #RRGGBBAA may also be possible).
 #'
 #' @export
-colorNumeric = function(palette, domain, na.color = "#808080", alpha = FALSE) {
+colorNumeric <- function(palette, domain, na.color = "#808080", alpha = FALSE) {
   rng = NULL
   if (length(domain) > 0) {
     rng = range(domain, na.rm = TRUE)
@@ -57,14 +57,14 @@ colorNumeric = function(palette, domain, na.color = "#808080", alpha = FALSE) {
 
 # Attach an attribute colorType to a color function f so we can derive legend
 # items from it
-withColorAttr = function(type, args = list(), fun) {
+withColorAttr <- function(type, args = list(), fun) {
   structure(fun, colorType = type, colorArgs = args)
 }
 
 # domain may or may not be NULL.
 # Iff domain is non-NULL, x may be NULL.
 # bins is non-NULL. It may be a scalar value (# of breaks) or a set of breaks.
-getBins = function(domain, x, bins, pretty) {
+getBins <- function(domain, x, bins, pretty) {
   if (is.null(domain) && is.null(x)) {
     stop("Assertion failed: domain and x can't both be NULL")
   }
@@ -97,7 +97,7 @@ getBins = function(domain, x, bins, pretty) {
 #'   to generate the bins and the breaks may not be "pretty".
 #' @rdname colorNumeric
 #' @export
-colorBin = function(palette, domain, bins = 7, pretty = TRUE,
+colorBin <- function(palette, domain, bins = 7, pretty = TRUE,
   na.color = "#808080", alpha = FALSE) {
 
   # domain usually needs to be explicitly provided (even if NULL) but not if
@@ -132,7 +132,7 @@ colorBin = function(palette, domain, bins = 7, pretty = TRUE,
 #'   argument is ignored.
 #' @rdname colorNumeric
 #' @export
-colorQuantile = function(palette, domain, n = 4,
+colorQuantile <- function(palette, domain, n = 4,
   probs = seq(0, 1, length.out = n + 1), na.color = "#808080", alpha = FALSE) {
 
   if (!is.null(domain)) {
@@ -161,7 +161,7 @@ colorQuantile = function(palette, domain, n = 4,
 
 # If already a factor, return the levels. Otherwise, convert to factor then
 # return the levels.
-calcLevels = function(x, ordered) {
+calcLevels <- function(x, ordered) {
   if (is.null(x)) {
     NULL
   } else if (is.factor(x)) {
@@ -173,7 +173,7 @@ calcLevels = function(x, ordered) {
   }
 }
 
-getLevels = function(domain, x, lvls, ordered) {
+getLevels <- function(domain, x, lvls, ordered) {
   if (!is.null(lvls))
     return(lvls)
 
@@ -195,7 +195,7 @@ getLevels = function(domain, x, lvls, ordered) {
 #'   factor, treat it as already in the correct order
 #' @rdname colorNumeric
 #' @export
-colorFactor = function(palette, domain, levels = NULL, ordered = FALSE,
+colorFactor <- function(palette, domain, levels = NULL, ordered = FALSE,
   na.color = "#808080", alpha = FALSE) {
 
   # domain usually needs to be explicitly provided (even if NULL) but not if
@@ -268,18 +268,18 @@ colorFactor = function(palette, domain, levels = NULL, ordered = FALSE,
 NULL
 
 
-safePaletteFunc = function(pal, na.color, alpha) {
+safePaletteFunc <- function(pal, na.color, alpha) {
   toPaletteFunc(pal, alpha=alpha) %>% filterRGB() %>% filterZeroLength() %>%
     filterNA(na.color) %>% filterRange()
 }
 
-toPaletteFunc = function(pal, alpha) {
+toPaletteFunc <- function(pal, alpha) {
   UseMethod("toPaletteFunc")
 }
 
 # Strings are interpreted as color names, unless length is 1 and it's the name
 # of an RColorBrewer palette
-toPaletteFunc.character = function(pal, alpha) {
+toPaletteFunc.character <- function(pal, alpha) {
   if (length(pal) == 1 && pal %in% row.names(RColorBrewer::brewer.pal.info)) {
     return(scales::colour_ramp(
       RColorBrewer::brewer.pal(RColorBrewer::brewer.pal.info[pal, 'maxcolors'], pal),
@@ -291,12 +291,12 @@ toPaletteFunc.character = function(pal, alpha) {
 }
 
 # Accept colorRamp style matrix
-toPaletteFunc.matrix = function(pal, alpha) {
+toPaletteFunc.matrix <- function(pal, alpha) {
   toPaletteFunc(rgb(pal, maxColorValue = 255), alpha = alpha)
 }
 
 # If a function, just assume it's already a function over [0-1]
-toPaletteFunc.function = function(pal, alpha) {
+toPaletteFunc.function <- function(pal, alpha) {
   pal
 }
 
@@ -306,7 +306,7 @@ toPaletteFunc.function = function(pal, alpha) {
 #' @param values A set of values to preview colors for
 #' @return An HTML-based list of the colors and values
 #' @export
-previewColors = function(pal, values) {
+previewColors <- function(pal, values) {
   heading = htmltools::tags$code(deparse(substitute(pal)))
   subheading = htmltools::tags$code(deparse(substitute(values)))
 
@@ -336,7 +336,7 @@ previewColors = function(pal, values) {
 
 # colorRamp(space = 'Lab') throws error when called with
 # zero-length input
-filterZeroLength = function(f) {
+filterZeroLength <- function(f) {
   force(f)
   function(x) {
     if (length(x) == 0) {
@@ -348,7 +348,7 @@ filterZeroLength = function(f) {
 }
 
 # Wraps an underlying non-NA-safe function (like colorRamp).
-filterNA = function(f, na.color) {
+filterNA <- function(f, na.color) {
   force(f)
   function(x) {
     results = character(length(x))
@@ -360,7 +360,7 @@ filterNA = function(f, na.color) {
 }
 
 # Wraps a function that may return RGB color matrix instead of rgb string.
-filterRGB = function(f) {
+filterRGB <- function(f) {
   force(f)
   function(x) {
     results = f(x)
@@ -374,7 +374,7 @@ filterRGB = function(f) {
   }
 }
 
-filterRange = function(f) {
+filterRange <- function(f) {
   force(f)
   function(x) {
     x[x < 0 | x > 1] = NA

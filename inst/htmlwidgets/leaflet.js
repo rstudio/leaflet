@@ -266,7 +266,7 @@ var DataFrame = function () {
     }
   }, {
     key: "get",
-    value: function get(row, col) {
+    value: function get(row, col, missingOK) {
       var _this3 = this;
 
       if (row > this.effectiveLength) throw new Error("Row argument was out of bounds: " + row + " > " + this.effectiveLength);
@@ -289,7 +289,9 @@ var DataFrame = function () {
       } else if (typeof col === "number") {
         colIndex = col;
       }
-      if (colIndex < 0 || colIndex > this.columns.length) throw new Error("Unknown column index: " + col);
+      if (colIndex < 0 || colIndex > this.columns.length) {
+        if (missingOK) return void 0;else throw new Error("Unknown column index: " + col);
+      }
 
       return this.columns[colIndex][row % this.columns[colIndex].length];
     }
@@ -432,9 +434,11 @@ var _clusterLayerStore2 = _interopRequireDefault(_clusterLayerStore);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 window.LeafletWidget = {};
+window.LeafletWidget.utils = {};
 var methods = window.LeafletWidget.methods = _jquery2.default.extend({}, _methods2.default);
 window.LeafletWidget.DataFrame = _dataframe2.default;
 window.LeafletWidget.ClusterLayerStore = _clusterLayerStore2.default;
+window.LeafletWidget.utils.getCRS = _crs_utils.getCRS;
 
 // Send updated bounds back to app. Takes a leaflet event object as input.
 function updateBounds(map) {
@@ -523,7 +527,11 @@ _htmlwidgets2.default.widget({
           }(); // undefine map
         }
 
-        map = _leaflet2.default.map(el, data.options);
+        if (data.options.mapFactory && typeof data.options.mapFactory === "function") {
+          map = data.options.mapFactory(el, data.options);
+        } else {
+          map = _leaflet2.default.map(el, data.options);
+        }
 
         preventUnintendedZoomOnScroll(map);
 
@@ -689,6 +697,7 @@ if (_htmlwidgets2.default.shinyMode) {
 
 
 },{"./cluster-layer-store":1,"./control-store":2,"./crs_utils":3,"./dataframe":4,"./fixup-default-icon":5,"./global/htmlwidgets":6,"./global/jquery":7,"./global/leaflet":8,"./global/shiny":10,"./layer-manager":12,"./methods":13,"./util":15}],12:[function(require,module,exports){
+(function (global){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -733,6 +742,8 @@ var LayerManager = function () {
     //           }
     // }
     this._byStamp = {};
+    // {<crosstalkGroupName>: {<key>: [<stamp>, <stamp>, ...], ...}}
+    this._byCrosstalkGroup = {};
 
     // END layer indices
 
@@ -744,7 +755,9 @@ var LayerManager = function () {
 
   _createClass(LayerManager, [{
     key: "addLayer",
-    value: function addLayer(layer, category, layerId, group) {
+    value: function addLayer(layer, category, layerId, group, ctGroup, ctKey) {
+      var _this = this;
+
       // Was a group provided?
       var hasId = typeof layerId === "string";
       var grouped = typeof group === "string";
@@ -787,18 +800,159 @@ var LayerManager = function () {
       this._byCategory[category][stamp] = layer;
 
       // Update stamp index
-      this._byStamp[stamp] = {
+      var layerInfo = this._byStamp[stamp] = {
         layer: layer,
         group: group,
+        ctGroup: ctGroup,
+        ctKey: ctKey,
         layerId: layerId,
         category: category,
-        container: container
+        container: container,
+        hidden: false
       };
 
+      // Update crosstalk group index
+      if (ctGroup) {
+        (function () {
+          if (layer.setStyle) {
+            // Need to save this info so we know what to set opacity to later
+            layer.options.origOpacity = typeof layer.options.opacity !== "undefined" ? layer.options.opacity : 0.5;
+            layer.options.origFillOpacity = typeof layer.options.fillOpacity !== "undefined" ? layer.options.fillOpacity : 0.2;
+          }
+
+          var ctg = _this._byCrosstalkGroup[ctGroup];
+          if (!ctg) {
+            (function () {
+              ctg = _this._byCrosstalkGroup[ctGroup] = {};
+              var crosstalk = global.crosstalk;
+
+              var handleFilter = function handleFilter(e) {
+                if (!e.value) {
+                  var groupKeys = Object.keys(ctg);
+                  for (var i = 0; i < groupKeys.length; i++) {
+                    var key = groupKeys[i];
+                    var _layerInfo = _this._byStamp[ctg[key]];
+                    _this._setVisibility(_layerInfo, true);
+                  }
+                } else {
+                  var selectedKeys = {};
+                  for (var _i = 0; _i < e.value.length; _i++) {
+                    selectedKeys[e.value[_i]] = true;
+                  }
+                  var _groupKeys = Object.keys(ctg);
+                  for (var _i2 = 0; _i2 < _groupKeys.length; _i2++) {
+                    var _key = _groupKeys[_i2];
+                    var _layerInfo2 = _this._byStamp[ctg[_key]];
+                    _this._setVisibility(_layerInfo2, selectedKeys[_groupKeys[_i2]]);
+                  }
+                }
+              };
+              var filterHandle = new crosstalk.FilterHandle(ctGroup);
+              filterHandle.on("change", handleFilter);
+
+              var handleSelection = function handleSelection(e) {
+                if (!e.value || !e.value.length) {
+                  var groupKeys = Object.keys(ctg);
+                  for (var i = 0; i < groupKeys.length; i++) {
+                    var key = groupKeys[i];
+                    var _layerInfo3 = _this._byStamp[ctg[key]];
+                    _this._setOpacity(_layerInfo3, 1.0);
+                  }
+                } else {
+                  var selectedKeys = {};
+                  for (var _i3 = 0; _i3 < e.value.length; _i3++) {
+                    selectedKeys[e.value[_i3]] = true;
+                  }
+                  var _groupKeys2 = Object.keys(ctg);
+                  for (var _i4 = 0; _i4 < _groupKeys2.length; _i4++) {
+                    var _key2 = _groupKeys2[_i4];
+                    var _layerInfo4 = _this._byStamp[ctg[_key2]];
+                    _this._setOpacity(_layerInfo4, selectedKeys[_groupKeys2[_i4]] ? 1.0 : 0.2);
+                  }
+                }
+              };
+              var selHandle = new crosstalk.SelectionHandle(ctGroup);
+              selHandle.on("change", handleSelection);
+
+              setTimeout(function () {
+                handleFilter({ value: filterHandle.filteredKeys });
+                handleSelection({ value: selHandle.value });
+              }, 100);
+            })();
+          }
+
+          if (!ctg[ctKey]) ctg[ctKey] = [];
+          ctg[ctKey].push(stamp);
+        })();
+      }
+
       // Add to container
-      container.addLayer(layer);
+      if (!layerInfo.hidden) container.addLayer(layer);
 
       return oldLayer;
+    }
+  }, {
+    key: "brush",
+    value: function brush(bounds, extraInfo) {
+      var _this2 = this;
+
+      /* eslint-disable no-console */
+
+      // For each Crosstalk group...
+      Object.keys(this._byCrosstalkGroup).forEach(function (ctGroupName) {
+        var ctg = _this2._byCrosstalkGroup[ctGroupName];
+        var selection = [];
+        // ...iterate over each Crosstalk key (each of which may have multiple
+        // layers)...
+        Object.keys(ctg).forEach(function (ctKey) {
+          // ...and for each layer...
+          ctg[ctKey].forEach(function (stamp) {
+            var layerInfo = _this2._byStamp[stamp];
+            // ...if it's something with a point...
+            if (layerInfo.layer.getLatLng) {
+              // ... and it's inside the selection bounds...
+              // TODO: Use pixel containment, not lat/lng containment
+              if (bounds.contains(layerInfo.layer.getLatLng())) {
+                // ...add the key to the selection.
+                selection.push(ctKey);
+              }
+            }
+          });
+        });
+        new global.crosstalk.SelectionHandle(ctGroupName).set(selection, extraInfo);
+      });
+    }
+  }, {
+    key: "unbrush",
+    value: function unbrush(extraInfo) {
+      Object.keys(this._byCrosstalkGroup).forEach(function (ctGroupName) {
+        new global.crosstalk.SelectionHandle(ctGroupName).clear(extraInfo);
+      });
+    }
+  }, {
+    key: "_setVisibility",
+    value: function _setVisibility(layerInfo, visible) {
+      if (layerInfo.hidden ^ visible) {
+        return;
+      } else if (visible) {
+        layerInfo.container.addLayer(layerInfo.layer);
+        layerInfo.hidden = false;
+      } else {
+        layerInfo.container.removeLayer(layerInfo.layer);
+        layerInfo.hidden = true;
+      }
+    }
+  }, {
+    key: "_setOpacity",
+    value: function _setOpacity(layerInfo, opacity) {
+      if (layerInfo.layer.setOpacity) {
+        layerInfo.layer.setOpacity(opacity);
+      } else if (layerInfo.layer.setStyle) {
+        layerInfo.layer.setStyle({
+          opacity: opacity * layerInfo.layer.options.origOpacity,
+          fillOpacity: opacity * layerInfo.layer.options.origFillOpacity
+        });
+      }
     }
   }, {
     key: "getLayer",
@@ -808,20 +962,20 @@ var LayerManager = function () {
   }, {
     key: "removeLayer",
     value: function removeLayer(category, layerIds) {
-      var _this = this;
+      var _this3 = this;
 
       // Find layer info
       _jquery2.default.each((0, _util.asArray)(layerIds), function (i, layerId) {
-        var layer = _this._byLayerId[_this._layerIdKey(category, layerId)];
+        var layer = _this3._byLayerId[_this3._layerIdKey(category, layerId)];
         if (layer) {
-          _this._removeLayer(layer);
+          _this3._removeLayer(layer);
         }
       });
     }
   }, {
     key: "clearLayers",
     value: function clearLayers(category) {
-      var _this2 = this;
+      var _this4 = this;
 
       // Find all layers in _byCategory[category]
       var catTable = this._byCategory[category];
@@ -836,7 +990,7 @@ var LayerManager = function () {
         stamps.push(k);
       });
       _jquery2.default.each(stamps, function (i, stamp) {
-        _this2._removeLayer(stamp);
+        _this4._removeLayer(stamp);
       });
     }
   }, {
@@ -845,7 +999,7 @@ var LayerManager = function () {
       var g = this._groupContainers[group];
       if (ensureExists && !g) {
         this._byGroup[group] = this._byGroup[group] || {};
-        g = this._groupContainers[group] = _leaflet2.default.layerGroup();
+        g = this._groupContainers[group] = _leaflet2.default.featureGroup();
         g.groupname = group;
         g.addTo(this._map);
       }
@@ -859,11 +1013,11 @@ var LayerManager = function () {
   }, {
     key: "getVisibleGroups",
     value: function getVisibleGroups() {
-      var _this3 = this;
+      var _this5 = this;
 
       var result = [];
       _jquery2.default.each(this._groupContainers, function (k, v) {
-        if (_this3._map.hasLayer(v)) {
+        if (_this5._map.hasLayer(v)) {
           result.push(k);
         }
       });
@@ -872,7 +1026,7 @@ var LayerManager = function () {
   }, {
     key: "clearGroup",
     value: function clearGroup(group) {
-      var _this4 = this;
+      var _this6 = this;
 
       // Find all layers in _byGroup[group]
       var groupTable = this._byGroup[group];
@@ -887,7 +1041,7 @@ var LayerManager = function () {
         stamps.push(k);
       });
       _jquery2.default.each(stamps, function (i, stamp) {
-        _this4._removeLayer(stamp);
+        _this6._removeLayer(stamp);
       });
     }
   }, {
@@ -901,6 +1055,7 @@ var LayerManager = function () {
       this._byCategory = {};
       this._byLayerId = {};
       this._byStamp = {};
+      this._byCrosstalkGroup = {};
       _jquery2.default.each(this._categoryContainers, clearLayerGroup);
       this._categoryContainers = {};
       _jquery2.default.each(this._groupContainers, clearLayerGroup);
@@ -930,6 +1085,18 @@ var LayerManager = function () {
       }
       delete this._byCategory[layerInfo.category][stamp];
       delete this._byStamp[stamp];
+      if (layerInfo.ctGroup) {
+        var ctGroup = this._byCrosstalkGroup[layerInfo.ctGroup];
+        var layersForKey = ctGroup[layerInfo.ctKey];
+        var idx = layersForKey ? layersForKey.indexOf(stamp) : -1;
+        if (idx >= 0) {
+          if (layersForKey.length === 1) {
+            delete ctGroup[layerInfo.ctKey];
+          } else {
+            layersForKey.splice(idx, 1);
+          }
+        }
+      }
     }
   }, {
     key: "_layerIdKey",
@@ -944,6 +1111,7 @@ var LayerManager = function () {
 exports.default = LayerManager;
 
 
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./global/jquery":7,"./global/leaflet":8,"./util":15}],13:[function(require,module,exports){
 (function (global){
 "use strict";
@@ -1102,7 +1270,6 @@ function addMarkers(map, df, group, clusterOptions, clusterId, markerFunc) {
     var clusterGroup = this.layerManager.getLayer("cluster", clusterId),
         cluster = clusterOptions !== null;
     if (cluster && !clusterGroup) {
-      //clusterGroup = L.markerClusterGroup(clusterOptions);
       clusterGroup = _leaflet2.default.markerClusterGroup.layerSupport(clusterOptions);
       if (clusterOptions.freezeAtZoom) {
         var freezeAtZoom = clusterOptions.freezeAtZoom;
@@ -1122,7 +1289,7 @@ function addMarkers(map, df, group, clusterOptions, clusterId, markerFunc) {
           if (cluster) {
             clusterGroup.clusterLayerStore.add(marker, thisId);
           } else {
-            this.layerManager.addLayer(marker, "marker", thisId, thisGroup);
+            this.layerManager.addLayer(marker, "marker", thisId, thisGroup, df.get(i, "ctGroup", true), df.get(i, "ctKey", true));
           }
           var popup = df.get(i, "popup");
           var popupOptions = df.get(i, "popupOptions");
@@ -1165,7 +1332,7 @@ function addMarkers(map, df, group, clusterOptions, clusterId, markerFunc) {
 
 methods.addGenericMarkers = addMarkers;
 
-methods.addMarkers = function (lat, lng, icon, layerId, group, options, popup, popupOptions, clusterOptions, clusterId, label, labelOptions) {
+methods.addMarkers = function (lat, lng, icon, layerId, group, options, popup, popupOptions, clusterOptions, clusterId, label, labelOptions, crosstalkOptions) {
   var icondf = void 0;
   var getIcon = void 0;
 
@@ -1212,7 +1379,7 @@ methods.addMarkers = function (lat, lng, icon, layerId, group, options, popup, p
 
   if (!(_jquery2.default.isEmptyObject(lat) || _jquery2.default.isEmptyObject(lng)) || _jquery2.default.isNumeric(lat) && _jquery2.default.isNumeric(lng)) {
 
-    var df = new _dataframe2.default().col("lat", lat).col("lng", lng).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).cbind(options);
+    var df = new _dataframe2.default().col("lat", lat).col("lng", lng).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).cbind(options).cbind(crosstalkOptions || {});
 
     if (icon) icondf.effectiveLength = df.nrow();
 
@@ -1224,7 +1391,7 @@ methods.addMarkers = function (lat, lng, icon, layerId, group, options, popup, p
   }
 };
 
-methods.addAwesomeMarkers = function (lat, lng, icon, layerId, group, options, popup, popupOptions, clusterOptions, clusterId, label, labelOptions) {
+methods.addAwesomeMarkers = function (lat, lng, icon, layerId, group, options, popup, popupOptions, clusterOptions, clusterId, label, labelOptions, crosstalkOptions) {
   var icondf = void 0;
   var getIcon = void 0;
   if (icon) {
@@ -1246,7 +1413,7 @@ methods.addAwesomeMarkers = function (lat, lng, icon, layerId, group, options, p
 
   if (!(_jquery2.default.isEmptyObject(lat) || _jquery2.default.isEmptyObject(lng)) || _jquery2.default.isNumeric(lat) && _jquery2.default.isNumeric(lng)) {
 
-    var df = new _dataframe2.default().col("lat", lat).col("lng", lng).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).cbind(options);
+    var df = new _dataframe2.default().col("lat", lat).col("lng", lng).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).cbind(options).cbind(crosstalkOptions || {});
 
     if (icon) icondf.effectiveLength = df.nrow();
 
@@ -1268,7 +1435,7 @@ function addLayers(map, category, df, layerFunc) {
         (function () {
           var thisId = df.get(i, "layerId");
           var thisGroup = df.get(i, "group");
-          _this4.layerManager.addLayer(layer, category, thisId, thisGroup);
+          _this4.layerManager.addLayer(layer, category, thisId, thisGroup, df.get(i, "ctGroup", true), df.get(i, "ctKey", true));
           if (layer.bindPopup) {
             var popup = df.get(i, "popup");
             var popupOptions = df.get(i, "popupOptions");
@@ -1334,9 +1501,9 @@ function addLayers(map, category, df, layerFunc) {
 
 methods.addGenericLayers = addLayers;
 
-methods.addCircles = function (lat, lng, radius, layerId, group, options, popup, popupOptions, label, labelOptions, highlightOptions) {
+methods.addCircles = function (lat, lng, radius, layerId, group, options, popup, popupOptions, label, labelOptions, highlightOptions, crosstalkOptions) {
   if (!(_jquery2.default.isEmptyObject(lat) || _jquery2.default.isEmptyObject(lng)) || _jquery2.default.isNumeric(lat) && _jquery2.default.isNumeric(lng)) {
-    var df = new _dataframe2.default().col("lat", lat).col("lng", lng).col("radius", radius).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).col("highlightOptions", highlightOptions).cbind(options);
+    var df = new _dataframe2.default().col("lat", lat).col("lng", lng).col("radius", radius).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).col("highlightOptions", highlightOptions).cbind(options).cbind(crosstalkOptions || {});
 
     addLayers(this, "shape", df, function (df, i) {
       if (_jquery2.default.isNumeric(df.get(i, "lat")) && _jquery2.default.isNumeric(df.get(i, "lng")) && _jquery2.default.isNumeric(df.get(i, "radius"))) {
@@ -1348,9 +1515,9 @@ methods.addCircles = function (lat, lng, radius, layerId, group, options, popup,
   }
 };
 
-methods.addCircleMarkers = function (lat, lng, radius, layerId, group, options, clusterOptions, clusterId, popup, popupOptions, label, labelOptions) {
+methods.addCircleMarkers = function (lat, lng, radius, layerId, group, options, clusterOptions, clusterId, popup, popupOptions, label, labelOptions, crosstalkOptions) {
   if (!(_jquery2.default.isEmptyObject(lat) || _jquery2.default.isEmptyObject(lng)) || _jquery2.default.isNumeric(lat) && _jquery2.default.isNumeric(lng)) {
-    var df = new _dataframe2.default().col("lat", lat).col("lng", lng).col("radius", radius).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).cbind(options);
+    var df = new _dataframe2.default().col("lat", lat).col("lng", lng).col("radius", radius).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).cbind(crosstalkOptions || {}).cbind(options);
 
     addMarkers(this, df, group, clusterOptions, clusterId, function (df, i) {
       return _leaflet2.default.circleMarker([df.get(i, "lat"), df.get(i, "lng")], df.get(i));
@@ -1367,9 +1534,15 @@ methods.addPolylines = function (polygons, layerId, group, options, popup, popup
     var df = new _dataframe2.default().col("shapes", polygons).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).col("highlightOptions", highlightOptions).cbind(options);
 
     addLayers(this, "shape", df, function (df, i) {
-      var shape = df.get(i, "shapes")[0];
-      shape = _htmlwidgets2.default.dataframeToD3(shape);
-      return _leaflet2.default.polyline(shape, df.get(i));
+      var shapes = df.get(i, "shapes");
+      for (var j = 0; j < shapes.length; j++) {
+        shapes[j] = _htmlwidgets2.default.dataframeToD3(shapes[j]);
+      }
+      if (shapes.length > 1) {
+        return _leaflet2.default.multiPolyline(shapes, df.get(i));
+      } else {
+        return _leaflet2.default.polyline(shapes[0], df.get(i));
+      }
     });
   }
 };
@@ -2030,6 +2203,72 @@ methods.removeMeasure = function () {
   delete this.measureControl;
 };
 
+methods.addSelect = function (ctGroup) {
+  var _this8 = this;
+
+  methods.removeSelect.call(this);
+
+  this._selectButton = _leaflet2.default.easyButton({
+    states: [{
+      stateName: "select-inactive",
+      icon: "ion-qr-scanner",
+      title: "Make a selection",
+      onClick: function onClick(btn, map) {
+        btn.state("select-active");
+        _this8._locationFilter = new _leaflet2.default.LocationFilter2();
+
+        if (ctGroup) {
+          (function () {
+            var selectionHandle = new global.crosstalk.SelectionHandle(ctGroup);
+            selectionHandle.on("change", function (e) {
+              if (e.sender !== selectionHandle) {
+                if (_this8._locationFilter) {
+                  _this8._locationFilter.disable();
+                  btn.state("select-inactive");
+                }
+              }
+            });
+            var handler = function handler(e) {
+              _this8.layerManager.brush(_this8._locationFilter.getBounds(), { sender: selectionHandle });
+            };
+            _this8._locationFilter.on("enabled", handler);
+            _this8._locationFilter.on("change", handler);
+            _this8._locationFilter.on("disabled", function () {
+              selectionHandle.close();
+              _this8._locationFilter = null;
+            });
+          })();
+        }
+
+        _this8._locationFilter.addTo(map);
+      }
+    }, {
+      stateName: "select-active",
+      icon: "ion-close-round",
+      title: "Dismiss selection",
+      onClick: function onClick(btn, map) {
+        btn.state("select-inactive");
+        _this8._locationFilter.disable();
+        // If explicitly dismissed, clear the crosstalk selections
+        _this8.layerManager.unbrush();
+      }
+    }]
+  });
+
+  this._selectButton.addTo(this);
+};
+
+methods.removeSelect = function () {
+  if (this._locationFilter) {
+    this._locationFilter.disable();
+  }
+
+  if (this._selectButton) {
+    this.removeControl(this._selectButton);
+    this._selectButton = null;
+  }
+};
+
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./cluster-layer-store":1,"./crs_utils":3,"./dataframe":4,"./global/htmlwidgets":6,"./global/jquery":7,"./global/leaflet":8,"./global/shiny":10,"./mipmapper":14,"./util":15}],14:[function(require,module,exports){
@@ -2048,6 +2287,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 // pixel of the original image has some contribution to the downscaled image)
 // as opposed to a single-step downscaling which will discard a lot of data
 // (and with sparse images at small scales can give very surprising results).
+
 var Mipmapper = function () {
   function Mipmapper(img) {
     _classCallCheck(this, Mipmapper);

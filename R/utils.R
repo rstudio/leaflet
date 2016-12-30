@@ -18,7 +18,7 @@
 #'   \code{map} object that was passed in, possibly modified.
 #'
 #' @export
-dispatch = function(map,
+dispatch <- function(map,
   funcName,
   leaflet = stop(paste(funcName, "requires a map proxy object")),
   leaflet_proxy = stop(paste(funcName, "does not support map proxy objects"))
@@ -34,7 +34,7 @@ dispatch = function(map,
 #' remove NULL elements from a list
 #' @param x A list whose NULL elements will be filtered
 #' @export
-filterNULL = function(x) {
+filterNULL <- function(x) {
   if (length(x) == 0 || !is.list(x)) return(x)
   x[!unlist(lapply(x, is.null))]
 }
@@ -44,8 +44,16 @@ filterNULL = function(x) {
 #' @param method the name of the JavaScript method to invoke
 #' @param ... unnamed arguments to be passed to the JavaScript method
 #' @rdname dispatch
+#' @import crosstalk
 #' @export
-invokeMethod = function(map, data, method, ...) {
+invokeMethod <- function(map, data, method, ...) {
+  if (crosstalk::is.SharedData(data)) {
+    map$dependencies <- c(map$dependencies, crosstalk::crosstalkLibs())
+    data <- data$data()
+  } else {
+    NULL
+  }
+
   args = evalFormula(list(...), data)
 
   dispatch(map,
@@ -180,7 +188,7 @@ leafletProxy <- function(mapId, session = shiny::getDefaultReactiveDomain(),
 # dependency and remove this entire mechanism.
 sessionFlushQueue = new.env(parent = emptyenv())
 
-invokeRemote = function(map, method, args = list()) {
+invokeRemote <- function(map, method, args = list()) {
   if (!inherits(map, "leaflet_proxy"))
     stop("Invalid map parameter; map proxy object was expected")
 
@@ -240,13 +248,13 @@ invokeRemote = function(map, method, args = list()) {
 
 # A helper function to generate the body of function(x, y) list(x = x, y = y),
 # to save some typing efforts in writing tileOptions(), markerOptions(), ...
-makeListFun = function(list) {
+makeListFun <- function(list) {
   if (is.function(list)) list = formals(list)
   nms = names(list)
   cat(sprintf('list(%s)\n', paste(nms, nms, sep = ' = ', collapse = ', ')))
 }
 
-"%||%" = function(a, b) {
+"%||%" <- function(a, b) {
   if (!is.null(a)) a else b
 }
 

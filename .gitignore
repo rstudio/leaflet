@@ -6,3 +6,4 @@ inst/htmlwidgets/sources
 *.swp
 inst/examples/rsconnect
 inst/examples/*.html
+R/tags

@@ -51,7 +51,7 @@
 #'   legend. The ID can also be used with \code{removeControl}.
 #' @example inst/examples/legend.R
 #' @export
-addLegend = function(
+addLegend <- function(
   map, position = c('topright', 'bottomright', 'bottomleft', 'topleft'),
   pal, values, na.label = 'NA', bins = 7, colors, opacity = 0.5, labels,
   labFormat = labelFormat(), title = NULL, className = "info legend",
@@ -161,12 +161,12 @@ addLegend = function(
 #' @param transform a function to transform the label value
 #' @rdname addLegend
 #' @export
-labelFormat = function(
+labelFormat <- function(
   prefix = '', suffix = '', between = ' &ndash; ', digits = 3, big.mark = ',',
   transform = identity
 ) {
 
-  formatNum = function(x) {
+  formatNum <- function(x) {
     format(
       round(transform(x), digits), trim = TRUE, scientific = FALSE,
       big.mark = big.mark

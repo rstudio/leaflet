@@ -23,6 +23,8 @@ export default class LayerManager {
     //           }
     // }
     this._byStamp = {};
+    // {<crosstalkGroupName>: {<key>: [<stamp>, <stamp>, ...], ...}}
+    this._byCrosstalkGroup = {};
 
     // END layer indices
 
@@ -32,7 +34,7 @@ export default class LayerManager {
     this._groupContainers = {};
   }
 
-  addLayer(layer, category, layerId, group) {
+  addLayer(layer, category, layerId, group, ctGroup, ctKey) {
     // Was a group provided?
     let hasId = typeof(layerId) === "string";
     let grouped = typeof(group) === "string";
@@ -76,18 +78,151 @@ export default class LayerManager {
     this._byCategory[category][stamp] = layer;
 
     // Update stamp index
-    this._byStamp[stamp] = {
+    let layerInfo = this._byStamp[stamp] = {
       layer: layer,
       group: group,
+      ctGroup: ctGroup,
+      ctKey: ctKey,
       layerId: layerId,
       category: category,
-      container: container
+      container: container,
+      hidden: false
     };
 
+    // Update crosstalk group index
+    if (ctGroup) {
+      if (layer.setStyle) {
+        // Need to save this info so we know what to set opacity to later
+        layer.options.origOpacity = typeof(layer.options.opacity) !== "undefined" ? layer.options.opacity : 0.5;
+        layer.options.origFillOpacity = typeof(layer.options.fillOpacity) !== "undefined" ? layer.options.fillOpacity : 0.2;
+      }
+
+      let ctg = this._byCrosstalkGroup[ctGroup];
+      if (!ctg) {
+        ctg = this._byCrosstalkGroup[ctGroup] = {};
+        let crosstalk = global.crosstalk;
+
+        let handleFilter = (e) => {
+          if (!e.value) {
+            let groupKeys = Object.keys(ctg);
+            for (let i = 0; i < groupKeys.length; i++) {
+              let key = groupKeys[i];
+              let layerInfo = this._byStamp[ctg[key]];
+              this._setVisibility(layerInfo, true);
+            }
+          } else {
+            let selectedKeys = {};
+            for (let i = 0; i < e.value.length; i++) {
+              selectedKeys[e.value[i]] = true;
+            }
+            let groupKeys = Object.keys(ctg);
+            for (let i = 0; i < groupKeys.length; i++) {
+              let key = groupKeys[i];
+              let layerInfo = this._byStamp[ctg[key]];
+              this._setVisibility(layerInfo, selectedKeys[groupKeys[i]]);
+            }
+          }
+        };
+        let filterHandle = new crosstalk.FilterHandle(ctGroup);
+        filterHandle.on("change", handleFilter);
+
+        let handleSelection = (e) => {
+          if (!e.value || !e.value.length) {
+            let groupKeys = Object.keys(ctg);
+            for (let i = 0; i < groupKeys.length; i++) {
+              let key = groupKeys[i];
+              let layerInfo = this._byStamp[ctg[key]];
+              this._setOpacity(layerInfo, 1.0);
+            }
+          } else {
+            let selectedKeys = {};
+            for (let i = 0; i < e.value.length; i++) {
+              selectedKeys[e.value[i]] = true;
+            }
+            let groupKeys = Object.keys(ctg);
+            for (let i = 0; i < groupKeys.length; i++) {
+              let key = groupKeys[i];
+              let layerInfo = this._byStamp[ctg[key]];
+              this._setOpacity(layerInfo, selectedKeys[groupKeys[i]] ? 1.0 : 0.2);
+            }
+          }
+        };
+        let selHandle = new crosstalk.SelectionHandle(ctGroup);
+        selHandle.on("change", handleSelection);
+
+        setTimeout(() => {
+          handleFilter({value: filterHandle.filteredKeys});
+          handleSelection({value: selHandle.value});
+        }, 100);
+      }
+
+      if (!ctg[ctKey])
+        ctg[ctKey] = [];
+      ctg[ctKey].push(stamp);
+    }
+
     // Add to container
-    container.addLayer(layer);
+    if (!layerInfo.hidden)
+      container.addLayer(layer);
 
     return oldLayer;
+  }
+
+  brush(bounds, extraInfo) {
+    /* eslint-disable no-console */
+
+    // For each Crosstalk group...
+    Object.keys(this._byCrosstalkGroup).forEach(ctGroupName => {
+      let ctg = this._byCrosstalkGroup[ctGroupName];
+      let selection = [];
+      // ...iterate over each Crosstalk key (each of which may have multiple
+      // layers)...
+      Object.keys(ctg).forEach(ctKey => {
+        // ...and for each layer...
+        ctg[ctKey].forEach(stamp => {
+          let layerInfo = this._byStamp[stamp];
+          // ...if it's something with a point...
+          if (layerInfo.layer.getLatLng) {
+            // ... and it's inside the selection bounds...
+            // TODO: Use pixel containment, not lat/lng containment
+            if (bounds.contains(layerInfo.layer.getLatLng())) {
+              // ...add the key to the selection.
+              selection.push(ctKey);
+            }
+          }
+        });
+      });
+      new global.crosstalk.SelectionHandle(ctGroupName).set(selection, extraInfo);
+    });
+  }
+
+  unbrush(extraInfo) {
+    Object.keys(this._byCrosstalkGroup).forEach(ctGroupName => {
+      new global.crosstalk.SelectionHandle(ctGroupName).clear(extraInfo);
+    });
+  }
+
+  _setVisibility(layerInfo, visible) {
+    if (layerInfo.hidden ^ visible) {
+      return;
+    } else if (visible) {
+      layerInfo.container.addLayer(layerInfo.layer);
+      layerInfo.hidden = false;
+    } else {
+      layerInfo.container.removeLayer(layerInfo.layer);
+      layerInfo.hidden = true;
+    }
+  }
+
+  _setOpacity(layerInfo, opacity) {
+    if (layerInfo.layer.setOpacity) {
+      layerInfo.layer.setOpacity(opacity);
+    } else if (layerInfo.layer.setStyle) {
+      layerInfo.layer.setStyle({
+        opacity: opacity * layerInfo.layer.options.origOpacity,
+        fillOpacity: opacity * layerInfo.layer.options.origFillOpacity
+      });
+    }
   }
 
   getLayer(category, layerId) {
@@ -126,7 +261,7 @@ export default class LayerManager {
     let g = this._groupContainers[group];
     if (ensureExists && !g) {
       this._byGroup[group] = this._byGroup[group] || {};
-      g = this._groupContainers[group] = L.layerGroup();
+      g = this._groupContainers[group] = L.featureGroup();
       g.groupname = group;
       g.addTo(this._map);
     }
@@ -174,6 +309,7 @@ export default class LayerManager {
     this._byCategory = {};
     this._byLayerId = {};
     this._byStamp = {};
+    this._byCrosstalkGroup = {};
     $.each(this._categoryContainers, clearLayerGroup);
     this._categoryContainers = {};
     $.each(this._groupContainers, clearLayerGroup);
@@ -202,6 +338,18 @@ export default class LayerManager {
     }
     delete this._byCategory[layerInfo.category][stamp];
     delete this._byStamp[stamp];
+    if (layerInfo.ctGroup) {
+      let ctGroup = this._byCrosstalkGroup[layerInfo.ctGroup];
+      let layersForKey = ctGroup[layerInfo.ctKey];
+      let idx = layersForKey ? layersForKey.indexOf(stamp) : -1;
+      if (idx >= 0) {
+        if (layersForKey.length === 1) {
+          delete ctGroup[layerInfo.ctKey];
+        } else {
+          layersForKey.splice(idx, 1);
+        }
+      }
+    }
   }
 
   _layerIdKey(category, layerId) {

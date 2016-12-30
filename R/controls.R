@@ -6,7 +6,7 @@
 #'
 #' @describeIn map-layers Add arbitrary HTML controls to the map
 #' @export
-addControl = function(
+addControl <- function(
   map, html, position = c('topleft', 'topright', 'bottomleft', 'bottomright'),
   layerId = NULL, className = "info legend", data = getMapData(map)
 ) {
@@ -22,13 +22,13 @@ addControl = function(
 
 #' @export
 #' @rdname remove
-removeControl = function(map, layerId) {
+removeControl <- function(map, layerId) {
     invokeMethod(map, NULL, 'removeControl', layerId)
 }
 
 #' @export
 #' @rdname remove
-clearControls = function(map) {
+clearControls <- function(map) {
     invokeMethod(map, NULL, 'clearControls')
 }
 
