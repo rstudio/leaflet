@@ -9,6 +9,17 @@ library(dplyr)
 rand_lng = function(n = 10) rnorm(n, -93.65, .01)
 rand_lat = function(n = 10) rnorm(n, 42.0285, .01)
 
+pts <- SharedData$new(
+  data.frame(
+    id = 1:10,
+    lng = rand_lng(),
+    lat = rand_lat()
+  ),
+  key = ~id,
+  group = "grp1"
+)
+
+
 ui <- fluidPage(
   fluidRow(
     column(2, filter_select(id="filterselect", label="Points", sharedData=pts, group=~id)),
@@ -19,6 +30,7 @@ ui <- fluidPage(
 )
 
 server <- function(input, output, session) {
+
   pts <- SharedData$new(
     data.frame(
       id = 1:10,
@@ -28,7 +40,6 @@ server <- function(input, output, session) {
     key = ~id,
     group = "grp1"
   )
-
 
 
   lf <- leaflet(pts) %>%
