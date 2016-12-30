@@ -1,5 +1,5 @@
-# devtools::install_github("rstudio/crosstalk@joe/simplify")
-# devtools::install_github("rstudio/leaflet@crosstalk3")
+# devtools::install_github("rstudio/crosstalk")
+# devtools::install_github("rstudio/leaflet")
 
 library(crosstalk)
 library(leaflet)
