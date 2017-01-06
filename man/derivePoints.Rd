@@ -6,7 +6,8 @@
 from data], formula [which should be evaluated with respect to the data], or
 vector data [which should be used as-is]) return a lng/lat data frame.}
 \usage{
-derivePoints(data, lng, lat, missingLng, missingLat, funcName)
+derivePoints(data, lng = NULL, lat = NULL, missingLng = missing(lng),
+  missingLat = missing(lat), funcName = "f")
 }
 \arguments{
 \item{data}{map data}

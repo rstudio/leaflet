@@ -73,7 +73,10 @@ doResolveFormula.SpatialPolygonsDataFrame <- doResolveFormula.SpatialPointsDataF
 #' @param missingLat whether lat is missing
 #' @param funcName Name of calling function (for logging)
 #' @export
-derivePoints <- function(data, lng, lat, missingLng, missingLat, funcName) {
+derivePoints <- function(data, lng = NULL, lat = NULL,
+                         missingLng = missing(lng),
+                         missingLat = missing(lat),
+                         funcName = "f") {
   if (missingLng || missingLat) {
     if (is.null(data)) {
       stop("Point data not found; please provide ", funcName,
@@ -100,7 +103,10 @@ derivePoints <- function(data, lng, lat, missingLng, missingLat, funcName) {
 #' @param missingLat whether lat is missing
 #' @param funcName Name of calling function (for logging)
 #' @export
-derivePolygons <- function(data, lng, lat, missingLng, missingLat, funcName) {
+derivePolygons <- function(data, lng = NULL, lat = NULL,
+                           missingLng = missing(lng),
+                           missingLat = missing(lat),
+                           funcName = "f") {
   if (missingLng != missingLat) {
     stop(funcName, " must be called with both lng and lat, or with neither.")
   }
