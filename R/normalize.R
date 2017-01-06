@@ -118,14 +118,7 @@ pointData.data.frame <- function(obj) {
 
 #' @export
 pointData.matrix <- function(obj) {
-  dims = dim(obj)
-  if (length(dims) != 2) {
-    stop("Point data must be two dimensional")
-  }
-  if (dims[[2]] != 2) {
-    stop("Point data must have exactly two columns")
-  }
-
+  checkMatrix(obj)
   data.frame(lng = obj[, 1], lat = obj[, 2])
 }
 
@@ -141,25 +134,34 @@ polygonData <- function(obj) {
 polygonData.default <- function(obj) {
   stop("Don't know how to get path data from object of class ", class(obj)[[1]])
 }
+
 #' @export
 polygonData.matrix <- function(obj) {
-  makePolyList(pointData.matrix(obj))
-}
+  checkMatrix(obj)
+  df <- data.frame(lng = obj[, 1], lat = obj[, 2])
 
-dfbbox <- function(df) {
-  suppressWarnings(rbind(
+  bbox <- suppressWarnings(rbind(
     lng = range(df$lng, na.rm = TRUE),
     lat = range(df$lat, na.rm = TRUE)
   ))
-}
-makePolyList <- function(df) {
-  lng = df$lng
-  lat = df$lat
-  i = is.na(lat)
-  chunks = cumsum(i)[!i]
-  unname(split(data.frame(lng=lng[!i], lat=lat[!i]), chunks)) %>%
-    lapply(as.list) %>%
-    lapply(list) %>%
-    structure(bbox = dfbbox(df))
+
+  # Split into polygons wherever there is a row of NA
+  missing <- !complete.cases(df)
+  group <- cumsum(missing)
+  polys <- split(df[!missing, , drop = FALSE], group[!missing])
+
+  structure(
+    lapply(unname(polys), list),
+    bbox = bbox
+  )
 }
 
+
+checkMatrix <- function(x) {
+  if (length(dim(x)) != 2) {
+    stop("Matrix data must be two dimensional", call. = FALSE)
+  }
+  if (ncol(x) != 2) {
+    stop("Matrix data must have exactly two columns", call. = FALSE)
+  }
+}
