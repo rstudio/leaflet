@@ -6,7 +6,8 @@
 from data], formula [which should be evaluated with respect to the data], or
 vector data [which should be used as-is]) return a spatial object}
 \usage{
-derivePolygons(data, lng, lat, missingLng, missingLat, funcName)
+derivePolygons(data, lng = NULL, lat = NULL, missingLng = missing(lng),
+  missingLat = missing(lat), funcName = "f")
 }
 \arguments{
 \item{data}{map data}

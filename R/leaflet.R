@@ -10,12 +10,13 @@
 #' we may add a circle layer to the map by \code{leaflet(data) \%>\%
 #' addCircles(lat = ~latitude, lng = ~longtitude)}, where the variables in the
 #' formulae will be evaluated in the \code{data}.
-#' @param data a data object (currently supported objects are matrices, data
-#'   frames, and spatial objects from the \pkg{sp} package of classes
-#'   \code{SpatialPoints}, \code{SpatialPointsDataFrame}, \code{Polygon},
+#' @param data a data object. Currently supported objects are matrices, data
+#'   frames, spatial objects from the \pkg{sp} package
+#'   (\code{SpatialPoints}, \code{SpatialPointsDataFrame}, \code{Polygon},
 #'   \code{Polygons}, \code{SpatialPolygons}, \code{SpatialPolygonsDataFrame},
 #'   \code{Line}, \code{Lines}, \code{SpatialLines}, and
-#'   \code{SpatialLinesDataFrame})
+#'   \code{SpatialLinesDataFrame}), and
+#'   spatial data frames from the \pkg{sf} package.
 #' @param width the width of the map
 #' @param height the height of the map
 #' @param padding the padding of the map
