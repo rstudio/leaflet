@@ -52,7 +52,7 @@ polygonData.SpatialPolygonsDataFrame <- function(obj) {
   if (length(obj@polygons) > 0) {
     polygonData(sp::polygons(obj))
   } else {
-    warning("Empty SpatialLinesDataFrame object passed and will be skipped")
+    warning("Empty SpatialPolygonsDataFrame object passed and will be skipped")
     structure(list(), bbox = obj@bbox)
   }
 }
