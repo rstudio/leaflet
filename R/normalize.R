@@ -32,27 +32,36 @@ doResolveFormula <- function(data, f) {
   UseMethod("doResolveFormula")
 }
 
+#' @export
 doResolveFormula.data.frame <- function(data, f) {
   eval(f[[2]], data, environment(f))
 }
 
+#' @export
 doResolveFormula.SharedData <- function(data, f) {
   doResolveFormula(data$data(withSelection = TRUE, withFilter = FALSE, withKey = TRUE), f)
 }
 
+#' @export
 doResolveFormula.map <- function(data, f) {
   eval(f[[2]], data, environment(f))
 }
 
+#' @export
 doResolveFormula.list <- function(data, f) {
   eval(f[[2]], data, environment(f))
 }
 
-doResolveFormula.SpatialLinesDataFrame <-
-doResolveFormula.SpatialPolygonsDataFrame <-
+#' @export
 doResolveFormula.SpatialPointsDataFrame <- function(data, f) {
   doResolveFormula(data@data, f)
 }
+
+#' @export
+doResolveFormula.SpatialLinesDataFrame <- doResolveFormula.SpatialPointsDataFrame
+
+#' @export
+doResolveFormula.SpatialPolygonsDataFrame <- doResolveFormula.SpatialPointsDataFrame
 
 #' Given a data object and lng/lat arguments (which may be NULL [meaning infer
 #' from data], formula [which should be evaluated with respect to the data], or
@@ -172,12 +181,15 @@ polygonData <- function(obj) {
   UseMethod("polygonData")
 }
 
+#' @export
 polygonData.default <- function(obj) {
   stop("Don't know how to get path data from object of class ", class(obj)[[1]])
 }
+#' @export
 polygonData.matrix <- function(obj) {
   makePolyList(pointData.matrix(obj))
 }
+#' @export
 polygonData.Polygon <- function(obj) {
   coords = polygon2coords(obj)
   structure(
@@ -185,6 +197,7 @@ polygonData.Polygon <- function(obj) {
     bbox = attr(coords, "bbox", exact = TRUE)
   )
 }
+#' @export
 polygonData.Polygons <- function(obj) {
   coords = polygons2coords(obj)
   structure(
@@ -192,10 +205,12 @@ polygonData.Polygons <- function(obj) {
     bbox = attr(coords, "bbox", exact = TRUE)
   )
 }
+#' @export
 polygonData.SpatialPolygons <- function(obj) {
   lapply(obj@polygons, polygons2coords, bbox = FALSE) %>%
     structure(bbox = obj@bbox)
 }
+#' @export
 polygonData.SpatialPolygonsDataFrame <- function(obj) {
   #polygonData(sp::polygons(obj))
   if(length(obj@polygons)>0) {
@@ -205,10 +220,12 @@ polygonData.SpatialPolygonsDataFrame <- function(obj) {
     structure(list(), bbox=obj@bbox)
   }
 }
+#' @export
 polygonData.map <- function(obj) {
   polygonData(cbind(obj$x, obj$y))
 }
 
+#' @export
 polygonData.Line <- function(obj) {
   coords = line2coords(obj)
   structure(
@@ -216,6 +233,7 @@ polygonData.Line <- function(obj) {
     bbox = attr(coords, "bbox", exact = TRUE)
   )
 }
+#' @export
 polygonData.Lines <- function(obj) {
   coords = lines2coords(obj)
   structure(
@@ -223,10 +241,12 @@ polygonData.Lines <- function(obj) {
     bbox = attr(coords, "bbox", exact = TRUE)
   )
 }
+#' @export
 polygonData.SpatialLines <- function(obj) {
   lapply(obj@lines, lines2coords, bbox = FALSE) %>%
     structure(bbox = obj@bbox)
 }
+#' @export
 polygonData.SpatialLinesDataFrame <- function(obj) {
   if(length(obj@lines)>0) {
     polygonData(sp::SpatialLines(obj@lines))
