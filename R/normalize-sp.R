@@ -1,15 +1,11 @@
-# doResolveFormula --------------------------------------------------------
+# metaData --------------------------------------------------------
 
 #' @export
-doResolveFormula.SpatialPointsDataFrame <- function(data, f) {
-  doResolveFormula(data@data, f)
-}
-
+metaData.SpatialPointsDataFrame <- function(obj) obj@data
 #' @export
-doResolveFormula.SpatialLinesDataFrame <- doResolveFormula.SpatialPointsDataFrame
-
+metaData.SpatialLinesDataFrame <- function(obj) obj@data
 #' @export
-doResolveFormula.SpatialPolygonsDataFrame <- doResolveFormula.SpatialPointsDataFrame
+metaData.SpatialPolygonsDataFrame <- function(obj) obj@data
 
 # pointData ---------------------------------------------------------------
 

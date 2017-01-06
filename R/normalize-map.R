@@ -1,8 +1,7 @@
 #' @export
-doResolveFormula.map <- function(data, f) {
-  eval(f[[2]], data, environment(f))
+metaData.map <- function(obj) {
+  obj
 }
-
 
 #' @export
 polygonData.map <- function(obj) {

@@ -25,22 +25,15 @@ resolveFormula <- function(f, data) {
   if (!inherits(f, 'formula')) return(f)
   if (length(f) != 2L) stop("Unexpected two-sided formula: ", deparse(f))
 
-  doResolveFormula(data, f)
+  eval(f[[2]], metaData(data), environment(f))
 }
 
-doResolveFormula <- function(data, f) {
-  UseMethod("doResolveFormula")
-}
-
+metaData <- function(obj) UseMethod("metaData")
 #' @export
-doResolveFormula.data.frame <- function(data, f) {
-  eval(f[[2]], data, environment(f))
-}
-
+metaData.data.frame <- function(obj) obj
 #' @export
-doResolveFormula.list <- function(data, f) {
-  eval(f[[2]], data, environment(f))
-}
+metaData.list <- function(obj) obj
+
 
 #' Given a data object and lng/lat arguments (which may be NULL [meaning infer
 #' from data], formula [which should be evaluated with respect to the data], or

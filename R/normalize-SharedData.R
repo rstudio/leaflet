@@ -1,6 +1,6 @@
 #' @export
-doResolveFormula.SharedData <- function(data, f) {
-  doResolveFormula(data$data(withSelection = TRUE, withFilter = FALSE, withKey = TRUE), f)
+metaData.sharedData <- function(obj) {
+  data$data(withSelection = TRUE, withFilter = FALSE, withKey = TRUE)
 }
 
 #' @export
