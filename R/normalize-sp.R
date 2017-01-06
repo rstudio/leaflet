@@ -15,18 +15,12 @@ doResolveFormula.SpatialPolygonsDataFrame <- doResolveFormula.SpatialPointsDataF
 
 #' @export
 pointData.SpatialPoints <- function(obj) {
-  structure(
-    as.data.frame(sp::coordinates(obj)),
-    names = c("lng", "lat")
-  )
+  sp_coords(obj)
 }
 
 #' @export
 pointData.SpatialPointsDataFrame <- function(obj) {
-  structure(
-    as.data.frame(sp::coordinates(obj)),
-    names = c("lng", "lat")
-  )
+  sp_coords(obj)
 }
 
 
@@ -35,7 +29,7 @@ pointData.SpatialPointsDataFrame <- function(obj) {
 #' @export
 polygonData.Polygon <- function(obj) {
   structure(
-    list(list(polygon2coords(obj))),
+    list(list(sp_coords(obj))),
     bbox = sp_bbox(obj)
   )
 }
@@ -66,7 +60,7 @@ polygonData.SpatialPolygonsDataFrame <- function(obj) {
 #' @export
 polygonData.Line <- function(obj) {
   structure(
-    list(list(line2coords(obj))),
+    list(list(sp_coords(obj))),
     bbox = sp_bbox(obj)
   )
 }
@@ -96,11 +90,10 @@ polygonData.SpatialLinesDataFrame <- function(obj) {
 
 # Helpers -----------------------------------------------------------------
 
-polygon2coords <- function(pgon, bbox = FALSE) {
-  df = pointData(sp::coordinates(pgon))
+sp_coords <- function(x) {
   structure(
-    as.list(df),
-    bbox = if (bbox) dfbbox(df)
+    as.data.frame(sp::coordinates(x)),
+    names = c("lng", "lat")
   )
 }
 
@@ -111,23 +104,10 @@ sp_bbox <- function(x) {
   bbox
 }
 
-line2coords <- polygon2coords
-
-polygons2coords <- function(pgon, bbox = FALSE) {
-  plural2coords(pgon@Polygons[pgon@plotOrder], bbox)
+polygons2coords <- function(pgon) {
+  lapply(pgon@Polygons[pgon@plotOrder], sp_coords)
 }
 
-lines2coords <- function(lines, bbox = FALSE) {
-  plural2coords(lines@Lines, bbox)
+lines2coords <- function(lines) {
+  lapply(lines@Lines, sp_coords)
 }
-
-plural2coords <- function(stuff, bbox) {
-  outbbox = bboxNull
-  lapply(stuff, function(pgon) {
-    coords = polygon2coords(pgon)
-    if (bbox)
-      outbbox <<- bboxAdd(outbbox, attr(coords, "bbox", exact = TRUE))
-    structure(coords, bbox = NULL)
-  }) %>% structure(bbox = if (bbox) outbbox)
-}
-
