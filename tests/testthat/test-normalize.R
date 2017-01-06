@@ -11,6 +11,18 @@ test_that("can get point data from SpatialPointsDataFrame", {
   expect_equal(nrow(points), 155)
 })
 
+test_that("derivePolygons works with sf classes", {
+  skip_if_not_installed("sf")
+
+  data("meuse", package = "sp", envir = environment())
+  sp::coordinates(meuse) <- ~x+y
+  meuse <- sf::st_as_sf(meuse)
+
+  points <- derivePoints(meuse)
+  expect_named(points, c("lng", "lat"))
+  expect_equal(nrow(points), 155)
+})
+
 # derivePolygons -----------------------------------------------------------
 
 test_that("derivePolygons normalizes polygon data across sp polygon classes", {
@@ -55,6 +67,18 @@ test_that("derivePolygons normalizes polygon data across sp line classes", {
   expect_equal(derivePolygons(slinesdf), out)
 })
 
+test_that("derivePolygons works with sf classes", {
+  skip_if_not_installed("sf")
+
+  nc <- sf::st_read(system.file("shape/nc.shp", package = "sf"), quiet = TRUE)
+
+  expect_warning(
+    polys <- derivePolygons(nc),
+    "inconsistent datum"
+  )
+
+  expect_length(polys, nrow(nc))
+})
 
 # guessLatLongCols --------------------------------------------------------
 ll_names <- function(lng, lat) list(lng = lng, lat = lat)

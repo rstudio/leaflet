@@ -66,11 +66,16 @@ polygonData.LINESTRING <- polygonData.POLYGON
 # helpers -----------------------------------------------------------------
 
 check_crs <- function(x) {
-  if (!sf::st_is_longlat(x)) {
-    stop("sf data must be long-lat", call. = FALSE)
+  crs <- sf::st_crs(x)
+
+  # Don't have enough information to check
+  if (is.na(crs))
+    return()
+
+  if (identical(sf::st_is_longlat(x), FALSE)) {
+    warning("sf layer is not long-lat data", call. = FALSE)
   }
 
-  crs <- sf::st_crs(x)
   if (!grepl("+datum=WGS84", crs$proj4string, fixed = TRUE)) {
     warning(
       "sf layer has inconsistent datum (", crs$proj4string, ").\n",
