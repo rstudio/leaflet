@@ -38,30 +38,9 @@ doResolveFormula.data.frame <- function(data, f) {
 }
 
 #' @export
-doResolveFormula.SharedData <- function(data, f) {
-  doResolveFormula(data$data(withSelection = TRUE, withFilter = FALSE, withKey = TRUE), f)
-}
-
-#' @export
-doResolveFormula.map <- function(data, f) {
-  eval(f[[2]], data, environment(f))
-}
-
-#' @export
 doResolveFormula.list <- function(data, f) {
   eval(f[[2]], data, environment(f))
 }
-
-#' @export
-doResolveFormula.SpatialPointsDataFrame <- function(data, f) {
-  doResolveFormula(data@data, f)
-}
-
-#' @export
-doResolveFormula.SpatialLinesDataFrame <- doResolveFormula.SpatialPointsDataFrame
-
-#' @export
-doResolveFormula.SpatialPolygonsDataFrame <- doResolveFormula.SpatialPointsDataFrame
 
 #' Given a data object and lng/lat arguments (which may be NULL [meaning infer
 #' from data], formula [which should be evaluated with respect to the data], or
@@ -157,28 +136,6 @@ pointData.matrix <- function(obj) {
   data.frame(lng = obj[, 1], lat = obj[, 2])
 }
 
-#' @export
-pointData.SpatialPoints <- function(obj) {
-  structure(
-    as.data.frame(sp::coordinates(obj)),
-    names = c("lng", "lat")
-  )
-}
-
-#' @export
-pointData.SpatialPointsDataFrame <- function(obj) {
-  structure(
-    as.data.frame(sp::coordinates(obj)),
-    names = c("lng", "lat")
-  )
-}
-
-#' @export
-pointData.SharedData <- function(obj) {
-  pointData(obj$data(withSelection = FALSE,
-    withFilter = FALSE, withKey = FALSE))
-}
-
 # A simple polygon is a list(lng=numeric(), lat=numeric()). A compound polygon
 # is a list of simple polygons. This function returns a list of compound
 # polygons, so list(list(list(lng=..., lat=...))). There is also a bbox
@@ -194,78 +151,6 @@ polygonData.default <- function(obj) {
 #' @export
 polygonData.matrix <- function(obj) {
   makePolyList(pointData.matrix(obj))
-}
-#' @export
-polygonData.Polygon <- function(obj) {
-  coords = polygon2coords(obj)
-  structure(
-    list(list(coords)),
-    bbox = attr(coords, "bbox", exact = TRUE)
-  )
-}
-#' @export
-polygonData.Polygons <- function(obj) {
-  coords = polygons2coords(obj)
-  structure(
-    list(structure(coords, bbox = NULL)),
-    bbox = attr(coords, "bbox", exact = TRUE)
-  )
-}
-#' @export
-polygonData.SpatialPolygons <- function(obj) {
-  lapply(obj@polygons, polygons2coords, bbox = FALSE) %>%
-    structure(bbox = obj@bbox)
-}
-#' @export
-polygonData.SpatialPolygonsDataFrame <- function(obj) {
-  #polygonData(sp::polygons(obj))
-  if(length(obj@polygons)>0) {
-    polygonData(sp::SpatialPolygons(obj@polygons))
-  } else {
-    warning("Empty SpatialLinesDataFrame object passed and will be skipped")
-    structure(list(), bbox=obj@bbox)
-  }
-}
-#' @export
-polygonData.map <- function(obj) {
-  polygonData(cbind(obj$x, obj$y))
-}
-
-#' @export
-polygonData.Line <- function(obj) {
-  coords = line2coords(obj)
-  structure(
-    list(list(coords)),
-    bbox = attr(coords, "bbox", exact = TRUE)
-  )
-}
-#' @export
-polygonData.Lines <- function(obj) {
-  coords = lines2coords(obj)
-  structure(
-    list(structure(coords, bbox = NULL)),
-    bbox = attr(coords, "bbox", exact = TRUE)
-  )
-}
-#' @export
-polygonData.SpatialLines <- function(obj) {
-  lapply(obj@lines, lines2coords, bbox = FALSE) %>%
-    structure(bbox = obj@bbox)
-}
-#' @export
-polygonData.SpatialLinesDataFrame <- function(obj) {
-  if(length(obj@lines)>0) {
-    polygonData(sp::SpatialLines(obj@lines))
-  } else {
-    warning("Empty SpatialLinesDataFrame object passed and will be skipped")
-    structure(list(), bbox=obj@bbox)
-  }
-}
-
-#' @export
-polygonData.SharedData <- function(obj) {
-  polygonData(obj$data(withSelection = FALSE,
-    withFilter = FALSE, withKey = FALSE))
 }
 
 dfbbox <- function(df) {
@@ -285,29 +170,3 @@ makePolyList <- function(df) {
     structure(bbox = dfbbox(df))
 }
 
-polygon2coords <- function(pgon, bbox = TRUE) {
-  df = pointData(sp::coordinates(pgon))
-  structure(
-    as.list(df),
-    bbox = if (bbox) dfbbox(df)
-  )
-}
-line2coords = polygon2coords
-
-plural2coords <- function(stuff, bbox) {
-  outbbox = bboxNull
-  lapply(stuff, function(pgon) {
-    coords = polygon2coords(pgon)
-    if (bbox)
-      outbbox <<- bboxAdd(outbbox, attr(coords, "bbox", exact = TRUE))
-    structure(coords, bbox = NULL)
-  }) %>% structure(bbox = if (bbox) outbbox)
-}
-
-polygons2coords <- function(pgon, bbox = TRUE) {
-  plural2coords(pgon@Polygons[pgon@plotOrder], bbox)
-}
-
-lines2coords <- function(lines, bbox = TRUE) {
-  plural2coords(lines@Lines, bbox)
-}
