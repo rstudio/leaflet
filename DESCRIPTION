@@ -48,6 +48,7 @@ Imports:
 Suggests:
     knitr,
     maps,
+    sf,
     shiny,
     testit (>= 0.4),
     rgdal,
