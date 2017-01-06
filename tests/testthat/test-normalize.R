@@ -34,7 +34,7 @@ test_that("derivePolygons normalizes polygon data across sp polygon classes", {
   expect_equal(derivePolygons(spolysdf), out)
 })
 
-test_that("derivePolygons normalizes polygon data across sp polygon classes", {
+test_that("derivePolygons normalizes polygon data across sp line classes", {
   data("meuse.riv", package = "sp", envir = environment())
   df <- data.frame(x = 1, row.names = "river")
 
