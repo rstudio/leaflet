@@ -23,6 +23,10 @@ pointData.sfc_POINT <- function(obj) {
   )
 }
 
+#' @export
+pointData.sfc_MULTIPOINT <- pointData.sfc_POINT
+
+
 # polygonData -------------------------------------------------------------
 
 #' @export
