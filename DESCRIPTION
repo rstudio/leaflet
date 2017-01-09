@@ -48,12 +48,14 @@ Imports:
 Suggests:
     knitr,
     maps,
+    sf,
     shiny,
     testit (>= 0.4),
     rgdal,
     R6,
     RJSONIO,
-    purrr
+    purrr,
+    testthat
 Remotes:
     rstudio/crosstalk
 RoxygenNote: 5.0.1

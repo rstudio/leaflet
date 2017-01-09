@@ -1,6 +1,8 @@
 leaflet 1.1
 --------------------------------------------------------------------------------
 
+* Add support for sf
+
 * Added support for Crosstalk (https://rstudio.github.io/crosstalk/).
 
 * Added ability to select rectangular region in a map.
