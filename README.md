@@ -1,3 +1,6 @@
+# Why did I did this fork?
+Since for my [climex](https://github.com/theGreatWhiteShark/climex) packages I wanted the legend of the leaflet map (color-coding of the circle markers) to be in horizontal instead of vertical orientation.
+
 # An R Interface to Leaflet Maps
 
 [![Build Status](https://travis-ci.org/rstudio/leaflet.svg)](https://travis-ci.org/rstudio/leaflet)
