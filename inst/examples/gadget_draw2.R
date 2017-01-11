@@ -81,7 +81,15 @@ l_poly <- lawn_featurecollection(
 )
 
 l_in <- lawn_within(l_pts, l_poly)
+l_out <- lawn_featurecollection(Filter(
+  function(pt) {
+    !lawn_inside(pt, lawn_polygon(drawn[[1]]$geometry$coordinates))
+  },
+  as.list(unname(apply(breweries91@coords,MARGIN=1,lawn_point)))
+))
 
 view(l_in) %>%
   addGeoJSON(drawn[[1]])
 
+view(l_out) %>%
+  addGeoJSON(drawn[[1]])
