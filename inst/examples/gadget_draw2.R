@@ -19,13 +19,15 @@ drawonme <- function(lf = NULL, height = NULL, width = NULL) {
 
   server <- function(input, output, session) {
     drawn <- list()
+    edited <- list()
+
     shiny::observeEvent(input$undefined_draw_new_feature, {
       # we can clean this up
       drawn <<- c(drawn, list(input$undefined_draw_new_feature))
     })
 
     shiny::observeEvent(input$undefined_draw_edited_features, {
-      edited <- input$undefined_draw_edited_features
+      edited <<- input$undefined_draw_edited_features
       # find the edited features and update drawn
       # start by getting the leaflet ids to do the match
       ids <- unlist(lapply(drawn, function(x){x$properties$`_leaflet_id`}))
@@ -68,4 +70,18 @@ Reduce(
   drawn,
   init = lf
 )
+
+library(lawn)
+l_pts <- lawn_featurecollection(
+  as.list(unname(apply(breweries91@coords,MARGIN=1,lawn_point)))
+)
+
+l_poly <- lawn_featurecollection(
+  list(lawn_polygon(drawn[[1]]$geometry$coordinates))
+)
+
+l_in <- lawn_within(l_pts, l_poly)
+
+view(l_in) %>%
+  addGeoJSON(drawn[[1]])
 
