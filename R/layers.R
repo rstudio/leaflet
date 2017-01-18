@@ -492,7 +492,7 @@ labelOptions <- function(
 #'    you can use \code{\link{markerClusterOptions}()} to specify marker cluster
 #'   options
 #' @param clusterId the id for the marker cluster layer
-#' @describeIn map-layers Add markders to the map
+#' @describeIn map-layers Add markers to the map
 #' @export
 addMarkers <- function(
   map, lng = NULL, lat = NULL, layerId = NULL, group = NULL,

@@ -227,7 +227,7 @@ Options to highlight shapes (polylines/polygons/circles/rectangles)
 
 \item \code{safeLabel}: Create a label with sanitized text/html
 
-\item \code{addMarkers}: Add markders to the map
+\item \code{addMarkers}: Add markers to the map
 
 \item \code{addLabelOnlyMarkers}: Add Label only markers to the map
 
