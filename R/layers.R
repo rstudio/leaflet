@@ -112,7 +112,7 @@ hideGroup <- function(map, group) {
 #' @export
 addTiles <- function(
   map,
-  urlTemplate = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+  urlTemplate = '//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
   attribution = NULL,
   layerId = NULL,
   group = NULL,
