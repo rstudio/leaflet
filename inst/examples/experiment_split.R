@@ -75,3 +75,39 @@ Split(["#map1", "#map2"], {
 ) %>>%
   browsable()
 
+
+
+library(svglite)
+svg1 <- htmlSVG({contour(volcano)}, standalone=FALSE)
+
+tagList(
+  tags$link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css"),
+  tags$script(src="https://cdnjs.cloudflare.com/ajax/libs/split.js/1.2.0/split.min.js"),
+  tags$style(css),
+  tags$div(
+    style = "height:410px;",
+    tags$div(
+      id = "map1",
+      class = "split split-horizontal",
+      tags$div(class="split content", lf)
+    ),
+    tags$div(
+      id = "map2",
+      class = "split split horizontal",
+      tags$div(class="split content", svg1)
+    )
+  ),
+  tags$script('
+Split(["#map1", "#map2"], {
+  gutterSize: 8,
+  cursor: "col-resize",
+  onDragEnd: function(evt){
+    $(".html-widget",$(event.target).parent().parent()).each(function(hw){
+      HTMLWidgets.find("#" + this.id).resize()
+    })
+  }
+})
+  ')
+  ) %>>%
+  browsable()
+
