@@ -64,7 +64,12 @@ tagList(
   tags$script('
 Split(["#map1", "#map2"], {
   gutterSize: 8,
-  cursor: "col-resize"
+  cursor: "col-resize",
+  onDragEnd: function(evt){
+    $(".html-widget",$(event.target).parent().parent()).each(function(hw){
+      HTMLWidgets.find("#" + this.id).resize()
+    })
+  }
 })
   ')
 ) %>>%
