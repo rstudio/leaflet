@@ -67,139 +67,160 @@ addLegend <- function(
   type = 'unknown'; na.color = NULL
   extra = NULL  # only used for numeric palettes to store extra info
 
-  if (!missing(pal)) {
-    if (!missing(colors))
-      stop("You must provide either 'pal' or 'colors' (not both)")
+    if (!missing(pal)) {
+        if (!missing(colors))
+            stop("You must provide either 'pal' or 'colors' (not both)")
+        
+        ## a better default title when values is formula
+        if (missing(title) && inherits(values, 'formula')) title = deparse(values[[2]])
+        values = evalFormula(values, getMapData(map))
+        generate.legend <- function( bins = bins ){
+            ## To ensure the ticks and labels in the color legend are readable they
+            ## must not be placed at the very beginning or end of the legend.
+            if ( ceiling( values[ 1 ] ) - values[ 1 ] < .25 )
+                warning( "the left-most tick in the leaflet legend will most probably not fit. Please lower the first value of the 'values' argument a bit (e.g. by .25)" )
+            if ( values[ 2 ] - floor( values[ 2 ] ) < .25 )
+                warning( "the right-most tick in the leaflet legend will most probably not fit. Please increase the first value of the 'values' argument a bit (e.g. by .25)" )
+            
+            type = attr(pal, 'colorType', exact = TRUE)
+            args = attr(pal, 'colorArgs', exact = TRUE)
+            na.color = args$na.color
+                                        # If na.color is transparent, don't show it on the legend
+            if (!is.null(na.color) && col2rgb(na.color, alpha = TRUE)[[4]] == 0) {
+                na.color = NULL
+            }
+            if (type == 'numeric') {
 
-    # a better default title when values is formula
-    if (missing(title) && inherits(values, 'formula')) title = deparse(values[[2]])
-    values = evalFormula(values, getMapData(map))
+                ## choose pretty cut points to draw tick-marks on the color gradient if
+                ## 'bins' is the number of bins, otherwise 'bins' is just the breaks
+                cuts = if (length(bins) == 1) pretty(values, n = bins) else bins
+                if (length(bins) > 2)
+                    if (!all(abs(diff(bins, differences = 2)) <= sqrt(.Machine$double.eps)))
+                        stop("The vector of breaks 'bins' must be equally spaced")
+                n = length(cuts)
+                r = range(values, na.rm = TRUE)
+                ## pretty cut points may be out of the range of `values`
+                cuts = cuts[cuts >= r[1] & cuts <= r[2]]
+                n = length(cuts)
+                p = (cuts - r[1]) / (r[2] - r[1])  # percents relative to min(values)
 
-    ## To ensure the ticks and labels in the color legend are readable they
-    ## must not be placed at the very beginning or end of the legend.
-    if ( ceiling( values[ 1 ] ) - values[ 1 ] < .25 )
-        warning( "the left-most tick in the leaflet legend will most probably not fit. Please lower the first value of the 'values' argument a bit (e.g. by .25)" )
-    if ( values[ 2 ] - floor( values[ 2 ] ) < .25 )
-        warning( "the right-most tick in the leaflet legend will most probably not fit. Please increase the first value of the 'values' argument a bit (e.g. by .25)" )
-    
-    type = attr(pal, 'colorType', exact = TRUE)
-    args = attr(pal, 'colorArgs', exact = TRUE)
-    na.color = args$na.color
-    # If na.color is transparent, don't show it on the legend
-    if (!is.null(na.color) && col2rgb(na.color, alpha = TRUE)[[4]] == 0) {
-      na.color = NULL
-    }
-    if (type != 'numeric' && !missing(bins))
-      warning("'bins' is ignored because the palette type is not numeric")
+                ## [    |       |       |  ...  |    ]
+                ## min  p1      p2      p3 ...  pn   max
+                ##  |   +   |   +   |   +  ...  +   |
+                ## here |+| denotes a table row, and there are n rows
+                
+                ## Since min and max may exceed the limits of the cut points, the client
+                ## needs to know the first and last cut points in order to place the tick
+                ## marks properly relative to the gradient.
+                extra = list(p_1 = p[1], p_n = p[n])
+                ## syntax for the color gradient: linear-gradient(start-color, color1 p1%,
+                ## color2 p2%, ..., colorn pn%, end-color])
+                p = c('', paste0(100 * p, '%'), '')
+                colors = pal(c(r[1], cuts, r[2]))
+                colors = paste(colors, p, sep = ' ', collapse = ', ')
+                labels = labFormat(type = 'numeric', cuts)
 
-    if (type == 'numeric') {
+                ## Calculating the width and height of the color-bar
+                ## taken from the original JS wrapper
+                default.thickness <- 18 # [px]; default width/height
+                ## If width/height is given (depending on the orientation)
+                ## this variable will be calculated from them
+                single.bin.length <- 20 # [px]; distance between the ticks
+                single.bin.percentage <- ( extra$p_n - extra$p_1 )/( n - 1 )
+                if ( orientation == "vertical" ){
+                    if ( is.null( height ) ){
+                        height <- single.bin.length/ single.bin.percentage + 1
+                    } else
+                        single.bin.length <- height* single.bin.percentage - 1
+                    if ( is.null( width ) )
+                        width <- default.thickness
+                } else {
+                    if ( is.null( height ) )
+                        height <- default.thickness
+                    if ( is.null( width ) ){
+                        width <- single.bin.length/ single.bin.percentage + 1
+                    } else
+                        single.bin.length <- width* single.bin.percentage - 1
+                }
+                ## calculating the tickOffset from the original JS wrapper
+                ## via the extra$p_1, the total length and the single.bin.percentage
+                if ( orientation == "vertical" ){
+                    tick.offset.beginning <- ( height - 1/ single.bin.percentage )* extra$p_1
+                    tick.offset.end <- ( height - 1/ single.bin.percentage )* extra$p_n
+                } else {
+                    tick.offset.beginning <- ( width - 1/ single.bin.percentage )* extra$p_1   
+                    tick.offset.end <- ( width - 1/ single.bin.percentage )* extra$p_n
+                }
 
-      # choose pretty cut points to draw tick-marks on the color gradient if
-      # 'bins' is the number of bins, otherwise 'bins' is just the breaks
-      cuts = if (length(bins) == 1) pretty(values, n = bins) else bins
-      if (length(bins) > 2)
-        if (!all(abs(diff(bins, differences = 2)) <= sqrt(.Machine$double.eps)))
-          stop("The vector of breaks 'bins' must be equally spaced")
-      n = length(cuts)
-      r = range(values, na.rm = TRUE)
-      # pretty cut points may be out of the range of `values`
-      cuts = cuts[cuts >= r[1] & cuts <= r[2]]
-      n = length(cuts)
-      p = (cuts - r[1]) / (r[2] - r[1])  # percents relative to min(values)
+            } else if (type == 'bin') {
 
-      # [    |       |       |  ...  |    ]
-      # min  p1      p2      p3 ...  pn   max
-      #  |   +   |   +   |   +  ...  +   |
-      # here |+| denotes a table row, and there are n rows
+                cuts = args$bins
+                n = length(cuts)
+                ## use middle points to represent intervals
+                mids = (cuts[-1] + cuts[-n]) / 2
+                colors = pal(mids)
+                labels = labFormat(type = 'bin', cuts)
+                height <- width <- tick.offset <- single.bin.length <- NULL
 
-      # Since min and max may exceed the limits of the cut points, the client
-      # needs to know the first and last cut points in order to place the tick
-      # marks properly relative to the gradient.
-      extra = list(p_1 = p[1], p_n = p[n])
-      # syntax for the color gradient: linear-gradient(start-color, color1 p1%,
-      # color2 p2%, ..., colorn pn%, end-color])
-      p = c('', paste0(100 * p, '%'), '')
-      colors = pal(c(r[1], cuts, r[2]))
-        colors = paste(colors, p, sep = ' ', collapse = ', ')
-      labels = labFormat(type = 'numeric', cuts)
+            } else if (type == 'quantile') {
 
-    } else if (type == 'bin') {
+                p = args$probs
+                n = length(p)
+                ## the "middle points" in this case are the middle probabilities
+                cuts = quantile(values, probs = p, na.rm = TRUE)
+                mids = quantile(values, probs = (p[-1] + p[-n]) / 2, na.rm = TRUE)
+                colors = pal(mids)
+                labels = labFormat(type = 'quantile', cuts, p)
+                height <- width <- tick.offset <- single.bin.length <- NULL
 
-      cuts = args$bins
-      n = length(cuts)
-      # use middle points to represent intervals
-      mids = (cuts[-1] + cuts[-n]) / 2
-      colors = pal(mids)
-      labels = labFormat(type = 'bin', cuts)
+            } else if (type == 'factor') {
 
-    } else if (type == 'quantile') {
+                v = sort(unique(na.omit(values)))
+                colors = pal(v)
+                labels = labFormat(type = 'factor', v)
+                height <- width <- tick.offset <- single.bin.length <- NULL
 
-      p = args$probs
-      n = length(p)
-      # the "middle points" in this case are the middle probabilities
-      cuts = quantile(values, probs = p, na.rm = TRUE)
-      mids = quantile(values, probs = (p[-1] + p[-n]) / 2, na.rm = TRUE)
-      colors = pal(mids)
-      labels = labFormat(type = 'quantile', cuts, p)
-
-    } else if (type == 'factor') {
-
-      v = sort(unique(na.omit(values)))
-      colors = pal(v)
-      labels = labFormat(type = 'factor', v)
-
-    } else stop('Palette function not supported')
-
-    if (!any(is.na(values))) na.color = NULL
-  } else {
-    if (length(colors) != length(labels))
-      stop("'colors' and 'labels' must be of the same length")
-  }
-    ## Calculating the width and height of the color-bar
-    ## This is only used/necessary for numerical input
-    if ( type != "numeric" ){
-        height <- width <- tick.offset <- single.bin.length <- NULL
-    } else {
-        ## taken from the original JS wrapper
-        default.thickness <- 18 # [px]; default width/height
-        ## If width/height is given (depending on the orientation)
-        ## this variable will be calculated from them
-        single.bin.length <- 20 # [px]; distance between the ticks
-        single.bin.percentage <- ( extra$p_n - extra$p_1 )/( n - 1 )
-        if ( orientation == "vertical" ){
-            if ( is.null( height ) ){
-                height <- single.bin.length/ single.bin.percentage + 1
-            } else
-                single.bin.length <- height* single.bin.percentage - 1
-            if ( is.null( width ) )
-                width <- default.thickness
-        } else {
-            if ( is.null( height ) )
-                height <- default.thickness
-            if ( is.null( width ) ){
-                width <- single.bin.length/ single.bin.percentage + 1
-            } else
-                single.bin.length <- width* single.bin.percentage - 1
+            } else stop('Palette function not supported')
+            
+            if (!any(is.na(values))) na.color = NULL
+            
+            ## For convenience I will also provide the former singleBinHeight variable.
+            ## It would just cause errors if defined at both this script and the wrapper.
+            legend = list(
+                colors = I(unname(colors)), labels = I(unname(labels)),
+                na_color = na.color, na_label = na.label, opacity = opacity,
+                position = position, type = type, title = title, extra = extra,
+                layerId = layerId, className = className, orientation = orientation,
+                totalWidth = width, totalHeight = height, tickOffset = tick.offset.beginning,
+                tickOffsetEnd = tick.offset.end, singleBinLength = single.bin.length
+            )
+            return( legend )
         }
-        ## calculating the tickOffset from the original JS wrapper
-        ## via the extra$p_1, the total length and the single.bin.percentage
-        if ( orientation == "vertical" ){
-            tick.offset <- ( height - 1/ single.bin.percentage )* extra$p_1
-        } else 
-            tick.offset <- ( width - 1/ single.bin.percentage )* extra$p_1        
+        legend <- generate.legend( bins )
+    } else {
+        if ( !missing( labels ) && !missing( colors ) ){
+            if (length(colors) != length( legend$labels ) )
+                stop("'colors' and 'labels' must be of the same length")
+        } else
+            stop( "'colors' and 'labels' must be supplied when 'pal' if omitted!" )
     }
-
-    ## For convenience I will also provide the former singleBinHeight variable.
-    ## It would just cause errors if defined at both this script and the wrapper.
-  legend = list(
-    colors = I(unname(colors)), labels = I(unname(labels)),
-    na_color = na.color, na_label = na.label, opacity = opacity,
-    position = position, type = type, title = title, extra = extra,
-    layerId = layerId, className = className, orientation = orientation,
-    totalWidth = width, totalHeight = height, tickOffset = tick.offset,
-    singleBinLength = single.bin.length
     
-  )
+    if ( legend$orientation == "horizontal" ){
+        ## In case of the vertical orientation the labels can be whatever
+        ## Now we have to check if the labels actually fit in the color-bar
+        ## I will assign a default width of a character. (Via the inspector)
+        ## With the two spaces in the collapse argument I took care of the
+        ## spaces between the labels (which should be present)
+        character.width <- 9 # [px]
+        label.width <- nchar( paste( legend$labels, sep = ' ', collapse = '  ' ) )*
+            character.width
+        total.width <- label.width + legend$tickOffset + legend$tickOffsetEnd
+        if ( total.width > legend$totalWidth ){
+            ## It does not fit. How much would have fit?
+            warning( "trallala" )
+        }
+    }
+    
   invokeMethod(map, getMapData(map), "addLegend", legend)
 }
 
