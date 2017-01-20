@@ -146,10 +146,10 @@ addLegend <- function(
                 ## via the extra$p_1, the total length and the single.bin.percentage
                 if ( orientation == "vertical" ){
                     tick.offset.beginning <- ( height - 1/ single.bin.percentage )* extra$p_1
-                    tick.offset.end <- ( height - 1/ single.bin.percentage )* extra$p_n
+                    tick.offset.end <- ( height - 1/ single.bin.percentage )* ( 1 - extra$p_n )
                 } else {
                     tick.offset.beginning <- ( width - 1/ single.bin.percentage )* extra$p_1   
-                    tick.offset.end <- ( width - 1/ single.bin.percentage )* extra$p_n
+                    tick.offset.end <- ( width - 1/ single.bin.percentage )* ( 1 - extra$p_n )
                 }
 
             } else if (type == 'bin') {
@@ -211,16 +211,24 @@ addLegend <- function(
         ## I will assign a default width of a character. (Via the inspector)
         ## With the two spaces in the collapse argument I took care of the
         ## spaces between the labels (which should be present)
-        character.width <- 9 # [px]
-        label.width <- nchar( paste( legend$labels, sep = ' ', collapse = '  ' ) )*
-            character.width
-        total.width <- label.width + legend$tickOffset + legend$tickOffsetEnd
-        if ( total.width > legend$totalWidth ){
-            ## It does not fit. How much would have fit?
-            warning( "trallala" )
+        character.width <- 4 # [px]
+        calculate.width <- function( legend ){
+            label.width <- nchar( paste( legend$labels, sep = ' ', collapse = '  ' ) )*
+                character.width
+            total.width <- label.width + legend$tickOffset + legend$tickOffsetEnd
+            return( total.width )
+        }
+        ## reduce the number of bins until the labels fit below the color-bar
+        while( calculate.width( legend ) > legend$totalWidth ){
+            ## It does not fit. So lets take less bins.
+            bins <- bins - 1
+            legend <- generate.legend( bins )
+            if ( bins == 1 ){
+                warning( "No labels fitting below your leaflet legend could be found!" )
+                break
+            }
         }
     }
-    
   invokeMethod(map, getMapData(map), "addLegend", legend)
 }
 
