@@ -51,13 +51,16 @@
 #'   legend. The ID can also be used with \code{removeControl}.
 #' @param orientation a string specifying the orientation of the legend. Default:
 #'   "vertical".
+#' @param width Specifies the legends width (the color-bar; not the overall box) in 'px'. If NULL it will be calculated according to the orientation and tick number. Default = NULL.
+#' @param height Specifies the legends height (the color-bar; not the overall box) in 'px'. If NULL it will be calculated according to the orientation and tick number. Default = NULL.
 #' @example inst/examples/legend.R
 #' @export
 addLegend <- function(
   map, position = c('topright', 'bottomright', 'bottomleft', 'topleft'),
   pal, values, na.label = 'NA', bins = 7, colors, opacity = 0.5, labels,
   labFormat = labelFormat(), title = NULL, className = "info legend",
-  layerId = NULL, orientation = c( "vertical", "horizontal" )
+  layerId = NULL, orientation = c( "vertical", "horizontal" ),
+  width = NULL, height = NULL
 ) {
     position = match.arg(position)
     orientation = match.arg(orientation)
@@ -152,12 +155,50 @@ addLegend <- function(
     if (length(colors) != length(labels))
       stop("'colors' and 'labels' must be of the same length")
   }
+    ## Calculating the width and height of the color-bar
+    ## This is only used/necessary for numerical input
+    if ( type != "numeric" ){
+        height <- width <- tick.offset <- single.bin.length <- NULL
+    } else {
+        ## taken from the original JS wrapper
+        default.thickness <- 18 # [px]; default width/height
+        ## If width/height is given (depending on the orientation)
+        ## this variable will be calculated from them
+        single.bin.length <- 20 # [px]; distance between the ticks
+        single.bin.percentage <- ( extra$p_n - extra$p_1 )/( n - 1 )
+        if ( orientation == "vertical" ){
+            if ( is.null( height ) ){
+                height <- single.bin.length/ single.bin.percentage + 1
+            } else
+                single.bin.length <- height* single.bin.percentage - 1
+            if ( is.null( width ) )
+                width <- default.thickness
+        } else {
+            if ( is.null( height ) )
+                height <- default.thickness
+            if ( is.null( width ) ){
+                width <- single.bin.length/ single.bin.percentage + 1
+            } else
+                single.bin.length <- width* single.bin.percentage - 1
+        }
+        ## calculating the tickOffset from the original JS wrapper
+        ## via the extra$p_1, the total length and the single.bin.percentage
+        if ( orientation == "vertical" ){
+            tick.offset <- ( height - 1/ single.bin.percentage )* extra$p_1
+        } else 
+            tick.offset <- ( width - 1/ single.bin.percentage )* extra$p_1        
+    }
 
+    ## For convenience I will also provide the former singleBinHeight variable.
+    ## It would just cause errors if defined at both this script and the wrapper.
   legend = list(
     colors = I(unname(colors)), labels = I(unname(labels)),
     na_color = na.color, na_label = na.label, opacity = opacity,
     position = position, type = type, title = title, extra = extra,
-    layerId = layerId, className = className, orientation = orientation
+    layerId = layerId, className = className, orientation = orientation,
+    totalWidth = width, totalHeight = height, tickOffset = tick.offset,
+    singleBinLength = single.bin.length
+    
   )
   invokeMethod(map, getMapData(map), "addLegend", legend)
 }
