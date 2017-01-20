@@ -1842,12 +1842,20 @@
               // Now that we know the max label width, we can right-justify
               (0, _jquery2.default)(svg).find("text").attr("dx", labelPadding + maxLblWidth).attr("text-anchor", "end");
 	    } else {
-	      var offsetXTick = singleBinHeight/4;
-	      var offsetXLabel = "-3px";
+	      // To center the text below the ticks I use the same offset for both
+	      // objects and set the 'text-anchor' attribute to the svg's text
+	      // object to 'middle'
+	      var offsetXTick = tickOffset;
+	      var offsetXLabel = tickOffset; 
+	      console.log( "offsetXTick: " + offsetXTick );
+	      console.log( "textWidth: " + textWidth );
+	      console.log( "textWidth/2: " + textWidth/2 );
+	      console.log( "offsetXLabel: " + offsetXLabel );
               _jquery2.default.each(labels, function (i, label) {
-		// center the ticks along the colorbar
-		var x = i * singleBinHeight + 0.5;
+		var x = i * singleBinHeight;//
 		var thisLabel = document.createElementNS(ns, "text");
+		thisLabel.setAttribute( 'text-anchor', 'middle' );
+		console.log( "label width: " + thisLabel.getAttribute( 'textLength' ) );
 		(0, _jquery2.default)(thisLabel).text(labels[i]).attr("x", x).attr("dx", offsetXLabel).attr("dy", "2.5ex");
 		g.appendChild(thisLabel);
 		maxLblWidth = Math.max(maxLblWidth, thisLabel.getComputedTextLength());
