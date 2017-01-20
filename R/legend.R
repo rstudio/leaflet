@@ -75,13 +75,6 @@ addLegend <- function(
         if (missing(title) && inherits(values, 'formula')) title = deparse(values[[2]])
         values = evalFormula(values, getMapData(map))
         generate.legend <- function( bins = bins ){
-            ## To ensure the ticks and labels in the color legend are readable they
-            ## must not be placed at the very beginning or end of the legend.
-            if ( ceiling( values[ 1 ] ) - values[ 1 ] < .25 )
-                warning( "the left-most tick in the leaflet legend will most probably not fit. Please lower the first value of the 'values' argument a bit (e.g. by .25)" )
-            if ( values[ 2 ] - floor( values[ 2 ] ) < .25 )
-                warning( "the right-most tick in the leaflet legend will most probably not fit. Please increase the first value of the 'values' argument a bit (e.g. by .25)" )
-            
             type = attr(pal, 'colorType', exact = TRUE)
             args = attr(pal, 'colorArgs', exact = TRUE)
             na.color = args$na.color
