@@ -1847,10 +1847,6 @@
 	      // object to 'middle'
 	      var offsetXTick = tickOffset;
 	      var offsetXLabel = tickOffset; 
-	      console.log( "offsetXTick: " + offsetXTick );
-	      console.log( "textWidth: " + textWidth );
-	      console.log( "textWidth/2: " + textWidth/2 );
-	      console.log( "offsetXLabel: " + offsetXLabel );
               _jquery2.default.each(labels, function (i, label) {
 		var x = i * singleBinHeight;//
 		var thisLabel = document.createElementNS(ns, "text");
