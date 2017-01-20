@@ -1751,7 +1751,8 @@
 	if (options.type === "numeric") {
 	  (function () {
             // # Formatting constants.
-            var singleBinHeight = 20; // The distance between tick marks, in px
+            var singleBinLenght = options.singleBinLength;
+	    // The distance between tick marks, in px
             var vMargin = 8; // If 1st tick mark starts at top of gradient, how
             // many extra px are needed for the top half of the
             // 1st label? (ditto for last tick mark/label)
@@ -1765,11 +1766,12 @@
             // It might not just be 1/(n-1), if the gradient extends past the tick
             // marks (which can be the case for pretty cut points).
             var singleBinPct = (options.extra.p_n - options.extra.p_1) / (labels.length - 1);
-            // Each bin is `singleBinHeight` high. How tall is the gradient?
-            var totalHeight = 1 / singleBinPct * singleBinHeight + 1;
+            // Each bin is `singleBinLenght` high. How tall is the gradient?
+            var totalHeight = options.totalHeight;
+	    var totalWidth = options.totalWidth;
             // How far should the first tick be shifted down, relative to the top
             // of the gradient?
-            var tickOffset = singleBinHeight / singleBinPct * options.extra.p_1;
+            var tickOffset = options.tickOffset;
 
 	    // The options.orientation will decide if the legend is rendered vertical or horizontal
 	    if ( options.orientation === "vertical" ){
@@ -1777,7 +1779,7 @@
 		"background": "linear-gradient(" + colors + ")",
 		"opacity": options.opacity,
 		"height": totalHeight + "px",
-		"width": "18px",
+		"width": totalWidth + "px",
 		"display": "block",
 		"margin-top": vMargin + "px"
 	      });
@@ -1786,8 +1788,8 @@
               gradSpan = (0, _jquery2.default)("<span/>").css({
 		"background": "linear-gradient( to right," + colors + ")",
 		"opacity": options.opacity,
-		"height": "18px",
-		"width": totalHeight + "px",
+		"height": totalHeight + "px",
+		"width": totalWidth + "px",
 		"display": "block",
 		"margin-top": vMargin + "px"
 	      });
@@ -1828,7 +1830,7 @@
             // Create tick marks and labels
 	    if ( options.orientation === "vertical" ){
               _jquery2.default.each(labels, function (i, label) {
-		var y = tickOffset + i * singleBinHeight + 0.5;
+		var y = tickOffset + i * singleBinLenght + 0.5;
 		
 		var thisLabel = document.createElementNS(ns, "text");
 		(0, _jquery2.default)(thisLabel).text(labels[i]).attr("y", y).attr("dx", labelPadding).attr("dy", "0.5ex");
@@ -1848,7 +1850,7 @@
 	      var offsetXTick = tickOffset;
 	      var offsetXLabel = tickOffset; 
               _jquery2.default.each(labels, function (i, label) {
-		var x = i * singleBinHeight;//
+		var x = i * singleBinLenght;//
 		var thisLabel = document.createElementNS(ns, "text");
 		thisLabel.setAttribute( 'text-anchor', 'middle' );
 		console.log( "label width: " + thisLabel.getAttribute( 'textLength' ) );
@@ -1869,7 +1871,7 @@
               });
 	    } else {
               (0, _jquery2.default)(svg).css({
-		width: totalHeight +  2 + "px",
+		width: totalWidth +  2 + "px",
 		height: vMargin * 3 + "px" // font-height + margin
               });
 	    }
