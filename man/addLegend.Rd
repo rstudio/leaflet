@@ -9,7 +9,7 @@ addLegend(map, position = c("topright", "bottomright", "bottomleft",
   "topleft"), pal, values, na.label = "NA", bins = 7, colors,
   opacity = 0.5, labels, labFormat = labelFormat(), title = NULL,
   className = "info legend", layerId = NULL, orientation = c("vertical",
-  "horizontal"))
+  "horizontal"), width = NULL, height = NULL)
 
 labelFormat(prefix = "", suffix = "", between = " &ndash; ", digits = 3,
   big.mark = ",", transform = identity)
@@ -54,6 +54,10 @@ legend. The ID can also be used with \code{removeControl}.}
 
 \item{orientation}{a string specifying the orientation of the legend. Default:
 "vertical".}
+
+\item{width}{Specifies the legends width (the color-bar; not the overall box) in 'px'. If NULL it will be calculated according to the orientation and tick number. Default = NULL.}
+
+\item{height}{Specifies the legends height (the color-bar; not the overall box) in 'px'. If NULL it will be calculated according to the orientation and tick number. Default = NULL.}
 
 \item{prefix}{a prefix of legend labels}
 
