@@ -1,5 +1,14 @@
 # Why did I did this fork?
-Since for my [climex](https://github.com/theGreatWhiteShark/climex) packages I wanted the legend of the leaflet map (color-coding of the circle markers) to be in horizontal instead of vertical orientation.
+Since for my [climex](https://github.com/theGreatWhiteShark/climex)
+packages I needed some additional features:
+
+- I want to be able to change the orientation of the legend to
+  horizontal
+- The height and width of the legend should be set via the R
+  interface. This way one can:
+  1. Customize the look of the map
+  2. Make the legend look nice on an arbitrary set of different client
+     devices or make it scale automatically with the window width
 
 # An R Interface to Leaflet Maps
 
