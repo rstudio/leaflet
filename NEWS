@@ -23,6 +23,8 @@ leaflet 1.1
 
 * Added Graticule plugin (PR #293)
 
+* Upgrade leaflet.js to 0.7.7.1 (PR #359)
+
 leaflet 1.0.2
 --------------------------------------------------------------------------------
 
