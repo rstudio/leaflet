@@ -34,6 +34,7 @@ BugReports: https://github.com/rstudio/leaflet/issues
 Depends: R (>= 3.1.0)
 Imports:
     base64enc,
+    crosstalk,
     htmlwidgets,
     htmltools,
     magrittr,
@@ -44,7 +45,7 @@ Imports:
     raster,
     scales (>= 0.2.5),
     sp,
-    crosstalk
+    viridis
 Suggests:
     knitr,
     maps,

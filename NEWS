@@ -25,6 +25,8 @@ leaflet 1.1
 
 * Upgrade leaflet.js to 0.7.7.1 (PR #359)
 
+* Color palette functions now support viridis palettes ("viridis", "magma", "inferno", and "plasma").
+
 leaflet 1.0.2
 --------------------------------------------------------------------------------
 

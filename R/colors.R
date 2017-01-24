@@ -242,6 +242,7 @@ colorFactor <- function(palette, domain, levels = NULL, ordered = FALSE,
 #' \enumerate{
 #'   \item{A character vector of RGB or named colors. Examples: \code{palette()}, \code{c("#000000", "#0000FF", "#FFFFFF")}, \code{topo.colors(10)}}
 #'   \item{The name of an RColorBrewer palette, e.g. \code{"BuPu"} or \code{"Greens"}.}
+#'   \item{The full name of a viridis palette: \code{"viridis"}, \code{"magma"}, \code{"inferno"}, or \code{"plasma"}.}
 #'   \item{A function that receives a single value between 0 and 1 and returns a color. Examples: \code{colorRamp(c("#000000", "#FFFFFF"), interpolate="spline")}.}
 #' }
 #' @examples
@@ -283,6 +284,13 @@ toPaletteFunc.character <- function(pal, alpha) {
   if (length(pal) == 1 && pal %in% row.names(RColorBrewer::brewer.pal.info)) {
     return(scales::colour_ramp(
       RColorBrewer::brewer.pal(RColorBrewer::brewer.pal.info[pal, 'maxcolors'], pal),
+      alpha = alpha
+    ))
+  }
+
+  if (length(pal) == 1 && pal %in% c("viridis", "magma", "inferno", "plasma")) {
+    return(scales::colour_ramp(
+      viridis::viridis(n = 256, alpha = 1, option = pal),
       alpha = alpha
     ))
   }
