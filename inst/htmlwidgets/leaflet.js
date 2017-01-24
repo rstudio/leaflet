@@ -873,7 +873,7 @@ var LayerManager = function () {
                   var _groupKeys2 = Object.keys(ctg);
                   // for compatability with plotly's ability to colour selections
                   // https://github.com/jcheng5/plotly/blob/71cf8a/R/crosstalk.R#L96-L100
-                  var selectionColour = crosstalk.var("plotlySelectionColour").get();
+                  var selectionColour = crosstalk.group(ctGroup).var("plotlySelectionColour").get();
                   var ctOpts = crosstalk.var("plotlyCrosstalkOpts").get() || { opacityDim: 0.2 };
                   var persist = ctOpts.persistent === true;
                   for (var _i4 = 0; _i4 < _groupKeys2.length; _i4++) {

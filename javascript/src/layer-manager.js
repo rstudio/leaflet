@@ -150,7 +150,7 @@ export default class LayerManager {
             let groupKeys = Object.keys(ctg);
             // for compatability with plotly's ability to colour selections
             // https://github.com/jcheng5/plotly/blob/71cf8a/R/crosstalk.R#L96-L100
-            let selectionColour = crosstalk.var("plotlySelectionColour").get();
+            let selectionColour = crosstalk.group(ctGroup).var("plotlySelectionColour").get();
             let ctOpts = crosstalk.var("plotlyCrosstalkOpts").get() || {opacityDim: 0.2};
             let persist = ctOpts.persistent === true;
             for (let i = 0; i < groupKeys.length; i++) {
