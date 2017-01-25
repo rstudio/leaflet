@@ -301,7 +301,7 @@ toPaletteFunc <- function(pal, alpha, nlevels) {
 }
 
 # Strings are interpreted as color names, unless length is 1 and it's the name
-# of an RColorBrewer palette
+# of an RColorBrewer palette that is marked as qualitative
 toPaletteFunc.character <- function(pal, alpha, nlevels) {
   if (length(pal) == 1 && pal %in% row.names(RColorBrewer::brewer.pal.info)) {
     paletteInfo <- RColorBrewer::brewer.pal.info[pal,]
@@ -316,18 +316,13 @@ toPaletteFunc.character <- function(pal, alpha, nlevels) {
         }
       }
     }
-
-    return(scales::colour_ramp(colors, alpha = alpha))
+  } else if (length(pal) == 1 && pal %in% c("viridis", "magma", "inferno", "plasma")) {
+    colors <- viridis::viridis(n = 256, option = pal)
+  } else {
+    colors <- pal
   }
 
-  if (length(pal) == 1 && pal %in% c("viridis", "magma", "inferno", "plasma")) {
-    return(scales::colour_ramp(
-      viridis::viridis(n = 256, alpha = 1, option = pal),
-      alpha = alpha
-    ))
-  }
-
-  scales::colour_ramp(pal, alpha = alpha)
+  scales::colour_ramp(colors, alpha = alpha)
 }
 
 # Accept colorRamp style matrix
