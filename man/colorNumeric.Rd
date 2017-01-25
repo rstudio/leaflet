@@ -7,16 +7,17 @@
 \alias{colorQuantile}
 \title{Color mapping}
 \usage{
-colorNumeric(palette, domain, na.color = "#808080", alpha = FALSE)
+colorNumeric(palette, domain, na.color = "#808080", alpha = FALSE,
+  reverse = FALSE)
 
 colorBin(palette, domain, bins = 7, pretty = TRUE, na.color = "#808080",
-  alpha = FALSE)
+  alpha = FALSE, reverse = FALSE)
 
 colorQuantile(palette, domain, n = 4, probs = seq(0, 1, length.out = n + 1),
-  na.color = "#808080", alpha = FALSE)
+  na.color = "#808080", alpha = FALSE, reverse = FALSE)
 
 colorFactor(palette, domain, levels = NULL, ordered = FALSE,
-  na.color = "#808080", alpha = FALSE)
+  na.color = "#808080", alpha = FALSE, reverse = FALSE)
 }
 \arguments{
 \item{palette}{The colors or color function that values will be mapped to}
@@ -39,6 +40,11 @@ colorFactor(palette, domain, levels = NULL, ordered = FALSE,
 \item{alpha}{Whether alpha channels should be respected or ignored. If
 \code{TRUE} then colors without explicit alpha information will be treated
 as fully opaque.}
+
+\item{reverse}{Whether the colors (or color function) in \code{palette}
+should be used in reverse order. For example, if the default order of a
+palette goes from blue to green, then \code{reverse = TRUE} will result in
+the colors going from green to blue.}
 
 \item{bins}{Either a numeric vector of two or more unique cut points or a
 single number (greater than or equal to 2) giving the number of intervals

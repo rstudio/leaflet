@@ -25,7 +25,11 @@ leaflet 1.1
 
 * Upgrade leaflet.js to 0.7.7.1 (PR #359)
 
-* Color palette functions now support viridis palettes ("viridis", "magma", "inferno", and "plasma").
+* Color palette improvements. All color palette functions now support viridis palettes ("viridis", "magma", "inferno", and "plasma").
+
+* Color palette functions now support reversing the order in which colors are used, via reverse=TRUE.
+
+* colorFactor no longer interpolates qualitative RColorBrewer palettes, unless the number of factor levels being mapped exceeds the number of colors in the specified RColorBrewer palette. (Issue #300)
 
 leaflet 1.0.2
 --------------------------------------------------------------------------------
