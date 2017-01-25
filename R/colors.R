@@ -175,7 +175,7 @@ calcLevels <- function(x, ordered) {
   if (is.null(x)) {
     NULL
   } else if (is.factor(x)) {
-    as.character(levels(x))
+    levels(x)
   } else if (ordered) {
     unique(x)
   } else {
@@ -219,7 +219,6 @@ colorFactor <- function(palette, domain, levels = NULL, ordered = FALSE,
     levels = unique(levels)
   }
   lvls = getLevels(domain, NULL, levels, ordered)
-  hasFixedLevels = is.null(lvls)
 
   withColorAttr('factor', list(na.color = na.color), function(x) {
     if (length(x) == 0 || all(is.na(x))) {
@@ -230,10 +229,7 @@ colorFactor <- function(palette, domain, levels = NULL, ordered = FALSE,
     pf = safePaletteFunc(palette, na.color, alpha, nlevels = length(lvls) * ifelse(reverse, -1, 1))
 
     origNa = is.na(x)
-    # Seems like we need to re-factor if hasFixedLevels, in case the x value
-    # has a different set of levels (like if droplevels was called in between
-    # when the domain was given and now)
-    x = factor(x, lvls)
+    x = match(as.character(x), lvls)
     if (any(is.na(x) != origNa)) {
       warning("Some values were outside the color scale and will be treated as NA")
     }
@@ -300,21 +296,29 @@ toPaletteFunc <- function(pal, alpha, nlevels) {
   UseMethod("toPaletteFunc")
 }
 
+brewer_pal <- function(palette, n = NULL) {
+  if (is.null(n))
+    n <- RColorBrewer::brewer.pal.info[palette, "maxcolors"]
+
+  colors <- RColorBrewer::brewer.pal(max(3, n), palette)
+  if (n == 1) {
+    colors[1]
+  } else if (n == 2) {
+    colors[c(1,3)]
+  } else {
+    colors
+  }
+}
+
 # Strings are interpreted as color names, unless length is 1 and it's the name
 # of an RColorBrewer palette that is marked as qualitative
 toPaletteFunc.character <- function(pal, alpha, nlevels) {
   if (length(pal) == 1 && pal %in% row.names(RColorBrewer::brewer.pal.info)) {
     paletteInfo <- RColorBrewer::brewer.pal.info[pal,]
-    colors <- RColorBrewer::brewer.pal(paletteInfo$maxcolors, pal)
-
-    if (!is.null(nlevels) && paletteInfo$category == "qual") {
-      if (abs(nlevels) < paletteInfo$maxcolors) {
-        if (nlevels < 0) {
-          colors <- tail(colors, -nlevels)
-        } else {
-          colors <- head(colors, nlevels)
-        }
-      }
+    if (!is.null(nlevels)) {
+      colors <- brewer_pal(pal, abs(nlevels))
+    } else {
+      colors <- brewer_pal(pal) # Get all colors
     }
   } else if (length(pal) == 1 && pal %in% c("viridis", "magma", "inferno", "plasma")) {
     colors <- viridis::viridis(n = 256, option = pal)

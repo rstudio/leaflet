@@ -1,5 +1,11 @@
 context("colors")
 
+# Like expect_warning, but returns the result of the expr
+with_warning <- function(expr) {
+  expect_warning(result <- force(expr))
+  result
+}
+
 test_that("factors match by name, not position", {
 
   full <- factor(letters[1:5])
@@ -57,7 +63,7 @@ test_that("OK, qualitative palettes sometimes interpolate", {
     n = RColorBrewer::brewer.pal.info["Accent","maxcolors"],
     name = "Accent")
 
-  result <- pal(letters[1:20])
+  result <- with_warning(pal(letters[1:20]))
   # The first and last levels are the first and last palette colors
   expect_true(all(result[c(1,20)] %in% allColors))
   # All the rest are interpolated though
@@ -65,19 +71,12 @@ test_that("OK, qualitative palettes sometimes interpolate", {
 })
 
 verifyReversal <- function(colorFunc, values, ..., filter = identity) {
-  f1 <- colorFunc("Blues", domain = values, ...)(values)
-  f2 <- colorFunc("Blues", domain = NULL, ...)(values)
-  f3 <- colorFunc("Blues", domain = values, reverse = FALSE, ...)(values)
-  f4 <- colorFunc("Blues", domain = NULL, reverse = FALSE, ...)(values)
-  r1 <- colorFunc("Blues", domain = values, reverse = TRUE, ...)(values)
-  r2 <- colorFunc("Blues", domain = NULL, reverse = TRUE, ...)(values)
-
-  f1 <- filter(f1)
-  f2 <- filter(f2)
-  f3 <- filter(f3)
-  f4 <- filter(f4)
-  r1 <- filter(r1)
-  r2 <- filter(r2)
+  f1 <- filter(colorFunc("Blues", domain = values, ...)(values))
+  f2 <- filter(colorFunc("Blues", domain = NULL, ...)(values))
+  f3 <- filter(colorFunc("Blues", domain = values, reverse = FALSE, ...)(values))
+  f4 <- filter(colorFunc("Blues", domain = NULL, reverse = FALSE, ...)(values))
+  r1 <- filter(colorFunc("Blues", domain = values, reverse = TRUE, ...)(values))
+  r2 <- filter(colorFunc("Blues", domain = NULL, reverse = TRUE, ...)(values))
 
   expect_identical(f1, f2)
   expect_identical(f1, f3)
@@ -105,14 +104,14 @@ test_that("colorQuantile can be reversed", {
 
 test_that("colorFactor can be reversed", {
   # With interpolation
-  verifyReversal(colorFactor, letters)
+  verifyReversal(colorFactor, letters, filter = with_warning)
 
   # Without interpolation
   accent <- suppressWarnings(RColorBrewer::brewer.pal(Inf, "Accent"))
   result1 <- colorFactor("Accent", NULL)(letters[1:5])
   expect_identical(result1, head(accent, 5))
-  # Reversing a qualitative palette means we should pull from the end,
-  # in reverse order
+  # Reversing a qualitative palette means we should pull the same colors, but
+  # apply them in reverse order
   result2 <- colorFactor("Accent", NULL, reverse = TRUE)(letters[1:5])
-  expect_identical(result2, rev(tail(accent, 5)))
+  expect_identical(result2, rev(head(accent, 5)))
 })
