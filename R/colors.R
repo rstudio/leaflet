@@ -296,10 +296,17 @@ toPaletteFunc <- function(pal, alpha, nlevels) {
   UseMethod("toPaletteFunc")
 }
 
+# Wrapper function for brewer.pal that deals with n < 3, plus returns maxcolors
+# by default
 brewer_pal <- function(palette, n = NULL) {
   if (is.null(n))
     n <- RColorBrewer::brewer.pal.info[palette, "maxcolors"]
 
+  # Work around the fact that if brewer.pal is passed a number smaller than 3,
+  # it returns 3 colors anyway with a warning.
+  #
+  # It also warns if passed a number greater than maxcolors, but that's OK, we
+  # want the user to see that warning.
   colors <- RColorBrewer::brewer.pal(max(3, n), palette)
   if (n == 1) {
     colors[1]
