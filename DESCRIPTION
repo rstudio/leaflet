@@ -45,6 +45,7 @@ Imports:
     raster,
     scales (>= 0.2.5),
     sp,
+    stats,
     viridis
 Suggests:
     knitr,
