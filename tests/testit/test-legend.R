@@ -58,7 +58,7 @@ assert(
 m4 = addLegend(map, pal = pal4, values = ~x4)
 l4 = getLastLegend(m4)
 assert(
-  l4$colors == c("#1B9E77", "#B27D5D", "#666666"),
+  l4$colors == c("#1B9E77", "#D95F02", "#7570B3"),
   l4$labels == as.character(df$x4),
   l4$type == 'factor'
 )
