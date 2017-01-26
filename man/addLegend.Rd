@@ -9,11 +9,7 @@ addLegend(map, position = c("topright", "bottomright", "bottomleft",
   "topleft"), pal, values, na.label = "NA", bins = 7, colors,
   opacity = 0.5, labels, labFormat = labelFormat(), title = NULL,
   className = "info legend", layerId = NULL, orientation = c("vertical",
-<<<<<<< HEAD
   "horizontal"), width = NULL, height = NULL)
-=======
-  "horizontal"))
->>>>>>> 061143d98d72b00de7dda1062cb509a78d8856a7
 
 labelFormat(prefix = "", suffix = "", between = " &ndash; ", digits = 3,
   big.mark = ",", transform = identity)
@@ -59,13 +55,10 @@ legend. The ID can also be used with \code{removeControl}.}
 \item{orientation}{a string specifying the orientation of the legend. Default:
 "vertical".}
 
-<<<<<<< HEAD
 \item{width}{Specifies the legends width (the color-bar; not the overall box) in 'px'. If NULL it will be calculated according to the orientation and tick number. Default = NULL.}
 
 \item{height}{Specifies the legends height (the color-bar; not the overall box) in 'px'. If NULL it will be calculated according to the orientation and tick number. Default = NULL.}
 
-=======
->>>>>>> 061143d98d72b00de7dda1062cb509a78d8856a7
 \item{prefix}{a prefix of legend labels}
 
 \item{suffix}{a suffix of legend labels}
