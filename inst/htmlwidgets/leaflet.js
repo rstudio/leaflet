@@ -1793,23 +1793,20 @@ methods.addLegend = function (options) {
             "margin-top": vMargin + "px"
           });
         }
-        var leftDiv = (0, _jquery2.default)("<div/>").css("float", "left"),
-            rightDiv = (0, _jquery2.default)("<div/>").css("float", "left");
-        leftDiv.append(gradSpan);
+        var leftDiv = (0, _jquery2.default)("<div/>");
+        var rightDiv = (0, _jquery2.default)("<div/>");
         if (options.orientation === "vertical") {
+          leftDiv.css("float", "left");
+          rightDiv.css("float", "left");
+          leftDiv.append(gradSpan);
           (0, _jquery2.default)(div).append(leftDiv).append(rightDiv).append((0, _jquery2.default)("<br clear=\"both\"/>"));
         } else {
           // display the elements in individual rows
-          // lint was complaining about rightDiv to be not
-          // defined when its definition is put in the
-          // previous if-condition. That's why gets
-          // overwritten.
-          var _leftDiv = (0, _jquery2.default)("<div/>").css("display", "block"),
-              _rightDiv = (0, _jquery2.default)("<div/>").css("display", "block");
-          _leftDiv.append(gradSpan);
+          leftDiv.css("display", "block"), rightDiv.css("display", "block");
+          leftDiv.append(gradSpan);
           // this linebreak does not look nice anymore when plotting
           // the legend in the horizontal direction
-          (0, _jquery2.default)(div).append(_leftDiv).append(_rightDiv);
+          (0, _jquery2.default)(div).append(leftDiv).append(rightDiv);
         }
 
         // Have to attach the div to the body at this early point, so that the
@@ -1862,11 +1859,13 @@ methods.addLegend = function (options) {
               (0, _jquery2.default)(thisLabel).text(labels[i]).attr("x", x).attr("dx", offsetXLabel).attr("dy", "2.5ex");
               g.appendChild(thisLabel);
               maxLblWidth = Math.max(maxLblWidth, thisLabel.getComputedTextLength());
-
               var thisTick = document.createElementNS(ns, "line");
               (0, _jquery2.default)(thisTick).attr("x1", x + offsetXTick).attr("x2", x + offsetXTick).attr("y1", 0).attr("y2", tickWidth).attr("stroke-width", 1);
               g.appendChild(thisTick);
             });
+
+            // Now that we know the max label width, we can right-justify
+            (0, _jquery2.default)(svg).find("text").attr("dx", labelPadding + maxLblWidth).attr("text-anchor", "end");
           })();
         }
 

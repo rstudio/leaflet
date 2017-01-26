@@ -728,20 +728,18 @@ methods.addLegend = function(options) {
           "margin-top": vMargin + "px"
         });
       }
-      let leftDiv = $("<div/>").css("float", "left"),
-        rightDiv = $("<div/>").css("float", "left");
-      leftDiv.append(gradSpan);
+      let leftDiv = $("<div/>");
+      let rightDiv = $("<div/>");
       if ( options.orientation === "vertical" ){
+        leftDiv.css("float", "left");
+        rightDiv.css("float", "left");
+        leftDiv.append(gradSpan);
         $(div).append(leftDiv).append(rightDiv)
               .append($("<br clear=\"both\"/>"));
       } else {
         // display the elements in individual rows
-	// lint was complaining about rightDiv to be not
-	// defined when its definition is put in the
-	// previous if-condition. That's why gets
-	// overwritten.
-        let leftDiv = $("<div/>").css("display", "block"),
-          rightDiv = $("<div/>").css("display", "block");
+        leftDiv.css("display", "block"),
+        rightDiv.css("display", "block");
         leftDiv.append(gradSpan);
         // this linebreak does not look nice anymore when plotting
         // the legend in the horizontal direction
@@ -799,7 +797,7 @@ methods.addLegend = function(options) {
         // offset for both objects and set the 'text-anchor'
         // attribute to the svg's text object to 'middle'
         let offsetXTick = tickOffset;
-        let offsetXLabel = tickOffset; 
+        let offsetXLabel = tickOffset;
         $.each(labels, function(i, label) {
           var x = i*singleBinLength;
 
@@ -812,7 +810,6 @@ methods.addLegend = function(options) {
             .attr("dy", "2.5ex");
           g.appendChild(thisLabel);
           maxLblWidth = Math.max(maxLblWidth, thisLabel.getComputedTextLength());
-
           let thisTick = document.createElementNS(ns, "line");
           $(thisTick)
             .attr("x1", x + offsetXTick)
@@ -822,6 +819,11 @@ methods.addLegend = function(options) {
             .attr("stroke-width", 1);
           g.appendChild(thisTick);
         });
+
+        // Now that we know the max label width, we can right-justify
+        $(svg).find("text")
+              .attr("dx", labelPadding + maxLblWidth)
+              .attr("text-anchor", "end");
       }
       
       // Final size for <svg>
