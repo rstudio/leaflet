@@ -686,7 +686,7 @@ methods.addLegend = function(options) {
       legendHTML = "";
     if (options.type === "numeric") {
       // # Formatting constants.
-      let singleBinHeight = 20;  // The distance between tick marks, in px
+      let singleBinLength = options.singleBinLength;  // The distance between tick marks, in px
       let vMargin = 8; // If 1st tick mark starts at top of gradient, how
                        // many extra px are needed for the top half of the
                        // 1st label? (ditto for last tick mark/label)
@@ -699,26 +699,54 @@ methods.addLegend = function(options) {
       // What's the height of a single bin, in percentage (of gradient height)?
       // It might not just be 1/(n-1), if the gradient extends past the tick
       // marks (which can be the case for pretty cut points).
-      let singleBinPct = (options.extra.p_n - options.extra.p_1) / (labels.length - 1);
+      // let singleBinPct = (options.extra.p_n - options.extra.p_1) / (labels.length - 1); // according to lint this is not used at all
       // Each bin is `singleBinHeight` high. How tall is the gradient?
-      let totalHeight = (1 / singleBinPct) * singleBinHeight + 1;
+      let totalHeight = options.totalHeight;
+      let totalWidth = options.totalWidth;
       // How far should the first tick be shifted down, relative to the top
       // of the gradient?
-      let tickOffset = (singleBinHeight / singleBinPct) * options.extra.p_1;
+      let tickOffset = options.tickOffset;
 
-      gradSpan = $("<span/>").css({
-        "background": "linear-gradient(" + colors + ")",
-        "opacity": options.opacity,
-        "height": totalHeight + "px",
-        "width": "18px",
-        "display": "block",
-        "margin-top": vMargin + "px"
-      });
+      // The options.orientation will decide if the legend is rendered vertical or horizontal
+      if ( options.orientation === "vertical" ){
+        gradSpan = $("<span/>").css({
+          "background": "linear-gradient(" + colors + ")",
+          "opacity": options.opacity,
+          "height": totalHeight + "px",
+          "width": totalWidth + "px",
+          "display": "block",
+          "margin-top": vMargin + "px"
+        });
+      } else {
+        // the heigt and width will just be switched
+        gradSpan = $("<span/>").css({
+          "background": "linear-gradient( to right," + colors + ")",
+          "opacity": options.opacity,
+          "height": totalHeight + "px",
+          "width": totalWidth + "px",
+          "display": "block",
+          "margin-top": vMargin + "px"
+        });
+      }
       let leftDiv = $("<div/>").css("float", "left"),
         rightDiv = $("<div/>").css("float", "left");
       leftDiv.append(gradSpan);
-      $(div).append(leftDiv).append(rightDiv)
-        .append($("<br clear=\"both\"/>"));
+      if ( options.orientation === "vertical" ){
+        $(div).append(leftDiv).append(rightDiv)
+              .append($("<br clear=\"both\"/>"));
+      } else {
+        // display the elements in individual rows
+	// lint was complaining about rightDiv to be not
+	// defined when its definition is put in the
+	// previous if-condition. That's why gets
+	// overwritten.
+        let leftDiv = $("<div/>").css("display", "block"),
+          rightDiv = $("<div/>").css("display", "block");
+        leftDiv.append(gradSpan);
+        // this linebreak does not look nice anymore when plotting
+        // the legend in the horizontal direction
+        $(div).append(leftDiv).append(rightDiv);
+      }
 
       // Have to attach the div to the body at this early point, so that the
       // svg text getComputedTextLength() actually works, below.
@@ -727,46 +755,87 @@ methods.addLegend = function(options) {
       let ns = "http://www.w3.org/2000/svg";
       let svg = document.createElementNS(ns, "svg");
       rightDiv.append(svg);
+      // container for grouping all the legend's labels 
       let g = document.createElementNS(ns, "g");
-      $(g).attr("transform", "translate(0, " + vMargin + ")");
+      if ( options.orientation === "vertical" ){
+        $(g).attr("transform", "translate(0, " + vMargin + ")");
+      }
       svg.appendChild(g);
 
       // max label width needed to set width of svg, and right-justify text
       let maxLblWidth = 0;
 
       // Create tick marks and labels
-      $.each(labels, function(i, label) {
-        let y = tickOffset + i*singleBinHeight + 0.5;
+      if ( options.orientation === "vertical" ){
+        $.each(labels, function(i, label) {
+          let y = tickOffset + i*singleBinLength + 0.5;
 
-        let thisLabel = document.createElementNS(ns, "text");
-        $(thisLabel)
-          .text(labels[i])
-          .attr("y", y)
-          .attr("dx", labelPadding)
-          .attr("dy", "0.5ex");
-        g.appendChild(thisLabel);
-        maxLblWidth = Math.max(maxLblWidth, thisLabel.getComputedTextLength());
+          let thisLabel = document.createElementNS(ns, "text");
+          $(thisLabel)
+            .text(labels[i])
+            .attr("y", y)
+            .attr("dx", labelPadding)
+            .attr("dy", "0.5ex");
+          g.appendChild(thisLabel);
+          maxLblWidth = Math.max(maxLblWidth, thisLabel.getComputedTextLength());
 
-        let thisTick = document.createElementNS(ns, "line");
-        $(thisTick)
-          .attr("x1", 0)
-          .attr("x2", tickWidth)
-          .attr("y1", y)
-          .attr("y2", y)
-          .attr("stroke-width", 1);
-        g.appendChild(thisTick);
-      });
+          let thisTick = document.createElementNS(ns, "line");
+          $(thisTick)
+            .attr("x1", 0)
+            .attr("x2", tickWidth)
+            .attr("y1", y)
+            .attr("y2", y)
+            .attr("stroke-width", 1);
+          g.appendChild(thisTick);
+        });
 
-      // Now that we know the max label width, we can right-justify
-      $(svg).find("text")
-        .attr("dx", labelPadding + maxLblWidth)
-        .attr("text-anchor", "end");
+        // Now that we know the max label width, we can right-justify
+        $(svg).find("text")
+              .attr("dx", labelPadding + maxLblWidth)
+              .attr("text-anchor", "end");
+      } else {
+        // options.orientation === "horizontal"
+        // To center the text below the ticks I use the same
+        // offset for both objects and set the 'text-anchor'
+        // attribute to the svg's text object to 'middle'
+        let offsetXTick = tickOffset;
+        let offsetXLabel = tickOffset; 
+        $.each(labels, function(i, label) {
+          var x = i*singleBinLength;
+
+          let thisLabel = document.createElementNS(ns, "text");
+          thisLabel.setAttribute( "text-anchor", "middle" );
+          $(thisLabel)
+            .text(labels[i])
+            .attr("x", x)
+            .attr("dx", offsetXLabel)
+            .attr("dy", "2.5ex");
+          g.appendChild(thisLabel);
+          maxLblWidth = Math.max(maxLblWidth, thisLabel.getComputedTextLength());
+
+          let thisTick = document.createElementNS(ns, "line");
+          $(thisTick)
+            .attr("x1", x + offsetXTick)
+            .attr("x2", x + offsetXTick)
+            .attr("y1", 0)
+            .attr("y2", tickWidth)
+            .attr("stroke-width", 1);
+          g.appendChild(thisTick);
+        });
+      }
+      
       // Final size for <svg>
-      $(svg).css({
-        width: (maxLblWidth + labelPadding) + "px",
-        height: totalHeight + vMargin*2 + "px"
-      });
-
+      if ( options.orientation === "vertical" ){
+        $(svg).css({
+          width: (maxLblWidth + labelPadding) + "px",
+          height: totalHeight + vMargin*2 + "px"
+        });
+      } else {
+        $(svg).css({
+          width: totalWidth + 2 + "px",
+          height: vMargin*3 + "px" // font-height + margin
+        });
+      }
       if (options.na_color) {
         $(div).append("<div><i style=\"background:" + options.na_color +
                       "\"></i> " + options.na_label + "</div>");
