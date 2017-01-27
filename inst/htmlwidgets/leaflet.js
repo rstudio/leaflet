@@ -1599,10 +1599,14 @@ methods.addPolygons = function (polygons, layerId, group, options, popup, popupO
 
     addLayers(this, "shape", df, function (df, i) {
       var shapes = df.get(i, "shapes");
-      for (var j = 0; j < shapes.length; j++) {
-        shapes[j] = _htmlwidgets2.default.dataframeToD3(shapes[j]);
-      }
-      return _leaflet2.default.polygon(shapes, df.get(i));
+      shapes = shapes.map(function (polygon) {
+        if (polygon.lat) {
+          return [_htmlwidgets2.default.dataframeToD3(polygon)];
+        } else {
+          return polygon.map(_htmlwidgets2.default.dataframeToD3);
+        }
+      });
+      return _leaflet2.default.multiPolygon(shapes, df.get(i));
     });
   }
 };

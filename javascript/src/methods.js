@@ -535,10 +535,14 @@ methods.addPolygons = function(polygons, layerId, group, options, popup, popupOp
 
     addLayers(this, "shape", df, function(df, i) {
       let shapes = df.get(i, "shapes");
-      for (let j = 0; j < shapes.length; j++) {
-        shapes[j] = HTMLWidgets.dataframeToD3(shapes[j]);
-      }
-      return L.polygon(shapes, df.get(i));
+      shapes = shapes.map(function(polygon) {
+        if (polygon.lat) {
+          return [HTMLWidgets.dataframeToD3(polygon)];
+        } else {
+          return polygon.map(HTMLWidgets.dataframeToD3);
+        }
+      });
+      return L.multiPolygon(shapes, df.get(i));
     });
   }
 };

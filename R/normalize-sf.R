@@ -43,14 +43,16 @@ polygonData.sfc <- function(obj) {
 
 #' @export
 polygonData.MULTIPOLYGON <- function(obj) {
-  n <- vapply(obj, length, integer(1))
-  if (any(n > 1L)) {
-    warning(
-      "leaflet currently does not support MULTIPOLYGONS. Taking first",
-      call. = FALSE)
-  }
-
-  lapply(obj, function(x) sf_coords(x[[1]]))
+  # Each element of obj is a polygon (list).
+  # Each element of a polygon is a ring (matrix).
+  structure(
+    lapply(obj, function(polygon) {
+      lapply(polygon, function(ring) {
+        sf_coords(ring)
+      })
+    }),
+    bbox = sf_bbox(obj)
+  )
 }
 #' @export
 polygonData.MULTILINESTRING <- polygonData.MULTIPOLYGON
