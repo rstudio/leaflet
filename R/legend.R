@@ -62,12 +62,12 @@ addLegend <- function(
   layerId = NULL, orientation = c( "vertical", "horizontal" ),
   width = NULL, height = NULL
 ) {
-    position = match.arg(position)
-    orientation = match.arg(orientation)
+  position = match.arg(position)
+  orientation = match.arg(orientation)
   type = 'unknown'; na.color = NULL
   extra = NULL  # only used for numeric palettes to store extra info
-
-    if (!missing(pal)) {
+  
+  if (!missing(pal)) {
         if (!missing(colors))
             stop("You must provide either 'pal' or 'colors' (not both)")
         
@@ -153,7 +153,7 @@ addLegend <- function(
                 mids = (cuts[-1] + cuts[-n]) / 2
                 colors = pal(mids)
                 labels = labFormat(type = 'bin', cuts)
-                height <- width <- tick.offset <- single.bin.length <- NULL
+                tick.offset.beginning <- tick.offset.end <- single.bin.length <- NULL
 
             } else if (type == 'quantile') {
 
@@ -164,14 +164,14 @@ addLegend <- function(
                 mids = quantile(values, probs = (p[-1] + p[-n]) / 2, na.rm = TRUE)
                 colors = pal(mids)
                 labels = labFormat(type = 'quantile', cuts, p)
-                height <- width <- tick.offset <- single.bin.length <- NULL
+                tick.offset.beginning <- tick.offset.end <- single.bin.length <- NULL
 
             } else if (type == 'factor') {
 
                 v = sort(unique(na.omit(values)))
                 colors = pal(v)
                 labels = labFormat(type = 'factor', v)
-                height <- width <- tick.offset <- single.bin.length <- NULL
+                tick.offset.beginning <- tick.offset.end <- single.bin.length <- NULL
 
             } else stop('Palette function not supported')
             
@@ -192,8 +192,37 @@ addLegend <- function(
         legend <- generate.legend( bins )
     } else {
         if ( !missing( labels ) && !missing( colors ) ){
-            if (length(colors) != length( legend$labels ) )
+            if (length(colors) != length( labels ) )
                 stop("'colors' and 'labels' must be of the same length")
+            if ( orientation == "horizontal" ){
+                warning( "To use the horizontal orientation of the legend please supply a palette." )
+                orientation <- "vertical"
+            }
+            ## Heuristic width and height for supplied colors and corresponding labels
+            singleBinLength <- 18 # size of colored square
+            if ( is.null( title ) ){
+                title.height <- title.width <- 0
+            } else {
+                title.height <- 18 # 16px character + 2px padding
+                title.width <- nchar( title )* 8
+            }
+            ## width of colored bar + margin + label
+            column.width <- singleBinLength + 8 + max( nchar( labels ) )* 8
+            ## height colored bins + title + padding
+            if ( is.null( height ) )
+                height <- singleBinLength* length( colors ) + title.width + 2* 6
+            ## the widest element controls the width + padding
+            if ( is.null( width ) )
+                widht <- max( column.width, title.width ) + 2*8
+            
+            legend <- list(
+                colors = I( unname( colors ) ), labels = I( unname( labels ) ),
+                na_color = na.color, na_label = na.label, opacity = opacity,
+                position = position, type = type, title = title, extra = extra,
+                layerId = layerId, className = className, orientation = orientation,
+                totalWidth = width, totalHeight = height, tickOffset = 0,
+                tickOffsetEnd = 0, singleBinLength = singleBinLength
+            )
         } else
             stop( "'colors' and 'labels' must be supplied when 'pal' if omitted!" )
     }
