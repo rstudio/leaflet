@@ -82,6 +82,8 @@ addLegend <- function(
             if (!is.null(na.color) && col2rgb(na.color, alpha = TRUE)[[4]] == 0) {
                 na.color = NULL
             }
+            if (type != 'numeric' && !missing(bins))
+                warning("'bins' is ignored because the palette type is not numeric")
             if (type == 'numeric') {
 
                 ## choose pretty cut points to draw tick-marks on the color gradient if
