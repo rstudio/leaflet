@@ -43,22 +43,24 @@ polygonData.sfc <- function(obj) {
 
 #' @export
 polygonData.MULTIPOLYGON <- function(obj) {
-  n <- vapply(obj, length, integer(1))
-  if (any(n > 1L)) {
-    warning(
-      "leaflet currently does not support MULTIPOLYGONS. Taking first",
-      call. = FALSE)
-  }
-
-  lapply(obj, function(x) sf_coords(x[[1]]))
+  unlist(
+    structure(
+      lapply(obj, function(x) lapply(x, sf_coords)),
+      bbox = sf_bbox(obj)
+    ), recursive = FALSE
+  )
 }
 #' @export
 polygonData.MULTILINESTRING <- polygonData.MULTIPOLYGON
 
 #' @export
 polygonData.POLYGON <- function(obj) {
-  lapply(obj, sf_coords)
+  structure(
+    lapply(obj, sf_coords),
+    bbox = sf_bbox(obj)
+  )
 }
+
 #' @export
 polygonData.LINESTRING <- polygonData.POLYGON
 
