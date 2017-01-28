@@ -24,22 +24,25 @@ pointData.SpatialPointsDataFrame <- function(obj) {
 
 #' @export
 polygonData.Polygon <- function(obj) {
+
+  list(list(to_polygon(obj)))
   structure(
-    list(list(sp_coords(obj))),
+    to_polygon(obj) %>%
+      list() %>%  # multipolygon
+      list(),     # list of multipolygons
     bbox = sp_bbox(obj)
   )
 }
 #' @export
-polygonData.Polygons <- function(obj) {
-  structure(
-    list(polygons2coords(obj)),
-    bbox = sp_bbox(obj)
-  )
-}
+polygonData.Polygons <- polygonData.Polygon
+
 #' @export
 polygonData.SpatialPolygons <- function(obj) {
   structure(
-    lapply(obj@polygons, polygons2coords),
+    lapply(obj@polygons, function(pgon) {
+      to_polygon(pgon) %>%
+        list() # multipolygon
+    }),
     bbox = sp_bbox(obj)
   )
 }
@@ -56,21 +59,28 @@ polygonData.SpatialPolygonsDataFrame <- function(obj) {
 #' @export
 polygonData.Line <- function(obj) {
   structure(
-    list(list(sp_coords(obj))),
+    to_polygon(obj) %>%
+      list() %>% # multipolygon
+      list(),    # list of multipolygons
     bbox = sp_bbox(obj)
   )
 }
 #' @export
 polygonData.Lines <- function(obj) {
   structure(
-    list(lines2coords(obj)),
+    to_polygon(obj) %>%
+      list() %>% # multipolygon
+      list(),    # list of multipolygons
     bbox = sp_bbox(obj)
   )
 }
 #' @export
 polygonData.SpatialLines <- function(obj) {
   structure(
-    lapply(obj@lines, lines2coords),
+    lapply(obj@lines, function(line) {
+      to_polygon(line) %>%
+        list() # multipolygon
+    }),
     bbox = sp_bbox(obj)
   )
 }
@@ -100,10 +110,18 @@ sp_bbox <- function(x) {
   bbox
 }
 
-polygons2coords <- function(pgon) {
-  lapply(pgon@Polygons[pgon@plotOrder], sp_coords)
+to_polygon.Polygons <- function(pgons) {
+  lapply(pgons@Polygons[pgons@plotOrder], sp_coords)
 }
 
-lines2coords <- function(lines) {
+to_polygon.Polygon <- function(pgon) {
+  list(sp_coords(pgon))
+}
+
+to_polygon.Lines <- function(lines) {
   lapply(lines@Lines, sp_coords)
+}
+
+to_polygon.Line <- function(line) {
+  list(sp_coords(line))
 }

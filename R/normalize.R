@@ -165,3 +165,20 @@ checkMatrix <- function(x) {
     stop("Matrix data must have exactly two columns", call. = FALSE)
   }
 }
+
+to_ring <- function(x) {
+  UseMethod("to_ring")
+}
+
+to_polygon <- function(x) {
+  UseMethod("to_polygon")
+}
+
+to_multipolygon <- function(x) {
+  UseMethod("to_multipolygon")
+}
+
+#' @export
+to_multipolygon.default <- function(x) {
+  list(to_polygon(x))
+}

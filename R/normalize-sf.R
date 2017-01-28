@@ -23,6 +23,22 @@ pointData.sfc_POINT <- function(obj) {
   )
 }
 
+#' @export
+pointData.POINT <- function(obj) {
+  check_crs(obj)
+
+  bbox <- sf_bbox(obj)
+
+  if (!is.matrix(obj)) {
+    obj <- matrix(obj, nrow = 1)
+  }
+
+  structure(
+    sf_coords(obj),
+    bbox = bbox
+  )
+}
+
 # polygonData -------------------------------------------------------------
 
 #' @export
@@ -36,24 +52,20 @@ polygonData.sfc <- function(obj) {
   check_crs(obj)
 
   structure(
-    lapply(obj, polygonData),
+    lapply(obj, to_multipolygon),
     bbox = sf_bbox(obj)
   )
 }
 
 #' @export
 polygonData.MULTIPOLYGON <- function(obj) {
-  # Each element of obj is a polygon (list).
-  # Each element of a polygon is a ring (matrix).
   structure(
-    lapply(obj, function(polygon) {
-      lapply(polygon, function(ring) {
-        sf_coords(ring)
-      })
-    }),
+    to_multipolygon(obj) %>%
+      list(), # list of multipolygons
     bbox = sf_bbox(obj)
   )
 }
+
 #' @export
 polygonData.MULTILINESTRING <- polygonData.MULTIPOLYGON
 
@@ -62,7 +74,14 @@ polygonData.POLYGON <- function(obj) {
   lapply(obj, sf_coords)
 }
 #' @export
-polygonData.LINESTRING <- polygonData.POLYGON
+polygonData.LINESTRING <- function(obj) {
+  structure(
+    to_polygon(obj) %>%
+      list() %>% # multipolygon
+      list(),    # list of multipolygons
+    bbox = sf_bbox(obj)
+  )
+}
 
 
 # helpers -----------------------------------------------------------------
@@ -89,12 +108,45 @@ check_crs <- function(x) {
 }
 
 sf_coords <- function(x) {
+  stopifnot(is.matrix(x) || inherits(x, "XY"))
   structure(
-    as.data.frame(x),
+    as.data.frame(unclass(x)),
     names = c("lng", "lat")
   )
 }
 
 sf_bbox <- function(x) {
-  matrix(sf::st_bbox(x), ncol = 2, byrow = FALSE)
+  structure(
+    matrix(sf::st_bbox(x), ncol = 2, byrow = FALSE),
+    dimnames = list(c("lng", "lat"), NULL)
+  )
+}
+
+#' @export
+to_polygon.LINESTRING <- function(x) {
+  list(sf_coords(x))
+}
+
+#' @export
+to_polygon.POLYGON <- function(x) {
+  lapply(x, sf_coords)
+}
+
+#' @export
+to_multipolygon.sfc <- function(x) {
+  lapply(x, to_polygon)
+}
+
+#' @export
+to_multipolygon.MULTIPOLYGON <- function(x) {
+  lapply(x, function(el) {
+    to_polygon(sf::st_polygon(el))
+  })
+}
+
+#' @export
+to_multipolygon.MULTILINESTRING <- function(x) {
+  lapply(x, function(el) {
+    to_polygon(sf::st_linestring(el))
+  })
 }
