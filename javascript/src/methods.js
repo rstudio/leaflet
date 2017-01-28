@@ -278,6 +278,9 @@ clusterOptions, clusterId, label, labelOptions, crosstalkOptions) {
         return new L.AwesomeMarkers.icon();
       }
 
+      if(opts.squareMarker) {
+        opts.className = "awesome-marker awesome-marker-square";
+      }
       return new L.AwesomeMarkers.icon(opts);
     };
   }

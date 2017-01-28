@@ -1407,6 +1407,9 @@ methods.addAwesomeMarkers = function (lat, lng, icon, layerId, group, options, p
         return new _leaflet2.default.AwesomeMarkers.icon();
       }
 
+      if (opts.squareMarker) {
+        opts.className = "awesome-marker awesome-marker-square";
+      }
       return new _leaflet2.default.AwesomeMarkers.icon(opts);
     };
   }
@@ -2287,7 +2290,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 // pixel of the original image has some contribution to the downscaled image)
 // as opposed to a single-step downscaling which will discard a lot of data
 // (and with sparse images at small scales can give very surprising results).
-
 var Mipmapper = function () {
   function Mipmapper(img) {
     _classCallCheck(this, Mipmapper);
