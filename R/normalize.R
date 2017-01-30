@@ -151,7 +151,7 @@ polygonData.matrix <- function(obj) {
   polys <- split(df[!missing, , drop = FALSE], group[!missing])
 
   structure(
-    lapply(unname(polys), list),
+    lapply(unname(polys), function(x) list(list(x))),
     bbox = bbox
   )
 }
