@@ -43,8 +43,7 @@ pointData.POINT <- function(obj) {
 
 #' @export
 polygonData.sf <- function(obj) {
-  geometry <- obj[[attr(obj, "sf_column")]]
-  polygonData(geometry)
+  polygonData(sf::st_geometry(obj))
 }
 
 #' @export
@@ -52,33 +51,15 @@ polygonData.sfc <- function(obj) {
   check_crs(obj)
 
   structure(
-    lapply(obj, to_multipolygon),
+    to_multipolygon_list(obj),
     bbox = sf_bbox(obj)
   )
 }
 
 #' @export
-polygonData.MULTIPOLYGON <- function(obj) {
+polygonData.sfg <- function(obj) {
   structure(
-    to_multipolygon(obj) %>%
-      list(), # list of multipolygons
-    bbox = sf_bbox(obj)
-  )
-}
-
-#' @export
-polygonData.MULTILINESTRING <- polygonData.MULTIPOLYGON
-
-#' @export
-polygonData.POLYGON <- function(obj) {
-  lapply(obj, sf_coords)
-}
-#' @export
-polygonData.LINESTRING <- function(obj) {
-  structure(
-    to_polygon(obj) %>%
-      list() %>% # multipolygon
-      list(),    # list of multipolygons
+    to_multipolygon_list(obj),
     bbox = sf_bbox(obj)
   )
 }
@@ -123,8 +104,8 @@ sf_bbox <- function(x) {
 }
 
 #' @export
-to_polygon.LINESTRING <- function(x) {
-  list(sf_coords(x))
+to_ring.LINESTRING <- function(x) {
+  sf_coords(x)
 }
 
 #' @export
@@ -133,8 +114,8 @@ to_polygon.POLYGON <- function(x) {
 }
 
 #' @export
-to_multipolygon.sfc <- function(x) {
-  lapply(x, to_polygon)
+to_multipolygon_list.sfc <- function(x) {
+  lapply(x, to_multipolygon)
 }
 
 #' @export

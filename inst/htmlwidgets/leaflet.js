@@ -1600,11 +1600,7 @@ methods.addPolygons = function (polygons, layerId, group, options, popup, popupO
     addLayers(this, "shape", df, function (df, i) {
       var shapes = df.get(i, "shapes");
       shapes = shapes.map(function (polygon) {
-        if (polygon.lat) {
-          return [_htmlwidgets2.default.dataframeToD3(polygon)];
-        } else {
-          return polygon.map(_htmlwidgets2.default.dataframeToD3);
-        }
+        return polygon.map(_htmlwidgets2.default.dataframeToD3);
       });
       return _leaflet2.default.multiPolygon(shapes, df.get(i));
     });

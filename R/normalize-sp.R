@@ -22,30 +22,20 @@ pointData.SpatialPointsDataFrame <- function(obj) {
 
 # polygonData -------------------------------------------------------------
 
-#' @export
-polygonData.Polygon <- function(obj) {
-
-  list(list(to_polygon(obj)))
+polygonData_sp <- function(obj) {
   structure(
-    to_polygon(obj) %>%
-      list() %>%  # multipolygon
-      list(),     # list of multipolygons
+    to_multipolygon_list(obj),
     bbox = sp_bbox(obj)
   )
 }
-#' @export
-polygonData.Polygons <- polygonData.Polygon
 
 #' @export
-polygonData.SpatialPolygons <- function(obj) {
-  structure(
-    lapply(obj@polygons, function(pgon) {
-      to_polygon(pgon) %>%
-        list() # multipolygon
-    }),
-    bbox = sp_bbox(obj)
-  )
-}
+polygonData.Polygon <- polygonData_sp
+#' @export
+polygonData.Polygons <- polygonData_sp
+#' @export
+polygonData.SpatialPolygons <- polygonData_sp
+
 #' @export
 polygonData.SpatialPolygonsDataFrame <- function(obj) {
   if (length(obj@polygons) > 0) {
@@ -57,33 +47,12 @@ polygonData.SpatialPolygonsDataFrame <- function(obj) {
 }
 
 #' @export
-polygonData.Line <- function(obj) {
-  structure(
-    to_polygon(obj) %>%
-      list() %>% # multipolygon
-      list(),    # list of multipolygons
-    bbox = sp_bbox(obj)
-  )
-}
+polygonData.Line <- polygonData_sp
 #' @export
-polygonData.Lines <- function(obj) {
-  structure(
-    to_polygon(obj) %>%
-      list() %>% # multipolygon
-      list(),    # list of multipolygons
-    bbox = sp_bbox(obj)
-  )
-}
+polygonData.Lines <- polygonData_sp
 #' @export
-polygonData.SpatialLines <- function(obj) {
-  structure(
-    lapply(obj@lines, function(line) {
-      to_polygon(line) %>%
-        list() # multipolygon
-    }),
-    bbox = sp_bbox(obj)
-  )
-}
+polygonData.SpatialLines <- polygonData_sp
+
 #' @export
 polygonData.SpatialLinesDataFrame <- function(obj) {
   if (length(obj@lines) > 0) {
@@ -103,6 +72,8 @@ sp_coords <- function(x) {
   )
 }
 
+# Converters --------------------------------------------------------------
+
 sp_bbox <- function(x) {
   bbox <- sp::bbox(x)
   colnames(bbox) <- NULL
@@ -110,18 +81,32 @@ sp_bbox <- function(x) {
   bbox
 }
 
+#' @export
+to_multipolygon_list.SpatialPolygons <- function(pgons) {
+  lapply(pgons@polygons, to_multipolygon)
+}
+
+#' @export
 to_polygon.Polygons <- function(pgons) {
-  lapply(pgons@Polygons[pgons@plotOrder], sp_coords)
+  lapply(pgons@Polygons[pgons@plotOrder], to_ring)
 }
 
-to_polygon.Polygon <- function(pgon) {
-  list(sp_coords(pgon))
+#' @export
+to_ring.Polygon <- function(pgon) {
+  sp_coords(pgon)
 }
 
+#' @export
+to_multipolygon_list.SpatialLines <- function(lines) {
+  lapply(lines@lines, to_multipolygon)
+}
+
+#' @export
 to_polygon.Lines <- function(lines) {
-  lapply(lines@Lines, sp_coords)
+  lapply(lines@Lines, to_ring)
 }
 
-to_polygon.Line <- function(line) {
-  list(sp_coords(line))
+#' @export
+to_ring.Line <- function(line) {
+  sp_coords(line)
 }

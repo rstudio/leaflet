@@ -26,6 +26,7 @@ test_that("derivePolygons works with sf classes", {
 # derivePolygons -----------------------------------------------------------
 
 verifyPolygonData <- function(x) {
+  expect_true(!is.null(attr(x, "bbox", exact = TRUE)))
   expect_is(x, "list")
   lapply(x, function(multipolygon) {
     expect_is(multipolygon, "list")
@@ -101,6 +102,7 @@ test_that("derivePolygons works with sf classes", {
 
   expect_warning(verifyPolygonData(derivePolygons(sf::st_geometry(nc))))
   verifyPolygonData(derivePolygons(sf::st_geometry(nc)[[1]]))
+  verifyPolygonData(derivePolygons(sf::st_polygon(sf::st_geometry(nc)[[1]][[1]])))
 })
 
 # guessLatLongCols --------------------------------------------------------

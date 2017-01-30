@@ -104,7 +104,7 @@ pointData <- function(obj) {
 #' @export
 pointData.default <- function(obj) {
   stop("Don't know how to get location data from object of class ",
-    class(obj)[[1]])
+    paste(class(obj), collapse = ","))
 }
 
 #' @export
@@ -166,12 +166,53 @@ checkMatrix <- function(x) {
   }
 }
 
-to_ring <- function(x) {
-  UseMethod("to_ring")
+
+# ==== Multi-polygon conversion generic functions ====
+#
+# The return value from the polygonData generic function is a list of
+# multipolygons, plus a bbox attribute.
+#
+# We want to implement polygonData generics for:
+#
+# - lists of multipolygons
+# - individual multipolygons
+# - lists of polygons
+# - individual polygons
+# - lists of multipolylines
+# - individual multipolylines
+# - lists of polylines
+# - individual polylines
+#
+# The previous implementation of this logic tried to directly implement
+# polygonData for each of the above (or at least as many as we could until the
+# scheme fell apart). This doesn't work because the shape of the return value
+# of polygonData must always be the same (a list of multipolygons) and always
+# includes the bbox attribute which is not needed for inner data structures.
+# In other words, polygonData.MULTIPOLYGON can't just do something like
+# lapply(obj, polygonData.POLYGON) because polygonData.POLYGON has too much
+# structure.
+#
+# The new scheme defines a family of conversion functions:
+#
+# - to_multipolygon_list
+# - to_multipolygon
+# - to_polygon
+# - to_ring
+#
+# Each of the specific sp/sf classes need only implement whichever ONE of those
+# actually makes sense (e.g. to_multipolygon_list.sfc,
+# to_multipolygon.MULTIPOLYGON, to_polygon.POLYGON, to_ring.LINESTRING). The
+# higher-level polygonData wrappers will simply call to_multipolygon_list(x),
+# and the default implementations of those methods will fall through to the next
+# level until a match is found.
+
+to_multipolygon_list <- function(x) {
+  UseMethod("to_multipolygon_list")
 }
 
-to_polygon <- function(x) {
-  UseMethod("to_polygon")
+#' @export
+to_multipolygon_list.default <- function(x) {
+  list(to_multipolygon(x))
 }
 
 to_multipolygon <- function(x) {
@@ -181,4 +222,23 @@ to_multipolygon <- function(x) {
 #' @export
 to_multipolygon.default <- function(x) {
   list(to_polygon(x))
+}
+
+to_polygon <- function(x) {
+  UseMethod("to_polygon")
+}
+
+#' @export
+to_polygon.default <- function(x) {
+  list(to_ring(x))
+}
+
+to_ring <- function(x) {
+  UseMethod("to_ring")
+}
+
+#' @export
+to_ring.default <- function(x) {
+  stop("Don't know how to get polygon data from object of class ",
+    paste(class(x), collapse = ","))
 }
