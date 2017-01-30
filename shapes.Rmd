@@ -25,7 +25,7 @@ library(rgdal)
 
 # From https://www.census.gov/geo/maps-data/data/cbf/cbf_state.html
 states <- readOGR("shp/cb_2013_us_state_20m.shp",
-  layer = "cb_2013_us_state_20m", verbose = TRUE)
+  layer = "cb_2013_us_state_20m", GDAL1_integer64_policy = TRUE)
 
 neStates <- subset(states, states$STUSPS %in% c(
   "CT","ME","MA","NH","RI","VT","NY","NJ","PA"
@@ -34,7 +34,7 @@ neStates <- subset(states, states$STUSPS %in% c(
 leaflet(neStates) %>%
   addPolygons(
     stroke = FALSE, fillOpacity = 0.5, smoothFactor = 0.5,
-    color = ~colorQuantile("YlOrRd", neStates$AWATER)(AWATER)
+    color = ~colorQuantile("YlOrRd", AWATER)(AWATER)
   )
 ```
 
