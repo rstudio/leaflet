@@ -4,7 +4,6 @@ cache: packages
 dist: trusty
 
 apt_packages:
-  - r-cran-rgdal
   - libproj-dev
 
 before_install:
@@ -13,6 +12,7 @@ before_install:
   - sudo apt-get install --yes libudunits2-dev libproj-dev libgeos-dev libgdal-dev
 
 r_packages:
+  - rgdal
   - rgeos
   - sf
 
