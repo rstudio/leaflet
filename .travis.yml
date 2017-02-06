@@ -1,6 +1,7 @@
 language: r
 sudo: required
 cache: packages
+dist: trusty
 
 apt_packages:
   - r-cran-rgdal
