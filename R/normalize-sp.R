@@ -87,8 +87,23 @@ to_multipolygon_list.SpatialPolygons <- function(pgons) {
 }
 
 #' @export
-to_polygon.Polygons <- function(pgons) {
-  lapply(pgons@Polygons[pgons@plotOrder], to_ring)
+to_multipolygon.Polygons <- function(pgons) {
+  if (length(pgons@Polygons) > 1) {
+    # If Polygons contains more than one Polygon, then we may be dealing with
+    # a polygon with holes or a multipolygon (potentially with holes). Use
+    # createPolygonsComment to validate and determine what the situation is.
+    comment <- rgeos::createPolygonsComment(pgons)
+    pstatus <- as.integer(strsplit(comment, " ")[[1]])
+    lapply(which(pstatus == 0L), function(index) {
+      # Return a list of rings, exterior first
+      c(
+        list(to_ring(pgons@Polygons[[index]])),  # exterior
+        lapply(pgons@Polygons[pstatus == index], to_ring)  # holes, if any
+      )
+    })
+  } else {
+    to_multipolygon(pgons@Polygons[[1]])
+  }
 }
 
 #' @export
