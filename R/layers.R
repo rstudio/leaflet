@@ -6,8 +6,12 @@
 evalFormula <- function(list, data) {
   evalAll <- function(x) {
     if (is.list(x)) {
-      structure(lapply(x, evalAll), class = class(x))
-    } else resolveFormula(x, data)
+      # Use `x[] <-` so attributes on x are preserved
+      x[] <- lapply(x, evalAll)
+      x
+    } else {
+      resolveFormula(x, data)
+    }
   }
   evalAll(list)
 }
