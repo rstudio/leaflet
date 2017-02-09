@@ -30,6 +30,11 @@ pointData.POINT <- function(obj) {
   bbox <- sf_bbox(obj)
 
   if (!is.matrix(obj)) {
+    # st_point can be represented by either a numeric vector or a matrix.
+    # Normalize to a matrix.
+    #
+    # is.matrix(sf::st_point(c(1,1))) # FALSE
+    # is.matrix(sf::st_point(matrix(c(1, 1), ncol = 2))) # TRUE
     obj <- matrix(obj, nrow = 1)
   }
 
