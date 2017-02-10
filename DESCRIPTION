@@ -54,6 +54,7 @@ Suggests:
     shiny,
     testit (>= 0.4),
     rgdal,
+    rgeos,
     R6,
     RJSONIO,
     purrr,

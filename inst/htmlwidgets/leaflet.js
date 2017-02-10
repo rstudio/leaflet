@@ -1538,9 +1538,9 @@ methods.addPolylines = function (polygons, layerId, group, options, popup, popup
 
     addLayers(this, "shape", df, function (df, i) {
       var shapes = df.get(i, "shapes");
-      for (var j = 0; j < shapes.length; j++) {
-        shapes[j] = _htmlwidgets2.default.dataframeToD3(shapes[j]);
-      }
+      shapes = shapes.map(function (shape) {
+        return _htmlwidgets2.default.dataframeToD3(shape[0]);
+      });
       if (shapes.length > 1) {
         return _leaflet2.default.multiPolyline(shapes, df.get(i));
       } else {
@@ -1602,10 +1602,10 @@ methods.addPolygons = function (polygons, layerId, group, options, popup, popupO
 
     addLayers(this, "shape", df, function (df, i) {
       var shapes = df.get(i, "shapes");
-      for (var j = 0; j < shapes.length; j++) {
-        shapes[j] = _htmlwidgets2.default.dataframeToD3(shapes[j]);
-      }
-      return _leaflet2.default.polygon(shapes, df.get(i));
+      shapes = shapes.map(function (polygon) {
+        return polygon.map(_htmlwidgets2.default.dataframeToD3);
+      });
+      return _leaflet2.default.multiPolygon(shapes, df.get(i));
     });
   }
 };

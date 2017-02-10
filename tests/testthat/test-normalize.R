@@ -25,14 +25,30 @@ test_that("derivePolygons works with sf classes", {
 
 # derivePolygons -----------------------------------------------------------
 
+verifyPolygonData <- function(x) {
+  expect_true(!is.null(attr(x, "bbox", exact = TRUE)))
+  expect_is(x, "list")
+  lapply(x, function(multipolygon) {
+    expect_is(multipolygon, "list")
+    lapply(multipolygon, function(polygon) {
+      expect_is(polygon, "list")
+      lapply(polygon, function(ring) {
+        expect_is(ring, "data.frame")
+      })
+    })
+  })
+  x
+}
+
 test_that("derivePolygons normalizes polygon data across sp polygon classes", {
   data("meuse.riv", package = "sp", envir = environment())
   df <- data.frame(x = 1, row.names = "river")
 
   poly <- sp::Polygon(meuse.riv)
   out <- derivePolygons(poly)
-  expect_equal(out[[1]][[1]]$lng, meuse.riv[, 1])
-  expect_equal(out[[1]][[1]]$lat, meuse.riv[, 2])
+  verifyPolygonData(out)
+  expect_equal(out[[1]][[1]][[1]]$lng, meuse.riv[, 1])
+  expect_equal(out[[1]][[1]][[1]]$lat, meuse.riv[, 2])
   # row/col names are different but values are the same
   expect_equivalent(attr(out, "bbox"), sp::bbox(meuse.riv))
 
@@ -52,8 +68,9 @@ test_that("derivePolygons normalizes polygon data across sp line classes", {
 
   line <- sp::Line(meuse.riv)
   out <- derivePolygons(line)
-  expect_equal(out[[1]][[1]]$lng, meuse.riv[, 1])
-  expect_equal(out[[1]][[1]]$lat, meuse.riv[, 2])
+  verifyPolygonData(out)
+  expect_equal(out[[1]][[1]][[1]]$lng, meuse.riv[, 1])
+  expect_equal(out[[1]][[1]][[1]]$lat, meuse.riv[, 2])
   # row/col names are different but values are the same
   expect_equivalent(attr(out, "bbox"), sp::bbox(meuse.riv))
 
@@ -65,6 +82,9 @@ test_that("derivePolygons normalizes polygon data across sp line classes", {
 
   slinesdf <- sp::SpatialLinesDataFrame(slines, df)
   expect_equal(derivePolygons(slinesdf), out)
+
+  expect_equal(derivePolygons(sf::st_as_sfc(slines)[[1]]), out)
+  expect_equal(derivePolygons(sf::st_as_sfc(slines)), out)
 })
 
 test_that("derivePolygons works with sf classes", {
@@ -78,6 +98,11 @@ test_that("derivePolygons works with sf classes", {
   )
 
   expect_length(polys, nrow(nc))
+  verifyPolygonData(polys)
+
+  expect_warning(verifyPolygonData(derivePolygons(sf::st_geometry(nc))))
+  verifyPolygonData(derivePolygons(sf::st_geometry(nc)[[1]]))
+  verifyPolygonData(derivePolygons(sf::st_polygon(sf::st_geometry(nc)[[1]][[1]])))
 })
 
 # guessLatLongCols --------------------------------------------------------
