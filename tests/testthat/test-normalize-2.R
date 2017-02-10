@@ -70,3 +70,48 @@ class(do.call(rbind, unclass(st_geometry(ptsdata))) %>% st_multipoint())  # XY, 
 # leaflet() %>% addTiles() %>% addCircleMarkers(data = do.call(rbind, unclass(st_geometry(ptsdata))) %>% st_multipoint())
 
 expect_maps_equal(p1, p2)
+
+
+### lines -----------------------------------------------------------------
+create_square <- function(width = 2, lng = 0, lat = 0, hole = FALSE, type = Polygon) {
+  lngs <- c(lng-width/2, lng+width/2, lng+width/2, lng-width/2)
+  lats <- c(lat+width/2, lat+width/2, lat-width/2, lat-width/2)
+
+  if (hole) {
+    lngs <- rev(lngs)
+    lats <- rev(lats)
+  }
+
+  type(cbind(lng = lngs, lat = lats))
+}
+
+spolys <- SpatialPolygons(list(
+  Polygons(list(
+    create_square(),
+    create_square(, 5, 5),
+    create_square(1, hole = TRUE),
+    create_square(1, 5, 5, hole = TRUE),
+    create_square(0.4, 4.25, 4.25, hole = TRUE)
+  ), "A")
+))
+stspolys <- st_as_sf(spolys)
+(l101 <- leaflet(spolys) %>% addPolygons())
+(l102 <- leaflet(stspolys) %>% addPolygons())
+expect_maps_equal(l101, l102)
+(l103 <- leaflet(spolys) %>% addPolylines())
+(l104 <- leaflet(stspolys) %>% addPolylines())
+expect_maps_equal(l103, l104)
+
+slines <- SpatialLines(list(
+  Lines(list(
+    create_square(type = Line),
+    create_square(, 5, 5, type = Line),
+    create_square(1, hole = TRUE, type = Line),
+    create_square(1, 5, 5, hole = TRUE, type = Line),
+    create_square(0.4, 4.25, 4.25, hole = TRUE, type = Line)
+  ), "A")
+))
+stslines <- st_as_sf(slines)
+(l105 <- leaflet(slines) %>% addPolylines())
+(l106 <- leaflet(stslines) %>% addPolylines())
+expect_maps_equal(l105, l106)

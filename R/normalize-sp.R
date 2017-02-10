@@ -117,8 +117,8 @@ to_multipolygon_list.SpatialLines <- function(lines) {
 }
 
 #' @export
-to_polygon.Lines <- function(lines) {
-  lapply(lines@Lines, to_ring)
+to_multipolygon.Lines <- function(lines) {
+  lapply(lines@Lines, to_polygon)
 }
 
 #' @export
