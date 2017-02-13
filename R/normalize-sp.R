@@ -92,7 +92,9 @@ to_multipolygon.Polygons <- function(pgons) {
     # If Polygons contains more than one Polygon, then we may be dealing with
     # a polygon with holes or a multipolygon (potentially with holes). Use
     # createPolygonsComment to validate and determine what the situation is.
-    comment <- rgeos::createPolygonsComment(pgons)
+    comment <- comment(pgons)
+    if (is.null(comment) || comment == "FALSE")
+      comment <- rgeos::createPolygonsComment(pgons)
     pstatus <- as.integer(strsplit(comment, " ")[[1]])
     lapply(which(pstatus == 0L), function(index) {
       # Return a list of rings, exterior first
