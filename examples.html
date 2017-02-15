@@ -129,6 +129,9 @@ $(document).ready(function () {
   p code {
     white-space: inherit;
   }
+  .leaflet-container {
+    margin: 0 0 10.5px;
+  }
 </style>
 
 <div class="fluid-row">
@@ -183,7 +186,9 @@ $(document).ready(function () {
 </div>
 
 
-<p>Here we present some detailed examples. You can find the source code under the <a href="https://github.com/rstudio/leaflet/tree/master/inst/examples">examples</a> directory.</p>
+<div id="examples" class="section level2">
+<h2>Examples</h2>
+<p>You can find the source code for the following examples under the <a href="https://github.com/rstudio/leaflet/tree/master/inst/examples">examples</a> directory.</p>
 <div id="tiles" class="section level4">
 <h4>Tiles</h4>
 <ul>
@@ -195,7 +200,6 @@ $(document).ready(function () {
 <ul>
 <li><a href="examples/labels.html">Labels on Markers and Shapes</a></li>
 <li><a href="examples/awesomeMarkers.html">Awesome Markers</a></li>
-<li><a href="examples/geojson.html">GeoJSON converted to Spatial Object</a></li>
 <li><a href="examples/marker-clustering.html">Marker Clustering</a></li>
 <li><a href="examples/highlight-polygons.html">Highlight Polygons on Mouse over</a></li>
 </ul>
@@ -218,6 +222,7 @@ $(document).ready(function () {
 <li><a href="examples/proj4leaflet_with_tms.html">Proj4Leaflet and TMS</a></li>
 </ul>
 </div>
+</div>
 
 <footer>
 <p><small>The "leaflet" R package is copyright &copy; 2014-2016 RStudio, Inc.<br/>
@@ -238,8 +243,11 @@ Maps &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contr
 <script>
 
 // add bootstrap table styles to pandoc tables
-$(document).ready(function () {
+function bootstrapStylePandocTables() {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
 });
 
 

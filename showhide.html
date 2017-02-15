@@ -145,6 +145,9 @@ $(document).ready(function () {
   p code {
     white-space: inherit;
   }
+  .leaflet-container {
+    margin: 0 0 10.5px;
+  }
 </style>
 
 <div class="fluid-row">
@@ -262,7 +265,7 @@ map</code></pre>
       {
         "method": "addTiles",
         "args": [
-          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           "OSM (default)",
           {
@@ -348,6 +351,7 @@ map</code></pre>
           null,
           null,
           null,
+          null,
           null
         ]
       },
@@ -356,10 +360,12 @@ map</code></pre>
         "args": [
           [
             [
-              {
-                "lng": [182.4, 181.8, 180.2, 177.1, 175.7, 166, 165.67, 165.77, 165.99, 187.2, 187.81, 188.13, 188.1],
-                "lat": [-33, -34.1, -35.56, -38.28, -38.59, -14.7, -12.85, -10.78, -10.72, -15.17, -15.46, -15.87, -17.7]
-              }
+              [
+                {
+                  "lng": [182.4, 181.8, 180.2, 177.1, 175.7, 166, 165.67, 165.77, 165.99, 187.2, 187.81, 188.13, 188.1],
+                  "lat": [-33, -34.1, -35.56, -38.28, -38.59, -14.7, -12.85, -10.78, -10.72, -15.17, -15.46, -15.87, -17.7]
+                }
+              ]
             ]
           ],
           null,
@@ -434,7 +440,7 @@ map</code></pre>
       {
         "method": "addTiles",
         "args": [
-          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           "OSM (default)",
           {
@@ -520,6 +526,7 @@ map</code></pre>
           null,
           null,
           null,
+          null,
           null
         ]
       },
@@ -528,10 +535,12 @@ map</code></pre>
         "args": [
           [
             [
-              {
-                "lng": [182.4, 181.8, 180.2, 177.1, 175.7, 166, 165.67, 165.77, 165.99, 187.2, 187.81, 188.13, 188.1],
-                "lat": [-33, -34.1, -35.56, -38.28, -38.59, -14.7, -12.85, -10.78, -10.72, -15.17, -15.46, -15.87, -17.7]
-              }
+              [
+                {
+                  "lng": [182.4, 181.8, 180.2, 177.1, 175.7, 166, 165.67, 165.77, 165.99, 187.2, 187.81, 188.13, 188.1],
+                  "lat": [-33, -34.1, -35.56, -38.28, -38.59, -14.7, -12.85, -10.78, -10.72, -15.17, -15.46, -15.87, -17.7]
+                }
+              ]
             ]
           ],
           null,
@@ -635,7 +644,7 @@ l %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -706,7 +715,8 @@ l %&gt;%
             "style": null,
             "zoomAnimation": true,
             "className": ""
-          }
+          },
+          null
         ]
       },
       {
@@ -755,7 +765,8 @@ l %&gt;%
             "style": null,
             "zoomAnimation": true,
             "className": ""
-          }
+          },
+          null
         ]
       },
       {
@@ -804,7 +815,8 @@ l %&gt;%
             "style": null,
             "zoomAnimation": true,
             "className": ""
-          }
+          },
+          null
         ]
       },
       {
@@ -849,8 +861,11 @@ Maps &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contr
 <script>
 
 // add bootstrap table styles to pandoc tables
-$(document).ready(function () {
+function bootstrapStylePandocTables() {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
 });
 
 

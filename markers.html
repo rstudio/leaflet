@@ -33,7 +33,7 @@
 <script src="libs/leaflet-binding/leaflet.js"></script>
 <link href="libs/leaflet-awesomemarkers/leaflet.awesome-markers.css" rel="stylesheet" />
 <script src="libs/leaflet-awesomemarkers/leaflet.awesome-markers.min.js"></script>
-<link href="libs/awesomemarkers-ionicons/ionicons.min.css" rel="stylesheet" />
+<link href="libs/ionicons/ionicons.min.css" rel="stylesheet" />
 <link href="libs/leaflet-markercluster/MarkerCluster.css" rel="stylesheet" />
 <link href="libs/leaflet-markercluster/MarkerCluster.Default.css" rel="stylesheet" />
 <script src="libs/leaflet-markercluster/leaflet.markercluster.js"></script>
@@ -146,6 +146,9 @@ $(document).ready(function () {
   p code {
     white-space: inherit;
   }
+  .leaflet-container {
+    margin: 0 0 10.5px;
+  }
 </style>
 
 <div class="fluid-row">
@@ -228,7 +231,7 @@ leaflet(data = quakes[1:20,]) %&gt;% addTiles() %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -277,6 +280,7 @@ leaflet(data = quakes[1:20,]) %&gt;% addTiles() %&gt;%
           null,
           null,
           ["4.8", "4.2", "5.4", "4.1", "4", "4", "4.8", "4.4", "4.7", "4.3", "4.4", "4.6", "4.4", "4.4", "6.1", "4.3", "6", "4.5", "4.4", "4.4"],
+          null,
           null
         ]
       }
@@ -320,7 +324,7 @@ leaflet(data = quakes[1:4,]) %&gt;% addTiles() %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -386,6 +390,7 @@ leaflet(data = quakes[1:4,]) %&gt;% addTiles() %&gt;%
           null,
           null,
           null,
+          null,
           null
         ]
       }
@@ -431,7 +436,7 @@ leaflet(data = quakes1) %&gt;% addTiles() %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -497,6 +502,7 @@ leaflet(data = quakes1) %&gt;% addTiles() %&gt;%
           null,
           null,
           null,
+          null,
           null
         ]
       }
@@ -547,7 +553,7 @@ leaflet(df) %&gt;% addTiles() %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -602,6 +608,7 @@ leaflet(df) %&gt;% addTiles() %&gt;%
             "riseOnHover": false,
             "riseOffset": 250
           },
+          null,
           null,
           null,
           null,
@@ -664,7 +671,7 @@ leaflet(df.20) %&gt;% addTiles() %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -719,6 +726,7 @@ leaflet(df.20) %&gt;% addTiles() %&gt;%
           null,
           null,
           ["4.8", "4.2", "5.4", "4.1", "4", "4", "4.8", "4.4", "4.7", "4.3", "4.4", "4.6", "4.4", "4.4", "6.1", "4.3", "6", "4.5", "4.4", "4.4"],
+          null,
           null
         ]
       }
@@ -755,7 +763,7 @@ leaflet(df.20) %&gt;% addTiles() %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -815,6 +823,7 @@ leaflet(df.20) %&gt;% addTiles() %&gt;%
           },
           null,
           null,
+          null,
           null
         ]
       }
@@ -851,7 +860,7 @@ leaflet(df.20) %&gt;% addTiles() %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -904,6 +913,7 @@ leaflet(df.20) %&gt;% addTiles() %&gt;%
           null,
           null,
           null,
+          null,
           null
         ]
       }
@@ -942,7 +952,7 @@ leaflet(df) %&gt;% addTiles() %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -982,14 +992,15 @@ leaflet(df) %&gt;% addTiles() %&gt;%
             "pointerEvents": null,
             "className": "",
             "stroke": false,
-            "color": ["#FF0000", "#000080", "#000080", "#000080", "#000080", "#000080", "#000080", "#000080", "#000080", "#FF0000", "#000080", "#000080", "#000080", "#000080", "#000080", "#000080", "#FF0000", "#000080", "#FF0000", "#FF0000"],
+            "color": ["#000080", "#FF0000", "#FF0000", "#FF0000", "#FF0000", "#FF0000", "#FF0000", "#FF0000", "#FF0000", "#000080", "#FF0000", "#FF0000", "#FF0000", "#FF0000", "#FF0000", "#FF0000", "#000080", "#FF0000", "#000080", "#000080"],
             "weight": 5,
             "opacity": 0.5,
             "fill": true,
-            "fillColor": ["#FF0000", "#000080", "#000080", "#000080", "#000080", "#000080", "#000080", "#000080", "#000080", "#FF0000", "#000080", "#000080", "#000080", "#000080", "#000080", "#000080", "#FF0000", "#000080", "#FF0000", "#FF0000"],
+            "fillColor": ["#000080", "#FF0000", "#FF0000", "#FF0000", "#FF0000", "#FF0000", "#FF0000", "#FF0000", "#FF0000", "#000080", "#FF0000", "#FF0000", "#FF0000", "#FF0000", "#FF0000", "#FF0000", "#000080", "#FF0000", "#000080", "#000080"],
             "fillOpacity": 0.5,
             "dashArray": null
           },
+          null,
           null,
           null,
           null,
@@ -1029,8 +1040,11 @@ Maps &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contr
 <script>
 
 // add bootstrap table styles to pandoc tables
-$(document).ready(function () {
+function bootstrapStylePandocTables() {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
 });
 
 

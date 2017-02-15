@@ -22,7 +22,7 @@
 <script src="libs/navigation-1.1/tabsets.js"></script>
 <link href="libs/highlightjs-1.1/default.css" rel="stylesheet" />
 <script src="libs/highlightjs-1.1/highlight.js"></script>
-<script src="libs/htmlwidgets-0.7/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-0.8/htmlwidgets.js"></script>
 <link href="libs/leaflet-0.7.7/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-0.7.7/leaflet.js"></script>
 <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
@@ -30,7 +30,7 @@
 <script src="libs/leaflet-label-0.2.2/leaflet.label.js"></script>
 <script src="libs/Proj4Leaflet-0.7.2/proj4-compressed.js"></script>
 <script src="libs/Proj4Leaflet-0.7.2/proj4leaflet.js"></script>
-<script src="libs/leaflet-binding-1.0.2.9003/leaflet.js"></script>
+<script src="libs/leaflet-binding-1.0.2.9010/leaflet.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -138,6 +138,9 @@ $(document).ready(function () {
   p code {
     white-space: inherit;
   }
+  .leaflet-container {
+    margin: 0 0 10.5px;
+  }
 </style>
 
 <div class="fluid-row">
@@ -146,7 +149,7 @@ $(document).ready(function () {
       <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-          <a class="navbar-brand" href="../">Leaflet for R</a>
+          <a class="navbar-brand" href="./">Leaflet for R</a>
         </div>
       </div>
     </nav>
@@ -215,7 +218,7 @@ leaflet() %&gt;% addTiles() %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -264,6 +267,7 @@ leaflet() %&gt;% addTiles() %&gt;%
           null,
           null,
           "This is a label",
+          null,
           null
         ]
       }
@@ -299,7 +303,7 @@ leaflet() %&gt;% addTiles() %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -359,7 +363,8 @@ leaflet() %&gt;% addTiles() %&gt;%
             "style": null,
             "zoomAnimation": true,
             "className": ""
-          }
+          },
+          null
         ]
       }
     ],
@@ -415,7 +420,7 @@ leaflet() %&gt;% addTiles() %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -479,7 +484,8 @@ leaflet() %&gt;% addTiles() %&gt;%
             "style": null,
             "zoomAnimation": true,
             "className": ""
-          }
+          },
+          null
         ]
       },
       {
@@ -521,7 +527,8 @@ leaflet() %&gt;% addTiles() %&gt;%
             "style": null,
             "zoomAnimation": true,
             "className": ""
-          }
+          },
+          null
         ]
       },
       {
@@ -563,7 +570,8 @@ leaflet() %&gt;% addTiles() %&gt;%
             "style": null,
             "zoomAnimation": true,
             "className": ""
-          }
+          },
+          null
         ]
       },
       {
@@ -605,7 +613,8 @@ leaflet() %&gt;% addTiles() %&gt;%
             "style": null,
             "zoomAnimation": true,
             "className": ""
-          }
+          },
+          null
         ]
       }
     ],
@@ -665,7 +674,7 @@ leaflet() %&gt;% addTiles() %&gt;% setView(-118.456554,34.09,13) %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -725,7 +734,8 @@ leaflet() %&gt;% addTiles() %&gt;% setView(-118.456554,34.09,13) %&gt;%
             "style": null,
             "zoomAnimation": true,
             "className": ""
-          }
+          },
+          null
         ]
       },
       {
@@ -763,7 +773,8 @@ leaflet() %&gt;% addTiles() %&gt;% setView(-118.456554,34.09,13) %&gt;%
             "style": null,
             "zoomAnimation": true,
             "className": ""
-          }
+          },
+          null
         ]
       },
       {
@@ -801,7 +812,8 @@ leaflet() %&gt;% addTiles() %&gt;% setView(-118.456554,34.09,13) %&gt;%
             "style": null,
             "zoomAnimation": true,
             "className": ""
-          }
+          },
+          null
         ]
       },
       {
@@ -846,7 +858,8 @@ leaflet() %&gt;% addTiles() %&gt;% setView(-118.456554,34.09,13) %&gt;%
             },
             "zoomAnimation": true,
             "className": ""
-          }
+          },
+          null
         ]
       }
     ],
@@ -888,7 +901,7 @@ leaflet() %&gt;% addTiles() %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -988,7 +1001,7 @@ leaflet(cities) %&gt;% addTiles() %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -1040,6 +1053,7 @@ leaflet(cities) %&gt;% addTiles() %&gt;%
           null,
           ["Boston", "Hartford", "New York City", "Philadelphia", "Pittsburgh", "Providence"],
           null,
+          null,
           null
         ]
       }
@@ -1076,7 +1090,7 @@ leaflet(cities) %&gt;% addTiles() %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -1201,6 +1215,7 @@ leaflet(cities) %&gt;% addTiles() %&gt;%
               "className": ""
             }
           ],
+          null,
           null
         ]
       }
@@ -1237,7 +1252,7 @@ leaflet(cities) %&gt;% addTiles() %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -1359,7 +1374,8 @@ leaflet(cities) %&gt;% addTiles() %&gt;%
               "zoomAnimation": true,
               "className": ""
             }
-          ]
+          ],
+          null
         ]
       }
     ],
@@ -1396,7 +1412,7 @@ leaflet(cities) %&gt;% addTiles() %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -1522,7 +1538,8 @@ leaflet(cities) %&gt;% addTiles() %&gt;%
               "zoomAnimation": true,
               "className": ""
             }
-          ]
+          ],
+          null
         ]
       }
     ],
@@ -1561,7 +1578,7 @@ leaflet(cities) %&gt;% addTiles() %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -1690,7 +1707,8 @@ leaflet(cities) %&gt;% addTiles() %&gt;%
               "zoomAnimation": true,
               "className": ""
             }
-          ]
+          ],
+          null
         ]
       }
     ],
@@ -1723,8 +1741,11 @@ Maps &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contr
 <script>
 
 // add bootstrap table styles to pandoc tables
-$(document).ready(function () {
+function bootstrapStylePandocTables() {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
 });
 
 

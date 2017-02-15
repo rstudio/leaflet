@@ -45,7 +45,7 @@
 <link href="libs/leaflet-easybutton/easy-button.css" rel="stylesheet" />
 <script src="libs/leaflet-easybutton/easy-button.js"></script>
 <script src="libs/leaflet-easybutton/EasyButton-binding.js"></script>
-<link href="libs/awesomemarkers-fontawesome/font-awesome.min.css" rel="stylesheet" />
+<link href="libs/fontawesome/font-awesome.min.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -153,6 +153,9 @@ $(document).ready(function () {
   p code {
     white-space: inherit;
   }
+  .leaflet-container {
+    margin: 0 0 10.5px;
+  }
 </style>
 
 <div class="fluid-row">
@@ -237,7 +240,7 @@ leaflet() %&gt;% addTiles() %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -317,7 +320,7 @@ leaflet() %&gt;% addTiles() %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -352,7 +355,14 @@ leaflet() %&gt;% addTiles() %&gt;%
             "weight": 1
           },
           null,
-          null
+          null,
+          {
+            "lineCap": null,
+            "lineJoin": null,
+            "clickable": false,
+            "pointerEvents": "none",
+            "className": ""
+          }
         ]
       }
     ],
@@ -391,7 +401,7 @@ leaflet() %&gt;% addTiles() %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -422,7 +432,14 @@ leaflet() %&gt;% addTiles() %&gt;%
           1,
           null,
           null,
-          null
+          null,
+          {
+            "lineCap": null,
+            "lineJoin": null,
+            "clickable": false,
+            "pointerEvents": "none",
+            "className": ""
+          }
         ]
       }
     ]
@@ -542,7 +559,7 @@ leaflet() %&gt;% addTiles() %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -901,8 +918,11 @@ Maps &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contr
 <script>
 
 // add bootstrap table styles to pandoc tables
-$(document).ready(function () {
+function bootstrapStylePandocTables() {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
 });
 
 

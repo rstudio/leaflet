@@ -22,7 +22,7 @@
 <script src="libs/navigation-1.1/tabsets.js"></script>
 <link href="libs/highlightjs-1.1/default.css" rel="stylesheet" />
 <script src="libs/highlightjs-1.1/highlight.js"></script>
-<script src="libs/htmlwidgets-0.7/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-0.8/htmlwidgets.js"></script>
 <link href="libs/leaflet-0.7.7/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-0.7.7/leaflet.js"></script>
 <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
@@ -30,17 +30,17 @@
 <script src="libs/leaflet-label-0.2.2/leaflet.label.js"></script>
 <script src="libs/Proj4Leaflet-0.7.2/proj4-compressed.js"></script>
 <script src="libs/Proj4Leaflet-0.7.2/proj4leaflet.js"></script>
-<script src="libs/leaflet-binding-1.0.2.9003/leaflet.js"></script>
+<script src="libs/leaflet-binding-1.0.2.9010/leaflet.js"></script>
 <link href="libs/leaflet-easybutton-1.3.1/easy-button.css" rel="stylesheet" />
 <script src="libs/leaflet-easybutton-1.3.1/easy-button.js"></script>
 <script src="libs/leaflet-easybutton-1.3.1/EasyButton-binding.js"></script>
-<link href="libs/awesomemarkers-fontawesome-4.4.0/font-awesome.min.css" rel="stylesheet" />
+<link href="libs/fontawesome-4.7.0/font-awesome.min.css" rel="stylesheet" />
 <link href="libs/leaflet-markercluster-0.5.0/MarkerCluster.css" rel="stylesheet" />
 <link href="libs/leaflet-markercluster-0.5.0/MarkerCluster.Default.css" rel="stylesheet" />
 <script src="libs/leaflet-markercluster-0.5.0/leaflet.markercluster.js"></script>
 <script src="libs/leaflet-markercluster-0.5.0/leaflet.markercluster.layersupport-src.js"></script>
 <script src="libs/leaflet-markercluster-0.5.0/leaflet.markercluster.freezable-src.js"></script>
-<link href="libs/awesomemarkers-ionicons-2.0.0/ionicons.min.css" rel="stylesheet" />
+<link href="libs/ionicons-2.0.1/ionicons.min.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -148,6 +148,9 @@ $(document).ready(function () {
   p code {
     white-space: inherit;
   }
+  .leaflet-container {
+    margin: 0 0 10.5px;
+  }
 </style>
 
 <div class="fluid-row">
@@ -156,7 +159,7 @@ $(document).ready(function () {
       <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-          <a class="navbar-brand" href="../">Leaflet for R</a>
+          <a class="navbar-brand" href="./">Leaflet for R</a>
         </div>
       </div>
     </nav>
@@ -202,17 +205,20 @@ $(document).ready(function () {
 </div>
 
 
+<div id="easybutton-examples" class="section level2">
+<h2>EasyButton examples</h2>
+<p>Use <code>addEasyButton()</code> to add simple buttons that trigger custom JavaScript logic.</p>
 <pre class="r"><code>library(leaflet)
 library(htmltools)
 library(htmlwidgets)</code></pre>
-<p>Add two easy buttons. first to set zoom level to 1, second to find your self</p>
+<p>This map adds two buttons: one sets the map zoom level to 1, and the other attempts to locate you.</p>
 <pre class="r"><code>leaflet() %&gt;% addTiles() %&gt;%
   addEasyButton(easyButton(
-    icon=&#39;fa-globe&#39;, title=&#39;Zoom to Level 1&#39;,
-    onClick=JS(&quot;function(btn, map){ map.setZoom(1);}&quot;))) %&gt;%
+    icon=&quot;fa-globe&quot;, title=&quot;Zoom to Level 1&quot;,
+    onClick=JS(&quot;function(btn, map){ map.setZoom(1); }&quot;))) %&gt;%
   addEasyButton(easyButton(
-    icon=&#39;fa-crosshairs&#39;, title=&#39;Locate Me&#39;,
-    onClick=JS(&quot;function(btn, map){ map.locate({setView: true});}&quot;)))</code></pre>
+    icon=&quot;fa-crosshairs&quot;, title=&quot;Locate Me&quot;,
+    onClick=JS(&quot;function(btn, map){ map.locate({setView: true}); }&quot;)))</code></pre>
 <div id="htmlwidget-927ec88a166bf954e46a" style="width:100%;height:336px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-927ec88a166bf954e46a">{
   "x": {
@@ -229,7 +235,7 @@ library(htmlwidgets)</code></pre>
       {
         "method": "addTiles",
         "args": [
-          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -260,7 +266,7 @@ library(htmlwidgets)</code></pre>
           {
             "icon": "fa-globe",
             "title": "Zoom to Level 1",
-            "onClick": "function(btn, map){ map.setZoom(1);}",
+            "onClick": "function(btn, map){ map.setZoom(1); }",
             "position": "topleft"
           }
         ]
@@ -271,7 +277,7 @@ library(htmlwidgets)</code></pre>
           {
             "icon": "fa-crosshairs",
             "title": "Locate Me",
-            "onClick": "function(btn, map){ map.locate({setView: true});}",
+            "onClick": "function(btn, map){ map.locate({setView: true}); }",
             "position": "topleft"
           }
         ]
@@ -281,42 +287,39 @@ library(htmlwidgets)</code></pre>
   "evals": ["calls.1.args.0.onClick", "calls.2.args.0.onClick"],
   "jsHooks": []
 }</script>
-<p><br/><br/>Toggle Button to freeze/unfreeze clustering at a zoom level.</p>
+<p>The next example demonstrates an easyButton with two distinct states: <code>frozen-markers</code> and <code>unfrozen-markers</code>, each of which has a distinct icon, title, and click handler.</p>
 <pre class="r"><code>leaflet() %&gt;% addTiles() %&gt;%
   addMarkers(data=quakes,
-             clusterOptions = markerClusterOptions(),
-             clusterId = &#39;quakesCluster&#39;) %&gt;%
+    clusterOptions = markerClusterOptions(),
+    clusterId = &quot;quakesCluster&quot;) %&gt;%
   addEasyButton(easyButton(
     states = list(
       easyButtonState(
-        stateName=&#39;unfrozen-markers&#39;,
-        icon=&#39;ion-toggle&#39;,
-        title=&#39;Freeze Clusters&#39;,
+        stateName=&quot;unfrozen-markers&quot;,
+        icon=&quot;ion-toggle&quot;,
+        title=&quot;Freeze Clusters&quot;,
         onClick = JS(&quot;
           function(btn, map) {
             var clusterManager =
-              map.layerManager.getLayer(&#39;cluster&#39;,
-                                        &#39;quakesCluster&#39;);
+              map.layerManager.getLayer(&#39;cluster&#39;, &#39;quakesCluster&#39;);
             clusterManager.freezeAtZoom();
             btn.state(&#39;frozen-markers&#39;);
           }&quot;)
       ),
       easyButtonState(
-        stateName=&#39;frozen-markers&#39;,
-        icon=&#39;ion-toggle-filled&#39;,
-        title=&#39;UnFreeze Clusters&#39;,
+        stateName=&quot;frozen-markers&quot;,
+        icon=&quot;ion-toggle-filled&quot;,
+        title=&quot;UnFreeze Clusters&quot;,
         onClick = JS(&quot;
           function(btn, map) {
             var clusterManager =
-              map.layerManager.getLayer(&#39;cluster&#39;,
-                                        &#39;quakesCluster&#39;);
+              map.layerManager.getLayer(&#39;cluster&#39;, &#39;quakesCluster&#39;);
             clusterManager.unfreeze();
             btn.state(&#39;unfrozen-markers&#39;);
           }&quot;)
       )
     )
   ))</code></pre>
-<pre><code>## Assuming &#39;long&#39; and &#39;lat&#39; are longitude and latitude, respectively</code></pre>
 <div id="htmlwidget-e2aad06f99e8b55df8d8" style="width:100%;height:336px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-e2aad06f99e8b55df8d8">{
   "x": {
@@ -333,7 +336,7 @@ library(htmlwidgets)</code></pre>
       {
         "method": "addTiles",
         "args": [
-          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -393,6 +396,7 @@ library(htmlwidgets)</code></pre>
           },
           "quakesCluster",
           null,
+          null,
           null
         ]
       },
@@ -408,13 +412,13 @@ library(htmlwidgets)</code></pre>
                 "stateName": "unfrozen-markers",
                 "icon": "ion-toggle",
                 "title": "Freeze Clusters",
-                "onClick": "\n          function(btn, map) {\n            var clusterManager =\n              map.layerManager.getLayer('cluster',\n                                        'quakesCluster');\n            clusterManager.freezeAtZoom();\n            btn.state('frozen-markers');\n          }"
+                "onClick": "\n          function(btn, map) {\n            var clusterManager =\n              map.layerManager.getLayer('cluster', 'quakesCluster');\n            clusterManager.freezeAtZoom();\n            btn.state('frozen-markers');\n          }"
               },
               {
                 "stateName": "frozen-markers",
                 "icon": "ion-toggle-filled",
                 "title": "UnFreeze Clusters",
-                "onClick": "\n          function(btn, map) {\n            var clusterManager =\n              map.layerManager.getLayer('cluster',\n                                        'quakesCluster');\n            clusterManager.unfreeze();\n            btn.state('unfrozen-markers');\n          }"
+                "onClick": "\n          function(btn, map) {\n            var clusterManager =\n              map.layerManager.getLayer('cluster', 'quakesCluster');\n            clusterManager.unfreeze();\n            btn.state('unfrozen-markers');\n          }"
               }
             ]
           }
@@ -429,83 +433,7 @@ library(htmlwidgets)</code></pre>
   "evals": ["calls.2.args.0.states.0.onClick", "calls.2.args.0.states.1.onClick"],
   "jsHooks": []
 }</script>
-<p><br/><br/>Add two easy buttons in a bar first to set zoom level to 1 second to find your self</p>
-<pre class="r"><code>leaflet() %&gt;% addTiles() %&gt;%
-  addEasyButtonBar(
-    easyButton(
-      icon=&#39;fa-globe&#39;, title=&#39;Zoom to Level 1&#39;,
-      onClick=JS(&quot;function(btn, map){ map.setZoom(1);}&quot;)),
-    easyButton(
-      icon=&#39;fa-crosshairs&#39;, title=&#39;Locate Me&#39;,
-      onClick=JS(&quot;function(btn, map){ map.locate({setView: true});}&quot;))
-  )</code></pre>
-<div id="htmlwidget-ec9d8b9e435c1a666871" style="width:100%;height:336px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-ec9d8b9e435c1a666871">{
-  "x": {
-    "options": {
-      "crs": {
-        "crsClass": "L.CRS.EPSG3857",
-        "code": null,
-        "proj4def": null,
-        "projectedBounds": null,
-        "options": {}
-      }
-    },
-    "calls": [
-      {
-        "method": "addTiles",
-        "args": [
-          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-          null,
-          null,
-          {
-            "minZoom": 0,
-            "maxZoom": 18,
-            "maxNativeZoom": null,
-            "tileSize": 256,
-            "subdomains": "abc",
-            "errorTileUrl": "",
-            "tms": false,
-            "continuousWorld": false,
-            "noWrap": false,
-            "zoomOffset": 0,
-            "zoomReverse": false,
-            "opacity": 1,
-            "zIndex": null,
-            "unloadInvisibleTiles": null,
-            "updateWhenIdle": null,
-            "detectRetina": false,
-            "reuseTiles": false,
-            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap\u003c/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA\u003c/a>"
-          }
-        ]
-      },
-      {
-        "method": "addEasyButtonBar",
-        "args": [
-          [
-            {
-              "icon": "fa-globe",
-              "title": "Zoom to Level 1",
-              "onClick": "function(btn, map){ map.setZoom(1);}",
-              "position": "topleft"
-            },
-            {
-              "icon": "fa-crosshairs",
-              "title": "Locate Me",
-              "onClick": "function(btn, map){ map.locate({setView: true});}",
-              "position": "topleft"
-            }
-          ],
-          "topleft",
-          null
-        ]
-      }
-    ]
-  },
-  "evals": ["calls.1.args.0.0.onClick", "calls.1.args.0.1.onClick"],
-  "jsHooks": []
-}</script>
+</div>
 
 <footer>
 <p><small>The "leaflet" R package is copyright &copy; 2014-2016 RStudio, Inc.<br/>
@@ -526,8 +454,11 @@ Maps &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contr
 <script>
 
 // add bootstrap table styles to pandoc tables
-$(document).ready(function () {
+function bootstrapStylePandocTables() {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
 });
 
 

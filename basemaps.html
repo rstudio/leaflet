@@ -140,6 +140,9 @@ $(document).ready(function () {
   p code {
     white-space: inherit;
   }
+  .leaflet-container {
+    margin: 0 0 10.5px;
+  }
 </style>
 
 <div class="fluid-row">
@@ -201,7 +204,7 @@ $(document).ready(function () {
 <h3>Default (OpenStreetMap) Tiles</h3>
 <p>The easiest way to add tiles is by calling <code>addTiles()</code> with no arguments; by default, <a href="https://www.openstreetmap.org/">OpenStreetMap</a> tiles are used.</p>
 <pre class="r"><code>m &lt;- leaflet() %&gt;% setView(lng = -71.0589, lat = 42.3601, zoom = 12)
-m %&gt;% addTiles() </code></pre>
+m %&gt;% addTiles()</code></pre>
 <div id="htmlwidget-927ec88a166bf954e46a" style="width:100%;height:240px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-927ec88a166bf954e46a">{
   "x": {
@@ -223,7 +226,7 @@ m %&gt;% addTiles() </code></pre>
       {
         "method": "addTiles",
         "args": [
-          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -256,8 +259,8 @@ m %&gt;% addTiles() </code></pre>
 </div>
 <div id="third-party-tiles" class="section level3">
 <h3>Third-Party Tiles</h3>
-<p>Alternatively, many popular free third-party basemaps can be added using the <code>addProviderTiles()</code> function, which is implemented using the <a href="https://github.com/leaflet-extras/leaflet-providers">leaflet-providers plugin</a>. See <a href="http://leaflet-extras.github.io/leaflet-providers/preview/index.html">here</a> for the complete set. Note that some tile set providers require you to register; see the <a href="https://github.com/leaflet-extras/leaflet-providers">project page</a> for more information.</p>
-<p>For convenience leaflet provides a <code>providers</code> list, prepopulated with all the third-party tile providers supported by the leaflet-providers plugin. This enables you to use auto-completion feature of your favorite R IDE (like RStudio) and not have to remember or look up supported tile providers.</p>
+<p>Alternatively, many popular free third-party basemaps can be added using the <code>addProviderTiles()</code> function, which is implemented using the <a href="https://github.com/leaflet-extras/leaflet-providers">leaflet-providers plugin</a>. See <a href="http://leaflet-extras.github.io/leaflet-providers/preview/index.html">here</a> for the complete set.</p>
+<p>As a convenience, leaflet also provides a named list of all the third-party tile providers that are supported by the plugin. This enables you to use auto-completion feature of your favorite R IDE (like RStudio) and not have to remember or look up supported tile providers; just type <code>providers$</code> and choose from one of the options. You can also use <code>names(providers)</code> to view all of the options.</p>
 <pre class="r"><code>m %&gt;% addProviderTiles(providers$Stamen.Toner)</code></pre>
 <div id="htmlwidget-e2aad06f99e8b55df8d8" style="width:100%;height:120px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-e2aad06f99e8b55df8d8">{
@@ -381,7 +384,7 @@ m %&gt;% addTiles() </code></pre>
   "evals": [],
   "jsHooks": []
 }</script>
-<p>To see a list of all supported tile providers see <code>names(providers)</code>. You can pass additional parameters to the tile provider by populating the <code>options</code> argument using <code>providerTileOptions()</code> function. This can for example be used to pass in API access token/key required by certain providers.</p>
+<p>Note that some tile set providers require you to register; see the <a href="https://github.com/leaflet-extras/leaflet-providers">project page</a> for more information. You can pass access tokens/keys, and other options, to the tile provider by populating the <code>options</code> argument with the <code>providerTileOptions()</code> function.</p>
 </div>
 <div id="custom-tile-url-template" class="section level3">
 <h3>Custom Tile URL Template</h3>
@@ -413,7 +416,7 @@ m %&gt;% addTiles() </code></pre>
       {
         "method": "addTiles",
         "args": [
-          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -570,8 +573,11 @@ Maps &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contr
 <script>
 
 // add bootstrap table styles to pandoc tables
-$(document).ready(function () {
+function bootstrapStylePandocTables() {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
 });
 
 

@@ -138,6 +138,9 @@ $(document).ready(function () {
   p code {
     white-space: inherit;
   }
+  .leaflet-container {
+    margin: 0 0 10.5px;
+  }
 </style>
 
 <div class="fluid-row">
@@ -222,7 +225,7 @@ leaflet() %&gt;% addTiles() %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -305,7 +308,7 @@ leaflet(df) %&gt;% addTiles() %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -350,6 +353,7 @@ leaflet(df) %&gt;% addTiles() %&gt;%
             "riseOffset": 250
           },
           ["Samurai Noodle", "Kukai Ramen", "Tsukushinbo"],
+          null,
           null,
           null,
           null,
@@ -398,7 +402,7 @@ leaflet(df) %&gt;% addTiles() %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -447,6 +451,7 @@ leaflet(df) %&gt;% addTiles() %&gt;%
           null,
           null,
           ["Samurai Noodle", "Kukai Ramen", "Tsukushinbo"],
+          null,
           null
         ]
       }
@@ -504,7 +509,7 @@ leaflet() %&gt;% addTiles() %&gt;% setView(-118.456554,34.09,13) %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -564,7 +569,8 @@ leaflet() %&gt;% addTiles() %&gt;% setView(-118.456554,34.09,13) %&gt;%
             "style": null,
             "zoomAnimation": true,
             "className": ""
-          }
+          },
+          null
         ]
       },
       {
@@ -602,7 +608,8 @@ leaflet() %&gt;% addTiles() %&gt;% setView(-118.456554,34.09,13) %&gt;%
             "style": null,
             "zoomAnimation": true,
             "className": ""
-          }
+          },
+          null
         ]
       },
       {
@@ -640,7 +647,8 @@ leaflet() %&gt;% addTiles() %&gt;% setView(-118.456554,34.09,13) %&gt;%
             "style": null,
             "zoomAnimation": true,
             "className": ""
-          }
+          },
+          null
         ]
       },
       {
@@ -685,7 +693,8 @@ leaflet() %&gt;% addTiles() %&gt;% setView(-118.456554,34.09,13) %&gt;%
             },
             "zoomAnimation": true,
             "className": ""
-          }
+          },
+          null
         ]
       }
     ],
@@ -728,8 +737,11 @@ Maps &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contr
 <script>
 
 // add bootstrap table styles to pandoc tables
-$(document).ready(function () {
+function bootstrapStylePandocTables() {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
 });
 
 

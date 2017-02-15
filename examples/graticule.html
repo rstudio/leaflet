@@ -22,7 +22,7 @@
 <script src="libs/navigation-1.1/tabsets.js"></script>
 <link href="libs/highlightjs-1.1/default.css" rel="stylesheet" />
 <script src="libs/highlightjs-1.1/highlight.js"></script>
-<script src="libs/htmlwidgets-0.7/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-0.8/htmlwidgets.js"></script>
 <link href="libs/leaflet-0.7.7/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-0.7.7/leaflet.js"></script>
 <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
@@ -30,7 +30,7 @@
 <script src="libs/leaflet-label-0.2.2/leaflet.label.js"></script>
 <script src="libs/Proj4Leaflet-0.7.2/proj4-compressed.js"></script>
 <script src="libs/Proj4Leaflet-0.7.2/proj4leaflet.js"></script>
-<script src="libs/leaflet-binding-1.0.2.9003/leaflet.js"></script>
+<script src="libs/leaflet-binding-1.0.2.9010/leaflet.js"></script>
 <script src="libs/leaflet-graticule-0.1.0/L.Graticule.js"></script>
 <script src="libs/leaflet-graticule-0.1.0/Graticule-binding.js"></script>
 
@@ -140,6 +140,9 @@ $(document).ready(function () {
   p code {
     white-space: inherit;
   }
+  .leaflet-container {
+    margin: 0 0 10.5px;
+  }
 </style>
 
 <div class="fluid-row">
@@ -148,7 +151,7 @@ $(document).ready(function () {
       <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-          <a class="navbar-brand" href="../">Leaflet for R</a>
+          <a class="navbar-brand" href="./">Leaflet for R</a>
         </div>
       </div>
     </nav>
@@ -215,7 +218,7 @@ l &lt;- leaflet() %&gt;% addTiles() %&gt;% setView(0,0,2)</code></pre>
       {
         "method": "addTiles",
         "args": [
-          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -250,7 +253,14 @@ l &lt;- leaflet() %&gt;% addTiles() %&gt;% setView(0,0,2)</code></pre>
             "weight": 1
           },
           null,
-          null
+          null,
+          {
+            "lineCap": null,
+            "lineJoin": null,
+            "clickable": false,
+            "pointerEvents": "none",
+            "className": ""
+          }
         ]
       }
     ],
@@ -281,7 +291,7 @@ l &lt;- leaflet() %&gt;% addTiles() %&gt;% setView(0,0,2)</code></pre>
       {
         "method": "addTiles",
         "args": [
-          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -316,7 +326,14 @@ l &lt;- leaflet() %&gt;% addTiles() %&gt;% setView(0,0,2)</code></pre>
             "weight": 1
           },
           null,
-          null
+          null,
+          {
+            "lineCap": null,
+            "lineJoin": null,
+            "clickable": false,
+            "pointerEvents": "none",
+            "className": ""
+          }
         ]
       }
     ],
@@ -352,7 +369,7 @@ l &lt;- leaflet() %&gt;% addTiles() %&gt;% setView(0,0,2)</code></pre>
       {
         "method": "addTiles",
         "args": [
-          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -387,7 +404,14 @@ l &lt;- leaflet() %&gt;% addTiles() %&gt;% setView(0,0,2)</code></pre>
             "weight": 1
           },
           null,
-          "graticule"
+          "graticule",
+          {
+            "lineCap": null,
+            "lineJoin": null,
+            "clickable": false,
+            "pointerEvents": "none",
+            "className": ""
+          }
         ]
       },
       {
@@ -432,8 +456,11 @@ Maps &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contr
 <script>
 
 // add bootstrap table styles to pandoc tables
-$(document).ready(function () {
+function bootstrapStylePandocTables() {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
 });
 
 

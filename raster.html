@@ -138,6 +138,9 @@ $(document).ready(function () {
   p code {
     white-space: inherit;
   }
+  .leaflet-container {
+    margin: 0 0 10.5px;
+  }
 </style>
 
 <div class="fluid-row">
@@ -221,6 +224,7 @@ $(document).ready(function () {
 </div>
 <div id="example" class="section level3">
 <h3>Example</h3>
+<pre><code>## Warning: package &#39;sp&#39; was built under R version 3.3.2</code></pre>
 <pre class="r"><code>library(raster)
 
 r &lt;- raster(&quot;nc/oisst-sst.nc&quot;)
@@ -247,7 +251,7 @@ leaflet() %&gt;% addTiles() %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -344,8 +348,11 @@ Maps &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contr
 <script>
 
 // add bootstrap table styles to pandoc tables
-$(document).ready(function () {
+function bootstrapStylePandocTables() {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
 });
 
 
