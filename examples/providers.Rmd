@@ -1,55 +1,55 @@
-Now that there is a providers list
-You can programmatically add providers.<br/>
-Here I show how to add all 'ESRI' provided basemaps.
-Checkout the `providers` list for all available providers.<br/>
-<br/>
+## Basemap providers
+
+This example shows how to programmatically add tile providers, and add them to a layers control.
 
 ```{r }
 library(leaflet)
 
-m <- leaflet() %>% setView(0,0,1)
+# Use all providers that begin with "Esri"
+esri <- grep("^Esri", providers, value = TRUE)
 
-# Take out ESRI provided tiles
-esri <- providers %>%
-  purrr::keep(~ grepl('^Esri',.))
-
-esri %>%
-  purrr::walk(function(x) m <<- m %>% addProviderTiles(x,group=x))
-
-m %>%
+m <- leaflet() %>%
+  setView(0,0,1) %>%
   addLayersControl(
     baseGroups = names(esri),
-    options = layersControlOptions(collapsed = TRUE)
-  )
+    options = layersControlOptions(collapsed = TRUE))
+
+for (provider in esri) {
+  m <- m %>% addProviderTiles(provider, group = provider)
+}
+
+m
 ```
 
-<br/><br/><br/><br/>
-providers with options
-Change the accessToken with your mapbox token in options below
-The one here may not work always
+### Provider with options
 
-```{r }
+This example shows how to pass an `options` argument to `addProviderTiles` to add specific options to a provider.
+
+```{r echo=FALSE}
+stopifnot(nzchar(Sys.getenv("MAPBOX_ACCESS_TOKEN")))
+```
+
+```{r}
 mapbox.tileIds <- list(Satellite='mapbox.satellite',
                        Terrian='mapbox.mapbox-terrain-v2')
 
-m <- leaflet() %>% setView(0,0,1)
-
-names(mapbox.tileIds) %>%
-  purrr::walk(function(x) {
-                 m <<- m %>%
-                    addProviderTiles(providers$MapBox, group = x,
-                       options = providerTileOptions(
-                         detectRetina = TRUE,
-                         # id and accessToken are Mapbox specific options
-                         id = mapbox.tileIds[[x]] ,
-                         accessToken = Sys.getenv('MAPBOX_ACCESS_TOKEN')
-                       ))
-                 })
-
-m %>%
+m <- leaflet() %>%
+  setView(0,0,1) %>%
   addLayersControl(
     baseGroups = names(mapbox.tileIds),
-    options = layersControlOptions(collapsed = FALSE)
-  )
+    options = layersControlOptions(collapsed = FALSE))
+
+for (tileId in names(mapbox.tileIds)) {
+  m <- m %>%
+    addProviderTiles(providers$MapBox, group = tileId,
+      options = providerTileOptions(
+        detectRetina = TRUE,
+        # id and accessToken are Mapbox specific options
+        id = mapbox.tileIds[[tileId]] ,
+        accessToken = Sys.getenv('MAPBOX_ACCESS_TOKEN')
+      ))
+}
+
+m
 ```
 

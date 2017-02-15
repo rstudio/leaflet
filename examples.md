@@ -2,7 +2,9 @@
 pagetitle: Leaflet for R - Detailed Examples
 ---
 
-Here we present some detailed examples. You can find the source code under the [examples](https://github.com/rstudio/leaflet/tree/master/inst/examples) directory.
+## Examples
+
+You can find the source code for the following examples under the [examples](https://github.com/rstudio/leaflet/tree/master/inst/examples) directory.
 
 #### Tiles
 
@@ -12,7 +14,6 @@ Here we present some detailed examples. You can find the source code under the [
 
 - [Labels on Markers and Shapes](examples/labels.html)
 - [Awesome Markers](examples/awesomeMarkers.html)
-- [GeoJSON converted to Spatial Object](examples/geojson.html)
 - [Marker Clustering](examples/marker-clustering.html)
 - [Highlight Polygons on Mouse over](examples/highlight-polygons.html)
 

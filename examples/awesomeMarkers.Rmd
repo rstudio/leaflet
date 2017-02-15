@@ -1,43 +1,42 @@
+## Awesome Markers
 
-```{r }
+These examples demonstrate the use of `addAwesomeMarkers` to easily add customizable markers, using the [Leaflet.awesome-markers](https://github.com/lvoogdt/Leaflet.awesome-markers) plugin.
+
+### Simple markers
+
+Use `makeAwesomeIcon` with `addAwesomeMarkers` to specify a single icon that should be used for all markers.
+
+```{r}
 library(leaflet)
 
-icon.glyphicon <- makeAwesomeIcon(icon= 'flag', markerColor = 'blue',
-                                  iconColor = 'black', library = 'glyphicon')
-icon.fa <- makeAwesomeIcon(icon = 'flag', markerColor = 'red', library='fa',
-                           iconColor = 'black')
-icon.ion <- makeAwesomeIcon(icon = 'home', markerColor = 'green',
-                            library='ion')
-
-
-# Marker + Label
-leaflet() %>% addTiles() %>%
-  addAwesomeMarkers(
-    lng=-118.456554, lat=34.078039,
-    label='This is a label',
-    icon = icon.glyphicon)
+# An icon using the Font Awesome library
+icon.fa <- makeAwesomeIcon(icon = "flag", markerColor = "red",
+  library="fa", iconColor = "black")
 
 leaflet() %>% addTiles() %>%
   addAwesomeMarkers(
     lng=-118.456554, lat=34.078039,
-    label='This is a label',
+    label="This is a label",
     icon = icon.fa)
 
-leaflet() %>% addTiles() %>%
-  addAwesomeMarkers(
-    lng=-118.456554, lat=34.078039,
-    label='This is a label',
-    icon = icon.ion)
+# An icon using the ionicons library
+icon.ion <- makeAwesomeIcon(icon = "home", markerColor = "green",
+  library="ion")
 
-# Marker + Static Label using custom label options
+# Marker + static label using custom label options
 leaflet() %>% addTiles() %>%
   addAwesomeMarkers(
     lng=-118.456554, lat=34.078039,
-    label='This is a static label',
+    label="This is a static label",
     labelOptions = labelOptions(noHide = T),
-    icon = icon.fa)
+    icon = icon.ion)
+```
 
+### Lists of icons with awesomeIcons()
 
+Use `awesomeIcons` instead of `makeAwesomeIcon` to create icons that are identical in most aspects but vary by one or a couple of parameters.
+
+```{r}
 cities <- read.csv(textConnection("
 City,Lat,Long,Pop
 Boston,42.3601,-71.0589,645966
@@ -48,38 +47,37 @@ Pittsburgh,40.4397,-79.9764,305841
 Providence,41.8236,-71.4222,177994
 "))
 
-library(dplyr)
-cities <- cities %>% mutate(PopCat=ifelse(Pop <500000,'blue','red'))
-
-
-leaflet(cities) %>% addTiles() %>%
-  addAwesomeMarkers(lng = ~Long, lat = ~Lat,
-             label = ~City,
-             icon = icon.ion
-  )
-
-icon.pop <- awesomeIcons(icon = 'users',
-                           markerColor = ifelse(cities$Pop <500000,'blue','red'),
-                           library = 'fa',
-                           iconColor = 'black')
-
-leaflet(cities) %>% addTiles() %>%
-  addAwesomeMarkers(lng = ~Long, lat = ~Lat,
-             label = ~City,
-             icon = icon.pop
-  )
-
-# Make a list of icons (from two different icon libraries).
-# We'll index into it based on name.
-popIcons <- awesomeIconList(
-  blue = makeAwesomeIcon(icon='user', library='glyphicon', markerColor = 'blue'),
-  red = makeAwesomeIcon(icon='users', library='fa', markerColor = 'red')
+icon.pop <- awesomeIcons(icon = "users",
+  markerColor = ifelse(cities$Pop<500000,"blue","red"),
+  library = "fa",
+  iconColor = "black"
 )
 
 leaflet(cities) %>% addTiles() %>%
   addAwesomeMarkers(lng = ~Long, lat = ~Lat,
-             label = ~City,
-             labelOptions = rep(labelOptions(noHide = T),nrow(cities)),
-             icon = ~popIcons[PopCat] )
+    label = ~City,
+    icon = icon.pop)
+```
+
+### Lists of icons with awesomeIconList()
+
+Finally, you may want to use `awesomeIconList` instead of `awesomeIcons` or `makeAwesomeIcon` if you have two or more very different icons, that you want to select from using a column from your data.
+
+```{r message=FALSE}
+# Make a list of icons (from two different icon libraries).
+# We'll index into it based on name.
+popIcons <- awesomeIconList(
+  blue = makeAwesomeIcon(icon="person", library="ion", markerColor="blue"),
+  red = makeAwesomeIcon(icon="users", library="fa", markerColor="red")
+)
+
+library(dplyr)
+cities <- cities %>% mutate(PopCat = ifelse(Pop<500000,"blue","red"))
+
+leaflet(cities) %>% addTiles() %>%
+  addAwesomeMarkers(lng = ~Long, lat = ~Lat,
+    label = ~City,
+    labelOptions = labelOptions(noHide = TRUE),
+    icon = ~popIcons[PopCat])
 ```
 
