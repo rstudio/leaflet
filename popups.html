@@ -468,31 +468,31 @@ leaflet(df) %&gt;% addTiles() %&gt;%
 <h4>Customizing Marker Labels</h4>
 <p>You can customize marker labels using the <code>labelOptions</code> argument of the <code>addMarkers</code> function. The <code>labelOptions</code> argument can be populated using the <code>labelOptions()</code> function. If <code>noHide</code> is false (the default) then the label is displayed only when you hover the mouse over the marker; if <code>noHide</code> is set to true then the label is always displayed.</p>
 <pre class="r"><code># Change Text Size and text Only and also a custom CSS
-leaflet() %&gt;% addTiles() %&gt;% setView(-118.456554,34.09,13) %&gt;%
+leaflet() %&gt;% addTiles() %&gt;% setView(-118.456554, 34.09, 13) %&gt;%
   addMarkers(
-    lng=-118.456554, lat=34.07,
-    label=&#39;Default Label&#39;,
+    lng = -118.456554, lat = 34.105,
+    label = &quot;Default Label&quot;,
     labelOptions = labelOptions(noHide = T)) %&gt;%
   addMarkers(
-    lng=-118.456554, lat=34.085,
-    label=&#39;Label w/o surrounding box&#39;,
+    lng = -118.456554, lat = 34.095,
+    label = &quot;Label w/o surrounding box&quot;,
     labelOptions = labelOptions(noHide = T, textOnly = TRUE)) %&gt;%
   addMarkers(
-    lng=-118.456554, lat=34.095,
-    label=&#39;label w/ textsize 15px&#39;,
-    labelOptions = labelOptions(noHide = T, textsize=&#39;15px&#39;)) %&gt;%
+    lng = -118.456554, lat = 34.085,
+    label = &quot;label w/ textsize 15px&quot;,
+    labelOptions = labelOptions(noHide = T, textsize = &quot;15px&quot;)) %&gt;%
   addMarkers(
-    lng=-118.456554, lat=34.11,
-    label=&#39;Label w/ custom CSS style&#39;,
-    labelOptions = labelOptions(noHide = T, textOnly = FALSE,
-                                style=list(
-                                  &#39;color&#39;=&#39;red&#39;,
-                                  &#39;font-family&#39;= &#39;serif&#39;,
-                                  &#39;font-style&#39;= &#39;italic&#39;,
-                                  &#39;box-shadow&#39; = &#39;3px 3px rgba(0,0,0,0.25)&#39;,
-                                  &#39;font-size&#39; = &#39;12px&#39;,
-                                  &#39;border-color&#39; = &#39;rgba(0,0,0,0.5)&#39;
-                                  )))</code></pre>
+    lng = -118.456554, lat = 34.075,
+    label = &quot;Label w/ custom CSS style&quot;,
+    labelOptions = labelOptions(noHide = T, direction = &quot;bottom&quot;,
+      style = list(
+        &quot;color&quot; = &quot;red&quot;,
+        &quot;font-family&quot; = &quot;serif&quot;,
+        &quot;font-style&quot; = &quot;italic&quot;,
+        &quot;box-shadow&quot; = &quot;3px 3px rgba(0,0,0,0.25)&quot;,
+        &quot;font-size&quot; = &quot;12px&quot;,
+        &quot;border-color&quot; = &quot;rgba(0,0,0,0.5)&quot;
+      )))</code></pre>
 <div id="htmlwidget-65e60ed4f5440bdab363" style="width:100%;height:384px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-65e60ed4f5440bdab363">{
   "x": {
@@ -537,7 +537,7 @@ leaflet() %&gt;% addTiles() %&gt;% setView(-118.456554,34.09,13) %&gt;%
       {
         "method": "addMarkers",
         "args": [
-          34.07,
+          34.105,
           -118.456554,
           null,
           null,
@@ -576,7 +576,7 @@ leaflet() %&gt;% addTiles() %&gt;% setView(-118.456554,34.09,13) %&gt;%
       {
         "method": "addMarkers",
         "args": [
-          34.085,
+          34.095,
           -118.456554,
           null,
           null,
@@ -615,7 +615,7 @@ leaflet() %&gt;% addTiles() %&gt;% setView(-118.456554,34.09,13) %&gt;%
       {
         "method": "addMarkers",
         "args": [
-          34.095,
+          34.085,
           -118.456554,
           null,
           null,
@@ -654,7 +654,7 @@ leaflet() %&gt;% addTiles() %&gt;% setView(-118.456554,34.09,13) %&gt;%
       {
         "method": "addMarkers",
         "args": [
-          34.11,
+          34.075,
           -118.456554,
           null,
           null,
@@ -678,7 +678,7 @@ leaflet() %&gt;% addTiles() %&gt;% setView(-118.456554,34.09,13) %&gt;%
           {
             "clickable": false,
             "noHide": true,
-            "direction": "right",
+            "direction": "bottom",
             "opacity": 1,
             "offset": [12, -15],
             "textsize": "10px",
@@ -704,7 +704,7 @@ leaflet() %&gt;% addTiles() %&gt;% setView(-118.456554,34.09,13) %&gt;%
       []
     ],
     "limits": {
-      "lat": [34.07, 34.11],
+      "lat": [34.075, 34.105],
       "lng": [-118.456554, -118.456554]
     }
   },

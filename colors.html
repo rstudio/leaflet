@@ -198,10 +198,27 @@ $(document).ready(function () {
 <div id="colors" class="section level2">
 <h2>Colors</h2>
 <p>An important part of spatial visualization is mapping variables to colors. While R has no shortage of built-in functionality to map values to colors, we found that there was enough friction in the process to warrant introducing some wrapper functions that do a lot of the work for you.</p>
-<p>To that end, we’ve created a family of <code>color*</code> convenience functions that can be used to easily generate <em>palette functions</em>. Essentially, you call the appropriate color function with 1) the colors you want to use and 2) optionally, the range of inputs (i.e. <em>domain</em>) that are expected. The color function returns a function that can be passed a vector of input values, and it’ll return a vector of colors in <code>#RRGGBB(AA)</code> format.</p>
+<p>To that end, we’ve created a family of <code>color*</code> convenience functions that can be used to easily generate <em>palette functions</em>. Essentially, you call the appropriate color function with 1) the colors you want to use and 2) optionally, the range of inputs (i.e. <em>domain</em>) that are expected. The color function returns a palette function that can be passed a vector of input values, and it’ll return a vector of colors in <code>#RRGGBB(AA)</code> format.</p>
+<pre class="r"><code># Call the color function (colorNumeric) to create a new palette function
+pal &lt;- colorNumeric(c(&quot;red&quot;, &quot;green&quot;, &quot;blue&quot;), 1:10)
+# Pass the palette function a data vector to get the corresponding colors
+pal(c(1,6,9))</code></pre>
+<pre><code>## [1] &quot;#FF0000&quot; &quot;#52E74B&quot; &quot;#6754D8&quot;</code></pre>
 <p>There are currently three color functions for dealing with continuous input: <code>colorNumeric</code>, <code>colorBin</code>, and <code>colorQuantile</code>; and one for categorical input, <code>colorFactor</code>.</p>
+<div id="common-parameters" class="section level3">
+<h3>Common parameters</h3>
+<p>The four color functions all have two required arguments, <code>palette</code> and <code>domain</code>.</p>
+<p>The <code>palette</code> argument specifies the colors to map the data to. This argument can take one of several forms:</p>
+<ol style="list-style-type: decimal">
+<li>The name of a preset palette from the <code>RColorBrewer</code> package, e.g. <code>&quot;RdYlBu&quot;</code>, <code>&quot;Accent&quot;</code>, or <code>&quot;Greens&quot;</code>.</li>
+<li>The full name of a <code>viridis</code> palette: <code>&quot;viridis&quot;</code>, <code>&quot;magma&quot;</code>, <code>&quot;inferno&quot;</code>, or <code>&quot;plasma&quot;</code>.</li>
+<li>A character vector of RGB or named colors, e.g. <code>palette()</code>, <code>c(&quot;#000000&quot;, &quot;#0000FF&quot;, &quot;#FFFFFF&quot;)</code>, <code>topo.colors(10)</code>.</li>
+<li>A function that receives a single value between 0 and 1 and returns a color, e.g.: <code>colorRamp(c(&quot;#000000&quot;, &quot;#FFFFFF&quot;), interpolate=&quot;spline&quot;)</code></li>
+</ol>
+<p>The <code>domain</code> argument tells the color function the range of input values. You can pass <code>NULL</code> here to create a palette function that doesn’t have a preset range; the range will be inferred from the data each time you invoke the palette function. If you use a palette function multiple times across different data, it’s important to provide a non-<code>NULL</code> value for <code>domain</code> so the scaling between data and colors is consistent.</p>
+</div>
 <div id="coloring-continuous-data" class="section level3">
-<h3>Coloring Continuous Data</h3>
+<h3>Coloring continuous data</h3>
 <pre class="r"><code>library(rgdal)
 
 # From http://data.okfn.org/data/datasets/geo-boundaries-world-110m
@@ -210,23 +227,21 @@ map &lt;- leaflet(countries)</code></pre>
 <p>We’ve loaded some shape data for countries, including a numeric field <code>gdp_md_est</code> which contains GDP estimates.</p>
 <pre class="r"><code>par(mar = c(5,5,0,0), cex = 0.8)
 hist(countries$gdp_md_est, breaks = 20, main = &quot;&quot;)</code></pre>
-<p><img src="colors_files/figure-html/unnamed-chunk-3-1.png" /><!-- --></p>
+<p><img src="colors_files/figure-html/unnamed-chunk-4-1.png" /><!-- --></p>
 <div id="continuous-input-continuous-colors-colornumeric" class="section level4">
-<h4>Continuous Input, Continuous Colors (<code>colorNumeric</code>)</h4>
+<h4>Continuous input, continuous colors (<code>colorNumeric</code>)</h4>
 <p>Let’s start by mapping GDP values directly to the <code>&quot;Blues&quot;</code> palette from <a href="http://colorbrewer2.org">Color Brewer 2</a>. We’ll use the <code>colorNumeric</code> function to create a mapping function. The <code>&quot;Blues&quot;</code> palette only contains nine colors, but <code>colorNumeric</code> interpolates these colors so we get continuous output.</p>
 <pre class="r"><code># Create a continuous palette function
 pal &lt;- colorNumeric(
   palette = &quot;Blues&quot;,
-  domain = countries$gdp_md_est
-)</code></pre>
+  domain = countries$gdp_md_est)</code></pre>
 <p>The <code>palette</code> parameter is the ordered list of colors you will map colors to. In this case we used a Color Brewer palette, but we could’ve used <code>c(&quot;white&quot;, &quot;navy&quot;)</code> or <code>c(&quot;#FFFFFF&quot;, &quot;#000080&quot;)</code> for a similar effect. You can also pass more than two colors, for a diverging palette for example. And for maximum flexibility, you can even pass a function that takes a numeric value over the interval [0,1] and returns a color.</p>
 <p>The second parameter, <code>domain</code>, indicates the set of input values that we are mapping to these colors. For <code>colorNumeric</code>, you can provide either a min/max as in this example, or a set of numbers that <code>colorNumeric</code> can call <code>range()</code> on.</p>
 <p>The result is <code>pal</code>, a function that can accept numeric vectors with values in the range <code>range(countries$gdp_md_est)</code> and return colors in <code>&quot;#RRGGBB&quot;</code> format.</p>
 <pre class="r"><code># Apply the function to provide RGB colors to addPolygons
 map %&gt;%
   addPolygons(stroke = FALSE, smoothFactor = 0.2, fillOpacity = 1,
-    color = ~pal(gdp_md_est)
-  )</code></pre>
+    color = ~pal(gdp_md_est))</code></pre>
 <div id="htmlwidget-927ec88a166bf954e46a" style="width:100%;height:216px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-927ec88a166bf954e46a">{
   "x": {
@@ -2356,15 +2371,14 @@ map %&gt;%
 }</script>
 </div>
 <div id="continuous-input-discrete-colors-colorbin-and-colorquantile" class="section level4">
-<h4>Continuous Input, Discrete Colors (<code>colorBin</code> and <code>colorQuantile</code>)</h4>
+<h4>Continuous input, discrete colors (<code>colorBin</code> and <code>colorQuantile</code>)</h4>
 <p><code>colorBin</code> maps numeric input data to a fixed number of output colors using binning (slicing the input domain up by value).</p>
 <p>You can specify either the exact breaks to use, or the desired number of bins. Note that in the latter case, if <code>pretty=TRUE</code> (the default) you’ll end up with nice round breaks but not necessarily the number of bins you wanted.</p>
 <pre class="r"><code>binpal &lt;- colorBin(&quot;Blues&quot;, countries$gdp_md_est, 6, pretty = FALSE)
 
 map %&gt;%
   addPolygons(stroke = FALSE, smoothFactor = 0.2, fillOpacity = 1,
-    color = ~binpal(gdp_md_est)
-  )</code></pre>
+    color = ~binpal(gdp_md_est))</code></pre>
 <div id="htmlwidget-e2aad06f99e8b55df8d8" style="width:100%;height:216px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-e2aad06f99e8b55df8d8">{
   "x": {
@@ -4496,8 +4510,7 @@ map %&gt;%
 <pre class="r"><code>qpal &lt;- colorQuantile(&quot;Blues&quot;, countries$gdp_md_est, n = 7)
 map %&gt;%
   addPolygons(stroke = FALSE, smoothFactor = 0.2, fillOpacity = 1,
-    color = ~qpal(gdp_md_est)
-  )</code></pre>
+    color = ~qpal(gdp_md_est))</code></pre>
 <div id="htmlwidget-ec9d8b9e435c1a666871" style="width:100%;height:216px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-ec9d8b9e435c1a666871">{
   "x": {
@@ -6628,7 +6641,7 @@ map %&gt;%
 </div>
 </div>
 <div id="coloring-categorical-data" class="section level3">
-<h3>Coloring Categorical Data</h3>
+<h3>Coloring categorical data</h3>
 <p>For categorical data, use the <code>colorFactor</code> function. If the <code>palette</code> contains the same number of elements as there are factor levels, then the mapping will be 1:1; otherwise, the palette will be interpolated to produce the desired number of colors.</p>
 <p>You can specify the input domain either by passing a factor or character vector to <code>domain</code>, or by providing levels directly using the <code>levels</code> parameter (in which case the <code>domain</code> will be ignored).</p>
 <pre class="r"><code># Make up some random levels. (TODO: Better example)
@@ -6638,8 +6651,7 @@ factpal &lt;- colorFactor(topo.colors(5), countries$category)
 
 leaflet(countries) %&gt;%
   addPolygons(stroke = FALSE, smoothFactor = 0.2, fillOpacity = 1,
-    color = ~factpal(category)
-  )</code></pre>
+    color = ~factpal(category))</code></pre>
 <div id="htmlwidget-65e60ed4f5440bdab363" style="width:100%;height:216px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-65e60ed4f5440bdab363">{
   "x": {

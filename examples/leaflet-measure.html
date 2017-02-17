@@ -197,13 +197,15 @@ $(document).ready(function () {
 </div>
 
 
+<div id="measuring-coordinates-distances-and-areas" class="section level2">
+<h2>Measuring coordinates, distances, and areas</h2>
+<p>You can use <code>addMeasure()</code> to add the <a href="https://github.com/ljagis/leaflet-measure">leaflet-measure</a> plugin to a map.</p>
 <pre class="r"><code>library(leaflet)
 
-leaf &lt;- leaflet() %&gt;%
-  addTiles()</code></pre>
-<p><br/> Default Behavior</p>
-<pre class="r"><code>leaf %&gt;%
-  # central park
+m &lt;- leaflet() %&gt;% addTiles()
+
+m %&gt;%
+  # Central Park
   fitBounds(-73.9, 40.75, -73.95,40.8) %&gt;%
   addMeasure()</code></pre>
 <div id="htmlwidget-927ec88a166bf954e46a" style="width:100%;height:336px;" class="leaflet html-widget"></div>
@@ -278,18 +280,16 @@ leaf &lt;- leaflet() %&gt;%
   "evals": [],
   "jsHooks": []
 }</script>
-<p><br/> Customization</p>
-<pre class="r"><code>leaf %&gt;%
-  # Berling, Germany with German localization
+<p>Use various options to customize the appearance and behavior of the plugin (see <code>?addMeasure</code> for details).</p>
+<pre class="r"><code>m %&gt;%
+  # Berlin, Germany
   fitBounds(13.76134, 52.675499, 13.0884, 52.33812) %&gt;%
   addMeasure(
     position = &quot;bottomleft&quot;,
     primaryLengthUnit = &quot;meters&quot;,
     primaryAreaUnit = &quot;sqmeters&quot;,
     activeColor = &quot;#3D535D&quot;,
-    completedColor = &quot;#7D4479&quot;,
-    localization=&#39;de&#39;
-  )</code></pre>
+    completedColor = &quot;#7D4479&quot;)</code></pre>
 <div id="htmlwidget-e2aad06f99e8b55df8d8" style="width:100%;height:336px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-e2aad06f99e8b55df8d8">{
   "x": {
@@ -345,7 +345,7 @@ leaf &lt;- leaflet() %&gt;%
               "autoPanPadding": [10, 10]
             },
             "captureZIndex": 10000,
-            "localization": "de",
+            "localization": "en",
             "decPoint": ".",
             "thousandsSep": ","
           }
@@ -362,6 +362,7 @@ leaf &lt;- leaflet() %&gt;%
   "evals": [],
   "jsHooks": []
 }</script>
+</div>
 
 <footer>
 <p><small>The "leaflet" R package is copyright &copy; 2014-2016 RStudio, Inc.<br/>

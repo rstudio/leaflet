@@ -197,11 +197,14 @@ $(document).ready(function () {
 </div>
 
 
+<div id="graticules" class="section level2">
+<h2>Graticules</h2>
+<p>Use the <code>addGraticule</code> function to add a graticule (grid) to the map (via the <a href="https://github.com/turban/Leaflet.Graticule">Leaflet.Graticule</a> plugin).</p>
 <pre class="r"><code>library(leaflet)
-# Default
-l &lt;- leaflet() %&gt;% addTiles() %&gt;% setView(0,0,2)</code></pre>
-<p>Default Graticule</p>
-<pre class="r"><code>l %&gt;% addGraticule()</code></pre>
+
+m &lt;- leaflet() %&gt;% addTiles() %&gt;% setView(0,0,2)
+
+m %&gt;% addGraticule()</code></pre>
 <div id="htmlwidget-927ec88a166bf954e46a" style="width:100%;height:336px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-927ec88a166bf954e46a">{
   "x": {
@@ -273,8 +276,7 @@ l &lt;- leaflet() %&gt;% addTiles() %&gt;% setView(0,0,2)</code></pre>
   "evals": [],
   "jsHooks": []
 }</script>
-<p><br/> Custom Params</p>
-<pre class="r"><code>l %&gt;% addGraticule(interval = 40, style = list(color=&#39;#FF0000&#39;, weight=1))</code></pre>
+<pre class="r"><code>m %&gt;% addGraticule(interval = 40, style = list(color = &quot;#FF0000&quot;, weight = 1))</code></pre>
 <div id="htmlwidget-e2aad06f99e8b55df8d8" style="width:100%;height:336px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-e2aad06f99e8b55df8d8">{
   "x": {
@@ -346,13 +348,11 @@ l &lt;- leaflet() %&gt;% addTiles() %&gt;% setView(0,0,2)</code></pre>
   "evals": [],
   "jsHooks": []
 }</script>
-<p><br/> on a toggleable Layer</p>
-<pre class="r"><code>l %&gt;%
-  addGraticule(group=&quot;graticule&quot;) %&gt;%
-  addLayersControl(
-    overlayGroups = c(&quot;graticule&quot;),
-    options = layersControlOptions(collapsed = FALSE)
-  )</code></pre>
+<p>You can use the <code>group</code> argument to make the graticule toggleable.</p>
+<pre class="r"><code>m %&gt;%
+  addGraticule(group = &quot;Graticule&quot;) %&gt;%
+  addLayersControl(overlayGroups = c(&quot;Graticule&quot;),
+    options = layersControlOptions(collapsed = FALSE))</code></pre>
 <div id="htmlwidget-ec9d8b9e435c1a666871" style="width:100%;height:336px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-ec9d8b9e435c1a666871">{
   "x": {
@@ -404,7 +404,7 @@ l &lt;- leaflet() %&gt;% addTiles() %&gt;% setView(0,0,2)</code></pre>
             "weight": 1
           },
           null,
-          "graticule",
+          "Graticule",
           {
             "lineCap": null,
             "lineJoin": null,
@@ -418,7 +418,7 @@ l &lt;- leaflet() %&gt;% addTiles() %&gt;% setView(0,0,2)</code></pre>
         "method": "addLayersControl",
         "args": [
           [],
-          "graticule",
+          "Graticule",
           {
             "collapsed": false,
             "autoZIndex": true,
@@ -436,6 +436,7 @@ l &lt;- leaflet() %&gt;% addTiles() %&gt;% setView(0,0,2)</code></pre>
   "evals": [],
   "jsHooks": []
 }</script>
+</div>
 
 <footer>
 <p><small>The "leaflet" R package is copyright &copy; 2014-2016 RStudio, Inc.<br/>

@@ -205,8 +205,19 @@ $(document).ready(function () {
 
 <div id="markers" class="section level2">
 <h2>Markers</h2>
-<p>Use markers to call out points on the map. Marker locations are expressed in latitude/longitude coordinates, and can either appear as icons or as circles. You can use <code>SpatialPoints</code>, <code>SpatialPointsDataFrame</code>, or a two-column numeric matrix (first column is longitude, second column is latitude) as data objects.</p>
-<p>You can also use a data frame with latitude and longitude columns. You can explicitly tell the marker function which columns contain the coordinate data (e.g. <code>addMarkers(lng = ~Longitude, lat = ~Latitude)</code>), or let the function look for columns named <code>lat</code>/<code>latitude</code> and <code>lon</code>/<code>lng</code>/<code>long</code>/<code>longitude</code> (case insensitive).</p>
+<p>Use markers to call out points on the map. Marker locations are expressed in latitude/longitude coordinates, and can either appear as icons or as circles.</p>
+<div id="data-sources" class="section level3">
+<h3>Data sources</h3>
+<p>Point data for markers can come from a variety of sources:</p>
+<ul>
+<li><code>SpatialPoints</code> or <code>SpatialPointsDataFrame</code> objects (from the <code>sp</code> package)</li>
+<li><code>POINT</code> objects (from the <code>sf</code> package); only <code>X</code> and <code>Y</code> dimensions will be considered</li>
+<li>Two-column numeric matrices (first column is longitude, second is latitude)</li>
+<li>Data frame with latitude and logitude columns. You can explicitly tell the marker function which columns contain the coordinate data (e.g. <code>addMarkers(lng = ~Longitude, lat = ~Latitude)</code>), or let the function look for columns named <code>lat</code>/<code>latitude</code> and <code>lon</code>/<code>lng</code>/<code>long</code>/<code>longitude</code> (case insensitive).</li>
+<li>Simply provide numeric vectors as <code>lng</code> and <code>lat</code> arguments</li>
+</ul>
+<p>Note that <code>MULTIPOINT</code> objects from <code>sf</code> are not supported at this time.</p>
+</div>
 <div id="icon-markers" class="section level3">
 <h3>Icon Markers</h3>
 <p>Icon markers are added using the <code>addMarkers</code> or the <code>addAwesomeMarkers</code> functions. Their default appearance is a dropped pin. As with most layer functions, the <code>popup</code> argument can be used to add a message to be displayed on click, and the <code>label</code> option can be used to display a text label either on hover or statically.</p>

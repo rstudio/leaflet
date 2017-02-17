@@ -202,21 +202,22 @@ $(document).ready(function () {
 <h3>Polygons and Polylines</h3>
 <p>Line and polygon data can come from a variety of sources:</p>
 <ul>
-<li>Objects of <code>SpatialPolygons</code>, <code>SpatialPolygonsDataFrame</code>, <code>Polygon</code>, and <code>Polygons</code> class (from the <code>sp</code> package)</li>
-<li>Objects of <code>SpatialLines</code>, <code>SpatialLinesDataFrame</code>, <code>Lines</code>, and <code>Line</code> class (from the <code>sp</code> package)</li>
-<li>Objects of <code>map</code> class (from the <code>maps</code> package’s <code>map()</code> function); use <code>map(fill = TRUE)</code> for polygons, <code>FALSE</code> for polylines</li>
-<li>Numeric matrix with two columns</li>
+<li><code>SpatialPolygons</code>, <code>SpatialPolygonsDataFrame</code>, <code>Polygons</code>, and <code>Polygon</code> objects (from the <code>sp</code> package)</li>
+<li><code>SpatialLines</code>, <code>SpatialLinesDataFrame</code>, <code>Lines</code>, and <code>Line</code> objects (from the <code>sp</code> package)</li>
+<li><code>MULTIPOLYGON</code>, <code>POLYGON</code>, <code>MULTILINESTRING</code>, and <code>LINESTRING</code> objects (from the <code>sf</code> package)</li>
+<li><code>map</code> objects (from the <code>maps</code> package’s <code>map()</code> function); use <code>map(fill = TRUE)</code> for polygons, <code>FALSE</code> for polylines</li>
+<li>Two-column numeric matrix; the first column is longitude and the second is latitude. Polygons are separated by rows of <code>(NA, NA)</code>. It is not possible to represent multi-polygons nor polygons with holes using this method; use <code>SpatialPolygons</code> instead.</li>
 </ul>
-<p>When a numeric matrix is used, the first column is longitude and the second is latitude. Polygons are separated by rows of <code>(NA, NA)</code>. It is not possible to represent polygons with holes using this method – use <code>SpatialPolygons</code> instead.</p>
 <pre class="r"><code>library(rgdal)
 
 # From https://www.census.gov/geo/maps-data/data/cbf/cbf_state.html
 states &lt;- readOGR(&quot;shp/cb_2013_us_state_20m.shp&quot;,
-  layer = &quot;cb_2013_us_state_20m&quot;, verbose = TRUE)</code></pre>
+  layer = &quot;cb_2013_us_state_20m&quot;, GDAL1_integer64_policy = TRUE)</code></pre>
 <pre><code>## OGR data source with driver: ESRI Shapefile 
 ## Source: &quot;shp/cb_2013_us_state_20m.shp&quot;, layer: &quot;cb_2013_us_state_20m&quot;
 ## with 52 features
-## It has 9 fields</code></pre>
+## It has 9 fields
+## Integer64 fields read as doubles:  ALAND AWATER</code></pre>
 <pre class="r"><code>neStates &lt;- subset(states, states$STUSPS %in% c(
   &quot;CT&quot;,&quot;ME&quot;,&quot;MA&quot;,&quot;NH&quot;,&quot;RI&quot;,&quot;VT&quot;,&quot;NY&quot;,&quot;NJ&quot;,&quot;PA&quot;
 ))
@@ -224,8 +225,7 @@ states &lt;- readOGR(&quot;shp/cb_2013_us_state_20m.shp&quot;,
 leaflet(neStates) %&gt;%
   addPolygons(
     stroke = FALSE, fillOpacity = 0.5, smoothFactor = 0.5,
-    color = ~colorQuantile(&quot;YlOrRd&quot;, neStates$AWATER)(AWATER)
-  )</code></pre>
+    color = ~colorQuantile(&quot;YlOrRd&quot;, ALAND)(ALAND))</code></pre>
 <div id="htmlwidget-927ec88a166bf954e46a" style="width:100%;height:216px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-927ec88a166bf954e46a">{
   "x": {
@@ -547,11 +547,11 @@ leaflet(neStates) %&gt;%
             "pointerEvents": null,
             "className": "",
             "stroke": false,
-            "color": ["#FECC5C", "#E31A1C", "#FD8D3C", "#E31A1C", "#FD8D3C", "#E31A1C", "#FECC5C", "#FFFFB2", "#FFFFB2"],
+            "color": ["#FFFFB2", "#FECC5C", "#FECC5C", "#E31A1C", "#E31A1C", "#E31A1C", "#FFFFB2", "#FD8D3C", "#FD8D3C"],
             "weight": 5,
             "opacity": 0.5,
             "fill": true,
-            "fillColor": ["#FECC5C", "#E31A1C", "#FD8D3C", "#E31A1C", "#FD8D3C", "#E31A1C", "#FECC5C", "#FFFFB2", "#FFFFB2"],
+            "fillColor": ["#FFFFB2", "#FECC5C", "#FECC5C", "#E31A1C", "#E31A1C", "#E31A1C", "#FFFFB2", "#FD8D3C", "#FD8D3C"],
             "fillOpacity": 0.5,
             "dashArray": null,
             "smoothFactor": 0.5,

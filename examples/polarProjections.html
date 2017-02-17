@@ -706,7 +706,6 @@ leaflet(options= leafletOptions(
   htmlwidgets::onRender(
     &quot;function(el, t){
        var myMap = this;
-       debugger;
        var tileLayer = myMap.layerManager._byLayerId[&#39;tile\\nantartica_tiles&#39;];
 
        // HACK: BEGIN
@@ -716,7 +715,6 @@ leaflet(options= leafletOptions(
        var superGetTileUrl = tileLayer.getTileUrl;
 
        tileLayer.getTileUrl = function(coords) {
-         debugger;
          var max = Math.pow(2, tileLayer._getZoomForUrl() + 1);
          if ( coords.x &lt; 0 ) { return &#39;&#39;; }
          if ( coords.y &lt; 0 ) { return &#39;&#39;; }
@@ -3910,7 +3908,7 @@ leaflet(options= leafletOptions(
   "jsHooks": {
     "render": [
       {
-        "code": "function(el, x, data) {\n  return (function(el, t){\n       var myMap = this;\n       debugger;\n       var tileLayer = myMap.layerManager._byLayerId['tile\\nantartica_tiles'];\n\n       // HACK: BEGIN\n       // Leaflet does not yet handle these kind of projections nicely. Monkey\n       // patch the getTileUrl function to ensure requests are within\n       // tile matrix set boundaries.\n       var superGetTileUrl = tileLayer.getTileUrl;\n\n       tileLayer.getTileUrl = function(coords) {\n         debugger;\n         var max = Math.pow(2, tileLayer._getZoomForUrl() + 1);\n         if ( coords.x < 0 ) { return ''; }\n         if ( coords.y < 0 ) { return ''; }\n         if ( coords.x >= max ) { return ''; }\n         if ( coords.y >= max ) { return ''; }\n           return superGetTileUrl.call(tileLayer, coords);\n       };\n       // HACK: END\n    }).call(this.getMap(), el, x, data);\n}",
+        "code": "function(el, x, data) {\n  return (function(el, t){\n       var myMap = this;\n       var tileLayer = myMap.layerManager._byLayerId['tile\\nantartica_tiles'];\n\n       // HACK: BEGIN\n       // Leaflet does not yet handle these kind of projections nicely. Monkey\n       // patch the getTileUrl function to ensure requests are within\n       // tile matrix set boundaries.\n       var superGetTileUrl = tileLayer.getTileUrl;\n\n       tileLayer.getTileUrl = function(coords) {\n         var max = Math.pow(2, tileLayer._getZoomForUrl() + 1);\n         if ( coords.x < 0 ) { return ''; }\n         if ( coords.y < 0 ) { return ''; }\n         if ( coords.x >= max ) { return ''; }\n         if ( coords.y >= max ) { return ''; }\n           return superGetTileUrl.call(tileLayer, coords);\n       };\n       // HACK: END\n    }).call(this.getMap(), el, x, data);\n}",
         "data": null
       }
     ]
