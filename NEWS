@@ -1,35 +1,42 @@
-leaflet 1.1
+leaflet 1.1.0
 --------------------------------------------------------------------------------
 
-* Add support for sf
+* Add support for sf. sf, sfc, and sfg classes are supported with POINT,
+  LINESTRING, MULTILINESTRING, POLYGON, and MULTIPOLYGON geometries (note
+  that MULTIPOINT is not currently supported).
 
 * Added support for Crosstalk (https://rstudio.github.io/crosstalk/).
 
-* Added ability to select rectangular region in a map.
+* Added option to highlight polygons, polylines, circles, and rectangles on
+  hover (use highlightOptions parameter).
 
-* Added a way for the Map instance to be instantiated via a factory.
+* Fix behavior when data contains NA points, or zero rows. Previously this would
+  cause an error.
 
-* Added option to highlight polygons on hover.
+* Added `popupOptions` parameter to all markers and shape layers.
 
-* Fixed all isses due to missing or NA data.
+* Upgraded existing plugins to their respective latest versions and added
+  missing/new functionality from those plugins. (PR #293)
 
-* Made the package extensible.
+* Added Proj4Leaflet plugin (PR #294).
 
-* Fixed Issues #288, #261, #283.
+* Added EasyButton plugin (PR #295).
 
-* Added 2 new plugins Proj4Leaflet (PR #294) and EasyButton (PR #295).
+* Added Graticule plugin (PR #293).
 
-* Upgraded existing plugins to their respective latest versions and added missing/new functionality from those plugins. (PR #293)
+* Color palette improvements. All color palette functions now support viridis
+  palettes ("viridis", "magma", "inferno", and "plasma").
 
-* Added Graticule plugin (PR #293)
+* Color palette functions now support reversing the order in which colors are
+  used, via reverse=TRUE.
+
+* `colorFactor` no longer interpolates qualitative RColorBrewer palettes,
+  unless the number of factor levels being mapped exceeds the number of colors
+  in the specified RColorBrewer palette. (Issue #300)
 
 * Upgrade leaflet.js to 0.7.7.1 (PR #359)
 
-* Color palette improvements. All color palette functions now support viridis palettes ("viridis", "magma", "inferno", and "plasma").
-
-* Color palette functions now support reversing the order in which colors are used, via reverse=TRUE.
-
-* colorFactor no longer interpolates qualitative RColorBrewer palettes, unless the number of factor levels being mapped exceeds the number of colors in the specified RColorBrewer palette. (Issue #300)
+* Added a way for the Map instance to be instantiated via a factory.
 
 leaflet 1.0.2
 --------------------------------------------------------------------------------
