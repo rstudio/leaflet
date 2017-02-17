@@ -6,15 +6,17 @@ pagetitle: Leaflet for R - Detailed Examples
 
 You can find the source code for the following examples under the [examples](https://github.com/rstudio/leaflet/tree/master/inst/examples) directory.
 
+#### Common tasks
+
+- [Choropleth](examples/choropleth.html)
+
 #### Tiles
 
 - [3rd Party Providers](examples/providers.html)
 
 #### Markers and Shapes
 
-- [Labels on Markers and Shapes](examples/labels.html)
 - [Awesome Markers](examples/awesomeMarkers.html)
-- [Marker Clustering](examples/marker-clustering.html)
 - [Highlight Polygons on Mouse over](examples/highlight-polygons.html)
 
 #### Utility Add-ons

@@ -156,7 +156,6 @@ leaflet(options= leafletOptions(
   htmlwidgets::onRender(
     "function(el, t){
        var myMap = this;
-       debugger;
        var tileLayer = myMap.layerManager._byLayerId['tile\\nantartica_tiles'];
 
        // HACK: BEGIN
@@ -166,7 +165,6 @@ leaflet(options= leafletOptions(
        var superGetTileUrl = tileLayer.getTileUrl;
 
        tileLayer.getTileUrl = function(coords) {
-         debugger;
          var max = Math.pow(2, tileLayer._getZoomForUrl() + 1);
          if ( coords.x < 0 ) { return ''; }
          if ( coords.y < 0 ) { return ''; }

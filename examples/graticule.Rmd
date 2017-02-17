@@ -1,32 +1,21 @@
+## Graticules
+
+Use the `addGraticule` function to add a graticule (grid) to the map (via the [Leaflet.Graticule](https://github.com/turban/Leaflet.Graticule) plugin).
 
 ```{r }
 library(leaflet)
-# Default
-l <- leaflet() %>% addTiles() %>% setView(0,0,2)
+
+m <- leaflet() %>% addTiles() %>% setView(0,0,2)
+
+m %>% addGraticule()
+m %>% addGraticule(interval = 40, style = list(color = "#FF0000", weight = 1))
 ```
 
-Default Graticule
+You can use the `group` argument to make the graticule toggleable.
 
 ```{r }
-l %>% addGraticule()
+m %>%
+  addGraticule(group = "Graticule") %>%
+  addLayersControl(overlayGroups = c("Graticule"),
+    options = layersControlOptions(collapsed = FALSE))
 ```
-
-<br/>
-Custom Params
-
-```{r }
-l %>% addGraticule(interval = 40, style = list(color='#FF0000', weight=1))
-```
-
-<br/>
-on a toggleable Layer
-
-```{r }
-l %>%
-  addGraticule(group="graticule") %>%
-  addLayersControl(
-    overlayGroups = c("graticule"),
-    options = layersControlOptions(collapsed = FALSE)
-  )
-```
-

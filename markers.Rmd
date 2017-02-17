@@ -4,9 +4,19 @@ pagetitle: Leaflet for R - Markers
 
 ## Markers
 
-Use markers to call out points on the map. Marker locations are expressed in latitude/longitude coordinates, and can either appear as icons or as circles. You can use `SpatialPoints`, `SpatialPointsDataFrame`, or a two-column numeric matrix (first column is longitude, second column is latitude) as data objects.
+Use markers to call out points on the map. Marker locations are expressed in latitude/longitude coordinates, and can either appear as icons or as circles.
 
-You can also use a data frame with latitude and longitude columns. You can explicitly tell the marker function which columns contain the coordinate data (e.g. `addMarkers(lng = ~Longitude, lat = ~Latitude)`), or let the function look for columns named `lat`/`latitude` and `lon`/`lng`/`long`/`longitude` (case insensitive).
+### Data sources
+
+Point data for markers can come from a variety of sources:
+
+- `SpatialPoints` or `SpatialPointsDataFrame` objects (from the `sp` package)
+- `POINT` objects (from the `sf` package); only `X` and `Y` dimensions will be considered
+- Two-column numeric matrices (first column is longitude, second is latitude)
+- Data frame with latitude and logitude columns. You can explicitly tell the marker function which columns contain the coordinate data (e.g. `addMarkers(lng = ~Longitude, lat = ~Latitude)`), or let the function look for columns named `lat`/`latitude` and `lon`/`lng`/`long`/`longitude` (case insensitive).
+- Simply provide numeric vectors as `lng` and `lat` arguments
+
+Note that `MULTIPOINT` objects from `sf` are not supported at this time.
 
 ### Icon Markers
 

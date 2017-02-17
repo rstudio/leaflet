@@ -10,12 +10,11 @@ Leaflet makes it easy to take spatial lines and shapes from R and add them to ma
 
 Line and polygon data can come from a variety of sources:
 
-* Objects of `SpatialPolygons`, `SpatialPolygonsDataFrame`, `Polygon`, and `Polygons` class (from the `sp` package)
-* Objects of `SpatialLines`, `SpatialLinesDataFrame`, `Lines`, and `Line` class (from the `sp` package)
-* Objects of `map` class (from the `maps` package's `map()` function); use `map(fill = TRUE)` for polygons, `FALSE` for polylines
-* Numeric matrix with two columns
-
-When a numeric matrix is used, the first column is longitude and the second is latitude. Polygons are separated by rows of `(NA, NA)`. It is not possible to represent polygons with holes using this method -- use `SpatialPolygons` instead.
+* `SpatialPolygons`, `SpatialPolygonsDataFrame`, `Polygons`, and `Polygon` objects (from the `sp` package)
+* `SpatialLines`, `SpatialLinesDataFrame`, `Lines`, and `Line` objects (from the `sp` package)
+* `MULTIPOLYGON`, `POLYGON`, `MULTILINESTRING`, and `LINESTRING` objects (from the `sf` package)
+* `map` objects (from the `maps` package's `map()` function); use `map(fill = TRUE)` for polygons, `FALSE` for polylines
+* Two-column numeric matrix; the first column is longitude and the second is latitude. Polygons are separated by rows of `(NA, NA)`. It is not possible to represent multi-polygons nor polygons with holes using this method; use `SpatialPolygons` instead.
 
 ```{r echo=FALSE,results='hide',message=FALSE,warning=FALSE}
 library(rgdal, quietly = TRUE)
@@ -34,8 +33,7 @@ neStates <- subset(states, states$STUSPS %in% c(
 leaflet(neStates) %>%
   addPolygons(
     stroke = FALSE, fillOpacity = 0.5, smoothFactor = 0.5,
-    color = ~colorQuantile("YlOrRd", AWATER)(AWATER)
-  )
+    color = ~colorQuantile("YlOrRd", ALAND)(ALAND))
 ```
 
 ### Circles

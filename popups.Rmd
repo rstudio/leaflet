@@ -64,31 +64,31 @@ You can customize marker labels using the `labelOptions` argument of the `addMar
 
 ```{r, fig.height=4}
 # Change Text Size and text Only and also a custom CSS
-leaflet() %>% addTiles() %>% setView(-118.456554,34.09,13) %>%
+leaflet() %>% addTiles() %>% setView(-118.456554, 34.09, 13) %>%
   addMarkers(
-    lng=-118.456554, lat=34.07,
-    label='Default Label',
+    lng = -118.456554, lat = 34.105,
+    label = "Default Label",
     labelOptions = labelOptions(noHide = T)) %>%
   addMarkers(
-    lng=-118.456554, lat=34.085,
-    label='Label w/o surrounding box',
+    lng = -118.456554, lat = 34.095,
+    label = "Label w/o surrounding box",
     labelOptions = labelOptions(noHide = T, textOnly = TRUE)) %>%
   addMarkers(
-    lng=-118.456554, lat=34.095,
-    label='label w/ textsize 15px',
-    labelOptions = labelOptions(noHide = T, textsize='15px')) %>%
+    lng = -118.456554, lat = 34.085,
+    label = "label w/ textsize 15px",
+    labelOptions = labelOptions(noHide = T, textsize = "15px")) %>%
   addMarkers(
-    lng=-118.456554, lat=34.11,
-    label='Label w/ custom CSS style',
-    labelOptions = labelOptions(noHide = T, textOnly = FALSE,
-                                style=list(
-                                  'color'='red',
-                                  'font-family'= 'serif',
-                                  'font-style'= 'italic',
-                                  'box-shadow' = '3px 3px rgba(0,0,0,0.25)',
-                                  'font-size' = '12px',
-                                  'border-color' = 'rgba(0,0,0,0.5)'
-                                  )))
+    lng = -118.456554, lat = 34.075,
+    label = "Label w/ custom CSS style",
+    labelOptions = labelOptions(noHide = T, direction = "bottom",
+      style = list(
+        "color" = "red",
+        "font-family" = "serif",
+        "font-style" = "italic",
+        "box-shadow" = "3px 3px rgba(0,0,0,0.25)",
+        "font-size" = "12px",
+        "border-color" = "rgba(0,0,0,0.5)"
+      )))
 ```
 
 
