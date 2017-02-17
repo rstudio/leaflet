@@ -15,7 +15,6 @@
 \alias{addTopoJSON}
 \alias{addWMSTiles}
 \alias{highlightOptions}
-\alias{safeLabel}
 \title{Graphics elements and layers}
 \usage{
 addControl(map, html, position = c("topleft", "topright", "bottomleft",
@@ -31,8 +30,6 @@ addWMSTiles(map, baseUrl, layerId = NULL, group = NULL,
 
 addPopups(map, lng = NULL, lat = NULL, popup, layerId = NULL,
   group = NULL, options = popupOptions(), data = getMapData(map))
-
-safeLabel(label, data)
 
 addMarkers(map, lng = NULL, lat = NULL, layerId = NULL, group = NULL,
   icon = NULL, popup = NULL, popupOptions = NULL, label = NULL,
@@ -141,8 +138,6 @@ the latitude column from \code{data})}
 \item{popup}{a character vector of the HTML content for the popups (you are
 recommended to escape the text using \code{\link[htmltools]{htmlEscape}()}}
 
-\item{label}{a character vector of the HTML content for the labels}
-
 \item{icon}{the icon(s) for markers; an icon is represented by an R list of
 the form \code{list(iconUrl = '?', iconSize = c(x, y))}, and you can use
 \code{\link{icons}()} to create multiple icons; note when you use an R list
@@ -152,6 +147,8 @@ when you publish the map elsewhere}
 
 \item{popupOptions}{A Vector of \code{\link{popupOptions}} to provide popups
 for security reasons)}
+
+\item{label}{a character vector of the HTML content for the labels}
 
 \item{labelOptions}{A Vector of \code{\link{labelOptions}} to provide label
 options for each label. Default \code{NULL}}
@@ -211,8 +208,6 @@ the new \code{map} object
 \description{
 Add graphics elements and layers to the map widget.
 
-Helper Function to create a safe label
-
 Options to highlight shapes (polylines/polygons/circles/rectangles)
 }
 \section{Functions}{
@@ -224,8 +219,6 @@ Options to highlight shapes (polylines/polygons/circles/rectangles)
 \item \code{addWMSTiles}: Add a WMS tile layer to the map
 
 \item \code{addPopups}: Add popups to the map
-
-\item \code{safeLabel}: Create a label with sanitized text/html
 
 \item \code{addMarkers}: Add markers to the map
 

@@ -395,7 +395,6 @@ addPopups <- function(
     expandLimits(pts$lat, pts$lng)
 }
 
-#' options for specify popup realted options
 #' @param className a CSS class name set on an element
 #' @param
 #' maxWidth,minWidth,maxHeight,autoPan,keepInView,closeButton,zoomAnimation,closeOnClick
@@ -437,8 +436,17 @@ clearPopups <- function(map) {
   invokeMethod(map, NULL, 'clearPopups')
 }
 
-#' Helper Function to create a safe label
-#' @describeIn map-layers Create a label with sanitized text/html
+#' Sanitize textual labels
+#'
+#' This is a helper function used internally to HTML-escape user-provided
+#' labels. It prevents strings from unintentionally being treated as HTML when
+#' they are intended to be plaintext.
+#'
+#' @param label A vector or list of plain characters or HTML (marked by
+#'   \code{\link[htmltools]{HTML}}), or a formula that resolves to such a value.
+#' @param data A data frame over which the formua is evaluated.
+#'
+#' @keywords internal
 #' @export
 safeLabel <- function(label, data) {
   if (is.null(label)) {
@@ -453,8 +461,6 @@ safeLabel <- function(label, data) {
   label
 }
 
-#' Extra options for marker and polygon labels
-#'
 #' @param
 #' noHide,direction,offset,textsize,textOnly,style
 #' label options; see \url{https://github.com/Leaflet/Leaflet.label#options}

@@ -100,10 +100,6 @@ SVG backend is used}
 \description{
 The rest of all possible options for map elements and layers that are not
 listed in the layer functions.
-
-options for specify popup realted options
-
-Extra options for marker and polygon labels
 }
 \section{Functions}{
 \itemize{
