@@ -36,6 +36,20 @@ leaflet(neStates) %>%
     color = ~colorQuantile("YlOrRd", ALAND)(ALAND))
 ```
 
+#### Simplifying complex polygons/polylines
+
+Very detailed (i.e. large) shape data can present a problem for Leafet, since it is all eventually passed into the browser and rendered as SVG, which is very expressive and convenient but has scalability limits. In these cases, consider using `rmapshaper::ms_simplify`, which does topology-preserving simplification conveniently from R.
+
+```{r}
+library(albersusa)
+
+fullsize <- usa_composite()
+object.size(fullsize)
+
+simplified <- rmapshaper::ms_simplify(fullsize)
+object.size(simplified)
+```
+
 ### Circles
 
 Circles are added using `addCircles()`. Circles are similar to [circle markers](markers.html#circle-markers); the only difference is that circles have their radii specified in meters, while circle markers are specified in pixels. As a result, circles are scaled with the map as the user zooms in and out, while circle markers remain a constant size on the screen regardless of zoom level.

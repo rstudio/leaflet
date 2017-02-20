@@ -573,6 +573,18 @@ leaflet(neStates) %&gt;%
   "evals": [],
   "jsHooks": []
 }</script>
+<div id="simplifying-complex-polygonspolylines" class="section level4">
+<h4>Simplifying complex polygons/polylines</h4>
+<p>Very detailed (i.e. large) shape data can present a problem for Leafet, since it is all eventually passed into the browser and rendered as SVG, which is very expressive and convenient but has scalability limits. In these cases, consider using <code>rmapshaper::ms_simplify</code>, which does topology-preserving simplification conveniently from R.</p>
+<pre class="r"><code>library(albersusa)
+
+fullsize &lt;- usa_composite()
+object.size(fullsize)</code></pre>
+<pre><code>## 1265256 bytes</code></pre>
+<pre class="r"><code>simplified &lt;- rmapshaper::ms_simplify(fullsize)
+object.size(simplified)</code></pre>
+<pre><code>## 262608 bytes</code></pre>
+</div>
 </div>
 <div id="circles" class="section level3">
 <h3>Circles</h3>
