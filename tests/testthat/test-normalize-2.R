@@ -15,7 +15,6 @@ pgontest <- function(x) {
   leaflet(x) %>% addTiles() %>% addPolygons()
 }
 
-gadmCHE <- readRDS(system.file("extdata", "gadmCHE.rds", package = "leaflet"))
 poldata <- st_as_sf(gadmCHE)
 
 (r1 <- pgontest(poldata))
@@ -33,7 +32,6 @@ expect_maps_equal(r1, r5)
 
 ### lines -----------------------------------------------------------------
 
-atlStorms2005 <- readRDS(system.file("extdata", "atlStorms2005.rds", package = "leaflet"))
 lindata <- st_as_sf(atlStorms2005)
 
 plinetest <- function(x) {
@@ -57,7 +55,6 @@ expect_maps_equal(l3, l7)
 expect_maps_equal(l3, l8)
 
 ### points ----------------------------------------------------------------
-breweries91 <- readRDS(system.file("extdata", "breweries91.rds", package = "leaflet"))
 ptsdata <- st_as_sf(breweries91)
 class(ptsdata)  # sf, data.frame
 class(st_geometry(ptsdata))  # sfc_POINT, sfc
