@@ -535,11 +535,15 @@ methods.addPolygons = function(polygons, layerId, group, options, popup, popupOp
       .cbind(options);
 
     addLayers(this, "shape", df, function(df, i) {
-      let shapes = df.get(i, "shapes");
-      shapes = shapes.map(function(polygon) {
-        return polygon.map(HTMLWidgets.dataframeToD3);
-      });
-      return L.multiPolygon(shapes, df.get(i));
+      // This code used to use L.multiPolygon, but that caused
+      // double-click on a multipolygon to fail to zoom in on the
+      // map. Surprisingly, putting all the rings in a single
+      // polygon seems to still work; complicated multipolygons
+      // are still rendered correctly.
+      let shapes = df.get(i, "shapes")
+        .map(polygon => polygon.map(HTMLWidgets.dataframeToD3))
+        .reduce((acc, val) => acc.concat(val), []);
+      return L.polygon(shapes, df.get(i));
     });
   }
 };
