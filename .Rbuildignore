@@ -3,6 +3,7 @@
 ^\.travis\.yml$
 ^inst/csv
 ^inst/examples
+^inst/htmlwidgets/sources
 \.bower\.json$
 \.bowerrc$
 ^docs/
