@@ -59,7 +59,5 @@ Suggests:
     RJSONIO,
     purrr,
     testthat
-Remotes:
-    rstudio/crosstalk
 RoxygenNote: 5.0.1
 LazyData: true
