@@ -13,26 +13,26 @@
 
 <title></title>
 
-<script src="libs/jquery-1.12.4/jquery.min.js"></script>
+<script src="libs/jquery/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
-<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
-<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
-<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
-<script src="libs/navigation-1.1/tabsets.js"></script>
-<link href="libs/highlightjs-1.1/default.css" rel="stylesheet" />
-<script src="libs/highlightjs-1.1/highlight.js"></script>
-<script src="libs/htmlwidgets-0.8/htmlwidgets.js"></script>
-<link href="libs/leaflet-0.7.7/leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-0.7.7/leaflet.js"></script>
-<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
-<link href="libs/leaflet-label-0.2.2/leaflet.label.css" rel="stylesheet" />
-<script src="libs/leaflet-label-0.2.2/leaflet.label.js"></script>
-<script src="libs/Proj4Leaflet-0.7.2/proj4-compressed.js"></script>
-<script src="libs/Proj4Leaflet-0.7.2/proj4leaflet.js"></script>
-<script src="libs/leaflet-binding-1.0.2.9010/leaflet.js"></script>
-<script src="libs/leaflet-providers-1.0.27/leaflet-providers.js"></script>
-<script src="libs/leaflet-providers-plugin-1.0.2.9010/leaflet-providers-plugin.js"></script>
+<link href="libs/bootstrap/css/flatly.min.css" rel="stylesheet" />
+<script src="libs/bootstrap/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap/shim/respond.min.js"></script>
+<script src="libs/navigation/tabsets.js"></script>
+<link href="libs/highlightjs/default.css" rel="stylesheet" />
+<script src="libs/highlightjs/highlight.js"></script>
+<script src="libs/htmlwidgets/htmlwidgets.js"></script>
+<link href="libs/leaflet/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet/leaflet.js"></script>
+<link href="libs/leafletfix/leafletfix.css" rel="stylesheet" />
+<link href="libs/leaflet-label/leaflet.label.css" rel="stylesheet" />
+<script src="libs/leaflet-label/leaflet.label.js"></script>
+<script src="libs/Proj4Leaflet/proj4-compressed.js"></script>
+<script src="libs/Proj4Leaflet/proj4leaflet.js"></script>
+<script src="libs/leaflet-binding/leaflet.js"></script>
+<script src="libs/leaflet-providers/leaflet-providers.js"></script>
+<script src="libs/leaflet-providers-plugin/leaflet-providers-plugin.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -161,22 +161,21 @@ $(document).ready(function () {
 <div class="fluid-row">
   <div class="col-sm-3">
     <div class="list-group">
-      <a class="list-group-item" href="../">Introduction</a>
-      <a class="list-group-item" href="../map_widget.html">The Map Widget</a>
-      <a class="list-group-item" href="../basemaps.html">Basemaps</a>
-      <a class="list-group-item" href="../markers.html">Markers</a>
-      <a class="list-group-item" href="../popups.html">Popups and Labels</a>
-      <a class="list-group-item" href="../shapes.html">Lines and Shapes</a>
-      <a class="list-group-item" href="../json.html">GeoJSON and TopoJSON</a>
-      <a class="list-group-item" href="../raster.html">Raster Images</a>
-      <a class="list-group-item" href="../shiny.html">Shiny Integration</a>
-      <a class="list-group-item" href="../colors.html">Colors</a>
-      <a class="list-group-item" href="../legends.html">Legends</a>
-      <a class="list-group-item" href="../showhide.html">Show/Hide Layers</a>
-      <a class="list-group-item" href="../projections.html">Projections</a>
-      <a class="list-group-item" href="../morefeatures.html">More Features</a>
-      <a class="list-group-item" href="../extending.html">Extending Leaflet</a>
-      <a class="list-group-item" href="../examples.html">Detailed Examples</a>
+      <a class="list-group-item" href="./">Introduction</a>
+      <a class="list-group-item" href="map_widget.html">The Map Widget</a>
+      <a class="list-group-item" href="basemaps.html">Basemaps</a>
+      <a class="list-group-item" href="markers.html">Markers</a>
+      <a class="list-group-item" href="popups.html">Popups and Labels</a>
+      <a class="list-group-item" href="shapes.html">Lines and Shapes</a>
+      <a class="list-group-item" href="json.html">GeoJSON and TopoJSON</a>
+      <a class="list-group-item" href="raster.html">Raster Images</a>
+      <a class="list-group-item" href="shiny.html">Shiny Integration</a>
+      <a class="list-group-item" href="colors.html">Colors</a>
+      <a class="list-group-item" href="legends.html">Legends</a>
+      <a class="list-group-item" href="showhide.html">Show/Hide Layers</a>
+      <a class="list-group-item" href="choropleths.html">Choropleths</a>
+      <a class="list-group-item" href="projections.html">Projections</a>
+      <a class="list-group-item" href="morefeatures.html">More Features</a>
     </div>
     <script>
       // manage active state of toc based on current page
@@ -1115,7 +1114,7 @@ class(states)</code></pre>
 <p>We’ve saved the basic basemap as a separate variable <code>m</code> so we can easily iterate on the <code>addPolygons</code> call as we work through the rest of the tutorial.</p>
 <p>To add uniform polygons with default styling, just call <code>addPolygons</code> with no additional arguments.</p>
 <pre class="r"><code>m %&gt;% addPolygons()</code></pre>
-<div id="htmlwidget-e2aad06f99e8b55df8d8" style="width:100%;height:336px;" class="leaflet html-widget"></div>
+<div id="htmlwidget-e2aad06f99e8b55df8d8" style="width:100%;height:216px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-e2aad06f99e8b55df8d8">{
   "x": {
     "options": {
@@ -1925,13 +1924,13 @@ class(states)</code></pre>
 pal &lt;- colorBin(&quot;YlOrRd&quot;, domain = states$density, bins = bins)
 
 m %&gt;% addPolygons(
-    fillColor = ~pal(density),
-    weight = 2,
-    opacity = 1,
-    color = &quot;white&quot;,
-    dashArray = &quot;3&quot;,
-    fillOpacity = 0.7)</code></pre>
-<div id="htmlwidget-ec9d8b9e435c1a666871" style="width:100%;height:336px;" class="leaflet html-widget"></div>
+  fillColor = ~pal(density),
+  weight = 2,
+  opacity = 1,
+  color = &quot;white&quot;,
+  dashArray = &quot;3&quot;,
+  fillOpacity = 0.7)</code></pre>
+<div id="htmlwidget-ec9d8b9e435c1a666871" style="width:100%;height:216px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-ec9d8b9e435c1a666871">{
   "x": {
     "options": {
@@ -2735,19 +2734,19 @@ m %&gt;% addPolygons(
 <h3>Adding interaction</h3>
 <p>The next thing we’ll want is to make the polygons highlight as the mouse passes over them. The <code>addPolygon</code> function has a <code>highlight</code> argument that makes this simple.</p>
 <pre class="r"><code>m %&gt;% addPolygons(
-    fillColor = ~pal(density),
-    weight = 2,
-    opacity = 1,
-    color = &quot;white&quot;,
-    dashArray = &quot;3&quot;,
+  fillColor = ~pal(density),
+  weight = 2,
+  opacity = 1,
+  color = &quot;white&quot;,
+  dashArray = &quot;3&quot;,
+  fillOpacity = 0.7,
+  highlight = highlightOptions(
+    weight = 5,
+    color = &quot;#666&quot;,
+    dashArray = &quot;&quot;,
     fillOpacity = 0.7,
-    highlight = highlightOptions(
-      weight = 5,
-      color = &quot;#666&quot;,
-      dashArray = &quot;&quot;,
-      fillOpacity = 0.7,
-      bringToFront = TRUE))</code></pre>
-<div id="htmlwidget-65e60ed4f5440bdab363" style="width:100%;height:336px;" class="leaflet html-widget"></div>
+    bringToFront = TRUE))</code></pre>
+<div id="htmlwidget-65e60ed4f5440bdab363" style="width:100%;height:216px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-65e60ed4f5440bdab363">{
   "x": {
     "options": {
@@ -3583,7 +3582,7 @@ m &lt;- m %&gt;% addPolygons(
     textsize = &quot;15px&quot;,
     direction = &quot;auto&quot;))
 m</code></pre>
-<div id="htmlwidget-c6a36a601760297b5cca" style="width:100%;height:336px;" class="leaflet html-widget"></div>
+<div id="htmlwidget-c6a36a601760297b5cca" style="width:100%;height:216px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-c6a36a601760297b5cca">{
   "x": {
     "options": {
@@ -4462,7 +4461,7 @@ m</code></pre>
 <p>As our final step, let’s add a legend. Because we chose to color our map using <code>colorBin</code>, the <code>addLegend</code> function makes it particularly easy to add a legend with the correct colors and intervals.</p>
 <pre class="r"><code>m %&gt;% addLegend(pal = pal, values = ~density, opacity = 0.7, title = NULL,
   position = &quot;bottomright&quot;)</code></pre>
-<div id="htmlwidget-6d8788299161dc56faef" style="width:100%;height:336px;" class="leaflet html-widget"></div>
+<div id="htmlwidget-6d8788299161dc56faef" style="width:100%;height:216px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-6d8788299161dc56faef">{
   "x": {
     "options": {

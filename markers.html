@@ -179,10 +179,9 @@ $(document).ready(function () {
       <a class="list-group-item" href="colors.html">Colors</a>
       <a class="list-group-item" href="legends.html">Legends</a>
       <a class="list-group-item" href="showhide.html">Show/Hide Layers</a>
+      <a class="list-group-item" href="choropleths.html">Choropleths</a>
       <a class="list-group-item" href="projections.html">Projections</a>
       <a class="list-group-item" href="morefeatures.html">More Features</a>
-      <a class="list-group-item" href="extending.html">Extending Leaflet</a>
-      <a class="list-group-item" href="examples.html">Detailed Examples</a>
     </div>
     <script>
       // manage active state of toc based on current page
@@ -717,6 +716,9 @@ leaflet(df.20) %&gt;% addTiles() %&gt;%
             "markerColor": ["orange", "orange", "red", "orange", "green", "green", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "red", "orange", "red", "orange", "orange", "orange"],
             "iconColor": "black",
             "spin": false,
+            "squareMarker": false,
+            "iconRotate": 0,
+            "font": "monospace",
             "prefix": "ion"
           },
           null,
