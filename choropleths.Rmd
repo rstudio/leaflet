@@ -1,3 +1,7 @@
+---
+pagetitle: Leaflet for R - Choropleths
+---
+
 ## Choropleths
 
 Making choropleths with leaflet is easy. In this example, we'll duplicate the [step-by-step choropleth tutorial](http://leafletjs.com/examples/choropleth/) from the Leaflet.js website.
