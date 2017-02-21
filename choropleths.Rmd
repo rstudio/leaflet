@@ -92,12 +92,12 @@ bins <- c(0, 10, 20, 50, 100, 200, 500, 1000, Inf)
 pal <- colorBin("YlOrRd", domain = states$density, bins = bins)
 
 m %>% addPolygons(
-    fillColor = ~pal(density),
-    weight = 2,
-    opacity = 1,
-    color = "white",
-    dashArray = "3",
-    fillOpacity = 0.7)
+  fillColor = ~pal(density),
+  weight = 2,
+  opacity = 1,
+  color = "white",
+  dashArray = "3",
+  fillOpacity = 0.7)
 ```
 
 ### Adding interaction
@@ -106,18 +106,18 @@ The next thing we'll want is to make the polygons highlight as the mouse passes 
 
 ```{r}
 m %>% addPolygons(
-    fillColor = ~pal(density),
-    weight = 2,
-    opacity = 1,
-    color = "white",
-    dashArray = "3",
+  fillColor = ~pal(density),
+  weight = 2,
+  opacity = 1,
+  color = "white",
+  dashArray = "3",
+  fillOpacity = 0.7,
+  highlight = highlightOptions(
+    weight = 5,
+    color = "#666",
+    dashArray = "",
     fillOpacity = 0.7,
-    highlight = highlightOptions(
-      weight = 5,
-      color = "#666",
-      dashArray = "",
-      fillOpacity = 0.7,
-      bringToFront = TRUE))
+    bringToFront = TRUE))
 ```
 
 (The Leaflet.js tutorial also adds an event handler that zooms into a state when it's clicked. This isn't currently possible with the Leaflet R package, except with either custom JavaScript or using Shiny, both of which are outside the scope of this example.)
