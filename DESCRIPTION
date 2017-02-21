@@ -21,6 +21,11 @@ Authors@R: c(
       person("Benjamin Becquet", role = c("ctb", "cph"), comment = "Leaflet.MagnifyingGlass plugin"),
       person("Norkart AS", role = c("ctb", "cph"), comment = "Leaflet.MiniMap plugin"),
       person("L. Voogdt", role = c("ctb", "cph"), comment = "Leaflet.awesome-markers plugin"),
+      person("Daniel Montague", role = c("ctb", "cph"), comment = "Leaflet.EasyButton plugin"),
+      person("Kartena AB", role = c("ctb", "cph"), comment = "Proj4Leaflet plugin"),
+      person("Robert Kajic", role = c("ctb", "cph"), comment = "leaflet-locationfilter plugin"),
+      person("Mapbox", role = c("ctb", "cph"), comment = "leaflet-omnivore plugin"),
+      person("Michael Bostock", role = c("ctb", "cph"), comment = "topojson"),
       person("RStudio", role = c("cph"))
     )
 Maintainer: Joe Cheng <joe@rstudio.com>
@@ -28,7 +33,7 @@ Description: Create and customize interactive maps using the 'Leaflet'
     JavaScript library and the 'htmlwidgets' package. These maps can be used
     directly from the R console, from 'RStudio', in Shiny apps and R Markdown
     documents.
-License: GPL-3 | file LICENSE
+License: GPL-3
 URL: http://rstudio.github.io/leaflet/
 BugReports: https://github.com/rstudio/leaflet/issues
 Depends: R (>= 3.1.0)
