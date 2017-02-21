@@ -1200,19 +1200,17 @@ library(htmlwidgets)</code></pre>
 <p>Below is an example where we sync the base layer of the mini-map with the baselayer of the main map, using the ‘baselayerchange’ event.</p>
 <pre class="r"><code>l &lt;- leaflet() %&gt;% setView(0,0,3)
 
-esri &lt;- providers %&gt;%
-  purrr::keep(~ grepl(&#39;^Esri&#39;,.))
+esri &lt;- grep(&quot;^Esri&quot;, providers, value = TRUE)
 
-esri %&gt;%
-  purrr::walk(function(x) l &lt;&lt;- l %&gt;% addProviderTiles(x,group=x))
+for (provider in esri) {
+  l &lt;- l %&gt;% addProviderTiles(provider, group = provider)
+}
 
 l %&gt;%
-  addLayersControl(
-    baseGroups = names(esri),
-    options = layersControlOptions(collapsed = FALSE)
-  ) %&gt;%
-  addMiniMap(tiles = esri[[1]],
-             toggleDisplay = T, position = &#39;bottomleft&#39;) %&gt;%
+  addLayersControl(baseGroups = names(esri),
+    options = layersControlOptions(collapsed = FALSE)) %&gt;%
+  addMiniMap(tiles = esri[[1]], toggleDisplay = TRUE,
+    position = &quot;bottomleft&quot;) %&gt;%
   htmlwidgets::onRender(&quot;
     function(el, x) {
       var myMap = this;

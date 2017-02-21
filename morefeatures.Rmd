@@ -183,19 +183,17 @@ Below is an example where we sync the base layer of the mini-map with the basela
 ```{r, fig.height=4}
 l <- leaflet() %>% setView(0,0,3)
 
-esri <- providers %>%
-  purrr::keep(~ grepl('^Esri',.))
+esri <- grep("^Esri", providers, value = TRUE)
 
-esri %>%
-  purrr::walk(function(x) l <<- l %>% addProviderTiles(x,group=x))
+for (provider in esri) {
+  l <- l %>% addProviderTiles(provider, group = provider)
+}
 
 l %>%
-  addLayersControl(
-    baseGroups = names(esri),
-    options = layersControlOptions(collapsed = FALSE)
-  ) %>%
-  addMiniMap(tiles = esri[[1]],
-             toggleDisplay = T, position = 'bottomleft') %>%
+  addLayersControl(baseGroups = names(esri),
+    options = layersControlOptions(collapsed = FALSE)) %>%
+  addMiniMap(tiles = esri[[1]], toggleDisplay = TRUE,
+    position = "bottomleft") %>%
   htmlwidgets::onRender("
     function(el, x) {
       var myMap = this;
@@ -205,4 +203,3 @@ l %>%
         })
     }")
 ```
-
