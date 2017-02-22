@@ -98,6 +98,28 @@ hideGroup <- function(map, group) {
   invokeMethod(map, getMapData(map), 'hideGroup', group)
 }
 
+#' bringToFront or bringToBack
+#'
+#' bringToFront brings the group to the top of all layers. Groups are
+#' created using the \code{group} parameter that is included on most layer
+#' adding functions.
+#'
+#' @param map the map to modify
+#' @param group character vector of one or more group names to show or hide
+#'
+#' @seealso \code{\link{showGroup}} to show/hide groups.
+#'
+#' @export
+bringToFront = function(map, group) {
+  invokeMethod(map, getMapData(map), 'bringToFront', group)
+}
+
+#' @rdname bringToFront
+#' @export
+bringToBack = function(map, group) {
+  invokeMethod(map, getMapData(map), 'bringToBack', group)
+}
+
 #' Graphics elements and layers
 #'
 #' Add graphics elements and layers to the map widget.
