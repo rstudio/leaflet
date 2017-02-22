@@ -31,10 +31,16 @@ neStates <- subset(states, states$STUSPS %in% c(
 ))
 
 leaflet(neStates) %>%
-  addPolygons(
-    stroke = FALSE, fillOpacity = 0.5, smoothFactor = 0.5,
-    color = ~colorQuantile("YlOrRd", ALAND)(ALAND))
+  addPolygons(color = "#444444", weight = 1, smoothFactor = 0.5,
+    opacity = 1.0, fillOpacity = 0.5,
+    fillColor = ~colorQuantile("YlOrRd", ALAND)(ALAND),
+    highlightOptions = highlightOptions(color = "white", weight = 2,
+      bringToFront = TRUE))
 ```
+
+#### Highlighting shapes
+
+The above example uses the `highlightOptions` parameter to emphasize the currently moused-over polygon. (The `bringToFront = TRUE` argument is necessary to prevent the thicker, white border of the active polygon from being hidden behind the borders of other polygons that happen to be higher in the z-order.) You can use `highlightOptions` with all of the shape layers described on this page.
 
 #### Simplifying complex polygons/polylines
 

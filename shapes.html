@@ -222,9 +222,11 @@ states &lt;- readOGR(&quot;shp/cb_2013_us_state_20m.shp&quot;,
 ))
 
 leaflet(neStates) %&gt;%
-  addPolygons(
-    stroke = FALSE, fillOpacity = 0.5, smoothFactor = 0.5,
-    color = ~colorQuantile(&quot;YlOrRd&quot;, ALAND)(ALAND))</code></pre>
+  addPolygons(color = &quot;#444444&quot;, weight = 1, smoothFactor = 0.5,
+    opacity = 1.0, fillOpacity = 0.5,
+    fillColor = ~colorQuantile(&quot;YlOrRd&quot;, ALAND)(ALAND),
+    highlightOptions = highlightOptions(color = &quot;white&quot;, weight = 2,
+      bringToFront = TRUE))</code></pre>
 <div id="htmlwidget-927ec88a166bf954e46a" style="width:100%;height:216px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-927ec88a166bf954e46a">{
   "x": {
@@ -545,10 +547,10 @@ leaflet(neStates) %&gt;%
             "clickable": true,
             "pointerEvents": null,
             "className": "",
-            "stroke": false,
-            "color": ["#FFFFB2", "#FECC5C", "#FECC5C", "#E31A1C", "#E31A1C", "#E31A1C", "#FFFFB2", "#FD8D3C", "#FD8D3C"],
-            "weight": 5,
-            "opacity": 0.5,
+            "stroke": true,
+            "color": "#444444",
+            "weight": 1,
+            "opacity": 1,
             "fill": true,
             "fillColor": ["#FFFFB2", "#FECC5C", "#FECC5C", "#E31A1C", "#E31A1C", "#E31A1C", "#FFFFB2", "#FD8D3C", "#FD8D3C"],
             "fillOpacity": 0.5,
@@ -560,7 +562,11 @@ leaflet(neStates) %&gt;%
           null,
           null,
           null,
-          null
+          {
+            "color": "white",
+            "weight": 2,
+            "bringToFront": true
+          }
         ]
       }
     ],
@@ -572,6 +578,10 @@ leaflet(neStates) %&gt;%
   "evals": [],
   "jsHooks": []
 }</script>
+<div id="highlighting-shapes" class="section level4">
+<h4>Highlighting shapes</h4>
+<p>The above example uses the <code>highlightOptions</code> parameter to emphasize the currently moused-over polygon. (The <code>bringToFront = TRUE</code> argument is necessary to prevent the thicker, white border of the active polygon from being hidden behind the borders of other polygons that happen to be higher in the z-order.) You can use <code>highlightOptions</code> with all of the shape layers described on this page.</p>
+</div>
 <div id="simplifying-complex-polygonspolylines" class="section level4">
 <h4>Simplifying complex polygons/polylines</h4>
 <p>Very detailed (i.e. large) shape data can present a problem for Leafet, since it is all eventually passed into the browser and rendered as SVG, which is very expressive and convenient but has scalability limits. In these cases, consider using <code>rmapshaper::ms_simplify</code>, which does topology-preserving simplification conveniently from R.</p>
