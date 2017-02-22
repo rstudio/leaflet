@@ -252,10 +252,8 @@ leaflet(df) %&gt;% addCircles()</code></pre>
 <pre class="r"><code>leaflet() %&gt;% addCircles(data = df)
 leaflet() %&gt;% addCircles(data = df, lat = ~ Lat, lng = ~ Long)</code></pre>
 <p>Below are examples of using <strong>sp</strong> and <strong>maps</strong>, respectively:</p>
-<pre class="r"><code>library(sp)</code></pre>
-<pre><code>## Warning: package &#39;sp&#39; was built under R version 3.3.2</code></pre>
-<pre><code>## Loading required package: methods</code></pre>
-<pre class="r"><code>Sr1 = Polygon(cbind(c(2, 4, 4, 1, 2), c(2, 3, 5, 4, 2)))
+<pre class="r"><code>library(sp)
+Sr1 = Polygon(cbind(c(2, 4, 4, 1, 2), c(2, 3, 5, 4, 2)))
 Sr2 = Polygon(cbind(c(5, 4, 2, 5), c(2, 3, 2, 2)))
 Sr3 = Polygon(cbind(c(4, 4, 5, 10, 4), c(5, 3, 2, 5, 5)))
 Sr4 = Polygon(cbind(c(5, 6, 6, 5, 5), c(4, 4, 3, 3, 4)), hole = TRUE)

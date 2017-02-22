@@ -72,7 +72,7 @@ leaflet() %>% addCircles(data = df, lat = ~ Lat, lng = ~ Long)
 
 Below are examples of using **sp** and **maps**, respectively:
 
-```{r}
+```{r message=FALSE}
 library(sp)
 Sr1 = Polygon(cbind(c(2, 4, 4, 1, 2), c(2, 3, 5, 4, 2)))
 Sr2 = Polygon(cbind(c(5, 4, 2, 5), c(2, 3, 2, 2)))
