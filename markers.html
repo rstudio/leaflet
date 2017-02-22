@@ -210,7 +210,7 @@ $(document).ready(function () {
 <p>Point data for markers can come from a variety of sources:</p>
 <ul>
 <li><code>SpatialPoints</code> or <code>SpatialPointsDataFrame</code> objects (from the <code>sp</code> package)</li>
-<li><code>POINT</code> objects (from the <code>sf</code> package); only <code>X</code> and <code>Y</code> dimensions will be considered</li>
+<li><code>POINT</code>, <code>sfc_POINT</code>, and <code>sf</code> objects (from the <code>sf</code> package); only <code>X</code> and <code>Y</code> dimensions will be considered</li>
 <li>Two-column numeric matrices (first column is longitude, second is latitude)</li>
 <li>Data frame with latitude and logitude columns. You can explicitly tell the marker function which columns contain the coordinate data (e.g. <code>addMarkers(lng = ~Longitude, lat = ~Latitude)</code>), or let the function look for columns named <code>lat</code>/<code>latitude</code> and <code>lon</code>/<code>lng</code>/<code>long</code>/<code>longitude</code> (case insensitive).</li>
 <li>Simply provide numeric vectors as <code>lng</code> and <code>lat</code> arguments</li>
