@@ -871,6 +871,16 @@ methods.showGroup = function(group) {
   });
 };
 
+methods.setGroupOptions = function(group, options) {
+  $.each(asArray(group), (i, g) => {
+    let layer = this.layerManager.getLayerGroup(g, true);
+    if (options.zoomLevels) {
+      layer.zoomLevels = options.zoomLevels;
+    }
+  });
+  this.showHideGroupsOnZoom();
+};
+
 methods.addRasterImage = function(uri, bounds, opacity, attribution, layerId, group) {
   // uri is a data URI containing an image. We want to paint this image as a
   // layer at (top-left) bounds[0] to (bottom-right) bounds[1].

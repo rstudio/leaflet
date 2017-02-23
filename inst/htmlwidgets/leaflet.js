@@ -496,6 +496,30 @@ function preventUnintendedZoomOnScroll(map) {
   });
 }
 
+function setupShowHideGroupsOnZoom(map) {
+  function setVisibility(layer, visible) {
+    if (visible !== map.hasLayer(layer)) {
+      if (visible) map.addLayer(layer);else map.removeLayer(layer);
+    }
+  }
+
+  function showHideGroupsOnZoom() {
+    if (!map.layerManager) return;
+
+    var zoom = map.getZoom();
+    map.layerManager.getAllGroupNames().forEach(function (group) {
+      var layer = map.layerManager.getLayerGroup(group, false);
+      if (layer && typeof layer.zoomLevels !== "undefined") {
+        setVisibility(layer, layer.zoomLevels === true || layer.zoomLevels.indexOf(zoom) >= 0);
+      }
+    });
+  }
+
+  map.showHideGroupsOnZoom = showHideGroupsOnZoom;
+  map.on("zoomend", showHideGroupsOnZoom);
+  showHideGroupsOnZoom();
+}
+
 _htmlwidgets2.default.widget({
 
   name: "leaflet",
@@ -534,6 +558,7 @@ _htmlwidgets2.default.widget({
         }
 
         preventUnintendedZoomOnScroll(map);
+        setupShowHideGroupsOnZoom(map);
 
         // Store some state in the map object
         map.leafletr = {
@@ -1020,6 +1045,15 @@ var LayerManager = function () {
         if (_this5._map.hasLayer(v)) {
           result.push(k);
         }
+      });
+      return result;
+    }
+  }, {
+    key: "getAllGroupNames",
+    value: function getAllGroupNames() {
+      var result = [];
+      _jquery2.default.each(this._groupContainers, function (k, v) {
+        result.push(k);
       });
       return result;
     }
@@ -1930,6 +1964,18 @@ methods.showGroup = function (group) {
   });
 };
 
+methods.setGroupOptions = function (group, options) {
+  var _this8 = this;
+
+  _jquery2.default.each((0, _util.asArray)(group), function (i, g) {
+    var layer = _this8.layerManager.getLayerGroup(g, true);
+    if (options.zoomLevels) {
+      layer.zoomLevels = options.zoomLevels;
+    }
+  });
+  this.showHideGroupsOnZoom();
+};
+
 methods.addRasterImage = function (uri, bounds, opacity, attribution, layerId, group) {
   // uri is a data URI containing an image. We want to paint this image as a
   // layer at (top-left) bounds[0] to (bottom-right) bounds[1].
@@ -2213,7 +2259,7 @@ methods.removeMeasure = function () {
 };
 
 methods.addSelect = function (ctGroup) {
-  var _this8 = this;
+  var _this9 = this;
 
   methods.removeSelect.call(this);
 
@@ -2224,32 +2270,32 @@ methods.addSelect = function (ctGroup) {
       title: "Make a selection",
       onClick: function onClick(btn, map) {
         btn.state("select-active");
-        _this8._locationFilter = new _leaflet2.default.LocationFilter2();
+        _this9._locationFilter = new _leaflet2.default.LocationFilter2();
 
         if (ctGroup) {
           (function () {
             var selectionHandle = new global.crosstalk.SelectionHandle(ctGroup);
             selectionHandle.on("change", function (e) {
               if (e.sender !== selectionHandle) {
-                if (_this8._locationFilter) {
-                  _this8._locationFilter.disable();
+                if (_this9._locationFilter) {
+                  _this9._locationFilter.disable();
                   btn.state("select-inactive");
                 }
               }
             });
             var handler = function handler(e) {
-              _this8.layerManager.brush(_this8._locationFilter.getBounds(), { sender: selectionHandle });
+              _this9.layerManager.brush(_this9._locationFilter.getBounds(), { sender: selectionHandle });
             };
-            _this8._locationFilter.on("enabled", handler);
-            _this8._locationFilter.on("change", handler);
-            _this8._locationFilter.on("disabled", function () {
+            _this9._locationFilter.on("enabled", handler);
+            _this9._locationFilter.on("change", handler);
+            _this9._locationFilter.on("disabled", function () {
               selectionHandle.close();
-              _this8._locationFilter = null;
+              _this9._locationFilter = null;
             });
           })();
         }
 
-        _this8._locationFilter.addTo(map);
+        _this9._locationFilter.addTo(map);
       }
     }, {
       stateName: "select-active",
@@ -2257,9 +2303,9 @@ methods.addSelect = function (ctGroup) {
       title: "Dismiss selection",
       onClick: function onClick(btn, map) {
         btn.state("select-inactive");
-        _this8._locationFilter.disable();
+        _this9._locationFilter.disable();
         // If explicitly dismissed, clear the crosstalk selections
-        _this8.layerManager.unbrush();
+        _this9.layerManager.unbrush();
       }
     }]
   });

@@ -282,6 +282,14 @@ export default class LayerManager {
     return result;
   }
 
+  getAllGroupNames() {
+    let result = [];
+    $.each(this._groupContainers, (k, v) => {
+      result.push(k);
+    });
+    return result;
+  }
+
   clearGroup(group) {
     // Find all layers in _byGroup[group]
     let groupTable = this._byGroup[group];
