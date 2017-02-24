@@ -1969,8 +1969,9 @@ methods.setGroupOptions = function (group, options) {
 
   _jquery2.default.each((0, _util.asArray)(group), function (i, g) {
     var layer = _this8.layerManager.getLayerGroup(g, true);
-    if (options.zoomLevels) {
-      layer.zoomLevels = options.zoomLevels;
+    // This slightly tortured check is because 0 is a valid value for zoomLevels
+    if (typeof options.zoomLevels !== "undefined" && options.zoomLevels !== null) {
+      layer.zoomLevels = (0, _util.asArray)(options.zoomLevels);
     }
   });
   this.showHideGroupsOnZoom();

@@ -874,8 +874,9 @@ methods.showGroup = function(group) {
 methods.setGroupOptions = function(group, options) {
   $.each(asArray(group), (i, g) => {
     let layer = this.layerManager.getLayerGroup(g, true);
-    if (options.zoomLevels) {
-      layer.zoomLevels = options.zoomLevels;
+    // This slightly tortured check is because 0 is a valid value for zoomLevels
+    if (typeof(options.zoomLevels) !== "undefined" && options.zoomLevels !== null) {
+      layer.zoomLevels = asArray(options.zoomLevels);
     }
   });
   this.showHideGroupsOnZoom();
