@@ -94,7 +94,9 @@ getBins <- function(domain, x, bins, pretty) {
 }
 
 #' @details \code{colorBin} also maps continuous numeric data, but performs
-#'   binning based on value (see the \code{\link[base]{cut}} function).
+#'   binning based on value (see the \code{\link[base]{cut}} function). colorBin
+#'   defaults for the \code{\link[base]{cut}} function are \code{include.lowest
+#'   = TRUE} and \code{right = FALSE}.
 #' @param bins Either a numeric vector of two or more unique cut points or a
 #'   single number (greater than or equal to 2) giving the number of intervals
 #'   into which the domain values are to be cut.
@@ -103,10 +105,12 @@ getBins <- function(domain, x, bins, pretty) {
 #'   \code{pretty = TRUE}, the actual number of bins may not be the number of
 #'   bins you specified. When \code{pretty = FALSE}, \code{\link{seq}()} is used
 #'   to generate the bins and the breaks may not be "pretty".
+#' @param right logical, indicating if the intervals should be closed on the
+#'   right (and open on the left) or vice versa.
 #' @rdname colorNumeric
 #' @export
 colorBin <- function(palette, domain, bins = 7, pretty = TRUE,
-  na.color = "#808080", alpha = FALSE, reverse = FALSE) {
+  na.color = "#808080", alpha = FALSE, reverse = FALSE, right = FALSE) {
 
   # domain usually needs to be explicitly provided (even if NULL) but not if
   # breaks are specified
@@ -126,7 +130,7 @@ colorBin <- function(palette, domain, bins = 7, pretty = TRUE,
       return(pf(x))
     }
     binsToUse = getBins(domain, x, bins, pretty)
-    ints = cut(x, binsToUse, labels = FALSE, include.lowest = TRUE, right = FALSE)
+    ints = cut(x, binsToUse, labels = FALSE, include.lowest = TRUE, right)
     if (any(is.na(x) != is.na(ints)))
       warning("Some values were outside the color scale and will be treated as NA")
     colorFunc(ints)
@@ -143,14 +147,14 @@ colorBin <- function(palette, domain, bins = 7, pretty = TRUE,
 #' @export
 colorQuantile <- function(palette, domain, n = 4,
   probs = seq(0, 1, length.out = n + 1), na.color = "#808080", alpha = FALSE,
-  reverse = FALSE) {
+  reverse = FALSE, right = FALSE) {
 
   if (!is.null(domain)) {
     bins = quantile(domain, probs, na.rm = TRUE, names = FALSE)
     return(withColorAttr(
       'quantile', list(probs = probs, na.color = na.color),
       colorBin(palette, domain = NULL, bins = bins, na.color = na.color,
-        alpha = alpha, reverse = reverse)
+        alpha = alpha, reverse = reverse, right = right)
     ))
   }
 
@@ -162,7 +166,7 @@ colorQuantile <- function(palette, domain, n = 4,
 
   withColorAttr('quantile', list(probs = probs, na.color = na.color), function(x) {
     binsToUse = quantile(x, probs, na.rm = TRUE, names = FALSE)
-    ints = cut(x, binsToUse, labels = FALSE, include.lowest = TRUE, right = FALSE)
+    ints = cut(x, binsToUse, labels = FALSE, include.lowest = TRUE, right)
     if (any(is.na(x) != is.na(ints)))
       warning("Some values were outside the color scale and will be treated as NA")
     colorFunc(ints)
