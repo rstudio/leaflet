@@ -496,30 +496,6 @@ function preventUnintendedZoomOnScroll(map) {
   });
 }
 
-function setupShowHideGroupsOnZoom(map) {
-  function setVisibility(layer, visible) {
-    if (visible !== map.hasLayer(layer)) {
-      if (visible) map.addLayer(layer);else map.removeLayer(layer);
-    }
-  }
-
-  function showHideGroupsOnZoom() {
-    if (!map.layerManager) return;
-
-    var zoom = map.getZoom();
-    map.layerManager.getAllGroupNames().forEach(function (group) {
-      var layer = map.layerManager.getLayerGroup(group, false);
-      if (layer && typeof layer.zoomLevels !== "undefined") {
-        setVisibility(layer, layer.zoomLevels === true || layer.zoomLevels.indexOf(zoom) >= 0);
-      }
-    });
-  }
-
-  map.showHideGroupsOnZoom = showHideGroupsOnZoom;
-  map.on("zoomend", showHideGroupsOnZoom);
-  showHideGroupsOnZoom();
-}
-
 _htmlwidgets2.default.widget({
 
   name: "leaflet",
@@ -558,7 +534,6 @@ _htmlwidgets2.default.widget({
         }
 
         preventUnintendedZoomOnScroll(map);
-        setupShowHideGroupsOnZoom(map);
 
         // Store some state in the map object
         map.leafletr = {
@@ -1964,6 +1939,34 @@ methods.showGroup = function (group) {
   });
 };
 
+function setupShowHideGroupsOnZoom(map) {
+  if (map.leafletr._hasInitializedShowHideGroups) {
+    return;
+  }
+  map.leafletr._hasInitializedShowHideGroups = true;
+
+  function setVisibility(layer, visible) {
+    if (visible !== map.hasLayer(layer)) {
+      if (visible) map.addLayer(layer);else map.removeLayer(layer);
+    }
+  }
+
+  function showHideGroupsOnZoom() {
+    if (!map.layerManager) return;
+
+    var zoom = map.getZoom();
+    map.layerManager.getAllGroupNames().forEach(function (group) {
+      var layer = map.layerManager.getLayerGroup(group, false);
+      if (layer && typeof layer.zoomLevels !== "undefined") {
+        setVisibility(layer, layer.zoomLevels === true || layer.zoomLevels.indexOf(zoom) >= 0);
+      }
+    });
+  }
+
+  map.showHideGroupsOnZoom = showHideGroupsOnZoom;
+  map.on("zoomend", showHideGroupsOnZoom);
+}
+
 methods.setGroupOptions = function (group, options) {
   var _this8 = this;
 
@@ -1974,6 +1977,8 @@ methods.setGroupOptions = function (group, options) {
       layer.zoomLevels = (0, _util.asArray)(options.zoomLevels);
     }
   });
+
+  setupShowHideGroupsOnZoom(this);
   this.showHideGroupsOnZoom();
 };
 

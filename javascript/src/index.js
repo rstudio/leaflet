@@ -79,35 +79,6 @@ function preventUnintendedZoomOnScroll(map) {
   });
 }
 
-function setupShowHideGroupsOnZoom(map) {
-  function setVisibility(layer, visible) {
-    if (visible !== map.hasLayer(layer)) {
-      if (visible)
-        map.addLayer(layer);
-      else
-        map.removeLayer(layer);
-    }
-  }
-
-  function showHideGroupsOnZoom() {
-    if (!map.layerManager)
-      return;
-
-    let zoom = map.getZoom();
-    map.layerManager.getAllGroupNames().forEach(group => {
-      let layer = map.layerManager.getLayerGroup(group, false);
-      if (layer && typeof(layer.zoomLevels) !== "undefined") {
-        setVisibility(layer,
-          layer.zoomLevels === true || layer.zoomLevels.indexOf(zoom) >= 0);
-      }
-    });
-  }
-
-  map.showHideGroupsOnZoom = showHideGroupsOnZoom;
-  map.on("zoomend", showHideGroupsOnZoom);
-  showHideGroupsOnZoom();
-}
-
 HTMLWidgets.widget({
 
   name: "leaflet",
@@ -144,7 +115,6 @@ HTMLWidgets.widget({
         }
 
         preventUnintendedZoomOnScroll(map);
-        setupShowHideGroupsOnZoom(map);
 
         // Store some state in the map object
         map.leafletr = {

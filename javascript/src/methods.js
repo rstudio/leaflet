@@ -871,6 +871,39 @@ methods.showGroup = function(group) {
   });
 };
 
+function setupShowHideGroupsOnZoom(map) {
+  if (map.leafletr._hasInitializedShowHideGroups) {
+    return;
+  }
+  map.leafletr._hasInitializedShowHideGroups = true;
+
+  function setVisibility(layer, visible) {
+    if (visible !== map.hasLayer(layer)) {
+      if (visible)
+        map.addLayer(layer);
+      else
+        map.removeLayer(layer);
+    }
+  }
+
+  function showHideGroupsOnZoom() {
+    if (!map.layerManager)
+      return;
+
+    let zoom = map.getZoom();
+    map.layerManager.getAllGroupNames().forEach(group => {
+      let layer = map.layerManager.getLayerGroup(group, false);
+      if (layer && typeof(layer.zoomLevels) !== "undefined") {
+        setVisibility(layer,
+          layer.zoomLevels === true || layer.zoomLevels.indexOf(zoom) >= 0);
+      }
+    });
+  }
+
+  map.showHideGroupsOnZoom = showHideGroupsOnZoom;
+  map.on("zoomend", showHideGroupsOnZoom);
+}
+
 methods.setGroupOptions = function(group, options) {
   $.each(asArray(group), (i, g) => {
     let layer = this.layerManager.getLayerGroup(g, true);
@@ -879,6 +912,8 @@ methods.setGroupOptions = function(group, options) {
       layer.zoomLevels = asArray(options.zoomLevels);
     }
   });
+
+  setupShowHideGroupsOnZoom(this);
   this.showHideGroupsOnZoom();
 };
 
