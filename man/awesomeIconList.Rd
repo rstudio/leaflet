@@ -21,4 +21,3 @@ iconSet = awesomeIconList(
 
 iconSet[c('home', 'flag')]
 }
-

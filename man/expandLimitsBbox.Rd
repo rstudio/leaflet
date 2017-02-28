@@ -16,4 +16,3 @@ expandLimitsBbox(map, poly)
 Same as expandLimits, but takes a polygon (that presumably has a bbox attr)
 rather than lat/lng.
 }
-

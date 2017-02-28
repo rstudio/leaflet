@@ -60,4 +60,3 @@ initially, but can be overridden}
 \description{
 Add Awesome Markers
 }
-

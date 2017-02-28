@@ -73,4 +73,3 @@ crs(r) <- CRS("+init=epsg:4326")
 leaflet() \%>\% addTiles() \%>\%
   addRasterImage(r, colors = "Spectral", opacity = 0.8)
 }
-
