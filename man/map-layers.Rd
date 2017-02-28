@@ -21,7 +21,8 @@ addControl(map, html, position = c("topleft", "topright", "bottomleft",
   "bottomright"), layerId = NULL, className = "info legend",
   data = getMapData(map))
 
-addTiles(map, urlTemplate = "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+addTiles(map,
+  urlTemplate = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
   attribution = NULL, layerId = NULL, group = NULL,
   options = tileOptions())
 
