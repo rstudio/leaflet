@@ -37,7 +37,7 @@ assert(
 m2 = addLegend(map, pal = pal2, values = ~x2)
 l2 = getLastLegend(m2)
 assert(
-  l2$colors == c("#67001F", "#F8B799", "#A8D0E4", "#053061"),
+  l2$colors == c("#CA0020", "#F4A582", "#92C5DE", "#0571B0"),
   l2$labels == c('1.0 &ndash; 1.5', '1.5 &ndash; 2.0', '2.0 &ndash; 2.5', '2.5 &ndash; 3.0'),
   l2$type == 'bin'
 )
@@ -45,7 +45,7 @@ assert(
 m3 = addLegend(map, pal = pal3, values = ~x3)
 l3 = getLastLegend(m3)
 assert(
-  l3$colors == c("#F7FCFD", "#AADFD3", "#38A265", "#00441B"),
+  l3$colors == c("#EDF8FB", "#B2E2E2", "#66C2A4", "#238B45"),
   l3$labels == c(
     '<span title="1.0 &ndash; 1.5">0% &ndash; 25%</span>',
     '<span title="1.5 &ndash; 2.0">25% &ndash; 50%</span>',
@@ -58,7 +58,7 @@ assert(
 m4 = addLegend(map, pal = pal4, values = ~x4)
 l4 = getLastLegend(m4)
 assert(
-  l4$colors == c("#1B9E77", "#B27D5D", "#666666"),
+  l4$colors == c("#1B9E77", "#D95F02", "#7570B3"),
   l4$labels == as.character(df$x4),
   l4$type == 'factor'
 )

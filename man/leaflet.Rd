@@ -17,12 +17,13 @@ leafletCRS(crsClass = "L.CRS.EPSG3857", code = NULL, proj4def = NULL,
   scales = NULL, resolutions = NULL, bounds = NULL, tileSize = NULL)
 }
 \arguments{
-\item{data}{a data object (currently supported objects are matrices, data
-frames, and spatial objects from the \pkg{sp} package of classes
-\code{SpatialPoints}, \code{SpatialPointsDataFrame}, \code{Polygon},
+\item{data}{a data object. Currently supported objects are matrices, data
+frames, spatial objects from the \pkg{sp} package
+(\code{SpatialPoints}, \code{SpatialPointsDataFrame}, \code{Polygon},
 \code{Polygons}, \code{SpatialPolygons}, \code{SpatialPolygonsDataFrame},
 \code{Line}, \code{Lines}, \code{SpatialLines}, and
-\code{SpatialLinesDataFrame})}
+\code{SpatialLinesDataFrame}), and
+spatial data frames from the \pkg{sf} package.}
 
 \item{width}{the width of the map}
 

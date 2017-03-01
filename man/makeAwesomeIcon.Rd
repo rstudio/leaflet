@@ -6,7 +6,8 @@
 \usage{
 makeAwesomeIcon(icon = "home", library = "glyphicon",
   markerColor = "blue", iconColor = "white", spin = FALSE,
-  extraClasses = NULL)
+  extraClasses = NULL, squareMarker = FALSE, iconRotate = 0,
+  fontFamily = "monospace", text = NULL)
 }
 \arguments{
 \item{icon}{Name of the icon}
@@ -15,8 +16,8 @@ makeAwesomeIcon(icon = "home", library = "glyphicon",
 values are \code{'fa'} (fontawesome) or \code{'ion'} (ionicons).}
 
 \item{markerColor}{Possible values are \code{'red'}, \code{'darkred'}, \code{'lightred'}, \code{'orange'},
-\code{'beige'}, \code{'green'}, \code{'darkgreen'}, \code{'lightgreen'}, \code{'blue'}, 
-\code{'darkblue'}, \code{'lightblue'}, \code{'purple'}, \code{'darkpurple'}, \code{'pink'}, 
+\code{'beige'}, \code{'green'}, \code{'darkgreen'}, \code{'lightgreen'}, \code{'blue'},
+\code{'darkblue'}, \code{'lightblue'}, \code{'purple'}, \code{'darkpurple'}, \code{'pink'},
 \code{'cadetblue'}, \code{'white'}, \code{'gray'}, \code{'lightgray'}, \code{'black'}}
 
 \item{iconColor}{The color to use for the icon itself. Use any CSS-valid
@@ -26,6 +27,15 @@ color (hex, rgba, etc.) or a named web color.}
 = 'fa'})}
 
 \item{extraClasses}{Additional css classes to include on the icon.}
+
+\item{squareMarker}{Whether to use a sqare marker.}
+
+\item{iconRotate}{Rotate the icon by a given angle.}
+
+\item{fontFamily}{Used when \code{text} option is specified.}
+
+\item{text}{Use this text string instead of an icon.
+argument of \code{\link{addAwesomeMarkers}()}.}
 }
 \description{
 Make Awesome Icon
