@@ -887,6 +887,7 @@ var LayerManager = function () {
                     _layerInfo4.layer.options.ctFillColor = selected ? selectionColour : persist ? opts.ctFillColor : opts.origFillColor;
 
                     _layerInfo4.layer.options.ctOpacity = selected ? opts.origOpacity : persist && opts.origOpacity == opts.ctOpacity ? opts.origOpacity : ctOpts.opacityDim * opts.origOpacity;
+                    _layerInfo4.layer.options.ctFillOpacity = selected ? opts.origFillOpacity : persist && opts.origFillOpacity == opts.ctFillOpacity ? opts.origFillOpacity : ctOpts.opacityDim * opts.origFillOpacity;
 
                     _this._setStyle(_layerInfo4);
                   }

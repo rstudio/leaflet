@@ -171,6 +171,10 @@ export default class LayerManager {
                   selected ? opts.origOpacity :
                     (persist && opts.origOpacity == opts.ctOpacity) ? opts.origOpacity :
                       ctOpts.opacityDim * opts.origOpacity;
+              layerInfo.layer.options.ctFillOpacity =
+                  selected ? opts.origFillOpacity :
+                    (persist && opts.origFillOpacity == opts.ctFillOpacity) ? opts.origFillOpacity :
+                      ctOpts.opacityDim * opts.origFillOpacity;
 
               this._setStyle(layerInfo);
             }
