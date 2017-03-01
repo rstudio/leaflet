@@ -1121,7 +1121,7 @@ var LayerManager = function () {
       if (layerInfo.ctGroup) {
         var ctGroup = this._byCrosstalkGroup[layerInfo.ctGroup];
         var layersForKey = ctGroup[layerInfo.ctKey];
-        var idx = layersForKey ? layersForKey.indexOf(stamp) : -1;
+        var idx = layersForKey ? layersForKey.indexOf(+stamp) : -1;
         if (idx >= 0) {
           if (layersForKey.length === 1) {
             delete ctGroup[layerInfo.ctKey];
