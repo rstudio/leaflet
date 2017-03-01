@@ -2,8 +2,8 @@
 % Please edit documentation in R/leaflet.R
 \name{leaflet}
 \alias{leaflet}
-\alias{leafletCRS}
 \alias{leafletOptions}
+\alias{leafletCRS}
 \title{Create a Leaflet map widget}
 \usage{
 leaflet(data = NULL, width = NULL, height = NULL, padding = 0,
@@ -97,6 +97,7 @@ formulae will be evaluated in the \code{data}.
 
 \item \code{leafletCRS}: class to create a custom CRS
 }}
+
 \examples{
 # !formatR
 library(leaflet)
@@ -262,4 +263,3 @@ m \%>\% addCircleMarkers(~lng, ~lat, radius = ~size,
 
 \url{http://leafletjs.com/reference.html#map-options} for details.
 }
-

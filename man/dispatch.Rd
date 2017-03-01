@@ -39,4 +39,3 @@ this \code{dispatch} call; for error message purposes}
 \description{
 Extension points for plugins
 }
-

@@ -38,4 +38,3 @@ leaflet() \%>\%
   addSimpleGraticule()
 
 }
-

@@ -17,4 +17,3 @@ An HTML-based list of the colors and values
 \description{
 Color previewing utility
 }
-

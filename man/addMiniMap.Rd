@@ -87,4 +87,3 @@ leaf <- leaflet() \%>\%
 \seealso{
 \code{\link{providers}}
 }
-

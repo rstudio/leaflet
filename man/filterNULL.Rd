@@ -12,4 +12,3 @@ filterNULL(x)
 \description{
 remove NULL elements from a list
 }
-

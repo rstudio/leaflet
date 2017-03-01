@@ -54,4 +54,3 @@ popups will "open", relative to the icon anchor}
 \description{
 Define icon sets
 }
-

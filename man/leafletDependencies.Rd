@@ -20,4 +20,3 @@ addBootStrap <- function(map) {
 }
 }
 \keyword{datasets}
-
