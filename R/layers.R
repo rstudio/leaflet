@@ -98,6 +98,40 @@ hideGroup <- function(map, group) {
   invokeMethod(map, getMapData(map), 'hideGroup', group)
 }
 
+#' Set options on layer groups
+#'
+#' Change options on layer groups. Currently the only option is to control what
+#' zoom levels a layer group will be displayed at. The \code{zoomLevels} option
+#' is not compatible with \link[=addLayersControl]{layers control}; do not both
+#' assign a group to zoom levels and use it with \code{addLayersControl}.
+#'
+#' @param map the map to modify
+#' @param group character vector of one or more group names to set options on
+#' @param zoomLevels numeric vector of zoom levels at which group(s) should be
+#'   visible, or \code{TRUE} to display at all zoom levels
+#'
+#' @examples
+#' pal <- colorQuantile("YlOrRd", quakes$mag)
+#'
+#' leaflet() %>%
+#'   # Basic markers
+#'   addTiles(group = "basic") %>%
+#'   addMarkers(data = quakes, group = "basic") %>%
+#'   # When zoomed in, we'll show circles at the base of each marker whose
+#'   # radius and color reflect the magnitude
+#'   addProviderTiles(providers$Stamen.TonerLite, group = "detail") %>%
+#'   addCircleMarkers(data = quakes, group = "detail", fillOpacity = 0.5,
+#'     radius = ~mag * 5, color = ~pal(mag), stroke = FALSE) %>%
+#'   # Set the detail group to only appear when zoomed in
+#'   groupOptions("detail", zoomLevels = 7:18)
+#'
+#' @export
+groupOptions <- function(map, group, zoomLevels = NULL) {
+  invokeMethod(map, getMapData(map), 'setGroupOptions', group,
+    list(zoomLevels = zoomLevels)
+  )
+}
+
 #' Graphics elements and layers
 #'
 #' Add graphics elements and layers to the map widget.
