@@ -1097,7 +1097,7 @@ var LayerManager = function () {
       if (layerInfo.ctGroup) {
         var ctGroup = this._byCrosstalkGroup[layerInfo.ctGroup];
         var layersForKey = ctGroup[layerInfo.ctKey];
-        var idx = layersForKey ? layersForKey.indexOf(stamp) : -1;
+        var idx = layersForKey ? layersForKey.indexOf(+stamp) : -1;
         if (idx >= 0) {
           if (layersForKey.length === 1) {
             delete ctGroup[layerInfo.ctKey];
@@ -2348,7 +2348,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 // pixel of the original image has some contribution to the downscaled image)
 // as opposed to a single-step downscaling which will discard a lot of data
 // (and with sparse images at small scales can give very surprising results).
-
 var Mipmapper = function () {
   function Mipmapper(img) {
     _classCallCheck(this, Mipmapper);
