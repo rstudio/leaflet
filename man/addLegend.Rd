@@ -8,7 +8,7 @@
 addLegend(map, position = c("topright", "bottomright", "bottomleft",
   "topleft"), pal, values, na.label = "NA", bins = 7, colors,
   opacity = 0.5, labels, labFormat = labelFormat(), title = NULL,
-  className = "info legend", layerId = NULL)
+  className = "info legend", layerId = NULL, group = NULL)
 
 labelFormat(prefix = "", suffix = "", between = " &ndash; ", digits = 3,
   big.mark = ",", transform = identity)
@@ -50,6 +50,13 @@ write your own function)}
 \item{layerId}{the ID of the legend; subsequent calls to \code{addLegend}
 or \code{addControl} with the same \code{layerId} will replace this
 legend. The ID can also be used with \code{removeControl}.}
+
+\item{group}{\code{group} name of a leaflet layer group.
+Supplying this value will tie the legend to the leaflet layer group
+with this name and will auto add/remove the legend as the
+group is added/removed, for example via layerControl.
+You will need to set the \code{group} when you add a layer
+(e.g. \code{\link{addPolygons}}) and supply the same name here.}
 
 \item{prefix}{a prefix of legend labels}
 
@@ -128,4 +135,3 @@ leaflet(df) \%>\%
     transform = function(x) 100 * x
   ))
 }
-
