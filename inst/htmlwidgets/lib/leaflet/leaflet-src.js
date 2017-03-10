@@ -1,6 +1,6 @@
 /*
  Leaflet, a JavaScript library for mobile-friendly interactive maps. http://leafletjs.com
- (c) 2010-2013, Vladimir Agafonkin
+ (c) 2010-2015, Vladimir Agafonkin
  (c) 2010-2011, CloudMade
 */
 (function (window, document, undefined) {
@@ -520,7 +520,7 @@ L.Mixin.Events.fire = L.Mixin.Events.fireEvent;
 
 	    mobile = typeof orientation !== undefined + '',
 	    msPointer = !window.PointerEvent && window.MSPointerEvent,
-		pointer = (window.PointerEvent && window.navigator.pointerEnabled) ||
+		pointer = (window.PointerEvent && window.navigator.pointerEnabled && window.navigator.maxTouchPoints) ||
 				  msPointer,
 	    retina = ('devicePixelRatio' in window && window.devicePixelRatio > 1) ||
 	             ('matchMedia' in window && window.matchMedia('(min-resolution:144dpi)') &&
@@ -1603,7 +1603,7 @@ L.Map = L.Class.extend({
 
 		    zoom = this.getBoundsZoom(bounds, false, paddingTL.add(paddingBR));
 
-		zoom = (options.maxZoom) ? Math.min(options.maxZoom, zoom) : zoom;
+		zoom = (typeof options.maxZoom === 'number') ? Math.min(options.maxZoom, zoom) : zoom;
 
 		var paddingOffset = paddingBR.subtract(paddingTL).divideBy(2),
 
@@ -4705,7 +4705,7 @@ L.Path = L.Path.extend({
 	},
 
 	_onMouseClick: function (e) {
-		if (this._map.dragging && this._map.dragging.moved()) { return; }
+		if (!e._simulated && this._map.dragging && this._map.dragging.moved()) { return; }
 
 		this._fireMouseEvent(e);
 	},
@@ -5035,6 +5035,7 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 
 	setStyle: function (style) {
 		L.setOptions(this, style);
+		this._addLineDash();
 
 		if (this._map) {
 			this._updateStyle();
@@ -5048,7 +5049,7 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 		    .off('viewreset', this.projectLatlngs, this)
 		    .off('moveend', this._updatePath, this);
 
-		if (this.options.clickable) {
+		if (this.options.clickable && this._onClick !== undefined) {
 			this._map.off('click', this._onClick, this);
 			this._map.off('mousemove', this._onMouseMove, this);
 		}
@@ -5075,6 +5076,12 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 		this._ctx = this._map._canvasCtx;
 	},
 
+	_addLineDash: function() {
+		if (this.options.dashArray) {
+			this.options._dashArray = this.options.dashArray.split(',').map(Number);
+		}
+	},
+
 	_updateStyle: function () {
 		var options = this.options;
 
@@ -5092,12 +5099,15 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 		if (options.lineJoin) {
 			this._ctx.lineJoin = options.lineJoin;
 		}
+		this._addLineDash();
 	},
 
 	_drawPath: function () {
 		var i, j, len, len2, point, drawMethod;
 
 		this._ctx.beginPath();
+
+		this._ctx.setLineDash(this.options && this.options._dashArray || []);
 
 		for (i = 0, len = this._parts.length; i < len; i++) {
 			for (j = 0, len2 = this._parts[i].length; j < len2; j++) {
@@ -5832,6 +5842,8 @@ L.rectangle = function (latLngBounds, options) {
 L.Circle = L.Path.extend({
 	initialize: function (latlng, radius, options) {
 		L.Path.prototype.initialize.call(this, options);
+
+		if (isNaN(radius)) { throw new Error('Circle radius cannot be NaN'); }
 
 		this._latlng = L.latLng(latlng);
 		this._mRadius = radius;

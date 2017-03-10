@@ -1024,6 +1024,15 @@ var LayerManager = function () {
       return result;
     }
   }, {
+    key: "getAllGroupNames",
+    value: function getAllGroupNames() {
+      var result = [];
+      _jquery2.default.each(this._groupContainers, function (k, v) {
+        result.push(k);
+      });
+      return result;
+    }
+  }, {
     key: "clearGroup",
     value: function clearGroup(group) {
       var _this6 = this;
@@ -1407,6 +1416,9 @@ methods.addAwesomeMarkers = function (lat, lng, icon, layerId, group, options, p
         return new _leaflet2.default.AwesomeMarkers.icon();
       }
 
+      if (opts.squareMarker) {
+        opts.className = "awesome-marker awesome-marker-square";
+      }
       return new _leaflet2.default.AwesomeMarkers.icon(opts);
     };
   }
@@ -1535,9 +1547,9 @@ methods.addPolylines = function (polygons, layerId, group, options, popup, popup
 
     addLayers(this, "shape", df, function (df, i) {
       var shapes = df.get(i, "shapes");
-      for (var j = 0; j < shapes.length; j++) {
-        shapes[j] = _htmlwidgets2.default.dataframeToD3(shapes[j]);
-      }
+      shapes = shapes.map(function (shape) {
+        return _htmlwidgets2.default.dataframeToD3(shape[0]);
+      });
       if (shapes.length > 1) {
         return _leaflet2.default.multiPolyline(shapes, df.get(i));
       } else {
@@ -1598,10 +1610,16 @@ methods.addPolygons = function (polygons, layerId, group, options, popup, popupO
     var df = new _dataframe2.default().col("shapes", polygons).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).col("highlightOptions", highlightOptions).cbind(options);
 
     addLayers(this, "shape", df, function (df, i) {
-      var shapes = df.get(i, "shapes");
-      for (var j = 0; j < shapes.length; j++) {
-        shapes[j] = _htmlwidgets2.default.dataframeToD3(shapes[j]);
-      }
+      // This code used to use L.multiPolygon, but that caused
+      // double-click on a multipolygon to fail to zoom in on the
+      // map. Surprisingly, putting all the rings in a single
+      // polygon seems to still work; complicated multipolygons
+      // are still rendered correctly.
+      var shapes = df.get(i, "shapes").map(function (polygon) {
+        return polygon.map(_htmlwidgets2.default.dataframeToD3);
+      }).reduce(function (acc, val) {
+        return acc.concat(val);
+      }, []);
       return _leaflet2.default.polygon(shapes, df.get(i));
     });
   }
@@ -1921,6 +1939,49 @@ methods.showGroup = function (group) {
   });
 };
 
+function setupShowHideGroupsOnZoom(map) {
+  if (map.leafletr._hasInitializedShowHideGroups) {
+    return;
+  }
+  map.leafletr._hasInitializedShowHideGroups = true;
+
+  function setVisibility(layer, visible) {
+    if (visible !== map.hasLayer(layer)) {
+      if (visible) map.addLayer(layer);else map.removeLayer(layer);
+    }
+  }
+
+  function showHideGroupsOnZoom() {
+    if (!map.layerManager) return;
+
+    var zoom = map.getZoom();
+    map.layerManager.getAllGroupNames().forEach(function (group) {
+      var layer = map.layerManager.getLayerGroup(group, false);
+      if (layer && typeof layer.zoomLevels !== "undefined") {
+        setVisibility(layer, layer.zoomLevels === true || layer.zoomLevels.indexOf(zoom) >= 0);
+      }
+    });
+  }
+
+  map.showHideGroupsOnZoom = showHideGroupsOnZoom;
+  map.on("zoomend", showHideGroupsOnZoom);
+}
+
+methods.setGroupOptions = function (group, options) {
+  var _this8 = this;
+
+  _jquery2.default.each((0, _util.asArray)(group), function (i, g) {
+    var layer = _this8.layerManager.getLayerGroup(g, true);
+    // This slightly tortured check is because 0 is a valid value for zoomLevels
+    if (typeof options.zoomLevels !== "undefined" && options.zoomLevels !== null) {
+      layer.zoomLevels = (0, _util.asArray)(options.zoomLevels);
+    }
+  });
+
+  setupShowHideGroupsOnZoom(this);
+  this.showHideGroupsOnZoom();
+};
+
 methods.addRasterImage = function (uri, bounds, opacity, attribution, layerId, group) {
   // uri is a data URI containing an image. We want to paint this image as a
   // layer at (top-left) bounds[0] to (bottom-right) bounds[1].
@@ -2204,7 +2265,7 @@ methods.removeMeasure = function () {
 };
 
 methods.addSelect = function (ctGroup) {
-  var _this8 = this;
+  var _this9 = this;
 
   methods.removeSelect.call(this);
 
@@ -2215,32 +2276,32 @@ methods.addSelect = function (ctGroup) {
       title: "Make a selection",
       onClick: function onClick(btn, map) {
         btn.state("select-active");
-        _this8._locationFilter = new _leaflet2.default.LocationFilter2();
+        _this9._locationFilter = new _leaflet2.default.LocationFilter2();
 
         if (ctGroup) {
           (function () {
             var selectionHandle = new global.crosstalk.SelectionHandle(ctGroup);
             selectionHandle.on("change", function (e) {
               if (e.sender !== selectionHandle) {
-                if (_this8._locationFilter) {
-                  _this8._locationFilter.disable();
+                if (_this9._locationFilter) {
+                  _this9._locationFilter.disable();
                   btn.state("select-inactive");
                 }
               }
             });
             var handler = function handler(e) {
-              _this8.layerManager.brush(_this8._locationFilter.getBounds(), { sender: selectionHandle });
+              _this9.layerManager.brush(_this9._locationFilter.getBounds(), { sender: selectionHandle });
             };
-            _this8._locationFilter.on("enabled", handler);
-            _this8._locationFilter.on("change", handler);
-            _this8._locationFilter.on("disabled", function () {
+            _this9._locationFilter.on("enabled", handler);
+            _this9._locationFilter.on("change", handler);
+            _this9._locationFilter.on("disabled", function () {
               selectionHandle.close();
-              _this8._locationFilter = null;
+              _this9._locationFilter = null;
             });
           })();
         }
 
-        _this8._locationFilter.addTo(map);
+        _this9._locationFilter.addTo(map);
       }
     }, {
       stateName: "select-active",
@@ -2248,9 +2309,9 @@ methods.addSelect = function (ctGroup) {
       title: "Dismiss selection",
       onClick: function onClick(btn, map) {
         btn.state("select-inactive");
-        _this8._locationFilter.disable();
+        _this9._locationFilter.disable();
         // If explicitly dismissed, clear the crosstalk selections
-        _this8.layerManager.unbrush();
+        _this9.layerManager.unbrush();
       }
     }]
   });

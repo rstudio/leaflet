@@ -23,6 +23,10 @@
 #' @param alpha Whether alpha channels should be respected or ignored. If
 #'   \code{TRUE} then colors without explicit alpha information will be treated
 #'   as fully opaque.
+#' @param reverse Whether the colors (or color function) in \code{palette}
+#'   should be used in reverse order. For example, if the default order of a
+#'   palette goes from blue to green, then \code{reverse = TRUE} will result in
+#'   the colors going from green to blue.
 #'
 #' @return A function that takes a single parameter \code{x}; when called with a
 #'   vector of numbers (except for \code{colorFactor}, which expects
@@ -30,7 +34,7 @@
 #'   \code{alpha=TRUE} in which case #RRGGBBAA may also be possible).
 #'
 #' @export
-colorNumeric <- function(palette, domain, na.color = "#808080", alpha = FALSE) {
+colorNumeric <- function(palette, domain, na.color = "#808080", alpha = FALSE, reverse = FALSE) {
   rng = NULL
   if (length(domain) > 0) {
     rng = range(domain, na.rm = TRUE)
@@ -51,6 +55,10 @@ colorNumeric <- function(palette, domain, na.color = "#808080", alpha = FALSE) {
     rescaled = scales::rescale(x, from = rng)
     if (any(rescaled < 0 | rescaled > 1, na.rm = TRUE))
       warning("Some values were outside the color scale and will be treated as NA")
+
+    if (reverse) {
+      rescaled <- 1 - rescaled
+    }
     pf(rescaled)
   })
 }
@@ -98,7 +106,7 @@ getBins <- function(domain, x, bins, pretty) {
 #' @rdname colorNumeric
 #' @export
 colorBin <- function(palette, domain, bins = 7, pretty = TRUE,
-  na.color = "#808080", alpha = FALSE) {
+  na.color = "#808080", alpha = FALSE, reverse = FALSE) {
 
   # domain usually needs to be explicitly provided (even if NULL) but not if
   # breaks are specified
@@ -109,7 +117,8 @@ colorBin <- function(palette, domain, bins = 7, pretty = TRUE,
   if (!is.null(domain))
     bins = getBins(domain, NULL, bins, pretty)
   numColors = if (length(bins) == 1) bins else length(bins) - 1
-  colorFunc = colorFactor(palette, domain = if (!autobin) 1:numColors, na.color = na.color)
+  colorFunc = colorFactor(palette, domain = if (!autobin) 1:numColors,
+    na.color = na.color, alpha = alpha, reverse = reverse)
   pf = safePaletteFunc(palette, na.color, alpha)
 
   withColorAttr('bin', list(bins = bins, na.color = na.color), function(x) {
@@ -133,14 +142,15 @@ colorBin <- function(palette, domain, bins = 7, pretty = TRUE,
 #' @rdname colorNumeric
 #' @export
 colorQuantile <- function(palette, domain, n = 4,
-  probs = seq(0, 1, length.out = n + 1), na.color = "#808080", alpha = FALSE) {
+  probs = seq(0, 1, length.out = n + 1), na.color = "#808080", alpha = FALSE,
+  reverse = FALSE) {
 
   if (!is.null(domain)) {
     bins = quantile(domain, probs, na.rm = TRUE, names = FALSE)
     return(withColorAttr(
       'quantile', list(probs = probs, na.color = na.color),
       colorBin(palette, domain = NULL, bins = bins, na.color = na.color,
-        alpha = alpha)
+        alpha = alpha, reverse = reverse)
     ))
   }
 
@@ -148,7 +158,7 @@ colorQuantile <- function(palette, domain, n = 4,
   # If you say probs = seq(0, 1, 0.25), which has length 5, does that map to 4 colors
   # or 5? 4, right?
   colorFunc = colorFactor(palette, domain = 1:(length(probs) - 1),
-    na.color = na.color, alpha = alpha)
+    na.color = na.color, alpha = alpha, reverse = reverse)
 
   withColorAttr('quantile', list(probs = probs, na.color = na.color), function(x) {
     binsToUse = quantile(x, probs, na.rm = TRUE, names = FALSE)
@@ -175,7 +185,7 @@ calcLevels <- function(x, ordered) {
 
 getLevels <- function(domain, x, lvls, ordered) {
   if (!is.null(lvls))
-    return(lvls)
+    return(as.character(lvls))
 
   if (!is.null(domain)) {
     return(calcLevels(domain, ordered))
@@ -196,7 +206,7 @@ getLevels <- function(domain, x, lvls, ordered) {
 #' @rdname colorNumeric
 #' @export
 colorFactor <- function(palette, domain, levels = NULL, ordered = FALSE,
-  na.color = "#808080", alpha = FALSE) {
+  na.color = "#808080", alpha = FALSE, reverse = FALSE) {
 
   # domain usually needs to be explicitly provided (even if NULL) but not if
   # levels are specified
@@ -209,30 +219,27 @@ colorFactor <- function(palette, domain, levels = NULL, ordered = FALSE,
     levels = unique(levels)
   }
   lvls = getLevels(domain, NULL, levels, ordered)
-  hasFixedLevels = is.null(lvls)
-  pf = safePaletteFunc(palette, na.color, alpha)
 
   withColorAttr('factor', list(na.color = na.color), function(x) {
     if (length(x) == 0 || all(is.na(x))) {
-      return(pf(x))
+      return(rep.int(na.color, length(x)))
     }
 
     lvls = getLevels(domain, x, lvls, ordered)
+    pf = safePaletteFunc(palette, na.color, alpha, nlevels = length(lvls) * ifelse(reverse, -1, 1))
 
-    if (!is.factor(x) || hasFixedLevels) {
-      origNa = is.na(x)
-      # Seems like we need to re-factor if hasFixedLevels, in case the x value
-      # has a different set of levels (like if droplevels was called in between
-      # when the domain was given and now)
-      x = factor(x, lvls)
-      if (any(is.na(x) != origNa)) {
-        warning("Some values were outside the color scale and will be treated as NA")
-      }
+    origNa = is.na(x)
+    x = match(as.character(x), lvls)
+    if (any(is.na(x) != origNa)) {
+      warning("Some values were outside the color scale and will be treated as NA")
     }
 
     scaled = scales::rescale(as.integer(x), from = c(1, length(lvls)))
     if (any(scaled < 0 | scaled > 1, na.rm = TRUE)) {
       warning("Some values were outside the color scale and will be treated as NA")
+    }
+    if (reverse) {
+      scaled <- 1 - scaled
     }
     pf(scaled)
   })
@@ -242,6 +249,7 @@ colorFactor <- function(palette, domain, levels = NULL, ordered = FALSE,
 #' \enumerate{
 #'   \item{A character vector of RGB or named colors. Examples: \code{palette()}, \code{c("#000000", "#0000FF", "#FFFFFF")}, \code{topo.colors(10)}}
 #'   \item{The name of an RColorBrewer palette, e.g. \code{"BuPu"} or \code{"Greens"}.}
+#'   \item{The full name of a viridis palette: \code{"viridis"}, \code{"magma"}, \code{"inferno"}, or \code{"plasma"}.}
 #'   \item{A function that receives a single value between 0 and 1 and returns a color. Examples: \code{colorRamp(c("#000000", "#FFFFFF"), interpolate="spline")}.}
 #' }
 #' @examples
@@ -268,35 +276,73 @@ colorFactor <- function(palette, domain, levels = NULL, ordered = FALSE,
 NULL
 
 
-safePaletteFunc <- function(pal, na.color, alpha) {
-  toPaletteFunc(pal, alpha=alpha) %>% filterRGB() %>% filterZeroLength() %>%
-    filterNA(na.color) %>% filterRange()
+safePaletteFunc <- function(pal, na.color, alpha, nlevels = NULL) {
+  toPaletteFunc(pal, alpha=alpha, nlevels = nlevels) %>%
+    filterRGB() %>%
+    filterZeroLength() %>%
+    filterNA(na.color) %>%
+    filterRange()
 }
 
-toPaletteFunc <- function(pal, alpha) {
+# nlevels is a positive or negative integer (or integral number) indicating the
+# number of levels to use for a discrete scale (i.e. factor, i.e. qualitative,
+# i.e. categorical); or NULL if it is a continuous scale. A negative value means
+# that the user has asked for a "reversed" palette, so pull from the tail of the
+# color palette rather than from the head.
+#
+# (Previous versions of this code didn't have nlevels and simply interpolated
+# between colors in a qualitative palette--clearly the wrong thing to do.)
+toPaletteFunc <- function(pal, alpha, nlevels) {
   UseMethod("toPaletteFunc")
 }
 
+# Wrapper function for brewer.pal that deals with n < 3, plus returns maxcolors
+# by default
+brewer_pal <- function(palette, n = NULL) {
+  if (is.null(n))
+    n <- RColorBrewer::brewer.pal.info[palette, "maxcolors"]
+
+  # Work around the fact that if brewer.pal is passed a number smaller than 3,
+  # it returns 3 colors anyway with a warning.
+  #
+  # It also warns if passed a number greater than maxcolors, but that's OK, we
+  # want the user to see that warning.
+  colors <- RColorBrewer::brewer.pal(max(3, n), palette)
+  if (n == 1) {
+    colors[1]
+  } else if (n == 2) {
+    colors[c(1,3)]
+  } else {
+    colors
+  }
+}
+
 # Strings are interpreted as color names, unless length is 1 and it's the name
-# of an RColorBrewer palette
-toPaletteFunc.character <- function(pal, alpha) {
+# of an RColorBrewer palette that is marked as qualitative
+toPaletteFunc.character <- function(pal, alpha, nlevels) {
   if (length(pal) == 1 && pal %in% row.names(RColorBrewer::brewer.pal.info)) {
-    return(scales::colour_ramp(
-      RColorBrewer::brewer.pal(RColorBrewer::brewer.pal.info[pal, 'maxcolors'], pal),
-      alpha = alpha
-    ))
+    paletteInfo <- RColorBrewer::brewer.pal.info[pal,]
+    if (!is.null(nlevels)) {
+      colors <- brewer_pal(pal, abs(nlevels))
+    } else {
+      colors <- brewer_pal(pal) # Get all colors
+    }
+  } else if (length(pal) == 1 && pal %in% c("viridis", "magma", "inferno", "plasma")) {
+    colors <- viridis::viridis(n = 256, option = pal)
+  } else {
+    colors <- pal
   }
 
-  scales::colour_ramp(pal, alpha = alpha)
+  scales::colour_ramp(colors, alpha = alpha)
 }
 
 # Accept colorRamp style matrix
-toPaletteFunc.matrix <- function(pal, alpha) {
+toPaletteFunc.matrix <- function(pal, alpha, nlevels) {
   toPaletteFunc(rgb(pal, maxColorValue = 255), alpha = alpha)
 }
 
 # If a function, just assume it's already a function over [0-1]
-toPaletteFunc.function <- function(pal, alpha) {
+toPaletteFunc.function <- function(pal, alpha, nlevels) {
   pal
 }
 

@@ -278,6 +278,9 @@ clusterOptions, clusterId, label, labelOptions, crosstalkOptions) {
         return new L.AwesomeMarkers.icon();
       }
 
+      if(opts.squareMarker) {
+        opts.className = "awesome-marker awesome-marker-square";
+      }
       return new L.AwesomeMarkers.icon(opts);
     };
   }
@@ -444,9 +447,7 @@ methods.addPolylines = function(polygons, layerId, group, options, popup, popupO
 
     addLayers(this, "shape", df, function(df, i) {
       let shapes = df.get(i, "shapes");
-      for (let j = 0; j < shapes.length; j++) {
-        shapes[j] = HTMLWidgets.dataframeToD3(shapes[j]);
-      }
+      shapes = shapes.map(shape => HTMLWidgets.dataframeToD3(shape[0]));
       if(shapes.length>1) {
         return L.multiPolyline(shapes, df.get(i));
       } else {
@@ -534,10 +535,14 @@ methods.addPolygons = function(polygons, layerId, group, options, popup, popupOp
       .cbind(options);
 
     addLayers(this, "shape", df, function(df, i) {
-      let shapes = df.get(i, "shapes");
-      for (let j = 0; j < shapes.length; j++) {
-        shapes[j] = HTMLWidgets.dataframeToD3(shapes[j]);
-      }
+      // This code used to use L.multiPolygon, but that caused
+      // double-click on a multipolygon to fail to zoom in on the
+      // map. Surprisingly, putting all the rings in a single
+      // polygon seems to still work; complicated multipolygons
+      // are still rendered correctly.
+      let shapes = df.get(i, "shapes")
+        .map(polygon => polygon.map(HTMLWidgets.dataframeToD3))
+        .reduce((acc, val) => acc.concat(val), []);
       return L.polygon(shapes, df.get(i));
     });
   }
@@ -864,6 +869,52 @@ methods.showGroup = function(group) {
       this.addLayer(layer);
     }
   });
+};
+
+function setupShowHideGroupsOnZoom(map) {
+  if (map.leafletr._hasInitializedShowHideGroups) {
+    return;
+  }
+  map.leafletr._hasInitializedShowHideGroups = true;
+
+  function setVisibility(layer, visible) {
+    if (visible !== map.hasLayer(layer)) {
+      if (visible)
+        map.addLayer(layer);
+      else
+        map.removeLayer(layer);
+    }
+  }
+
+  function showHideGroupsOnZoom() {
+    if (!map.layerManager)
+      return;
+
+    let zoom = map.getZoom();
+    map.layerManager.getAllGroupNames().forEach(group => {
+      let layer = map.layerManager.getLayerGroup(group, false);
+      if (layer && typeof(layer.zoomLevels) !== "undefined") {
+        setVisibility(layer,
+          layer.zoomLevels === true || layer.zoomLevels.indexOf(zoom) >= 0);
+      }
+    });
+  }
+
+  map.showHideGroupsOnZoom = showHideGroupsOnZoom;
+  map.on("zoomend", showHideGroupsOnZoom);
+}
+
+methods.setGroupOptions = function(group, options) {
+  $.each(asArray(group), (i, g) => {
+    let layer = this.layerManager.getLayerGroup(g, true);
+    // This slightly tortured check is because 0 is a valid value for zoomLevels
+    if (typeof(options.zoomLevels) !== "undefined" && options.zoomLevels !== null) {
+      layer.zoomLevels = asArray(options.zoomLevels);
+    }
+  });
+
+  setupShowHideGroupsOnZoom(this);
+  this.showHideGroupsOnZoom();
 };
 
 methods.addRasterImage = function(uri, bounds, opacity, attribution, layerId, group) {
