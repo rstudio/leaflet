@@ -11,5 +11,9 @@ m %>% addMarkers(rand_lng(), rand_lat())
 ```
 
 error was pre-existing and not caused by 1.0.3
-fixed but not solved [commit]()
+fixed but not solved [commit](https://github.com/timelyportfolio/leaflet/commit/4b841f02c399a206c84642a42e5eb189498f9b65)
 
+
+### leaflet.measure
+
+completely broken, so needs rewrite
