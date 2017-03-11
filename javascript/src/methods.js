@@ -1191,14 +1191,14 @@ methods.addMeasure = function(options){
   // if a measureControl already exists, then remove it and
   //   replace with a new one
   if(this.measureControl) {
-    this.measureControl.removeFrom( this );
+    this.removeControl(this.measureControl);
   }
   this.measureControl = L.control.measure(options);
   this.measureControl.addTo(this);
 };
 
 methods.removeMeasure = function() {
-  this.measureControl.removeFrom( this );
+  this.removeControl(this.measureControl);
   delete this.measureControl;
 };
 
