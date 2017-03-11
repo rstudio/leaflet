@@ -14,6 +14,7 @@ error was pre-existing and not caused by 1.0.3
 fixed but not solved [commit](https://github.com/timelyportfolio/leaflet/commit/4b841f02c399a206c84642a42e5eb189498f9b65)
 
 
-### leaflet.measure
+### controls
 
-completely broken, so needs rewrite
+leaflet-measure, layersControl, and probably others do not remove
+
