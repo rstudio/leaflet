@@ -497,12 +497,14 @@ safeLabel <- function(label, data) {
 
 #' @param
 #' noHide,direction,offset,textsize,textOnly,style
-#' label options; see \url{https://github.com/Leaflet/Leaflet.label#options}
+#' label options; see \url{http://leafletjs.com/reference-1.0.3.html#tooltip-option}
 #' @describeIn map-options Options for labels
 #' @export
 labelOptions <- function(
-  clickable = FALSE,
-  noHide = FALSE,
+  interactive = FALSE,
+  clickable = NULL,
+  noHide = NULL,
+  permanent = FALSE,
   className = '',
   direction = 'right',
   #pane = NULL,
@@ -514,8 +516,13 @@ labelOptions <- function(
   zoomAnimation = TRUE,
   ...
 ) {
+  # use old clickable if provided
+  if(!is.null(clickable) && interactive != clickable) interactive <- clickable
+  # use old noHide if provided
+  if(!is.null(noHide) && permanent != noHide) permanent <- noHide
+
   list(
-    clickable = clickable, noHide = noHide, direction = direction,
+    interactive = interactive, permanent = permanent, direction = direction,
     opacity = opacity, offset = offset,
     textsize = textsize, textOnly = textOnly, style = style,
     zoomAnimation = zoomAnimation, className = className, ...

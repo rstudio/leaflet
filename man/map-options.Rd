@@ -24,9 +24,9 @@ popupOptions(maxWidth = 300, minWidth = 50, maxHeight = NULL,
   autoPan = TRUE, keepInView = FALSE, closeButton = TRUE,
   zoomAnimation = TRUE, closeOnClick = NULL, className = "", ...)
 
-labelOptions(clickable = FALSE, noHide = FALSE, className = "",
-  direction = "right", offset = c(12, -15), opacity = 1,
-  textsize = "10px", textOnly = FALSE, style = NULL,
+labelOptions(interactive = FALSE, clickable = NULL, noHide = NULL,
+  permanent = FALSE, className = "", direction = "right", offset = c(12,
+  -15), opacity = 1, textsize = "10px", textOnly = FALSE, style = NULL,
   zoomAnimation = TRUE, ...)
 
 markerOptions(clickable = TRUE, draggable = FALSE, keyboard = TRUE,
@@ -65,7 +65,7 @@ transparency}
 
 \item{clickable}{whether the element emits mouse events}
 
-\item{noHide, direction, offset, textsize, textOnly, style}{label options; see \url{https://github.com/Leaflet/Leaflet.label#options}}
+\item{noHide, direction, offset, textsize, textOnly, style}{label options; see \url{http://leafletjs.com/reference-1.0.3.html#tooltip-option}}
 
 \item{draggable, keyboard, title, alt, zIndexOffset, opacity, riseOnHover, riseOffset}{marker options; see \url{http://leafletjs.com/reference.html#marker}}
 

@@ -166,12 +166,12 @@ function addMarkers(map, df, group, clusterOptions, clusterId, markerFunc) {
           if (label !== null) {
             if (labelOptions !== null) {
               if(labelOptions.noHide) {
-                marker.bindLabel(label, labelOptions).showLabel();
+                marker.bindTooltip(label, labelOptions).showLabel();
               } else {
-                marker.bindLabel(label, labelOptions);
+                marker.bindTooltip(label, labelOptions);
               }
             } else {
-              marker.bindLabel(label);
+              marker.bindTooltip(label);
             }
           }
           marker.on("click", mouseHandler(this.id, thisId, thisGroup, "marker_click", extraInfo), this);
@@ -329,14 +329,14 @@ function addLayers(map, category, df, layerFunc) {
             }
           }
         }
-        if (layer.bindLabel) {
+        if (layer.bindTooltip) {
           let label = df.get(i, "label");
           let labelOptions = df.get(i, "labelOptions");
           if (label !== null) {
             if (labelOptions !== null) {
-              layer.bindLabel(label, labelOptions);
+              layer.bindTooltip(label, labelOptions);
             } else {
-              layer.bindLabel(label);
+              layer.bindTooltip(label);
             }
           }
         }
