@@ -1,3 +1,12 @@
+leaflet 2.0
+--------------------------------------------------------------------------------
+
+* update to leaflet.js v1.0.3
+
+* all plugins updated to their newest versions compatible with leaflet > 1.0
+
+* leaflet-label plugin now L.tooltip in leaflet.js.  labelOptions() now translates old options clickable to interactive and noHide to permanent.
+
 leaflet 1.1.1
 --------------------------------------------------------------------------------
 
