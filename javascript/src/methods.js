@@ -826,13 +826,13 @@ methods.addLayersControl = function(baseGroups, overlayGroups, options) {
     }
   });
 
-  let layersControl = L.control.layers(base, overlay, options).addTo(this);
-  this.currentLayersControl = layersControl;
+  this.currentLayersControl = L.control.layers(base, overlay, options);
+  this.addControl(this.currentLayersControl);
 };
 
 methods.removeLayersControl = function() {
   if (this.currentLayersControl) {
-    this.currentLayersControl.removeFrom(this);
+    this.removeControl(this.currentLayersControl);
     this.currentLayersControl = null;
   }
 };
@@ -1190,16 +1190,16 @@ methods.clearImages = function() {
 methods.addMeasure = function(options){
   // if a measureControl already exists, then remove it and
   //   replace with a new one
-  if(this.measureControl) {
-    this.removeControl(this.measureControl);
-  }
+  methods.removeMeasure.call(this);
   this.measureControl = L.control.measure(options);
-  this.measureControl.addTo(this);
+  this.addControl(this.measureControl);
 };
 
 methods.removeMeasure = function() {
-  this.removeControl(this.measureControl);
-  delete this.measureControl;
+  if(this.measureControl) {
+    this.removeControl(this.measureControl);
+    this.measureControl = null;
+  }
 };
 
 methods.addSelect = function(ctGroup) {

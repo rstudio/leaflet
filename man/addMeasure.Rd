@@ -70,12 +70,12 @@ leaf
 
 # customizing
 leaf \%>\% addMeasure(
-   position = "bottomleft"
-  , primaryLengthUnit = "meters"
-  , primaryAreaUnit = "sqmeters"
-  , activeColor = "#3D535D"
-  , completedColor = "#7D4479"
-  , localization = 'de'
+  position = "bottomleft",
+  primaryLengthUnit = "meters",
+  primaryAreaUnit = "sqmeters",
+  activeColor = "#3D535D",
+  completedColor = "#7D4479",
+  localization = 'de'
 )
 
 }
