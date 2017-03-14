@@ -508,7 +508,7 @@ labelOptions <- function(
   className = '',
   direction = 'right',
   #pane = NULL,
-  offset = c(12,-15),
+  offset = c(0,0),
   opacity = 1,
   textsize = "10px",
   textOnly = FALSE,
