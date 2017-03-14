@@ -165,7 +165,7 @@ function addMarkers(map, df, group, clusterOptions, clusterId, markerFunc) {
           let labelOptions = df.get(i, "labelOptions");
           if (label !== null) {
             if (labelOptions !== null) {
-              if(labelOptions.noHide) {
+              if(labelOptions.permanent) {
                 marker.bindTooltip(label, labelOptions).showLabel();
               } else {
                 marker.bindTooltip(label, labelOptions);
