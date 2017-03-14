@@ -27,8 +27,11 @@ module.exports.wkt = wktLoad;
 module.exports.wkt.parse = wktParse;
 
 function addData(l, d) {
-    if ('addData' in l) l.addData(d);
-    if ('setGeoJSON' in l) l.setGeoJSON(d);
+    if ('setGeoJSON' in l) {
+        l.setGeoJSON(d);
+    } else if ('addData' in l) {
+        l.addData(d);
+    }
 }
 
 /**
@@ -255,647 +258,9 @@ function parseXML(str) {
     }
 }
 
-},{"corslite":3,"csv2geojson":4,"polyline":6,"togeojson":9,"topojson":10,"wellknown":11}],2:[function(require,module,exports){
+},{"corslite":4,"csv2geojson":5,"polyline":8,"togeojson":9,"topojson":10,"wellknown":11}],2:[function(require,module,exports){
 
 },{}],3:[function(require,module,exports){
-function corslite(url, callback, cors) {
-    var sent = false;
-
-    if (typeof window.XMLHttpRequest === 'undefined') {
-        return callback(Error('Browser not supported'));
-    }
-
-    if (typeof cors === 'undefined') {
-        var m = url.match(/^\s*https?:\/\/[^\/]*/);
-        cors = m && (m[0] !== location.protocol + '//' + location.hostname +
-                (location.port ? ':' + location.port : ''));
-    }
-
-    var x = new window.XMLHttpRequest();
-
-    function isSuccessful(status) {
-        return status >= 200 && status < 300 || status === 304;
-    }
-
-    if (cors && !('withCredentials' in x)) {
-        // IE8-9
-        x = new window.XDomainRequest();
-
-        // Ensure callback is never called synchronously, i.e., before
-        // x.send() returns (this has been observed in the wild).
-        // See https://github.com/mapbox/mapbox.js/issues/472
-        var original = callback;
-        callback = function() {
-            if (sent) {
-                original.apply(this, arguments);
-            } else {
-                var that = this, args = arguments;
-                setTimeout(function() {
-                    original.apply(that, args);
-                }, 0);
-            }
-        }
-    }
-
-    function loaded() {
-        if (
-            // XDomainRequest
-            x.status === undefined ||
-            // modern browsers
-            isSuccessful(x.status)) callback.call(x, null, x);
-        else callback.call(x, x, null);
-    }
-
-    // Both `onreadystatechange` and `onload` can fire. `onreadystatechange`
-    // has [been supported for longer](http://stackoverflow.com/a/9181508/229001).
-    if ('onload' in x) {
-        x.onload = loaded;
-    } else {
-        x.onreadystatechange = function readystate() {
-            if (x.readyState === 4) {
-                loaded();
-            }
-        };
-    }
-
-    // Call the callback with the XMLHttpRequest object as an error and prevent
-    // it from ever being called again by reassigning it to `noop`
-    x.onerror = function error(evt) {
-        // XDomainRequest provides no evt parameter
-        callback.call(this, evt || true, null);
-        callback = function() { };
-    };
-
-    // IE9 must have onprogress be set to a unique function.
-    x.onprogress = function() { };
-
-    x.ontimeout = function(evt) {
-        callback.call(this, evt, null);
-        callback = function() { };
-    };
-
-    x.onabort = function(evt) {
-        callback.call(this, evt, null);
-        callback = function() { };
-    };
-
-    // GET is the only supported HTTP Verb by XDomainRequest and is the
-    // only one supported here.
-    x.open('GET', url, true);
-
-    // Send the request. Sending data is not supported.
-    x.send(null);
-    sent = true;
-
-    return x;
-}
-
-if (typeof module !== 'undefined') module.exports = corslite;
-
-},{}],4:[function(require,module,exports){
-var dsv = require('d3-dsv'),
-    sexagesimal = require('sexagesimal');
-
-function isLat(f) { return !!f.match(/(Lat)(itude)?/gi); }
-function isLon(f) { return !!f.match(/(L)(on|ng)(gitude)?/i); }
-
-function keyCount(o) {
-    return (typeof o == 'object') ? Object.keys(o).length : 0;
-}
-
-function autoDelimiter(x) {
-    var delimiters = [',', ';', '\t', '|'];
-    var results = [];
-
-    delimiters.forEach(function(delimiter) {
-        var res = dsv.dsv(delimiter).parse(x);
-        if (res.length >= 1) {
-            var count = keyCount(res[0]);
-            for (var i = 0; i < res.length; i++) {
-                if (keyCount(res[i]) !== count) return;
-            }
-            results.push({
-                delimiter: delimiter,
-                arity: Object.keys(res[0]).length,
-            });
-        }
-    });
-
-    if (results.length) {
-        return results.sort(function(a, b) {
-            return b.arity - a.arity;
-        })[0].delimiter;
-    } else {
-        return null;
-    }
-}
-
-/**
- * Silly stopgap for dsv to d3-dsv upgrade
- *
- * @param {Array} x dsv output
- * @returns {Array} array without columns member
- */
-function deleteColumns(x) {
-    delete x.columns;
-    return x;
-}
-
-function auto(x) {
-    var delimiter = autoDelimiter(x);
-    if (!delimiter) return null;
-    return deleteColumns(dsv.dsv(delimiter).parse(x));
-}
-
-function csv2geojson(x, options, callback) {
-
-    if (!callback) {
-        callback = options;
-        options = {};
-    }
-
-    options.delimiter = options.delimiter || ',';
-
-    var latfield = options.latfield || '',
-        lonfield = options.lonfield || '',
-        crs = options.crs || '';
-
-    var features = [],
-        featurecollection = { type: 'FeatureCollection', features: features };
-
-    if (crs !== '') {
-        featurecollection.crs = { type: 'name', properties: { name: crs } };
-    }
-
-    if (options.delimiter === 'auto' && typeof x == 'string') {
-        options.delimiter = autoDelimiter(x);
-        if (!options.delimiter) return callback({
-            type: 'Error',
-            message: 'Could not autodetect delimiter'
-        });
-    }
-
-    var parsed = (typeof x == 'string') ? 
-        dsv.dsv(options.delimiter).parse(x) : x;
-
-    if (!parsed.length) return callback(null, featurecollection);
-
-    if (!latfield || !lonfield) {
-        for (var f in parsed[0]) {
-            if (!latfield && isLat(f)) latfield = f;
-            if (!lonfield && isLon(f)) lonfield = f;
-        }
-        if (!latfield || !lonfield) {
-            var fields = [];
-            for (var k in parsed[0]) fields.push(k);
-            return callback({
-                type: 'Error',
-                message: 'Latitude and longitude fields not present',
-                data: deleteColumns(parsed),
-                fields: fields
-            });
-        }
-    }
-
-    var errors = [];
-
-    for (var i = 0; i < parsed.length; i++) {
-        if (parsed[i][lonfield] !== undefined &&
-            parsed[i][lonfield] !== undefined) {
-
-            var lonk = parsed[i][lonfield],
-                latk = parsed[i][latfield],
-                lonf, latf,
-                a;
-
-            a = sexagesimal(lonk, 'EW');
-            if (a) lonk = a;
-            a = sexagesimal(latk, 'NS');
-            if (a) latk = a;
-
-            lonf = parseFloat(lonk);
-            latf = parseFloat(latk);
-
-            if (isNaN(lonf) ||
-                isNaN(latf)) {
-                errors.push({
-                    message: 'A row contained an invalid value for latitude or longitude',
-                    row: parsed[i]
-                });
-            } else {
-                if (!options.includeLatLon) {
-                    delete parsed[i][lonfield];
-                    delete parsed[i][latfield];
-                }
-
-                features.push({
-                    type: 'Feature',
-                    properties: parsed[i],
-                    geometry: {
-                        type: 'Point',
-                        coordinates: [
-                            parseFloat(lonf),
-                            parseFloat(latf)
-                        ]
-                    }
-                });
-            }
-        }
-    }
-
-    callback(errors.length ? errors: null, featurecollection);
-}
-
-function toLine(gj) {
-    var features = gj.features;
-    var line = {
-        type: 'Feature',
-        geometry: {
-            type: 'LineString',
-            coordinates: []
-        }
-    };
-    for (var i = 0; i < features.length; i++) {
-        line.geometry.coordinates.push(features[i].geometry.coordinates);
-    }
-    line.properties = features.reduce(function(aggregatedProperties, newFeature) {
-      for (var key in newFeature.properties) {
-        if (!aggregatedProperties[key]) {
-          aggregatedProperties[key] = [];
-        }
-        aggregatedProperties[key].push(newFeature.properties[key]);
-      }
-      return aggregatedProperties;
-    }, {});
-    return {
-        type: 'FeatureCollection',
-        features: [line]
-    };
-}
-
-function toPolygon(gj) {
-    var features = gj.features;
-    var poly = {
-        type: 'Feature',
-        geometry: {
-            type: 'Polygon',
-            coordinates: [[]]
-        }
-    };
-    for (var i = 0; i < features.length; i++) {
-        poly.geometry.coordinates[0].push(features[i].geometry.coordinates);
-    }
-    poly.properties = features.reduce(function(aggregatedProperties, newFeature) {
-      for (var key in newFeature.properties) {
-        if (!aggregatedProperties[key]) {
-          aggregatedProperties[key] = [];
-        }
-        aggregatedProperties[key].push(newFeature.properties[key]);
-      }
-      return aggregatedProperties;
-    }, {});
-    return {
-        type: 'FeatureCollection',
-        features: [poly]
-    };
-}
-
-module.exports = {
-    isLon: isLon,
-    isLat: isLat,
-    csv: dsv.csvParse,
-    tsv: dsv.tsvParse,
-    dsv: dsv,
-    auto: auto,
-    csv2geojson: csv2geojson,
-    toLine: toLine,
-    toPolygon: toPolygon
-};
-
-},{"d3-dsv":5,"sexagesimal":8}],5:[function(require,module,exports){
-(function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-  typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (factory((global.d3_dsv = {})));
-}(this, function (exports) { 'use strict';
-
-  function objectConverter(columns) {
-    return new Function("d", "return {" + columns.map(function(name, i) {
-      return JSON.stringify(name) + ": d[" + i + "]";
-    }).join(",") + "}");
-  }
-
-  function customConverter(columns, f) {
-    var object = objectConverter(columns);
-    return function(row, i) {
-      return f(object(row), i, columns);
-    };
-  }
-
-  // Compute unique columns in order of discovery.
-  function inferColumns(rows) {
-    var columnSet = Object.create(null),
-        columns = [];
-
-    rows.forEach(function(row) {
-      for (var column in row) {
-        if (!(column in columnSet)) {
-          columns.push(columnSet[column] = column);
-        }
-      }
-    });
-
-    return columns;
-  }
-
-  function dsv(delimiter) {
-    var reFormat = new RegExp("[\"" + delimiter + "\n]"),
-        delimiterCode = delimiter.charCodeAt(0);
-
-    function parse(text, f) {
-      var convert, columns, rows = parseRows(text, function(row, i) {
-        if (convert) return convert(row, i - 1);
-        columns = row, convert = f ? customConverter(row, f) : objectConverter(row);
-      });
-      rows.columns = columns;
-      return rows;
-    }
-
-    function parseRows(text, f) {
-      var EOL = {}, // sentinel value for end-of-line
-          EOF = {}, // sentinel value for end-of-file
-          rows = [], // output rows
-          N = text.length,
-          I = 0, // current character index
-          n = 0, // the current line number
-          t, // the current token
-          eol; // is the current token followed by EOL?
-
-      function token() {
-        if (I >= N) return EOF; // special case: end of file
-        if (eol) return eol = false, EOL; // special case: end of line
-
-        // special case: quotes
-        var j = I, c;
-        if (text.charCodeAt(j) === 34) {
-          var i = j;
-          while (i++ < N) {
-            if (text.charCodeAt(i) === 34) {
-              if (text.charCodeAt(i + 1) !== 34) break;
-              ++i;
-            }
-          }
-          I = i + 2;
-          c = text.charCodeAt(i + 1);
-          if (c === 13) {
-            eol = true;
-            if (text.charCodeAt(i + 2) === 10) ++I;
-          } else if (c === 10) {
-            eol = true;
-          }
-          return text.slice(j + 1, i).replace(/""/g, "\"");
-        }
-
-        // common case: find next delimiter or newline
-        while (I < N) {
-          var k = 1;
-          c = text.charCodeAt(I++);
-          if (c === 10) eol = true; // \n
-          else if (c === 13) { eol = true; if (text.charCodeAt(I) === 10) ++I, ++k; } // \r|\r\n
-          else if (c !== delimiterCode) continue;
-          return text.slice(j, I - k);
-        }
-
-        // special case: last token before EOF
-        return text.slice(j);
-      }
-
-      while ((t = token()) !== EOF) {
-        var a = [];
-        while (t !== EOL && t !== EOF) {
-          a.push(t);
-          t = token();
-        }
-        if (f && (a = f(a, n++)) == null) continue;
-        rows.push(a);
-      }
-
-      return rows;
-    }
-
-    function format(rows, columns) {
-      if (columns == null) columns = inferColumns(rows);
-      return [columns.map(formatValue).join(delimiter)].concat(rows.map(function(row) {
-        return columns.map(function(column) {
-          return formatValue(row[column]);
-        }).join(delimiter);
-      })).join("\n");
-    }
-
-    function formatRows(rows) {
-      return rows.map(formatRow).join("\n");
-    }
-
-    function formatRow(row) {
-      return row.map(formatValue).join(delimiter);
-    }
-
-    function formatValue(text) {
-      return reFormat.test(text) ? "\"" + text.replace(/\"/g, "\"\"") + "\"" : text;
-    }
-
-    return {
-      parse: parse,
-      parseRows: parseRows,
-      format: format,
-      formatRows: formatRows
-    };
-  }
-
-  var csv = dsv(",");
-
-  var csvParse = csv.parse;
-  var csvParseRows = csv.parseRows;
-  var csvFormat = csv.format;
-  var csvFormatRows = csv.formatRows;
-
-  var tsv = dsv("\t");
-
-  var tsvParse = tsv.parse;
-  var tsvParseRows = tsv.parseRows;
-  var tsvFormat = tsv.format;
-  var tsvFormatRows = tsv.formatRows;
-
-  var version = "0.2.0";
-
-  exports.version = version;
-  exports.dsv = dsv;
-  exports.csvParse = csvParse;
-  exports.csvParseRows = csvParseRows;
-  exports.csvFormat = csvFormat;
-  exports.csvFormatRows = csvFormatRows;
-  exports.tsvParse = tsvParse;
-  exports.tsvParseRows = tsvParseRows;
-  exports.tsvFormat = tsvFormat;
-  exports.tsvFormatRows = tsvFormatRows;
-
-}));
-},{}],6:[function(require,module,exports){
-'use strict';
-
-/**
- * Based off of [the offical Google document](https://developers.google.com/maps/documentation/utilities/polylinealgorithm)
- *
- * Some parts from [this implementation](http://facstaff.unca.edu/mcmcclur/GoogleMaps/EncodePolyline/PolylineEncoder.js)
- * by [Mark McClure](http://facstaff.unca.edu/mcmcclur/)
- *
- * @module polyline
- */
-
-var polyline = {};
-
-function encode(coordinate, factor) {
-    coordinate = Math.round(coordinate * factor);
-    coordinate <<= 1;
-    if (coordinate < 0) {
-        coordinate = ~coordinate;
-    }
-    var output = '';
-    while (coordinate >= 0x20) {
-        output += String.fromCharCode((0x20 | (coordinate & 0x1f)) + 63);
-        coordinate >>= 5;
-    }
-    output += String.fromCharCode(coordinate + 63);
-    return output;
-}
-
-/**
- * Decodes to a [latitude, longitude] coordinates array.
- *
- * This is adapted from the implementation in Project-OSRM.
- *
- * @param {String} str
- * @param {Number} precision
- * @returns {Array}
- *
- * @see https://github.com/Project-OSRM/osrm-frontend/blob/master/WebContent/routing/OSRM.RoutingGeometry.js
- */
-polyline.decode = function(str, precision) {
-    var index = 0,
-        lat = 0,
-        lng = 0,
-        coordinates = [],
-        shift = 0,
-        result = 0,
-        byte = null,
-        latitude_change,
-        longitude_change,
-        factor = Math.pow(10, precision || 5);
-
-    // Coordinates have variable length when encoded, so just keep
-    // track of whether we've hit the end of the string. In each
-    // loop iteration, a single coordinate is decoded.
-    while (index < str.length) {
-
-        // Reset shift, result, and byte
-        byte = null;
-        shift = 0;
-        result = 0;
-
-        do {
-            byte = str.charCodeAt(index++) - 63;
-            result |= (byte & 0x1f) << shift;
-            shift += 5;
-        } while (byte >= 0x20);
-
-        latitude_change = ((result & 1) ? ~(result >> 1) : (result >> 1));
-
-        shift = result = 0;
-
-        do {
-            byte = str.charCodeAt(index++) - 63;
-            result |= (byte & 0x1f) << shift;
-            shift += 5;
-        } while (byte >= 0x20);
-
-        longitude_change = ((result & 1) ? ~(result >> 1) : (result >> 1));
-
-        lat += latitude_change;
-        lng += longitude_change;
-
-        coordinates.push([lat / factor, lng / factor]);
-    }
-
-    return coordinates;
-};
-
-/**
- * Encodes the given [latitude, longitude] coordinates array.
- *
- * @param {Array.<Array.<Number>>} coordinates
- * @param {Number} precision
- * @returns {String}
- */
-polyline.encode = function(coordinates, precision) {
-    if (!coordinates.length) { return ''; }
-
-    var factor = Math.pow(10, precision || 5),
-        output = encode(coordinates[0][0], factor) + encode(coordinates[0][1], factor);
-
-    for (var i = 1; i < coordinates.length; i++) {
-        var a = coordinates[i], b = coordinates[i - 1];
-        output += encode(a[0] - b[0], factor);
-        output += encode(a[1] - b[1], factor);
-    }
-
-    return output;
-};
-
-function flipped(coords) {
-    var flipped = [];
-    for (var i = 0; i < coords.length; i++) {
-        flipped.push(coords[i].slice().reverse());
-    }
-    return flipped;
-}
-
-/**
- * Encodes a GeoJSON LineString feature/geometry.
- *
- * @param {Object} geojson
- * @param {Number} precision
- * @returns {String}
- */
-polyline.fromGeoJSON = function(geojson, precision) {
-    if (geojson && geojson.type === 'Feature') {
-        geojson = geojson.geometry;
-    }
-    if (!geojson || geojson.type !== 'LineString') {
-        throw new Error('Input must be a GeoJSON LineString');
-    }
-    return polyline.encode(flipped(geojson.coordinates), precision);
-};
-
-/**
- * Decodes to a GeoJSON LineString geometry.
- *
- * @param {String} str
- * @param {Number} precision
- * @returns {Object}
- */
-polyline.toGeoJSON = function(str, precision) {
-    var coords = polyline.decode(str, precision);
-    return {
-        type: 'LineString',
-        coordinates: flipped(coords)
-    };
-};
-
-if (typeof module === 'object' && module.exports) {
-    module.exports = polyline;
-}
-
-},{}],7:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -1077,72 +442,756 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],8:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
+function corslite(url, callback, cors) {
+    var sent = false;
+
+    if (typeof window.XMLHttpRequest === 'undefined') {
+        return callback(Error('Browser not supported'));
+    }
+
+    if (typeof cors === 'undefined') {
+        var m = url.match(/^\s*https?:\/\/[^\/]*/);
+        cors = m && (m[0] !== location.protocol + '//' + location.hostname +
+                (location.port ? ':' + location.port : ''));
+    }
+
+    var x = new window.XMLHttpRequest();
+
+    function isSuccessful(status) {
+        return status >= 200 && status < 300 || status === 304;
+    }
+
+    if (cors && !('withCredentials' in x)) {
+        // IE8-9
+        x = new window.XDomainRequest();
+
+        // Ensure callback is never called synchronously, i.e., before
+        // x.send() returns (this has been observed in the wild).
+        // See https://github.com/mapbox/mapbox.js/issues/472
+        var original = callback;
+        callback = function() {
+            if (sent) {
+                original.apply(this, arguments);
+            } else {
+                var that = this, args = arguments;
+                setTimeout(function() {
+                    original.apply(that, args);
+                }, 0);
+            }
+        }
+    }
+
+    function loaded() {
+        if (
+            // XDomainRequest
+            x.status === undefined ||
+            // modern browsers
+            isSuccessful(x.status)) callback.call(x, null, x);
+        else callback.call(x, x, null);
+    }
+
+    // Both `onreadystatechange` and `onload` can fire. `onreadystatechange`
+    // has [been supported for longer](http://stackoverflow.com/a/9181508/229001).
+    if ('onload' in x) {
+        x.onload = loaded;
+    } else {
+        x.onreadystatechange = function readystate() {
+            if (x.readyState === 4) {
+                loaded();
+            }
+        };
+    }
+
+    // Call the callback with the XMLHttpRequest object as an error and prevent
+    // it from ever being called again by reassigning it to `noop`
+    x.onerror = function error(evt) {
+        // XDomainRequest provides no evt parameter
+        callback.call(this, evt || true, null);
+        callback = function() { };
+    };
+
+    // IE9 must have onprogress be set to a unique function.
+    x.onprogress = function() { };
+
+    x.ontimeout = function(evt) {
+        callback.call(this, evt, null);
+        callback = function() { };
+    };
+
+    x.onabort = function(evt) {
+        callback.call(this, evt, null);
+        callback = function() { };
+    };
+
+    // GET is the only supported HTTP Verb by XDomainRequest and is the
+    // only one supported here.
+    x.open('GET', url, true);
+
+    // Send the request. Sending data is not supported.
+    x.send(null);
+    sent = true;
+
+    return x;
+}
+
+if (typeof module !== 'undefined') module.exports = corslite;
+
+},{}],5:[function(require,module,exports){
+'use strict';
+
+var dsv = require('d3-dsv'),
+    sexagesimal = require('sexagesimal');
+
+var latRegex = /(Lat)(itude)?/gi,
+    lonRegex = /(L)(on|ng)(gitude)?/i;
+
+function guessHeader(row, regexp) {
+    var name, match, score;
+    for (var f in row) {
+        match = f.match(regexp);
+        if (match && (!name || match[0].length / f.length > score)) {
+            score = match[0].length / f.length;
+            name = f;
+        }
+    }
+    return name;
+}
+
+function guessLatHeader(row) { return guessHeader(row, latRegex); }
+function guessLonHeader(row) { return guessHeader(row, lonRegex); }
+
+function isLat(f) { return !!f.match(latRegex); }
+function isLon(f) { return !!f.match(lonRegex); }
+
+function keyCount(o) {
+    return (typeof o == 'object') ? Object.keys(o).length : 0;
+}
+
+function autoDelimiter(x) {
+    var delimiters = [',', ';', '\t', '|'];
+    var results = [];
+
+    delimiters.forEach(function (delimiter) {
+        var res = dsv.dsvFormat(delimiter).parse(x);
+        if (res.length >= 1) {
+            var count = keyCount(res[0]);
+            for (var i = 0; i < res.length; i++) {
+                if (keyCount(res[i]) !== count) return;
+            }
+            results.push({
+                delimiter: delimiter,
+                arity: Object.keys(res[0]).length,
+            });
+        }
+    });
+
+    if (results.length) {
+        return results.sort(function (a, b) {
+            return b.arity - a.arity;
+        })[0].delimiter;
+    } else {
+        return null;
+    }
+}
+
+/**
+ * Silly stopgap for dsv to d3-dsv upgrade
+ *
+ * @param {Array} x dsv output
+ * @returns {Array} array without columns member
+ */
+function deleteColumns(x) {
+    delete x.columns;
+    return x;
+}
+
+function auto(x) {
+    var delimiter = autoDelimiter(x);
+    if (!delimiter) return null;
+    return deleteColumns(dsv.dsvFormat(delimiter).parse(x));
+}
+
+function csv2geojson(x, options, callback) {
+
+    if (!callback) {
+        callback = options;
+        options = {};
+    }
+
+    options.delimiter = options.delimiter || ',';
+
+    var latfield = options.latfield || '',
+        lonfield = options.lonfield || '',
+        crs = options.crs || '';
+
+    var features = [],
+        featurecollection = {type: 'FeatureCollection', features: features};
+
+    if (crs !== '') {
+        featurecollection.crs = {type: 'name', properties: {name: crs}};
+    }
+
+    if (options.delimiter === 'auto' && typeof x == 'string') {
+        options.delimiter = autoDelimiter(x);
+        if (!options.delimiter) {
+            callback({
+                type: 'Error',
+                message: 'Could not autodetect delimiter'
+            });
+            return;
+        }
+    }
+
+    var parsed = (typeof x == 'string') ?
+        dsv.dsvFormat(options.delimiter).parse(x) : x;
+
+    if (!parsed.length) {
+        callback(null, featurecollection);
+        return;
+    }
+
+    var errors = [];
+    var i;
+
+
+    if (!latfield) latfield = guessLatHeader(parsed[0]);
+    if (!lonfield) lonfield = guessLonHeader(parsed[0]);
+    var noGeometry = (!latfield || !lonfield);
+
+    if (noGeometry) {
+        for (i = 0; i < parsed.length; i++) {
+            features.push({
+                type: 'Feature',
+                properties: parsed[i],
+                geometry: null
+            });
+        }
+        callback(errors.length ? errors : null, featurecollection);
+        return;
+    }
+
+    for (i = 0; i < parsed.length; i++) {
+        if (parsed[i][lonfield] !== undefined &&
+            parsed[i][latfield] !== undefined) {
+
+            var lonk = parsed[i][lonfield],
+                latk = parsed[i][latfield],
+                lonf, latf,
+                a;
+
+            a = sexagesimal(lonk, 'EW');
+            if (a) lonk = a;
+            a = sexagesimal(latk, 'NS');
+            if (a) latk = a;
+
+            lonf = parseFloat(lonk);
+            latf = parseFloat(latk);
+
+            if (isNaN(lonf) ||
+                isNaN(latf)) {
+                errors.push({
+                    message: 'A row contained an invalid value for latitude or longitude',
+                    row: parsed[i],
+                    index: i
+                });
+            } else {
+                if (!options.includeLatLon) {
+                    delete parsed[i][lonfield];
+                    delete parsed[i][latfield];
+                }
+
+                features.push({
+                    type: 'Feature',
+                    properties: parsed[i],
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [
+                            parseFloat(lonf),
+                            parseFloat(latf)
+                        ]
+                    }
+                });
+            }
+        }
+    }
+
+    callback(errors.length ? errors : null, featurecollection);
+}
+
+function toLine(gj) {
+    var features = gj.features;
+    var line = {
+        type: 'Feature',
+        geometry: {
+            type: 'LineString',
+            coordinates: []
+        }
+    };
+    for (var i = 0; i < features.length; i++) {
+        line.geometry.coordinates.push(features[i].geometry.coordinates);
+    }
+    line.properties = features.reduce(function (aggregatedProperties, newFeature) {
+        for (var key in newFeature.properties) {
+            if (!aggregatedProperties[key]) {
+                aggregatedProperties[key] = [];
+            }
+            aggregatedProperties[key].push(newFeature.properties[key]);
+        }
+        return aggregatedProperties;
+    }, {});
+    return {
+        type: 'FeatureCollection',
+        features: [line]
+    };
+}
+
+function toPolygon(gj) {
+    var features = gj.features;
+    var poly = {
+        type: 'Feature',
+        geometry: {
+            type: 'Polygon',
+            coordinates: [[]]
+        }
+    };
+    for (var i = 0; i < features.length; i++) {
+        poly.geometry.coordinates[0].push(features[i].geometry.coordinates);
+    }
+    poly.properties = features.reduce(function (aggregatedProperties, newFeature) {
+        for (var key in newFeature.properties) {
+            if (!aggregatedProperties[key]) {
+                aggregatedProperties[key] = [];
+            }
+            aggregatedProperties[key].push(newFeature.properties[key]);
+        }
+        return aggregatedProperties;
+    }, {});
+    return {
+        type: 'FeatureCollection',
+        features: [poly]
+    };
+}
+
+module.exports = {
+    isLon: isLon,
+    isLat: isLat,
+    guessLatHeader: guessLatHeader,
+    guessLonHeader: guessLonHeader,
+    csv: dsv.csvParse,
+    tsv: dsv.tsvParse,
+    dsv: dsv,
+    auto: auto,
+    csv2geojson: csv2geojson,
+    toLine: toLine,
+    toPolygon: toPolygon
+};
+
+},{"d3-dsv":6,"sexagesimal":7}],6:[function(require,module,exports){
+// https://d3js.org/d3-dsv/ Version 1.0.1. Copyright 2016 Mike Bostock.
+(function (global, factory) {
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+  typeof define === 'function' && define.amd ? define(['exports'], factory) :
+  (factory((global.d3 = global.d3 || {})));
+}(this, function (exports) { 'use strict';
+
+  function objectConverter(columns) {
+    return new Function("d", "return {" + columns.map(function(name, i) {
+      return JSON.stringify(name) + ": d[" + i + "]";
+    }).join(",") + "}");
+  }
+
+  function customConverter(columns, f) {
+    var object = objectConverter(columns);
+    return function(row, i) {
+      return f(object(row), i, columns);
+    };
+  }
+
+  // Compute unique columns in order of discovery.
+  function inferColumns(rows) {
+    var columnSet = Object.create(null),
+        columns = [];
+
+    rows.forEach(function(row) {
+      for (var column in row) {
+        if (!(column in columnSet)) {
+          columns.push(columnSet[column] = column);
+        }
+      }
+    });
+
+    return columns;
+  }
+
+  function dsv(delimiter) {
+    var reFormat = new RegExp("[\"" + delimiter + "\n]"),
+        delimiterCode = delimiter.charCodeAt(0);
+
+    function parse(text, f) {
+      var convert, columns, rows = parseRows(text, function(row, i) {
+        if (convert) return convert(row, i - 1);
+        columns = row, convert = f ? customConverter(row, f) : objectConverter(row);
+      });
+      rows.columns = columns;
+      return rows;
+    }
+
+    function parseRows(text, f) {
+      var EOL = {}, // sentinel value for end-of-line
+          EOF = {}, // sentinel value for end-of-file
+          rows = [], // output rows
+          N = text.length,
+          I = 0, // current character index
+          n = 0, // the current line number
+          t, // the current token
+          eol; // is the current token followed by EOL?
+
+      function token() {
+        if (I >= N) return EOF; // special case: end of file
+        if (eol) return eol = false, EOL; // special case: end of line
+
+        // special case: quotes
+        var j = I, c;
+        if (text.charCodeAt(j) === 34) {
+          var i = j;
+          while (i++ < N) {
+            if (text.charCodeAt(i) === 34) {
+              if (text.charCodeAt(i + 1) !== 34) break;
+              ++i;
+            }
+          }
+          I = i + 2;
+          c = text.charCodeAt(i + 1);
+          if (c === 13) {
+            eol = true;
+            if (text.charCodeAt(i + 2) === 10) ++I;
+          } else if (c === 10) {
+            eol = true;
+          }
+          return text.slice(j + 1, i).replace(/""/g, "\"");
+        }
+
+        // common case: find next delimiter or newline
+        while (I < N) {
+          var k = 1;
+          c = text.charCodeAt(I++);
+          if (c === 10) eol = true; // \n
+          else if (c === 13) { eol = true; if (text.charCodeAt(I) === 10) ++I, ++k; } // \r|\r\n
+          else if (c !== delimiterCode) continue;
+          return text.slice(j, I - k);
+        }
+
+        // special case: last token before EOF
+        return text.slice(j);
+      }
+
+      while ((t = token()) !== EOF) {
+        var a = [];
+        while (t !== EOL && t !== EOF) {
+          a.push(t);
+          t = token();
+        }
+        if (f && (a = f(a, n++)) == null) continue;
+        rows.push(a);
+      }
+
+      return rows;
+    }
+
+    function format(rows, columns) {
+      if (columns == null) columns = inferColumns(rows);
+      return [columns.map(formatValue).join(delimiter)].concat(rows.map(function(row) {
+        return columns.map(function(column) {
+          return formatValue(row[column]);
+        }).join(delimiter);
+      })).join("\n");
+    }
+
+    function formatRows(rows) {
+      return rows.map(formatRow).join("\n");
+    }
+
+    function formatRow(row) {
+      return row.map(formatValue).join(delimiter);
+    }
+
+    function formatValue(text) {
+      return text == null ? ""
+          : reFormat.test(text += "") ? "\"" + text.replace(/\"/g, "\"\"") + "\""
+          : text;
+    }
+
+    return {
+      parse: parse,
+      parseRows: parseRows,
+      format: format,
+      formatRows: formatRows
+    };
+  }
+
+  var csv = dsv(",");
+
+  var csvParse = csv.parse;
+  var csvParseRows = csv.parseRows;
+  var csvFormat = csv.format;
+  var csvFormatRows = csv.formatRows;
+
+  var tsv = dsv("\t");
+
+  var tsvParse = tsv.parse;
+  var tsvParseRows = tsv.parseRows;
+  var tsvFormat = tsv.format;
+  var tsvFormatRows = tsv.formatRows;
+
+  exports.dsvFormat = dsv;
+  exports.csvParse = csvParse;
+  exports.csvParseRows = csvParseRows;
+  exports.csvFormat = csvFormat;
+  exports.csvFormatRows = csvFormatRows;
+  exports.tsvParse = tsvParse;
+  exports.tsvParseRows = tsvParseRows;
+  exports.tsvFormat = tsvFormat;
+  exports.tsvFormatRows = tsvFormatRows;
+
+  Object.defineProperty(exports, '__esModule', { value: true });
+
+}));
+},{}],7:[function(require,module,exports){
 module.exports = element;
 module.exports.pair = pair;
 module.exports.format = format;
 module.exports.formatPair = formatPair;
+module.exports.coordToDMS = coordToDMS;
 
 function element(x, dims) {
-    return search(x, dims).val;
+  return search(x, dims).val;
 }
 
 function formatPair(x) {
-    return format(x.lat, 'lat') + ' ' + format(x.lon, 'lon');
+  return format(x.lat, 'lat') + ' ' + format(x.lon, 'lon');
 }
 
 // Is 0 North or South?
 function format(x, dim) {
-    var dirs = {
-            lat: ['N', 'S'],
-            lon: ['E', 'W']
-        }[dim] || '',
-        dir = dirs[x >= 0 ? 0 : 1],
-        abs = Math.abs(x),
-        whole = Math.floor(abs),
-        fraction = abs - whole,
-        fractionMinutes = fraction * 60,
-        minutes = Math.floor(fractionMinutes),
-        seconds = Math.floor((fractionMinutes - minutes) * 60);
+  var dms = coordToDMS(x,dim);
+  return dms.whole + '° ' +
+    (dms.minutes ? dms.minutes + '\' ' : '') +
+    (dms.seconds ? dms.seconds + '" ' : '') + dms.dir;
+}
 
-    return whole + '° ' +
-        (minutes ? minutes + "' " : '') +
-        (seconds ? seconds + '" ' : '') + dir;
+function coordToDMS(x,dim) {
+  var dirs = {
+    lat: ['N', 'S'],
+    lon: ['E', 'W']
+  }[dim] || '',
+  dir = dirs[x >= 0 ? 0 : 1],
+    abs = Math.abs(x),
+    whole = Math.floor(abs),
+    fraction = abs - whole,
+    fractionMinutes = fraction * 60,
+    minutes = Math.floor(fractionMinutes),
+    seconds = Math.floor((fractionMinutes - minutes) * 60);
+
+  return {
+    whole: whole,
+    minutes: minutes,
+    seconds: seconds,
+    dir: dir
+  };
 }
 
 function search(x, dims, r) {
-    if (!dims) dims = 'NSEW';
-    if (typeof x !== 'string') return { val: null, regex: r };
-    r = r || /[\s\,]*([\-|\—|\―]?[0-9.]+)°? *(?:([0-9.]+)['’′‘] *)?(?:([0-9.]+)(?:''|"|”|″) *)?([NSEW])?/gi;
-    var m = r.exec(x);
-    if (!m) return { val: null, regex: r };
-    else if (m[4] && dims.indexOf(m[4]) === -1) return { val: null, regex: r };
-    else return {
-        val: (((m[1]) ? parseFloat(m[1]) : 0) +
-            ((m[2] ? parseFloat(m[2]) / 60 : 0)) +
-            ((m[3] ? parseFloat(m[3]) / 3600 : 0))) *
-            ((m[4] && m[4] === 'S' || m[4] === 'W') ? -1 : 1),
-        regex: r,
-        raw: m[0],
-        dim: m[4]
-    };
+  if (!dims) dims = 'NSEW';
+  if (typeof x !== 'string') return { val: null, regex: r };
+  r = r || /[\s\,]*([\-|\—|\―]?[0-9.]+)°? *(?:([0-9.]+)['’′‘] *)?(?:([0-9.]+)(?:''|"|”|″) *)?([NSEW])?/gi;
+  var m = r.exec(x);
+  if (!m) return { val: null, regex: r };
+  else if (m[4] && dims.indexOf(m[4]) === -1) return { val: null, regex: r };
+  else return {
+    val: (((m[1]) ? parseFloat(m[1]) : 0) +
+          ((m[2] ? parseFloat(m[2]) / 60 : 0)) +
+          ((m[3] ? parseFloat(m[3]) / 3600 : 0))) *
+          ((m[4] && m[4] === 'S' || m[4] === 'W') ? -1 : 1),
+    regex: r,
+    raw: m[0],
+    dim: m[4]
+  };
 }
 
 function pair(x, dims) {
-    x = x.trim();
-    var one = search(x, dims);
-    if (one.val === null) return null;
-    var two = search(x, dims, one.regex);
-    if (two.val === null) return null;
-    // null if one/two are not contiguous.
-    if (one.raw + two.raw !== x) return null;
-    if (one.dim) return swapdim(one.val, two.val, one.dim);
-    else return [one.val, two.val];
+  x = x.trim();
+  var one = search(x, dims);
+  if (one.val === null) return null;
+  var two = search(x, dims, one.regex);
+  if (two.val === null) return null;
+  // null if one/two are not contiguous.
+  if (one.raw + two.raw !== x) return null;
+  if (one.dim) {
+    return swapdim(one.val, two.val, one.dim);
+  } else {
+    return [one.val, two.val];
+  }
 }
 
 function swapdim(a, b, dim) {
-    if (dim == 'N' || dim == 'S') return [a, b];
-    if (dim == 'W' || dim == 'E') return [b, a];
+  if (dim === 'N' || dim === 'S') return [a, b];
+  if (dim === 'W' || dim === 'E') return [b, a];
+}
+
+},{}],8:[function(require,module,exports){
+'use strict';
+
+/**
+ * Based off of [the offical Google document](https://developers.google.com/maps/documentation/utilities/polylinealgorithm)
+ *
+ * Some parts from [this implementation](http://facstaff.unca.edu/mcmcclur/GoogleMaps/EncodePolyline/PolylineEncoder.js)
+ * by [Mark McClure](http://facstaff.unca.edu/mcmcclur/)
+ *
+ * @module polyline
+ */
+
+var polyline = {};
+
+function encode(coordinate, factor) {
+    coordinate = Math.round(coordinate * factor);
+    coordinate <<= 1;
+    if (coordinate < 0) {
+        coordinate = ~coordinate;
+    }
+    var output = '';
+    while (coordinate >= 0x20) {
+        output += String.fromCharCode((0x20 | (coordinate & 0x1f)) + 63);
+        coordinate >>= 5;
+    }
+    output += String.fromCharCode(coordinate + 63);
+    return output;
+}
+
+/**
+ * Decodes to a [latitude, longitude] coordinates array.
+ *
+ * This is adapted from the implementation in Project-OSRM.
+ *
+ * @param {String} str
+ * @param {Number} precision
+ * @returns {Array}
+ *
+ * @see https://github.com/Project-OSRM/osrm-frontend/blob/master/WebContent/routing/OSRM.RoutingGeometry.js
+ */
+polyline.decode = function(str, precision) {
+    var index = 0,
+        lat = 0,
+        lng = 0,
+        coordinates = [],
+        shift = 0,
+        result = 0,
+        byte = null,
+        latitude_change,
+        longitude_change,
+        factor = Math.pow(10, precision || 5);
+
+    // Coordinates have variable length when encoded, so just keep
+    // track of whether we've hit the end of the string. In each
+    // loop iteration, a single coordinate is decoded.
+    while (index < str.length) {
+
+        // Reset shift, result, and byte
+        byte = null;
+        shift = 0;
+        result = 0;
+
+        do {
+            byte = str.charCodeAt(index++) - 63;
+            result |= (byte & 0x1f) << shift;
+            shift += 5;
+        } while (byte >= 0x20);
+
+        latitude_change = ((result & 1) ? ~(result >> 1) : (result >> 1));
+
+        shift = result = 0;
+
+        do {
+            byte = str.charCodeAt(index++) - 63;
+            result |= (byte & 0x1f) << shift;
+            shift += 5;
+        } while (byte >= 0x20);
+
+        longitude_change = ((result & 1) ? ~(result >> 1) : (result >> 1));
+
+        lat += latitude_change;
+        lng += longitude_change;
+
+        coordinates.push([lat / factor, lng / factor]);
+    }
+
+    return coordinates;
+};
+
+/**
+ * Encodes the given [latitude, longitude] coordinates array.
+ *
+ * @param {Array.<Array.<Number>>} coordinates
+ * @param {Number} precision
+ * @returns {String}
+ */
+polyline.encode = function(coordinates, precision) {
+    if (!coordinates.length) { return ''; }
+
+    var factor = Math.pow(10, precision || 5),
+        output = encode(coordinates[0][0], factor) + encode(coordinates[0][1], factor);
+
+    for (var i = 1; i < coordinates.length; i++) {
+        var a = coordinates[i], b = coordinates[i - 1];
+        output += encode(a[0] - b[0], factor);
+        output += encode(a[1] - b[1], factor);
+    }
+
+    return output;
+};
+
+function flipped(coords) {
+    var flipped = [];
+    for (var i = 0; i < coords.length; i++) {
+        flipped.push(coords[i].slice().reverse());
+    }
+    return flipped;
+}
+
+/**
+ * Encodes a GeoJSON LineString feature/geometry.
+ *
+ * @param {Object} geojson
+ * @param {Number} precision
+ * @returns {String}
+ */
+polyline.fromGeoJSON = function(geojson, precision) {
+    if (geojson && geojson.type === 'Feature') {
+        geojson = geojson.geometry;
+    }
+    if (!geojson || geojson.type !== 'LineString') {
+        throw new Error('Input must be a GeoJSON LineString');
+    }
+    return polyline.encode(flipped(geojson.coordinates), precision);
+};
+
+/**
+ * Decodes to a GeoJSON LineString geometry.
+ *
+ * @param {String} str
+ * @param {Number} precision
+ * @returns {Object}
+ */
+polyline.toGeoJSON = function(str, precision) {
+    var coords = polyline.decode(str, precision);
+    return {
+        type: 'LineString',
+        coordinates: flipped(coords)
+    };
+};
+
+if (typeof module === 'object' && module.exports) {
+    module.exports = polyline;
 }
 
 },{}],9:[function(require,module,exports){
@@ -1511,7 +1560,7 @@ var toGeoJSON = (function() {
 if (typeof module !== 'undefined') module.exports = toGeoJSON;
 
 }).call(this,require('_process'))
-},{"_process":7,"xmldom":2}],10:[function(require,module,exports){
+},{"_process":3,"xmldom":2}],10:[function(require,module,exports){
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
