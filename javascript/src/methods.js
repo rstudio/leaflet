@@ -1034,14 +1034,17 @@ methods.addRasterImage = function(uri, bounds, opacity, attribution, layerId, gr
   };
   img.src = uri;
 
-  let canvasTiles = L.tileLayer.canvas({
+  let canvasTiles = L.gridLayer({
     opacity: opacity,
     attribution: attribution,
     detectRetina: true,
     async: true
   });
 
-  canvasTiles.drawTile = function(canvas, tilePoint, zoom) {
+  canvasTiles.createTile = function(tilePoint) {
+    let zoom = tilePoint.z;
+    let canvas = L.DomUtil.create("canvas", "leaflet-tile");
+
     getImageData(function(imgData, w, h, mipmapper) {
       try {
         // The Context2D we'll being drawing onto. It's always 256x256.
@@ -1171,9 +1174,10 @@ methods.addRasterImage = function(uri, bounds, opacity, attribution, layerId, gr
           }
         }
       } finally {
-        canvasTiles.tileDrawn(canvas);
+        return canvas;
       }
     });
+    return canvas;
   };
 
   this.layerManager.addLayer(canvasTiles, "image", layerId, group);

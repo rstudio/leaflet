@@ -44,4 +44,13 @@ leaflet-label now in main leaflet as L.tooltip.  How do we handle changed option
 - Bonus: new option `sticky` will make the label follow the mouse instead of being displayed at the feature center
 
 
-# removed leaflet-label source and in yaml in [commit]()
+* removed leaflet-label source and in yaml in [commit]()
+
+
+### tileLayer.canvas no longer available
+
+```
+library(mapview)
+
+leaflet() %>% addRasterImage(poppendorf[[1]])
+```

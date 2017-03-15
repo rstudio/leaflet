@@ -2100,14 +2100,17 @@ methods.addRasterImage = function (uri, bounds, opacity, attribution, layerId, g
   };
   img.src = uri;
 
-  var canvasTiles = _leaflet2.default.tileLayer.canvas({
+  var canvasTiles = _leaflet2.default.gridLayer({
     opacity: opacity,
     attribution: attribution,
     detectRetina: true,
     async: true
   });
 
-  canvasTiles.drawTile = function (canvas, tilePoint, zoom) {
+  canvasTiles.createTile = function (tilePoint) {
+    var zoom = tilePoint.z;
+    var canvas = _leaflet2.default.DomUtil.create("canvas", "leaflet-tile");
+
     getImageData(function (imgData, w, h, mipmapper) {
       try {
         var _ret7 = function () {
@@ -2236,9 +2239,10 @@ methods.addRasterImage = function (uri, bounds, opacity, attribution, layerId, g
 
         if ((typeof _ret7 === "undefined" ? "undefined" : _typeof(_ret7)) === "object") return _ret7.v;
       } finally {
-        canvasTiles.tileDrawn(canvas);
+        return canvas;
       }
     });
+    return canvas;
   };
 
   this.layerManager.addLayer(canvasTiles, "image", layerId, group);
