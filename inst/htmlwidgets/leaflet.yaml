@@ -13,7 +13,7 @@ dependencies:
     src: "htmlwidgets/lib/leafletfix"
     stylesheet: leafletfix.css
   - name: Proj4Leaflet
-    version: 0.7.2
+    version: 1.0.1
     src: "htmlwidgets/plugins/Proj4Leaflet"
     script:
       - proj4-compressed.js
