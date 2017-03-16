@@ -1041,9 +1041,15 @@ methods.addRasterImage = function(uri, bounds, opacity, attribution, layerId, gr
     async: true
   });
 
-  canvasTiles.createTile = function(tilePoint) {
+  canvasTiles.createTile = function(tilePoint, done) {
     let zoom = tilePoint.z;
     let canvas = L.DomUtil.create("canvas", "leaflet-tile");
+    let error;
+
+    // setup tile width and height according to the options
+    var size = this.getTileSize();
+    canvas.width = size.x;
+    canvas.height = size.y;
 
     getImageData(function(imgData, w, h, mipmapper) {
       try {
@@ -1174,7 +1180,7 @@ methods.addRasterImage = function(uri, bounds, opacity, attribution, layerId, gr
           }
         }
       } finally {
-        return canvas;
+        done(error, canvas);
       }
     });
     return canvas;

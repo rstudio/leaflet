@@ -2107,9 +2107,15 @@ methods.addRasterImage = function (uri, bounds, opacity, attribution, layerId, g
     async: true
   });
 
-  canvasTiles.createTile = function (tilePoint) {
+  canvasTiles.createTile = function (tilePoint, done) {
     var zoom = tilePoint.z;
     var canvas = _leaflet2.default.DomUtil.create("canvas", "leaflet-tile");
+    var error = void 0;
+
+    // setup tile width and height according to the options
+    var size = this.getTileSize();
+    canvas.width = size.x;
+    canvas.height = size.y;
 
     getImageData(function (imgData, w, h, mipmapper) {
       try {
@@ -2239,7 +2245,7 @@ methods.addRasterImage = function (uri, bounds, opacity, attribution, layerId, g
 
         if ((typeof _ret7 === "undefined" ? "undefined" : _typeof(_ret7)) === "object") return _ret7.v;
       } finally {
-        return canvas;
+        done(error, canvas);
       }
     });
     return canvas;
