@@ -1325,6 +1325,7 @@ function addMarkers(map, df, group, clusterOptions, clusterId, markerFunc) {
           marker.on("click", mouseHandler(this.id, thisId, thisGroup, "marker_click", extraInfo), this);
           marker.on("mouseover", mouseHandler(this.id, thisId, thisGroup, "marker_mouseover", extraInfo), this);
           marker.on("mouseout", mouseHandler(this.id, thisId, thisGroup, "marker_mouseout", extraInfo), this);
+          marker.on("dragend", mouseHandler(this.id, thisId, thisGroup, "marker_dragend", extraInfo), this);
         }).call(_this3);
       }
     };
