@@ -23,7 +23,7 @@ export function getCRS(crsOptions) {
       crsOptions.options.bounds = L.bounds(crsOptions.options.bounds);
     }
     if(crsOptions.options && crsOptions.options.transformation) {
-      crsOptions.options.transformation =
+      crsOptions.options.transformation = new
         L.Transformation(
           crsOptions.options.transformation[0],
           crsOptions.options.transformation[1],
