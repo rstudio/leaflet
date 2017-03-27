@@ -15,4 +15,3 @@ Administrative borders of Switzerland (level 1)
 This dataset comes from \url{http://gadm.org}.
 It was downloaded using \code{\link{getData}}.
 }
-

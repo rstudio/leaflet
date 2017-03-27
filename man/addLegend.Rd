@@ -128,4 +128,3 @@ leaflet(df) \%>\%
     transform = function(x) 100 * x
   ))
 }
-

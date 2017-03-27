@@ -16,4 +16,3 @@ evalFormula(list, data)
 Evaluate list members that are formulae, using the map data as the environment
 (if provided, otherwise the formula environment)
 }
-
