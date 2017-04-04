@@ -21,18 +21,13 @@ guessLatLongCols <- function(names, stopOnFailure = TRUE) {
   list(lng = NA, lat = NA)
 }
 
+#' @import lazyeval
 resolveFormula <- function(f, data) {
   if (!inherits(f, 'formula')) return(f)
   if (length(f) != 2L) stop("Unexpected two-sided formula: ", deparse(f))
 
-  eval(f[[2]], metaData(data), environment(f))
+  eval(f[[2]], lazyeval::find_data(data), environment(f))
 }
-
-metaData <- function(obj) UseMethod("metaData")
-#' @export
-metaData.data.frame <- function(obj) obj
-#' @export
-metaData.list <- function(obj) obj
 
 
 #' Given a data object and lng/lat arguments (which may be NULL [meaning infer

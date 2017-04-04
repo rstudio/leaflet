@@ -1,6 +1,7 @@
+#' @import lazyeval
 #' @export
-metaData.SharedData <- function(obj) {
-  metaData(obj$data(withSelection = TRUE, withFilter = FALSE, withKey = TRUE))
+find_data.SharedData <- function(obj) {
+  lazyeval::find_data(obj$data(withSelection = TRUE, withFilter = FALSE, withKey = TRUE))
 }
 
 #' @export

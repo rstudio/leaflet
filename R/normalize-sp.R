@@ -1,11 +1,11 @@
-# metaData --------------------------------------------------------
+# find_data --------------------------------------------------------
 
 #' @export
-metaData.SpatialPointsDataFrame <- function(obj) obj@data
+find_data.SpatialPointsDataFrame <- function(obj) obj@data
 #' @export
-metaData.SpatialLinesDataFrame <- function(obj) obj@data
+find_data.SpatialLinesDataFrame <- function(obj) obj@data
 #' @export
-metaData.SpatialPolygonsDataFrame <- function(obj) obj@data
+find_data.SpatialPolygonsDataFrame <- function(obj) obj@data
 
 # pointData ---------------------------------------------------------------
 
