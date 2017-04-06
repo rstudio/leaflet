@@ -95,6 +95,9 @@ export default class LayerManager {
         // Need to save this info so we know what to set opacity to later
         layer.options.origOpacity = typeof(layer.options.opacity) !== "undefined" ? layer.options.opacity : 0.5;
         layer.options.origFillOpacity = typeof(layer.options.fillOpacity) !== "undefined" ? layer.options.fillOpacity : 0.2;
+        layer.options.origColor = typeof(layer.options.color) !== "undefined" ? layer.options.color : "#03F";
+        layer.options.origFillColor = typeof(layer.options.fillColor) !== "undefined" ? layer.options.fillColor : layer.options.origColor;
+
       }
 
       let ctg = this._byCrosstalkGroup[ctGroup];
@@ -132,7 +135,12 @@ export default class LayerManager {
             for (let i = 0; i < groupKeys.length; i++) {
               let key = groupKeys[i];
               let layerInfo = this._byStamp[ctg[key]];
-              this._setOpacity(layerInfo, 1.0);
+              // reset the crosstalk style params
+              layerInfo.layer.options.ctOpacity = undefined;
+              layerInfo.layer.options.ctFillOpacity = undefined;
+              layerInfo.layer.options.ctColor = undefined;
+              layerInfo.layer.options.ctFillColor = undefined;
+              this._setStyle(layerInfo);
             }
           } else {
             let selectedKeys = {};
@@ -140,10 +148,35 @@ export default class LayerManager {
               selectedKeys[e.value[i]] = true;
             }
             let groupKeys = Object.keys(ctg);
+            // for compatability with plotly's ability to colour selections
+            // https://github.com/jcheng5/plotly/blob/71cf8a/R/crosstalk.R#L96-L100
+            let selectionColour = crosstalk.group(ctGroup).var("plotlySelectionColour").get();
+            let ctOpts = crosstalk.var("plotlyCrosstalkOpts").get() || {opacityDim: 0.2};
+            let persist = ctOpts.persistent === true;
             for (let i = 0; i < groupKeys.length; i++) {
               let key = groupKeys[i];
               let layerInfo = this._byStamp[ctg[key]];
-              this._setOpacity(layerInfo, selectedKeys[groupKeys[i]] ? 1.0 : 0.2);
+              let selected = selectedKeys[groupKeys[i]];
+              let opts = layerInfo.layer.options;
+
+              // remember "old" selection colors if this is persistent selection
+              layerInfo.layer.options.ctColor =
+                selected ? selectionColour :
+                  persist ? opts.ctColor : opts.origColor;
+              layerInfo.layer.options.ctFillColor =
+                selected ? selectionColour :
+                  persist ? opts.ctFillColor : opts.origFillColor;
+
+              layerInfo.layer.options.ctOpacity =
+                  selected ? opts.origOpacity :
+                    (persist && opts.origOpacity == opts.ctOpacity) ? opts.origOpacity :
+                      ctOpts.opacityDim * opts.origOpacity;
+              layerInfo.layer.options.ctFillOpacity =
+                  selected ? opts.origFillOpacity :
+                    (persist && opts.origFillOpacity == opts.ctFillOpacity) ? opts.origFillOpacity :
+                      ctOpts.opacityDim * opts.origFillOpacity;
+
+              this._setStyle(layerInfo);
             }
           }
         };
@@ -214,15 +247,17 @@ export default class LayerManager {
     }
   }
 
-  _setOpacity(layerInfo, opacity) {
-    if (layerInfo.layer.setOpacity) {
-      layerInfo.layer.setOpacity(opacity);
-    } else if (layerInfo.layer.setStyle) {
-      layerInfo.layer.setStyle({
-        opacity: opacity * layerInfo.layer.options.origOpacity,
-        fillOpacity: opacity * layerInfo.layer.options.origFillOpacity
-      });
+  _setStyle(layerInfo) {
+    let opts = layerInfo.layer.options;
+    if (!layerInfo.layer.setStyle) {
+      return;
     }
+    layerInfo.layer.setStyle({
+      opacity: opts.ctOpacity || opts.origOpacity,
+      fillOpacity: opts.ctFillOpacity || opts.origFillOpacity,
+      color: opts.ctColor || opts.origColor,
+      fillColor: opts.ctFillColor || opts.origFillColor
+    });
   }
 
   getLayer(category, layerId) {
@@ -349,7 +384,7 @@ export default class LayerManager {
     if (layerInfo.ctGroup) {
       let ctGroup = this._byCrosstalkGroup[layerInfo.ctGroup];
       let layersForKey = ctGroup[layerInfo.ctKey];
-      let idx = layersForKey ? layersForKey.indexOf(stamp) : -1;
+      let idx = layersForKey ? layersForKey.indexOf(+stamp) : -1;
       if (idx >= 0) {
         if (layersForKey.length === 1) {
           delete ctGroup[layerInfo.ctKey];

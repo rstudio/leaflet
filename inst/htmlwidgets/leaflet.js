@@ -818,6 +818,8 @@ var LayerManager = function () {
             // Need to save this info so we know what to set opacity to later
             layer.options.origOpacity = typeof layer.options.opacity !== "undefined" ? layer.options.opacity : 0.5;
             layer.options.origFillOpacity = typeof layer.options.fillOpacity !== "undefined" ? layer.options.fillOpacity : 0.2;
+            layer.options.origColor = typeof layer.options.color !== "undefined" ? layer.options.color : "#03F";
+            layer.options.origFillColor = typeof layer.options.fillColor !== "undefined" ? layer.options.fillColor : layer.options.origColor;
           }
 
           var ctg = _this._byCrosstalkGroup[ctGroup];
@@ -856,7 +858,12 @@ var LayerManager = function () {
                   for (var i = 0; i < groupKeys.length; i++) {
                     var key = groupKeys[i];
                     var _layerInfo3 = _this._byStamp[ctg[key]];
-                    _this._setOpacity(_layerInfo3, 1.0);
+                    // reset the crosstalk style params
+                    _layerInfo3.layer.options.ctOpacity = undefined;
+                    _layerInfo3.layer.options.ctFillOpacity = undefined;
+                    _layerInfo3.layer.options.ctColor = undefined;
+                    _layerInfo3.layer.options.ctFillColor = undefined;
+                    _this._setStyle(_layerInfo3);
                   }
                 } else {
                   var selectedKeys = {};
@@ -864,10 +871,25 @@ var LayerManager = function () {
                     selectedKeys[e.value[_i3]] = true;
                   }
                   var _groupKeys2 = Object.keys(ctg);
+                  // for compatability with plotly's ability to colour selections
+                  // https://github.com/jcheng5/plotly/blob/71cf8a/R/crosstalk.R#L96-L100
+                  var selectionColour = crosstalk.group(ctGroup).var("plotlySelectionColour").get();
+                  var ctOpts = crosstalk.var("plotlyCrosstalkOpts").get() || { opacityDim: 0.2 };
+                  var persist = ctOpts.persistent === true;
                   for (var _i4 = 0; _i4 < _groupKeys2.length; _i4++) {
                     var _key2 = _groupKeys2[_i4];
                     var _layerInfo4 = _this._byStamp[ctg[_key2]];
-                    _this._setOpacity(_layerInfo4, selectedKeys[_groupKeys2[_i4]] ? 1.0 : 0.2);
+                    var selected = selectedKeys[_groupKeys2[_i4]];
+                    var opts = _layerInfo4.layer.options;
+
+                    // remember "old" selection colors if this is persistent selection
+                    _layerInfo4.layer.options.ctColor = selected ? selectionColour : persist ? opts.ctColor : opts.origColor;
+                    _layerInfo4.layer.options.ctFillColor = selected ? selectionColour : persist ? opts.ctFillColor : opts.origFillColor;
+
+                    _layerInfo4.layer.options.ctOpacity = selected ? opts.origOpacity : persist && opts.origOpacity == opts.ctOpacity ? opts.origOpacity : ctOpts.opacityDim * opts.origOpacity;
+                    _layerInfo4.layer.options.ctFillOpacity = selected ? opts.origFillOpacity : persist && opts.origFillOpacity == opts.ctFillOpacity ? opts.origFillOpacity : ctOpts.opacityDim * opts.origFillOpacity;
+
+                    _this._setStyle(_layerInfo4);
                   }
                 }
               };
@@ -943,16 +965,18 @@ var LayerManager = function () {
       }
     }
   }, {
-    key: "_setOpacity",
-    value: function _setOpacity(layerInfo, opacity) {
-      if (layerInfo.layer.setOpacity) {
-        layerInfo.layer.setOpacity(opacity);
-      } else if (layerInfo.layer.setStyle) {
-        layerInfo.layer.setStyle({
-          opacity: opacity * layerInfo.layer.options.origOpacity,
-          fillOpacity: opacity * layerInfo.layer.options.origFillOpacity
-        });
+    key: "_setStyle",
+    value: function _setStyle(layerInfo) {
+      var opts = layerInfo.layer.options;
+      if (!layerInfo.layer.setStyle) {
+        return;
       }
+      layerInfo.layer.setStyle({
+        opacity: opts.ctOpacity || opts.origOpacity,
+        fillOpacity: opts.ctFillOpacity || opts.origFillOpacity,
+        color: opts.ctColor || opts.origColor,
+        fillColor: opts.ctFillColor || opts.origFillColor
+      });
     }
   }, {
     key: "getLayer",
@@ -1097,7 +1121,7 @@ var LayerManager = function () {
       if (layerInfo.ctGroup) {
         var ctGroup = this._byCrosstalkGroup[layerInfo.ctGroup];
         var layersForKey = ctGroup[layerInfo.ctKey];
-        var idx = layersForKey ? layersForKey.indexOf(stamp) : -1;
+        var idx = layersForKey ? layersForKey.indexOf(+stamp) : -1;
         if (idx >= 0) {
           if (layersForKey.length === 1) {
             delete ctGroup[layerInfo.ctKey];
@@ -1605,9 +1629,9 @@ methods.addRectangles = function (lat1, lng1, lat2, lng2, layerId, group, option
  * @param lat Array of arrays of latitude coordinates for polygons
  * @param lng Array of arrays of longitude coordinates for polygons
  */
-methods.addPolygons = function (polygons, layerId, group, options, popup, popupOptions, label, labelOptions, highlightOptions) {
+methods.addPolygons = function (polygons, layerId, group, options, popup, popupOptions, label, labelOptions, highlightOptions, crosstalkOptions) {
   if (polygons.length > 0) {
-    var df = new _dataframe2.default().col("shapes", polygons).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).col("highlightOptions", highlightOptions).cbind(options);
+    var df = new _dataframe2.default().col("shapes", polygons).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).col("highlightOptions", highlightOptions).cbind(options).cbind(crosstalkOptions || {});
 
     addLayers(this, "shape", df, function (df, i) {
       // This code used to use L.multiPolygon, but that caused
@@ -2348,7 +2372,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 // pixel of the original image has some contribution to the downscaled image)
 // as opposed to a single-step downscaling which will discard a lot of data
 // (and with sparse images at small scales can give very surprising results).
-
 var Mipmapper = function () {
   function Mipmapper(img) {
     _classCallCheck(this, Mipmapper);

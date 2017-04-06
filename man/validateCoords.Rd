@@ -18,4 +18,3 @@ validateCoords(lng, lat, funcName, warn = T)
 \description{
 Utility function to check if a coordinates is valid
 }
-
