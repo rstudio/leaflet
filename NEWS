@@ -4,6 +4,9 @@ leaflet 1.1.1
 * Add `groupOptions` parameter, currently the only option is letting you specify
   zoom levels at which a group should be visible.
 
+* Fix bug with accessing columns in formulas when the data source is a Crosstalk
+  SharedData object wrapping a spatial data frame or sf object.
+
 leaflet 1.1.0
 --------------------------------------------------------------------------------
 
