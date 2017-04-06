@@ -42,6 +42,7 @@ Imports:
     crosstalk,
     htmlwidgets,
     htmltools,
+    lazyeval,
     magrittr,
     markdown,
     methods,

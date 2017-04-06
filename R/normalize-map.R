@@ -1,5 +1,5 @@
 #' @export
-metaData.map <- function(obj) {
+find_data.map <- function(obj) {
   obj
 }
 
