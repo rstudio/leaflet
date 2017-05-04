@@ -12,5 +12,4 @@
 ^javascript$
 ^package\.json$
 ^node_modules$
-
 ^data-raw$

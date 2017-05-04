@@ -794,6 +794,25 @@ methods.addLegend = function(options) {
     return div;
   };
 
+  if(options.group) {
+    // Auto generate a layerID if not provided
+    if(!options.layerId) {
+      options.layerId = L.stamp(legend);
+    }
+
+    let map = this;
+    map.on("overlayadd", function(e){
+      if(e.name === options.group) {
+        map.controls.add(legend, options.layerId);
+      }
+    });
+    map.on("overlayremove", function(e){
+      if(e.name === options.group) {
+        map.controls.remove(options.layerId);
+      }
+    });
+  }
+
   this.controls.add(legend, options.layerId);
 };
 
