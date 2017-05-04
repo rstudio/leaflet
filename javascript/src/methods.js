@@ -774,7 +774,8 @@ methods.addLegend = function(options) {
 
       if (options.na_color) {
         $(div).append("<div><i style=\"background:" + options.na_color +
-                      "\"></i> " + options.na_label + "</div>");
+                      ";opacity:" + options.opacity +
+                      ";\"></i> " + options.na_label + "</div>");
       }
     } else {
       if (options.na_color) {
