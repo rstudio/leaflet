@@ -1649,7 +1649,16 @@ methods.addGeoJSON = function (data, layerId, group, style) {
         properties: feature.properties
       };
       var popup = feature.properties.popup;
-      if (typeof popup !== "undefined" && popup !== null) layer.bindPopup(popup);
+
+      if (typeof popup !== "undefined" && popup !== null) {
+      		 
+      		  var popupOptions = feature.properties.popupOptions;
+      		  if (typeof popupOptions !== "undefined" && popupOptions !== null) {
+      		  		layer.bindPopup(popup, popupOptions);
+      		  } else {
+      		  		layer.bindPopup(popup);
+      		  };
+      };
       layer.on("click", mouseHandler(self.id, layerId, group, "geojson_click", extraInfo), this);
       layer.on("mouseover", mouseHandler(self.id, layerId, group, "geojson_mouseover", extraInfo), this);
       layer.on("mouseout", mouseHandler(self.id, layerId, group, "geojson_mouseout", extraInfo), this);
