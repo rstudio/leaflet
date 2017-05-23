@@ -112,6 +112,8 @@ colorBin <- function(palette, domain, bins = 7, pretty = TRUE,
   # breaks are specified
   if (missing(domain) && length(bins) > 1) {
     domain = NULL
+  } else if (!(length(domain) == 2 && all(is.finite(domain)))) {
+    stop ("'Domain' must be of length 2 and contain finite values only!")
   }
   autobin = is.null(domain) && length(bins) == 1
   if (!is.null(domain))
