@@ -7,7 +7,7 @@
 \usage{
 addLegend(map, position = c("topright", "bottomright", "bottomleft",
   "topleft"), pal, values, na.label = "NA", bins = 7, colors,
-  opacity = 0.5, labels, labFormat = labelFormat(), title = NULL,
+  opacity = 0.5, labels = NULL, labFormat = labelFormat(), title = NULL,
   className = "info legend", layerId = NULL, group = NULL)
 
 labelFormat(prefix = "", suffix = "", between = " &ndash; ", digits = 3,
@@ -118,20 +118,26 @@ df = local({
 })
 pal = colorNumeric('OrRd', df$z)
 leaflet(df) \%>\%
-  addCircleMarkers(~x, ~y, color = ~pal(z)) \%>\%
-  addLegend(pal = pal, values = ~z)
+  addTiles() \%>\%
+  addCircleMarkers(~x, ~y, color = ~pal(z), group='circles') \%>\%
+  addLegend(pal = pal, values = ~z, group='circles', position='bottomleft') \%>\%
+  addLayersControl(overlayGroups = c('circles'))
 
 # format legend labels
 df = data.frame(x = rnorm(100), y = rexp(100, 2), z = runif(100))
 pal = colorBin('PuOr', df$z, bins = c(0, .1, .4, .9, 1))
 leaflet(df) \%>\%
-  addCircleMarkers(~x, ~y, color = ~pal(z)) \%>\%
-  addLegend(pal = pal, values = ~z)
+  addTiles() \%>\%
+  addCircleMarkers(~x, ~y, color = ~pal(z), group='circles') \%>\%
+  addLegend(pal = pal, values = ~z, group='circles', position='bottomleft') \%>\%
+  addLayersControl(overlayGroups = c('circles'))
 
 leaflet(df) \%>\%
-  addCircleMarkers(~x, ~y, color = ~pal(z)) \%>\%
+  addTiles() \%>\%
+  addCircleMarkers(~x, ~y, color = ~pal(z), group='circles') \%>\%
   addLegend(pal = pal, values = ~z, labFormat = labelFormat(
     prefix = '(', suffix = ')\%', between = ', ',
     transform = function(x) 100 * x
-  ))
+  ),  group='circles', position='bottomleft' ) \%>\%
+  addLayersControl(overlayGroups = c('circles'))
 }

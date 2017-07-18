@@ -93,6 +93,15 @@ var ControlStore = function () {
       this._map.addControl(control);
     }
   }, {
+    key: "get",
+    value: function get(id) {
+      var control = null;
+      if (this._controlsById[id]) {
+        control = this._controlsById[id];
+      }
+      return control;
+    }
+  }, {
     key: "remove",
     value: function remove(id) {
       if (this._controlsById[id]) {
@@ -1753,6 +1762,10 @@ methods.removeControl = function (layerId) {
   this.controls.remove(layerId);
 };
 
+methods.getControl = function (layerId) {
+  this.controls.get(layerId);
+};
+
 methods.clearControls = function () {
   this.controls.clear();
 };
@@ -1876,6 +1889,16 @@ methods.addLegend = function (options) {
           map.controls.remove(options.layerId);
         }
       });
+      map.on("groupadd", function (e) {
+        if (e.name === options.group) {
+          map.controls.add(legend, options.layerId);
+        }
+      });
+      map.on("groupremove", function (e) {
+        if (e.name === options.group) {
+          map.controls.remove(options.layerId);
+        }
+      });
     })();
   }
 
@@ -1968,9 +1991,15 @@ function setupShowHideGroupsOnZoom(map) {
   }
   map.leafletr._hasInitializedShowHideGroups = true;
 
-  function setVisibility(layer, visible) {
+  function setVisibility(layer, visible, group) {
     if (visible !== map.hasLayer(layer)) {
-      if (visible) map.addLayer(layer);else map.removeLayer(layer);
+      if (visible) {
+        map.addLayer(layer);
+        map.fire("groupadd", { "name": group, "layer": layer });
+      } else {
+        map.removeLayer(layer);
+        map.fire("groupremove", { "name": group, "layer": layer });
+      }
     }
   }
 
@@ -1981,7 +2010,7 @@ function setupShowHideGroupsOnZoom(map) {
     map.layerManager.getAllGroupNames().forEach(function (group) {
       var layer = map.layerManager.getLayerGroup(group, false);
       if (layer && typeof layer.zoomLevels !== "undefined") {
-        setVisibility(layer, layer.zoomLevels === true || layer.zoomLevels.indexOf(zoom) >= 0);
+        setVisibility(layer, layer.zoomLevels === true || layer.zoomLevels.indexOf(zoom) >= 0, group);
       }
     });
   }
@@ -2371,6 +2400,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 // pixel of the original image has some contribution to the downscaled image)
 // as opposed to a single-step downscaling which will discard a lot of data
 // (and with sparse images at small scales can give very surprising results).
+
 var Mipmapper = function () {
   function Mipmapper(img) {
     _classCallCheck(this, Mipmapper);

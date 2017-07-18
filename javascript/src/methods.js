@@ -676,6 +676,10 @@ methods.removeControl = function(layerId) {
   this.controls.remove(layerId);
 };
 
+methods.getControl = function(layerId) {
+  this.controls.get(layerId);
+};
+
 methods.clearControls = function() {
   this.controls.clear();
 };
@@ -811,6 +815,16 @@ methods.addLegend = function(options) {
         map.controls.remove(options.layerId);
       }
     });
+    map.on("groupadd", function(e){
+      if(e.name === options.group) {
+        map.controls.add(legend, options.layerId);
+      }
+    });
+    map.on("groupremove", function(e){
+      if(e.name === options.group) {
+        map.controls.remove(options.layerId);
+      }
+    });
   }
 
   this.controls.add(legend, options.layerId);
@@ -897,12 +911,15 @@ function setupShowHideGroupsOnZoom(map) {
   }
   map.leafletr._hasInitializedShowHideGroups = true;
 
-  function setVisibility(layer, visible) {
+  function setVisibility(layer, visible, group) {
     if (visible !== map.hasLayer(layer)) {
-      if (visible)
+      if (visible) {
         map.addLayer(layer);
-      else
+        map.fire("groupadd", {"name": group, "layer": layer});
+      } else {
         map.removeLayer(layer);
+        map.fire("groupremove", {"name": group, "layer": layer});
+      }
     }
   }
 
@@ -915,7 +932,8 @@ function setupShowHideGroupsOnZoom(map) {
       let layer = map.layerManager.getLayerGroup(group, false);
       if (layer && typeof(layer.zoomLevels) !== "undefined") {
         setVisibility(layer,
-          layer.zoomLevels === true || layer.zoomLevels.indexOf(zoom) >= 0);
+          layer.zoomLevels === true || layer.zoomLevels.indexOf(zoom) >= 0,
+          group);
       }
     });
   }

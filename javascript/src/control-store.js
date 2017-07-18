@@ -18,6 +18,14 @@ export default class ControlStore {
     this._map.addControl(control);
   }
 
+  get(id) {
+    let control = null;
+    if (this._controlsById[id]) {
+      control = this._controlsById[id];
+    }
+    return control;
+  }
+
   remove(id) {
     if (this._controlsById[id]) {
       let control = this._controlsById[id];
