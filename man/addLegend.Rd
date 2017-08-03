@@ -141,3 +141,4 @@ leaflet(df) \%>\%
   ),  group='circles', position='bottomleft' ) \%>\%
   addLayersControl(overlayGroups = c('circles'))
 }
+

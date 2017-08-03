@@ -10,7 +10,7 @@ safeLabel(label, data)
 \item{label}{A vector or list of plain characters or HTML (marked by
 \code{\link[htmltools]{HTML}}), or a formula that resolves to such a value.}
 
-\item{data}{A data frame over which the formua is evaluated.}
+\item{data}{A data frame over which the formula is evaluated.}
 }
 \description{
 This is a helper function used internally to HTML-escape user-provided
