@@ -175,7 +175,7 @@ makeAwesomeIcon <- function(
 #'   = 'fa'})
 #' @param extraClasses Additional css classes to include on the icon.
 #' @return A list of awesome-icon data that can be passed to the \code{icon}
-#' @param squareMarker Whether to use a sqare marker.
+#' @param squareMarker Whether to use a square marker.
 #' @param iconRotate Rotate the icon by a given angle.
 #' @param fontFamily Used when \code{text} option is specified.
 #' @param text Use this text string instead of an icon.

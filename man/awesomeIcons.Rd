@@ -29,7 +29,7 @@ color (hex, rgba, etc.) or a named web color.}
 
 \item{extraClasses}{Additional css classes to include on the icon.}
 
-\item{squareMarker}{Whether to use a sqare marker.}
+\item{squareMarker}{Whether to use a square marker.}
 
 \item{iconRotate}{Rotate the icon by a given angle.}
 
