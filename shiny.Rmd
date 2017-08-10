@@ -202,6 +202,8 @@ The map itself also has a few input values/events.
 
 <code>input$*MAPID*\_zoom</code> is an integer that indicates the [zoom level](http://wiki.openstreetmap.org/wiki/Zoom_levels).
 
+<code>input$*MAPID*\_center</code> provides the latitude/longtitude of the center of the currently visible map area; the value is a `list()` that has named elements `lat` and `lng`.
+
 ### Putting it all together
 
 For an extensive example of Shiny and Leaflet working together, take a look at the [SuperZip Explorer](http://shiny.rstudio.com/gallery/superzip-example.html) example app (note the "Get Code" button at the top of the page). (Hint: Try clicking on the bubbles, and also notice that the plots in the sidebar change as you pan and zoom around the map.)
