@@ -306,7 +306,7 @@ tileOptions <- function(
   zoomOffset = 0,
   zoomReverse = FALSE,
   opacity = 1.0,
-  zIndex = NULL,
+  zIndex = 1,
   unloadInvisibleTiles = NULL,
   updateWhenIdle = NULL,
   detectRetina = FALSE,
