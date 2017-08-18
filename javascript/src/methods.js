@@ -993,11 +993,15 @@ methods.addRasterImage = function(uri, bounds, opacity, attribution, layerId, gr
   let imgDataCallbacks = [];
 
   // Consumers of imgData, w, and h can call this to be notified when data
-  // is available. Unlike most async/promise-based APIs, the callback will
-  // be invoked immediately/synchronously if the data is already available.
+  // is available.
   function getImageData(callback) {
     if (imgData != null) {
-      callback(imgData, w, h, imgDataMipMapper);
+      // Must not invoke the callback immediately; it's too confusing and
+      // fragile to have a function invoke the callback *either* immediately
+      // or in the future. Better to be consistent here.
+      setTimeout(() => {
+        callback(imgData, w, h, imgDataMipMapper);
+      }, 0);
     } else {
       imgDataCallbacks.push(callback);
     }
@@ -1041,9 +1045,12 @@ methods.addRasterImage = function(uri, bounds, opacity, attribution, layerId, gr
     async: true
   });
 
+  // NOTE: The done() function MUST NOT be invoked until after the current
+  // tick; done() looks in Leaflet's tile cache for the current tile, and
+  // since it's still being constructed, it won't be found.
   canvasTiles.createTile = function(tilePoint, done) {
     let zoom = tilePoint.z;
-    let canvas = L.DomUtil.create("canvas", "leaflet-tile");
+    let canvas = L.DomUtil.create("canvas");
     let error;
 
     // setup tile width and height according to the options
@@ -1179,6 +1186,8 @@ methods.addRasterImage = function(uri, bounds, opacity, attribution, layerId, gr
             }
           }
         }
+      } catch(e) {
+        error = e;
       } finally {
         done(error, canvas);
       }
