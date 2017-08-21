@@ -47,4 +47,3 @@ An icon can be represented as a list of the form \code{list(icon, library,
 icon data. Shorter argument values will be re-cycled. \code{NULL} values for
 these arguments will be ignored.
 }
-

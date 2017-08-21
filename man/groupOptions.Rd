@@ -36,4 +36,3 @@ leaflet() \%>\%
   groupOptions("detail", zoomLevels = 7:18)
 
 }
-

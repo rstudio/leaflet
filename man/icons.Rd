@@ -114,4 +114,3 @@ leaflet() \%>\% addMarkers(
 
 unlink(iconFiles)  # clean up the tmp png files that have been embedded
 }
-

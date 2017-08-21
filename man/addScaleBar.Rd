@@ -2,8 +2,8 @@
 % Please edit documentation in R/scalebar.R
 \name{addScaleBar}
 \alias{addScaleBar}
-\alias{removeScaleBar}
 \alias{scaleBarOptions}
+\alias{removeScaleBar}
 \title{Add or remove a scale bar}
 \usage{
 addScaleBar(map, position = c("topright", "bottomright", "bottomleft",
@@ -48,4 +48,3 @@ leaflet() \%>\%
 }
 
 }
-

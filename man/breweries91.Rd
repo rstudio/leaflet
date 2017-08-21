@@ -14,4 +14,3 @@ subset of a larger database that was compiled by students at the
 University of Marburg for a seminar called
 "The Geography of Beer, sustainability in the food industry"
 }
-

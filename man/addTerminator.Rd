@@ -34,4 +34,3 @@ leaf <- leaflet() \%>\%
   addTerminator()
 
 }
-
