@@ -1,11 +1,17 @@
 leaflet 1.1.1
 --------------------------------------------------------------------------------
 
-* Add `groupOptions` parameter, currently the only option is letting you specify
+* Fix a bug where the default `addTiles()` would not work with .html files
+  served directly from the filesystem.
+
+* Add `groupOptions` function. Currently the only option is letting you specify
   zoom levels at which a group should be visible.
 
 * Fix bug with accessing columns in formulas when the data source is a Crosstalk
   SharedData object wrapping a spatial data frame or sf object.
+
+* Fix strange wrapping behavior for legend, especially common for Chrome when
+  browser zoom level is not 100%.
 
 * Fix incorrect opacity on NA entry in legend. (PR #425)
 
