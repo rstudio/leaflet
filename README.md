@@ -1,6 +1,6 @@
 # An R Interface to Leaflet Maps
 
-[![Build Status](https://travis-ci.org/rstudio/leaflet.svg)](https://travis-ci.org/rstudio/leaflet)
+[![Build Status](https://travis-ci.org/rstudio/leaflet.svg?branch=master)](https://travis-ci.org/rstudio/leaflet)
 
 [Leaflet](http://leafletjs.com) is an open-source JavaScript library for
 interactive maps. This R package makes it easy to create Leaflet maps from R.
