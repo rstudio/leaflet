@@ -93,6 +93,15 @@ var ControlStore = function () {
       this._map.addControl(control);
     }
   }, {
+    key: "get",
+    value: function get(id) {
+      var control = null;
+      if (this._controlsById[id]) {
+        control = this._controlsById[id];
+      }
+      return control;
+    }
+  }, {
     key: "remove",
     value: function remove(id) {
       if (this._controlsById[id]) {
@@ -164,7 +173,7 @@ function getCRS(crsOptions) {
         crsOptions.options.bounds = _leaflet2.default.bounds(crsOptions.options.bounds);
       }
       if (crsOptions.options && crsOptions.options.transformation) {
-        crsOptions.options.transformation = _leaflet2.default.Transformation(crsOptions.options.transformation[0], crsOptions.options.transformation[1], crsOptions.options.transformation[2], crsOptions.options.transformation[3]);
+        crsOptions.options.transformation = new _leaflet2.default.Transformation(crsOptions.options.transformation[0], crsOptions.options.transformation[1], crsOptions.options.transformation[2], crsOptions.options.transformation[3]);
       }
       crs = new _proj4leaflet2.default.CRS(crsOptions.code, crsOptions.proj4def, crsOptions.options);
       break;
@@ -1756,11 +1765,17 @@ methods.removeControl = function (layerId) {
   this.controls.remove(layerId);
 };
 
+methods.getControl = function (layerId) {
+  this.controls.get(layerId);
+};
+
 methods.clearControls = function () {
   this.controls.clear();
 };
 
 methods.addLegend = function (options) {
+  var _this5 = this;
+
   var legend = _leaflet2.default.control({ position: options.position });
   var gradSpan = void 0;
 
@@ -1842,7 +1857,7 @@ methods.addLegend = function (options) {
         });
 
         if (options.na_color) {
-          (0, _jquery2.default)(div).append("<div><i style=\"background:" + options.na_color + "\"></i> " + options.na_label + "</div>");
+          (0, _jquery2.default)(div).append("<div><i style=\"background:" + options.na_color + ";opacity:" + options.opacity + ";\"></i> " + options.na_label + "</div>");
         }
       })();
     } else {
@@ -1851,7 +1866,7 @@ methods.addLegend = function (options) {
         labels.push(options.na_label);
       }
       for (var i = 0; i < colors.length; i++) {
-        legendHTML += "<i style=\"background:" + colors[i] + ";opacity:" + options.opacity + "\"></i> " + labels[i] + "<br/>";
+        legendHTML += "<i style=\"background:" + colors[i] + ";opacity:" + options.opacity + "\"></i> " + labels[i] + "<br clear='both'/>";
       }
       div.innerHTML = legendHTML;
     }
@@ -1859,11 +1874,42 @@ methods.addLegend = function (options) {
     return div;
   };
 
+  if (options.group) {
+    (function () {
+      // Auto generate a layerID if not provided
+      if (!options.layerId) {
+        options.layerId = _leaflet2.default.Util.stamp(legend);
+      }
+
+      var map = _this5;
+      map.on("overlayadd", function (e) {
+        if (e.name === options.group) {
+          map.controls.add(legend, options.layerId);
+        }
+      });
+      map.on("overlayremove", function (e) {
+        if (e.name === options.group) {
+          map.controls.remove(options.layerId);
+        }
+      });
+      map.on("groupadd", function (e) {
+        if (e.name === options.group) {
+          map.controls.add(legend, options.layerId);
+        }
+      });
+      map.on("groupremove", function (e) {
+        if (e.name === options.group) {
+          map.controls.remove(options.layerId);
+        }
+      });
+    })();
+  }
+
   this.controls.add(legend, options.layerId);
 };
 
 methods.addLayersControl = function (baseGroups, overlayGroups, options) {
-  var _this5 = this;
+  var _this6 = this;
 
   // Only allow one layers control at a time
   methods.removeLayersControl.call(this);
@@ -1871,23 +1917,23 @@ methods.addLayersControl = function (baseGroups, overlayGroups, options) {
   var firstLayer = true;
   var base = {};
   _jquery2.default.each((0, _util.asArray)(baseGroups), function (i, g) {
-    var layer = _this5.layerManager.getLayerGroup(g, true);
+    var layer = _this6.layerManager.getLayerGroup(g, true);
     if (layer) {
       base[g] = layer;
 
       // Check if >1 base layers are visible; if so, hide all but the first one
-      if (_this5.hasLayer(layer)) {
+      if (_this6.hasLayer(layer)) {
         if (firstLayer) {
           firstLayer = false;
         } else {
-          _this5.removeLayer(layer);
+          _this6.removeLayer(layer);
         }
       }
     }
   });
   var overlay = {};
   _jquery2.default.each((0, _util.asArray)(overlayGroups), function (i, g) {
-    var layer = _this5.layerManager.getLayerGroup(g, true);
+    var layer = _this6.layerManager.getLayerGroup(g, true);
     if (layer) {
       overlay[g] = layer;
     }
@@ -1921,23 +1967,23 @@ methods.removeScaleBar = function () {
 };
 
 methods.hideGroup = function (group) {
-  var _this6 = this;
-
-  _jquery2.default.each((0, _util.asArray)(group), function (i, g) {
-    var layer = _this6.layerManager.getLayerGroup(g, true);
-    if (layer) {
-      _this6.removeLayer(layer);
-    }
-  });
-};
-
-methods.showGroup = function (group) {
   var _this7 = this;
 
   _jquery2.default.each((0, _util.asArray)(group), function (i, g) {
     var layer = _this7.layerManager.getLayerGroup(g, true);
     if (layer) {
-      _this7.addLayer(layer);
+      _this7.removeLayer(layer);
+    }
+  });
+};
+
+methods.showGroup = function (group) {
+  var _this8 = this;
+
+  _jquery2.default.each((0, _util.asArray)(group), function (i, g) {
+    var layer = _this8.layerManager.getLayerGroup(g, true);
+    if (layer) {
+      _this8.addLayer(layer);
     }
   });
 };
@@ -1948,9 +1994,15 @@ function setupShowHideGroupsOnZoom(map) {
   }
   map.leafletr._hasInitializedShowHideGroups = true;
 
-  function setVisibility(layer, visible) {
+  function setVisibility(layer, visible, group) {
     if (visible !== map.hasLayer(layer)) {
-      if (visible) map.addLayer(layer);else map.removeLayer(layer);
+      if (visible) {
+        map.addLayer(layer);
+        map.fire("groupadd", { "name": group, "layer": layer });
+      } else {
+        map.removeLayer(layer);
+        map.fire("groupremove", { "name": group, "layer": layer });
+      }
     }
   }
 
@@ -1961,7 +2013,7 @@ function setupShowHideGroupsOnZoom(map) {
     map.layerManager.getAllGroupNames().forEach(function (group) {
       var layer = map.layerManager.getLayerGroup(group, false);
       if (layer && typeof layer.zoomLevels !== "undefined") {
-        setVisibility(layer, layer.zoomLevels === true || layer.zoomLevels.indexOf(zoom) >= 0);
+        setVisibility(layer, layer.zoomLevels === true || layer.zoomLevels.indexOf(zoom) >= 0, group);
       }
     });
   }
@@ -1971,10 +2023,10 @@ function setupShowHideGroupsOnZoom(map) {
 }
 
 methods.setGroupOptions = function (group, options) {
-  var _this8 = this;
+  var _this9 = this;
 
   _jquery2.default.each((0, _util.asArray)(group), function (i, g) {
-    var layer = _this8.layerManager.getLayerGroup(g, true);
+    var layer = _this9.layerManager.getLayerGroup(g, true);
     // This slightly tortured check is because 0 is a valid value for zoomLevels
     if (typeof options.zoomLevels !== "undefined" && options.zoomLevels !== null) {
       layer.zoomLevels = (0, _util.asArray)(options.zoomLevels);
@@ -2126,7 +2178,7 @@ methods.addRasterImage = function (uri, bounds, opacity, attribution, layerId, g
 
     getImageData(function (imgData, w, h, mipmapper) {
       try {
-        var _ret7 = function () {
+        var _ret8 = function () {
           // The Context2D we'll being drawing onto. It's always 256x256.
           var ctx = canvas.getContext("2d");
 
@@ -2250,7 +2302,7 @@ methods.addRasterImage = function (uri, bounds, opacity, attribution, layerId, g
           }
         }();
 
-        if ((typeof _ret7 === "undefined" ? "undefined" : _typeof(_ret7)) === "object") return _ret7.v;
+        if ((typeof _ret8 === "undefined" ? "undefined" : _typeof(_ret8)) === "object") return _ret8.v;
       } catch (e) {
         error = e;
       } finally {
@@ -2287,7 +2339,7 @@ methods.removeMeasure = function () {
 };
 
 methods.addSelect = function (ctGroup) {
-  var _this9 = this;
+  var _this10 = this;
 
   methods.removeSelect.call(this);
 
@@ -2298,32 +2350,32 @@ methods.addSelect = function (ctGroup) {
       title: "Make a selection",
       onClick: function onClick(btn, map) {
         btn.state("select-active");
-        _this9._locationFilter = new _leaflet2.default.LocationFilter2();
+        _this10._locationFilter = new _leaflet2.default.LocationFilter2();
 
         if (ctGroup) {
           (function () {
             var selectionHandle = new global.crosstalk.SelectionHandle(ctGroup);
             selectionHandle.on("change", function (e) {
               if (e.sender !== selectionHandle) {
-                if (_this9._locationFilter) {
-                  _this9._locationFilter.disable();
+                if (_this10._locationFilter) {
+                  _this10._locationFilter.disable();
                   btn.state("select-inactive");
                 }
               }
             });
             var handler = function handler(e) {
-              _this9.layerManager.brush(_this9._locationFilter.getBounds(), { sender: selectionHandle });
+              _this10.layerManager.brush(_this10._locationFilter.getBounds(), { sender: selectionHandle });
             };
-            _this9._locationFilter.on("enabled", handler);
-            _this9._locationFilter.on("change", handler);
-            _this9._locationFilter.on("disabled", function () {
+            _this10._locationFilter.on("enabled", handler);
+            _this10._locationFilter.on("change", handler);
+            _this10._locationFilter.on("disabled", function () {
               selectionHandle.close();
-              _this9._locationFilter = null;
+              _this10._locationFilter = null;
             });
           })();
         }
 
-        _this9._locationFilter.addTo(map);
+        _this10._locationFilter.addTo(map);
       }
     }, {
       stateName: "select-active",
@@ -2331,9 +2383,9 @@ methods.addSelect = function (ctGroup) {
       title: "Dismiss selection",
       onClick: function onClick(btn, map) {
         btn.state("select-inactive");
-        _this9._locationFilter.disable();
+        _this10._locationFilter.disable();
         // If explicitly dismissed, clear the crosstalk selections
-        _this9.layerManager.unbrush();
+        _this10.layerManager.unbrush();
       }
     }]
   });

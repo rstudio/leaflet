@@ -26,7 +26,7 @@ leafletMeasureDependencies <- function() {
 #' @param completedColor base color to use for features generated
 #'           from a completed measurement.
 #'           Value should be a color represented as a hexadecimal string.
-#' @param popupOptions \code{list} of ptions applied to the popup
+#' @param popupOptions \code{list} of options applied to the popup
 #'           of the resulting measure feature.
 #'           Properties may be any \href{http://leafletjs.com/reference.html#popup-options}{standard Leaflet popup options}.
 #' @param captureZIndex Z-index of the marker used to capture measure clicks.

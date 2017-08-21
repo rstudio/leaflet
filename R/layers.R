@@ -478,7 +478,7 @@ clearPopups <- function(map) {
 #'
 #' @param label A vector or list of plain characters or HTML (marked by
 #'   \code{\link[htmltools]{HTML}}), or a formula that resolves to such a value.
-#' @param data A data frame over which the formua is evaluated.
+#' @param data A data frame over which the formula is evaluated.
 #'
 #' @keywords internal
 #' @export
@@ -734,7 +734,7 @@ makeIcon <- function(iconUrl = NULL, iconRetinaUrl = NULL, iconWidth = NULL, ico
 #' @param iconWidth,iconHeight size of the icon image in pixels
 #' @param iconAnchorX,iconAnchorY the coordinates of the "tip" of the icon
 #'   (relative to its top left corner, i.e. the top left corner means
-#'   \code{iconAnchorX = 0} and \code{iconAnchorY = 0)}, and the icon will be
+#'   \code{iconAnchorX = 0} and \code{iconAnchorY = 0}), and the icon will be
 #'   aligned so that this point is at the marker's geographical location
 #' @param shadowUrl the URL or file path to the icon shadow image
 #' @param shadowRetinaUrl the URL or file path to the retina sized version of
