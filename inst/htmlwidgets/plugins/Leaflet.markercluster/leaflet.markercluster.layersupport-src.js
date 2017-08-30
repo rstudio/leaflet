@@ -1,4 +1,20 @@
 /**
+ * Leaflet.MarkerCluster.LayerSupport 1.0.5+87f3848
+ * Sub-plugin for Leaflet.markercluster plugin (MCG in short); brings compatibility with L.Control.Layers and other Leaflet plugins.
+ * (c) 2015-2017 Boris Seang
+ * License MIT
+ */
+(function (root, factory) {
+    if (typeof define === "function" && define.amd) {
+        define(["leaflet"], factory);
+    } else if (typeof module === "object" && module.exports) {
+        factory(require("leaflet"));
+    } else {
+        factory(root.L);
+    }
+}(this, function (L, undefined) {
+
+/**
  * Extends the L.MarkerClusterGroup class by mainly overriding methods for
  * addition/removal of layers, so that they can also be directly added/removed
  * from the map later on while still clustering in this group.
@@ -53,13 +69,13 @@ L.MarkerClusterGroup.LayerSupport = L.MarkerClusterGroup.extend({
 	 */
 	checkOut: function (layers) {
 		var layersArray = this._toArray(layers),
-			separated = this._separateSingleFromGroupLayers(layersArray, {
-				groups: [],
-				singles: []
-			}),
-			groups = separated.groups,
-			singles = separated.singles,
-			i, layer;
+		    separated = this._separateSingleFromGroupLayers(layersArray, {
+		        groups: [],
+		        singles: []
+		    }),
+		    groups = separated.groups,
+		    singles = separated.singles,
+		    i, layer;
 
 		// Un-stamp single layers.
 		for (i = 0; i < singles.length; i++) {
@@ -91,9 +107,9 @@ L.MarkerClusterGroup.LayerSupport = L.MarkerClusterGroup.extend({
 	 */
 	addLayers: function (layers) {
 		var layersArray = this._toArray(layers),
-			separated = this._checkInGetSeparated(layersArray),
-			groups = separated.groups,
-			i, group, id;
+		    separated = this._checkInGetSeparated(layersArray),
+		    groups = separated.groups,
+		    i, group, id;
 
 		// Batch add all single layers.
 		this._originalAddLayers(separated.singles);
@@ -125,14 +141,14 @@ L.MarkerClusterGroup.LayerSupport = L.MarkerClusterGroup.extend({
 	 */
 	removeLayers: function (layers) {
 		var layersArray = this._toArray(layers),
-			separated = this._separateSingleFromGroupLayers(layersArray, {
-				groups: [],
-				singles: []
-			}),
-			groups = separated.groups,
-			singles = separated.singles,
-			i = 0,
-			group, id;
+		    separated = this._separateSingleFromGroupLayers(layersArray, {
+		        groups: [],
+		        singles: []
+		    }),
+		    groups = separated.groups,
+		    singles = separated.singles,
+		    i = 0,
+		    group, id;
 
 		// Batch remove single layers from MCG.
 		this._originalRemoveLayers(singles);
@@ -172,7 +188,7 @@ L.MarkerClusterGroup.LayerSupport = L.MarkerClusterGroup.extend({
 		// (if it was never added to map before). Therefore we need to
 		// remove all checked in layers from map!
 		var toBeReAdded = this._removePreAddedLayers(map),
-			id, group, i;
+		    id, group, i;
 
 		// Normal MCG onAdd.
 		this._originalOnAdd.call(this, map);
@@ -209,7 +225,7 @@ L.MarkerClusterGroup.LayerSupport = L.MarkerClusterGroup.extend({
 
 	_bufferSingleAddRemove: function (layer, operationType) {
 		var duration = this.options.singleAddRemoveBufferDuration,
-			fn;
+		    fn;
 
 		if (duration > 0) {
 			this._singleAddRemoveBuffer.push({
@@ -230,10 +246,10 @@ L.MarkerClusterGroup.LayerSupport = L.MarkerClusterGroup.extend({
 		// For now, simply cut the processes at each operation change
 		// (addLayers, removeLayers).
 		var singleAddRemoveBuffer = this._singleAddRemoveBuffer,
-			i = 0,
-			layersBuffer = [],
-			currentOperation,
-			currentOperationType;
+		    i = 0,
+		    layersBuffer = [],
+		    currentOperation,
+		    currentOperationType;
 
 		for (; i < singleAddRemoveBuffer.length; i++) {
 			currentOperation = singleAddRemoveBuffer[i];
@@ -244,6 +260,7 @@ L.MarkerClusterGroup.LayerSupport = L.MarkerClusterGroup.extend({
 				layersBuffer.push(currentOperation.layer);
 			} else {
 				this[currentOperationType](layersBuffer);
+				currentOperationType = currentOperation.type;
 				layersBuffer = [currentOperation.layer];
 			}
 		}
@@ -255,12 +272,12 @@ L.MarkerClusterGroup.LayerSupport = L.MarkerClusterGroup.extend({
 
 	_checkInGetSeparated: function (layersArray) {
 		var separated = this._separateSingleFromGroupLayers(layersArray, {
-				groups: [],
-				singles: []
-			}),
-			groups = separated.groups,
-			singles = separated.singles,
-			i, layer;
+		        groups: [],
+		        singles: []
+		    }),
+		    groups = separated.groups,
+		    singles = separated.singles,
+		    i, layer;
 
 		// Recruit Layer Groups.
 		// If they do not already belong to this group, they will be
@@ -286,9 +303,9 @@ L.MarkerClusterGroup.LayerSupport = L.MarkerClusterGroup.extend({
 
 	_separateSingleFromGroupLayers: function (inputLayers, output) {
 		var groups = output.groups,
-			singles = output.singles,
-			isArray = L.Util.isArray,
-			layer;
+		    singles = output.singles,
+		    isArray = L.Util.isArray,
+		    layer;
 
 		for (var i = 0; i < inputLayers.length; i++) {
 			layer = inputLayers[i];
@@ -385,8 +402,8 @@ L.MarkerClusterGroup.LayerSupport = L.MarkerClusterGroup.extend({
 	// In case checked in layers have been added to map whereas map is not redirected.
 	_removePreAddedLayers: function (map) {
 		var layers = this._layers,
-			toBeReAdded = [],
-			layer;
+		    toBeReAdded = [],
+		    layer;
 
 		for (var id in layers) {
 			layer = layers[id];
@@ -503,6 +520,16 @@ var _proxyLayerGroup = {
 		delete this._layers[id];
 
 		return this;
+	},
+
+	// Make sure it uses addLayers when added to map.
+	onAdd: function () {
+		this._proxyMcgLayerSupportGroup.addLayers(this.getLayers());
+	},
+
+	// Make sure it uses removeLayers when removed from map.
+	onRemove: function () {
+		this._proxyMcgLayerSupportGroup.removeLayers(this.getLayers());
 	}
 
 };
@@ -539,3 +566,9 @@ var _layerSwitchMap = {
 L.markerClusterGroup.layerSupport = function (options) {
 	return new L.MarkerClusterGroup.LayerSupport(options);
 };
+
+
+
+}));
+
+//# sourceMappingURL=leaflet.markercluster.layersupport-src.js.map
