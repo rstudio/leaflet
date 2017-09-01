@@ -18,4 +18,3 @@ labels. It prevents strings from unintentionally being treated as HTML when
 they are intended to be plaintext.
 }
 \keyword{internal}
-

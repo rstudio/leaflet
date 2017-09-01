@@ -36,4 +36,3 @@ leaf <- leaflet() \%>\%
   addGraticule()
 
 }
-

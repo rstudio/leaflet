@@ -16,4 +16,3 @@ expandLimits(map, lat, lng)
 \description{
 Notifies the map of new latitude/longitude of items of interest on the map
 }
-
