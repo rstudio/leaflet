@@ -9,12 +9,16 @@ metaData.sf <- function(obj) {
 
 #' @export
 pointData.sf <- function(obj) {
-  geometry <- obj[[attr(obj, "sf_column")]]
-  pointData(geometry)
+  pointData(sf::st_geometry(obj))
 }
 
 #' @export
 pointData.sfc_POINT <- function(obj) {
+  if (length(obj) == 0) {
+    # If a sfc_GEOMETRY is empty, just return nothing.
+    return(data.frame(lng = numeric(0), lat = numeric(0)))
+  }
+
   check_crs(obj)
 
   structure(
@@ -42,6 +46,21 @@ pointData.POINT <- function(obj) {
     sf_coords(obj),
     bbox = bbox
   )
+}
+
+#' @export
+pointData.sfc_GEOMETRY <- function(obj) {
+  if (length(obj) == 0) {
+    # If a sfc_GEOMETRY is empty, just return nothing.
+    data.frame(lng = numeric(0), lat = numeric(0))
+  } else if (all(vapply(obj, inherits, logical(1), "POINT"))) {
+    # If it's all POINT objects, then treat it as sfc_POINT.
+    pointData.sfc_POINT(obj)
+  } else {
+    # Otherwise, we don't know what to do. Let pointData.default throw an
+    # error.
+    NextMethod("pointData")
+  }
 }
 
 # polygonData -------------------------------------------------------------

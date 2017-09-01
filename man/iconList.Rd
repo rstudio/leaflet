@@ -21,4 +21,3 @@ iconSet = iconList(
 
 iconSet[c('red', 'green', 'red')]
 }
-

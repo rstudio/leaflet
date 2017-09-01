@@ -40,4 +40,3 @@ argument of \code{\link{addAwesomeMarkers}()}.}
 \description{
 Make Awesome Icon
 }
-

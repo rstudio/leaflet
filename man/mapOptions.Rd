@@ -26,4 +26,3 @@ leaflet() \%>\%
   addPopups(174.7690922, -36.8523071, 'R was born here!') \%>\%
   mapOptions(zoomToLimits = "first")
 }
-

@@ -12,4 +12,3 @@ getMapData(map)
 \description{
 returns the map's data
 }
-
