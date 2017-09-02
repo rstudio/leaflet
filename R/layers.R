@@ -1121,8 +1121,11 @@ addPolygons <- function(
     dashArray = dashArray, smoothFactor = smoothFactor, noClip = noClip
   ))
   pgons = derivePolygons(data, lng, lat, missing(lng), missing(lat), "addPolygons")
-  invokeMethod(map, data, 'addPolygons', pgons, layerId, group, options, popup, popupOptions, safeLabel(label, data), labelOptions, highlightOptions) %>%
-    expandLimitsBbox(pgons)
+  invokeMethod(
+    map, data, 'addPolygons', pgons, layerId, group, options, popup,
+    popupOptions, safeLabel(label, data), labelOptions, highlightOptions,
+    getCrosstalkOptions(data)
+  ) %>% expandLimitsBbox(pgons)
 }
 
 #' @rdname remove
