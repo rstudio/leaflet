@@ -209,6 +209,10 @@ epsg3857 <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y
 #'   the caller's responsibility to ensure that \code{x} is already projected,
 #'   and that \code{extent(x)} is expressed in WGS84 latitude/longitude
 #'   coordinates
+#' @param method the method used for computing values of the new, projected raster image.
+#'   \code{"bilinear"} (the default) is appropriate for continuous data,
+#'   \code{"ngb"} - nearest neighbor - is appropriate for categorical data.
+#'   Ignored if \code{project = FALSE}. See \code{\link{projectRaster}} for details.
 #' @param maxBytes the maximum number of bytes to allow for the projected image
 #'   (before base64 encoding); defaults to 4MB.
 #'
@@ -231,12 +235,14 @@ addRasterImage <- function(
   layerId = NULL,
   group = NULL,
   project = TRUE,
+  method = c("bilinear", "ngb"),
   maxBytes = 4*1024*1024
 ) {
   stopifnot(inherits(x, "RasterLayer"))
 
   if (project) {
-    projected <- projectRasterForLeaflet(x)
+    method <- match.arg(method, c("bilinear", "ngb"))
+    projected <- projectRasterForLeaflet(x, method)
   } else {
     projected <- x
   }
@@ -266,8 +272,12 @@ addRasterImage <- function(
 
 #' @rdname addRasterImage
 #' @export
-projectRasterForLeaflet <- function(x) {
-  raster::projectRaster(x, raster::projectExtent(x, crs = sp::CRS(epsg3857)))
+projectRasterForLeaflet <- function(x, method) {
+  raster::projectRaster(
+    x,
+    raster::projectExtent(x, crs = sp::CRS(epsg3857)),
+    method = method
+  )
 }
 
 #' @rdname remove

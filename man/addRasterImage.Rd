@@ -7,9 +7,9 @@
 \usage{
 addRasterImage(map, x, colors = "Spectral", opacity = 1,
   attribution = NULL, layerId = NULL, group = NULL, project = TRUE,
-  maxBytes = 4 * 1024 * 1024)
+  method = c("bilinear", "ngb"), maxBytes = 4 * 1024 * 1024)
 
-projectRasterForLeaflet(x)
+projectRasterForLeaflet(x, method)
 }
 \arguments{
 \item{map}{a map widget object}
@@ -34,6 +34,11 @@ projection expected by Leaflet (\code{EPSG:3857}); if \code{FALSE}, it's
 the caller's responsibility to ensure that \code{x} is already projected,
 and that \code{extent(x)} is expressed in WGS84 latitude/longitude
 coordinates}
+
+\item{method}{the method used for computing values of the new, projected raster image.
+\code{"bilinear"} (the default) is appropriate for continuous data,
+\code{"ngb"} - nearest neighbor - is appropriate for categorical data.
+Ignored if \code{project = FALSE}. See \code{\link{projectRaster}} for details.}
 
 \item{maxBytes}{the maximum number of bytes to allow for the projected image
 (before base64 encoding); defaults to 4MB.}

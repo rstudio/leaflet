@@ -21,12 +21,15 @@
 #' @param height the height of the map
 #' @param padding the padding of the map
 #' @param options the map options
+#' @param elementId Use an explicit element ID for the widget
+#'   (rather than an automatically generated one).
 #' @return A HTML widget object, on which we can add graphics layers using
 #'   \code{\%>\%} (see examples).
 #' @example inst/examples/leaflet.R
 #' @export
 leaflet <- function(data = NULL, width = NULL, height = NULL,
-                   padding = 0, options = leafletOptions()) {
+                   padding = 0, options = leafletOptions(),
+                   elementId = NULL) {
 
   # Validate the CRS if specified
   if(!is.null(options[['crs']]) &&
@@ -61,7 +64,8 @@ leaflet <- function(data = NULL, width = NULL, height = NULL,
         })
       }
       widget
-    }
+    },
+    elementId = elementId
   )
 
   if (crosstalk::is.SharedData(data)) {
