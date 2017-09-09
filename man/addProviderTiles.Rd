@@ -45,4 +45,3 @@ leaflet() \%>\%
   addProviderTiles("Stamen.TonerHybrid")
 
 }
-

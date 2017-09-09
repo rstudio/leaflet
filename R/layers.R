@@ -6,8 +6,12 @@
 evalFormula <- function(list, data) {
   evalAll <- function(x) {
     if (is.list(x)) {
-      structure(lapply(x, evalAll), class = class(x))
-    } else resolveFormula(x, data)
+      # Use `x[] <-` so attributes on x are preserved
+      x[] <- lapply(x, evalAll)
+      x
+    } else {
+      resolveFormula(x, data)
+    }
   }
   evalAll(list)
 }
@@ -94,6 +98,40 @@ hideGroup <- function(map, group) {
   invokeMethod(map, getMapData(map), 'hideGroup', group)
 }
 
+#' Set options on layer groups
+#'
+#' Change options on layer groups. Currently the only option is to control what
+#' zoom levels a layer group will be displayed at. The \code{zoomLevels} option
+#' is not compatible with \link[=addLayersControl]{layers control}; do not both
+#' assign a group to zoom levels and use it with \code{addLayersControl}.
+#'
+#' @param map the map to modify
+#' @param group character vector of one or more group names to set options on
+#' @param zoomLevels numeric vector of zoom levels at which group(s) should be
+#'   visible, or \code{TRUE} to display at all zoom levels
+#'
+#' @examples
+#' pal <- colorQuantile("YlOrRd", quakes$mag)
+#'
+#' leaflet() %>%
+#'   # Basic markers
+#'   addTiles(group = "basic") %>%
+#'   addMarkers(data = quakes, group = "basic") %>%
+#'   # When zoomed in, we'll show circles at the base of each marker whose
+#'   # radius and color reflect the magnitude
+#'   addProviderTiles(providers$Stamen.TonerLite, group = "detail") %>%
+#'   addCircleMarkers(data = quakes, group = "detail", fillOpacity = 0.5,
+#'     radius = ~mag * 5, color = ~pal(mag), stroke = FALSE) %>%
+#'   # Set the detail group to only appear when zoomed in
+#'   groupOptions("detail", zoomLevels = 7:18)
+#'
+#' @export
+groupOptions <- function(map, group, zoomLevels = NULL) {
+  invokeMethod(map, getMapData(map), 'setGroupOptions', group,
+    list(zoomLevels = zoomLevels)
+  )
+}
+
 #' Graphics elements and layers
 #'
 #' Add graphics elements and layers to the map widget.
@@ -112,7 +150,7 @@ hideGroup <- function(map, group) {
 #' @export
 addTiles <- function(
   map,
-  urlTemplate = '//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+  urlTemplate = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
   attribution = NULL,
   layerId = NULL,
   group = NULL,
@@ -391,7 +429,6 @@ addPopups <- function(
     expandLimits(pts$lat, pts$lng)
 }
 
-#' options for specify popup realted options
 #' @param className a CSS class name set on an element
 #' @param
 #' maxWidth,minWidth,maxHeight,autoPan,keepInView,closeButton,zoomAnimation,closeOnClick
@@ -433,8 +470,17 @@ clearPopups <- function(map) {
   invokeMethod(map, NULL, 'clearPopups')
 }
 
-#' Helper Function to create a safe label
-#' @describeIn map-layers Create a label with sanitized text/html
+#' Sanitize textual labels
+#'
+#' This is a helper function used internally to HTML-escape user-provided
+#' labels. It prevents strings from unintentionally being treated as HTML when
+#' they are intended to be plaintext.
+#'
+#' @param label A vector or list of plain characters or HTML (marked by
+#'   \code{\link[htmltools]{HTML}}), or a formula that resolves to such a value.
+#' @param data A data frame over which the formula is evaluated.
+#'
+#' @keywords internal
 #' @export
 safeLabel <- function(label, data) {
   if (is.null(label)) {
@@ -449,8 +495,6 @@ safeLabel <- function(label, data) {
   label
 }
 
-#' Extra options for marker and polygon labels
-#'
 #' @param
 #' noHide,direction,offset,textsize,textOnly,style
 #' label options; see \url{https://github.com/Leaflet/Leaflet.label#options}
@@ -683,7 +727,7 @@ makeIcon <- function(iconUrl = NULL, iconRetinaUrl = NULL, iconWidth = NULL, ico
 #' @param iconWidth,iconHeight size of the icon image in pixels
 #' @param iconAnchorX,iconAnchorY the coordinates of the "tip" of the icon
 #'   (relative to its top left corner, i.e. the top left corner means
-#'   \code{iconAnchorX = 0} and \code{iconAnchorY = 0)}, and the icon will be
+#'   \code{iconAnchorX = 0} and \code{iconAnchorY = 0}), and the icon will be
 #'   aligned so that this point is at the marker's geographical location
 #' @param shadowUrl the URL or file path to the icon shadow image
 #' @param shadowRetinaUrl the URL or file path to the retina sized version of

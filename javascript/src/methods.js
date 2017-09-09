@@ -278,6 +278,9 @@ clusterOptions, clusterId, label, labelOptions, crosstalkOptions) {
         return new L.AwesomeMarkers.icon();
       }
 
+      if(opts.squareMarker) {
+        opts.className = "awesome-marker awesome-marker-square";
+      }
       return new L.AwesomeMarkers.icon(opts);
     };
   }
@@ -444,9 +447,7 @@ methods.addPolylines = function(polygons, layerId, group, options, popup, popupO
 
     addLayers(this, "shape", df, function(df, i) {
       let shapes = df.get(i, "shapes");
-      for (let j = 0; j < shapes.length; j++) {
-        shapes[j] = HTMLWidgets.dataframeToD3(shapes[j]);
-      }
+      shapes = shapes.map(shape => HTMLWidgets.dataframeToD3(shape[0]));
       if(shapes.length>1) {
         return L.multiPolyline(shapes, df.get(i));
       } else {
@@ -534,10 +535,14 @@ methods.addPolygons = function(polygons, layerId, group, options, popup, popupOp
       .cbind(options);
 
     addLayers(this, "shape", df, function(df, i) {
-      let shapes = df.get(i, "shapes");
-      for (let j = 0; j < shapes.length; j++) {
-        shapes[j] = HTMLWidgets.dataframeToD3(shapes[j]);
-      }
+      // This code used to use L.multiPolygon, but that caused
+      // double-click on a multipolygon to fail to zoom in on the
+      // map. Surprisingly, putting all the rings in a single
+      // polygon seems to still work; complicated multipolygons
+      // are still rendered correctly.
+      let shapes = df.get(i, "shapes")
+        .map(polygon => polygon.map(HTMLWidgets.dataframeToD3))
+        .reduce((acc, val) => acc.concat(val), []);
       return L.polygon(shapes, df.get(i));
     });
   }
@@ -671,6 +676,10 @@ methods.removeControl = function(layerId) {
   this.controls.remove(layerId);
 };
 
+methods.getControl = function(layerId) {
+  this.controls.get(layerId);
+};
+
 methods.clearControls = function() {
   this.controls.clear();
 };
@@ -769,7 +778,8 @@ methods.addLegend = function(options) {
 
       if (options.na_color) {
         $(div).append("<div><i style=\"background:" + options.na_color +
-                      "\"></i> " + options.na_label + "</div>");
+                      ";opacity:" + options.opacity +
+                      ";\"></i> " + options.na_label + "</div>");
       }
     } else {
       if (options.na_color) {
@@ -778,7 +788,7 @@ methods.addLegend = function(options) {
       }
       for (let i = 0; i < colors.length; i++) {
         legendHTML += "<i style=\"background:" + colors[i] + ";opacity:" +
-                      options.opacity + "\"></i> " + labels[i] + "<br/>";
+                      options.opacity + "\"></i> " + labels[i] + "<br clear='both'/>";
       }
       div.innerHTML = legendHTML;
     }
@@ -787,6 +797,35 @@ methods.addLegend = function(options) {
                       options.title + "</strong></div>");
     return div;
   };
+
+  if(options.group) {
+    // Auto generate a layerID if not provided
+    if(!options.layerId) {
+      options.layerId = L.stamp(legend);
+    }
+
+    let map = this;
+    map.on("overlayadd", function(e){
+      if(e.name === options.group) {
+        map.controls.add(legend, options.layerId);
+      }
+    });
+    map.on("overlayremove", function(e){
+      if(e.name === options.group) {
+        map.controls.remove(options.layerId);
+      }
+    });
+    map.on("groupadd", function(e){
+      if(e.name === options.group) {
+        map.controls.add(legend, options.layerId);
+      }
+    });
+    map.on("groupremove", function(e){
+      if(e.name === options.group) {
+        map.controls.remove(options.layerId);
+      }
+    });
+  }
 
   this.controls.add(legend, options.layerId);
 };
@@ -864,6 +903,56 @@ methods.showGroup = function(group) {
       this.addLayer(layer);
     }
   });
+};
+
+function setupShowHideGroupsOnZoom(map) {
+  if (map.leafletr._hasInitializedShowHideGroups) {
+    return;
+  }
+  map.leafletr._hasInitializedShowHideGroups = true;
+
+  function setVisibility(layer, visible, group) {
+    if (visible !== map.hasLayer(layer)) {
+      if (visible) {
+        map.addLayer(layer);
+        map.fire("groupadd", {"name": group, "layer": layer});
+      } else {
+        map.removeLayer(layer);
+        map.fire("groupremove", {"name": group, "layer": layer});
+      }
+    }
+  }
+
+  function showHideGroupsOnZoom() {
+    if (!map.layerManager)
+      return;
+
+    let zoom = map.getZoom();
+    map.layerManager.getAllGroupNames().forEach(group => {
+      let layer = map.layerManager.getLayerGroup(group, false);
+      if (layer && typeof(layer.zoomLevels) !== "undefined") {
+        setVisibility(layer,
+          layer.zoomLevels === true || layer.zoomLevels.indexOf(zoom) >= 0,
+          group);
+      }
+    });
+  }
+
+  map.showHideGroupsOnZoom = showHideGroupsOnZoom;
+  map.on("zoomend", showHideGroupsOnZoom);
+}
+
+methods.setGroupOptions = function(group, options) {
+  $.each(asArray(group), (i, g) => {
+    let layer = this.layerManager.getLayerGroup(g, true);
+    // This slightly tortured check is because 0 is a valid value for zoomLevels
+    if (typeof(options.zoomLevels) !== "undefined" && options.zoomLevels !== null) {
+      layer.zoomLevels = asArray(options.zoomLevels);
+    }
+  });
+
+  setupShowHideGroupsOnZoom(this);
+  this.showHideGroupsOnZoom();
 };
 
 methods.addRasterImage = function(uri, bounds, opacity, attribution, layerId, group) {

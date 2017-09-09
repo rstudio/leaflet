@@ -22,27 +22,20 @@ pointData.SpatialPointsDataFrame <- function(obj) {
 
 # polygonData -------------------------------------------------------------
 
-#' @export
-polygonData.Polygon <- function(obj) {
+polygonData_sp <- function(obj) {
   structure(
-    list(list(sp_coords(obj))),
+    to_multipolygon_list(obj),
     bbox = sp_bbox(obj)
   )
 }
+
 #' @export
-polygonData.Polygons <- function(obj) {
-  structure(
-    list(polygons2coords(obj)),
-    bbox = sp_bbox(obj)
-  )
-}
+polygonData.Polygon <- polygonData_sp
 #' @export
-polygonData.SpatialPolygons <- function(obj) {
-  structure(
-    lapply(obj@polygons, polygons2coords),
-    bbox = sp_bbox(obj)
-  )
-}
+polygonData.Polygons <- polygonData_sp
+#' @export
+polygonData.SpatialPolygons <- polygonData_sp
+
 #' @export
 polygonData.SpatialPolygonsDataFrame <- function(obj) {
   if (length(obj@polygons) > 0) {
@@ -54,26 +47,12 @@ polygonData.SpatialPolygonsDataFrame <- function(obj) {
 }
 
 #' @export
-polygonData.Line <- function(obj) {
-  structure(
-    list(list(sp_coords(obj))),
-    bbox = sp_bbox(obj)
-  )
-}
+polygonData.Line <- polygonData_sp
 #' @export
-polygonData.Lines <- function(obj) {
-  structure(
-    list(lines2coords(obj)),
-    bbox = sp_bbox(obj)
-  )
-}
+polygonData.Lines <- polygonData_sp
 #' @export
-polygonData.SpatialLines <- function(obj) {
-  structure(
-    lapply(obj@lines, lines2coords),
-    bbox = sp_bbox(obj)
-  )
-}
+polygonData.SpatialLines <- polygonData_sp
+
 #' @export
 polygonData.SpatialLinesDataFrame <- function(obj) {
   if (length(obj@lines) > 0) {
@@ -93,6 +72,8 @@ sp_coords <- function(x) {
   )
 }
 
+# Converters --------------------------------------------------------------
+
 sp_bbox <- function(x) {
   bbox <- sp::bbox(x)
   colnames(bbox) <- NULL
@@ -100,10 +81,49 @@ sp_bbox <- function(x) {
   bbox
 }
 
-polygons2coords <- function(pgon) {
-  lapply(pgon@Polygons[pgon@plotOrder], sp_coords)
+#' @export
+to_multipolygon_list.SpatialPolygons <- function(pgons) {
+  lapply(pgons@polygons, to_multipolygon)
 }
 
-lines2coords <- function(lines) {
-  lapply(lines@Lines, sp_coords)
+#' @export
+to_multipolygon.Polygons <- function(pgons) {
+  if (length(pgons@Polygons) > 1) {
+    # If Polygons contains more than one Polygon, then we may be dealing with
+    # a polygon with holes or a multipolygon (potentially with holes). Use
+    # createPolygonsComment to validate and determine what the situation is.
+    comment <- comment(pgons)
+    if (is.null(comment) || comment == "FALSE")
+      comment <- rgeos::createPolygonsComment(pgons)
+    pstatus <- as.integer(strsplit(comment, " ")[[1]])
+    lapply(which(pstatus == 0L), function(index) {
+      # Return a list of rings, exterior first
+      c(
+        list(to_ring(pgons@Polygons[[index]])),  # exterior
+        lapply(pgons@Polygons[pstatus == index], to_ring)  # holes, if any
+      )
+    })
+  } else {
+    to_multipolygon(pgons@Polygons[[1]])
+  }
+}
+
+#' @export
+to_ring.Polygon <- function(pgon) {
+  sp_coords(pgon)
+}
+
+#' @export
+to_multipolygon_list.SpatialLines <- function(lines) {
+  lapply(lines@lines, to_multipolygon)
+}
+
+#' @export
+to_multipolygon.Lines <- function(lines) {
+  lapply(lines@Lines, to_polygon)
+}
+
+#' @export
+to_ring.Line <- function(line) {
+  sp_coords(line)
 }

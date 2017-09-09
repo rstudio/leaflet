@@ -1,6 +1,6 @@
 #' @export
-metaData.sharedData <- function(obj) {
-  obj$data(withSelection = TRUE, withFilter = FALSE, withKey = TRUE)
+metaData.SharedData <- function(obj) {
+  metaData(obj$data(withSelection = TRUE, withFilter = FALSE, withKey = TRUE))
 }
 
 #' @export

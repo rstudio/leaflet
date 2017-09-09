@@ -135,15 +135,22 @@ makeAwesomeIcon <- function(
   markerColor = "blue",
   iconColor = "white",
   spin = FALSE,
-  extraClasses = NULL
+  extraClasses = NULL,
+  squareMarker = FALSE,
+  iconRotate = 0,
+  fontFamily = 'monospace',
+  text = NULL
 ) {
   if (!inherits(library, "formula")) {
     verifyIconLibrary(library)
   }
 
   icon = filterNULL(list(
-    icon= icon, library = library, markerColor = markerColor,
-    iconColor = iconColor, spin = spin, extraClasses = extraClasses
+    icon = icon, library = library, markerColor = markerColor,
+    iconColor = iconColor, spin = spin, extraClasses = extraClasses,
+    squareMarker = squareMarker, iconRotate = iconRotate,
+    font = fontFamily, text = text
+
   ))
   structure(icon, class = "leaflet_awesome_icon")
 }
@@ -159,8 +166,8 @@ makeAwesomeIcon <- function(
 #' @param library Which icon library. Default \code{'glyphicon'}, other possible
 #'   values are \code{'fa'} (fontawesome) or \code{'ion'} (ionicons).
 #' @param markerColor Possible values are \code{'red'}, \code{'darkred'}, \code{'lightred'}, \code{'orange'},
-#' \code{'beige'}, \code{'green'}, \code{'darkgreen'}, \code{'lightgreen'}, \code{'blue'}, 
-#' \code{'darkblue'}, \code{'lightblue'}, \code{'purple'}, \code{'darkpurple'}, \code{'pink'}, 
+#' \code{'beige'}, \code{'green'}, \code{'darkgreen'}, \code{'lightgreen'}, \code{'blue'},
+#' \code{'darkblue'}, \code{'lightblue'}, \code{'purple'}, \code{'darkpurple'}, \code{'pink'},
 #' \code{'cadetblue'}, \code{'white'}, \code{'gray'}, \code{'lightgray'}, \code{'black'}
 #' @param iconColor The color to use for the icon itself. Use any CSS-valid
 #'   color (hex, rgba, etc.) or a named web color.
@@ -168,6 +175,10 @@ makeAwesomeIcon <- function(
 #'   = 'fa'})
 #' @param extraClasses Additional css classes to include on the icon.
 #' @return A list of awesome-icon data that can be passed to the \code{icon}
+#' @param squareMarker Whether to use a square marker.
+#' @param iconRotate Rotate the icon by a given angle.
+#' @param fontFamily Used when \code{text} option is specified.
+#' @param text Use this text string instead of an icon.
 #'   argument of \code{\link{addAwesomeMarkers}()}.
 #' @export
 awesomeIcons <- function(
@@ -176,7 +187,11 @@ awesomeIcons <- function(
   markerColor = "blue",
   iconColor = "white",
   spin = FALSE,
-  extraClasses = NULL
+  extraClasses = NULL,
+  squareMarker = FALSE,
+  iconRotate = 0,
+  fontFamily = 'monospace',
+  text = NULL
 
 ) {
   if (!inherits(library, "formula")) {
@@ -185,7 +200,9 @@ awesomeIcons <- function(
 
   filterNULL(list(
     icon = icon, library = library, markerColor = markerColor,
-    iconColor = iconColor, spin = spin, extraClasses = extraClasses
+    iconColor = iconColor, spin = spin, extraClasses = extraClasses,
+    squareMarker = squareMarker, iconRotate = iconRotate,
+    font = fontFamily, text = text
   ))
 }
 

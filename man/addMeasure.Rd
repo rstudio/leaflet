@@ -33,7 +33,7 @@ Value should be a color represented as a hexadecimal string.}
 from a completed measurement.
 Value should be a color represented as a hexadecimal string.}
 
-\item{popupOptions}{\code{list} of ptions applied to the popup
+\item{popupOptions}{\code{list} of options applied to the popup
 of the resulting measure feature.
 Properties may be any \href{http://leafletjs.com/reference.html#popup-options}{standard Leaflet popup options}.}
 
@@ -79,4 +79,3 @@ leaf \%>\% addMeasure(
 )
 
 }
-

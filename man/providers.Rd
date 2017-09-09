@@ -15,4 +15,3 @@ providers
 List of all providers with their variations
 }
 \keyword{datasets}
-

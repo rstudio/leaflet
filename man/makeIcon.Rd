@@ -22,12 +22,12 @@ icon image}
 
 \item{iconAnchorX}{the coordinates of the "tip" of the icon
 (relative to its top left corner, i.e. the top left corner means
-\code{iconAnchorX = 0} and \code{iconAnchorY = 0)}, and the icon will be
+\code{iconAnchorX = 0} and \code{iconAnchorY = 0}), and the icon will be
 aligned so that this point is at the marker's geographical location}
 
 \item{iconAnchorY}{the coordinates of the "tip" of the icon
 (relative to its top left corner, i.e. the top left corner means
-\code{iconAnchorX = 0} and \code{iconAnchorY = 0)}, and the icon will be
+\code{iconAnchorX = 0} and \code{iconAnchorY = 0}), and the icon will be
 aligned so that this point is at the marker's geographical location}
 
 \item{shadowUrl}{the URL or file path to the icon shadow image}
@@ -54,4 +54,3 @@ popups will "open", relative to the icon anchor}
 \description{
 Define icon sets
 }
-

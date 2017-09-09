@@ -152,7 +152,7 @@ leafletProxy <- function(mapId, session = shiny::getDefaultReactiveDomain(),
   # This won't be necessary in future versions of Shiny, as session$ns (and
   # other forms of ns()) will be smart enough to only namespace un-namespaced
   # IDs.
-  if (!is.null(session$ns) && nzchar(session$ns(NULL)) && !startsWith(mapId, session$ns(""))) {
+  if (!is.null(session$ns) && nzchar(session$ns(NULL)) && substring(mapId, 1, nchar(session$ns(""))) != session$ns("")) {
     mapId <- session$ns(mapId)
   }
 
