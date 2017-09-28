@@ -16,12 +16,12 @@
 
 L.MarkerClusterGroup.include({
 
-	_originalOnAdd: L.MarkerClusterGroup.prototype.onAdd,
+	_originalOnAddFreezable: L.MarkerClusterGroup.prototype.onAdd,
 
 	onAdd: function (map) {
 		var frozenZoom = this._zoom;
 
-		this._originalOnAdd(map);
+		this._originalOnAddFreezable(map);
 
 		if (this._frozen) {
 
@@ -167,7 +167,10 @@ L.MarkerClusterGroup.include({
 			// Make as if we had instantly zoomed in from previousZoom to targetZoom.
 			this._animationStart();
 			this._topClusterLevel._recursivelyRemoveChildrenFromMap(
-				this._currentShownBounds, previousZoom, this._getExpandedVisibleBounds()
+				this._currentShownBounds,
+				this._map.getMinZoom(), // New 2nd argument added in Leaflet.markercluster 1.0.4
+				previousZoom,
+				this._getExpandedVisibleBounds()
 			);
 			this._animationZoomIn(previousZoom, targetZoom);
 
@@ -216,6 +219,9 @@ L.MarkerClusterGroup.include({
 				c._addToMap();
 			}
 		);
+
+		// Record new bounds so that newly added markers are properly displayed.
+		this._currentShownBounds = newBounds;
 	},
 
 	_originalZoomOrSpiderfy: L.MarkerClusterGroup.prototype._zoomOrSpiderfy,
