@@ -633,7 +633,7 @@ markerClusterDependencies <- function() {
       'leaflet-markercluster',
       '1.0.4',
       system.file('htmlwidgets/plugins/Leaflet.markercluster', package = 'leaflet'),
-      script = c('leaflet.markercluster.js', 'leaflet.markercluster.layersupport-src.js', 'leaflet.markercluster.freezable-src.js'),
+      script = c('leaflet.markercluster.js', 'leaflet.markercluster.freezable-src.js', 'leaflet.markercluster.layersupport-src.js'),
       stylesheet = c('MarkerCluster.css', 'MarkerCluster.Default.css')
     )
   )
