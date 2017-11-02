@@ -36,3 +36,4 @@ Suggests:
     sp,
     testit
 VignetteBuilder: knitr
+RoxygenNote: 6.0.1

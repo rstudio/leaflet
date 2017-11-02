@@ -485,7 +485,7 @@ var dataframe = (function() {
 
       if (!HTMLWidgets.shinyMode) return map;
 
-      map.id = this.getId(el);
+      map.id = el.id;
 
       // When the map is clicked, send the coordinates back to the app
       map.on('click', function(e) {
