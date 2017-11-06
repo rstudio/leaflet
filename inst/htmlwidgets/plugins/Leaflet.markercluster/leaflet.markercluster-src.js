@@ -1,7 +1,7 @@
 /*
  Leaflet.markercluster, Provides Beautiful Animated Marker Clustering functionality for Leaflet, a JS library for interactive maps.
  https://github.com/Leaflet/Leaflet.markercluster
- (c) 2012-2013, Dave Leaver, smartrak
+ (c) 2012-2017, Dave Leaver
 */
 (function (window, document, undefined) {/*
  * L.MarkerClusterGroup extends L.FeatureGroup by clustering the markers contained within
@@ -12,6 +12,7 @@ L.MarkerClusterGroup = L.FeatureGroup.extend({
 	options: {
 		maxClusterRadius: 80, //A cluster will cover at most this many pixels from its center
 		iconCreateFunction: null,
+		clusterPane: L.Marker.prototype.options.pane,
 
 		spiderfyOnMaxZoom: true,
 		showCoverageOnHover: true,
@@ -54,9 +55,6 @@ L.MarkerClusterGroup = L.FeatureGroup.extend({
 		if (!this.options.iconCreateFunction) {
 			this.options.iconCreateFunction = this._defaultIconCreateFunction;
 		}
-		if (!this.options.clusterPane) {
-		    this.options.clusterPane = L.Marker.prototype.options.pane;
-        }
 
 		this._featureGroup = L.featureGroup();
 		this._featureGroup.addEventParent(this);
@@ -1900,7 +1898,8 @@ L.DistanceGrid.prototype = {
 						for (k = 0, len = cell.length; k < len; k++) {
 							obj = cell[k];
 							dist = this._sqDist(objectPoint[L.Util.stamp(obj)], point);
-							if (dist < closestDistSq) {
+							if (dist < closestDistSq ||
+								dist <= closestDistSq && closest === null) {
 								closestDistSq = dist;
 								closest = obj;
 							}
@@ -1913,7 +1912,8 @@ L.DistanceGrid.prototype = {
 	},
 
 	_getCoord: function (x) {
-		return Math.floor(x / this._cellSize);
+		var coord = Math.floor(x / this._cellSize);
+		return isFinite(coord) ? coord : x;
 	},
 
 	_sqDist: function (p, p2) {

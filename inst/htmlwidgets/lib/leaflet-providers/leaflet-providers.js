@@ -110,7 +110,7 @@
 					}
 				},
 				DE: {
-					url: 'http://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png',
+					url: '//{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png',
 					options: {
 						maxZoom: 18
 					}
@@ -144,30 +144,29 @@
 			}
 		},
 		Thunderforest: {
-			url: '//{s}.tile.thunderforest.com/{variant}/{z}/{x}/{y}.png',
+			url: '//{s}.tile.thunderforest.com/{variant}/{z}/{x}/{y}.png?apikey={apikey}',
 			options: {
 				attribution:
 					'&copy; <a href="http://www.thunderforest.com/">Thunderforest</a>, {attribution.OpenStreetMap}',
-				variant: 'cycle'
+				variant: 'cycle',
+				apikey: '<insert your api key here>',
+				maxZoom: 22
 			},
 			variants: {
 				OpenCycleMap: 'cycle',
 				Transport: {
 					options: {
-						variant: 'transport',
-						maxZoom: 19
+						variant: 'transport'
 					}
 				},
 				TransportDark: {
 					options: {
-						variant: 'transport-dark',
-						maxZoom: 19
+						variant: 'transport-dark'
 					}
 				},
 				SpinalMap: {
 					options: {
-						variant: 'spinal-map',
-						maxZoom: 11
+						variant: 'spinal-map'
 					}
 				},
 				Landscape: 'landscape',
@@ -201,6 +200,7 @@
 		Hydda: {
 			url: '//{s}.tile.openstreetmap.se/hydda/{variant}/{z}/{x}/{y}.png',
 			options: {
+				maxZoom: 18,
 				variant: 'full',
 				attribution: 'Tiles courtesy of <a href="http://openstreetmap.se/" target="_blank">OpenStreetMap Sweden</a> &mdash; Map data {attribution.OpenStreetMap}'
 			},
@@ -216,7 +216,9 @@
 				attribution:
 					'Imagery from <a href="http://mapbox.com/about/maps/">MapBox</a> &mdash; ' +
 					'Map data {attribution.OpenStreetMap}',
-				subdomains: 'abcd'
+				subdomains: 'abcd',
+				id: 'streets',
+				accessToken: '<insert your access token here>',
 			}
 		},
 		Stamen: {
@@ -528,7 +530,7 @@
 			}
 		},
 		BasemapAT: {
-			url: '//maps{s}.wien.gv.at/basemap/{variant}/normal/google3857/{z}/{y}/{x}.{format}',
+			url: 'https://maps{s}.wien.gv.at/basemap/{variant}/normal/google3857/{z}/{y}/{x}.{format}',
 			options: {
 				maxZoom: 19,
 				attribution: 'Datenquelle: <a href="www.basemap.at">basemap.at</a>',
@@ -538,7 +540,12 @@
 				variant: 'geolandbasemap'
 			},
 			variants: {
-				basemap: 'geolandbasemap',
+				basemap: {
+					options: {
+						maxZoom: 20, // currently only in Vienna
+						variant: 'geolandbasemap'
+					}
+				},
 				grau: 'bmapgrau',
 				overlay: 'bmapoverlay',
 				highdpi: {
@@ -549,6 +556,7 @@
 				},
 				orthofoto: {
 					options: {
+						maxZoom: 20, // currently only in Vienna
 						variant: 'bmaporthofoto30cm',
 						format: 'jpeg'
 					}
@@ -627,6 +635,30 @@
 				minZoom: 1,
 				maxZoom: 18,
 				subdomains: '0123',
+			}
+		},
+		JusticeMap: {
+			// Justice Map (http://www.justicemap.org/)
+			// Visualize race and income data for your community, county and country.
+			// Includes tools for data journalists, bloggers and community activists.
+			url: 'http://www.justicemap.org/tile/{size}/{variant}/{z}/{x}/{y}.png',
+			options: {
+				attribution: '<a href="http://www.justicemap.org/terms.php">Justice Map</a>',
+				// one of 'county', 'tract', 'block'
+				size: 'county',
+				// Bounds for USA, including Alaska and Hawaii
+				bounds: [[14, -180], [72, -56]]
+			},
+			variants: {
+				income: 'income',
+				americanIndian: 'indian',
+				asian: 'asian',
+				black: 'black',
+				hispanic: 'hispanic',
+				multi: 'multi',
+				nonWhite: 'nonwhite',
+				white: 'white',
+				plurality: 'plural'
 			}
 		}
 	};

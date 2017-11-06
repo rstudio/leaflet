@@ -1,5 +1,5 @@
 /**
- * Leaflet.MarkerCluster.Freezable 0.1.1+0285b6c
+ * Leaflet.MarkerCluster.Freezable 1.0.0+9db80a3
  * Sub-plugin for Leaflet.markercluster plugin; adds the ability to freeze clusters at a specified zoom.
  * (c) 2015-2016 Boris Seang
  * License MIT

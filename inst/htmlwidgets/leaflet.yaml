@@ -4,7 +4,7 @@ dependencies:
     src: "htmlwidgets/lib/jquery"
     script: jquery.min.js
   - name: leaflet
-    version: 1.0.3
+    version: 1.2.0
     src: "htmlwidgets/lib/leaflet"
     script: leaflet.js
     stylesheet: leaflet.css
