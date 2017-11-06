@@ -51,7 +51,7 @@ library(dplyr)
 cities <- cities %>% mutate(PopCat=ifelse(Pop <500000,'blue','red'))
 
 
-leaflet(cities) %>% addTiles() %>%
+leaflet(cities) %>% addProviderTiles(providers$OpenStreetMap) %>%
   addAwesomeMarkers(lng = ~Long, lat = ~Lat,
              label = ~City,
              icon = icon.ion)
@@ -61,7 +61,7 @@ icon.pop <- awesomeIcons(icon = 'users',
                            library = 'fa',
                            iconColor = 'black')
 
-leaflet(cities) %>% addTiles() %>%
+leaflet(cities) %>% addProviderTiles(providers$OpenStreetMap) %>%
   addAwesomeMarkers(lng = ~Long, lat = ~Lat,
              label = ~City,
              icon = icon.pop)
@@ -72,7 +72,7 @@ popIcons <- awesomeIconList(
   blue = makeAwesomeIcon(icon='user', library='glyphicon', markerColor = 'blue'),
   red = makeAwesomeIcon(icon='users', library='fa', markerColor = 'red'))
 
-leaflet(cities) %>% addTiles() %>%
+leaflet(cities) %>% addProviderTiles(providers$CartoDB.DarkMatter) %>%
   addAwesomeMarkers(lng = ~Long, lat = ~Lat,
              label = ~City,
              labelOptions = rep(labelOptions(noHide = T),nrow(cities)),

@@ -5,7 +5,7 @@ quakes <- quakes %>%
   dplyr::mutate(mag.level = cut(mag,c(3,4,5,6),
                                 labels = c('>3 & <=4', '>4 & <=5', '>5 & <=6')))
 
-l <- leaflet() %>% addTiles()
+l <- leaflet() %>% addProviderTiles(providers$OpenStreetMap)
 
 #' <br/><br/>
 #' Default Clustering
@@ -52,7 +52,7 @@ l2 %>%
 
 #' <br/><br/>
 #' Clustering with custom iconCreateFunction
-leaflet(quakes) %>% addTiles() %>%
+leaflet(quakes) %>% addProviderTiles(providers$OpenStreetMap) %>%
   addMarkers(clusterOptions =
                markerClusterOptions(iconCreateFunction =
                                       JS("

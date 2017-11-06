@@ -506,8 +506,8 @@ safeLabel <- function(label, data) {
 }
 
 #' @param
-#' noHide,direction,offset,textsize,textOnly,style
-#' label options; see \url{http://leafletjs.com/reference-1.0.3.html#tooltip-option}
+#' noHide,direction,offset,textsize,textOnly,style,interactive,permanent
+#' label options; see \url{http://leafletjs.com/reference-1.2.0.html#tooltip-option}
 #' @describeIn map-options Options for labels
 #' @export
 labelOptions <- function(

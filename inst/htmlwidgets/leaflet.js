@@ -184,7 +184,9 @@ function getCRS(crsOptions) {
       if (crsOptions.options && crsOptions.options.transformation) {
         crsOptions.options.transformation = _leaflet2.default.Transformation(crsOptions.options.transformation[0], crsOptions.options.transformation[1], crsOptions.options.transformation[2], crsOptions.options.transformation[3]);
       }
-      crs = new _proj4leaflet2.default.CRS.TMS(crsOptions.code, crsOptions.proj4def, crsOptions.projectedBounds, crsOptions.options);
+      //crs = new Proj4Leaflet.CRS.TMS(crsOptions.code, crsOptions.proj4def,
+      //crsOptions.projectedBounds, crsOptions.options);
+      crs = new _proj4leaflet2.default.CRS(crsOptions.code, crsOptions.proj4def, crsOptions.options);
       break;
   }
   return crs;

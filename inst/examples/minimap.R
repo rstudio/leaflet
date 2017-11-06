@@ -3,7 +3,7 @@ library(leaflet)
 l <- leaflet() %>% setView(0,0,3)
 
 #' Default Minimap
-l %>% addTiles() %>% addMiniMap()
+l %>% addProviderTiles(providers$OpenStreetMap) %>% addMiniMap()
 
 #' <br/>
 #' Different basemap for the minimap and togglable
@@ -62,7 +62,7 @@ icons <- awesomeIconList(
   restaurant = makeAwesomeIcon(icon='cutlery', library='fa', markerColor = 'blue')
 )
 
-leaflet() %>% addTiles() %>%
+leaflet() %>% addProviderTiles(providers$OpenStreetMap) %>%
   setView(10.758276373601069, 59.92448055859924, 13) %>%
   addAwesomeMarkers(data=spdf,
              label=~stringr::str_c(amenity,': ', name),

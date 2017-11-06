@@ -6,11 +6,11 @@ library(leaflet)
 #' Default SPherical Mercator Projection specified explicitly
 leaflet(
   options =
-    leafletOptions(crs=leafletCRS(crsClass='L.CRS.EPSG3857'))) %>% addTiles()
+    leafletOptions(crs=leafletCRS(crsClass='L.CRS.EPSG3857'))) %>% addProviderTiles(providers$OpenStreetMap)
 
 #' <br/><br/>Gothenberg, Sweeden in default projection
 leaflet() %>%
-  addTiles() %>% setView(11.965, 57.704, 16)
+  addProviderTiles(providers$OpenStreetMap) %>% setView(11.965, 57.704, 16)
 
 
 #' <br/><br/>Gothenberg, Sweeden in local projection

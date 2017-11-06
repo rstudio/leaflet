@@ -65,7 +65,7 @@ transparency}
 
 \item{clickable}{whether the element emits mouse events}
 
-\item{noHide, direction, offset, textsize, textOnly, style}{label options; see \url{http://leafletjs.com/reference-1.0.3.html#tooltip-option}}
+\item{noHide, direction, offset, textsize, textOnly, style, interactive, permanent}{label options; see \url{http://leafletjs.com/reference-1.2.0.html#tooltip-option}}
 
 \item{draggable, keyboard, title, alt, zIndexOffset, opacity, riseOnHover, riseOffset}{marker options; see \url{http://leafletjs.com/reference.html#marker}}
 

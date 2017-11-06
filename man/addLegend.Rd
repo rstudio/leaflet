@@ -103,7 +103,7 @@ factor palette, and a function to return labels of the form \samp{x[i] - x[i
 # !formatR
 library(leaflet)
 # a manual legend
-leaflet() \%>\% addTiles() \%>\% addLegend(
+leaflet() \%>\% addProviderTiles(providers$OpenStreetMap) \%>\% addLegend(
   position = 'bottomright',
   colors = rgb(t(col2rgb(palette())) / 255),
   labels = palette(), opacity = 1,

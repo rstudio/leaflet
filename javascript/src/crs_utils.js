@@ -47,8 +47,10 @@ export function getCRS(crsOptions) {
           crsOptions.options.transformation[3]
         );
     }
-    crs = new Proj4Leaflet.CRS.TMS(crsOptions.code, crsOptions.proj4def,
-                         crsOptions.projectedBounds, crsOptions.options);
+    //crs = new Proj4Leaflet.CRS.TMS(crsOptions.code, crsOptions.proj4def,
+                         //crsOptions.projectedBounds, crsOptions.options);
+    crs = new Proj4Leaflet.CRS(crsOptions.code, crsOptions.proj4def,
+                         crsOptions.options);
     break;
   }
   return crs;
