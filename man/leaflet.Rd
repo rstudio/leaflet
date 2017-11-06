@@ -7,7 +7,7 @@
 \title{Create a Leaflet map widget}
 \usage{
 leaflet(data = NULL, width = NULL, height = NULL, padding = 0,
-  options = leafletOptions())
+  options = leafletOptions(), elementId = NULL)
 
 leafletOptions(minZoom = NULL, maxZoom = NULL, crs = leafletCRS(),
   worldCopyJump = NULL, ...)
@@ -32,6 +32,9 @@ spatial data frames from the \pkg{sf} package.}
 \item{padding}{the padding of the map}
 
 \item{options}{the map options}
+
+\item{elementId}{Use an explicit element ID for the widget
+(rather than an automatically generated one).}
 
 \item{minZoom}{Minimum zoom level of the map. Overrides any minZoom set on map layers.}
 

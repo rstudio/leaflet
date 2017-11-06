@@ -68,6 +68,11 @@ class(do.call(rbind, unclass(st_geometry(ptsdata))) %>% st_multipoint())  # XY, 
 
 expect_maps_equal(p1, p2)
 
+(p4 <- leaflet() %>% addTiles() %>% addCircleMarkers(data = ptsdata[FALSE,]))
+(p5 <- leaflet() %>% addTiles() %>% addCircleMarkers(data = st_geometry(ptsdata)[FALSE]))
+(p6 <- leaflet() %>% addTiles() %>% addCircleMarkers(lng = numeric(0), lat = numeric(0)))
+expect_maps_equal(p4, p5)
+expect_maps_equal(p4, p6)
 
 ### lines -----------------------------------------------------------------
 create_square <- function(width = 2, lng = 0, lat = 0, hole = FALSE, type = Polygon) {
