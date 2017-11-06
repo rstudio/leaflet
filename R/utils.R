@@ -263,8 +263,15 @@ makeListFun <- function(list) {
 #' @param lat vector with latitude values
 #' @param funcName Name of calling function
 #' @param warn A boolean. Whether to generate a warning message if there are rows with missing/invalid data
+#' @param mode if \code{"point"} then warn about any \code{NA} lng/lat values;
+#'   if \code{"polygon"} then \code{NA} values are expected to be used as
+#'   polygon delimiters
 #' @export
-validateCoords <- function(lng, lat, funcName, warn=T) {
+validateCoords <- function(lng, lat, funcName, warn=TRUE,
+  mode = c("point", "polygon")) {
+
+  mode <- match.arg(mode)
+
   if (is.null(lng) && is.null(lat)) {
     stop(funcName, " requires non-NULL longitude/latitude values")
   } else if (is.null(lng)) {
@@ -280,13 +287,19 @@ validateCoords <- function(lng, lat, funcName, warn=T) {
   } else if (!is.numeric(lat)) {
     stop(funcName, " requires numeric latitude values")
   }
-  complete <- ifelse(
-    is.na(lat) | is.null(lat) | is.na(lng) | is.null(lng) |
-      !is.numeric(lat) | !is.numeric(lng),
-    FALSE, TRUE)
 
-  if(any(!complete)) {
-    warning(sprintf("Data contains %s rows with either missing or invalid lat/lon values and will be ignored",sum(!complete)))
+  if (mode == "point") {
+    incomplete <- is.na(lat) | is.na(lng)
+    if(any(incomplete)) {
+      warning(sprintf("Data contains %s rows with either missing or invalid lat/lon values and will be ignored",sum(incomplete)))
+    }
+  } else if (mode == "polygon") {
+    incomplete <- is.na(lat) != is.na(lng)
+    if(any(incomplete)) {
+      warning(sprintf("Data contains %s rows with either missing or invalid lat/lon values and will be ignored",sum(incomplete)))
+    }
+    lng <- lng[!incomplete]
+    lat <- lat[!incomplete]
   }
 
   data.frame(lng=lng,lat=lat)
