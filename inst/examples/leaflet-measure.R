@@ -1,7 +1,7 @@
 library(leaflet)
 
 leaf <- leaflet() %>%
-  addProviderTiles(providers$OpenStreetMap)
+  addTiles()
 
 #' <br/>
 #' Default Behavior

@@ -3,7 +3,7 @@ library(leaflet)
 #' Add two easy buttons.
 #' first to set zoom level to 1,
 #' second to find your self
-leaflet() %>% addProviderTiles(providers$OpenStreetMap) %>%
+leaflet() %>% addTiles() %>%
   addEasyButton(easyButton(
     icon='fa-globe', title='Zoom to Level 1',
     onClick=JS("function(btn, map){ map.setZoom(1);}"))) %>%
@@ -12,7 +12,7 @@ leaflet() %>% addProviderTiles(providers$OpenStreetMap) %>%
     onClick=JS("function(btn, map){ map.locate({setView: true});}")))
 
 #' <br/><br/>Toggle Button to freeze/unfreeze clustering at a zoom level.
-leaflet() %>% addProviderTiles(providers$OpenStreetMap) %>%
+leaflet() %>% addTiles() %>%
   addMarkers(data=quakes,
              clusterOptions = markerClusterOptions(),
              clusterId = 'quakesCluster') %>%

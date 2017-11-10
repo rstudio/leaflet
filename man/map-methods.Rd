@@ -2,14 +2,20 @@
 % Please edit documentation in R/methods.R
 \name{setView}
 \alias{setView}
+\alias{flyTo}
 \alias{fitBounds}
+\alias{flyToBounds}
 \alias{setMaxBounds}
 \alias{clearBounds}
 \title{Methods to manipulate the map widget}
 \usage{
 setView(map, lng, lat, zoom, options = list())
 
-fitBounds(map, lng1, lat1, lng2, lat2)
+flyTo(map, lng, lat, zoom, options = list())
+
+fitBounds(map, lng1, lat1, lng2, lat2, options = list())
+
+flyToBounds(map, lng1, lat1, lng2, lat2, options = list())
 
 setMaxBounds(map, lng1, lat1, lng2, lat2)
 
@@ -39,7 +45,11 @@ A series of methods to manipulate the map.
 \itemize{
 \item \code{setView}: Set the view of the map (center and zoom level)
 
+\item \code{flyTo}: Flys to a given location/zoom-level using smooth pan-zoom.
+
 \item \code{fitBounds}: Set the bounds of a map
+
+\item \code{flyToBounds}: Flys to given bound using smooth pan/zoom.
 
 \item \code{setMaxBounds}: Restricts the map view to the given bounds
 

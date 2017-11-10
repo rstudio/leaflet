@@ -44,11 +44,22 @@ methods.setView = function(center, zoom, options) {
   this.setView(center, zoom, options);
 };
 
-methods.fitBounds = function(lat1, lng1, lat2, lng2) {
+methods.fitBounds = function(lat1, lng1, lat2, lng2, options) {
   this.fitBounds([
     [lat1, lng1], [lat2, lng2]
-  ]);
+  ], options);
 };
+
+methods.flyTo = function(center, zoom, options) {
+  this.flyTo(center, zoom, options);
+};
+
+methods.flyToBounds = function(lat1, lng1, lat2, lng2, options) {
+  this.flyToBounds([
+    [lat1, lng1], [lat2, lng2]
+  ], options);
+};
+
 
 methods.setMaxBounds = function(lat1, lng1, lat2, lng2) {
   this.setMaxBounds([

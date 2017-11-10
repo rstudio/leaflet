@@ -1,6 +1,6 @@
 library(leaflet)
 # Default
-l <- leaflet() %>% addProviderTiles(providers$OpenStreetMap) %>% setView(0,0,1)
+l <- leaflet() %>% addTiles() %>% setView(0,0,1)
 
 #' Default simple Graticule
 l %>% addSimpleGraticule()

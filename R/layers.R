@@ -127,6 +127,8 @@ hideGroup <- function(map, group) {
 #'
 #' @export
 groupOptions <- function(map, group, zoomLevels = NULL) {
+  if(is.null(zoomLevels)) # Default to TRUE if nothing specified.
+    zoomLevels <- TRUE
   invokeMethod(map, getMapData(map), 'setGroupOptions', group,
     list(zoomLevels = zoomLevels)
   )
@@ -323,7 +325,7 @@ tileOptions <- function(
   reuseTiles = FALSE,
   ...
 ) {
-  list(
+  filterNULL(list(
     minZoom = minZoom, maxZoom = maxZoom, maxNativeZoom = maxNativeZoom,
     tileSize = tileSize, subdomains = subdomains, errorTileUrl = errorTileUrl,
     tms = tms, continuousWorld = continuousWorld, noWrap = noWrap,
@@ -332,7 +334,7 @@ tileOptions <- function(
     updateWhenIdle = updateWhenIdle, detectRetina = detectRetina,
     reuseTiles = reuseTiles,
     ...
-  )
+  ))
 }
 
 #' Remove elements from a map
@@ -400,10 +402,10 @@ WMSTileOptions <- function(
   styles = '', format = 'image/jpeg', transparent = FALSE, version = '1.1.1',
   crs = NULL, ...
 ) {
-  list(
+  filterNULL(list(
     styles = styles, format = format, transparent = transparent,
     version = version, crs = crs, ...
-  )
+  ))
 }
 
 #' @param lng a numeric vector of longitudes, or a one-sided formula of the form
@@ -461,11 +463,11 @@ popupOptions <- function(
   className = "",
   ...
 ) {
-  list(
+  filterNULL(list(
     maxWidth = maxWidth, minWidth = minWidth, maxHeight = maxHeight,
     autoPan = autoPan, keepInView = keepInView, closeButton = closeButton,
     zoomAnimation = zoomAnimation, closeOnClick = closeOnClick, className = className, ...
-  )
+  ))
 }
 
 #' @rdname remove
@@ -531,12 +533,12 @@ labelOptions <- function(
   # use old noHide if provided
   if(!is.null(noHide) && permanent != noHide) permanent <- noHide
 
-  list(
+  filterNULL(list(
     interactive = interactive, permanent = permanent, direction = direction,
     opacity = opacity, offset = offset,
     textsize = textsize, textOnly = textOnly, style = style,
     zoomAnimation = zoomAnimation, className = className, ...
-  )
+  ))
 }
 
 #' @param icon the icon(s) for markers; an icon is represented by an R list of
@@ -825,11 +827,11 @@ markerOptions <- function(
   riseOffset = 250,
   ...
 ) {
-  list(
+  filterNULL(list(
     clickable = clickable, draggable = draggable, keyboard = keyboard,
     title = title, alt = alt, zIndexOffset = zIndexOffset, opacity = opacity,
     riseOnHover = riseOnHover, riseOffset = riseOffset, ...
-  )
+  ))
 }
 
 #' @param showCoverageOnHover when you mouse over a cluster it shows the bounds
@@ -852,14 +854,14 @@ markerClusterOptions <- function(
   freezeAtZoom = FALSE,
   ...
 ) {
-  list(
+  filterNULL(list(
     showCoverageOnHover = showCoverageOnHover,
     zoomToBoundsOnClick = zoomToBoundsOnClick,
     spiderfyOnMaxZoom = spiderfyOnMaxZoom,
     removeOutsideVisibleBounds = removeOutsideVisibleBounds,
     spiderLegPolylineOptions =  spiderLegPolylineOptions,
     freezeAtZoom = freezeAtZoom, ...
-  )
+  ))
 }
 
 #' @param radius a numeric vector of radii for the circles; it can also be a
@@ -898,11 +900,11 @@ addCircleMarkers <- function(
   clusterId = NULL,
   data = getMapData(map)
 ) {
-  options = c(options, list(
+  options = c(options, filterNULL(list(
     stroke = stroke, color = color, weight = weight, opacity = opacity,
     fill = fill, fillColor = fillColor, fillOpacity = fillOpacity,
     dashArray = dashArray
-  ))
+  )))
   if (!is.null(clusterOptions))
     map$dependencies = c(map$dependencies, markerClusterDependencies())
   pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addCircleMarkers")
@@ -963,10 +965,10 @@ pathOptions <- function(
   className = "",
   ...
 ) {
-  list(
+  filterNULL(list(
     lineCap = lineCap, lineJoin = lineJoin, clickable = clickable,
     pointerEvents = pointerEvents, className = className, ...
-  )
+  ))
 }
 
 #' Options to highlight shapes (polylines/polygons/circles/rectangles)
@@ -1020,11 +1022,11 @@ addCircles <- function(
   highlightOptions = NULL,
   data = getMapData(map)
 ) {
-  options = c(options, list(
+  options = c(options, filterNULL(list(
     stroke = stroke, color = color, weight = weight, opacity = opacity,
     fill = fill, fillColor = fillColor, fillOpacity = fillOpacity,
     dashArray = dashArray
-  ))
+  )))
   pts = derivePoints(data, lng, lat, missing(lng), missing(lat), "addCircles")
   invokeMethod(map, data, 'addCircles', pts$lat, pts$lng, radius, layerId, group, options,
                popup, popupOptions, safeLabel(label, data), labelOptions, highlightOptions,
@@ -1058,11 +1060,11 @@ addPolylines <- function(
   highlightOptions = NULL,
   data = getMapData(map)
 ) {
-  options = c(options, list(
+  options = c(options, filterNULL(list(
     stroke = stroke, color = color, weight = weight, opacity = opacity,
     fill = fill, fillColor = fillColor, fillOpacity = fillOpacity,
     dashArray = dashArray, smoothFactor = smoothFactor, noClip = noClip
-  ))
+  )))
   pgons = derivePolygons(data, lng, lat, missing(lng), missing(lat), "addPolylines")
   invokeMethod(map, data, 'addPolylines', pgons, layerId, group, options,
                popup, popupOptions, safeLabel(label, data), labelOptions, highlightOptions) %>%
@@ -1093,11 +1095,11 @@ addRectangles <- function(
   highlightOptions = NULL,
   data = getMapData(map)
 ) {
-  options = c(options, list(
+  options = c(options, filterNULL(list(
     stroke = stroke, color = color, weight = weight, opacity = opacity,
     fill = fill, fillColor = fillColor, fillOpacity = fillOpacity,
     dashArray = dashArray, smoothFactor = smoothFactor, noClip = noClip
-  ))
+  )))
   lng1 = resolveFormula(lng1, data)
   lat1 = resolveFormula(lat1, data)
   lng2 = resolveFormula(lng2, data)
@@ -1132,11 +1134,11 @@ addPolygons <- function(
   highlightOptions = NULL,
   data = getMapData(map)
 ) {
-  options = c(options, list(
+  options = c(options, filterNULL(list(
     stroke = stroke, color = color, weight = weight, opacity = opacity,
     fill = fill, fillColor = fillColor, fillOpacity = fillOpacity,
     dashArray = dashArray, smoothFactor = smoothFactor, noClip = noClip
-  ))
+  )))
   pgons = derivePolygons(data, lng, lat, missing(lng), missing(lat), "addPolygons")
   invokeMethod(map, data, 'addPolygons', pgons, layerId, group, options, popup, popupOptions, safeLabel(label, data), labelOptions, highlightOptions) %>%
     expandLimitsBbox(pgons)
@@ -1170,11 +1172,11 @@ addGeoJSON <- function(map, geojson, layerId = NULL, group = NULL,
   noClip = FALSE,
   options = pathOptions()
 ) {
-  options = c(options, list(
+  options = c(options, filterNULL(list(
     stroke = stroke, color = color, weight = weight, opacity = opacity,
     fill = fill, fillColor = fillColor, fillOpacity = fillOpacity,
     dashArray = dashArray, smoothFactor = smoothFactor, noClip = noClip
-  ))
+  )))
   invokeMethod(map, getMapData(map), 'addGeoJSON', geojson, layerId, group, options)
 }
 
@@ -1240,7 +1242,7 @@ addLayersControl <- function(map,
 #' @param ... other options for \code{layersControlOptions()}
 #' @export
 layersControlOptions <- function(collapsed = TRUE, autoZIndex = TRUE, ...) {
-  list(collapsed = collapsed, autoZIndex = autoZIndex, ...)
+  filterNULL(list(collapsed = collapsed, autoZIndex = autoZIndex, ...))
 }
 
 #' @rdname addLayersControl

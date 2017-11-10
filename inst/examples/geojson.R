@@ -19,7 +19,7 @@ icons <- awesomeIconList(
   restaurant = makeAwesomeIcon(icon='cutlery', library='fa', markerColor = 'blue')
 )
 
-leaflet() %>% addProviderTiles(providers$OpenStreetMap) %>%
+leaflet() %>% addTiles() %>%
   setView(10.758276373601069, 59.92448055859924, 13) %>%
   addAwesomeMarkers(data=spdf,
              label=~stringr::str_c(amenity,': ', name),

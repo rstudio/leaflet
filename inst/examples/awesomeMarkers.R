@@ -51,7 +51,7 @@ library(dplyr)
 cities <- cities %>% mutate(PopCat=ifelse(Pop <500000,'blue','red'))
 
 
-leaflet(cities) %>% addProviderTiles(providers$OpenStreetMap) %>%
+leaflet(cities) %>% addTiles() %>%
   addAwesomeMarkers(lng = ~Long, lat = ~Lat,
              label = ~City,
              icon = icon.ion)
@@ -61,7 +61,7 @@ icon.pop <- awesomeIcons(icon = 'users',
                            library = 'fa',
                            iconColor = 'black')
 
-leaflet(cities) %>% addProviderTiles(providers$OpenStreetMap) %>%
+leaflet(cities) %>% addTiles() %>%
   addAwesomeMarkers(lng = ~Long, lat = ~Lat,
              label = ~City,
              icon = icon.pop)
