@@ -47,13 +47,13 @@ spatial data frames from the \pkg{sf} package.}
 \item{...}{other options.}
 
 \item{crsClass}{One of L.CRS.EPSG3857, L.CRS.EPSG4326, L.CRS.EPSG3395,
-L.CRS.Simple, L.Proj.CRS, L.Proj.CRS.TMS}
+L.CRS.Simple, L.Proj.CRS}
 
 \item{code}{CRS identifier}
 
 \item{proj4def}{Proj4 string}
 
-\item{projectedBounds}{Only when crsClass = 'L.Proj.CRS.TMS'}
+\item{projectedBounds}{DEPRECATED! Use the bounds argument.}
 
 \item{origin}{Origin in projected coordinates, if set overrides transformation option.}
 
@@ -69,8 +69,7 @@ for zoom levels; specify either scales or resolutions, not both}
 Proj4Leaflet will use this in the getSize method, otherwise
 defaulting to Leaflet's default CRS size}
 
-\item{tileSize}{Tile size, in pixels, to use in this CRS (Default 256)
-Only needed when crsClass = 'L.Proj.CRS.TMS'}
+\item{tileSize}{DEPRECATED! Specify the tilesize in the \code{\link{tileOptions}()} argument.}
 }
 \value{
 A HTML widget object, on which we can add graphics layers using
@@ -264,5 +263,5 @@ m \%>\% addCircleMarkers(~lng, ~lat, radius = ~size,
 \seealso{
 \code{\link{leafletCRS}} for creating a custom CRS.
 
-\url{http://leafletjs.com/reference.html#map-options} for details.
+\url{http://leafletjs.com/reference-1.2.0.html#map-option} for details.
 }

@@ -47,6 +47,7 @@ export function getCRS(crsOptions) {
           crsOptions.options.transformation[3]
         );
     }
+    // L.Proj.CRS.TMS is deprecated as of Leaflet 1.x, fall back to L.Proj.CRS
     //crs = new Proj4Leaflet.CRS.TMS(crsOptions.code, crsOptions.proj4def,
                          //crsOptions.projectedBounds, crsOptions.options);
     crs = new Proj4Leaflet.CRS(crsOptions.code, crsOptions.proj4def,

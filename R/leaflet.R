@@ -121,7 +121,7 @@ mapOptions <- function(map, zoomToLimits = c("always", "first", "never")) {
 #' @param  worldCopyJump With this option enabled, the map tracks when you pan to another "copy" of the world and seamlessly jumps to the original one so that all overlays like markers and vector layers are still visible.
 #' @param ... other options.
 #' @describeIn leaflet Options for map creation
-#' @seealso \url{http://leafletjs.com/reference.html#map-options} for details.
+#' @seealso \url{http://leafletjs.com/reference-1.2.0.html#map-option} for details.
 #' @export
 leafletOptions <- function(
   minZoom = NULL,
@@ -146,10 +146,10 @@ crsClasses <- list('L.CRS.EPSG3857', 'L.CRS.EPSG4326', 'L.CRS.EPSG3395',
 #' creates a custom CRS
 #' Refer to \url{https://kartena.github.io/Proj4Leaflet/api/} for details.
 #' @param crsClass One of L.CRS.EPSG3857, L.CRS.EPSG4326, L.CRS.EPSG3395,
-#' L.CRS.Simple, L.Proj.CRS, L.Proj.CRS.TMS
+#' L.CRS.Simple, L.Proj.CRS
 #' @param code CRS identifier
 #' @param proj4def Proj4 string
-#' @param projectedBounds Only when crsClass = 'L.Proj.CRS.TMS'
+#' @param projectedBounds DEPRECATED! Use the bounds argument.
 #' @param origin Origin in projected coordinates, if set overrides transformation option.
 #' @param transformation to use when transforming projected coordinates into pixel coordinates
 #' @param scales Scale factors (pixels per projection unit, for example pixels/meter)
@@ -159,8 +159,7 @@ crsClasses <- list('L.CRS.EPSG3857', 'L.CRS.EPSG4326', 'L.CRS.EPSG3395',
 #' @param bounds Bounds of the CRS, in projected coordinates; if defined,
 #'    Proj4Leaflet will use this in the getSize method, otherwise
 #'    defaulting to Leaflet's default CRS size
-#' @param tileSize Tile size, in pixels, to use in this CRS (Default 256)
-#'    Only needed when crsClass = 'L.Proj.CRS.TMS'
+#' @param tileSize DEPRECATED! Specify the tilesize in the \code{\link{tileOptions}()} argument.
 #' @describeIn leaflet class to create a custom CRS
 #' @export
 leafletCRS <- function(
@@ -175,18 +174,32 @@ leafletCRS <- function(
   bounds = NULL,
   tileSize = NULL
 ) {
+
+  # Deprecated since Leaflet JS 1.x
+  if(!missing(projectedBounds)) {
+    warning("projectedBounds argument is deprecated and has no effect, use the bounds argument.")
+  }
+  if(!missing(tileSize)) {
+    warning("tileSize argument is deprecated and has no effect, use the tileOptions() function to pass the tileSize argument to the addTiles() function")
+  }
+  if(crsClass == 'L.Proj.CRS.TMS') {
+    warning("L.Proj.CRS.TMS is deprecated and will behave exactly like L.Proj.CRS.")
+  }
+
   if(!crsClass %in% crsClasses) {
     stop(sprintf("crsClass argument must be one of %s",
                  paste0(crsClasses, collapse = ', ')))
-
   }
+
+
+
   if(crsClass %in% c('L.Proj.CRS', 'L.Proj.CRS.TMS') &&
     !is.null(scales) && !is.null(resolutions)) {
-    stop(sprintf("Either input scales or resolutions"))
+    stop(sprintf("Either specify scales or resolutions"))
   }
   if(crsClass %in% c('L.Proj.CRS', 'L.Proj.CRS.TMS') &&
     is.null(scales) && is.null(resolutions)) {
-    stop(sprintf("Input either scales or resolutions, not both"))
+    stop(sprintf("Specify either scales or resolutions, not both"))
   }
     structure(
       list(
