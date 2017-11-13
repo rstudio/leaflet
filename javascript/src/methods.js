@@ -788,13 +788,13 @@ methods.addLegend = function(options) {
         height: totalHeight + vMargin*2 + "px"
       });
 
-      if (options.na_color) {
+      if (options.na_color && ($.inArray(options.na_label, labels)<0) ) {
         $(div).append("<div><i style=\"background:" + options.na_color +
                       ";opacity:" + options.opacity +
                       ";\"></i> " + options.na_label + "</div>");
       }
     } else {
-      if (options.na_color) {
+      if (options.na_color && ($.inArray(options.na_label, labels)<0) ) {
         colors.push(options.na_color);
         labels.push(options.na_label);
       }

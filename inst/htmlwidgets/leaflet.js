@@ -184,6 +184,7 @@ function getCRS(crsOptions) {
       if (crsOptions.options && crsOptions.options.transformation) {
         crsOptions.options.transformation = _leaflet2.default.Transformation(crsOptions.options.transformation[0], crsOptions.options.transformation[1], crsOptions.options.transformation[2], crsOptions.options.transformation[3]);
       }
+      // L.Proj.CRS.TMS is deprecated as of Leaflet 1.x, fall back to L.Proj.CRS
       //crs = new Proj4Leaflet.CRS.TMS(crsOptions.code, crsOptions.proj4def,
       //crsOptions.projectedBounds, crsOptions.options);
       crs = new _proj4leaflet2.default.CRS(crsOptions.code, crsOptions.proj4def, crsOptions.options);
@@ -1875,12 +1876,12 @@ methods.addLegend = function (options) {
           height: totalHeight + vMargin * 2 + "px"
         });
 
-        if (options.na_color) {
+        if (options.na_color && _jquery2.default.inArray(options.na_label, labels) < 0) {
           (0, _jquery2.default)(div).append("<div><i style=\"background:" + options.na_color + ";opacity:" + options.opacity + ";\"></i> " + options.na_label + "</div>");
         }
       })();
     } else {
-      if (options.na_color) {
+      if (options.na_color && _jquery2.default.inArray(options.na_label, labels) < 0) {
         colors.push(options.na_color);
         labels.push(options.na_label);
       }
