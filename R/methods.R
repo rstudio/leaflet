@@ -6,8 +6,8 @@
 #' @param lat The latitude of the map center
 #' @param zoom the zoom level
 #' @param options a list of zoom/pan options (see
-#'   \url{http://leafletjs.com/reference.html#map-zoompanoptions})
-#' @references \url{http://leafletjs.com/reference.html#map-set-methods}
+#'   \url{http://leafletjs.com/reference-1.2.0.html#zoom/pan-options})
+#' @references \url{http://leafletjs.com/reference-1.2.0.html#map-methods-for-modifying-map-state}
 #' @return The modified map widget.
 #' @describeIn map-methods Set the view of the map (center and zoom level)
 #' @export

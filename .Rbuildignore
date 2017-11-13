@@ -15,3 +15,12 @@
 ^data-raw$
 ^npm-shrinkwrap\.json$
 ^\.Rprofile\.local$
+^inst/htmlwidgets/lib/.*/.*\.map$
+^inst/htmlwidgets/plugins/.*/.*\.map$
+^inst/htmlwidgets/lib/jquery/jquery.js$
+^inst/htmlwidgets/lib/leaflet/leaflet-src.js$
+^inst/htmlwidgets/plugins/Leaflet.markercluster/leaflet.markercluster.freezable-src.js$
+^inst/htmlwidgets/plugins/Leaflet.markercluster/leaflet.markercluster.layersupport-src.js$
+^inst/htmlwidgets/plugins/Leaflet.markercluster/leaflet.markercluster-src.js$
+^inst/htmlwidgets/lib/leaflet-measure/leaflet-measure.js$
+^inst/htmlwidgets/plugins/Proj4Leaflet/proj4.js$

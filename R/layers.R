@@ -147,7 +147,7 @@ groupOptions <- function(map, group, zoomLevels = NULL) {
 #'   \code{\link{popupOptions}}, \code{\link{markerOptions}},
 #'   \code{\link{pathOptions}}
 #' @references The Leaflet API documentation:
-#'   \url{http://leafletjs.com/reference.html}
+#'   \url{http://leafletjs.com/reference-1.2.0.html}
 #' @describeIn map-layers Add a tile layer to the map
 #' @export
 addTiles <- function(
@@ -299,9 +299,9 @@ clearImages <- function(map) {
 #' The rest of all possible options for map elements and layers that are not
 #' listed in the layer functions.
 #' @param
-#' minZoom,maxZoom,maxNativeZoom,tileSize,subdomains,errorTileUrl,tms,continuousWorld,noWrap,zoomOffset,zoomReverse,zIndex,unloadInvisibleTiles,updateWhenIdle,detectRetina,reuseTiles
+#' minZoom,maxZoom,maxNativeZoom,tileSize,subdomains,errorTileUrl,tms,noWrap,zoomOffset,zoomReverse,zIndex,unloadInvisibleTiles,updateWhenIdle,detectRetina
 #' the tile layer options; see
-#' \url{http://leafletjs.com/reference.html#tilelayer}
+#' \url{http://leafletjs.com/reference-1.2.0.html#tilelayer}
 #' @param ... extra options passed to underlying Javascript object constructor.
 #' @describeIn map-options Options for tile layers
 #' @export
@@ -313,7 +313,6 @@ tileOptions <- function(
   subdomains = 'abc',
   errorTileUrl = '',
   tms = FALSE,
-  continuousWorld = FALSE,
   noWrap = FALSE,
   zoomOffset = 0,
   zoomReverse = FALSE,
@@ -322,17 +321,15 @@ tileOptions <- function(
   unloadInvisibleTiles = NULL,
   updateWhenIdle = NULL,
   detectRetina = FALSE,
-  reuseTiles = FALSE,
   ...
 ) {
   filterNULL(list(
     minZoom = minZoom, maxZoom = maxZoom, maxNativeZoom = maxNativeZoom,
     tileSize = tileSize, subdomains = subdomains, errorTileUrl = errorTileUrl,
-    tms = tms, continuousWorld = continuousWorld, noWrap = noWrap,
+    tms = tms, noWrap = noWrap,
     zoomOffset = zoomOffset, zoomReverse = zoomReverse, opacity = opacity,
     zIndex = zIndex, unloadInvisibleTiles = unloadInvisibleTiles,
     updateWhenIdle = updateWhenIdle, detectRetina = detectRetina,
-    reuseTiles = reuseTiles,
     ...
   ))
 }
@@ -382,6 +379,9 @@ addWMSTiles <- function(
   map, baseUrl, layerId = NULL, group = NULL,
   options = WMSTileOptions(), attribution = NULL, layers = ''
 ) {
+  if(layers == '') {
+    stop("layers is a required argument with comma-separated list of WMS layers to show")
+  }
   options$attribution = attribution
   options$layers = layers
   invokeMethod(map, getMapData(map), 'addWMSTiles', baseUrl, layerId, group, options)
@@ -444,7 +444,7 @@ addPopups <- function(
 #' @param className a CSS class name set on an element
 #' @param
 #' maxWidth,minWidth,maxHeight,autoPan,keepInView,closeButton,zoomAnimation,closeOnClick
-#' popup options; see \url{http://leafletjs.com/reference.html#popup}
+#' popup options; see \url{http://leafletjs.com/reference-1.2.0.html#popup-option}
 #' @describeIn map-options Options for popups
 #' @export
 popupOptions <- function(
@@ -454,10 +454,6 @@ popupOptions <- function(
   autoPan = TRUE,
   keepInView = FALSE,
   closeButton = TRUE,
-  # offset = TODO,
-  # autoPanPaddingTopLeft = TODO,
-  # autoPanPaddingBottomRight = TODO,
-  # autoPanPadding = TODO,
   zoomAnimation = TRUE,
   closeOnClick = NULL,
   className = "",
@@ -508,7 +504,7 @@ safeLabel <- function(label, data) {
 }
 
 #' @param
-#' noHide,direction,offset,textsize,textOnly,style,interactive,permanent
+#' noHide,direction,offset,textsize,textOnly,style,permanent
 #' label options; see \url{http://leafletjs.com/reference-1.2.0.html#tooltip-option}
 #' @describeIn map-options Options for labels
 #' @export
@@ -518,8 +514,7 @@ labelOptions <- function(
   noHide = NULL,
   permanent = FALSE,
   className = '',
-  direction = 'right',
-  #pane = NULL,
+  direction = 'auto',
   offset = c(0,0),
   opacity = 1,
   textsize = "10px",
@@ -528,7 +523,7 @@ labelOptions <- function(
   zoomAnimation = TRUE,
   ...
 ) {
-  # use old clickable if provided
+  # use old (Leaflet 0.7.x) clickable if provided
   if(!is.null(clickable) && interactive != clickable) interactive <- clickable
   # use old noHide if provided
   if(!is.null(noHide) && permanent != noHide) permanent <- noHide
@@ -645,7 +640,7 @@ markerClusterDependencies <- function() {
       'leaflet-markercluster',
       '1.0.5',
       system.file('htmlwidgets/plugins/Leaflet.markercluster', package = 'leaflet'),
-      script = c('leaflet.markercluster.js', 'leaflet.markercluster.freezable-src.js', 'leaflet.markercluster.layersupport-src.js'),
+      script = c('leaflet.markercluster.js', 'leaflet.markercluster.freezable.js', 'leaflet.markercluster.layersupport.js'),
       stylesheet = c('MarkerCluster.css', 'MarkerCluster.Default.css')
     )
   )
@@ -809,14 +804,16 @@ b64EncodePackedIcons <- function(packedIcons) {
   packedIcons
 }
 
-#' @param clickable whether the element emits mouse events
+#' @param interactive whether the element emits mouse events
+#' @param clickable DEPRECATED! Use the \code{interactive} option.
 #' @param
 #'   draggable,keyboard,title,alt,zIndexOffset,opacity,riseOnHover,riseOffset
-#'   marker options; see \url{http://leafletjs.com/reference.html#marker}
+#'   marker options; see \url{http://leafletjs.com/reference-1.2.0.html#marker-option}
 #' @describeIn map-options Options for markers
 #' @export
 markerOptions <- function(
-  clickable = TRUE,
+  interactive = TRUE,
+  clickable = NULL,
   draggable = FALSE,
   keyboard = TRUE,
   title = "",
@@ -827,8 +824,11 @@ markerOptions <- function(
   riseOffset = 250,
   ...
 ) {
+  # use old (Leaflet 0.7.x) clickable if provided
+  if(!is.null(clickable) && interactive != clickable) interactive <- clickable
+
   filterNULL(list(
-    clickable = clickable, draggable = draggable, keyboard = keyboard,
+    interactive = interactive, draggable = draggable, keyboard = keyboard,
     title = title, alt = alt, zIndexOffset = zIndexOffset, opacity = opacity,
     riseOnHover = riseOnHover, riseOffset = riseOffset, ...
   ))
@@ -841,7 +841,7 @@ markerOptions <- function(
 #'   spiderfy it so you can see all of its markers
 #' @param removeOutsideVisibleBounds clusters and markers too far from the
 #'   viewport are removed from the map for performance
-#' @param spiderLegPolylineOptions Allows you to specify PolylineOptions (\url{http://leafletjs.com/reference.html#polyline-options}) to style spider legs. By default, they are { weight: 1.5, color: '#222', opacity: 0.5 }
+#' @param spiderLegPolylineOptions Allows you to specify PolylineOptions (\url{http://leafletjs.com/reference-1.2.0.html#polyline-option}) to style spider legs. By default, they are { weight: 1.5, color: '#222', opacity: 0.5 }
 #' @param freezeAtZoom Allows you to freeze cluster expansion to a zoom level.
 #' Can be a zoom level e.g. 10, 12 or 'max' or 'maxKeepSpiderify'
 #' See \url{https://github.com/ghybs/Leaflet.MarkerCluster.Freezable#api-reference}
@@ -960,13 +960,16 @@ removeMarkerFromCluster <- function(map, layerId, clusterId) {
 pathOptions <- function(
   lineCap = NULL,
   lineJoin = NULL,
-  clickable = TRUE,
+  clickable = NULL,
+  interactive = TRUE,
   pointerEvents = NULL,
   className = "",
   ...
 ) {
+  # use old (Leaflet 0.7.x) clickable if provided
+  if(!is.null(clickable) && interactive != clickable) interactive <- clickable
   filterNULL(list(
-    lineCap = lineCap, lineJoin = lineJoin, clickable = clickable,
+    lineCap = lineCap, lineJoin = lineJoin, interactive = interactive ,
     pointerEvents = pointerEvents, className = className, ...
   ))
 }
@@ -1195,7 +1198,7 @@ clearGeoJSON <- function(map) {
 #' Add UI controls to switch layers on and off
 #'
 #' Uses Leaflet's built-in
-#' \href{http://leafletjs.com/reference.html#control-layers}{layers control}
+#' \href{http://leafletjs.com/reference-1.2.0.html#control-layers}{layers control}
 #' feature to allow users to choose one of several base layers, and to choose
 #' any number of overlay layers to view.
 #'
