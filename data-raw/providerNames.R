@@ -1,6 +1,8 @@
 # The JSON was extracted and fixed from ...
 # https://github.com/leaflet-extras/leaflet-providers/blob/master/leaflet-providers.js
 
+library(magrittr)
+
 providers.details <- jsonlite::fromJSON(
   './inst/htmlwidgets/lib/leaflet-providers/providers.json')
 
