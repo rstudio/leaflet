@@ -16,7 +16,7 @@ addGraticule(map, interval = 20, sphere = FALSE, style = list(color =
 
 \item{sphere}{boolean. Default FALSE}
 
-\item{style}{path options for the generated lines. See \url{http://leafletjs.com/reference.html#path-options}}
+\item{style}{path options for the generated lines. See \url{http://leafletjs.com/reference-1.2.0.html#path-option}}
 
 \item{layerId}{the layer id}
 

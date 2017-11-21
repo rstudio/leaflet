@@ -2,7 +2,7 @@ leafletMeasureDependencies <- function() {
   list(
     htmltools::htmlDependency(
       "leaflet-measure",
-      "2.0.2",
+      "2.1.7",
       system.file("htmlwidgets/lib/leaflet-measure", package = "leaflet"),
       script = "leaflet-measure.min.js",
       stylesheet = "leaflet-measure.css"
@@ -13,7 +13,7 @@ leafletMeasureDependencies <- function() {
 #' Add a measure control to the map.
 #'
 #' @param map a map widget object
-#' @param position standard \href{http://leafletjs.com/reference.html#control-positions}{Leaflet control position options}.
+#' @param position standard \href{http://leafletjs.com/reference-1.2.0.html#control-positions}{Leaflet control position options}.
 #' @param primaryLengthUnit,secondaryLengthUnit units used to display length
 #'           results. secondaryLengthUnit is optional.
 #'           Valid values are \code{"feet"}, \code{"meters"}, \code{"miles"}, and \code{"kilometers"}.
@@ -28,7 +28,7 @@ leafletMeasureDependencies <- function() {
 #'           Value should be a color represented as a hexadecimal string.
 #' @param popupOptions \code{list} of options applied to the popup
 #'           of the resulting measure feature.
-#'           Properties may be any \href{http://leafletjs.com/reference.html#popup-options}{standard Leaflet popup options}.
+#'           Properties may be any \href{http://leafletjs.com/reference-1.2.0.html#popup-option}{standard Leaflet popup options}.
 #' @param captureZIndex Z-index of the marker used to capture measure clicks.
 #'           Set this value higher than the z-index of all other map layers to
 #'           disable click events on other layers while a measurement is active.
@@ -54,51 +54,51 @@ leafletMeasureDependencies <- function() {
 #'
 #' # customizing
 #' leaf %>% addMeasure(
-#'    position = "bottomleft"
-#'   , primaryLengthUnit = "meters"
-#'   , primaryAreaUnit = "sqmeters"
-#'   , activeColor = "#3D535D"
-#'   , completedColor = "#7D4479"
-#'   , localization = 'de'
+#'   position = "bottomleft",
+#'   primaryLengthUnit = "meters",
+#'   primaryAreaUnit = "sqmeters",
+#'   activeColor = "#3D535D",
+#'   completedColor = "#7D4479",
+#'   localization = 'de'
 #' )
 #'
 #' @export
 addMeasure <- function(
-  map
-  , position = "topright"
-  , primaryLengthUnit = "feet"
-  , secondaryLengthUnit = NULL
-  , primaryAreaUnit = "acres"
-  , secondaryAreaUnit = NULL
-  , activeColor = "#ABE67E"
-  , completedColor ="#C8F2BE"
-  , popupOptions = list( className =  'leaflet-measure-resultpopup', autoPanPadding =  c(10,10) )
-  , captureZIndex = 10000
-  , localization = 'en'
-  , decPoint = '.'
-  , thousandsSep = ','
+  map,
+  position = "topright",
+  primaryLengthUnit = "feet",
+  secondaryLengthUnit = NULL,
+  primaryAreaUnit = "acres",
+  secondaryAreaUnit = NULL,
+  activeColor = "#ABE67E",
+  completedColor ="#C8F2BE",
+  popupOptions = list( className =  'leaflet-measure-resultpopup', autoPanPadding =  c(10,10) ),
+  captureZIndex = 10000,
+  localization = 'en',
+  decPoint = '.',
+  thousandsSep = ','
 ) {
   map$dependencies <- c(map$dependencies, leafletMeasureDependencies())
   invokeMethod(
-    map
-    , getMapData(map)
-    , 'addMeasure'
-    , Filter(
-        Negate(is.null)
-        ,list(
-          position = position
-          , primaryLengthUnit = primaryLengthUnit
-          , secondaryLengthUnit = secondaryLengthUnit
-          , primaryAreaUnit = primaryAreaUnit
-          , secondaryAreaUnit = secondaryAreaUnit
-          , activeColor = activeColor
-          , completedColor = completedColor
-          , popupOptions = popupOptions
-          , captureZIndex = captureZIndex
-          , localization = localization
-          , decPoint = decPoint
-          , thousandsSep = thousandsSep
-        )
+    map,
+    getMapData(map),
+    'addMeasure',
+    Filter(
+      Negate(is.null),
+      list(
+        position = position,
+        primaryLengthUnit = primaryLengthUnit,
+        secondaryLengthUnit = secondaryLengthUnit,
+        primaryAreaUnit = primaryAreaUnit,
+        secondaryAreaUnit = secondaryAreaUnit,
+        activeColor = activeColor,
+        completedColor = completedColor,
+        popupOptions = popupOptions,
+        captureZIndex = captureZIndex,
+        localization = localization,
+        decPoint = decPoint,
+        thousandsSep = thousandsSep
+      )
     )
   )
 }
@@ -107,8 +107,8 @@ addMeasure <- function(
 #' @rdname remove
 removeMeasure <- function( map ){
   invokeMethod(
-    map
-    , getMapData(map)
-    , 'removeMeasure'
+    map,
+    getMapData(map),
+    'removeMeasure'
   )
 }

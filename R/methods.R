@@ -6,8 +6,8 @@
 #' @param lat The latitude of the map center
 #' @param zoom the zoom level
 #' @param options a list of zoom/pan options (see
-#'   \url{http://leafletjs.com/reference.html#map-zoompanoptions})
-#' @references \url{http://leafletjs.com/reference.html#map-set-methods}
+#'   \url{http://leafletjs.com/reference-1.2.0.html#zoom/pan-options})
+#' @references \url{http://leafletjs.com/reference-1.2.0.html#map-methods-for-modifying-map-state}
 #' @return The modified map widget.
 #' @describeIn map-methods Set the view of the map (center and zoom level)
 #' @export
@@ -33,11 +33,31 @@ setView <- function(map, lng, lat, zoom, options = list()) {
   )
 }
 
+#' @describeIn map-methods Flys to a given location/zoom-level using smooth pan-zoom.
+#' @export
+flyTo <- function(map, lng, lat, zoom, options = list()) {
+  view = evalFormula(list(c(lat, lng), zoom, options))
+
+  dispatch(map,
+    "flyTo",
+    leaflet = {
+      map$x$flyTo = view
+      map$x$fitBounds = NULL
+      map
+    },
+    leaflet_proxy = {
+      invokeRemote(map, "flyTo", view)
+      map
+    }
+  )
+}
+
+
 #' @describeIn map-methods Set the bounds of a map
 #' @param lng1,lat1,lng2,lat2 the coordinates of the map bounds
 #' @export
-fitBounds <- function(map, lng1, lat1, lng2, lat2) {
-  bounds = evalFormula(list(lat1, lng1, lat2, lng2), getMapData(map))
+fitBounds <- function(map, lng1, lat1, lng2, lat2, options = list()) {
+  bounds = evalFormula(list(lat1, lng1, lat2, lng2, options), getMapData(map))
 
   dispatch(map,
     "fitBounds",
@@ -48,6 +68,25 @@ fitBounds <- function(map, lng1, lat1, lng2, lat2) {
     },
     leaflet_proxy = {
       invokeRemote(map, "fitBounds", bounds)
+      map
+    }
+  )
+}
+
+#' @describeIn map-methods Flys to given bound using smooth pan/zoom.
+#' @export
+flyToBounds <- function(map, lng1, lat1, lng2, lat2, options = list()) {
+  bounds = evalFormula(list(lat1, lng1, lat2, lng2, options), getMapData(map))
+
+  dispatch(map,
+    "flyToBounds",
+    leaflet = {
+      map$x$flyToBounds = bounds
+      map$x$setView = NULL
+      map
+    },
+    leaflet_proxy = {
+      invokeRemote(map, "flyToBounds", bounds)
       map
     }
   )

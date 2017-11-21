@@ -12,10 +12,9 @@
 \usage{
 tileOptions(minZoom = 0, maxZoom = 18, maxNativeZoom = NULL,
   tileSize = 256, subdomains = "abc", errorTileUrl = "", tms = FALSE,
-  continuousWorld = FALSE, noWrap = FALSE, zoomOffset = 0,
-  zoomReverse = FALSE, opacity = 1, zIndex = NULL,
-  unloadInvisibleTiles = NULL, updateWhenIdle = NULL,
-  detectRetina = FALSE, reuseTiles = FALSE, ...)
+  noWrap = FALSE, zoomOffset = 0, zoomReverse = FALSE, opacity = 1,
+  zIndex = 1, unloadInvisibleTiles = NULL, updateWhenIdle = NULL,
+  detectRetina = FALSE, ...)
 
 WMSTileOptions(styles = "", format = "image/jpeg", transparent = FALSE,
   version = "1.1.1", crs = NULL, ...)
@@ -24,26 +23,26 @@ popupOptions(maxWidth = 300, minWidth = 50, maxHeight = NULL,
   autoPan = TRUE, keepInView = FALSE, closeButton = TRUE,
   zoomAnimation = TRUE, closeOnClick = NULL, className = "", ...)
 
-labelOptions(clickable = FALSE, noHide = FALSE, className = "",
-  direction = "right", offset = c(12, -15), opacity = 1,
-  textsize = "10px", textOnly = FALSE, style = NULL,
+labelOptions(interactive = FALSE, clickable = NULL, noHide = NULL,
+  permanent = FALSE, className = "", direction = "auto", offset = c(0,
+  0), opacity = 1, textsize = "10px", textOnly = FALSE, style = NULL,
   zoomAnimation = TRUE, ...)
 
-markerOptions(clickable = TRUE, draggable = FALSE, keyboard = TRUE,
-  title = "", alt = "", zIndexOffset = 0, opacity = 1,
-  riseOnHover = FALSE, riseOffset = 250, ...)
+markerOptions(interactive = TRUE, clickable = NULL, draggable = FALSE,
+  keyboard = TRUE, title = "", alt = "", zIndexOffset = 0,
+  opacity = 1, riseOnHover = FALSE, riseOffset = 250, ...)
 
 markerClusterOptions(showCoverageOnHover = TRUE, zoomToBoundsOnClick = TRUE,
   spiderfyOnMaxZoom = TRUE, removeOutsideVisibleBounds = TRUE,
   spiderLegPolylineOptions = list(weight = 1.5, color = "#222", opacity =
   0.5), freezeAtZoom = FALSE, ...)
 
-pathOptions(lineCap = NULL, lineJoin = NULL, clickable = TRUE,
-  pointerEvents = NULL, className = "", ...)
+pathOptions(lineCap = NULL, lineJoin = NULL, clickable = NULL,
+  interactive = TRUE, pointerEvents = NULL, className = "", ...)
 }
 \arguments{
-\item{minZoom, maxZoom, maxNativeZoom, tileSize, subdomains, errorTileUrl, tms, continuousWorld, noWrap, zoomOffset, zoomReverse, zIndex, unloadInvisibleTiles, updateWhenIdle, detectRetina, reuseTiles}{the tile layer options; see
-\url{http://leafletjs.com/reference.html#tilelayer}}
+\item{minZoom, maxZoom, maxNativeZoom, tileSize, subdomains, errorTileUrl, tms, noWrap, zoomOffset, zoomReverse, zIndex, unloadInvisibleTiles, updateWhenIdle, detectRetina}{the tile layer options; see
+\url{http://leafletjs.com/reference-1.2.0.html#tilelayer}}
 
 \item{...}{extra options passed to underlying Javascript object constructor.}
 
@@ -59,15 +58,17 @@ transparency}
 
 \item{crs}{Coordinate Reference System to use for the WMS requests, defaults.}
 
-\item{maxWidth, minWidth, maxHeight, autoPan, keepInView, closeButton, zoomAnimation, closeOnClick}{popup options; see \url{http://leafletjs.com/reference.html#popup}}
+\item{maxWidth, minWidth, maxHeight, autoPan, keepInView, closeButton, zoomAnimation, closeOnClick}{popup options; see \url{http://leafletjs.com/reference-1.2.0.html#popup-option}}
 
 \item{className}{a CSS class name set on an element}
 
-\item{clickable}{whether the element emits mouse events}
+\item{interactive}{whether the element emits mouse events}
 
-\item{noHide, direction, offset, textsize, textOnly, style}{label options; see \url{https://github.com/Leaflet/Leaflet.label#options}}
+\item{clickable}{DEPRECATED! Use the \code{interactive} option.}
 
-\item{draggable, keyboard, title, alt, zIndexOffset, opacity, riseOnHover, riseOffset}{marker options; see \url{http://leafletjs.com/reference.html#marker}}
+\item{noHide, direction, offset, textsize, textOnly, style, permanent}{label options; see \url{http://leafletjs.com/reference-1.2.0.html#tooltip-option}}
+
+\item{draggable, keyboard, title, alt, zIndexOffset, opacity, riseOnHover, riseOffset}{marker options; see \url{http://leafletjs.com/reference-1.2.0.html#marker-option}}
 
 \item{showCoverageOnHover}{when you mouse over a cluster it shows the bounds
 of its markers}
@@ -80,7 +81,7 @@ spiderfy it so you can see all of its markers}
 \item{removeOutsideVisibleBounds}{clusters and markers too far from the
 viewport are removed from the map for performance}
 
-\item{spiderLegPolylineOptions}{Allows you to specify PolylineOptions (\url{http://leafletjs.com/reference.html#polyline-options}) to style spider legs. By default, they are { weight: 1.5, color: '#222', opacity: 0.5 }}
+\item{spiderLegPolylineOptions}{Allows you to specify PolylineOptions (\url{http://leafletjs.com/reference-1.2.0.html#polyline-option}) to style spider legs. By default, they are { weight: 1.5, color: '#222', opacity: 0.5 }}
 
 \item{freezeAtZoom}{Allows you to freeze cluster expansion to a zoom level.
 Can be a zoom level e.g. 10, 12 or 'max' or 'maxKeepSpiderify'

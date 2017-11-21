@@ -202,6 +202,14 @@ HTMLWidgets.widget({
           explicitView = true;
           methods.fitBounds.apply(map, data.fitBounds);
         }
+        if (data.flyTo) {
+          explicitView = true;
+          map.flyTo.apply(map, data.flyTo);
+        }
+        if (data.flyToBounds) {
+          explicitView = true;
+          methods.flyToBounds.apply(map, data.flyToBounds);
+        }
         if(data.options.center) {
           explicitView = true;
         }
