@@ -35,7 +35,7 @@ leaflet() %>% addTiles() %>%
     lng=-118.456554, lat=34.079979, radius = 5,
     label='On the Top',
     labelOptions = labelOptions(noHide = T, direction = 'top',
-                                offset=c(0,-45))
+                                offset=c(0,-15))
   )%>%
   addCircleMarkers(
     lng=-118.456554, lat=34.076279, radius = 5,

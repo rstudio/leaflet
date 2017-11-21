@@ -1,11 +1,27 @@
+/**
+ * Leaflet.MarkerCluster.Freezable 1.0.0+9db80a3
+ * Sub-plugin for Leaflet.markercluster plugin; adds the ability to freeze clusters at a specified zoom.
+ * (c) 2015-2016 Boris Seang
+ * License MIT
+ */
+(function (root, factory) {
+    if (typeof define === "function" && define.amd) {
+        define(["leaflet"], factory);
+    } else if (typeof module === "object" && module.exports) {
+        factory(require("leaflet"));
+    } else {
+        factory(root.L);
+    }
+}(this, function (L, undefined) {
+
 L.MarkerClusterGroup.include({
 
-	_originalOnAdd: L.MarkerClusterGroup.prototype.onAdd,
+	_originalOnAddFreezable: L.MarkerClusterGroup.prototype.onAdd,
 
 	onAdd: function (map) {
 		var frozenZoom = this._zoom;
 
-		this._originalOnAdd(map);
+		this._originalOnAddFreezable(map);
 
 		if (this._frozen) {
 
@@ -151,7 +167,10 @@ L.MarkerClusterGroup.include({
 			// Make as if we had instantly zoomed in from previousZoom to targetZoom.
 			this._animationStart();
 			this._topClusterLevel._recursivelyRemoveChildrenFromMap(
-				this._currentShownBounds, previousZoom, this._getExpandedVisibleBounds()
+				this._currentShownBounds,
+				this._map.getMinZoom(), // New 2nd argument added in Leaflet.markercluster 1.0.4
+				previousZoom,
+				this._getExpandedVisibleBounds()
 			);
 			this._animationZoomIn(previousZoom, targetZoom);
 
@@ -200,6 +219,9 @@ L.MarkerClusterGroup.include({
 				c._addToMap();
 			}
 		);
+
+		// Record new bounds so that newly added markers are properly displayed.
+		this._currentShownBounds = newBounds;
 	},
 
 	_originalZoomOrSpiderfy: L.MarkerClusterGroup.prototype._zoomOrSpiderfy,
@@ -216,3 +238,9 @@ L.MarkerClusterGroup.include({
 	}
 
 });
+
+
+
+}));
+
+//# sourceMappingURL=leaflet.markercluster.freezable-src.map

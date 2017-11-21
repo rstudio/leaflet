@@ -73,7 +73,7 @@ polarmaps <- purrr::map2(crses, tileURLtemplates,
         addTiles(urlTemplate = tileURLTemplate,
           attribution = "Map © ArcticConnect. Data © OpenStreetMap contributors",
           options = tileOptions(subdomains = "abc", noWrap = TRUE,
-                      continuousWorld = FALSE))
+                      continuousWorld = FALSE, detectRetina = TRUE))
     })
 
 #' #### EPSG:3571

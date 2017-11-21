@@ -349,7 +349,7 @@ export default class LayerManager {
     if (layerInfo.ctGroup) {
       let ctGroup = this._byCrosstalkGroup[layerInfo.ctGroup];
       let layersForKey = ctGroup[layerInfo.ctKey];
-      let idx = layersForKey ? layersForKey.indexOf(stamp) : -1;
+      let idx = layersForKey ? layersForKey.indexOf(+stamp) : -1;
       if (idx >= 0) {
         if (layersForKey.length === 1) {
           delete ctGroup[layerInfo.ctKey];

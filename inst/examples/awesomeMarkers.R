@@ -72,7 +72,7 @@ popIcons <- awesomeIconList(
   blue = makeAwesomeIcon(icon='user', library='glyphicon', markerColor = 'blue'),
   red = makeAwesomeIcon(icon='users', library='fa', markerColor = 'red'))
 
-leaflet(cities) %>% addTiles() %>%
+leaflet(cities) %>% addProviderTiles(providers$CartoDB.DarkMatter) %>%
   addAwesomeMarkers(lng = ~Long, lat = ~Lat,
              label = ~City,
              labelOptions = rep(labelOptions(noHide = T),nrow(cities)),

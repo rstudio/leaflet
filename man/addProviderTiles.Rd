@@ -9,8 +9,7 @@ addProviderTiles(map, provider, layerId = NULL, group = NULL,
   options = providerTileOptions())
 
 providerTileOptions(errorTileUrl = "", noWrap = FALSE, opacity = NULL,
-  zIndex = NULL, unloadInvisibleTiles = NULL, updateWhenIdle = NULL,
-  detectRetina = FALSE, reuseTiles = FALSE, ...)
+  zIndex = NULL, updateWhenIdle = NULL, detectRetina = FALSE, ...)
 }
 \arguments{
 \item{map}{the map to add the tile layer to}
@@ -28,8 +27,8 @@ identifier-style names.}
 
 \item{options}{tile options}
 
-\item{errorTileUrl, noWrap, opacity, zIndex, unloadInvisibleTiles, updateWhenIdle, detectRetina, reuseTiles}{the tile layer options; see
-\url{http://leafletjs.com/reference.html#tilelayer}}
+\item{errorTileUrl, noWrap, opacity, zIndex, updateWhenIdle, detectRetina}{the tile layer options; see
+\url{http://leafletjs.com/reference-1.2.0.html#tilelayer}}
 
 \item{...}{named parameters to add to the options}
 }

@@ -92,7 +92,7 @@ derivePolygons <- function(data, lng = NULL, lat = NULL,
   lng = resolveFormula(lng, data)
   lat = resolveFormula(lat, data)
 
-  df <- validateCoords(lng, lat, funcName)
+  df <- validateCoords(lng, lat, funcName, mode = "polygon")
   polygonData(cbind(df$lng, df$lat))
 }
 

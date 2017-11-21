@@ -6,30 +6,32 @@ library(leaflet)
 #' Default SPherical Mercator Projection specified explicitly
 leaflet(
   options =
-    leafletOptions(crs=leafletCRS(crsClass='L.CRS.EPSG3857'))) %>% addTiles()
+    leafletOptions(crs=leafletCRS(crsClass='L.CRS.EPSG3857'))) %>%
+  addTiles()
 
 #' <br/><br/>Gothenberg, Sweeden in default projection
 leaflet() %>%
-  addTiles() %>% setView(11.965, 57.704, 16)
+  addTiles() %>%
+  setView(11.965, 57.704, 16)
 
 
 #' <br/><br/>Gothenberg, Sweeden in local projection
 leaflet(
   options =
     leafletOptions(
-      worldCopyJump = FALSE,
       crs=leafletCRS(
         crsClass="L.Proj.CRS",
         code='EPSG:3006',
         proj4def='+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs',
         resolutions = c(
           8192, 4096, 2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5 ),
-        origin =c(0, 0))
+        origin =c(0, 0)
+        )
       )) %>%
   addTiles(
     urlTemplate = 'http://api.geosition.com/tile/osm-bright-3006/{z}/{x}/{y}.png',
     attribution = 'Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>, Imagery &copy; 2013 <a href="http://www.kartena.se/">Kartena</a>',
-    options = tileOptions(minZoom=0,maxZoom=14,continuousWorld = TRUE)) %>%
+    options = tileOptions(minZoom=0,maxZoom=14)) %>%
   setView(11.965, 57.704, 13)
 
 #' <br/><br/>

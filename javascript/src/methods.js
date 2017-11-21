@@ -44,11 +44,22 @@ methods.setView = function(center, zoom, options) {
   this.setView(center, zoom, options);
 };
 
-methods.fitBounds = function(lat1, lng1, lat2, lng2) {
+methods.fitBounds = function(lat1, lng1, lat2, lng2, options) {
   this.fitBounds([
     [lat1, lng1], [lat2, lng2]
-  ]);
+  ], options);
 };
+
+methods.flyTo = function(center, zoom, options) {
+  this.flyTo(center, zoom, options);
+};
+
+methods.flyToBounds = function(lat1, lng1, lat2, lng2, options) {
+  this.flyToBounds([
+    [lat1, lng1], [lat2, lng2]
+  ], options);
+};
+
 
 methods.setMaxBounds = function(lat1, lng1, lat2, lng2) {
   this.setMaxBounds([
@@ -177,6 +188,7 @@ function addMarkers(map, df, group, clusterOptions, clusterId, markerFunc) {
           marker.on("click", mouseHandler(this.id, thisId, thisGroup, "marker_click", extraInfo), this);
           marker.on("mouseover", mouseHandler(this.id, thisId, thisGroup, "marker_mouseover", extraInfo), this);
           marker.on("mouseout", mouseHandler(this.id, thisId, thisGroup, "marker_mouseout", extraInfo), this);
+          marker.on("dragend", mouseHandler(this.id, thisId, thisGroup, "marker_dragend", extraInfo), this);
         }).call(this);
       }
     }
@@ -776,13 +788,13 @@ methods.addLegend = function(options) {
         height: totalHeight + vMargin*2 + "px"
       });
 
-      if (options.na_color) {
+      if (options.na_color && ($.inArray(options.na_label, labels)<0) ) {
         $(div).append("<div><i style=\"background:" + options.na_color +
                       ";opacity:" + options.opacity +
                       ";\"></i> " + options.na_label + "</div>");
       }
     } else {
-      if (options.na_color) {
+      if (options.na_color && ($.inArray(options.na_label, labels)<0) ) {
         colors.push(options.na_color);
         labels.push(options.na_label);
       }

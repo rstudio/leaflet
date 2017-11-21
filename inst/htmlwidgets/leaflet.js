@@ -184,7 +184,10 @@ function getCRS(crsOptions) {
       if (crsOptions.options && crsOptions.options.transformation) {
         crsOptions.options.transformation = _leaflet2.default.Transformation(crsOptions.options.transformation[0], crsOptions.options.transformation[1], crsOptions.options.transformation[2], crsOptions.options.transformation[3]);
       }
-      crs = new _proj4leaflet2.default.CRS.TMS(crsOptions.code, crsOptions.proj4def, crsOptions.projectedBounds, crsOptions.options);
+      // L.Proj.CRS.TMS is deprecated as of Leaflet 1.x, fall back to L.Proj.CRS
+      //crs = new Proj4Leaflet.CRS.TMS(crsOptions.code, crsOptions.proj4def,
+      //crsOptions.projectedBounds, crsOptions.options);
+      crs = new _proj4leaflet2.default.CRS(crsOptions.code, crsOptions.proj4def, crsOptions.options);
       break;
   }
   return crs;
@@ -632,6 +635,14 @@ _htmlwidgets2.default.widget({
         if (data.fitBounds) {
           explicitView = true;
           methods.fitBounds.apply(map, data.fitBounds);
+        }
+        if (data.flyTo) {
+          explicitView = true;
+          map.flyTo.apply(map, data.flyTo);
+        }
+        if (data.flyToBounds) {
+          explicitView = true;
+          methods.flyToBounds.apply(map, data.flyToBounds);
         }
         if (data.options.center) {
           explicitView = true;
@@ -1109,7 +1120,7 @@ var LayerManager = function () {
       if (layerInfo.ctGroup) {
         var ctGroup = this._byCrosstalkGroup[layerInfo.ctGroup];
         var layersForKey = ctGroup[layerInfo.ctKey];
-        var idx = layersForKey ? layersForKey.indexOf(stamp) : -1;
+        var idx = layersForKey ? layersForKey.indexOf(+stamp) : -1;
         if (idx >= 0) {
           if (layersForKey.length === 1) {
             delete ctGroup[layerInfo.ctKey];
@@ -1208,8 +1219,16 @@ methods.setView = function (center, zoom, options) {
   this.setView(center, zoom, options);
 };
 
-methods.fitBounds = function (lat1, lng1, lat2, lng2) {
-  this.fitBounds([[lat1, lng1], [lat2, lng2]]);
+methods.fitBounds = function (lat1, lng1, lat2, lng2, options) {
+  this.fitBounds([[lat1, lng1], [lat2, lng2]], options);
+};
+
+methods.flyTo = function (center, zoom, options) {
+  this.flyTo(center, zoom, options);
+};
+
+methods.flyToBounds = function (lat1, lng1, lat2, lng2, options) {
+  this.flyToBounds([[lat1, lng1], [lat2, lng2]], options);
 };
 
 methods.setMaxBounds = function (lat1, lng1, lat2, lng2) {
@@ -1337,6 +1356,7 @@ function addMarkers(map, df, group, clusterOptions, clusterId, markerFunc) {
           marker.on("click", mouseHandler(this.id, thisId, thisGroup, "marker_click", extraInfo), this);
           marker.on("mouseover", mouseHandler(this.id, thisId, thisGroup, "marker_mouseover", extraInfo), this);
           marker.on("mouseout", mouseHandler(this.id, thisId, thisGroup, "marker_mouseout", extraInfo), this);
+          marker.on("dragend", mouseHandler(this.id, thisId, thisGroup, "marker_dragend", extraInfo), this);
         }).call(_this3);
       }
     };
@@ -1856,12 +1876,12 @@ methods.addLegend = function (options) {
           height: totalHeight + vMargin * 2 + "px"
         });
 
-        if (options.na_color) {
+        if (options.na_color && _jquery2.default.inArray(options.na_label, labels) < 0) {
           (0, _jquery2.default)(div).append("<div><i style=\"background:" + options.na_color + ";opacity:" + options.opacity + ";\"></i> " + options.na_label + "</div>");
         }
       })();
     } else {
-      if (options.na_color) {
+      if (options.na_color && _jquery2.default.inArray(options.na_label, labels) < 0) {
         colors.push(options.na_color);
         labels.push(options.na_label);
       }
