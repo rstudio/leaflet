@@ -22,9 +22,7 @@ setView <- function(map, lng, lat, zoom, options = list()) {
   dispatch(map,
     "setView",
     leaflet = {
-      map$x$setView = view
-      map$x$fitBounds = NULL
-      map
+      changeView(map, setView = view)
     },
     leaflet_proxy = {
       invokeRemote(map, "setView", view)
@@ -41,9 +39,7 @@ flyTo <- function(map, lng, lat, zoom, options = list()) {
   dispatch(map,
     "flyTo",
     leaflet = {
-      map$x$flyTo = view
-      map$x$fitBounds = NULL
-      map
+      changeView(map, flyTo = view)
     },
     leaflet_proxy = {
       invokeRemote(map, "flyTo", view)
@@ -62,9 +58,7 @@ fitBounds <- function(map, lng1, lat1, lng2, lat2, options = list()) {
   dispatch(map,
     "fitBounds",
     leaflet = {
-      map$x$fitBounds = bounds
-      map$x$setView = NULL
-      map
+      changeView(map, fitBounds = bounds)
     },
     leaflet_proxy = {
       invokeRemote(map, "fitBounds", bounds)
@@ -81,9 +75,7 @@ flyToBounds <- function(map, lng1, lat1, lng2, lat2, options = list()) {
   dispatch(map,
     "flyToBounds",
     leaflet = {
-      map$x$flyToBounds = bounds
-      map$x$setView = NULL
-      map
+      changeView(map, flyToBounds = bounds)
     },
     leaflet_proxy = {
       invokeRemote(map, "flyToBounds", bounds)
@@ -106,9 +98,17 @@ clearBounds <- function(map) {
   dispatch(map,
     "clearBounds",
     leaflet = {
-      map$x$fitBounds = NULL
-      map$x$setView = NULL
-      map
+      changeView(map)
     }
   )
+}
+
+
+changeView <- function(map, setView = NULL, fitBounds = NULL, flyTo = NULL, flyToBounds = NULL) {
+  map$x$setView <- setView
+  map$x$fitBounds <- fitBounds
+  map$x$flyTo <- flyTo
+  map$x$flyToBounds <- flyToBounds
+
+  map
 }
