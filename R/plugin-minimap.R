@@ -1,4 +1,4 @@
-globalVariables(c('providers')) # To make R CMD Check happy
+utils::globalVariables(c('providers')) # To make R CMD Check happy
 
 leafletMiniMapDependencies <- function() {
   list(
