@@ -39,7 +39,7 @@ export default class LayerManager {
     let hasId = typeof(layerId) === "string";
     let grouped = typeof(group) === "string";
 
-    let stamp = L.Util.stamp(layer);
+    let stamp = L.Util.stamp(layer) + "";
 
     // This will be the default layer group to add the layer to.
     // We may overwrite this let before using it (i.e. if a group is assigned).
@@ -349,7 +349,7 @@ export default class LayerManager {
     if (layerInfo.ctGroup) {
       let ctGroup = this._byCrosstalkGroup[layerInfo.ctGroup];
       let layersForKey = ctGroup[layerInfo.ctKey];
-      let idx = layersForKey ? layersForKey.indexOf(+stamp) : -1;
+      let idx = layersForKey ? layersForKey.indexOf(stamp) : -1;
       if (idx >= 0) {
         if (layersForKey.length === 1) {
           delete ctGroup[layerInfo.ctKey];
