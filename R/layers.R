@@ -379,7 +379,7 @@ addWMSTiles <- function(
   map, baseUrl, layerId = NULL, group = NULL,
   options = WMSTileOptions(), attribution = NULL, layers = ''
 ) {
-  if(layers == '') {
+  if(identical(layers, '')) {
     stop("layers is a required argument with comma-separated list of WMS layers to show")
   }
   options$attribution = attribution
