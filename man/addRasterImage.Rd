@@ -7,7 +7,8 @@
 \usage{
 addRasterImage(map, x, colors = "Spectral", opacity = 1,
   attribution = NULL, layerId = NULL, group = NULL, project = TRUE,
-  method = c("bilinear", "ngb"), maxBytes = 4 * 1024 * 1024)
+  method = c("bilinear", "ngb"), maxBytes = 4 * 1024 * 1024,
+  data = getMapData(map))
 
 projectRasterForLeaflet(x, method)
 }
@@ -42,6 +43,10 @@ Ignored if \code{project = FALSE}. See \code{\link{projectRaster}} for details.}
 
 \item{maxBytes}{the maximum number of bytes to allow for the projected image
 (before base64 encoding); defaults to 4MB.}
+
+\item{data}{the data object from which the argument values are derived; by
+default, it is the \code{data} object provided to \code{leaflet()}
+initially, but can be overridden}
 }
 \description{
 Create an image overlay from a \code{RasterLayer} object. \emph{This is only

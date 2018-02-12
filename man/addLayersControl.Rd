@@ -8,7 +8,8 @@
 \usage{
 addLayersControl(map, baseGroups = character(0),
   overlayGroups = character(0), position = c("topright", "bottomright",
-  "bottomleft", "topleft"), options = layersControlOptions())
+  "bottomleft", "topleft"), options = layersControlOptions(),
+  data = getMapData(map))
 
 layersControlOptions(collapsed = TRUE, autoZIndex = TRUE, ...)
 
@@ -29,6 +30,10 @@ group. The user can turn each overlay group on or off independently.}
 
 \item{options}{a list of additional options, intended to be provided by
 a call to \code{layersControlOptions}}
+
+\item{data}{the data object from which the argument values are derived; by
+default, it is the \code{data} object provided to \code{leaflet()}
+initially, but can be overridden}
 
 \item{collapsed}{if \code{TRUE} (the default), the layers control will be
 rendered as an icon that expands when hovered over. Set to \code{FALSE}

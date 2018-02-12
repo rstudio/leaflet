@@ -8,7 +8,8 @@
 addLegend(map, position = c("topright", "bottomright", "bottomleft",
   "topleft"), pal, values, na.label = "NA", bins = 7, colors,
   opacity = 0.5, labels = NULL, labFormat = labelFormat(), title = NULL,
-  className = "info legend", layerId = NULL, group = NULL)
+  className = "info legend", layerId = NULL, group = NULL,
+  data = getMapData(map))
 
 labelFormat(prefix = "", suffix = "", between = " &ndash; ", digits = 3,
   big.mark = ",", transform = identity)
@@ -57,6 +58,10 @@ with this name and will auto add/remove the legend as the
 group is added/removed, for example via layerControl.
 You will need to set the \code{group} when you add a layer
 (e.g. \code{\link{addPolygons}}) and supply the same name here.}
+
+\item{data}{the data object from which the argument values are derived; by
+default, it is the \code{data} object provided to \code{leaflet()}
+initially, but can be overridden}
 
 \item{prefix}{a prefix of legend labels}
 

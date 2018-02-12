@@ -156,7 +156,8 @@ addTiles <- function(
   attribution = NULL,
   layerId = NULL,
   group = NULL,
-  options = tileOptions()
+  options = tileOptions(),
+  data = getMapData(map)
 ) {
   options$attribution = attribution
   if (missing(urlTemplate) && is.null(options$attribution))
@@ -164,7 +165,7 @@ addTiles <- function(
       '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a>',
       'contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
     )
-  invokeMethod(map, getMapData(map), 'addTiles', urlTemplate, layerId, group,
+  invokeMethod(map, data, 'addTiles', urlTemplate, layerId, group,
     options)
 }
 
@@ -217,6 +218,7 @@ epsg3857 <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y
 #'   Ignored if \code{project = FALSE}. See \code{\link{projectRaster}} for details.
 #' @param maxBytes the maximum number of bytes to allow for the projected image
 #'   (before base64 encoding); defaults to 4MB.
+#' @template data-getMapData
 #'
 #' @examples
 #' library(raster)
@@ -238,7 +240,8 @@ addRasterImage <- function(
   group = NULL,
   project = TRUE,
   method = c("bilinear", "ngb"),
-  maxBytes = 4*1024*1024
+  maxBytes = 4*1024*1024,
+  data = getMapData(map)
 ) {
   stopifnot(inherits(x, "RasterLayer"))
 
@@ -268,7 +271,7 @@ addRasterImage <- function(
     list(raster::ymin(bounds), raster::xmax(bounds))
   )
 
-  invokeMethod(map, getMapData(map), "addRasterImage", uri, latlng, opacity, attribution, layerId, group) %>%
+  invokeMethod(map, data, "addRasterImage", uri, latlng, opacity, attribution, layerId, group) %>%
     expandLimits(c(raster::ymin(bounds), raster::ymax(bounds)), c(raster::xmin(bounds), raster::xmax(bounds)))
 }
 
@@ -377,14 +380,15 @@ clearTiles <- function(map) {
 #' @export
 addWMSTiles <- function(
   map, baseUrl, layerId = NULL, group = NULL,
-  options = WMSTileOptions(), attribution = NULL, layers = ''
+  options = WMSTileOptions(), attribution = NULL, layers = '',
+  data = getMapData(map)
 ) {
   if(identical(layers, '')) {
     stop("layers is a required argument with comma-separated list of WMS layers to show")
   }
   options$attribution = attribution
   options$layers = layers
-  invokeMethod(map, getMapData(map), 'addWMSTiles', baseUrl, layerId, group, options)
+  invokeMethod(map, data, 'addWMSTiles', baseUrl, layerId, group, options)
 }
 
 #' @param styles comma-separated list of WMS styles
@@ -426,9 +430,7 @@ WMSTileOptions <- function(
 #'   Human-friendly group names are permitted--they need not be short,
 #'   identifier-style names. Any number of layers and even different types of
 #'   layers (e.g. markers and polygons) can share the same group name.
-#' @param data the data object from which the argument values are derived; by
-#'   default, it is the \code{data} object provided to \code{leaflet()}
-#'   initially, but can be overridden
+#' @template data-getMapData
 #' @describeIn map-layers Add popups to the map
 #' @export
 addPopups <- function(
@@ -1173,14 +1175,15 @@ addGeoJSON <- function(map, geojson, layerId = NULL, group = NULL,
   dashArray = NULL,
   smoothFactor = 1.0,
   noClip = FALSE,
-  options = pathOptions()
+  options = pathOptions(),
+  data = getMapData(map)
 ) {
   options = c(options, filterNULL(list(
     stroke = stroke, color = color, weight = weight, opacity = opacity,
     fill = fill, fillColor = fillColor, fillOpacity = fillOpacity,
     dashArray = dashArray, smoothFactor = smoothFactor, noClip = noClip
   )))
-  invokeMethod(map, getMapData(map), 'addGeoJSON', geojson, layerId, group, options)
+  invokeMethod(map, data, 'addGeoJSON', geojson, layerId, group, options)
 }
 
 #' @rdname remove
@@ -1212,6 +1215,7 @@ clearGeoJSON <- function(map) {
 #'   'bottomright'
 #' @param options a list of additional options, intended to be provided by
 #'   a call to \code{layersControlOptions}
+#' @template data-getMapData
 #'
 #' @examples
 #' \donttest{
@@ -1229,10 +1233,12 @@ clearGeoJSON <- function(map) {
 addLayersControl <- function(map,
   baseGroups = character(0), overlayGroups = character(0),
   position = c('topright', 'bottomright', 'bottomleft', 'topleft'),
-  options = layersControlOptions()) {
+  options = layersControlOptions(),
+  data = getMapData(map)
+) {
 
   options = c(options, list(position = match.arg(position)))
-  invokeMethod(map, getMapData(map), 'addLayersControl', baseGroups,
+  invokeMethod(map, data, 'addLayersControl', baseGroups,
     overlayGroups, options)
 }
 
