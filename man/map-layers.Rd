@@ -24,10 +24,11 @@ addControl(map, html, position = c("topleft", "topright", "bottomleft",
 addTiles(map,
   urlTemplate = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
   attribution = NULL, layerId = NULL, group = NULL,
-  options = tileOptions())
+  options = tileOptions(), data = getMapData(map))
 
 addWMSTiles(map, baseUrl, layerId = NULL, group = NULL,
-  options = WMSTileOptions(), attribution = NULL, layers = "")
+  options = WMSTileOptions(), attribution = NULL, layers = "",
+  data = getMapData(map))
 
 addPopups(map, lng = NULL, lat = NULL, popup, layerId = NULL,
   group = NULL, options = popupOptions(), data = getMapData(map))
@@ -85,7 +86,8 @@ addPolygons(map, lng = NULL, lat = NULL, layerId = NULL, group = NULL,
 addGeoJSON(map, geojson, layerId = NULL, group = NULL, stroke = TRUE,
   color = "#03F", weight = 5, opacity = 0.5, fill = TRUE,
   fillColor = color, fillOpacity = 0.2, dashArray = NULL,
-  smoothFactor = 1, noClip = FALSE, options = pathOptions())
+  smoothFactor = 1, noClip = FALSE, options = pathOptions(),
+  data = getMapData(map))
 
 addTopoJSON(map, topojson, layerId = NULL, group = NULL, stroke = TRUE,
   color = "#03F", weight = 5, opacity = 0.5, fill = TRUE,

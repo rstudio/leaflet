@@ -25,3 +25,5 @@
 ^inst/htmlwidgets/lib/leaflet-measure/leaflet-measure.js$
 ^inst/htmlwidgets/plugins/Proj4Leaflet/proj4.js$
 ^revdep/
+^\.lintr$
+^man-roxygen/
