@@ -55,9 +55,7 @@
 #'   group is added/removed, for example via layerControl.
 #'   You will need to set the \code{group} when you add a layer
 #'   (e.g. \code{\link{addPolygons}}) and supply the same name here.
-#' @param data the data object from which the argument values are derived; by
-#'   default, it is the \code{data} object provided to \code{leaflet()}
-#'   initially, but can be overridden
+#' @template data-getMapData
 #' @example inst/examples/legend.R
 #' @export
 addLegend <- function(
