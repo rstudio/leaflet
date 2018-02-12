@@ -1,14 +1,11 @@
-leaflet 2.0
+leaflet 1.2.0
 --------------------------------------------------------------------------------
 
-* update to leaflet.js v1.0.3
+* Update to leaflet.js v1.0.3
 
-* all plugins updated to their newest versions compatible with leaflet > 1.0
+* All plugins updated to their newest versions compatible with leaflet > 1.0
 
 * leaflet-label plugin now L.tooltip in leaflet.js.  labelOptions() now translates old options clickable to interactive and noHide to permanent.
-
-leaflet 1.1.1
---------------------------------------------------------------------------------
 
 * Fix a bug where the default `addTiles()` would not work with .html files
   served directly from the filesystem.
@@ -112,4 +109,3 @@ leaflet 1.0.0
 --------------------------------------------------------------------------------
 
 * Initial release
-
