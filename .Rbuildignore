@@ -24,3 +24,4 @@
 ^inst/htmlwidgets/plugins/Leaflet.markercluster/leaflet.markercluster-src.js$
 ^inst/htmlwidgets/lib/leaflet-measure/leaflet-measure.js$
 ^inst/htmlwidgets/plugins/Proj4Leaflet/proj4.js$
+^revdep/
