@@ -1,9 +1,9 @@
 leaflet 1.2.0
 --------------------------------------------------------------------------------
 
-* Update to leaflet.js v1.2.0
+* Update to leaflet.js v1.2.0 (#453)
 
-* All plugins updated to their newest versions compatible with leaflet > 1.0
+* All plugins updated to their newest versions compatible with leaflet > 1.0 (#458)
 
 * leaflet-label plugin now L.tooltip in leaflet.js.  labelOptions() now translates old options clickable to interactive and noHide to permanent.
 
@@ -20,6 +20,18 @@ leaflet 1.2.0
   browser zoom level is not 100%.
 
 * Fix incorrect opacity on NA entry in legend. (PR #425)
+
+* Added support for drag events (#405)
+
+* Ensure type safety of .indexOf(stamp) (#396)
+
+* `validateCoords()` warns on invalid polygon data (#393)
+
+* Added `method` argument to `addRasterImage()` to enable nearest neighbor interpolation when projecting categorical rasters (#462)
+
+* Added an `'auto'` method for `addRasterImage()`. Projected factor results are coerced into factors. (9accc7e)
+
+* Added `data` parameter to remaining `addXXX()` methods, including addLegend. (f273edd, #491, #485)
 
 leaflet 1.1.0
 --------------------------------------------------------------------------------
