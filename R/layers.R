@@ -233,28 +233,56 @@ epsg3857 <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y
 addRasterImage <- function(
   map,
   x,
-  colors = "Spectral",
+  colors = if (raster::is.factor(x)) "Set1" else "Spectral",
   opacity = 1,
   attribution = NULL,
   layerId = NULL,
   group = NULL,
   project = TRUE,
-  method = c("bilinear", "ngb"),
-  maxBytes = 4*1024*1024,
+  method = c("auto", "bilinear", "ngb"),
+  maxBytes = 4 * 1024 * 1024,
   data = getMapData(map)
 ) {
   stopifnot(inherits(x, "RasterLayer"))
 
+  raster_is_factor <- raster::is.factor(x)
+  method <- match.arg(method)
+  if (method == "auto") {
+    if (raster_is_factor) {
+      method <- "ngb"
+    } else {
+      method <- "bilinear"
+    }
+  }
+
   if (project) {
-    method <- match.arg(method, c("bilinear", "ngb"))
+    # if we should project the data
     projected <- projectRasterForLeaflet(x, method)
+
+    # if data is factor data, make the result factors as well.
+    if (raster_is_factor) {
+      projected <- raster::as.factor(projected)
+    }
   } else {
+    # do not project data
     projected <- x
   }
-  bounds <- raster::extent(raster::projectExtent(raster::projectExtent(x, crs = sp::CRS(epsg3857)), crs = sp::CRS(epsg4326)))
+
+  bounds <- raster::extent(
+    raster::projectExtent(
+      raster::projectExtent(x, crs = sp::CRS(epsg3857)),
+      crs = sp::CRS(epsg4326)
+    )
+  )
 
   if (!is.function(colors)) {
-    colors <- colorNumeric(colors, domain = NULL, na.color = "#00000000", alpha = TRUE)
+    if (method == "ngb") {
+      # 'factors'
+      colors <- colorFactor(colors, domain = NULL, na.color = "#00000000", alpha = TRUE)
+    } else {
+      # 'numeric'
+      colors <- colorNumeric(colors, domain = NULL, na.color = "#00000000", alpha = TRUE)
+    }
   }
 
   tileData <- raster::values(projected) %>% colors() %>% col2rgb(alpha = TRUE) %>% as.raw()
