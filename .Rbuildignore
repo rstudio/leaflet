@@ -26,4 +26,5 @@
 ^inst/htmlwidgets/plugins/Proj4Leaflet/proj4.js$
 ^revdep/
 ^\.lintr$
+^\.github/
 ^man-roxygen/
