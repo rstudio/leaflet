@@ -220,6 +220,7 @@ colorFactor <- function(palette, domain, levels = NULL, ordered = FALSE,
   }
   lvls = getLevels(domain, NULL, levels, ordered)
 
+  force(palette)
   withColorAttr('factor', list(na.color = na.color), function(x) {
     if (length(x) == 0 || all(is.na(x))) {
       return(rep.int(na.color, length(x)))
