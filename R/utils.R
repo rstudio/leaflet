@@ -129,8 +129,9 @@ invokeMethod <- function(map, data, method, ...) {
 #'   })
 #' }
 #'
+#' \donttest{
 #' shinyApp(ui, server)
-#'
+#' }
 #' }
 #'
 #' @export

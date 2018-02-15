@@ -67,8 +67,9 @@ server <- function(input, output, session) {
   })
 }
 
+\donttest{
 shinyApp(ui, server)
-
+}
 }
 
 }
