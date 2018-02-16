@@ -43,7 +43,7 @@ addProviderTiles <- function(
   options = providerTileOptions()
 ) {
   map$dependencies <- c(map$dependencies, leafletProviderDependencies())
-  invokeMethod(map, getMapData(map), 'addProviderTiles',
+  invokeMethod(map, getMapData(map), "addProviderTiles",
     provider, layerId, group, options)
 }
 
@@ -54,7 +54,7 @@ addProviderTiles <- function(
 #' @param ... named parameters to add to the options
 #' @rdname addProviderTiles
 #' @export
-providerTileOptions <- function(errorTileUrl = '', noWrap = FALSE,
+providerTileOptions <- function(errorTileUrl = "", noWrap = FALSE,
   opacity = NULL, zIndex = NULL,
   updateWhenIdle = NULL, detectRetina = FALSE, ...
 ) {

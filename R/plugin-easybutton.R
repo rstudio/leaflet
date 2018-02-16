@@ -5,7 +5,7 @@ leafletEasyButtonDependencies <- function() {
       "1.3.1",
       system.file("htmlwidgets/plugins/Leaflet.EasyButton", package = "leaflet"),
       script = c("easy-button.js", "EasyButton-binding.js"),
-      stylesheet = c('easy-button.css')
+      stylesheet = c("easy-button.css")
     )
   )
 }
@@ -21,7 +21,7 @@ easyButtonState <- function(
    title,
    onClick
 ) {
-  if(!inherits(onClick,'JS_EVAL')) {
+ if (!inherits(onClick, "JS_EVAL")) {
     stop("onClick needs to be a returned value from a JS() call")
   }
   structure(list(
@@ -30,7 +30,7 @@ easyButtonState <- function(
     title = as.character(title),
     onClick = onClick
   ),
-      class='leaflet_easybutton_state')
+      class = "leaflet_easybutton_state")
 }
 
 #' Creates an easy button.
@@ -50,12 +50,12 @@ easyButton <- function(
   id = NULL,
   states = NULL
 ) {
-  if(!missing(onClick) && !inherits(onClick,'JS_EVAL')) {
+ if (!missing(onClick) && !inherits(onClick, "JS_EVAL")) {
     stop("onClick needs to be a returned value from a JS() call")
   }
-  if(!is.null(states) && ! (
-    inherits(states,'list') &&
-    all(sapply(states,function(x) inherits(x,'leaflet_easybutton_state'))))) {
+ if (!is.null(states) && ! (
+    inherits(states, "list") &&
+    all(sapply(states, function(x) inherits(x, "leaflet_easybutton_state"))))) {
     stop("states needs to be a list() of easyButton instances")
   }
   structure(filterNULL(list(
@@ -66,7 +66,7 @@ easyButton <- function(
     id = id,
     states = states
   )),
-      class='leaflet_easybutton')
+      class = "leaflet_easybutton")
 }
 
 #' Add a EasyButton on the map
@@ -80,7 +80,7 @@ easyButton <- function(
 #' leaf <- leaflet() %>%
 #'   addTiles() %>%
 #'   addEasyButton(easyButton(
-#'      icon = htmltools::span(class='star','&starf;'),
+#'      icon = htmltools::span(class = "star", "&starf;"),
 #'      onClick = JS("function(btn, map){ map.setZoom(1);}")))
 #'
 #' @describeIn easyButton add an EasyButton to the map
@@ -90,33 +90,33 @@ addEasyButton <- function(
   button
 ) {
 
-  if(!inherits(button,'leaflet_easybutton')) {
-    stop('button should be created with easyButton()')
+ if (!inherits(button, "leaflet_easybutton")) {
+    stop("button should be created with easyButton()")
   }
 
   map$dependencies <- c(map$dependencies, leafletEasyButtonDependencies())
 
   # Add dependencies for various icon libs if required.
-  if(is.null(button$states)) {
-    if(grepl('fa-',button$icon))
+ if (is.null(button$states)) {
+   if (grepl("fa-", button$icon))
       map$dependencies <- c(map$dependencies, leafletAmFontAwesomeDependencies())
-    if(grepl('glyphicon-',button$icon))
+   if (grepl("glyphicon-", button$icon))
       map$dependencies <- c(map$dependencies, leafletAmBootstrapDependencies())
-    if(grepl('ion-',button$icon))
+   if (grepl("ion-", button$icon))
       map$dependencies <- c(map$dependencies, leafletAmIonIconDependencies())
   } else {
-    if(any(sapply(button$states,function(x) grepl('fa-',x$icon))))
+   if (any(sapply(button$states, function(x) grepl("fa-", x$icon))))
       map$dependencies <- c(map$dependencies, leafletAmFontAwesomeDependencies())
-    if(any(sapply(button$states,function(x) grepl('glyphicon-',x$icon))))
+   if (any(sapply(button$states, function(x) grepl("glyphicon-", x$icon))))
       map$dependencies <- c(map$dependencies, leafletAmBootstrapDependencies())
-    if(any(sapply(button$states,function(x) grepl('ion-',x$icon))))
+   if (any(sapply(button$states, function(x) grepl("ion-", x$icon))))
       map$dependencies <- c(map$dependencies, leafletAmIonIconDependencies())
   }
 
   invokeMethod(
     map,
     getMapData(map),
-    'addEasyButton',
+    "addEasyButton",
     button
   )
 }
@@ -133,11 +133,11 @@ addEasyButton <- function(
 #'   addTiles() %>%
 #'   addEasyButtonBar(
 #'    easyButton(
-#'      icon = htmltools::span(class='star','&starf;'),
-#'      onClick = JS("function(btn, map){ alert('Button 1');}")),
+#'      icon = htmltools::span(class = "star", "&starf;"),
+#'      onClick = JS("function(btn, map){ alert(\"Button 1\");}")),
 #'    easyButton(
-#'      icon = htmltools::span(class='star','&target;'),
-#'      onClick = JS("function(btn, map){ alert('Button 2');}")))
+#'      icon = htmltools::span(class = "star", "&target;"),
+#'      onClick = JS("function(btn, map){ alert(\"Button 2\");}")))
 #'
 #'
 #' @describeIn easyButton add an EasyButton to the map
@@ -145,32 +145,32 @@ addEasyButton <- function(
 addEasyButtonBar <- function(
   map,
   ...,
-  position = 'topleft',
+  position = "topleft",
   id = NULL
 ) {
   buttons <- list(...)
-  if(!length(buttons) >= 1 ||
-    !all(sapply(buttons,function(x) inherits(x,'leaflet_easybutton')))) {
-    stop('need buttons created with easyButton()')
+ if (!length(buttons) >= 1 ||
+    !all(sapply(buttons, function(x) inherits(x, "leaflet_easybutton")))) {
+    stop("need buttons created with easyButton()")
   }
 
   map$dependencies <- c(map$dependencies, leafletEasyButtonDependencies())
 
   # Add dependencies for various icon libs if required.
-  for(button in buttons) {
-    if(is.null(button$states)) {
-      if(grepl('fa-',button$icon))
+  for (button in buttons) {
+   if (is.null(button$states)) {
+     if (grepl("fa-", button$icon))
         map$dependencies <- c(map$dependencies, leafletAmFontAwesomeDependencies())
-      if(grepl('glyphicon-',button$icon))
+     if (grepl("glyphicon-", button$icon))
         map$dependencies <- c(map$dependencies, leafletAmBootstrapDependencies())
-      if(grepl('ion-',button$icon))
+     if (grepl("ion-", button$icon))
         map$dependencies <- c(map$dependencies, leafletAmIonIconDependencies())
     } else {
-      if(any(sapply(button$states,function(x) grepl('fa-',x$icon))))
+     if (any(sapply(button$states, function(x) grepl("fa-", x$icon))))
         map$dependencies <- c(map$dependencies, leafletAmFontAwesomeDependencies())
-      if(any(sapply(button$states,function(x) grepl('glyphicon-',x$icon))))
+     if (any(sapply(button$states, function(x) grepl("glyphicon-", x$icon))))
         map$dependencies <- c(map$dependencies, leafletAmBootstrapDependencies())
-      if(any(sapply(button$states,function(x) grepl('ion-',x$icon))))
+     if (any(sapply(button$states, function(x) grepl("ion-", x$icon))))
         map$dependencies <- c(map$dependencies, leafletAmIonIconDependencies())
     }
   }
@@ -178,7 +178,7 @@ addEasyButtonBar <- function(
   invokeMethod(
     map,
     getMapData(map),
-    'addEasyButtonBar',
+    "addEasyButtonBar",
     buttons,
     position,
     id

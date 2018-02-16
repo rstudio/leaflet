@@ -12,19 +12,19 @@ makeAwesomeIcon(icon = "home", library = "glyphicon",
 \arguments{
 \item{icon}{Name of the icon}
 
-\item{library}{Which icon library. Default \code{'glyphicon'}, other possible
-values are \code{'fa'} (fontawesome) or \code{'ion'} (ionicons).}
+\item{library}{Which icon library. Default \code{"glyphicon"}, other possible
+values are \code{"fa"} (fontawesome) or \code{"ion"} (ionicons).}
 
-\item{markerColor}{Possible values are \code{'red'}, \code{'darkred'}, \code{'lightred'}, \code{'orange'},
-\code{'beige'}, \code{'green'}, \code{'darkgreen'}, \code{'lightgreen'}, \code{'blue'},
-\code{'darkblue'}, \code{'lightblue'}, \code{'purple'}, \code{'darkpurple'}, \code{'pink'},
-\code{'cadetblue'}, \code{'white'}, \code{'gray'}, \code{'lightgray'}, \code{'black'}}
+\item{markerColor}{Possible values are \code{"red"}, \code{"darkred"}, \code{"lightred"}, \code{"orange"},
+\code{"beige"}, \code{"green"}, \code{"darkgreen"}, \code{"lightgreen"}, \code{"blue"},
+\code{"darkblue"}, \code{"lightblue"}, \code{"purple"}, \code{"darkpurple"}, \code{"pink"},
+\code{"cadetblue"}, \code{"white"}, \code{"gray"}, \code{"lightgray"}, \code{"black"}}
 
 \item{iconColor}{The color to use for the icon itself. Use any CSS-valid
 color (hex, rgba, etc.) or a named web color.}
 
 \item{spin}{If \code{TRUE}, make the icon spin (only works when \code{library
-= 'fa'})}
+= "fa"})}
 
 \item{extraClasses}{Additional css classes to include on the icon.}
 

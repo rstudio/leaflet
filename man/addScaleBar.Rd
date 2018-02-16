@@ -17,8 +17,8 @@ removeScaleBar(map)
 \arguments{
 \item{map}{the map to add the scale bar to}
 
-\item{position}{position of control: 'topleft', 'topright', 'bottomleft', or
-'bottomright'}
+\item{position}{position of control: "topleft", "topright", "bottomleft", or
+"bottomright"}
 
 \item{options}{a list of additional options, intended to be provided by
 a call to \code{scaleBarOptions}}

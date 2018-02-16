@@ -25,8 +25,8 @@ most commonly used for mostly-opaque tile layers.}
 \item{overlayGroups}{character vector where each element is the name of a
 group. The user can turn each overlay group on or off independently.}
 
-\item{position}{position of control: 'topleft', 'topright', 'bottomleft', or
-'bottomright'}
+\item{position}{position of control: "topleft", "topright", "bottomleft", or
+"bottomright"}
 
 \item{options}{a list of additional options, intended to be provided by
 a call to \code{layersControlOptions}}

@@ -3,15 +3,15 @@ library(leaflet)
 # Marker + Label on hover
 leaflet() %>% addTiles() %>%
   addMarkers(
-    lng=-118.456554, lat=34.078039,
-    label='This is a label')
+    lng = -118.456554, lat = 34.078039,
+    label = "This is a label")
 #' <br/><br/>
 
 # Marker + Static Labels
 leaflet() %>% addTiles() %>%
   addMarkers(
-    lng=-118.456554, lat=34.078039,
-    label='This is a static label',
+    lng = -118.456554, lat = 34.078039,
+    label = "This is a static label",
     labelOptions = labelOptions(noHide = T))
 #' <br/><br/>
 
@@ -19,67 +19,67 @@ leaflet() %>% addTiles() %>%
 # Note the offset values for top and bottom directions.
 leaflet() %>% addTiles() %>%
   setView(
-    lng=-118.456554, lat=34.078039, zoom  = 16
-  )%>%
+    lng = -118.456554, lat = 34.078039, zoom  = 16
+  ) %>%
   addCircleMarkers(
-    lng=-118.45990, lat=34.078079, radius = 5,
-    label='On the Right',
-    labelOptions = labelOptions(noHide = T, direction = 'right')
-  )%>%
+    lng = -118.45990, lat = 34.078079, radius = 5,
+    label = "On the Right",
+    labelOptions = labelOptions(noHide = T, direction = "right")
+  ) %>%
   addCircleMarkers(
-    lng=-118.45280, lat=34.078079, radius = 5,
-    label='On the left',
-    labelOptions = labelOptions(noHide = T, direction = 'left')
-  )%>%
+    lng = -118.45280, lat = 34.078079, radius = 5,
+    label = "On the left",
+    labelOptions = labelOptions(noHide = T, direction = "left")
+  ) %>%
   addCircleMarkers(
-    lng=-118.456554, lat=34.079979, radius = 5,
-    label='On the Top',
-    labelOptions = labelOptions(noHide = T, direction = 'top',
-                                offset=c(0,-15))
-  )%>%
+    lng = -118.456554, lat = 34.079979, radius = 5,
+    label = "On the Top",
+    labelOptions = labelOptions(noHide = T, direction = "top",
+                                offset = c(0, -15))
+  ) %>%
   addCircleMarkers(
-    lng=-118.456554, lat=34.076279, radius = 5,
-    label='On the Bottom',
-    labelOptions = labelOptions(noHide = T, direction = 'bottom',
-                                offset=c(0,15)))
+    lng = -118.456554, lat = 34.076279, radius = 5,
+    label = "On the Bottom",
+    labelOptions = labelOptions(noHide = T, direction = "bottom",
+                                offset = c(0, 15)))
 #' <br/><br/>
 
 
 # Change Text Size and text Only and also a custom CSS
-leaflet() %>% addTiles() %>% setView(-118.456554,34.09,13) %>%
+leaflet() %>% addTiles() %>% setView(-118.456554, 34.09, 13) %>%
   addMarkers(
-    lng=-118.456554, lat=34.07,
-    label='Default Label',
+    lng = -118.456554, lat = 34.07,
+    label = "Default Label",
     labelOptions = labelOptions(noHide = T)) %>%
   addMarkers(
-    lng=-118.456554, lat=34.085,
-    label='Label w/o surrounding box',
+    lng = -118.456554, lat = 34.085,
+    label = "Label w/o surrounding box",
     labelOptions = labelOptions(noHide = T, textOnly = TRUE)) %>%
   addMarkers(
-    lng=-118.456554, lat=34.095,
-    label='label w/ textsize 15px',
-    labelOptions = labelOptions(noHide = T, textsize='15px')) %>%
+    lng = -118.456554, lat = 34.095,
+    label = "label w/ textsize 15px",
+    labelOptions = labelOptions(noHide = T, textsize = "15px")) %>%
   addMarkers(
-    lng=-118.456554, lat=34.11,
-    label='Label w/ custom CSS style',
+    lng = -118.456554, lat = 34.11,
+    label = "Label w/ custom CSS style",
     labelOptions = labelOptions(noHide = T, textOnly = FALSE,
-                                style=list(
-                                  'color'='red',
-                                  'font-family'= 'serif',
-                                  'font-style'= 'italic',
-                                  'box-shadow' = '3px 3px rgba(0,0,0,0.25)',
-                                  'font-size' = '12px',
-                                  'border-color' = 'rgba(0,0,0,0.5)'
+                                style = list(
+                                  "color" = "red",
+                                  "font-family" = "serif",
+                                  "font-style" = "italic",
+                                  "box-shadow" = "3px 3px rgba(0,0,0,0.25)",
+                                  "font-size" = "12px",
+                                  "border-color" = "rgba(0,0,0,0.5)"
                                   )))
 #' <br/><br/>
 
 # Polygon + HTML Label
 leaflet() %>% addTiles() %>%
   addRectangles(
-    lng1=-118.456554, lat1=34.078039,
-    lng2=-118.436383, lat2=34.062717,
+    lng1 = -118.456554, lat1 = 34.078039,
+    lng2 = -118.436383, lat2 = 34.062717,
     fillColor = "transparent",
-    label= htmltools::HTML("<em>I'm a HTML Label</em>")
+    label = htmltools::HTML("<em>I'm a HTML Label</em>")
   )
 #' <br/><br/>
 
@@ -107,7 +107,7 @@ leaflet(cities) %>% addTiles() %>%
   addCircles(lng = ~Long, lat = ~Lat, weight = 1,
              radius = ~sqrt(Pop) * 30, label = ~City,
                labelOptions = lapply(1:nrow(cities), function(x) {
-                 labelOptions(opacity=0.8)
+                 labelOptions(opacity = 0.8)
                }))
 #' <br/><br/>
 
@@ -116,7 +116,7 @@ leaflet(cities) %>% addTiles() %>%
   addMarkers(lng = ~Long, lat = ~Lat,
              label = ~City,
              labelOptions = lapply(1:nrow(cities), function(x) {
-               labelOptions(opacity=0.9)
+               labelOptions(opacity = 0.9)
              }))
 #' <br/><br/>
 
@@ -126,8 +126,8 @@ leaflet(cities) %>% addTiles() %>%
   addCircleMarkers(lng = ~Long, lat = ~Lat,
              label = ~City,
              labelOptions = lapply(1:nrow(cities), function(x) {
-               labelOptions(opacity=1, noHide = T,
-                            direction = 'auto', offset=c(20,-15))
+               labelOptions(opacity = 1, noHide = T,
+                            direction = "auto", offset = c(20, -15))
              }))
 #' <br/><br/>
 
@@ -135,10 +135,12 @@ leaflet(cities) %>% addTiles() %>%
 library(htmltools)
 leaflet(cities) %>% addTiles() %>%
   addMarkers(lng = ~Long, lat = ~Lat,
-             label = mapply(function(x, y) {
-               HTML(sprintf("<em>%s:</em> %s", htmlEscape(x), htmlEscape(y)))},
+             label = mapply(
+               function(x, y) {
+                 HTML(sprintf("<em>%s:</em> %s", htmlEscape(x), htmlEscape(y)))
+               },
                cities$City, cities$Pop, SIMPLIFY = F),
              labelOptions = lapply(1:nrow(cities), function(x) {
-               labelOptions(direction='auto')
+               labelOptions(direction = "auto")
              }))
 #' <br/><br/>

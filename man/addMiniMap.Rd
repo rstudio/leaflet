@@ -19,7 +19,7 @@ addMiniMap(map, position = "bottomright", width = 150, height = 150,
 
 \item{position}{The standard Leaflet.Control position parameter,
    used like all the other controls.
-Defaults to 'bottomright'.}
+Defaults to "bottomright".}
 
 \item{width}{The width of the minimap in pixels. Defaults to 150.}
 

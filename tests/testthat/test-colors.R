@@ -23,7 +23,7 @@ test_that("qualitative palettes don't interpolate", {
   pal <- colorFactor("Accent", na.color = NA, levels = letters[1:5])
 
   allColors <- RColorBrewer::brewer.pal(
-    n = RColorBrewer::brewer.pal.info["Accent","maxcolors"],
+    n = RColorBrewer::brewer.pal.info["Accent", "maxcolors"],
     name = "Accent")
 
   # If we're not interpolating, then the colors for each level should match
@@ -60,14 +60,14 @@ test_that("OK, qualitative palettes sometimes interpolate", {
   pal <- colorFactor("Accent", na.color = NA, levels = letters[1:20])
 
   allColors <- RColorBrewer::brewer.pal(
-    n = RColorBrewer::brewer.pal.info["Accent","maxcolors"],
+    n = RColorBrewer::brewer.pal.info["Accent", "maxcolors"],
     name = "Accent")
 
   result <- with_warning(pal(letters[1:20]))
   # The first and last levels are the first and last palette colors
-  expect_true(all(result[c(1,20)] %in% allColors))
+  expect_true(all(result[c(1, 20)] %in% allColors))
   # All the rest are interpolated though
-  expect_true(!any(result[-c(1,20)] %in% allColors))
+  expect_true(!any(result[-c(1, 20)] %in% allColors))
 })
 
 verifyReversal <- function(colorFunc, values, ..., filter = identity) {

@@ -32,20 +32,20 @@ leaflet <- function(data = NULL, width = NULL, height = NULL,
                    elementId = NULL) {
 
   # Validate the CRS if specified
-  if(!is.null(options[['crs']]) &&
-     !inherits(options[['crs']], 'leaflet_crs')) {
+ if (!is.null(options[["crs"]]) &&
+     !inherits(options[["crs"]], "leaflet_crs")) {
     stop("CRS in mapOptions should be a return value of leafletCRS() function")
   }
 
   map <- htmlwidgets::createWidget(
-    'leaflet',
+    "leaflet",
     structure(
       list(options = options),
       leafletData = data
     ),
     width = width, height = height,
     sizingPolicy = htmlwidgets::sizingPolicy(
-      defaultWidth = '100%',
+      defaultWidth = "100%",
       defaultHeight = 400,
       padding = padding,
       browser.fill = TRUE
@@ -100,7 +100,7 @@ getMapData <- function(map) {
 #' # Don't auto-zoom to the objects (can be useful in interactive applications)
 #' leaflet() %>%
 #'   addTiles() %>%
-#'   addPopups(174.7690922, -36.8523071, 'R was born here!') %>%
+#'   addPopups(174.7690922, -36.8523071, "R was born here!") %>%
 #'   mapOptions(zoomToLimits = "first")
 #' @export
 mapOptions <- function(map, zoomToLimits = c("always", "first", "never")) {
@@ -140,8 +140,8 @@ leafletOptions <- function(
 }
 
 # CRS classes supported
-crsClasses <- list('L.CRS.EPSG3857', 'L.CRS.EPSG4326', 'L.CRS.EPSG3395',
-                   'L.CRS.Simple', 'L.Proj.CRS', 'L.Proj.CRS.TMS')
+crsClasses <- list("L.CRS.EPSG3857", "L.CRS.EPSG4326", "L.CRS.EPSG3395",
+                   "L.CRS.Simple", "L.Proj.CRS", "L.Proj.CRS.TMS")
 
 #' creates a custom CRS
 #' Refer to \url{https://kartena.github.io/Proj4Leaflet/api/} for details.
@@ -163,7 +163,7 @@ crsClasses <- list('L.CRS.EPSG3857', 'L.CRS.EPSG4326', 'L.CRS.EPSG3395',
 #' @describeIn leaflet class to create a custom CRS
 #' @export
 leafletCRS <- function(
-  crsClass = 'L.CRS.EPSG3857',
+  crsClass = "L.CRS.EPSG3857",
   code = NULL,
   proj4def = NULL,
   projectedBounds = NULL,
@@ -176,28 +176,28 @@ leafletCRS <- function(
 ) {
 
   # Deprecated since Leaflet JS 1.x
-  if(!missing(projectedBounds)) {
+ if (!missing(projectedBounds)) {
     warning("projectedBounds argument is deprecated and has no effect, use the bounds argument.")
   }
-  if(!missing(tileSize)) {
-    warning("tileSize argument is deprecated and has no effect, use the tileOptions() function to pass the tileSize argument to the addTiles() function")
+ if (!missing(tileSize)) {
+    warning("tileSize argument is deprecated and has no effect, use the tileOptions() function to pass the tileSize argument to the addTiles() function") # nolint
   }
-  if(crsClass == 'L.Proj.CRS.TMS') {
+ if (crsClass == "L.Proj.CRS.TMS") {
     warning("L.Proj.CRS.TMS is deprecated and will behave exactly like L.Proj.CRS.")
   }
 
-  if(!crsClass %in% crsClasses) {
+ if (!crsClass %in% crsClasses) {
     stop(sprintf("crsClass argument must be one of %s",
-                 paste0(crsClasses, collapse = ', ')))
+                 paste0(crsClasses, collapse = ", ")))
   }
 
 
 
-  if(crsClass %in% c('L.Proj.CRS', 'L.Proj.CRS.TMS') &&
+ if (crsClass %in% c("L.Proj.CRS", "L.Proj.CRS.TMS") &&
     !is.null(scales) && !is.null(resolutions)) {
     stop(sprintf("Either specify scales or resolutions"))
   }
-  if(crsClass %in% c('L.Proj.CRS', 'L.Proj.CRS.TMS') &&
+ if (crsClass %in% c("L.Proj.CRS", "L.Proj.CRS.TMS") &&
     is.null(scales) && is.null(resolutions)) {
     stop(sprintf("Specify either scales or resolutions, not both"))
   }
@@ -216,7 +216,6 @@ leafletCRS <- function(
           tileSize = tileSize
         ))
       ),
-      class = 'leaflet_crs'
+      class = "leaflet_crs"
   )
 }
-

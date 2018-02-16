@@ -9,7 +9,7 @@ providers.details <- jsonlite::fromJSON(
 variants <- purrr::map(providers.details, ~ names(.$variants))
 
 providers <- purrr::map(names(providers.details), function(provider) {
-  if(is.null(variants[[provider]])) {
+ if (is.null(variants[[provider]])) {
     provider
   } else {
     c(provider, stringr::str_c(provider,'.',variants[[provider]]))

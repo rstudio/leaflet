@@ -21,7 +21,7 @@
 #' length.
 #'
 #' By default, \code{labFormat} is basically \code{format(scientific = FALSE,
-#' big.mark = ',')} for the numeric palette, \code{as.character()} for the
+#' big.mark = ",")} for the numeric palette, \code{as.character()} for the
 #' factor palette, and a function to return labels of the form \samp{x[i] - x[i
 #' + 1]} for bin and quantile palettes (in the case of quantile palettes,
 #' \code{x} is the probabilities instead of the values of breaks).
@@ -59,47 +59,47 @@
 #' @example inst/examples/legend.R
 #' @export
 addLegend <- function(
-  map, position = c('topright', 'bottomright', 'bottomleft', 'topleft'),
-  pal, values, na.label = 'NA', bins = 7, colors, opacity = 0.5, labels = NULL,
+  map, position = c("topright", "bottomright", "bottomleft", "topleft"),
+  pal, values, na.label = "NA", bins = 7, colors, opacity = 0.5, labels = NULL,
   labFormat = labelFormat(), title = NULL, className = "info legend",
   layerId = NULL, group = NULL, data = getMapData(map)
 ) {
-  position = match.arg(position)
-  type = 'unknown'; na.color = NULL
-  extra = NULL  # only used for numeric palettes to store extra info
+  position <- match.arg(position)
+  type <- "unknown"; na.color <- NULL
+  extra <- NULL  # only used for numeric palettes to store extra info
 
   if (!missing(pal)) {
     if (!missing(colors))
       stop("You must provide either 'pal' or 'colors' (not both)")
 
     # a better default title when values is formula
-    if (missing(title) && inherits(values, 'formula')) title = deparse(values[[2]])
-    values = evalFormula(values, data)
+    if (missing(title) && inherits(values, "formula")) title <- deparse(values[[2]])
+    values <- evalFormula(values, data)
 
-    type = attr(pal, 'colorType', exact = TRUE)
-    args = attr(pal, 'colorArgs', exact = TRUE)
-    na.color = args$na.color
+    type <- attr(pal, "colorType", exact = TRUE)
+    args <- attr(pal, "colorArgs", exact = TRUE)
+    na.color <- args$na.color
     # If na.color is transparent, don't show it on the legend
     if (!is.null(na.color) && col2rgb(na.color, alpha = TRUE)[[4]] == 0) {
-      na.color = NULL
+      na.color <- NULL
     }
-    if (type != 'numeric' && !missing(bins))
+    if (type != "numeric" && !missing(bins))
       warning("'bins' is ignored because the palette type is not numeric")
 
-    if (type == 'numeric') {
+    if (type == "numeric") {
 
       # choose pretty cut points to draw tick-marks on the color gradient if
       # 'bins' is the number of bins, otherwise 'bins' is just the breaks
-      cuts = if (length(bins) == 1) pretty(values, n = bins) else bins
+      cuts <- if (length(bins) == 1) pretty(values, n = bins) else bins
       if (length(bins) > 2)
         if (!all(abs(diff(bins, differences = 2)) <= sqrt(.Machine$double.eps)))
           stop("The vector of breaks 'bins' must be equally spaced")
-      n = length(cuts)
-      r = range(values, na.rm = TRUE)
+      n <- length(cuts)
+      r <- range(values, na.rm = TRUE)
       # pretty cut points may be out of the range of `values`
-      cuts = cuts[cuts >= r[1] & cuts <= r[2]]
-      n = length(cuts)
-      p = (cuts - r[1]) / (r[2] - r[1])  # percents relative to min(values)
+      cuts <- cuts[cuts >= r[1] & cuts <= r[2]]
+      n <- length(cuts)
+      p <- (cuts - r[1]) / (r[2] - r[1])  # percents relative to min(values)
 
       # [    |       |       |  ...  |    ]
       # min  p1      p2      p3 ...  pn   max
@@ -109,48 +109,48 @@ addLegend <- function(
       # Since min and max may exceed the limits of the cut points, the client
       # needs to know the first and last cut points in order to place the tick
       # marks properly relative to the gradient.
-      extra = list(p_1 = p[1], p_n = p[n])
+      extra <- list(p_1 = p[1], p_n = p[n])
       # syntax for the color gradient: linear-gradient(start-color, color1 p1%,
       # color2 p2%, ..., colorn pn%, end-color])
-      p = c('', paste0(100 * p, '%'), '')
-      colors = pal(c(r[1], cuts, r[2]))
-      colors = paste(colors, p, sep = ' ', collapse = ', ')
-      labels = labFormat(type = 'numeric', cuts)
+      p <- c("", paste0(100 * p, "%"), "")
+      colors <- pal(c(r[1], cuts, r[2]))
+      colors <- paste(colors, p, sep = " ", collapse = ", ")
+      labels <- labFormat(type = "numeric", cuts)
 
-    } else if (type == 'bin') {
+    } else if (type == "bin") {
 
-      cuts = args$bins
-      n = length(cuts)
+      cuts <- args$bins
+      n <- length(cuts)
       # use middle points to represent intervals
-      mids = (cuts[-1] + cuts[-n]) / 2
-      colors = pal(mids)
-      labels = labFormat(type = 'bin', cuts)
+      mids <- (cuts[-1] + cuts[-n]) / 2
+      colors <- pal(mids)
+      labels <- labFormat(type = "bin", cuts)
 
-    } else if (type == 'quantile') {
+    } else if (type == "quantile") {
 
-      p = args$probs
-      n = length(p)
+      p <- args$probs
+      n <- length(p)
       # the "middle points" in this case are the middle probabilities
-      cuts = quantile(values, probs = p, na.rm = TRUE)
-      mids = quantile(values, probs = (p[-1] + p[-n]) / 2, na.rm = TRUE)
-      colors = pal(mids)
-      labels = labFormat(type = 'quantile', cuts, p)
+      cuts <- quantile(values, probs = p, na.rm = TRUE)
+      mids <- quantile(values, probs = (p[-1] + p[-n]) / 2, na.rm = TRUE)
+      colors <- pal(mids)
+      labels <- labFormat(type = "quantile", cuts, p)
 
-    } else if (type == 'factor') {
+    } else if (type == "factor") {
 
-      v = sort(unique(na.omit(values)))
-      colors = pal(v)
-      labels = labFormat(type = 'factor', v)
+      v <- sort(unique(na.omit(values)))
+      colors <- pal(v)
+      labels <- labFormat(type = "factor", v)
 
-    } else stop('Palette function not supported')
+    } else stop("Palette function not supported")
 
-    if (!any(is.na(values))) na.color = NULL
+    if (!any(is.na(values))) na.color <- NULL
   } else {
     if (length(colors) != length(labels))
       stop("'colors' and 'labels' must be of the same length")
   }
 
-  legend = list(
+  legend <- list(
     colors = I(unname(colors)), labels = I(unname(labels)),
     na_color = na.color, na_label = na.label, opacity = opacity,
     position = position, type = type, title = title, extra = extra,
@@ -169,7 +169,7 @@ addLegend <- function(
 #' @rdname addLegend
 #' @export
 labelFormat <- function(
-  prefix = '', suffix = '', between = ' &ndash; ', digits = 3, big.mark = ',',
+  prefix = "", suffix = "", between = " &ndash; ", digits = 3, big.mark = ",",
   transform = identity
 ) {
 
@@ -185,24 +185,24 @@ labelFormat <- function(
       type,
       numeric = (function(cuts) {
         paste0(prefix, formatNum(cuts), suffix)
-      })(...),
+      })(...), # nolint
       bin = (function(cuts) {
-        n = length(cuts)
+        n <- length(cuts)
         paste0(prefix, formatNum(cuts[-n]), between, formatNum(cuts[-1]), suffix)
-      })(...),
+      })(...), # nolint
       quantile = (function(cuts, p) {
-        n = length(cuts)
-        p = paste0(round(p * 100), '%')
-        cuts = paste0(formatNum(cuts[-n]), between, formatNum(cuts[-1]))
+        n <- length(cuts)
+        p <- paste0(round(p * 100), "%")
+        cuts <- paste0(formatNum(cuts[-n]), between, formatNum(cuts[-1]))
         # mouse over the legend labels to see the values (quantiles)
         paste0(
-          '<span title="', cuts, '">', prefix, p[-n], between, p[-1], suffix,
-          '</span>'
+          "<span title=\"", cuts, "\">", prefix, p[-n], between, p[-1], suffix,
+          "</span>"
         )
-      })(...),
+      })(...), # nolint
       factor = (function(cuts) {
         paste0(prefix, as.character(transform(cuts)), suffix)
-      })(...)
+      })(...) # nolint
     )
   }
 

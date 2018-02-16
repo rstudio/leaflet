@@ -9,7 +9,7 @@ m <- leaflet(data = data.frame(color = sample.int(2, 30, replace = TRUE))) %>%
     shadowWidth = 50, shadowHeight = 64, shadowAnchorX = 4, shadowAnchorY = 62
   ))
 assert(
-  'icon deduping works',
+  "icon deduping works",
   identical(length(m$x$calls[[1]]$args[[3]]$iconUrl$data), 2L),
   TRUE
 )

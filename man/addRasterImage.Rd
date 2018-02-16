@@ -71,12 +71,12 @@ package to 2.4 or later will provide a large speedup versus previous
 versions. If you are repeatedly adding a particular raster to your Leaflet
 maps, you can perform the projection ahead of time using
 \code{projectRasterForLeaflet()}, and call \code{addRasterImage} with
-\code{project=FALSE}.
+\code{project = FALSE}.
 }
 \examples{
 library(raster)
 
-r <- raster(xmn=-2.8, xmx=-2.79, ymn=54.04, ymx=54.05, nrows=30, ncols=30)
+r <- raster(xmn = -2.8, xmx = -2.79, ymn = 54.04, ymx = 54.05, nrows = 30, ncols = 30)
 values(r) <- matrix(1:900, nrow(r), ncol(r), byrow = TRUE)
 crs(r) <- CRS("+init=epsg:4326")
 

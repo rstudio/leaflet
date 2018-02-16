@@ -54,16 +54,16 @@ invokeMethod <- function(map, data, method, ...) {
     NULL
   }
 
-  args = evalFormula(list(...), data)
+  args <- evalFormula(list(...), data)
 
   dispatch(map,
     method,
     leaflet = {
-      x = map$x$calls
-      if (is.null(x)) x = list()
-      n = length(x)
-      x[[n + 1]] = list(method = method, args = args)
-      map$x$calls = x
+      x <- map$x$calls
+      if (is.null(x)) x <- list()
+      n <- length(x)
+      x[[n + 1]] <- list(method = method, args = args)
+      map$x$calls <- x
       map
     },
     leaflet_proxy = {
@@ -153,7 +153,11 @@ leafletProxy <- function(mapId, session = shiny::getDefaultReactiveDomain(),
   # This won't be necessary in future versions of Shiny, as session$ns (and
   # other forms of ns()) will be smart enough to only namespace un-namespaced
   # IDs.
-  if (!is.null(session$ns) && nzchar(session$ns(NULL)) && substring(mapId, 1, nchar(session$ns(""))) != session$ns("")) {
+  if (
+    !is.null(session$ns) &&
+    nzchar(session$ns(NULL)) &&
+    substring(mapId, 1, nchar(session$ns(""))) != session$ns("")
+  ) {
     mapId <- session$ns(mapId)
   }
 
@@ -187,7 +191,7 @@ leafletProxy <- function(mapId, session = shiny::getDefaultReactiveDomain(),
 #
 # When Shiny >0.12.0 goes to CRAN, we should update our version
 # dependency and remove this entire mechanism.
-sessionFlushQueue = new.env(parent = emptyenv())
+sessionFlushQueue <- new.env(parent = emptyenv())
 
 invokeRemote <- function(map, method, args = list()) {
   if (!inherits(map, "leaflet_proxy"))
@@ -229,7 +233,7 @@ invokeRemote <- function(map, method, args = list()) {
           for (msg in sessionFlushQueue[[sess$token]]) {
             sess$sendCustomMessage("leaflet-calls", msg)
           }
-        }, once = TRUE)
+        }, once = TRUE) # nolint
       }
 
       # Append the current value to the apporpriate sessionFlushQueue entry,
@@ -239,7 +243,7 @@ invokeRemote <- function(map, method, args = list()) {
     } else {
       sess$onFlushed(function() {
         sess$sendCustomMessage("leaflet-calls", msg)
-      }, once = TRUE)
+      }, once = TRUE) # nolint
     }
   } else {
     sess$sendCustomMessage("leaflet-calls", msg)
@@ -250,9 +254,9 @@ invokeRemote <- function(map, method, args = list()) {
 # A helper function to generate the body of function(x, y) list(x = x, y = y),
 # to save some typing efforts in writing tileOptions(), markerOptions(), ...
 makeListFun <- function(list) {
-  if (is.function(list)) list = formals(list)
-  nms = names(list)
-  cat(sprintf('list(%s)\n', paste(nms, nms, sep = ' = ', collapse = ', ')))
+  if (is.function(list)) list <- formals(list)
+  nms <- names(list)
+  cat(sprintf("list(%s)\n", paste(nms, nms, sep = " = ", collapse = ", ")))
 }
 
 "%||%" <- function(a, b) {
@@ -268,7 +272,7 @@ makeListFun <- function(list) {
 #'   if \code{"polygon"} then \code{NA} values are expected to be used as
 #'   polygon delimiters
 #' @export
-validateCoords <- function(lng, lat, funcName, warn=TRUE,
+validateCoords <- function(lng, lat, funcName, warn = TRUE,
   mode = c("point", "polygon")) {
 
   mode <- match.arg(mode)
@@ -291,18 +295,18 @@ validateCoords <- function(lng, lat, funcName, warn=TRUE,
 
   if (mode == "point") {
     incomplete <- is.na(lat) | is.na(lng)
-    if(any(incomplete)) {
-      warning(sprintf("Data contains %s rows with either missing or invalid lat/lon values and will be ignored",sum(incomplete)))
+   if (any(incomplete)) {
+      warning(sprintf("Data contains %s rows with either missing or invalid lat/lon values and will be ignored", sum(incomplete))) # nolint
     }
   } else if (mode == "polygon") {
     incomplete <- is.na(lat) != is.na(lng)
-    if(any(incomplete)) {
-      warning(sprintf("Data contains %s rows with either missing or invalid lat/lon values and will be ignored",sum(incomplete)))
+   if (any(incomplete)) {
+      warning(sprintf("Data contains %s rows with either missing or invalid lat/lon values and will be ignored", sum(incomplete))) # nolint
     }
     lng <- lng[!incomplete]
     lat <- lat[!incomplete]
   }
 
-  data.frame(lng=lng,lat=lat)
+  data.frame(lng = lng, lat = lat)
 
 }

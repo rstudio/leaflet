@@ -12,12 +12,12 @@
 #' @describeIn map-methods Set the view of the map (center and zoom level)
 #' @export
 #' @examples library(leaflet)
-#' m = leaflet() %>% addTiles() %>% setView(-71.0382679, 42.3489054, zoom = 18)
+#' m <- leaflet() %>% addTiles() %>% setView(-71.0382679, 42.3489054, zoom = 18)
 #' m  # the RStudio 'headquarter'
 #' m %>% fitBounds(-72, 40, -70, 43)
 #' m %>% clearBounds()  # world view
 setView <- function(map, lng, lat, zoom, options = list()) {
-  view = evalFormula(list(c(lat, lng), zoom, options))
+  view <- evalFormula(list(c(lat, lng), zoom, options))
 
   dispatch(map,
     "setView",
@@ -34,7 +34,7 @@ setView <- function(map, lng, lat, zoom, options = list()) {
 #' @describeIn map-methods Flys to a given location/zoom-level using smooth pan-zoom.
 #' @export
 flyTo <- function(map, lng, lat, zoom, options = list()) {
-  view = evalFormula(list(c(lat, lng), zoom, options))
+  view <- evalFormula(list(c(lat, lng), zoom, options))
 
   dispatch(map,
     "flyTo",
@@ -53,7 +53,7 @@ flyTo <- function(map, lng, lat, zoom, options = list()) {
 #' @param lng1,lat1,lng2,lat2 the coordinates of the map bounds
 #' @export
 fitBounds <- function(map, lng1, lat1, lng2, lat2, options = list()) {
-  bounds = evalFormula(list(lat1, lng1, lat2, lng2, options), getMapData(map))
+  bounds <- evalFormula(list(lat1, lng1, lat2, lng2, options), getMapData(map))
 
   dispatch(map,
     "fitBounds",
@@ -70,7 +70,7 @@ fitBounds <- function(map, lng1, lat1, lng2, lat2, options = list()) {
 #' @describeIn map-methods Flys to given bound using smooth pan/zoom.
 #' @export
 flyToBounds <- function(map, lng1, lat1, lng2, lat2, options = list()) {
-  bounds = evalFormula(list(lat1, lng1, lat2, lng2, options), getMapData(map))
+  bounds <- evalFormula(list(lat1, lng1, lat2, lng2, options), getMapData(map))
 
   dispatch(map,
     "flyToBounds",
@@ -87,7 +87,7 @@ flyToBounds <- function(map, lng1, lat1, lng2, lat2, options = list()) {
 #' @describeIn map-methods Restricts the map view to the given bounds
 #' @export
 setMaxBounds <- function(map, lng1, lat1, lng2, lat2) {
-  invokeMethod(map, getMapData(map), 'setMaxBounds', lat1, lng1, lat2, lng2)
+  invokeMethod(map, getMapData(map), "setMaxBounds", lat1, lng1, lat2, lng2)
 }
 
 #' @describeIn map-methods Clear the bounds of a map, and the bounds will be

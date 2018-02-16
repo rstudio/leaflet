@@ -10,7 +10,7 @@
 #' @examples # !formatR
 #' \donttest{library(leaflet)
 #' library(shiny)
-#' app = shinyApp(
+#' app <- shinyApp(
 #'   ui = fluidPage(leafletOutput('myMap')),
 #'   server = function(input, output) {
 #'     map = leaflet() %>% addTiles() %>% setView(-93.65, 42.0285, zoom = 17)
@@ -26,6 +26,6 @@ leafletOutput <- function(outputId, width = "100%", height = 400) {
 #' @rdname map-shiny
 #' @export
 renderLeaflet <- function(expr, env = parent.frame(), quoted = FALSE) {
-  if (!quoted) expr = substitute(expr)  # force quoted
+  if (!quoted) expr <- substitute(expr)  # force quoted
   htmlwidgets::shinyRenderWidget(expr, leafletOutput, env, quoted = TRUE)
 }

@@ -63,7 +63,7 @@ library(leaflet)
 leaf <- leaflet() \%>\%
   addTiles() \%>\%
   addEasyButton(easyButton(
-     icon = htmltools::span(class='star','&starf;'),
+     icon = htmltools::span(class = "star", "&starf;"),
      onClick = JS("function(btn, map){ map.setZoom(1);}")))
 
 library(leaflet)
@@ -72,11 +72,11 @@ leaf <- leaflet() \%>\%
   addTiles() \%>\%
   addEasyButtonBar(
    easyButton(
-     icon = htmltools::span(class='star','&starf;'),
-     onClick = JS("function(btn, map){ alert('Button 1');}")),
+     icon = htmltools::span(class = "star", "&starf;"),
+     onClick = JS("function(btn, map){ alert(\\"Button 1\\");}")),
    easyButton(
-     icon = htmltools::span(class='star','&target;'),
-     onClick = JS("function(btn, map){ alert('Button 2');}")))
+     icon = htmltools::span(class = "star", "&target;"),
+     onClick = JS("function(btn, map){ alert(\\"Button 2\\");}")))
 
 
 }

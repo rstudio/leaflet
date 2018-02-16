@@ -48,7 +48,7 @@ pathOptions(lineCap = NULL, lineJoin = NULL, clickable = NULL,
 
 \item{styles}{comma-separated list of WMS styles}
 
-\item{format}{WMS image format (use \code{'image/png'} for layers with
+\item{format}{WMS image format (use \code{"image/png"} for layers with
 transparency)}
 
 \item{transparent}{if \code{TRUE}, the WMS service will return images with
@@ -81,10 +81,10 @@ spiderfy it so you can see all of its markers}
 \item{removeOutsideVisibleBounds}{clusters and markers too far from the
 viewport are removed from the map for performance}
 
-\item{spiderLegPolylineOptions}{Allows you to specify PolylineOptions (\url{http://leafletjs.com/reference-1.2.0.html#polyline-option}) to style spider legs. By default, they are { weight: 1.5, color: '#222', opacity: 0.5 }}
+\item{spiderLegPolylineOptions}{Allows you to specify PolylineOptions (\url{http://leafletjs.com/reference-1.2.0.html#polyline-option}) to style spider legs. By default, they are { weight: 1.5, color: "#222", opacity: 0.5 }}
 
 \item{freezeAtZoom}{Allows you to freeze cluster expansion to a zoom level.
-Can be a zoom level e.g. 10, 12 or 'max' or 'maxKeepSpiderify'
+Can be a zoom level e.g. 10, 12 or "max" or "maxKeepSpiderify"
 See \url{https://github.com/ghybs/Leaflet.MarkerCluster.Freezable#api-reference}}
 
 \item{lineCap}{a string that defines

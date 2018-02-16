@@ -7,7 +7,7 @@ leaf <- leaflet() %>%
 #' Default Behavior
 leaf %>%
   # central park
-  fitBounds(-73.9, 40.75, -73.95,40.8) %>%
+  fitBounds(-73.9, 40.75, -73.95, 40.8) %>%
   addMeasure()
 
 #' <br/>
@@ -21,5 +21,5 @@ leaf %>%
     primaryAreaUnit = "sqmeters",
     activeColor = "#3D535D",
     completedColor = "#7D4479",
-    localization='de'
+    localization = "de"
   )

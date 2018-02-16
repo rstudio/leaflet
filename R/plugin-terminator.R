@@ -34,14 +34,14 @@ addTerminator <- function(
   resolution = 2,
   time = NULL,
   layerId = NULL,
-  group=NULL,
-  options = pathOptions(pointerEvents="none", clickable=FALSE) # Default unclickable
+  group = NULL,
+  options = pathOptions(pointerEvents = "none", clickable = FALSE) # Default unclickable
 ) {
   map$dependencies <- c(map$dependencies, leafletTerminatorDependencies())
   invokeMethod(
     map,
     getMapData(map),
-    'addTerminator',
+    "addTerminator",
     resolution,
     time,
     layerId,

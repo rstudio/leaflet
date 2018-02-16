@@ -100,8 +100,8 @@ addTopoJSON(map, topojson, layerId = NULL, group = NULL, stroke = TRUE,
 \item{html}{the content of the control. May be provided as string or as HTML
 generated with Shiny/htmltools tags}
 
-\item{position}{position of control: 'topleft', 'topright', 'bottomleft', or
-'bottomright'}
+\item{position}{position of control: "topleft", "topright", "bottomleft", or
+"bottomright"}
 
 \item{layerId}{the layer id}
 
@@ -142,7 +142,7 @@ the latitude column from \code{data})}
 recommended to escape the text using \code{\link[htmltools]{htmlEscape}()}}
 
 \item{icon}{the icon(s) for markers; an icon is represented by an R list of
-the form \code{list(iconUrl = '?', iconSize = c(x, y))}, and you can use
+the form \code{list(iconUrl = "?", iconSize = c(x, y))}, and you can use
 \code{\link{icons}()} to create multiple icons; note when you use an R list
 that contains images as local files, these local image files will be base64
 encoded into the HTML page so the icon images will still be available even

@@ -30,7 +30,7 @@ to render the map widget.
 # !formatR
 \donttest{library(leaflet)
 library(shiny)
-app = shinyApp(
+app <- shinyApp(
   ui = fluidPage(leafletOutput('myMap')),
   server = function(input, output) {
     map = leaflet() \%>\% addTiles() \%>\% setView(-93.65, 42.0285, zoom = 17)

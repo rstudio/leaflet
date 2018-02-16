@@ -14,10 +14,10 @@ Make awesome-icon set
 }
 \examples{
 
-iconSet = awesomeIconList(
-  home = makeAwesomeIcon(icon='Home', library='fa'),
-  flag = makeAwesomeIcon(icon='Flag', library='fa')
+iconSet <- awesomeIconList(
+  home = makeAwesomeIcon(icon = "Home", library = "fa"),
+  flag = makeAwesomeIcon(icon = "Flag", library = "fa")
 )
 
-iconSet[c('home', 'flag')]
+iconSet[c("home", "flag")]
 }

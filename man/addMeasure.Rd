@@ -75,7 +75,7 @@ leaf \%>\% addMeasure(
   primaryAreaUnit = "sqmeters",
   activeColor = "#3D535D",
   completedColor = "#7D4479",
-  localization = 'de'
+  localization = "de"
 )
 
 }

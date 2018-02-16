@@ -15,11 +15,11 @@
 #' p = (p - min(p))/(max(p) - min(p))
 #' plot(Lat ~ Long, data = uspop2000, cex = sqrt(p), asp = 1, col = rgb(1, 0, 0, .3))
 
-if(FALSE){
-uspop2000 = NULL
-if (file.exists('inst/csv/uspop2000.csv')) {
-  uspop2000 = read.csv(
-    text = readLines('inst/csv/uspop2000.csv', encoding = 'UTF-8'),
+if (FALSE) {
+uspop2000 <- NULL
+if (file.exists("inst/csv/uspop2000.csv")) {
+  uspop2000 <- read.csv(
+    text = readLines("inst/csv/uspop2000.csv", encoding = "UTF-8"),
     stringsAsFactors = FALSE
   )
 }
@@ -56,4 +56,3 @@ NULL
 #' "The Geography of Beer, sustainability in the food industry"
 #' @format \code{sp::SpatialPointsDataFrame}
 NULL
-
