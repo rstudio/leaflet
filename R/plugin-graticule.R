@@ -25,6 +25,7 @@ leafletGraticuleDependencies <- function() {
 #' leaf <- leaflet() %>%
 #'   addTiles() %>%
 #'   addGraticule()
+#' leaf
 #'
 #' @export
 addGraticule <- function(
