@@ -64,5 +64,7 @@ Suggests:
     RJSONIO,
     purrr,
     testthat
+Remotes:
+    schloerke/webshot@appshot_shinyapp
 RoxygenNote: 6.0.1
 LazyData: true
