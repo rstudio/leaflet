@@ -34,5 +34,6 @@ library(leaflet)
 leaf <- leaflet() \%>\%
   addTiles() \%>\%
   addGraticule()
+leaf
 
 }

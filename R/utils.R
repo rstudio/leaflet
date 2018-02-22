@@ -108,7 +108,6 @@ invokeMethod <- function(map, data, method, ...) {
 #'   \code{TRUE}
 #'
 #' @examples
-#' \donttest{
 #' library(shiny)
 #'
 #' ui <- fluidPage(
@@ -129,10 +128,8 @@ invokeMethod <- function(map, data, method, ...) {
 #'   })
 #' }
 #'
-#' \donttest{
-#' shinyApp(ui, server)
-#' }
-#' }
+#' app <- shinyApp(ui, server)
+#' \donttest{app}
 #'
 #' @export
 leafletProxy <- function(mapId, session = shiny::getDefaultReactiveDomain(),

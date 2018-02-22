@@ -8,7 +8,6 @@
 #' @rdname map-shiny
 #' @export
 #' @examples # !formatR
-#' \donttest{library(leaflet)
 #' library(shiny)
 #' app <- shinyApp(
 #'   ui = fluidPage(leafletOutput('myMap')),
@@ -18,7 +17,7 @@
 #'   }
 #' )
 #'
-#' if (interactive()) print(app)}
+#' \donttest{app}
 leafletOutput <- function(outputId, width = "100%", height = 400) {
   htmlwidgets::shinyWidgetOutput(outputId, "leaflet", width, height, "leaflet")
 }

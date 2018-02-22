@@ -46,7 +46,6 @@ instead of customizing an in-memory representation, these commands will
 execute on the live Leaflet map instance.
 }
 \examples{
-\donttest{
 library(shiny)
 
 ui <- fluidPage(
@@ -67,9 +66,7 @@ server <- function(input, output, session) {
   })
 }
 
-\donttest{
-shinyApp(ui, server)
-}
-}
+app <- shinyApp(ui, server)
+\donttest{app}
 
 }

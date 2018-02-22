@@ -28,7 +28,6 @@ to render the map widget.
 }
 \examples{
 # !formatR
-\donttest{library(leaflet)
 library(shiny)
 app <- shinyApp(
   ui = fluidPage(leafletOutput('myMap')),
@@ -38,5 +37,5 @@ app <- shinyApp(
   }
 )
 
-if (interactive()) print(app)}
+\donttest{app}
 }
