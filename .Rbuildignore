@@ -28,3 +28,4 @@
 ^\.lintr$
 ^\.github/
 ^man-roxygen/
+^viztest-.*
