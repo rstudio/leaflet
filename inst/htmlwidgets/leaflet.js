@@ -1815,7 +1815,7 @@ methods.addLegend = function (options) {
         var leftDiv = (0, _jquery2.default)("<div/>").css("float", "left"),
             rightDiv = (0, _jquery2.default)("<div/>").css("float", "left");
         leftDiv.append(gradSpan);
-        (0, _jquery2.default)(div).append(leftDiv).append(rightDiv).append((0, _jquery2.default)("<br clear=\"both\"/>"));
+        (0, _jquery2.default)(div).append(leftDiv).append(rightDiv).append((0, _jquery2.default)("<br>"));
 
         // Have to attach the div to the body at this early point, so that the
         // svg text getComputedTextLength() actually works, below.
@@ -1863,7 +1863,7 @@ methods.addLegend = function (options) {
         labels.push(options.na_label);
       }
       for (var i = 0; i < colors.length; i++) {
-        legendHTML += "<i style=\"background:" + colors[i] + ";opacity:" + options.opacity + "\"></i> " + labels[i] + "<br clear='both'/>";
+        legendHTML += "<i style=\"background:" + colors[i] + ";opacity:" + options.opacity + "\"></i> " + labels[i];
       }
       div.innerHTML = legendHTML;
     }
