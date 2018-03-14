@@ -623,6 +623,14 @@ addMarkers <- function(
     icon$iconRetinaUrl   <- b64EncodePackedIcons(packStrings(icon$iconRetinaUrl))
     icon$shadowUrl       <- b64EncodePackedIcons(packStrings(icon$shadowUrl))
     icon$shadowRetinaUrl <- b64EncodePackedIcons(packStrings(icon$shadowRetinaUrl))
+
+    # if iconSize is of length 2 and there is one icon url, wrap the icon size in a list
+    if (length(icon$iconSize) == 2) {
+      if (is.numeric(icon$iconSize[[1]]) && is.numeric(icon$iconSize[[2]])) {
+        icon$iconSize <- list(icon$iconSize)
+      }
+    }
+
     icon <- filterNULL(icon)
   }
 
