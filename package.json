@@ -8,6 +8,8 @@
     "test": "tests"
   },
   "scripts": {
+    "build": "grunt build",
+    "watch": "grunt",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
