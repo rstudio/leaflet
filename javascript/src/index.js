@@ -11,7 +11,7 @@ import LayerManager from "./layer-manager";
 
 import defaultMethods from "./methods";
 
-import "./fixup-default-icon";
+// import "./fixup-default-icon";
 
 import DataFrame from "./dataframe";
 import ClusterLayerStore from "./cluster-layer-store";
