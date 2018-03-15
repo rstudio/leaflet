@@ -82,6 +82,7 @@ easyButton <- function(
 #'   addEasyButton(easyButton(
 #'      icon = htmltools::span(class = "star", "&starf;"),
 #'      onClick = JS("function(btn, map){ map.setZoom(1);}")))
+#' leaf
 #'
 #' @describeIn easyButton add an EasyButton to the map
 #' @export
@@ -138,6 +139,7 @@ addEasyButton <- function(
 #'    easyButton(
 #'      icon = htmltools::span(class = "star", "&target;"),
 #'      onClick = JS("function(btn, map){ alert(\"Button 2\");}")))
+#' leaf
 #'
 #'
 #' @describeIn easyButton add an EasyButton to the map

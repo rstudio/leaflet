@@ -27,6 +27,7 @@ leafletTerminatorDependencies <- function() {
 #' leaf <- leaflet() %>%
 #'   addTiles() %>%
 #'   addTerminator()
+#' leaf
 #'
 #' @export
 addTerminator <- function(

@@ -82,6 +82,7 @@ library(leaflet)
 leaf <- leaflet() \%>\%
   addTiles() \%>\%
   addMiniMap()
+leaf
 
 }
 \seealso{

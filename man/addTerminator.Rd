@@ -32,5 +32,6 @@ library(leaflet)
 leaf <- leaflet() \%>\%
   addTiles() \%>\%
   addTerminator()
+leaf
 
 }

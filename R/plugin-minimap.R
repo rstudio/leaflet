@@ -60,6 +60,7 @@ leafletMiniMapDependencies <- function() {
 #' leaf <- leaflet() %>%
 #'   addTiles() %>%
 #'   addMiniMap()
+#' leaf
 #'
 #' @seealso \code{\link{providers}}
 #' @export

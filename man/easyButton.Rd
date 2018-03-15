@@ -65,6 +65,7 @@ leaf <- leaflet() \%>\%
   addEasyButton(easyButton(
      icon = htmltools::span(class = "star", "&starf;"),
      onClick = JS("function(btn, map){ map.setZoom(1);}")))
+leaf
 
 library(leaflet)
 
@@ -77,6 +78,7 @@ leaf <- leaflet() \%>\%
    easyButton(
      icon = htmltools::span(class = "star", "&target;"),
      onClick = JS("function(btn, map){ alert(\\"Button 2\\");}")))
+leaf
 
 
 }
