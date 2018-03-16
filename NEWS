@@ -1,7 +1,9 @@
 leaflet 2.0.0
 --------------------------------------------------------------------------------
 
-* Update to leaflet.js v1.2.0 (#453)
+* Fix bug where markers would not appear in self contained knitr files (cc79bc3)
+
+* Update to latest leaflet.js v1.3.1 (#453, 314616f)
 
 * All plugins updated to their newest versions compatible with leaflet > 1.0 (#458)
 
