@@ -4,7 +4,13 @@ import L from "./global/leaflet";
 // images that Leaflet needs but doesn't load into the page. Instead, we'll set
 // data URIs for the default marker, and let any others be loaded via CDN.
 if (typeof(L.Icon.Default.imagePath) === "undefined") {
-  L.Icon.Default.imagePath = "//cdn.leafletjs.com/leaflet/v1.0.3/images/";
+  // if in a local file, support http
+  if (window.location.protocol === "file:") {
+    L.Icon.Default.imagePath = "http://cdn.leafletjs.com/leaflet/v1.3.1/images/";
+  } else {
+    // otherwise use same protocol
+    L.Icon.Default.imagePath = "//cdn.leafletjs.com/leaflet/v1.3.1/images/";
+  }
   // don't know how to make this dataURI work since
   //  will be appended to Defaul.imagePath above
   /*
