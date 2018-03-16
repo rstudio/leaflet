@@ -1550,9 +1550,9 @@ methods.addCircleMarkers = function (lat, lng, radius, layerId, group, options, 
  * @param lat Array of arrays of latitude coordinates for polylines
  * @param lng Array of arrays of longitude coordinates for polylines
  */
-methods.addPolylines = function (polygons, layerId, group, options, popup, popupOptions, label, labelOptions, highlightOptions) {
+methods.addPolylines = function (polygons, layerId, group, options, popup, popupOptions, label, labelOptions, highlightOptions, crosstalkOptions) {
   if (polygons.length > 0) {
-    var df = new _dataframe2.default().col("shapes", polygons).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).col("highlightOptions", highlightOptions).cbind(options);
+    var df = new _dataframe2.default().col("shapes", polygons).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).col("highlightOptions", highlightOptions).cbind(options).cbind(crosstalkOptions || {});
 
     addLayers(this, "shape", df, function (df, i) {
       var shapes = df.get(i, "shapes");
@@ -1598,8 +1598,8 @@ methods.clearShapes = function () {
   this.layerManager.clearLayers("shape");
 };
 
-methods.addRectangles = function (lat1, lng1, lat2, lng2, layerId, group, options, popup, popupOptions, label, labelOptions, highlightOptions) {
-  var df = new _dataframe2.default().col("lat1", lat1).col("lng1", lng1).col("lat2", lat2).col("lng2", lng2).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).col("highlightOptions", highlightOptions).cbind(options);
+methods.addRectangles = function (lat1, lng1, lat2, lng2, layerId, group, options, popup, popupOptions, label, labelOptions, highlightOptions, crosstalkOptions) {
+  var df = new _dataframe2.default().col("lat1", lat1).col("lng1", lng1).col("lat2", lat2).col("lng2", lng2).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).col("highlightOptions", highlightOptions).cbind(options).cbind(crosstalkOptions || {});
 
   addLayers(this, "shape", df, function (df, i) {
     if (_jquery2.default.isNumeric(df.get(i, "lat1")) && _jquery2.default.isNumeric(df.get(i, "lng1")) && _jquery2.default.isNumeric(df.get(i, "lat2")) && _jquery2.default.isNumeric(df.get(i, "lng2"))) {

@@ -432,7 +432,7 @@ methods.addCircleMarkers = function(lat, lng, radius, layerId, group, options, c
  * @param lat Array of arrays of latitude coordinates for polylines
  * @param lng Array of arrays of longitude coordinates for polylines
  */
-methods.addPolylines = function(polygons, layerId, group, options, popup, popupOptions, label, labelOptions, highlightOptions) {
+methods.addPolylines = function(polygons, layerId, group, options, popup, popupOptions, label, labelOptions, highlightOptions, crosstalkOptions) {
   if(polygons.length>0) {
     let df = new DataFrame()
       .col("shapes", polygons)
@@ -443,7 +443,8 @@ methods.addPolylines = function(polygons, layerId, group, options, popup, popupO
       .col("label", label)
       .col("labelOptions", labelOptions)
       .col("highlightOptions", highlightOptions)
-      .cbind(options);
+      .cbind(options)
+      .cbind(crosstalkOptions || {});
 
     addLayers(this, "shape", df, function(df, i) {
       let shapes = df.get(i, "shapes");
@@ -487,7 +488,7 @@ methods.clearShapes = function() {
   this.layerManager.clearLayers("shape");
 };
 
-methods.addRectangles = function(lat1, lng1, lat2, lng2, layerId, group, options, popup, popupOptions, label, labelOptions, highlightOptions) {
+methods.addRectangles = function(lat1, lng1, lat2, lng2, layerId, group, options, popup, popupOptions, label, labelOptions, highlightOptions, crosstalkOptions) {
   let df = new DataFrame()
     .col("lat1", lat1)
     .col("lng1", lng1)
@@ -499,8 +500,9 @@ methods.addRectangles = function(lat1, lng1, lat2, lng2, layerId, group, options
     .col("popupOptions", popupOptions)
     .col("label", label)
     .col("labelOptions", labelOptions)
-      .col("highlightOptions", highlightOptions)
-    .cbind(options);
+    .col("highlightOptions", highlightOptions)
+    .cbind(options)
+    .cbind(crosstalkOptions || {});
 
   addLayers(this, "shape", df, function(df, i) {
     if($.isNumeric(df.get(i, "lat1")) && $.isNumeric(df.get(i, "lng1")) &&
