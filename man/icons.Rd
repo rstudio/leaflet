@@ -62,8 +62,8 @@ iconData <- data.frame(
 leaflet() \%>\% addMarkers(
   data = iconData,
   icon = ~ icons(
-    iconUrl = sprintf("https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-\%s.png", group),
-    shadowUrl = "https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-shadow.png",
+    iconUrl = sprintf("http://leafletjs.com/examples/custom-icons/leaf-\%s.png", group),
+    shadowUrl = "http://leafletjs.com/examples/custom-icons/leaf-shadow.png",
     iconWidth = 38, iconHeight = 95, shadowWidth = 50, shadowHeight = 64,
     iconAnchorX = 22, iconAnchorY = 94, shadowAnchorX = 4, shadowAnchorY = 62,
     popupAnchorX = -3, popupAnchorY = -76
