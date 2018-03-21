@@ -13,3 +13,4 @@
 ^package\.json$
 ^node_modules$
 ^data-raw$
+^npm-shrinkwrap\.json$
