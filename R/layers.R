@@ -488,6 +488,11 @@ safeLabel <- function(label, data) {
   }
 
   label <- evalFormula(label, data)
+
+  if(length(label) == 0) {
+    return(label)
+  }
+  
   if(! (inherits(label, "html") ||
                     sum(sapply(label,function(x){!inherits(x,'html')})) == 0)) {
     label <- htmltools::htmlEscape(label)
