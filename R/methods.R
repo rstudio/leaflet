@@ -35,6 +35,8 @@ setView <- function(map, lng, lat, zoom, options = list()) {
 
 #' @describeIn map-methods Set the bounds of a map
 #' @param lng1,lat1,lng2,lat2 the coordinates of the map bounds
+#' @param options a list of zoom/pan options (see
+#'   \url{http://leafletjs.com/reference.html#zoom/pan-options})
 #' @export
 fitBounds <- function(map, lng1, lat1, lng2, lat2, options = list()) {
   bounds = evalFormula(list(lat1, lng1, lat2, lng2, options), getMapData(map))
