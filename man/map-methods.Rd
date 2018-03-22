@@ -9,7 +9,7 @@
 \usage{
 setView(map, lng, lat, zoom, options = list())
 
-fitBounds(map, lng1, lat1, lng2, lat2)
+fitBounds(map, lng1, lat1, lng2, lat2, options = list())
 
 setMaxBounds(map, lng1, lat1, lng2, lat2)
 
