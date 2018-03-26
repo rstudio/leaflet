@@ -1,6 +1,8 @@
 leaflet 2.0.0
 --------------------------------------------------------------------------------
 
+* Fix bug where icons where anchored to the top-center, not center-center (2a60751)
+
 * Fix bug where markers would not appear in self contained knitr files (cc79bc3)
 
 * Update to latest leaflet.js v1.3.1 (#453, 314616f)
