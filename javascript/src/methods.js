@@ -739,7 +739,7 @@ methods.addLegend = function(options) {
         rightDiv = $("<div/>").css("float", "left");
       leftDiv.append(gradSpan);
       $(div).append(leftDiv).append(rightDiv)
-        .append($("<br clear=\"both\"/>"));
+        .append($("<br>"));
 
       // Have to attach the div to the body at this early point, so that the
       // svg text getComputedTextLength() actually works, below.
@@ -800,7 +800,7 @@ methods.addLegend = function(options) {
       }
       for (let i = 0; i < colors.length; i++) {
         legendHTML += "<i style=\"background:" + colors[i] + ";opacity:" +
-                      options.opacity + "\"></i> " + labels[i] + "<br clear='both'/>";
+                      options.opacity + "\"></i> " + labels[i];
       }
       div.innerHTML = legendHTML;
     }
