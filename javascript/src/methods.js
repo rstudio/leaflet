@@ -789,9 +789,11 @@ methods.addLegend = function(options) {
       });
 
       if (options.na_color && ($.inArray(options.na_label, labels)<0) ) {
-        $(div).append("<div><i style=\"background:" + options.na_color +
+        $(div).append("<div><i style=\"" +
+                      "background:" + options.na_color +
                       ";opacity:" + options.opacity +
-                      ";\"></i> " + options.na_label + "</div>");
+                      ";margin-right:" + labelPadding + "px" +
+                      ";\"></i>" + options.na_label + "</div>");
       }
     } else {
       if (options.na_color && ($.inArray(options.na_label, labels)<0) ) {

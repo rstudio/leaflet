@@ -1883,7 +1883,7 @@ methods.addLegend = function (options) {
         });
 
         if (options.na_color && _jquery2.default.inArray(options.na_label, labels) < 0) {
-          (0, _jquery2.default)(div).append("<div><i style=\"background:" + options.na_color + ";opacity:" + options.opacity + ";\"></i> " + options.na_label + "</div>");
+          (0, _jquery2.default)(div).append("<div><i style=\"" + "background:" + options.na_color + ";opacity:" + options.opacity + ";margin-right:" + labelPadding + "px" + ";\"></i>" + options.na_label + "</div>");
         }
       })();
     } else {
