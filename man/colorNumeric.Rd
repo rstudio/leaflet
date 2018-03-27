@@ -12,10 +12,10 @@ colorNumeric(palette, domain, na.color = "#808080", alpha = FALSE,
   reverse = FALSE)
 
 colorBin(palette, domain, bins = 7, pretty = TRUE, na.color = "#808080",
-  alpha = FALSE, reverse = FALSE)
+  alpha = FALSE, reverse = FALSE, right = FALSE)
 
 colorQuantile(palette, domain, n = 4, probs = seq(0, 1, length.out = n + 1),
-  na.color = "#808080", alpha = FALSE, reverse = FALSE)
+  na.color = "#808080", alpha = FALSE, reverse = FALSE, right = FALSE)
 
 colorFactor(palette, domain, levels = NULL, ordered = FALSE,
   na.color = "#808080", alpha = FALSE, reverse = FALSE)
@@ -57,6 +57,8 @@ the bins when the argument \code{bins} is a single number. When
 bins you specified. When \code{pretty = FALSE}, \code{\link{seq}()} is used
 to generate the bins and the breaks may not be "pretty".}
 
+\item{right}{parameter supplied to cut. See Details}
+
 \item{n}{Number of equal-size quantiles desired. For more precise control,
 use the \code{probs} argument instead.}
 
@@ -84,7 +86,9 @@ according to a given palette, which can be provided in a variety of formats.
 to an interpolated palette.
 
 \code{colorBin} also maps continuous numeric data, but performs
-  binning based on value (see the \code{\link[base]{cut}} function).
+  binning based on value (see the \code{\link[base]{cut}} function). \code{colorBin}
+  defaults for the \code{\link[base]{cut}} function are \code{include.lowest
+  = TRUE} and \code{right = FALSE}.
 
 \code{colorQuantile} similarly bins numeric data, but via the
   \code{\link[stats]{quantile}} function.
