@@ -29,3 +29,4 @@
 ^\.github/
 ^man-roxygen/
 ^viztest-.*
+^scripts
