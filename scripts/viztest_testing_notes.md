@@ -1,3 +1,11 @@
+## Also run
+
+* crosstalk
+  * should produce two plots. A scatter plot that highlights the markers in the leaflet plot when points are selected by click and drag
+```r
+source("scripts/crosstalk_example.R")
+```
+
 ## Known Issues
 * The top left zoom icons changed css and are now bigger
 * The rings css is different in the new leaflet.js
