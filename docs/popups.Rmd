@@ -1,0 +1,97 @@
+---
+pagetitle: Leaflet for R - Popups and Labels
+---
+
+## Popups
+
+Popups are small boxes containing arbitrary HTML, that point to a specific point on the map.
+
+Use the `addPopups()` function to add standalone popup to the map.
+
+```{r}
+content <- paste(sep = "<br/>",
+  "<b><a href='http://www.samurainoodle.com'>Samurai Noodle</a></b>",
+  "606 5th Ave. S",
+  "Seattle, WA 98138"
+)
+
+leaflet() %>% addTiles() %>%
+  addPopups(-122.327298, 47.597131, content,
+    options = popupOptions(closeButton = FALSE)
+  )
+```
+
+A common use for popups is to have them appear when markers or shapes are clicked. Marker and shape functions in the Leaflet package take a `popup` argument, where you can pass in HTML to easily attach a simple popup.
+
+```{r}
+library(htmltools)
+
+df <- read.csv(textConnection(
+"Name,Lat,Long
+Samurai Noodle,47.597131,-122.327298
+Kukai Ramen,47.6154,-122.327157
+Tsukushinbo,47.59987,-122.326726"
+))
+
+leaflet(df) %>% addTiles() %>%
+  addMarkers(~Long, ~Lat, popup = ~htmlEscape(Name))
+```
+
+In the preceding example, `htmltools::htmlEscape` was used to santize any characters in the name that might be interpreted as HTML. While it wasn't necessary for this example (as the restaurant names contained no HTML markup), doing so is important in any situation where the data may come from a file or database, or from the user.
+
+In addition to markers you can also add popups on shapes like lines, circles and other polygons.
+
+## Labels
+
+A label is a textual or HTML content that can attached to markers and shapes to be always displayed or displayed on mouse over. Unlike popups you don't need to click a marker/polygon for the label to be shown.
+
+```{r}
+library(htmltools)
+
+df <- read.csv(textConnection(
+"Name,Lat,Long
+Samurai Noodle,47.597131,-122.327298
+Kukai Ramen,47.6154,-122.327157
+Tsukushinbo,47.59987,-122.326726"))
+
+leaflet(df) %>% addTiles() %>%
+  addMarkers(~Long, ~Lat, label = ~htmlEscape(Name))
+```
+
+#### Customizing Marker Labels
+
+You can customize marker labels using the `labelOptions` argument of the `addMarkers` function. The `labelOptions` argument can be populated using the `labelOptions()` function. If `noHide` is false (the default) then the label is displayed only when you hover the mouse over the marker; if `noHide` is set to true then the label is always displayed.
+
+```{r, fig.height=4}
+# Change Text Size and text Only and also a custom CSS
+leaflet() %>% addTiles() %>% setView(-118.456554, 34.09, 13) %>%
+  addMarkers(
+    lng = -118.456554, lat = 34.105,
+    label = "Default Label",
+    labelOptions = labelOptions(noHide = T)) %>%
+  addMarkers(
+    lng = -118.456554, lat = 34.095,
+    label = "Label w/o surrounding box",
+    labelOptions = labelOptions(noHide = T, textOnly = TRUE)) %>%
+  addMarkers(
+    lng = -118.456554, lat = 34.085,
+    label = "label w/ textsize 15px",
+    labelOptions = labelOptions(noHide = T, textsize = "15px")) %>%
+  addMarkers(
+    lng = -118.456554, lat = 34.075,
+    label = "Label w/ custom CSS style",
+    labelOptions = labelOptions(noHide = T, direction = "bottom",
+      style = list(
+        "color" = "red",
+        "font-family" = "serif",
+        "font-style" = "italic",
+        "box-shadow" = "3px 3px rgba(0,0,0,0.25)",
+        "font-size" = "12px",
+        "border-color" = "rgba(0,0,0,0.5)"
+      )))
+```
+
+
+#### Labels without markers
+
+You can create labels without the accompanying markers using the `addLabelOnlyMarkers` function.

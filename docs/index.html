@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Leaflet for R - Introduction</title>
+
+<script src="libs/jquery/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap/css/flatly.min.css" rel="stylesheet" />
+<script src="libs/bootstrap/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap/shim/respond.min.js"></script>
+<script src="libs/navigation/tabsets.js"></script>
+<link href="libs/highlightjs/default.css" rel="stylesheet" />
+<script src="libs/highlightjs/highlight.js"></script>
+<script src="libs/htmlwidgets/htmlwidgets.js"></script>
+<link href="libs/leaflet/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet/leaflet.js"></script>
+<link href="libs/leafletfix/leafletfix.css" rel="stylesheet" />
+<script src="libs/Proj4Leaflet/proj4-compressed.js"></script>
+<script src="libs/Proj4Leaflet/proj4leaflet.js"></script>
+<script src="libs/leaflet-binding/leaflet.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+<style type="text/css">
+  body {
+    padding-top: 20px;
+  }
+  .navbar-brand {
+    font-weight: bold;
+  }
+  footer {
+    border-top: 1px solid #CCC;
+    margin-top: 60px;
+    margin-bottom: 48px;
+    opacity: 0.75;
+  }
+  .content-body>:first-child, .content-body>:first-child>:first-child {
+    margin-top: 0 !important;
+  }
+  p code {
+    white-space: inherit;
+  }
+  .leaflet-container {
+    margin: 0 0 10.5px;
+  }
+</style>
+
+<div class="fluid-row">
+  <div class="col-sm-12">
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <a class="navbar-brand" href="./">Leaflet for R</a>
+        </div>
+      </div>
+    </nav>
+  </div>
+</div>
+
+<div class="fluid-row">
+  <div class="col-sm-3">
+    <div class="list-group">
+      <a class="list-group-item" href="./">Introduction</a>
+      <a class="list-group-item" href="map_widget.html">The Map Widget</a>
+      <a class="list-group-item" href="basemaps.html">Basemaps</a>
+      <a class="list-group-item" href="markers.html">Markers</a>
+      <a class="list-group-item" href="popups.html">Popups and Labels</a>
+      <a class="list-group-item" href="shapes.html">Lines and Shapes</a>
+      <a class="list-group-item" href="json.html">GeoJSON and TopoJSON</a>
+      <a class="list-group-item" href="raster.html">Raster Images</a>
+      <a class="list-group-item" href="shiny.html">Shiny Integration</a>
+      <a class="list-group-item" href="colors.html">Colors</a>
+      <a class="list-group-item" href="legends.html">Legends</a>
+      <a class="list-group-item" href="showhide.html">Show/Hide Layers</a>
+      <a class="list-group-item" href="choropleths.html">Choropleths</a>
+      <a class="list-group-item" href="projections.html">Projections</a>
+      <a class="list-group-item" href="morefeatures.html">Additional Features</a>
+    </div>
+    <script>
+      // manage active state of toc based on current page
+      var href = window.location.pathname;
+      href = href.substr(href.lastIndexOf('/') + 1);
+      if (href === "" || href === "index.html")
+        href = "./";
+      $('a.list-group-item[href="' + href + '"]').addClass('active');
+    </script>
+  </div>
+  <div class="col-sm-9 content-body">
+
+<div class="fluid-row" id="header">
+
+
+
+
+</div>
+
+
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p><a href="http://leafletjs.com">Leaflet</a> is one of the most popular open-source JavaScript libraries for interactive maps. It’s used by websites ranging from <a href="http://www.nytimes.com/projects/elections/2013/nyc-primary/mayor/map.html">The New York Times</a> and <a href="http://www.washingtonpost.com/sf/local/2013/11/09/washington-a-world-apart/">The Washington Post</a> to <a href="https://github.com/blog/1528-there-s-a-map-for-that">GitHub</a> and <a href="https://www.flickr.com/map">Flickr</a>, as well as GIS specialists like <a href="http://www.openstreetmap.org/">OpenStreetMap</a>, <a href="http://www.mapbox.com/">Mapbox</a>, and <a href="http://cartodb.com/">CartoDB</a>.</p>
+<p>This R package makes it easy to integrate and control Leaflet maps in R.</p>
+<div id="features" class="section level3">
+<h3>Features</h3>
+<ul>
+<li>Interactive panning/zooming</li>
+<li>Compose maps using arbitrary combinations of:
+<ul>
+<li>Map tiles</li>
+<li>Markers</li>
+<li>Polygons</li>
+<li>Lines</li>
+<li>Popups</li>
+<li>GeoJSON</li>
+</ul></li>
+<li>Create maps right from the R console or RStudio</li>
+<li>Embed maps in <a href="http://yihui.name/knitr/">knitr</a>/<a href="http://rmarkdown.rstudio.com/">R Markdown</a> documents and <a href="http://shiny.rstudio.com/">Shiny</a> apps</li>
+<li>Easily render spatial objects from the <code>sp</code> or <code>sf</code> packages, or data frames with latitude/longitude columns</li>
+<li>Use map bounds and mouse events to drive Shiny logic</li>
+<li>Display maps in non spherical mercator projections</li>
+<li>Augment map features using chosen plugins from <a href="http://leafletjs.com/plugins">leaflet plugins repository</a></li>
+</ul>
+</div>
+<div id="installation" class="section level3">
+<h3>Installation</h3>
+<p>To install this R package, run this command at your R prompt:</p>
+<pre class="r"><code>install.packages(&quot;leaflet&quot;)
+# to install the development version from Github, run
+# devtools::install_github(&quot;rstudio/leaflet&quot;)</code></pre>
+<p>Once installed, you can use this package at the R console, within <a href="http://rmarkdown.rstudio.com/">R Markdown</a> documents, and within <a href="http://shiny.rstudio.com/">Shiny</a> applications.</p>
+</div>
+<div id="basic-usage" class="section level3">
+<h3>Basic Usage</h3>
+<p>You create a Leaflet map with these basic steps:</p>
+<ol style="list-style-type: decimal">
+<li>Create a map widget by calling <code>leaflet()</code>.</li>
+<li>Add <em>layers</em> (i.e., features) to the map by using layer functions (e.g. <code>addTiles</code>, <code>addMarkers</code>, <code>addPolygons</code>) to modify the map widget.</li>
+<li>Repeat step 2 as desired.</li>
+<li>Print the map widget to display it.</li>
+</ol>
+<p>Here’s a basic example:</p>
+<pre class="r"><code>library(leaflet)
+
+m &lt;- leaflet() %&gt;%
+  addTiles() %&gt;%  # Add default OpenStreetMap map tiles
+  addMarkers(lng=174.768, lat=-36.852, popup=&quot;The birthplace of R&quot;)
+m  # Print the map</code></pre>
+<div id="htmlwidget-927ec88a166bf954e46a" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-927ec88a166bf954e46a">{
+  "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
+    "calls": [
+      {
+        "method": "addTiles",
+        "args": [
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          null,
+          null,
+          {
+            "minZoom": 0,
+            "maxZoom": 18,
+            "tileSize": 256,
+            "subdomains": "abc",
+            "errorTileUrl": "",
+            "tms": false,
+            "noWrap": false,
+            "zoomOffset": 0,
+            "zoomReverse": false,
+            "opacity": 1,
+            "zIndex": 1,
+            "detectRetina": false,
+            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+          }
+        ]
+      },
+      {
+        "method": "addMarkers",
+        "args": [
+          -36.852,
+          174.768,
+          null,
+          null,
+          null,
+          {
+            "interactive": true,
+            "draggable": false,
+            "keyboard": true,
+            "title": "",
+            "alt": "",
+            "zIndexOffset": 0,
+            "opacity": 1,
+            "riseOnHover": false,
+            "riseOffset": 250
+          },
+          "The birthplace of R",
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      }
+    ],
+    "limits": {
+      "lat": [-36.852, -36.852],
+      "lng": [174.768, 174.768]
+    }
+  },
+  "evals": [],
+  "jsHooks": []
+}</script>
+<p>In case you’re not familiar with the <a href="https://github.com/smbache/magrittr">magrittr</a> pipe operator (<code>%&gt;%</code>), here is the equivalent without using pipes:</p>
+<pre class="r"><code>m &lt;- leaflet()
+m &lt;- addTiles(m)
+m &lt;- addMarkers(m, lng=174.768, lat=-36.852, popup=&quot;The birthplace of R&quot;)
+m</code></pre>
+</div>
+<div id="next-steps" class="section level3">
+<h3>Next Steps</h3>
+<p>We highly recommend that you proceed to <a href="map_widget.html">The Map Widget</a> page before exploring the rest of this site, as it describes common idioms we’ll use throughout the examples on the other pages.</p>
+<p>Although we have tried to provide an R-like interface to Leaflet, you may want to check out the <a href="http://leafletjs.com/reference.html">API documentation</a> of Leaflet occasionally when the meanings of certain parameters are not clear to you.</p>
+</div>
+</div>
+
+<footer>
+<p><small>The "leaflet" R package is copyright &copy; 2014-2016 RStudio, Inc.<br/>
+The Leaflet JavaScript library is &copy; 2010–2016 <a href="http://agafonkin.com/en">Vladimir Agafonkin</a>, 2010–2011 <a href="http://cloudmade.com">CloudMade</a>.<br/>
+Maps &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors unless otherwise noted.
+</small></p>
+</footer>
+
+  </div>
+</div>
+
+<a href="https://github.com/rstudio/leaflet"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

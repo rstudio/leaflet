@@ -1,0 +1,121 @@
+---
+---
+
+## Shiny
+
+There are two wrapper functions `leafletOutput()` and `renderLeaflet()` in this package for using Leaflet maps in **shiny**. The function `leafletProxy()` allows you to manipulate a map after it has been rendered.
+
+# UI Layers
+
+The UI elements markers and popups are supported via `addMarkers()` and `addPopups()`, respectively. In the example below, we add a marker with a custom icon, and a popup:
+
+```{r}
+leaflet() %>% addTiles() %>%
+  addMarkers(174.7690922, -36.8523071, icon = icons(
+    iconUrl = 'http://cran.rstudio.com/Rlogo.jpg',
+    iconWidth = 40, iconHeight = 40
+  )) %>%
+  addPopups(174.7690922, -36.8523071, 'R was born here!')
+```
+
+# Raster Layers
+
+Currently tile layers are supported via `addTiles()`. By default, the OpenStreetMap tiles are used, and you can certainly use other tiles of your choice.
+
+A live demo of many tile sets is available [here](http://leaflet-extras.github.io/leaflet-providers/preview/index.html). Note that some tile set providers require you to register. See the [project page](https://github.com/leaflet-extras/leaflet-providers) for more information.
+
+```{r}
+leaflet() %>%
+  addTiles(
+    'http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
+    attribution = 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community') %>%
+  setView(-93.65, 42.0285, zoom = 17)
+```
+
+# Vector Layers
+
+Vector layers contain elements of vector graphics, such as circles, rectangles, and polylines, etc. All vector layer functions have the arguments `lng` and `lat`, with additional arguments specifying the attributes of the graphical elements. Note the terminology is slightly different with R graphics. For example, the border of elements is controlled by the argument `stroke` (e.g., `leaflet::addRectangles(stroke = FALSE)` is like `graphics::rect(border = NA)`), the `color` argument only specifies the color of the border (in base R, `col`/`color` often means the _fill_ color), and the `weight` argument is like `lwd` in base R graphics.
+
+```{r}
+set.seed(123)
+m = leaflet() %>% addTiles()
+rand_lng = function(n = 10) rnorm(n, -93.65, .01)
+rand_lat = function(n = 10) rnorm(n, 42.0285, .01)
+
+# circles (units in metres)
+m %>% addCircles(rand_lng(50), rand_lat(50), radius = runif(50, 10, 200))
+
+# circle markers (units in pixels)
+m %>% addCircleMarkers(rand_lng(50), rand_lat(50), color = '#ff0000')
+m %>% addCircleMarkers(rand_lng(100), rand_lat(100), radius = runif(100, 5, 15))
+
+# rectangles
+m %>% addRectangles(
+  rand_lng(), rand_lat(), rand_lng(), rand_lat(),
+  color = 'red', fill = FALSE, dashArray = '5,5', weight = 3
+)
+
+# polylines
+m %>% addPolylines(rand_lng(50), rand_lat(50), fill = FALSE)
+
+# polygons
+m %>% addPolygons(
+  c(rand_lng(3), NA, rand_lng(4), NA, rand_lng(5)),
+  c(rand_lat(3), NA, rand_lat(4), NA, rand_lat(5)),
+  color = c('red', 'green', 'blue')
+)
+```
+
+# Other Layers
+
+[GeoJSON](http://geojson.org) is a JSON format for encoding geographic data structures such as points, lines, and polygons. The function `addGeoJSON()` allows us to add a GeoJSON layer to the map, and the layer data is normally represented as an R list. For example, the GeoJSON data
+
+```javascript
+var MPoint = {
+  "type": "MultiPoint",
+  "coordinates": [ [100.0, 0.0], [101.0, 1.0] ]
+};
+```
+
+can be represented in R as
+
+```{r eval=FALSE}
+MPoint = list(
+  type = 'MultiPoint',
+  coordinates = rbind(c(100.0, 0.0), c(101.0, 1.0))
+)
+```
+
+You can pass this list to `addGeoJSON()` to draw two points on the map.
+
+For a GeoJSON feature layer, you can use the `style` element in the `properties` list to define its style, and the `popup` element in `properties` to define the popup text. Here is an example:
+
+```{r}
+m = leaflet() %>% addCircles(lat = 1:26, lng = 1:26, popup = LETTERS)
+shapes = list(
+  list(
+    type = 'Feature',
+    properties = list(
+      popup = 'Here are some markers!'
+    ),
+    geometry = list(
+      type = 'MultiPoint',
+      coordinates = cbind(10:1, 1:10)
+    )
+  ),
+  list(
+    type = 'Feature',
+    properties = list(
+      style = list(color = 'red', fillColor = 'yellow'),
+      popup = 'Here is a polygon, or perhaps a flower...'
+    ),
+    geometry = list(
+      type = 'Polygon',
+      coordinates = list(26 + 10 * t(sapply(seq(0, 2 * pi, length = 10), function(x) {
+        c(cos(x), sin(x))
+      })))
+    )
+  )
+)
+m %>% addGeoJSON(shapes)
+```
