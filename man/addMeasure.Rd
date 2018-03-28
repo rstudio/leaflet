@@ -58,8 +58,6 @@ modified map
 Add a measure control to the map.
 }
 \examples{
-library(leaflet)
-
 leaf <- leaflet() \%>\%
   addTiles() \%>\%
   # central park

@@ -58,16 +58,12 @@ see \url{https://github.com/CliffCloud/Leaflet.EasyButton}
 }}
 
 \examples{
-library(leaflet)
-
 leaf <- leaflet() \%>\%
   addTiles() \%>\%
   addEasyButton(easyButton(
      icon = htmltools::span(class = "star", htmltools::HTML("&starf;")),
      onClick = JS("function(btn, map){ map.setZoom(1);}")))
 leaf
-
-library(leaflet)
 
 leaf <- leaflet() \%>\%
   addTiles() \%>\%

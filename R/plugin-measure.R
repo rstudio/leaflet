@@ -42,8 +42,6 @@ leafletMeasureDependencies <- function() {
 #'
 #' @return modified map
 #' @examples
-#' library(leaflet)
-#'
 #' leaf <- leaflet() %>%
 #'   addTiles() %>%
 #'   # central park

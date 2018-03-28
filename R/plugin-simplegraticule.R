@@ -23,8 +23,6 @@ leafletSimpleGraticuleDependencies <- function() {
 #' @param layerId the layer id
 #' @param group the name of the group this layer belongs to.
 #' @examples
-#' library(leaflet)
-#'
 #' leaflet() %>%
 #'   addTiles() %>%
 #'   addSimpleGraticule()

@@ -20,8 +20,6 @@ leafletGraticuleDependencies <- function() {
 #' @param group the name of the group this layer belongs to.
 #' @param options the path options for the graticule layer
 #' @examples
-#' library(leaflet)
-#'
 #' leaf <- leaflet() %>%
 #'   addTiles() %>%
 #'   addGraticule()

@@ -22,8 +22,6 @@ leafletTerminatorDependencies <- function() {
 #' @param group the name of the group this layer belongs to.
 #' @param options the path options for the daynight layer
 #' @examples
-#' library(leaflet)
-#'
 #' leaf <- leaflet() %>%
 #'   addTiles() %>%
 #'   addTerminator()

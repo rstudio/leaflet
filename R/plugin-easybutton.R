@@ -75,8 +75,6 @@ easyButton <- function(
 #' @param map a map widget object
 #' @param button the button object created with \code{\link{easyButton}}
 #' @examples
-#' library(leaflet)
-#'
 #' leaf <- leaflet() %>%
 #'   addTiles() %>%
 #'   addEasyButton(easyButton(
@@ -128,8 +126,6 @@ addEasyButton <- function(
 #' @param ... a list of buttons created with \code{\link{easyButton}}
 #' @seealso \code{\link{addEasyButton}}
 #' @examples
-#' library(leaflet)
-#'
 #' leaf <- leaflet() %>%
 #'   addTiles() %>%
 #'   addEasyButtonBar(

@@ -77,8 +77,6 @@ Add a minimap to the Map
 \url{https://github.com/Norkart/Leaflet-MiniMap}
 }
 \examples{
-library(leaflet)
-
 leaf <- leaflet() \%>\%
   addTiles() \%>\%
   addMiniMap()

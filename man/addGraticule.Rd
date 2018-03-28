@@ -29,8 +29,6 @@ Add a Graticule on the map
 see \url{https://github.com/turban/Leaflet.Graticule}
 }
 \examples{
-library(leaflet)
-
 leaf <- leaflet() \%>\%
   addTiles() \%>\%
   addGraticule()

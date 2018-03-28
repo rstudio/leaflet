@@ -55,8 +55,6 @@ leafletMiniMapDependencies <- function() {
 #' @param mapOptions Sets Leaflet options for the MiniMap map.
 #'    It does not override the MiniMap default map options but extends them.
 #' @examples
-#' library(leaflet)
-#'
 #' leaf <- leaflet() %>%
 #'   addTiles() %>%
 #'   addMiniMap()
