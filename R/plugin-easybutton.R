@@ -134,10 +134,10 @@ addEasyButton <- function(
 #'   addTiles() %>%
 #'   addEasyButtonBar(
 #'    easyButton(
-#'      icon = htmltools::span(class = "star", "&starf;"),
+#'      icon = htmltools::span(class = "star", htmltools::HTML("&starf;")),
 #'      onClick = JS("function(btn, map){ alert(\"Button 1\");}")),
 #'    easyButton(
-#'      icon = htmltools::span(class = "star", "&target;"),
+#'      icon = htmltools::span(class = "star", htmltools::HTML("&target;")),
 #'      onClick = JS("function(btn, map){ alert(\"Button 2\");}")))
 #' leaf
 #'
