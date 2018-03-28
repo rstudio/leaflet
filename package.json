@@ -1,31 +1,16 @@
 {
   "name": "leaflet-r-package",
-  "version": "0.0.0",
-  "description": "",
-  "main": "javascript/src/index.js",
-  "directories": {
-    "man": "man",
-    "test": "tests"
-  },
+  "private": true,
   "scripts": {
     "build": "grunt build",
     "watch": "grunt",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/rstudio/leaflet.git"
-  },
-  "author": "",
   "license": "GPL-3.0",
-  "bugs": {
-    "url": "https://github.com/rstudio/leaflet/issues"
-  },
-  "homepage": "https://github.com/rstudio/leaflet#readme",
   "devDependencies": {
     "babel": "^6.5.2",
-    "babel-preset-es2015": "^6.6.0",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.14.0",
+    "babel-preset-es2015": "^6.6.0",
     "babel-register": "^6.14.0",
     "babelify": "^7.3.0",
     "browserify": "^13.0.0",
@@ -33,6 +18,7 @@
     "grunt": "^1.0.1",
     "grunt-babel": "^6.0.0",
     "grunt-browserify": "^5.0.0",
+    "grunt-cli": "^1.2.0",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-eslint": "^18.1.0",
     "grunt-mocha-test": "^0.12.7",
