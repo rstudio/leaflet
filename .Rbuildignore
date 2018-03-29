@@ -30,3 +30,4 @@
 ^man-roxygen/
 ^viztest-.*
 ^scripts
+^cran-comments\.md$

@@ -1,40 +1,8 @@
 # amt
 
-Version: 0.0.2.0
+Version: 0.0.3.0
 
 ## In both
-
-*   checking whether package ‘amt’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: package ‘tidyverse’ was built under R version 3.4.2
-      Warning: package ‘tibble’ was built under R version 3.4.3
-      Warning: package ‘tidyr’ was built under R version 3.4.3
-      Warning: package ‘purrr’ was built under R version 3.4.2
-      Warning: package ‘dplyr’ was built under R version 3.4.2
-      Warning: No Rd macros in package 'Rdpack'.
-    See ‘/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/checks.noindex/amt/new/amt.Rcheck/00install.out’ for details.
-    ```
-
-*   checking Rd files ... WARNING
-    ```
-    Warning: No Rd macros in package 'Rdpack'.
-    prepare_Rd: adjust_param.Rd:84: unknown macro '\insertRef'
-    prepare_Rd: movement_metrics.Rd:51: unknown macro '\insertRef'
-    prepare_Rd: movement_metrics.Rd:52: unknown macro '\insertRef'
-    prepare_Rd: movement_metrics.Rd:53: unknown macro '\insertRef'
-    prepare_Rd: sim_ud.Rd:58: unknown macro '\insertRef'
-    prepare_Rd: sim_ud.Rd:59: unknown macro '\insertRef'
-    ```
-
-*   checking for missing documentation entries ... WARNING
-    ```
-    Warning: package ‘raster’ was built under R version 3.4.2
-    Warning: package ‘sp’ was built under R version 3.4.3
-    All user-level objects in a package should have documentation entries.
-    See chapter ‘Writing R documentation files’ in the ‘Writing R
-    Extensions’ manual.
-    ```
 
 *   checking dependencies in R code ... NOTE
     ```
@@ -42,40 +10,56 @@ Version: 0.0.2.0
       All declared Imports should be used.
     ```
 
-# antaresViz
+# CDECRetrieve
 
-Version: 0.12.0
+Version: 0.1.0
 
 ## In both
 
-*   checking whether package ‘antaresViz’ can be installed ... WARNING
+*   checking dependencies in R code ... NOTE
     ```
-    Found the following significant warnings:
-      Warning: package ‘spMaps’ was built under R version 3.4.3
-      Warning: package ‘sp’ was built under R version 3.4.3
-      Warning: package ‘raster’ was built under R version 3.4.2
-      Warning: package ‘rgeos’ was built under R version 3.4.2
-    See ‘/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/checks.noindex/antaresViz/new/antaresViz.Rcheck/00install.out’ for details.
+    Namespaces in Imports field not imported from:
+      ‘lazyeval’ ‘purrr’ ‘roxygen2’
+      All declared Imports should be used.
+    ```
+
+# geoSpectral
+
+Version: 0.17.4
+
+## In both
+
+*   checking examples ... ERROR
+    ```
+    ...
+    [1] NA
+    
+    $header$Latitude
+    [1] NA
+    
+    $header$Longitude
+    [1] NA
+    
+    
+    > 
+    > #Convert the data.frame back to Spectra
+    > sp2 <- as(df, "Spectra")
+    > 
+    > #Convert a bare data.frame to Spectra with minimal attributes
+    > df2 <- data.frame(ch1=c(1,2,3,4), ch2=c(5,6,7,8), TIME=Sys.time()+1:4, LAT=1:4, LON=5:8)
+    > attr(df2, "Units") <- "m-1"
+    > attr(df2, "Wavelengths") <- c(500, 600)
+    > attr(df2, "ShortName") <- "abs"
+    > as(df2, "Spectra")
+    Error: tz1.set == tz2.set is not TRUE
+    Execution halted
     ```
 
 # jpmesh
 
-Version: 1.0.1
+Version: 1.1.0
 
 ## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  5.5Mb
-      sub-directories of 1Mb or more:
-        R   4.6Mb
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘readr’
-      All declared Imports should be used.
-    ```
 
 *   checking data for non-ASCII characters ... NOTE
     ```
@@ -88,41 +72,31 @@ Version: 0.3.0
 
 ## In both
 
-*   checking whether package ‘jpndistrict’ can be installed ... WARNING
+*   checking tests ...
     ```
-    Found the following significant warnings:
-      Warning: package ‘jpmesh’ was built under R version 3.4.3
-    See ‘/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/checks.noindex/jpndistrict/new/jpndistrict.Rcheck/00install.out’ for details.
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      Loading required package: jpmesh
+      This package provide map data is based on the Digital Map 25000(Map
+      Image) published by Geospatial Information Authorityof Japan (Approval
+      No.603FY2017 information usage <http://www.gsi.go.jp>)
+      > 
+      > test_check("jpndistrict")
+      ── 1. Failure: jpn_pref (@test-spdf_jpn.R#20)  ─────────────────────────────────
+      Names of `df_pref2` ('jis_code', 'prefecture', 'geometry') don't match 'jis_code', 'prefecture', '.'
+      
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      OK: 41 SKIPPED: 0 FAILED: 1
+      1. Failure: jpn_pref (@test-spdf_jpn.R#20) 
+      
+      Error: testthat unit tests failed
+      Execution halted
     ```
 
 *   checking data for non-ASCII characters ... NOTE
     ```
       Note: found 502 marked UTF-8 strings
-    ```
-
-# lawn
-
-Version: 0.4.2
-
-## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Packages which this enhances but not available for checking:
-      ‘maps’ ‘geojsonio’
-    ```
-
-# leaflet.esri
-
-Version: 0.2
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘htmlwidgets’ ‘shiny’
-      All declared Imports should be used.
     ```
 
 # leaflet.extras
@@ -163,7 +137,7 @@ Version: 0.2.1
 
 # lingtypology
 
-Version: 1.0.11
+Version: 1.0.12
 
 ## In both
 
@@ -172,23 +146,9 @@ Version: 1.0.11
       Note: found 118 marked UTF-8 strings
     ```
 
-# macleish
-
-Version: 0.3.2
-
-## In both
-
-*   checking whether package ‘macleish’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: package ‘etl’ was built under R version 3.4.2
-      Warning: package ‘dplyr’ was built under R version 3.4.2
-    See ‘/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/checks.noindex/macleish/new/macleish.Rcheck/00install.out’ for details.
-    ```
-
 # mapedit
 
-Version: 0.3.2
+Version: 0.4.1
 
 ## In both
 
@@ -199,7 +159,7 @@ Version: 0.3.2
 
 # mapr
 
-Version: 0.3.4
+Version: 0.4.0
 
 ## In both
 
@@ -210,7 +170,7 @@ Version: 0.3.4
 
 # mapsapi
 
-Version: 0.3.0
+Version: 0.3.5
 
 ## In both
 
@@ -222,40 +182,13 @@ Version: 0.3.0
 
 # metScanR
 
-Version: 1.1.1
+Version: 1.2.0
 
 ## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  5.2Mb
-      sub-directories of 1Mb or more:
-        data   5.1Mb
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘RCurl’
-      All declared Imports should be used.
-    ```
 
 *   checking data for non-ASCII characters ... NOTE
     ```
-      Note: found 2 marked UTF-8 strings
-    ```
-
-# nyctaxi
-
-Version: 0.0.1
-
-## In both
-
-*   checking whether package ‘nyctaxi’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: package ‘etl’ was built under R version 3.4.2
-      Warning: package ‘dplyr’ was built under R version 3.4.2
-    See ‘/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/checks.noindex/nyctaxi/new/nyctaxi.Rcheck/00install.out’ for details.
+      Note: found 6 marked UTF-8 strings
     ```
 
 # parlitools
@@ -269,21 +202,6 @@ Version: 0.2.1
       Note: found 13 marked UTF-8 strings
     ```
 
-# PWFSLSmoke
-
-Version: 1.0.10
-
-## In both
-
-*   checking whether package ‘PWFSLSmoke’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: package ‘dplyr’ was built under R version 3.4.2
-      Warning: package ‘MazamaSpatialUtils’ was built under R version 3.4.3
-      Warning: package ‘sp’ was built under R version 3.4.3
-    See ‘/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/checks.noindex/PWFSLSmoke/new/PWFSLSmoke.Rcheck/00install.out’ for details.
-    ```
-
 # rdwd
 
 Version: 0.9.0
@@ -294,15 +212,64 @@ Version: 0.9.0
     ```
     Error in re-building vignettes:
       ...
-    Warning in as.POSIXlt.POSIXct(Sys.time()) :
-      unknown timezone 'zone/tz/2017c.1.0/zoneinfo/America/New_York'
-    Quitting from lines 90-96 (rdwd.Rmd) 
+    Quitting from lines 112-121 (rdwd.Rmd) 
     Error: processing vignette 'rdwd.Rmd' failed with diagnostics:
-    in buildVignettes -> engine$ call_block -> block_exec -> in_dir -> evaluate -> evaluate::evaluate -> evaluate_call -> timing_fn -> handle -> readDWD -> checkFile :  The file 'daily_kl_recent_tageswerte_KL_03987_akt.zip'
-      does not exist. Current getwd: /Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/checks.noindex/rdwd/new/rdwd.Rcheck/vign_test/rdwd/vignettes
+    cannot open URL 'ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/monthly/kl/historical/monatswerte_KL_03987_18930101_20161231_hist.zip'
     Execution halted
     ```
 
+# rpostgisLT
+
+Version: 0.6.0
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘htmltools’
+      All declared Imports should be used.
+    ```
+
+# segclust2d
+
+Version: 0.1.0
+
+## In both
+
+*   checking whether package ‘segclust2d’ can be installed ... ERROR
+    ```
+    Installation failed.
+    See ‘/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/checks.noindex/segclust2d/new/segclust2d.Rcheck/00install.out’ for details.
+    ```
+
+## Installation
+
+### Devel
+
+```
+* installing *source* package ‘segclust2d’ ...
+** package ‘segclust2d’ successfully unpacked and MD5 sums checked
+** libs
+clang++  -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I"/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/library.noindex/leaflet/new/Rcpp/include" -I"/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/library.noindex/segclust2d/RcppArmadillo/include" -I/usr/local/include  -fopenmp -fPIC  -Wall -g -O2  -c RcppExports.cpp -o RcppExports.o
+clang: error: unsupported option '-fopenmp'
+make: *** [RcppExports.o] Error 1
+ERROR: compilation failed for package ‘segclust2d’
+* removing ‘/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/checks.noindex/segclust2d/new/segclust2d.Rcheck/segclust2d’
+
+```
+### CRAN
+
+```
+* installing *source* package ‘segclust2d’ ...
+** package ‘segclust2d’ successfully unpacked and MD5 sums checked
+** libs
+clang++  -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I"/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/library.noindex/leaflet/old/Rcpp/include" -I"/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/library.noindex/segclust2d/RcppArmadillo/include" -I/usr/local/include  -fopenmp -fPIC  -Wall -g -O2  -c RcppExports.cpp -o RcppExports.o
+clang: error: unsupported option '-fopenmp'
+make: *** [RcppExports.o] Error 1
+ERROR: compilation failed for package ‘segclust2d’
+* removing ‘/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/checks.noindex/segclust2d/old/segclust2d.Rcheck/segclust2d’
+
+```
 # SpatialEpiApp
 
 Version: 0.3
@@ -329,13 +296,6 @@ Version: 0.1.0
 
 ## In both
 
-*   checking whether package ‘statesRcontiguous’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: package ‘sf’ was built under R version 3.4.3
-    See ‘/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/checks.noindex/statesRcontiguous/new/statesRcontiguous.Rcheck/00install.out’ for details.
-    ```
-
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
@@ -359,33 +319,11 @@ Version: 0.4.1
       installed size is  8.1Mb
     ```
 
-# synthACS
-
-Version: 1.0.1
-
-## In both
-
-*   checking whether package ‘synthACS’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: package ‘acs’ was built under R version 3.4.2
-      Warning: package ‘data.table’ was built under R version 3.4.2
-    See ‘/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/checks.noindex/synthACS/new/synthACS.Rcheck/00install.out’ for details.
-    ```
-
 # teachingApps
 
 Version: 1.0.2
 
-## Newly broken
-
-*   checking whether package ‘teachingApps’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/checks.noindex/teachingApps/new/teachingApps.Rcheck/00install.out’ for details.
-    ```
-
-## Newly fixed
+## In both
 
 *   checking dependencies in R code ... NOTE
     ```
@@ -394,78 +332,11 @@ Version: 1.0.2
       All declared Imports should be used.
     ```
 
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘teachingApps’ ...
-** package ‘teachingApps’ successfully unpacked and MD5 sums checked
-Warning in as.POSIXlt.POSIXct(x, tz) :
-  unknown timezone 'zone/tz/2017c.1.0/zoneinfo/America/New_York'
-** libs
-clang++  -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I"/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/library.noindex/leaflet/new/Rcpp/include" -I/usr/local/include   -fPIC  -Wall -g -O2  -c RcppExports.cpp -o RcppExports.o
-clang++  -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I"/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/library.noindex/leaflet/new/Rcpp/include" -I/usr/local/include   -fPIC  -Wall -g -O2  -c bisa.cpp -o bisa.o
-clang++  -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I"/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/library.noindex/leaflet/new/Rcpp/include" -I/usr/local/include   -fPIC  -Wall -g -O2  -c lev.cpp -o lev.o
-clang++  -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I"/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/library.noindex/leaflet/new/Rcpp/include" -I/usr/local/include   -fPIC  -Wall -g -O2  -c likely.cpp -o likely.o
-clang++  -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I"/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/library.noindex/leaflet/new/Rcpp/include" -I/usr/local/include   -fPIC  -Wall -g -O2  -c rcpp_hello_world.cpp -o rcpp_hello_world.o
-clang++  -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I"/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/library.noindex/leaflet/new/Rcpp/include" -I/usr/local/include   -fPIC  -Wall -g -O2  -c sev.cpp -o sev.o
-clang++ -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -single_module -multiply_defined suppress -L/Library/Frameworks/R.framework/Resources/lib -L/usr/local/lib -o teachingApps.so RcppExports.o bisa.o lev.o likely.o rcpp_hello_world.o sev.o -F/Library/Frameworks/R.framework/.. -framework R -Wl,-framework -Wl,CoreFoundation
-installing to /Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/checks.noindex/teachingApps/new/teachingApps.Rcheck/teachingApps/libs
-** R
-** inst
-** preparing package for lazy loading
-Error : object ‘cividis’ is not exported by 'namespace:viridisLite'
-ERROR: lazy loading failed for package ‘teachingApps’
-* removing ‘/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/checks.noindex/teachingApps/new/teachingApps.Rcheck/teachingApps’
-
-```
-### CRAN
-
-```
-* installing *source* package ‘teachingApps’ ...
-** package ‘teachingApps’ successfully unpacked and MD5 sums checked
-Warning in as.POSIXlt.POSIXct(x, tz) :
-  unknown timezone 'zone/tz/2017c.1.0/zoneinfo/America/New_York'
-** libs
-clang++  -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I"/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/library.noindex/leaflet/old/Rcpp/include" -I/usr/local/include   -fPIC  -Wall -g -O2  -c RcppExports.cpp -o RcppExports.o
-clang++  -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I"/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/library.noindex/leaflet/old/Rcpp/include" -I/usr/local/include   -fPIC  -Wall -g -O2  -c bisa.cpp -o bisa.o
-clang++  -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I"/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/library.noindex/leaflet/old/Rcpp/include" -I/usr/local/include   -fPIC  -Wall -g -O2  -c lev.cpp -o lev.o
-clang++  -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I"/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/library.noindex/leaflet/old/Rcpp/include" -I/usr/local/include   -fPIC  -Wall -g -O2  -c likely.cpp -o likely.o
-clang++  -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I"/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/library.noindex/leaflet/old/Rcpp/include" -I/usr/local/include   -fPIC  -Wall -g -O2  -c rcpp_hello_world.cpp -o rcpp_hello_world.o
-clang++  -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I"/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/library.noindex/leaflet/old/Rcpp/include" -I/usr/local/include   -fPIC  -Wall -g -O2  -c sev.cpp -o sev.o
-clang++ -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -single_module -multiply_defined suppress -L/Library/Frameworks/R.framework/Resources/lib -L/usr/local/lib -o teachingApps.so RcppExports.o bisa.o lev.o likely.o rcpp_hello_world.o sev.o -F/Library/Frameworks/R.framework/.. -framework R -Wl,-framework -Wl,CoreFoundation
-installing to /Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/checks.noindex/teachingApps/old/teachingApps.Rcheck/teachingApps/libs
-** R
-** inst
-** preparing package for lazy loading
-** help
-*** installing help indices
-** building package indices
-** testing if installed package can be loaded
-* DONE (teachingApps)
-
-```
 # tilegramsR
 
 Version: 0.2.0
 
 ## In both
-
-*   checking whether package ‘tilegramsR’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: package ‘sf’ was built under R version 3.4.3
-    See ‘/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/checks.noindex/tilegramsR/new/tilegramsR.Rcheck/00install.out’ for details.
-    ```
-
-*   checking for missing documentation entries ... WARNING
-    ```
-    Warning: package ‘sp’ was built under R version 3.4.3
-    All user-level objects in a package should have documentation entries.
-    See chapter ‘Writing R documentation files’ in the ‘Writing R
-    Extensions’ manual.
-    ```
 
 *   checking dependencies in R code ... NOTE
     ```
@@ -480,7 +351,7 @@ Version: 0.2.0
 
 # tmap
 
-Version: 1.11
+Version: 1.11-1
 
 ## In both
 
@@ -498,13 +369,6 @@ Version: 1.0.0
 
 ## In both
 
-*   checking whether package ‘trackeR’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: package ‘zoo’ was built under R version 3.4.3
-    See ‘/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/checks.noindex/trackeR/new/trackeR.Rcheck/00install.out’ for details.
-    ```
-
 *   checking installed package size ... NOTE
     ```
       installed size is  5.0Mb
@@ -515,7 +379,7 @@ Version: 1.0.0
 
 # wallace
 
-Version: 1.0.3
+Version: 1.0.4
 
 ## In both
 
@@ -530,13 +394,14 @@ Version: 1.0.3
 
 # windfarmGA
 
-Version: 1.1.1
+Version: 1.2.1
 
 ## In both
 
 *   checking dependencies in R code ... NOTE
     ```
-    Namespace in Imports field not imported from: ‘RandomFields’
+    Namespaces in Imports field not imported from:
+      ‘RandomFields’ ‘data.table’
       All declared Imports should be used.
     ```
 
