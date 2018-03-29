@@ -121,7 +121,7 @@ mapOptions <- function(map, zoomToLimits = c("always", "first", "never")) {
 #' @param  worldCopyJump With this option enabled, the map tracks when you pan to another "copy" of the world and seamlessly jumps to the original one so that all overlays like markers and vector layers are still visible.
 #' @param ... other options.
 #' @describeIn leaflet Options for map creation
-#' @seealso \url{http://leafletjs.com/reference-1.2.0.html#map-option} for details.
+#' @seealso \url{http://leafletjs.com/reference-1.3.1.html#map-option} for details.
 #' @export
 leafletOptions <- function(
   minZoom = NULL,

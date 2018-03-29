@@ -263,5 +263,5 @@ m \%>\% addCircleMarkers(~lng, ~lat, radius = ~size,
 \seealso{
 \code{\link{leafletCRS}} for creating a custom CRS.
 
-\url{http://leafletjs.com/reference-1.2.0.html#map-option} for details.
+\url{http://leafletjs.com/reference-1.3.1.html#map-option} for details.
 }

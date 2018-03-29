@@ -42,7 +42,7 @@ pathOptions(lineCap = NULL, lineJoin = NULL, clickable = NULL,
 }
 \arguments{
 \item{minZoom, maxZoom, maxNativeZoom, tileSize, subdomains, errorTileUrl, tms, noWrap, zoomOffset, zoomReverse, zIndex, unloadInvisibleTiles, updateWhenIdle, detectRetina}{the tile layer options; see
-\url{http://leafletjs.com/reference-1.2.0.html#tilelayer}}
+\url{http://leafletjs.com/reference-1.3.1.html#tilelayer}}
 
 \item{...}{extra options passed to underlying Javascript object constructor.}
 
@@ -58,7 +58,7 @@ transparency}
 
 \item{crs}{Coordinate Reference System to use for the WMS requests, defaults.}
 
-\item{maxWidth, minWidth, maxHeight, autoPan, keepInView, closeButton, zoomAnimation, closeOnClick}{popup options; see \url{http://leafletjs.com/reference-1.2.0.html#popup-option}}
+\item{maxWidth, minWidth, maxHeight, autoPan, keepInView, closeButton, zoomAnimation, closeOnClick}{popup options; see \url{http://leafletjs.com/reference-1.3.1.html#popup-option}}
 
 \item{className}{a CSS class name set on an element}
 
@@ -66,9 +66,9 @@ transparency}
 
 \item{clickable}{DEPRECATED! Use the \code{interactive} option.}
 
-\item{noHide, direction, offset, textsize, textOnly, style, permanent}{label options; see \url{http://leafletjs.com/reference-1.2.0.html#tooltip-option}}
+\item{noHide, direction, offset, textsize, textOnly, style, permanent}{label options; see \url{http://leafletjs.com/reference-1.3.1.html#tooltip-option}}
 
-\item{draggable, keyboard, title, alt, zIndexOffset, opacity, riseOnHover, riseOffset}{marker options; see \url{http://leafletjs.com/reference-1.2.0.html#marker-option}}
+\item{draggable, keyboard, title, alt, zIndexOffset, opacity, riseOnHover, riseOffset}{marker options; see \url{http://leafletjs.com/reference-1.3.1.html#marker-option}}
 
 \item{showCoverageOnHover}{when you mouse over a cluster it shows the bounds
 of its markers}
@@ -81,7 +81,7 @@ spiderfy it so you can see all of its markers}
 \item{removeOutsideVisibleBounds}{clusters and markers too far from the
 viewport are removed from the map for performance}
 
-\item{spiderLegPolylineOptions}{Allows you to specify PolylineOptions (\url{http://leafletjs.com/reference-1.2.0.html#polyline-option}) to style spider legs. By default, they are { weight: 1.5, color: "#222", opacity: 0.5 }}
+\item{spiderLegPolylineOptions}{Allows you to specify PolylineOptions (\url{http://leafletjs.com/reference-1.3.1.html#polyline-option}) to style spider legs. By default, they are { weight: 1.5, color: "#222", opacity: 0.5 }}
 
 \item{freezeAtZoom}{Allows you to freeze cluster expansion to a zoom level.
 Can be a zoom level e.g. 10, 12 or "max" or "maxKeepSpiderify"

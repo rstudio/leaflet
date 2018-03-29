@@ -28,7 +28,7 @@ identifier-style names.}
 \item{options}{tile options}
 
 \item{errorTileUrl, noWrap, opacity, zIndex, updateWhenIdle, detectRetina}{the tile layer options; see
-\url{http://leafletjs.com/reference-1.2.0.html#tilelayer}}
+\url{http://leafletjs.com/reference-1.3.1.html#tilelayer}}
 
 \item{...}{named parameters to add to the options}
 }

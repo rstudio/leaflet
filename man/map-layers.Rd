@@ -246,7 +246,7 @@ Options to highlight shapes (polylines/polygons/circles/rectangles)
 
 \references{
 The Leaflet API documentation:
-  \url{http://leafletjs.com/reference-1.2.0.html}
+  \url{http://leafletjs.com/reference-1.3.1.html}
 }
 \seealso{
 \code{\link{tileOptions}}, \code{\link{WMSTileOptions}},

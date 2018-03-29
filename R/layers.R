@@ -147,7 +147,7 @@ groupOptions <- function(map, group, zoomLevels = NULL) {
 #'   \code{\link{popupOptions}}, \code{\link{markerOptions}},
 #'   \code{\link{pathOptions}}
 #' @references The Leaflet API documentation:
-#'   \url{http://leafletjs.com/reference-1.2.0.html}
+#'   \url{http://leafletjs.com/reference-1.3.1.html}
 #' @describeIn map-layers Add a tile layer to the map
 #' @export
 addTiles <- function(
@@ -338,7 +338,7 @@ clearImages <- function(map) {
 #' @param
 #' minZoom,maxZoom,maxNativeZoom,tileSize,subdomains,errorTileUrl,tms,noWrap,zoomOffset,zoomReverse,zIndex,unloadInvisibleTiles,updateWhenIdle,detectRetina
 #' the tile layer options; see
-#' \url{http://leafletjs.com/reference-1.2.0.html#tilelayer}
+#' \url{http://leafletjs.com/reference-1.3.1.html#tilelayer}
 #' @param ... extra options passed to underlying Javascript object constructor.
 #' @describeIn map-options Options for tile layers
 #' @export
@@ -480,7 +480,7 @@ addPopups <- function(
 #' @param className a CSS class name set on an element
 #' @param
 #' maxWidth,minWidth,maxHeight,autoPan,keepInView,closeButton,zoomAnimation,closeOnClick
-#' popup options; see \url{http://leafletjs.com/reference-1.2.0.html#popup-option}
+#' popup options; see \url{http://leafletjs.com/reference-1.3.1.html#popup-option}
 #' @describeIn map-options Options for popups
 #' @export
 popupOptions <- function(
@@ -545,7 +545,7 @@ safeLabel <- function(label, data) {
 
 #' @param
 #' noHide,direction,offset,textsize,textOnly,style,permanent
-#' label options; see \url{http://leafletjs.com/reference-1.2.0.html#tooltip-option}
+#' label options; see \url{http://leafletjs.com/reference-1.3.1.html#tooltip-option}
 #' @describeIn map-options Options for labels
 #' @export
 labelOptions <- function(
@@ -860,7 +860,7 @@ b64EncodePackedIcons <- function(packedIcons) {
 #' @param clickable DEPRECATED! Use the \code{interactive} option.
 #' @param
 #'   draggable,keyboard,title,alt,zIndexOffset,opacity,riseOnHover,riseOffset
-#'   marker options; see \url{http://leafletjs.com/reference-1.2.0.html#marker-option}
+#'   marker options; see \url{http://leafletjs.com/reference-1.3.1.html#marker-option}
 #' @describeIn map-options Options for markers
 #' @export
 markerOptions <- function(
@@ -893,7 +893,7 @@ markerOptions <- function(
 #'   spiderfy it so you can see all of its markers
 #' @param removeOutsideVisibleBounds clusters and markers too far from the
 #'   viewport are removed from the map for performance
-#' @param spiderLegPolylineOptions Allows you to specify PolylineOptions (\url{http://leafletjs.com/reference-1.2.0.html#polyline-option}) to style spider legs. By default, they are { weight: 1.5, color: "#222", opacity: 0.5 }
+#' @param spiderLegPolylineOptions Allows you to specify PolylineOptions (\url{http://leafletjs.com/reference-1.3.1.html#polyline-option}) to style spider legs. By default, they are { weight: 1.5, color: "#222", opacity: 0.5 }
 #' @param freezeAtZoom Allows you to freeze cluster expansion to a zoom level.
 #' Can be a zoom level e.g. 10, 12 or "max" or "maxKeepSpiderify"
 #' See \url{https://github.com/ghybs/Leaflet.MarkerCluster.Freezable#api-reference}
@@ -1257,7 +1257,7 @@ clearGeoJSON <- function(map) {
 #' Add UI controls to switch layers on and off
 #'
 #' Uses Leaflet's built-in
-#' \href{http://leafletjs.com/reference-1.2.0.html#control-layers}{layers control}
+#' \href{http://leafletjs.com/reference-1.3.1.html#control-layers}{layers control}
 #' feature to allow users to choose one of several base layers, and to choose
 #' any number of overlay layers to view.
 #'
