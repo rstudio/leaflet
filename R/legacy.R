@@ -19,13 +19,13 @@ createLeafletMap <- function(session, outputId) {
   # client side function args.
   send <- function(method, func, msg) {
 
-    msg = msg[names(formals(func))]
-    names(msg) = NULL
+    msg <- msg[names(formals(func))]
+    names(msg) <- NULL
 
-    opts = options(digits = 22)
+    opts <- options(digits = 22)
     on.exit(options(opts))
 
-    session$sendCustomMessage('leaflet', list(
+    session$sendCustomMessage("leaflet", list(
       mapId = outputId,
       method = method,
       args = msg
@@ -44,29 +44,29 @@ createLeafletMap <- function(session, outputId) {
   #     })
   stub <- function(p) {
     # The function name is the first element
-    name = as.character(p[[1]])
+    name <- as.character(p[[1]])
 
     # Get textual representation of the expression; change name to "function"
     # and add a NULL function body
-    txt = paste(deparse(p), collapse = "\n")
-    txt = sub(name, "function", txt, fixed = TRUE)
-    txt = paste0(txt, "NULL")
+    txt <- paste(deparse(p), collapse = "\n")
+    txt <- sub(name, "function", txt, fixed = TRUE)
+    txt <- paste0(txt, "NULL")
 
     # Create the function
-    func = eval(parse(text = txt))
+    func <- eval(parse(text = txt))
 
     # Replace the function body
-    body(func) = substituteDirect(
+    body(func) <- substituteDirect(
       quote(send(name, sys.function(), as.list(environment()))),
       list(name = name)
     )
-    environment(func) = environment(send)
+    environment(func) <- environment(send)
 
     # Return as list
     structure(list(func), names = name)
   }
 
-  obj = lapply(expression(
+  obj <- lapply(expression(
     setView(lat, lng, zoom, forceReset = FALSE),
     addMarker(lat, lng, layerId = NULL, options = list(), eachOptions = list()),
     addCircleMarker(lat, lng, radius, layerId = NULL, options = list(), eachOptions = list()),
@@ -93,17 +93,17 @@ createLeafletMap <- function(session, outputId) {
 #' @export
 leafletMap <- function(
   outputId, width, height,
-  initialTileLayer = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+  initialTileLayer = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
   initialTileLayerAttribution = NULL,
-  options=NULL) {
+  options = NULL) {
 
   if (missing(initialTileLayer) && is.null(initialTileLayerAttribution))
-    initialTileLayerAttribution = paste(
-      '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a>',
-      'contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
+    initialTileLayerAttribution <- paste(
+      "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a>",
+      "contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>"
     )
 
-  shiny::addResourcePath("leaflet-legacy", system.file("legacy/www", package="leaflet"))
+  shiny::addResourcePath("leaflet-legacy", system.file("legacy/www", package = "leaflet"))
 
   if (is.numeric(width))
     width <- sprintf("%dpx", width)
@@ -113,9 +113,13 @@ leafletMap <- function(
   htmltools::tagList(
     htmltools::singleton(
       htmltools::tags$head(
-        htmltools::tags$link(rel="stylesheet", type="text/css", href="leaflet-legacy/leaflet.css"),
-        htmltools::tags$script(src="leaflet-legacy/leaflet.js"),
-        htmltools::tags$script(src="leaflet-legacy/binding.js")
+        htmltools::tags$link(
+          rel = "stylesheet",
+          type = "text/css",
+          href = "leaflet-legacy/leaflet.css"
+        ),
+        htmltools::tags$script(src = "leaflet-legacy/leaflet.js"),
+        htmltools::tags$script(src = "leaflet-legacy/binding.js")
       )
     ),
     htmltools::tags$div(
@@ -125,7 +129,7 @@ leafletMap <- function(
       `data-initial-tile-layer-attrib` = initialTileLayerAttribution,
 
       htmltools::tags$script(
-        type="application/json", class="leaflet-options",
+        type = "application/json", class = "leaflet-options",
         ifelse(is.null(options), "{}", RJSONIO::toJSON(options))
       )
     )

@@ -1,4 +1,4 @@
-globalVariables(c('providers')) # To make R CMD Check happy
+utils::globalVariables(c("providers")) # To make R CMD Check happy
 
 leafletMiniMapDependencies <- function() {
   list(
@@ -6,8 +6,8 @@ leafletMiniMapDependencies <- function() {
       "leaflet-minimap",
       "3.3.1",
       system.file("htmlwidgets/plugins/Leaflet-MiniMap", package = "leaflet"),
-      script = c('Control.MiniMap.min.js', 'Minimap-binding.js'),
-      stylesheet = c('Control.MiniMap.min.css')
+      script = c("Control.MiniMap.min.js", "Minimap-binding.js"),
+      stylesheet = c("Control.MiniMap.min.css")
     )
   )
 }
@@ -18,7 +18,7 @@ leafletMiniMapDependencies <- function() {
 #' @param map a map widget object
 #' @param position The standard Leaflet.Control position parameter,
 #'    used like all the other controls.
-#' Defaults to 'bottomright'.
+#' Defaults to "bottomright".
 #' @param width  The width of the minimap in pixels. Defaults to 150.
 #' @param height The height of the minimap in pixels. Defaults to 150.
 #' @param collapsedWidth The width of the toggle marker and the minimap
@@ -45,27 +45,26 @@ leafletMiniMapDependencies <- function() {
 #'    Especially useful when 'zoomLevelFixed' is set.
 #' @param minimized Sets whether the minimap should start in a minimized position.
 #' @param aimingRectOptions Sets the style of the aiming rectangle by passing in
-#'    a Path.Options (\url{http://leafletjs.com/reference.html#path-options}) object.
+#'    a Path.Options (\url{http://leafletjs.com/reference-1.3.1.html#path-options}) object.
 #'    (Clickable will always be overridden and set to false.)
 #' @param shadowRectOptions Sets the style of the aiming shadow rectangle by passing in
-#'    a Path.Options (\url{http://leafletjs.com/reference.html#path-options}) object.
+#'    a Path.Options (\url{http://leafletjs.com/reference-1.3.1.html#path-option}) object.
 #'    (Clickable will always be overridden and set to false.)
 #' @param strings Overrides the default strings allowing for translation.
 #' @param tiles URL for tiles or one of the pre-defined providers.
 #' @param mapOptions Sets Leaflet options for the MiniMap map.
 #'    It does not override the MiniMap default map options but extends them.
 #' @examples
-#' library(leaflet)
-#'
 #' leaf <- leaflet() %>%
 #'   addTiles() %>%
 #'   addMiniMap()
+#' leaf
 #'
 #' @seealso \code{\link{providers}}
 #' @export
 addMiniMap <- function(
   map,
-  position = 'bottomright',
+  position = "bottomright",
   width = 150,
   height = 150,
   collapsedWidth = 19,
@@ -77,10 +76,10 @@ addMiniMap <- function(
   toggleDisplay = FALSE,
   autoToggleDisplay = FALSE,
   minimized = FALSE,
-  aimingRectOptions = list(color= '#ff7800', weight= 1, clickable= FALSE),
-  shadowRectOptions = list(color= '#000000', weight= 1, clickable= FALSE,
-                           opacity= 0, fillOpacity= 0),
-  strings = list(hideText= 'Hide MiniMap', showText= 'Show MiniMap'),
+  aimingRectOptions = list(color = "#ff7800", weight = 1, clickable = FALSE),
+  shadowRectOptions = list(color = "#000000", weight = 1, clickable = FALSE,
+                           opacity = 0, fillOpacity = 0),
+  strings = list(hideText = "Hide MiniMap", showText = "Show MiniMap"),
   tiles = NULL,
   mapOptions = list()
 ) {
@@ -88,8 +87,8 @@ addMiniMap <- function(
   # determin tiles to use
   tilesURL <- NULL
   tilesProvider <- NULL
-  if(!is.null(tiles)) {
-    if(tiles %in% providers) {
+ if (!is.null(tiles)) {
+   if (tiles %in% providers) {
       map$dependencies <- c(map$dependencies, leafletProviderDependencies())
       tilesProvider <- tiles
     } else {
@@ -101,7 +100,7 @@ addMiniMap <- function(
   invokeMethod(
     map
     , getMapData(map)
-    , 'addMiniMap'
+    , "addMiniMap"
     , tilesURL
     , tilesProvider
     , position

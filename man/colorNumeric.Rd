@@ -12,10 +12,10 @@ colorNumeric(palette, domain, na.color = "#808080", alpha = FALSE,
   reverse = FALSE)
 
 colorBin(palette, domain, bins = 7, pretty = TRUE, na.color = "#808080",
-  alpha = FALSE, reverse = FALSE)
+  alpha = FALSE, reverse = FALSE, right = FALSE)
 
 colorQuantile(palette, domain, n = 4, probs = seq(0, 1, length.out = n + 1),
-  na.color = "#808080", alpha = FALSE, reverse = FALSE)
+  na.color = "#808080", alpha = FALSE, reverse = FALSE, right = FALSE)
 
 colorFactor(palette, domain, levels = NULL, ordered = FALSE,
   na.color = "#808080", alpha = FALSE, reverse = FALSE)
@@ -36,7 +36,7 @@ colorFactor(palette, domain, levels = NULL, ordered = FALSE,
   domain.}
 
 \item{na.color}{The color to return for \code{NA} values. Note that
-\code{na.color=NA} is valid.}
+\code{na.color = NA} is valid.}
 
 \item{alpha}{Whether alpha channels should be respected or ignored. If
 \code{TRUE} then colors without explicit alpha information will be treated
@@ -57,6 +57,8 @@ the bins when the argument \code{bins} is a single number. When
 bins you specified. When \code{pretty = FALSE}, \code{\link{seq}()} is used
 to generate the bins and the breaks may not be "pretty".}
 
+\item{right}{parameter supplied to cut. See Details}
+
 \item{n}{Number of equal-size quantiles desired. For more precise control,
 use the \code{probs} argument instead.}
 
@@ -73,7 +75,7 @@ factor, treat it as already in the correct order}
 A function that takes a single parameter \code{x}; when called with a
   vector of numbers (except for \code{colorFactor}, which expects
   factors/characters), #RRGGBB color strings are returned (unless
-  \code{alpha=TRUE} in which case #RRGGBBAA may also be possible).
+  \code{alpha = TRUE} in which case #RRGGBBAA may also be possible).
 }
 \description{
 Conveniently maps data values (numeric or factor/character) to colors
@@ -84,7 +86,9 @@ according to a given palette, which can be provided in a variety of formats.
 to an interpolated palette.
 
 \code{colorBin} also maps continuous numeric data, but performs
-  binning based on value (see the \code{\link[base]{cut}} function).
+  binning based on value (see the \code{\link[base]{cut}} function). \code{colorBin}
+  defaults for the \code{\link[base]{cut}} function are \code{include.lowest
+  = TRUE} and \code{right = FALSE}.
 
 \code{colorQuantile} similarly bins numeric data, but via the
   \code{\link[stats]{quantile}} function.
@@ -98,11 +102,11 @@ The \code{palette} argument can be any of the following:
   \item{A character vector of RGB or named colors. Examples: \code{palette()}, \code{c("#000000", "#0000FF", "#FFFFFF")}, \code{topo.colors(10)}}
   \item{The name of an RColorBrewer palette, e.g. \code{"BuPu"} or \code{"Greens"}.}
   \item{The full name of a viridis palette: \code{"viridis"}, \code{"magma"}, \code{"inferno"}, or \code{"plasma"}.}
-  \item{A function that receives a single value between 0 and 1 and returns a color. Examples: \code{colorRamp(c("#000000", "#FFFFFF"), interpolate="spline")}.}
+  \item{A function that receives a single value between 0 and 1 and returns a color. Examples: \code{colorRamp(c("#000000", "#FFFFFF"), interpolate = "spline")}.}
 }
 }
 \examples{
-pal = colorBin("Greens", domain = 0:100)
+pal <- colorBin("Greens", domain = 0:100)
 pal(runif(10, 60, 100))
 
 \donttest{
@@ -116,7 +120,7 @@ previewColors(colorQuantile("Blues", domain = NULL), sort(rexp(16)))
 # Categorical data; by default, the values being colored span the gamut...
 previewColors(colorFactor("RdYlBu", domain = NULL), LETTERS[1:5])
 # ...unless the data is a factor, without droplevels...
-previewColors(colorFactor("RdYlBu", domain = NULL), factor(LETTERS[1:5], levels=LETTERS))
+previewColors(colorFactor("RdYlBu", domain = NULL), factor(LETTERS[1:5], levels = LETTERS))
 # ...or the domain is stated explicitly.
 previewColors(colorFactor("RdYlBu", levels = LETTERS), LETTERS[1:5])
 }

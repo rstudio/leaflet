@@ -1,38 +1,38 @@
 library(leaflet)
 
-icon.glyphicon <- makeAwesomeIcon(icon= 'flag', markerColor = 'blue',
-                                  iconColor = 'black', library = 'glyphicon',
+icon.glyphicon <- makeAwesomeIcon(icon = "flag", markerColor = "blue",
+                                  iconColor = "black", library = "glyphicon",
                                   squareMarker =  TRUE)
-icon.fa <- makeAwesomeIcon(icon = 'flag', markerColor = 'red', library='fa',
-                           iconColor = 'black')
-icon.ion <- makeAwesomeIcon(icon = 'home', markerColor = 'green',
-                            library='ion')
+icon.fa <- makeAwesomeIcon(icon = "flag", markerColor = "red", library = "fa",
+                           iconColor = "black")
+icon.ion <- makeAwesomeIcon(icon = "home", markerColor = "green",
+                            library = "ion")
 
 
 # Marker + Label
 leaflet() %>% addTiles() %>%
   addAwesomeMarkers(
-    lng=-118.456554, lat=34.078039,
-    label='This is a label',
+    lng = -118.456554, lat = 34.078039,
+    label = "This is a label",
     icon = icon.glyphicon)
 
 leaflet() %>% addTiles() %>%
   addAwesomeMarkers(
-    lng=-118.456554, lat=34.078039,
-    label='This is a label',
+    lng = -118.456554, lat = 34.078039,
+    label = "This is a label",
     icon = icon.fa)
 
 leaflet() %>% addTiles() %>%
   addAwesomeMarkers(
-    lng=-118.456554, lat=34.078039,
-    label='This is a label',
+    lng = -118.456554, lat = 34.078039,
+    label = "This is a label",
     icon = icon.ion)
 
 # Marker + Static Label using custom label options
 leaflet() %>% addTiles() %>%
   addAwesomeMarkers(
-    lng=-118.456554, lat=34.078039,
-    label='This is a static label',
+    lng = -118.456554, lat = 34.078039,
+    label = "This is a static label",
     labelOptions = labelOptions(noHide = T),
     icon = icon.fa)
 
@@ -48,7 +48,7 @@ Providence,41.8236,-71.4222,177994
 "))
 
 library(dplyr)
-cities <- cities %>% mutate(PopCat=ifelse(Pop <500000,'blue','red'))
+cities <- cities %>% mutate(PopCat = ifelse(Pop < 500000, "blue", "red"))
 
 
 leaflet(cities) %>% addTiles() %>%
@@ -56,10 +56,10 @@ leaflet(cities) %>% addTiles() %>%
              label = ~City,
              icon = icon.ion)
 
-icon.pop <- awesomeIcons(icon = 'users',
-                           markerColor = ifelse(cities$Pop <500000,'blue','red'),
-                           library = 'fa',
-                           iconColor = 'black')
+icon.pop <- awesomeIcons(icon = "users",
+                           markerColor = ifelse(cities$Pop < 500000, "blue", "red"),
+                           library = "fa",
+                           iconColor = "black")
 
 leaflet(cities) %>% addTiles() %>%
   addAwesomeMarkers(lng = ~Long, lat = ~Lat,
@@ -69,11 +69,11 @@ leaflet(cities) %>% addTiles() %>%
 # Make a list of icons (from two different icon libraries).
 # We'll index into it based on name.
 popIcons <- awesomeIconList(
-  blue = makeAwesomeIcon(icon='user', library='glyphicon', markerColor = 'blue'),
-  red = makeAwesomeIcon(icon='users', library='fa', markerColor = 'red'))
+  blue = makeAwesomeIcon(icon = "user", library = "glyphicon", markerColor = "blue"),
+  red = makeAwesomeIcon(icon = "users", library = "fa", markerColor = "red"))
 
-leaflet(cities) %>% addTiles() %>%
+leaflet(cities) %>% addProviderTiles(providers$CartoDB.DarkMatter) %>%
   addAwesomeMarkers(lng = ~Long, lat = ~Lat,
              label = ~City,
-             labelOptions = rep(labelOptions(noHide = T),nrow(cities)),
+             labelOptions = rep(labelOptions(noHide = T), nrow(cities)),
              icon = ~popIcons[PopCat] )

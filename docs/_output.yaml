@@ -1,0 +1,10 @@
+html_document:
+  theme: flatly
+  self_contained: no
+  lib_dir: libs
+  fig_width: 5.5
+  fig_height: 2.25
+  fig_retina: 1
+  includes:
+    before_body: _includes/before_body.html
+    after_body: _includes/after_body.html

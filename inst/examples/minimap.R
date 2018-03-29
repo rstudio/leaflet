@@ -1,6 +1,6 @@
 library(leaflet)
 
-l <- leaflet() %>% setView(0,0,3)
+l <- leaflet() %>% setView(0, 0, 3)
 
 #' Default Minimap
 l %>% addTiles() %>% addMiniMap()
@@ -19,10 +19,10 @@ l %>% addProviderTiles(providers$Esri.WorldStreetMap) %>%
 #' But not for one's added with addTiles using a URL schema.
 m <- l
 esri <- providers %>%
-  purrr::keep(~ grepl('^Esri',.))
+  purrr::keep(~ grepl("^Esri", .))
 
 esri %>%
-  purrr::walk(function(x) m <<- m %>% addProviderTiles(x,group=x))
+  purrr::walk(function(x) m <<- m %>% addProviderTiles(x, group = x))
 
 m %>%
   addLayersControl(
@@ -48,27 +48,27 @@ m %>%
 #' The V8 part is simply to read the JSON embeded in the Javascript.<br/>
 #' For a geojson file `jsonlite::fromfromJSON()` or `geojsonio::regeojson_read()` will do
 #'
-jsURL <- 'https://rawgit.com/Norkart/Leaflet-MiniMap/master/example/local_pubs_restaurant_norway.js'
+jsURL <- "https://rawgit.com/Norkart/Leaflet-MiniMap/master/example/local_pubs_restaurant_norway.js"
 v8 <- V8::v8()
 v8$source(jsURL)
-geoJson <- geojsonio::as.json(v8$get('pubsGeoJSON'))
+geoJson <- geojsonio::as.json(v8$get("pubsGeoJSON"))
 
 # This is the kicker, convert geojson to a Spatial object.
 # This then allows us to use formulas in our markers, polygons etc.
 spdf <- geojsonio::geojson_sp(geoJson)
 
 icons <- awesomeIconList(
-  pub = makeAwesomeIcon(icon='glass', library='fa', markerColor = 'red'),
-  restaurant = makeAwesomeIcon(icon='cutlery', library='fa', markerColor = 'blue')
+  pub = makeAwesomeIcon(icon = "glass", library = "fa", markerColor = "red"),
+  restaurant = makeAwesomeIcon(icon = "cutlery", library = "fa", markerColor = "blue")
 )
 
 leaflet() %>% addTiles() %>%
   setView(10.758276373601069, 59.92448055859924, 13) %>%
-  addAwesomeMarkers(data=spdf,
-             label=~stringr::str_c(amenity,': ', name),
+  addAwesomeMarkers(data = spdf,
+             label = ~stringr::str_c(amenity, ": ", name),
              icon = ~icons[amenity],
              options = markerOptions(riseOnHover = TRUE, opacity = 0.75),
-             group = 'pubs') %>%
+             group = "pubs") %>%
   addMiniMap() %>%
   htmlwidgets::onRender("
     function(el, t) {
@@ -90,14 +90,14 @@ leaflet() %>% addTiles() %>%
 #' Minimap w/ changable layers and circle markers.
 m <- leaflet()
 esri %>%
-  purrr::walk(function(x) m <<- m %>% addProviderTiles(x,group=x))
+  purrr::walk(function(x) m <<- m %>% addProviderTiles(x, group = x))
 m %>%
   setView(10.758276373601069, 59.92448055859924, 13) %>%
-  addAwesomeMarkers(data=spdf,
-             label=~stringr::str_c(amenity,': ', name),
+  addAwesomeMarkers(data = spdf,
+             label = ~stringr::str_c(amenity, ": ", name),
              icon = ~icons[amenity],
              options = markerOptions(riseOnHover = TRUE, opacity = 0.75),
-             group = 'pubs') %>%
+             group = "pubs") %>%
   addLayersControl(
     baseGroups = names(esri),
     options = layersControlOptions(collapsed = FALSE)

@@ -16,7 +16,7 @@ addGraticule(map, interval = 20, sphere = FALSE, style = list(color =
 
 \item{sphere}{boolean. Default FALSE}
 
-\item{style}{path options for the generated lines. See \url{http://leafletjs.com/reference.html#path-options}}
+\item{style}{path options for the generated lines. See \url{http://leafletjs.com/reference-1.3.1.html#path-option}}
 
 \item{layerId}{the layer id}
 
@@ -29,10 +29,9 @@ Add a Graticule on the map
 see \url{https://github.com/turban/Leaflet.Graticule}
 }
 \examples{
-library(leaflet)
-
 leaf <- leaflet() \%>\%
   addTiles() \%>\%
   addGraticule()
+leaf
 
 }

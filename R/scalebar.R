@@ -1,12 +1,12 @@
 #' Add or remove a scale bar
 #'
 #' Uses Leaflet's built-in
-#' \href{http://leafletjs.com/reference.html#control-scale}{scale bar}
+#' \href{http://leafletjs.com/reference-1.3.1.html#control-scale}{scale bar}
 #' feature to add a scale bar.
 #'
 #' @param map the map to add the scale bar to
-#' @param position position of control: 'topleft', 'topright', 'bottomleft', or
-#'   'bottomright'
+#' @param position position of control: "topleft", "topright", "bottomleft", or
+#'   "bottomright"
 #' @param options a list of additional options, intended to be provided by
 #'   a call to \code{scaleBarOptions}
 #'
@@ -19,11 +19,11 @@
 #'
 #' @export
 addScaleBar <- function(map,
-  position = c('topright', 'bottomright', 'bottomleft', 'topleft'),
+  position = c("topright", "bottomright", "bottomleft", "topleft"),
   options = scaleBarOptions()) {
 
-  options = c(options, list(position = match.arg(position)))
-  invokeMethod(map, getMapData(map), 'addScaleBar', options)
+  options <- c(options, list(position = match.arg(position)))
+  invokeMethod(map, getMapData(map), "addScaleBar", options)
 }
 
 #' @rdname addScaleBar
@@ -37,13 +37,13 @@ addScaleBar <- function(map,
 #' on \code{moveend}.
 #' @export
 scaleBarOptions <- function(maxWidth = 100, metric = TRUE, imperial = TRUE,
-	updateWhenIdle = TRUE) {
-	list(maxWidth=maxWidth, metric=metric, imperial=imperial,
-		updateWhenIdle=updateWhenIdle)
+  updateWhenIdle = TRUE) {
+    list(maxWidth = maxWidth, metric = metric, imperial = imperial,
+      updateWhenIdle = updateWhenIdle)
 }
 
 #' @rdname addScaleBar
 #' @export
 removeScaleBar <- function(map) {
-  invokeMethod(map, NULL, 'removeScaleBar')
+  invokeMethod(map, NULL, "removeScaleBar")
 }

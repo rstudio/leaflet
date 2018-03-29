@@ -1,0 +1,8 @@
+linters: with_defaults(
+    camel_case_linter = NULL,
+    line_length_linter = NULL, # line_length_linter(100),
+    commented_code_linter = NULL,
+    object_usage_linter = NULL,
+    NULL
+  )
+exclusions: list()

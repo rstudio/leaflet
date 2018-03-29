@@ -21,28 +21,31 @@
 #' @param height the height of the map
 #' @param padding the padding of the map
 #' @param options the map options
+#' @param elementId Use an explicit element ID for the widget
+#'   (rather than an automatically generated one).
 #' @return A HTML widget object, on which we can add graphics layers using
 #'   \code{\%>\%} (see examples).
 #' @example inst/examples/leaflet.R
 #' @export
 leaflet <- function(data = NULL, width = NULL, height = NULL,
-                   padding = 0, options = leafletOptions()) {
+                   padding = 0, options = leafletOptions(),
+                   elementId = NULL) {
 
   # Validate the CRS if specified
-  if(!is.null(options[['crs']]) &&
-     !inherits(options[['crs']], 'leaflet_crs')) {
+ if (!is.null(options[["crs"]]) &&
+     !inherits(options[["crs"]], "leaflet_crs")) {
     stop("CRS in mapOptions should be a return value of leafletCRS() function")
   }
 
   map <- htmlwidgets::createWidget(
-    'leaflet',
+    "leaflet",
     structure(
       list(options = options),
       leafletData = data
     ),
     width = width, height = height,
     sizingPolicy = htmlwidgets::sizingPolicy(
-      defaultWidth = '100%',
+      defaultWidth = "100%",
       defaultHeight = 400,
       padding = padding,
       browser.fill = TRUE
@@ -61,7 +64,8 @@ leaflet <- function(data = NULL, width = NULL, height = NULL,
         })
       }
       widget
-    }
+    },
+    elementId = elementId
   )
 
   if (crosstalk::is.SharedData(data)) {
@@ -96,7 +100,7 @@ getMapData <- function(map) {
 #' # Don't auto-zoom to the objects (can be useful in interactive applications)
 #' leaflet() %>%
 #'   addTiles() %>%
-#'   addPopups(174.7690922, -36.8523071, 'R was born here!') %>%
+#'   addPopups(174.7690922, -36.8523071, "R was born here!") %>%
 #'   mapOptions(zoomToLimits = "first")
 #' @export
 mapOptions <- function(map, zoomToLimits = c("always", "first", "never")) {
@@ -117,7 +121,7 @@ mapOptions <- function(map, zoomToLimits = c("always", "first", "never")) {
 #' @param  worldCopyJump With this option enabled, the map tracks when you pan to another "copy" of the world and seamlessly jumps to the original one so that all overlays like markers and vector layers are still visible.
 #' @param ... other options.
 #' @describeIn leaflet Options for map creation
-#' @seealso \url{http://leafletjs.com/reference.html#map-options} for details.
+#' @seealso \url{http://leafletjs.com/reference-1.3.1.html#map-option} for details.
 #' @export
 leafletOptions <- function(
   minZoom = NULL,
@@ -136,16 +140,16 @@ leafletOptions <- function(
 }
 
 # CRS classes supported
-crsClasses <- list('L.CRS.EPSG3857', 'L.CRS.EPSG4326', 'L.CRS.EPSG3395',
-                   'L.CRS.Simple', 'L.Proj.CRS', 'L.Proj.CRS.TMS')
+crsClasses <- list("L.CRS.EPSG3857", "L.CRS.EPSG4326", "L.CRS.EPSG3395",
+                   "L.CRS.Simple", "L.Proj.CRS", "L.Proj.CRS.TMS")
 
 #' creates a custom CRS
 #' Refer to \url{https://kartena.github.io/Proj4Leaflet/api/} for details.
 #' @param crsClass One of L.CRS.EPSG3857, L.CRS.EPSG4326, L.CRS.EPSG3395,
-#' L.CRS.Simple, L.Proj.CRS, L.Proj.CRS.TMS
+#' L.CRS.Simple, L.Proj.CRS
 #' @param code CRS identifier
 #' @param proj4def Proj4 string
-#' @param projectedBounds Only when crsClass = 'L.Proj.CRS.TMS'
+#' @param projectedBounds DEPRECATED! Use the bounds argument.
 #' @param origin Origin in projected coordinates, if set overrides transformation option.
 #' @param transformation to use when transforming projected coordinates into pixel coordinates
 #' @param scales Scale factors (pixels per projection unit, for example pixels/meter)
@@ -155,12 +159,11 @@ crsClasses <- list('L.CRS.EPSG3857', 'L.CRS.EPSG4326', 'L.CRS.EPSG3395',
 #' @param bounds Bounds of the CRS, in projected coordinates; if defined,
 #'    Proj4Leaflet will use this in the getSize method, otherwise
 #'    defaulting to Leaflet's default CRS size
-#' @param tileSize Tile size, in pixels, to use in this CRS (Default 256)
-#'    Only needed when crsClass = 'L.Proj.CRS.TMS'
+#' @param tileSize DEPRECATED! Specify the tilesize in the \code{\link{tileOptions}()} argument.
 #' @describeIn leaflet class to create a custom CRS
 #' @export
 leafletCRS <- function(
-  crsClass = 'L.CRS.EPSG3857',
+  crsClass = "L.CRS.EPSG3857",
   code = NULL,
   proj4def = NULL,
   projectedBounds = NULL,
@@ -171,18 +174,32 @@ leafletCRS <- function(
   bounds = NULL,
   tileSize = NULL
 ) {
-  if(!crsClass %in% crsClasses) {
-    stop(sprintf("crsClass argument must be one of %s",
-                 paste0(crsClasses, collapse = ', ')))
 
+  # Deprecated since Leaflet JS 1.x
+ if (!missing(projectedBounds)) {
+    warning("projectedBounds argument is deprecated and has no effect, use the bounds argument.")
   }
-  if(crsClass %in% c('L.Proj.CRS', 'L.Proj.CRS.TMS') &&
+ if (!missing(tileSize)) {
+    warning("tileSize argument is deprecated and has no effect, use the tileOptions() function to pass the tileSize argument to the addTiles() function") # nolint
+  }
+ if (crsClass == "L.Proj.CRS.TMS") {
+    warning("L.Proj.CRS.TMS is deprecated and will behave exactly like L.Proj.CRS.")
+  }
+
+ if (!crsClass %in% crsClasses) {
+    stop(sprintf("crsClass argument must be one of %s",
+                 paste0(crsClasses, collapse = ", ")))
+  }
+
+
+
+ if (crsClass %in% c("L.Proj.CRS", "L.Proj.CRS.TMS") &&
     !is.null(scales) && !is.null(resolutions)) {
-    stop(sprintf("Either input scales or resolutions"))
+    stop(sprintf("Either specify scales or resolutions"))
   }
-  if(crsClass %in% c('L.Proj.CRS', 'L.Proj.CRS.TMS') &&
+ if (crsClass %in% c("L.Proj.CRS", "L.Proj.CRS.TMS") &&
     is.null(scales) && is.null(resolutions)) {
-    stop(sprintf("Input either scales or resolutions, not both"))
+    stop(sprintf("Specify either scales or resolutions, not both"))
   }
     structure(
       list(
@@ -199,7 +216,6 @@ leafletCRS <- function(
           tileSize = tileSize
         ))
       ),
-      class = 'leaflet_crs'
+      class = "leaflet_crs"
   )
 }
-

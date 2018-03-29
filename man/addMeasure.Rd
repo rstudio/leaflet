@@ -15,7 +15,7 @@ addMeasure(map, position = "topright", primaryLengthUnit = "feet",
 \arguments{
 \item{map}{a map widget object}
 
-\item{position}{standard \href{http://leafletjs.com/reference.html#control-positions}{Leaflet control position options}.}
+\item{position}{standard \href{http://leafletjs.com/reference-1.3.1.html#control-positions}{Leaflet control position options}.}
 
 \item{primaryLengthUnit, secondaryLengthUnit}{units used to display length
 results. secondaryLengthUnit is optional.
@@ -35,7 +35,7 @@ Value should be a color represented as a hexadecimal string.}
 
 \item{popupOptions}{\code{list} of options applied to the popup
 of the resulting measure feature.
-Properties may be any \href{http://leafletjs.com/reference.html#popup-options}{standard Leaflet popup options}.}
+Properties may be any \href{http://leafletjs.com/reference-1.3.1.html#popup-option}{standard Leaflet popup options}.}
 
 \item{captureZIndex}{Z-index of the marker used to capture measure clicks.
 Set this value higher than the z-index of all other map layers to
@@ -58,8 +58,6 @@ modified map
 Add a measure control to the map.
 }
 \examples{
-library(leaflet)
-
 leaf <- leaflet() \%>\%
   addTiles() \%>\%
   # central park
@@ -70,12 +68,12 @@ leaf
 
 # customizing
 leaf \%>\% addMeasure(
-   position = "bottomleft"
-  , primaryLengthUnit = "meters"
-  , primaryAreaUnit = "sqmeters"
-  , activeColor = "#3D535D"
-  , completedColor = "#7D4479"
-  , localization = 'de'
+  position = "bottomleft",
+  primaryLengthUnit = "meters",
+  primaryAreaUnit = "sqmeters",
+  activeColor = "#3D535D",
+  completedColor = "#7D4479",
+  localization = "de"
 )
 
 }

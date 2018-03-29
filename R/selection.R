@@ -2,7 +2,7 @@ locationFilter2Dependencies <- function() {
   list(
     htmltools::htmlDependency(
       "leaflet-locationfilter2",
-      "0.1.0",
+      "0.1.1",
       system.file("htmlwidgets/plugins/leaflet-locationfilter", package = "leaflet"),
       script = c("locationfilter.js", "locationfilter-bindings.js"),
       stylesheet = c("locationfilter.css")

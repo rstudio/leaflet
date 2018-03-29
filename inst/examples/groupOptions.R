@@ -5,14 +5,14 @@ leaflet(quakes) %>%
   addProviderTiles(providers$Esri.OceanBasemap, group = "basic") %>%
   addCircleMarkers(group = "detail", fillOpacity = 0.5,
   radius = ~mag * 5, color = ~pal(mag), stroke = FALSE) %>%
-  addLegend(pal = pal, values = ~mag, group='detail', position='bottomleft')
+  addLegend(pal = pal, values = ~mag, group = "detail", position = "bottomleft")
 
 l <- leaflet(quakes) %>%
   addProviderTiles(providers$Esri.OceanBasemap, group = "basic") %>%
   addMarkers(data = quakes, group = "basic") %>%
   addCircleMarkers(group = "detail", fillOpacity = 0.5,
   radius = ~mag * 5, color = ~pal(mag), stroke = FALSE) %>%
-  addLegend(pal = pal, values = ~mag, group='detail', position='bottomleft')  %>%
+  addLegend(pal = pal, values = ~mag, group = "detail", position = "bottomleft")  %>%
   groupOptions("detail", zoomLevels = 7:18) %>%
   addControl(htmltools::HTML("Zoom Level"), position = "topright",
              layerId = "zoom_display")

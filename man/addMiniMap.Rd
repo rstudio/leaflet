@@ -19,7 +19,7 @@ addMiniMap(map, position = "bottomright", width = 150, height = 150,
 
 \item{position}{The standard Leaflet.Control position parameter,
    used like all the other controls.
-Defaults to 'bottomright'.}
+Defaults to "bottomright".}
 
 \item{width}{The width of the minimap in pixels. Defaults to 150.}
 
@@ -58,11 +58,11 @@ Especially useful when 'zoomLevelFixed' is set.}
 \item{minimized}{Sets whether the minimap should start in a minimized position.}
 
 \item{aimingRectOptions}{Sets the style of the aiming rectangle by passing in
-a Path.Options (\url{http://leafletjs.com/reference.html#path-options}) object.
+a Path.Options (\url{http://leafletjs.com/reference-1.3.1.html#path-options}) object.
 (Clickable will always be overridden and set to false.)}
 
 \item{shadowRectOptions}{Sets the style of the aiming shadow rectangle by passing in
-a Path.Options (\url{http://leafletjs.com/reference.html#path-options}) object.
+a Path.Options (\url{http://leafletjs.com/reference-1.3.1.html#path-option}) object.
 (Clickable will always be overridden and set to false.)}
 
 \item{strings}{Overrides the default strings allowing for translation.}
@@ -77,11 +77,10 @@ Add a minimap to the Map
 \url{https://github.com/Norkart/Leaflet-MiniMap}
 }
 \examples{
-library(leaflet)
-
 leaf <- leaflet() \%>\%
   addTiles() \%>\%
   addMiniMap()
+leaf
 
 }
 \seealso{
