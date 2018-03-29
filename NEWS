@@ -1,13 +1,29 @@
 leaflet 2.0.0
 --------------------------------------------------------------------------------
 
+* Update to latest leaflet.js v1.3.1 (#453, 314616f)  Please see http://leafletjs.com/reference-1.3.0.html for the latest documentation
+
+* All plugins updated to versions compatible with leaflet > 1.0 (#458)
+
+    _ jQuery, https://github.com/jquery/jquery
+    _ Leaflet (JavaScript library), https://github.com/Leaflet/Leaflet
+    _ Leaflet Providers, https://github.com/leaflet-extras/leaflet-providers
+    _ leaflet-measure, https://github.com/ljagis/leaflet-measure
+    _ Leaflet.label, https://github.com/Leaflet/Leaflet.label
+    _ Leaflet.Terminator, https://github.com/joergdietrich/Leaflet.Terminator
+    _ Leaflet.SimpleGraticule, https://github.com/ablakey/Leaflet.SimpleGraticule
+    _ Leaflet.MagnifyingGlass, https://github.com/bbecquet/Leaflet.MagnifyingGlass
+    _ Leaflet.MiniMap, https://github.com/Norkart/Leaflet-MiniMap
+    _ Leaflet.awesome-markers, https://github.com/lvoogdt/Leaflet.awesome-markers
+    _ Leaflet.EasyButton, https://github.com/CliffCloud/Leaflet.EasyButton/
+    _ Proj4Leaflet, https://github.com/kartena/Proj4Leaflet
+    _ leaflet-locationfilter, https://github.com/kajic/leaflet-locationfilter
+    _ leaflet-omnivore, https://github.com/mapbox/leaflet-omnivore
+    _ topojson, https://github.com/topojson/topojson
+
 * Fix bug where icons where anchored to the top-center, not center-center (2a60751)
 
 * Fix bug where markers would not appear in self contained knitr files (cc79bc3)
-
-* Update to latest leaflet.js v1.3.1 (#453, 314616f)
-
-* All plugins updated to their newest versions compatible with leaflet > 1.0 (#458)
 
 * leaflet-label plugin now L.tooltip in leaflet.js.  labelOptions() now translates old options clickable to interactive and noHide to permanent.
 
