@@ -6,9 +6,10 @@
 \title{Add a raster image as a layer}
 \usage{
 addRasterImage(map, x, colors = if (raster::is.factor(x)) "Set1" else
-  "Spectral", layerId = NULL, group = NULL, project = TRUE,
-  method = c("auto", "bilinear", "ngb"), maxBytes = 4 * 1024 * 1024,
-  options = tileOptions(), data = getMapData(map))
+  "Spectral", opacity = NULL, attribution = NULL, layerId = NULL,
+  group = NULL, project = TRUE, method = c("auto", "bilinear", "ngb"),
+  maxBytes = 4 * 1024 * 1024, options = tileOptions(),
+  data = getMapData(map))
 
 projectRasterForLeaflet(x, method)
 }
@@ -20,6 +21,12 @@ projectRasterForLeaflet(x, method)
 \item{colors}{the color palette (see \code{\link{colorNumeric}}) or function
 to use to color the raster values (hint: if providing a function, set
 \code{na.color} to \code{"#00000000"} to make \code{NA} areas transparent)}
+
+\item{opacity}{the base opacity of the raster, expressed from 0 to 1
+(if set will overwrite \code{options})}
+
+\item{attribution}{the HTML string to show as the attribution for this layer
+(can be also passed via \code{options})}
 
 \item{layerId}{the layer id}
 
