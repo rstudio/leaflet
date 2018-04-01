@@ -6,9 +6,9 @@
 \title{Add a raster image as a layer}
 \usage{
 addRasterImage(map, x, colors = if (raster::is.factor(x)) "Set1" else
-  "Spectral", opacity = 1, attribution = NULL, layerId = NULL,
-  group = NULL, project = TRUE, method = c("auto", "bilinear", "ngb"),
-  maxBytes = 4 * 1024 * 1024, data = getMapData(map))
+  "Spectral", layerId = NULL, group = NULL, project = TRUE,
+  method = c("auto", "bilinear", "ngb"), maxBytes = 4 * 1024 * 1024,
+  options = tileOptions(), data = getMapData(map))
 
 projectRasterForLeaflet(x, method)
 }
@@ -20,10 +20,6 @@ projectRasterForLeaflet(x, method)
 \item{colors}{the color palette (see \code{\link{colorNumeric}}) or function
 to use to color the raster values (hint: if providing a function, set
 \code{na.color} to \code{"#00000000"} to make \code{NA} areas transparent)}
-
-\item{opacity}{the base opacity of the raster, expressed from 0 to 1}
-
-\item{attribution}{the HTML string to show as the attribution for this layer}
 
 \item{layerId}{the layer id}
 
@@ -43,6 +39,9 @@ Ignored if \code{project = FALSE}. See \code{\link{projectRaster}} for details.}
 
 \item{maxBytes}{the maximum number of bytes to allow for the projected image
 (before base64 encoding); defaults to 4MB.}
+
+\item{options}{a list of extra options for tile layers, popups, paths
+(circles, rectangles, polygons, ...), or other map elements}
 
 \item{data}{the data object from which the argument values are derived; by
 default, it is the \code{data} object provided to \code{leaflet()}
@@ -82,4 +81,7 @@ crs(r) <- CRS("+init=epsg:4326")
 
 leaflet() \%>\% addTiles() \%>\%
   addRasterImage(r, colors = "Spectral", opacity = 0.8)
+}
+\seealso{
+\code{\link{tileOptions}}
 }

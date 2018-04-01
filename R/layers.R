@@ -202,8 +202,6 @@ epsg3857 <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y
 #' @param colors the color palette (see \code{\link{colorNumeric}}) or function
 #'   to use to color the raster values (hint: if providing a function, set
 #'   \code{na.color} to \code{"#00000000"} to make \code{NA} areas transparent)
-#' @param opacity the base opacity of the raster, expressed from 0 to 1
-#' @param attribution the HTML string to show as the attribution for this layer
 #' @param layerId the layer id
 #' @param group the name of the group this raster image should belong to (see
 #'   the same parameter under \code{\link{addTiles}})
@@ -218,6 +216,9 @@ epsg3857 <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y
 #'   Ignored if \code{project = FALSE}. See \code{\link{projectRaster}} for details.
 #' @param maxBytes the maximum number of bytes to allow for the projected image
 #'   (before base64 encoding); defaults to 4MB.
+#' @param options a list of extra options for tile layers, popups, paths
+#'   (circles, rectangles, polygons, ...), or other map elements
+#' @seealso \code{\link{tileOptions}}
 #' @template data-getMapData
 #'
 #' @examples
@@ -234,13 +235,12 @@ addRasterImage <- function(
   map,
   x,
   colors = if (raster::is.factor(x)) "Set1" else "Spectral",
-  opacity = 1,
-  attribution = NULL,
   layerId = NULL,
   group = NULL,
   project = TRUE,
   method = c("auto", "bilinear", "ngb"),
   maxBytes = 4 * 1024 * 1024,
+  options = tileOptions(),
   data = getMapData(map)
 ) {
   stopifnot(inherits(x, "RasterLayer"))
@@ -302,7 +302,10 @@ addRasterImage <- function(
     list(raster::ymin(bounds), raster::xmax(bounds))
   )
 
-  invokeMethod(map, data, "addRasterImage", uri, latlng, opacity, attribution, layerId, group) %>%
+  options$detectRetina = TRUE
+  options$async = TRUE
+
+  invokeMethod(map, data, "addRasterImage", uri, latlng, layerId, group, options) %>%
     expandLimits(
       c(raster::ymin(bounds), raster::ymax(bounds)),
       c(raster::xmin(bounds), raster::xmax(bounds))
