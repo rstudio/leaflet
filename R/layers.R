@@ -203,9 +203,9 @@ epsg3857 <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y
 #'   to use to color the raster values (hint: if providing a function, set
 #'   \code{na.color} to \code{"#00000000"} to make \code{NA} areas transparent)
 #' @param opacity the base opacity of the raster, expressed from 0 to 1
-#'   (if set will overwrite \code{options})
+#'   (deprecated, if set will overwrite \code{options})
 #' @param attribution the HTML string to show as the attribution for this layer
-#'   (can be also passed via \code{options})
+#'   (deprecated, if set will overwrite \code{options})
 #' @param layerId the layer id
 #' @param group the name of the group this raster image should belong to (see
 #'   the same parameter under \code{\link{addTiles}})
@@ -310,12 +310,16 @@ addRasterImage <- function(
 
   options$detectRetina = TRUE
   options$async = TRUE
-  # if attribution not passed via options
-  if (!exists('attribution', where = options))
+  # if attribution is set
+  if (!missing(attribution)) {
+    warning("argument 'attribution' is deprecated. Use options= instead.")
     options$attribution <- attribution
+  }
   # if opacity is set
-  if (!is.null(opacity))
+  if (!missing(opacity)) {
+    warning("argument 'opacity' is deprecated. Use options= instead.")
     options$opacity <- opacity
+  }
 
   invokeMethod(map, data, "addRasterImage", uri, latlng, layerId, group, options) %>%
     expandLimits(

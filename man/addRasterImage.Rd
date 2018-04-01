@@ -23,10 +23,10 @@ to use to color the raster values (hint: if providing a function, set
 \code{na.color} to \code{"#00000000"} to make \code{NA} areas transparent)}
 
 \item{opacity}{the base opacity of the raster, expressed from 0 to 1
-(if set will overwrite \code{options})}
+(deprecated, if set will overwrite \code{options})}
 
 \item{attribution}{the HTML string to show as the attribution for this layer
-(can be also passed via \code{options})}
+(deprecated, if set will overwrite \code{options})}
 
 \item{layerId}{the layer id}
 
