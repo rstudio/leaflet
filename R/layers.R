@@ -670,7 +670,7 @@ addLabelOnlyMarkers <- function(
     map = map, lng = lng, lat = lat, layerId = layerId,
     group = group,
     icon = makeIcon(
-      iconUrl = system.file("htmlwidgets/lib/leaflet/images/1px.png", package = "leaflet"),
+      iconUrl = system.file("htmlwidgets/lib/rstudio_leaflet/images/1px.png", package = "leaflet"),
       iconWidth = 1, iconHeight = 1),
       label = label,
       labelOptions = labelOptions,
