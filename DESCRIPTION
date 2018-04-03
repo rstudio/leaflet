@@ -16,7 +16,6 @@ Authors@R: c(
       person("Leaflet contributors", role = c("ctb"), comment = "Leaflet library"),
       person("Leaflet Providers contributors", role = c("ctb", "cph"), comment = "Leaflet Providers plugin"),
       person("Brandon Copeland", role = c("ctb", "cph"), comment = "leaflet-measure plugin"),
-      person("Jacob Toye", role = c("ctb", "cph"), comment = "Leaflet.label plugin"),
       person("Joerg Dietrich", role = c("ctb", "cph"), comment = "Leaflet.Terminator plugin"),
       person("Benjamin Becquet", role = c("ctb", "cph"), comment = "Leaflet.MagnifyingGlass plugin"),
       person("Norkart AS", role = c("ctb", "cph"), comment = "Leaflet.MiniMap plugin"),
