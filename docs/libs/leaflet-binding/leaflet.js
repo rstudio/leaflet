@@ -59,7 +59,7 @@ var ClusterLayerStore = function () {
 exports.default = ClusterLayerStore;
 
 
-},{"./util":15}],2:[function(require,module,exports){
+},{"./util":16}],2:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -194,7 +194,7 @@ function getCRS(crsOptions) {
 }
 
 
-},{"./global/leaflet":8,"./global/proj4leaflet":9}],4:[function(require,module,exports){
+},{"./global/leaflet":9,"./global/proj4leaflet":10}],4:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -320,7 +320,7 @@ var DataFrame = function () {
 exports.default = DataFrame;
 
 
-},{"./util":15}],5:[function(require,module,exports){
+},{"./util":16}],5:[function(require,module,exports){
 "use strict";
 
 var _leaflet = require("./global/leaflet");
@@ -352,7 +352,40 @@ if (typeof _leaflet2.default.Icon.Default.imagePath === "undefined") {
 }
 
 
-},{"./global/leaflet":8}],6:[function(require,module,exports){
+},{"./global/leaflet":9}],6:[function(require,module,exports){
+"use strict";
+
+var _leaflet = require("./global/leaflet");
+
+var _leaflet2 = _interopRequireDefault(_leaflet);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// add texxtsize, textOnly, and style
+_leaflet2.default.Tooltip.prototype.options.textsize = "10px";
+_leaflet2.default.Tooltip.prototype.options.textOnly = false;
+_leaflet2.default.Tooltip.prototype.options.style = null;
+
+// copy original layout to not completely stomp it.
+var initLayoutOriginal = _leaflet2.default.Tooltip.prototype._initLayout;
+
+_leaflet2.default.Tooltip.prototype._initLayout = function () {
+  initLayoutOriginal.call(this);
+  this._container.style.fontSize = this.options.textsize;
+
+  if (this.options.textOnly) {
+    _leaflet2.default.DomUtil.addClass(this._container, "leaflet-tooltip-text-only");
+  }
+
+  if (this.options.style) {
+    for (var property in this.options.style) {
+      this._container.style[property] = this.options.style[property];
+    }
+  }
+};
+
+
+},{"./global/leaflet":9}],7:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -363,7 +396,7 @@ exports.default = global.HTMLWidgets;
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -374,7 +407,7 @@ exports.default = global.jQuery;
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -385,7 +418,7 @@ exports.default = global.L;
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -396,7 +429,7 @@ exports.default = global.L.Proj;
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -407,7 +440,7 @@ exports.default = global.Shiny;
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 "use strict";
 
 var _jquery = require("./global/jquery");
@@ -443,6 +476,8 @@ var _methods = require("./methods");
 var _methods2 = _interopRequireDefault(_methods);
 
 require("./fixup-default-icon");
+
+require("./fixup-default-tooltip");
 
 var _dataframe = require("./dataframe");
 
@@ -725,7 +760,7 @@ if (_htmlwidgets2.default.shinyMode) {
 }
 
 
-},{"./cluster-layer-store":1,"./control-store":2,"./crs_utils":3,"./dataframe":4,"./fixup-default-icon":5,"./global/htmlwidgets":6,"./global/jquery":7,"./global/leaflet":8,"./global/shiny":10,"./layer-manager":12,"./methods":13,"./util":15}],12:[function(require,module,exports){
+},{"./cluster-layer-store":1,"./control-store":2,"./crs_utils":3,"./dataframe":4,"./fixup-default-icon":5,"./fixup-default-tooltip":6,"./global/htmlwidgets":7,"./global/jquery":8,"./global/leaflet":9,"./global/shiny":11,"./layer-manager":13,"./methods":14,"./util":16}],13:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -1150,7 +1185,7 @@ exports.default = LayerManager;
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./global/jquery":7,"./global/leaflet":8,"./util":15}],13:[function(require,module,exports){
+},{"./global/jquery":8,"./global/leaflet":9,"./util":16}],14:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -1844,7 +1879,7 @@ methods.addLegend = function (options) {
         var leftDiv = (0, _jquery2.default)("<div/>").css("float", "left"),
             rightDiv = (0, _jquery2.default)("<div/>").css("float", "left");
         leftDiv.append(gradSpan);
-        (0, _jquery2.default)(div).append(leftDiv).append(rightDiv).append((0, _jquery2.default)("<br clear=\"both\"/>"));
+        (0, _jquery2.default)(div).append(leftDiv).append(rightDiv).append((0, _jquery2.default)("<br>"));
 
         // Have to attach the div to the body at this early point, so that the
         // svg text getComputedTextLength() actually works, below.
@@ -1883,7 +1918,7 @@ methods.addLegend = function (options) {
         });
 
         if (options.na_color && _jquery2.default.inArray(options.na_label, labels) < 0) {
-          (0, _jquery2.default)(div).append("<div><i style=\"background:" + options.na_color + ";opacity:" + options.opacity + ";\"></i> " + options.na_label + "</div>");
+          (0, _jquery2.default)(div).append("<div><i style=\"" + "background:" + options.na_color + ";opacity:" + options.opacity + ";margin-right:" + labelPadding + "px" + ";\"></i>" + options.na_label + "</div>");
         }
       })();
     } else {
@@ -1892,7 +1927,7 @@ methods.addLegend = function (options) {
         labels.push(options.na_label);
       }
       for (var i = 0; i < colors.length; i++) {
-        legendHTML += "<i style=\"background:" + colors[i] + ";opacity:" + options.opacity + "\"></i> " + labels[i] + "<br clear='both'/>";
+        legendHTML += "<i style=\"background:" + colors[i] + ";opacity:" + options.opacity + "\"></i> " + labels[i];
       }
       div.innerHTML = legendHTML;
     }
@@ -2432,7 +2467,7 @@ methods.removeSelect = function () {
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./cluster-layer-store":1,"./crs_utils":3,"./dataframe":4,"./global/htmlwidgets":6,"./global/jquery":7,"./global/leaflet":8,"./global/shiny":10,"./mipmapper":14,"./util":15}],14:[function(require,module,exports){
+},{"./cluster-layer-store":1,"./crs_utils":3,"./dataframe":4,"./global/htmlwidgets":7,"./global/jquery":8,"./global/leaflet":9,"./global/shiny":11,"./mipmapper":15,"./util":16}],15:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2539,7 +2574,7 @@ var Mipmapper = function () {
 exports.default = Mipmapper;
 
 
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2581,4 +2616,4 @@ function asArray(value) {
 }
 
 
-},{}]},{},[11]);
+},{}]},{},[12]);
