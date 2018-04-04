@@ -30,6 +30,8 @@ BREAKING CHANGES
 
 BUG FIXES AND FEATURES
 
+* `L.multiPolyline` was absorbed into `L.polyline`, which accepts multiple an array of polyline information. http://leafletjs.com/reference-1.3.0.html#polyline. (#515)
+
 * Fix bug where icons where anchored to the top-center, not center-center (2a60751)
 
 * Fix bug where markers would not appear in self contained knitr files (cc79bc3)
