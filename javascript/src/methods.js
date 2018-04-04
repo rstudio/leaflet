@@ -460,8 +460,8 @@ methods.addPolylines = function(polygons, layerId, group, options, popup, popupO
     addLayers(this, "shape", df, function(df, i) {
       let shapes = df.get(i, "shapes");
       shapes = shapes.map(shape => HTMLWidgets.dataframeToD3(shape[0]));
-      if(shapes.length>1) {
-        return L.multiPolyline(shapes, df.get(i));
+      if(shapes.length > 1) {
+        return L.polyline(shapes, df.get(i));
       } else {
         return L.polyline(shapes[0], df.get(i));
       }
