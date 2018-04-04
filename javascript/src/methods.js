@@ -802,7 +802,7 @@ methods.addLegend = function(options) {
       }
       for (let i = 0; i < colors.length; i++) {
         legendHTML += "<i style=\"background:" + colors[i] + ";opacity:" +
-                      options.opacity + "\"></i> " + labels[i];
+                      options.opacity + "\"></i> " + labels[i] + "<br>";
       }
       div.innerHTML = legendHTML;
     }
