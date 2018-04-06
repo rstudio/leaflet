@@ -1624,7 +1624,7 @@ methods.addPolylines = function (polygons, layerId, group, options, popup, popup
         return _htmlwidgets2.default.dataframeToD3(shape[0]);
       });
       if (shapes.length > 1) {
-        return _leaflet2.default.multiPolyline(shapes, df.get(i));
+        return _leaflet2.default.polyline(shapes, df.get(i));
       } else {
         return _leaflet2.default.polyline(shapes[0], df.get(i));
       }
