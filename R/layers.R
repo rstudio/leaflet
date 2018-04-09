@@ -546,6 +546,7 @@ safeLabel <- function(label, data) {
 #' @param
 #' noHide,direction,offset,textsize,textOnly,style,permanent
 #' label options; see \url{http://leafletjs.com/reference-1.3.1.html#tooltip-option}
+#' @param sticky If true, the tooltip will follow the mouse instead of being fixed at the feature center. Default value is \code{TRUE} (different from leaflet.js \code{FALSE}); see \url{http://leafletjs.com/reference-1.3.0.html#tooltip-sticky}
 #' @describeIn map-options Options for labels
 #' @export
 labelOptions <- function(
@@ -561,6 +562,7 @@ labelOptions <- function(
   textOnly = FALSE,
   style = NULL,
   zoomAnimation = TRUE,
+  sticky = TRUE,
   ...
 ) {
   # use old (Leaflet 0.7.x) clickable if provided
