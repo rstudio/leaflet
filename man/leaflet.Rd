@@ -10,7 +10,7 @@ leaflet(data = NULL, width = NULL, height = NULL, padding = 0,
   options = leafletOptions(), elementId = NULL)
 
 leafletOptions(minZoom = NULL, maxZoom = NULL, crs = leafletCRS(),
-  worldCopyJump = NULL, ...)
+  worldCopyJump = NULL, preferCanvas = FALSE, ...)
 
 leafletCRS(crsClass = "L.CRS.EPSG3857", code = NULL, proj4def = NULL,
   projectedBounds = NULL, origin = NULL, transformation = NULL,
@@ -44,7 +44,9 @@ spatial data frames from the \pkg{sf} package.}
 
 \item{worldCopyJump}{With this option enabled, the map tracks when you pan to another "copy" of the world and seamlessly jumps to the original one so that all overlays like markers and vector layers are still visible.}
 
-\item{...}{other options.}
+\item{preferCanvas}{Whether leaflet.js Paths should be rendered on a Canvas renderer. By default, all Paths are rendered in a SVG renderer.}
+
+\item{...}{other options used for leaflet.js map creation.}
 
 \item{crsClass}{One of L.CRS.EPSG3857, L.CRS.EPSG4326, L.CRS.EPSG3395,
 L.CRS.Simple, L.Proj.CRS}
@@ -263,5 +265,5 @@ m \%>\% addCircleMarkers(~lng, ~lat, radius = ~size,
 \seealso{
 \code{\link{leafletCRS}} for creating a custom CRS.
 
-\url{http://leafletjs.com/reference-1.3.1.html#map-option} for details.
+See \url{http://leafletjs.com/reference-1.3.1.html#map-option} for details and more options.
 }
