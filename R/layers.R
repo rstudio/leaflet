@@ -574,7 +574,7 @@ labelOptions <- function(
     interactive = interactive, permanent = permanent, direction = direction,
     opacity = opacity, offset = offset,
     textsize = textsize, textOnly = textOnly, style = style,
-    zoomAnimation = zoomAnimation, className = className, ...
+    zoomAnimation = zoomAnimation, className = className, sticky = sticky, ...
   ))
 }
 
