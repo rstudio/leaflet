@@ -137,6 +137,7 @@ leafletOptions <- function(
       maxZoom = maxZoom,
       crs = crs,
       worldCopyJump = worldCopyJump,
+      preferCanvas = preferCanvas,
       ...)
   )
 }
