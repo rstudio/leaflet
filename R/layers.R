@@ -479,7 +479,7 @@ addPopups <- function(
 
 #' @param className a CSS class name set on an element
 #' @param
-#' maxWidth,minWidth,maxHeight,autoPan,keepInView,closeButton,zoomAnimation,closeOnClick
+#' maxWidth,minWidth,maxHeight,autoPan,keepInView,closeButton,closeOnClick
 #' popup options; see \url{http://leafletjs.com/reference-1.3.1.html#popup-option}
 #' @param zoomAnimation deprecated. See https://github.com/Leaflet/Leaflet/blob/master/CHANGELOG.md#api-changes-5
 #' @param ... extra arguments supplied to Leaflet.js popupOptions. See \url{http://leafletjs.com/reference-1.3.1.html#popup-option}
@@ -549,10 +549,14 @@ safeLabel <- function(label, data) {
 }
 
 #' @param
-#' noHide,direction,offset,textsize,textOnly,style,permanent
+#' noHide,direction,offset,style,permanent
 #' label options; see \url{http://leafletjs.com/reference-1.3.1.html#tooltip-option}
-#' @param sticky If true, the tooltip will follow the mouse instead of being fixed at the feature center. Default value is \code{TRUE} (different from leaflet.js \code{FALSE}); see \url{http://leafletjs.com/reference-1.3.0.html#tooltip-sticky}
+#' @param opacity Tooltip container opacity. Default value is \code{1} (different from leaflet.js \code{0.9}); see \url{http://leafletjs.com/reference-1.3.1.html#tooltip-opacity}
+#' @param textsize Change the text size of a single tooltip
+#' @param textOnly Display only the text, no regular surrounding box.
+#' @param style list of css style to be added to the tooltip
 #' @param zoomAnimation deprecated. See \url{https://github.com/Leaflet/Leaflet/blob/master/CHANGELOG.md#api-changes-5}
+#' @param sticky If true, the tooltip will follow the mouse instead of being fixed at the feature center. Default value is \code{TRUE} (different from leaflet.js \code{FALSE}); see \url{http://leafletjs.com/reference-1.3.1.html#tooltip-sticky}
 #' @describeIn map-options Options for labels
 #' @export
 labelOptions <- function(
@@ -616,6 +620,8 @@ addMarkers <- function(
   clusterId = NULL,
   data = getMapData(map)
 ) {
+  if (missing(labelOptions)) labelOptions <- labelOptions()
+
   if (!is.null(icon)) {
     # If custom icons are specified, we need to 1) deduplicate any URLs/files,
     # so we can efficiently send e.g. 1000 markers that all use the same 2
@@ -678,6 +684,8 @@ addLabelOnlyMarkers <- function(
   clusterId = NULL,
   data = getMapData(map)
 ) {
+  if (missing(labelOptions)) labelOptions <- labelOptions()
+
   do.call(addMarkers, filterNULL(list(
     map = map, lng = lng, lat = lat, layerId = layerId,
     group = group,
@@ -964,6 +972,8 @@ addCircleMarkers <- function(
   clusterId = NULL,
   data = getMapData(map)
 ) {
+  if (missing(labelOptions)) labelOptions <- labelOptions()
+
   options <- c(options, filterNULL(list(
     stroke = stroke, color = color, weight = weight, opacity = opacity,
     fill = fill, fillColor = fillColor, fillOpacity = fillOpacity,
@@ -1089,6 +1099,8 @@ addCircles <- function(
   highlightOptions = NULL,
   data = getMapData(map)
 ) {
+  if (missing(labelOptions)) labelOptions <- labelOptions()
+
   options <- c(options, filterNULL(list(
     stroke = stroke, color = color, weight = weight, opacity = opacity,
     fill = fill, fillColor = fillColor, fillOpacity = fillOpacity,
@@ -1127,6 +1139,8 @@ addPolylines <- function(
   highlightOptions = NULL,
   data = getMapData(map)
 ) {
+  if (missing(labelOptions)) labelOptions <- labelOptions()
+
   options <- c(options, filterNULL(list(
     stroke = stroke, color = color, weight = weight, opacity = opacity,
     fill = fill, fillColor = fillColor, fillOpacity = fillOpacity,
@@ -1162,6 +1176,8 @@ addRectangles <- function(
   highlightOptions = NULL,
   data = getMapData(map)
 ) {
+  if (missing(labelOptions)) labelOptions <- labelOptions()
+
   options <- c(options, filterNULL(list(
     stroke = stroke, color = color, weight = weight, opacity = opacity,
     fill = fill, fillColor = fillColor, fillOpacity = fillOpacity,
@@ -1204,6 +1220,8 @@ addPolygons <- function(
   highlightOptions = NULL,
   data = getMapData(map)
 ) {
+  if (missing(labelOptions)) labelOptions <- labelOptions()
+
   options <- c(options, filterNULL(list(
     stroke = stroke, color = color, weight = weight, opacity = opacity,
     fill = fill, fillColor = fillColor, fillOpacity = fillOpacity,

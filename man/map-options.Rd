@@ -44,6 +44,8 @@ pathOptions(lineCap = NULL, lineJoin = NULL, clickable = NULL,
 \item{minZoom, maxZoom, maxNativeZoom, tileSize, subdomains, errorTileUrl, tms, noWrap, zoomOffset, zoomReverse, zIndex, unloadInvisibleTiles, updateWhenIdle, detectRetina}{the tile layer options; see
 \url{http://leafletjs.com/reference-1.3.1.html#tilelayer}}
 
+\item{opacity}{Tooltip container opacity. Default value is \code{1} (different from leaflet.js \code{0.9}); see \url{http://leafletjs.com/reference-1.3.1.html#tooltip-opacity}}
+
 \item{...}{extra options passed to underlying Javascript object constructor.}
 
 \item{styles}{comma-separated list of WMS styles}
@@ -68,9 +70,15 @@ transparency}
 
 \item{clickable}{DEPRECATED! Use the \code{interactive} option.}
 
-\item{noHide, direction, offset, textsize, textOnly, style, permanent}{label options; see \url{http://leafletjs.com/reference-1.3.1.html#tooltip-option}}
+\item{noHide, direction, offset, style, permanent}{label options; see \url{http://leafletjs.com/reference-1.3.1.html#tooltip-option}}
 
-\item{sticky}{If true, the tooltip will follow the mouse instead of being fixed at the feature center. Default value is \code{TRUE} (different from leaflet.js \code{FALSE}); see \url{http://leafletjs.com/reference-1.3.0.html#tooltip-sticky}}
+\item{textsize}{Change the text size of a single tooltip}
+
+\item{textOnly}{Display only the text, no regular surrounding box.}
+
+\item{style}{list of css style to be added to the tooltip}
+
+\item{sticky}{If true, the tooltip will follow the mouse instead of being fixed at the feature center. Default value is \code{TRUE} (different from leaflet.js \code{FALSE}); see \url{http://leafletjs.com/reference-1.3.1.html#tooltip-sticky}}
 
 \item{draggable, keyboard, title, alt, zIndexOffset, opacity, riseOnHover, riseOffset}{marker options; see \url{http://leafletjs.com/reference-1.3.1.html#marker-option}}
 
@@ -101,6 +109,8 @@ See \url{https://github.com/ghybs/Leaflet.MarkerCluster.Freezable#api-reference}
 
 \item{pointerEvents}{sets the \code{pointer-events} attribute on the path if
 SVG backend is used}
+
+\item{...}{extra arguments supplied to Leaflet.js popupOptions. See \url{http://leafletjs.com/reference-1.3.1.html#popup-option}}
 
 \item{zoomAnimation}{deprecated. See \url{https://github.com/Leaflet/Leaflet/blob/master/CHANGELOG.md#api-changes-5}}
 }
