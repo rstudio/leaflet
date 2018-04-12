@@ -21,12 +21,12 @@ WMSTileOptions(styles = "", format = "image/jpeg", transparent = FALSE,
 
 popupOptions(maxWidth = 300, minWidth = 50, maxHeight = NULL,
   autoPan = TRUE, keepInView = FALSE, closeButton = TRUE,
-  zoomAnimation = TRUE, closeOnClick = NULL, className = "", ...)
+  zoomAnimation = NULL, closeOnClick = NULL, className = "", ...)
 
 labelOptions(interactive = FALSE, clickable = NULL, noHide = NULL,
   permanent = FALSE, className = "", direction = "auto", offset = c(0,
   0), opacity = 1, textsize = "10px", textOnly = FALSE, style = NULL,
-  zoomAnimation = TRUE, sticky = TRUE, ...)
+  zoomAnimation = NULL, sticky = TRUE, ...)
 
 markerOptions(interactive = TRUE, clickable = NULL, draggable = FALSE,
   keyboard = TRUE, title = "", alt = "", zIndexOffset = 0,
@@ -58,7 +58,9 @@ transparency}
 
 \item{crs}{Coordinate Reference System to use for the WMS requests, defaults.}
 
-\item{maxWidth, minWidth, maxHeight, autoPan, keepInView, closeButton, zoomAnimation, closeOnClick}{popup options; see \url{http://leafletjs.com/reference-1.3.1.html#popup-option}}
+\item{maxWidth, minWidth, maxHeight, autoPan, keepInView, closeButton, closeOnClick}{popup options; see \url{http://leafletjs.com/reference-1.3.1.html#popup-option}}
+
+\item{zoomAnimation}{deprecated. See https://github.com/Leaflet/Leaflet/blob/master/CHANGELOG.md#api-changes-5}
 
 \item{className}{a CSS class name set on an element}
 
@@ -99,6 +101,8 @@ See \url{https://github.com/ghybs/Leaflet.MarkerCluster.Freezable#api-reference}
 
 \item{pointerEvents}{sets the \code{pointer-events} attribute on the path if
 SVG backend is used}
+
+\item{zoomAnimation}{deprecated. See \url{https://github.com/Leaflet/Leaflet/blob/master/CHANGELOG.md#api-changes-5}}
 }
 \description{
 The rest of all possible options for map elements and layers that are not

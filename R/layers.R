@@ -481,6 +481,8 @@ addPopups <- function(
 #' @param
 #' maxWidth,minWidth,maxHeight,autoPan,keepInView,closeButton,zoomAnimation,closeOnClick
 #' popup options; see \url{http://leafletjs.com/reference-1.3.1.html#popup-option}
+#' @param zoomAnimation deprecated. See https://github.com/Leaflet/Leaflet/blob/master/CHANGELOG.md#api-changes-5
+#' @param ... extra arguments supplied to Leaflet.js popupOptions. See \url{http://leafletjs.com/reference-1.3.1.html#popup-option}
 #' @describeIn map-options Options for popups
 #' @export
 popupOptions <- function(
@@ -490,15 +492,18 @@ popupOptions <- function(
   autoPan = TRUE,
   keepInView = FALSE,
   closeButton = TRUE,
-  zoomAnimation = TRUE,
+  zoomAnimation = NULL,
   closeOnClick = NULL,
   className = "",
   ...
 ) {
+  if (!missing(zoomAnimation)) {
+    zoomAnimationWarning()
+  }
   filterNULL(list(
     maxWidth = maxWidth, minWidth = minWidth, maxHeight = maxHeight,
     autoPan = autoPan, keepInView = keepInView, closeButton = closeButton,
-    zoomAnimation = zoomAnimation, closeOnClick = closeOnClick, className = className, ...
+    closeOnClick = closeOnClick, className = className, ...
   ))
 }
 
@@ -547,6 +552,7 @@ safeLabel <- function(label, data) {
 #' noHide,direction,offset,textsize,textOnly,style,permanent
 #' label options; see \url{http://leafletjs.com/reference-1.3.1.html#tooltip-option}
 #' @param sticky If true, the tooltip will follow the mouse instead of being fixed at the feature center. Default value is \code{TRUE} (different from leaflet.js \code{FALSE}); see \url{http://leafletjs.com/reference-1.3.0.html#tooltip-sticky}
+#' @param zoomAnimation deprecated. See \url{https://github.com/Leaflet/Leaflet/blob/master/CHANGELOG.md#api-changes-5}
 #' @describeIn map-options Options for labels
 #' @export
 labelOptions <- function(
@@ -561,7 +567,7 @@ labelOptions <- function(
   textsize = "10px",
   textOnly = FALSE,
   style = NULL,
-  zoomAnimation = TRUE,
+  zoomAnimation = NULL,
   sticky = TRUE,
   ...
 ) {
@@ -569,12 +575,16 @@ labelOptions <- function(
  if (!is.null(clickable) && interactive != clickable) interactive <- clickable
   # use old noHide if provided
  if (!is.null(noHide) && permanent != noHide) permanent <- noHide
+ if (!missing(zoomAnimation)) {
+   zoomAnimationWarning()
+ }
+
 
   filterNULL(list(
     interactive = interactive, permanent = permanent, direction = direction,
     opacity = opacity, offset = offset,
     textsize = textsize, textOnly = textOnly, style = style,
-    zoomAnimation = zoomAnimation, className = className, sticky = sticky, ...
+    className = className, sticky = sticky, ...
   ))
 }
 
@@ -1316,4 +1326,10 @@ layersControlOptions <- function(collapsed = TRUE, autoZIndex = TRUE, ...) {
 #' @export
 removeLayersControl <- function(map) {
   invokeMethod(map, NULL, "removeLayersControl")
+}
+
+
+
+zoomAnimationWarning <- function() {
+  warning("zoomAnimation has been deprecated by Leaflet.js. See https://github.com/Leaflet/Leaflet/blob/master/CHANGELOG.md#api-changes-5\nignoring 'zoomAnimation' parameter")
 }
