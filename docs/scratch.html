@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title></title>
+
+<script src="libs/jquery/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap/css/flatly.min.css" rel="stylesheet" />
+<script src="libs/bootstrap/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap/shim/respond.min.js"></script>
+<script src="libs/navigation/tabsets.js"></script>
+<link href="libs/highlightjs/default.css" rel="stylesheet" />
+<script src="libs/highlightjs/highlight.js"></script>
+<script src="libs/htmlwidgets/htmlwidgets.js"></script>
+<link href="libs/leaflet/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet/leaflet.js"></script>
+<link href="libs/leafletfix/leafletfix.css" rel="stylesheet" />
+<script src="libs/Proj4Leaflet/proj4-compressed.js"></script>
+<script src="libs/Proj4Leaflet/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding/leaflet.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+<style type="text/css">
+  body {
+    padding-top: 20px;
+  }
+  .navbar-brand {
+    font-weight: bold;
+  }
+  footer {
+    border-top: 1px solid #CCC;
+    margin-top: 60px;
+    margin-bottom: 48px;
+    opacity: 0.75;
+  }
+  .content-body>:first-child, .content-body>:first-child>:first-child {
+    margin-top: 0 !important;
+  }
+  p code {
+    white-space: inherit;
+  }
+  .leaflet-container {
+    margin: 0 0 10.5px;
+  }
+</style>
+
+<div class="fluid-row">
+  <div class="col-sm-12">
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <a class="navbar-brand" href="./">Leaflet for R</a>
+        </div>
+      </div>
+    </nav>
+  </div>
+</div>
+
+<div class="fluid-row">
+  <div class="col-sm-3">
+    <div class="list-group">
+      <a class="list-group-item" href="./">Introduction</a>
+      <a class="list-group-item" href="map_widget.html">The Map Widget</a>
+      <a class="list-group-item" href="basemaps.html">Basemaps</a>
+      <a class="list-group-item" href="markers.html">Markers</a>
+      <a class="list-group-item" href="popups.html">Popups and Labels</a>
+      <a class="list-group-item" href="shapes.html">Lines and Shapes</a>
+      <a class="list-group-item" href="json.html">GeoJSON and TopoJSON</a>
+      <a class="list-group-item" href="raster.html">Raster Images</a>
+      <a class="list-group-item" href="shiny.html">Shiny Integration</a>
+      <a class="list-group-item" href="colors.html">Colors</a>
+      <a class="list-group-item" href="legends.html">Legends</a>
+      <a class="list-group-item" href="showhide.html">Show/Hide Layers</a>
+      <a class="list-group-item" href="choropleths.html">Choropleths</a>
+      <a class="list-group-item" href="projections.html">Projections</a>
+      <a class="list-group-item" href="morefeatures.html">Additional Features</a>
+    </div>
+    <script>
+      // manage active state of toc based on current page
+      var href = window.location.pathname;
+      href = href.substr(href.lastIndexOf('/') + 1);
+      if (href === "" || href === "index.html")
+        href = "./";
+      $('a.list-group-item[href="' + href + '"]').addClass('active');
+    </script>
+  </div>
+  <div class="col-sm-9 content-body">
+
+<div class="fluid-row" id="header">
+
+
+
+
+</div>
+
+
+<div id="shiny" class="section level2">
+<h2>Shiny</h2>
+<p>There are two wrapper functions <code>leafletOutput()</code> and <code>renderLeaflet()</code> in this package for using Leaflet maps in <strong>shiny</strong>. The function <code>leafletProxy()</code> allows you to manipulate a map after it has been rendered.</p>
+</div>
+<div id="ui-layers" class="section level1">
+<h1>UI Layers</h1>
+<p>The UI elements markers and popups are supported via <code>addMarkers()</code> and <code>addPopups()</code>, respectively. In the example below, we add a marker with a custom icon, and a popup:</p>
+<pre class="r"><code>leaflet() %&gt;% addTiles() %&gt;%
+  addMarkers(174.7690922, -36.8523071, icon = icons(
+    iconUrl = &#39;http://cran.rstudio.com/Rlogo.jpg&#39;,
+    iconWidth = 40, iconHeight = 40
+  )) %&gt;%
+  addPopups(174.7690922, -36.8523071, &#39;R was born here!&#39;)</code></pre>
+<div id="htmlwidget-927ec88a166bf954e46a" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-927ec88a166bf954e46a">{
+  "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
+    "calls": [
+      {
+        "method": "addTiles",
+        "args": [
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          null,
+          null,
+          {
+            "minZoom": 0,
+            "maxZoom": 18,
+            "tileSize": 256,
+            "subdomains": "abc",
+            "errorTileUrl": "",
+            "tms": false,
+            "noWrap": false,
+            "zoomOffset": 0,
+            "zoomReverse": false,
+            "opacity": 1,
+            "zIndex": 1,
+            "detectRetina": false,
+            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+          }
+        ]
+      },
+      {
+        "method": "addMarkers",
+        "args": [
+          -36.8523071,
+          174.7690922,
+          {
+            "iconUrl": {
+              "data": "http://cran.rstudio.com/Rlogo.jpg",
+              "index": 0
+            },
+            "iconWidth": 40,
+            "iconHeight": 40
+          },
+          null,
+          null,
+          {
+            "interactive": true,
+            "draggable": false,
+            "keyboard": true,
+            "title": "",
+            "alt": "",
+            "zIndexOffset": 0,
+            "opacity": 1,
+            "riseOnHover": false,
+            "riseOffset": 250
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      {
+        "method": "addPopups",
+        "args": [
+          -36.8523071,
+          174.7690922,
+          "R was born here!",
+          null,
+          null,
+          {
+            "maxWidth": 300,
+            "minWidth": 50,
+            "autoPan": true,
+            "keepInView": false,
+            "closeButton": true,
+            "zoomAnimation": true,
+            "className": ""
+          }
+        ]
+      }
+    ],
+    "limits": {
+      "lat": [-36.8523071, -36.8523071],
+      "lng": [174.7690922, 174.7690922]
+    }
+  },
+  "evals": [],
+  "jsHooks": []
+}</script>
+</div>
+<div id="raster-layers" class="section level1">
+<h1>Raster Layers</h1>
+<p>Currently tile layers are supported via <code>addTiles()</code>. By default, the OpenStreetMap tiles are used, and you can certainly use other tiles of your choice.</p>
+<p>A live demo of many tile sets is available <a href="http://leaflet-extras.github.io/leaflet-providers/preview/index.html">here</a>. Note that some tile set providers require you to register. See the <a href="https://github.com/leaflet-extras/leaflet-providers">project page</a> for more information.</p>
+<pre class="r"><code>leaflet() %&gt;%
+  addTiles(
+    &#39;http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}&#39;,
+    attribution = &#39;Tiles &amp;copy; Esri &amp;mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community&#39;) %&gt;%
+  setView(-93.65, 42.0285, zoom = 17)</code></pre>
+<div id="htmlwidget-e2aad06f99e8b55df8d8" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-e2aad06f99e8b55df8d8">{
+  "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
+    "calls": [
+      {
+        "method": "addTiles",
+        "args": [
+          "http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
+          null,
+          null,
+          {
+            "minZoom": 0,
+            "maxZoom": 18,
+            "tileSize": 256,
+            "subdomains": "abc",
+            "errorTileUrl": "",
+            "tms": false,
+            "noWrap": false,
+            "zoomOffset": 0,
+            "zoomReverse": false,
+            "opacity": 1,
+            "zIndex": 1,
+            "detectRetina": false,
+            "attribution": "Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community"
+          }
+        ]
+      }
+    ],
+    "setView": [
+      [42.0285, -93.65],
+      17,
+      []
+    ]
+  },
+  "evals": [],
+  "jsHooks": []
+}</script>
+</div>
+<div id="vector-layers" class="section level1">
+<h1>Vector Layers</h1>
+<p>Vector layers contain elements of vector graphics, such as circles, rectangles, and polylines, etc. All vector layer functions have the arguments <code>lng</code> and <code>lat</code>, with additional arguments specifying the attributes of the graphical elements. Note the terminology is slightly different with R graphics. For example, the border of elements is controlled by the argument <code>stroke</code> (e.g., <code>leaflet::addRectangles(stroke = FALSE)</code> is like <code>graphics::rect(border = NA)</code>), the <code>color</code> argument only specifies the color of the border (in base R, <code>col</code>/<code>color</code> often means the <em>fill</em> color), and the <code>weight</code> argument is like <code>lwd</code> in base R graphics.</p>
+<pre class="r"><code>set.seed(123)
+m = leaflet() %&gt;% addTiles()
+rand_lng = function(n = 10) rnorm(n, -93.65, .01)
+rand_lat = function(n = 10) rnorm(n, 42.0285, .01)
+
+# circles (units in metres)
+m %&gt;% addCircles(rand_lng(50), rand_lat(50), radius = runif(50, 10, 200))</code></pre>
+<div id="htmlwidget-ec9d8b9e435c1a666871" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ec9d8b9e435c1a666871">{
+  "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
+    "calls": [
+      {
+        "method": "addTiles",
+        "args": [
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          null,
+          null,
+          {
+            "minZoom": 0,
+            "maxZoom": 18,
+            "tileSize": 256,
+            "subdomains": "abc",
+            "errorTileUrl": "",
+            "tms": false,
+            "noWrap": false,
+            "zoomOffset": 0,
+            "zoomReverse": false,
+            "opacity": 1,
+            "zIndex": 1,
+            "detectRetina": false,
+            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+          }
+        ]
+      },
+      {
+        "method": "addCircles",
+        "args": [
+          [42.0310331851399, 42.0282145324465, 42.0280712954271, 42.0421860228401, 42.0262422901434, 42.0436647060443, 42.0130124719577, 42.0343461374964, 42.0297385424384, 42.0306594156874, 42.0322963948276, 42.0234767654689, 42.0251679261633, 42.0183142461689, 42.0177820877352, 42.031535286414, 42.0329820977863, 42.0290300422673, 42.0377226746788, 42.0490008468563, 42.0235896883394, 42.0054083112436, 42.0385573852446, 42.0214079923742, 42.0216199138353, 42.038755713697, 42.0256522699295, 42.0162928228775, 42.0303130347975, 42.0271110863756, 42.028557641859, 42.0323528040113, 42.0247933996821, 42.0349437654852, 42.0262951343818, 42.0318178196392, 42.0394683901315, 42.0328518149083, 42.0252406841447, 42.0399880761845, 42.0384350385596, 42.0339839695951, 42.0308873173511, 42.0222209392396, 42.0421065244853, 42.0224974041285, 42.0503733299302, 42.0438261062619, 42.026142996409, 42.0182357909969],
+          [-93.6556047564655, -93.6523017748948, -93.6344129168585, -93.6492949160858, -93.6487071226484, -93.6328493501312, -93.6453908379401, -93.6626506123461, -93.6568685285189, -93.654456619701, -93.6377591820256, -93.6464018617294, -93.6459922854941, -93.6488931728406, -93.6555584113475, -93.632130868632, -93.6450214952177, -93.6696661715663, -93.6429864409844, -93.6547279140773, -93.6606782370599, -93.6521797491466, -93.6602600444831, -93.6572889122929, -93.6562503926785, -93.6668669331074, -93.6416221295551, -93.6484662688216, -93.6613813693701, -93.6374618507893, -93.6457353577852, -93.6529507148299, -93.6410487433896, -93.6412186651247, -93.6417841891836, -93.643113597459, -93.6444608234646, -93.6506191171058, -93.6530596266374, -93.6538047100101, -93.6569470697892, -93.6520791727802, -93.6626539635157, -93.6283104403466, -93.637920380017, -93.661231085832, -93.654028848353, -93.6546665535362, -93.6422003488166, -93.6508336906647],
+          [55.3579451004043, 192.848197922576, 124.259487935342, 107.85564817721, 86.4889350184239, 177.246842833702, 79.177454309538, 64.7654633317143, 42.4225946702063, 42.7126318123192, 101.588095049374, 58.0633364175446, 51.0884100268595, 138.131513735279, 19.0560892107897, 143.162086619996, 76.8588413065299, 87.6993596064858, 165.980751551688, 184.582896148786, 63.6803827201948, 192.609910804313, 148.394941370934, 140.411265580915, 20.0403491267934, 85.0918255816214, 100.79062217148, 116.448120099958, 142.66970302444, 183.979872299824, 127.486733200494, 91.4000866631977, 112.9952697712, 21.1109128315002, 59.5628028409556, 85.4588711285032, 47.5714999693446, 168.066236937884, 39.0485723363236, 162.649522984866, 113.896969745401, 135.840351982042, 42.6227138377726, 130.28051836649, 69.2552518867888, 147.665325817652, 85.7985666859895, 194.17771811597, 193.805690417066, 148.073482413311],
+          null,
+          null,
+          {
+            "interactive": true,
+            "className": "",
+            "stroke": true,
+            "color": "#03F",
+            "weight": 5,
+            "opacity": 0.5,
+            "fill": true,
+            "fillColor": "#03F",
+            "fillOpacity": 0.2
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      }
+    ],
+    "limits": {
+      "lat": [42.0054083112436, 42.0503733299302],
+      "lng": [-93.6696661715663, -93.6283104403466]
+    }
+  },
+  "evals": [],
+  "jsHooks": []
+}</script>
+<pre class="r"><code># circle markers (units in pixels)
+m %&gt;% addCircleMarkers(rand_lng(50), rand_lat(50), color = &#39;#ff0000&#39;)</code></pre>
+<div id="htmlwidget-65e60ed4f5440bdab363" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-65e60ed4f5440bdab363">{
+  "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
+    "calls": [
+      {
+        "method": "addTiles",
+        "args": [
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          null,
+          null,
+          {
+            "minZoom": 0,
+            "maxZoom": 18,
+            "tileSize": 256,
+            "subdomains": "abc",
+            "errorTileUrl": "",
+            "tms": false,
+            "noWrap": false,
+            "zoomOffset": 0,
+            "zoomReverse": false,
+            "opacity": 1,
+            "zIndex": 1,
+            "detectRetina": false,
+            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+          }
+        ]
+      },
+      {
+        "method": "addCircleMarkers",
+        "args": [
+          [42.0175400373293, 42.0288778839917, 42.0316048074944, 42.0328652347891, 42.0239163466729, 42.0178667386603, 42.0411318517609, 42.0250034961205, 42.0198448713735, 42.0261372043106, 42.0265282410565, 42.0395992028971, 42.029347372922, 42.0360405378518, 42.0235070798283, 42.0306444530958, 42.0252531408851, 42.0294458352817, 42.0195463664202, 42.0153919846667, 42.0484721338475, 42.0345070882367, 42.0159872863838, 42.0223883408332, 42.016645199154, 42.0504881034888, 42.0416241297643, 42.025848549433, 42.0339319405923, 42.0243566005208, 42.0237375310538, 42.0206139716215, 42.0225538273254, 42.0450090746734, 42.0279597187491, 42.0296924523643, 42.030936874296, 42.0408247587849, 42.0233393616906, 42.0185749284961, 42.045256969324, 42.0240883678309, 42.0212693403006, 42.0161372688112, 42.0156528427768, 42.022760265207, 42.0346798581717, 42.0395984813893, 42.0355758835384, 42.024863427029],
+          [-93.656519499017, -93.6476461342772, -93.6492203915044, -93.6596185663413, -93.6507130808612, -93.6355544914158, -93.6454849594692, -93.6495876707801, -93.6542249683234, -93.6705324722154, -93.6386866278659, -93.6646064007093, -93.6426005248912, -93.6309089643078, -93.6644389316097, -93.6429821566463, -93.652621974894, -93.6657214415915, -93.6651466765378, -93.6660153617357, -93.6553090652217, -93.66461755585, -93.6431208322702, -93.6289989105947, -93.6628703047604, -93.6421226115253, -93.64230957759, -93.6466779742105, -93.6600837660828, -93.6511945260663, -93.6528039533517, -93.6443701046678, -93.653724387561, -93.6402302661331, -93.6537458085777, -93.6394728853442, -93.6604917700667, -93.6626015524476, -93.6175896006506, -93.6541685758816, -93.6470177240846, -93.6436343032597, -93.6548378062571, -93.6448313795569, -93.6463103547262, -93.6521538050764, -93.6493470696648, -93.6503406725374, -93.6287154810098, -93.6574133609627],
+          10,
+          null,
+          null,
+          {
+            "interactive": true,
+            "className": "",
+            "stroke": true,
+            "color": "#ff0000",
+            "weight": 5,
+            "opacity": 0.5,
+            "fill": true,
+            "fillColor": "#ff0000",
+            "fillOpacity": 0.2
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      }
+    ],
+    "limits": {
+      "lat": [42.0153919846667, 42.0504881034888],
+      "lng": [-93.6705324722154, -93.6175896006506]
+    }
+  },
+  "evals": [],
+  "jsHooks": []
+}</script>
+<pre class="r"><code>m %&gt;% addCircleMarkers(rand_lng(100), rand_lat(100), radius = runif(100, 5, 15))</code></pre>
+<div id="htmlwidget-c6a36a601760297b5cca" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-c6a36a601760297b5cca">{
+  "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
+    "calls": [
+      {
+        "method": "addTiles",
+        "args": [
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          null,
+          null,
+          {
+            "minZoom": 0,
+            "maxZoom": 18,
+            "tileSize": 256,
+            "subdomains": "abc",
+            "errorTileUrl": "",
+            "tms": false,
+            "noWrap": false,
+            "zoomOffset": 0,
+            "zoomReverse": false,
+            "opacity": 1,
+            "zIndex": 1,
+            "detectRetina": false,
+            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+          }
+        ]
+      },
+      {
+        "method": "addCircleMarkers",
+        "args": [
+          [42.0353374552185, 42.0278917804534, 42.0348296071303, 42.0418551761506, 42.0285729009032, 42.0386755863695, 42.0166156596485, 42.0212839555956, 42.0436921771139, 42.0322738797302, 42.0079777717957, 42.0148596254792, 42.0264921898441, 42.0371577940433, 42.0274811674429, 42.0347418747202, 42.0380900537779, 42.0452105482886, 42.0290601673328, 42.0279801809382, 42.0109676264086, 42.0294932759409, 42.022781499421, 42.018759904172, 42.0267009376895, 42.0386494317274, 42.0085725151131, 42.024227207128, 42.0296663728358, 42.0195679242995, 42.031839029425, 42.0326142992062, 42.0281696384072, 42.0038410180624, 42.0542145814587, 42.0264470074253, 42.0350119328159, 42.0312376649104, 42.0387467323482, 42.0366765944637, 42.0264020682877, 42.0322816777221, 42.0190459116888, 42.037069230109, 42.0238896166112, 42.0526677335379, 42.0119895110431, 42.0238601275703, 42.0367537986276, 42.0336013254688, 42.0226051896149, 42.0185321925779, 42.0299447570471, 42.0283569258683, 42.0105971876274, 42.0288455106713, 42.0304023031569, 42.0302472639698, 42.017949829574, 42.033261332783, 42.0422857013696, 42.0330623640318, 42.0171441152963, 42.0241435453031, 42.0319610361955, 42.0220295436868, 42.0069235366499, 42.0373425082003, 42.0202052238838, 42.0227643972923, 42.04353900609, 42.0207585507039, 42.0369573154019, 42.0158931712118, 42.0249545759693, 42.0277644398086, 42.0168134857558, 42.0221525173509, 42.0282115844707, 42.0352069596873, 42.0119945345658, 42.0250024576079, 42.0360640643855, 42.0231119084002, 42.0307729192167, 42.0334222857006, 42.0311783501533, 42.0350325767947, 42.0272729133902, 42.0243632348641, 42.0020685104797, 42.0275705898152, 42.0328028469636, 42.0338539884087, 42.0229472164869, 42.0462950290978, 42.0313642441963, 42.0297631585846, 42.0412226677947, 42.0213153377868],
+          [-93.6494025006262, -93.6570459646368, -93.6571721816157, -93.6411534950102, -93.660155925786, -93.6304470603451, -93.6509031959397, -93.6478546117337, -93.6573852770474, -93.6557438868976, -93.6631701613231, -93.6518292538837, -93.6458101759508, -93.6467569565584, -93.6578153648706, -93.6578862197085, -93.6550219871834, -93.6350393933015, -93.6613730362067, -93.6517905159438, -93.6309763817832, -93.6510097488533, -93.6635984070382, -93.6566476943527, -93.645145400211, -93.6537560287167, -93.6556187636355, -93.6534391723413, -93.6490950335286, -93.6340149122885, -93.6508856511214, -93.6391920050385, -93.6436924588435, -93.6511363989551, -93.6653290200289, -93.6552111731755, -93.6548987045314, -93.6495284556724, -93.6369980132233, -93.6270692102617, -93.6345241894102, -93.6513315096433, -93.6675652739556, -93.6538877986407, -93.6491079277693, -93.6415498699593, -93.6403747203152, -93.6431569057058, -93.663952743498, -93.6415035695437, -93.6544655721643, -93.6482519729984, -93.6492544882283, -93.6457183323503, -93.6497532501717, -93.6666747509759, -93.6426350403523, -93.6461397343165, -93.6526565162528, -93.6488185548895, -93.6486596135463, -93.6477898053144, -93.6335915383402, -93.6521905037893, -93.6483193461612, -93.6383161612693, -93.6394581897662, -93.6385473688962, -93.6557746800106, -93.6299751726971, -93.6493329912907, -93.6313314815529, -93.6635090268603, -93.6497901641365, -93.6375008542903, -93.6571524218722, -93.6575268896822, -93.6593853870361, -93.6605251327934, -93.6543715953318, -93.6466882082704, -93.6701421049792, -93.6478801956663, -93.6376332495358, -93.6296242598176, -93.636988240078, -93.642432252362, -93.6672673039912, -93.6560150670801, -93.6535204645658, -93.6429647609724, -93.65105671334, -93.6625864862806, -93.6331556429191, -93.6408860870821, -93.6476256972751, -93.6378189138968, -93.6633877428724, -93.6433917970221, -93.6552291237631],
+          [8.26233146712184, 12.2639888827689, 14.9174523539841, 12.1513352775946, 10.0443981098942, 9.36047671828419, 14.4882525061257, 6.20181487640366, 5.75145176611841, 13.8902149279602, 9.24452095059678, 5.42360678780824, 11.4744214364327, 9.68619162449613, 11.1792612331919, 7.70815432537347, 6.57295286655426, 6.14254270214587, 10.0768286315724, 10.4803228750825, 6.40646189451218, 6.6976905008778, 12.6198532315902, 10.2739494061098, 13.6098935757764, 11.7355498787947, 5.13041029684246, 11.9319890136831, 13.9171373215504, 11.3185017532669, 6.07294654939324, 14.210652038455, 11.7536238115281, 6.48593712598085, 12.453418422956, 14.4259886187501, 9.20783375622705, 7.97723078168929, 7.59426670148969, 7.22881316905841, 10.6565434345976, 12.566501328256, 11.696035459172, 10.4652279429138, 13.1146365776658, 12.5916680204682, 5.20068466197699, 8.80903700133786, 5.50880113616586, 12.9790293728001, 14.2369921319187, 10.4259837046266, 13.523646001704, 10.8356286329217, 11.6832364350557, 10.1131459651515, 12.6275058928877, 14.0336228790693, 13.2047451217659, 5.71431849617511, 5.03896343056113, 5.52198615856469, 13.6656017974019, 10.7624516892247, 8.13842572038993, 14.5946578378789, 10.9119375701994, 10.3140933578834, 8.83936671540141, 8.19553229492158, 13.083862552885, 5.41919498471543, 8.63742694724351, 13.5659696697257, 11.9794657849707, 11.8448647297919, 8.4801505273208, 10.5468182940967, 6.37243617558852, 12.8493155632168, 13.8686257158406, 7.0409588329494, 12.7062296145596, 10.9636296075769, 14.5766974240541, 6.58688397612423, 10.259742741473, 13.7315136753023, 13.6970607028343, 5.23688643239439, 14.7588969347998, 9.90224198205397, 8.89170323032886, 9.17554959887639, 5.92925820499659, 6.61809210199863, 9.05416495166719, 8.41814444167539, 9.15257453219965, 8.04052469087765],
+          null,
+          null,
+          {
+            "interactive": true,
+            "className": "",
+            "stroke": true,
+            "color": "#03F",
+            "weight": 5,
+            "opacity": 0.5,
+            "fill": true,
+            "fillColor": "#03F",
+            "fillOpacity": 0.2
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      }
+    ],
+    "limits": {
+      "lat": [42.0020685104797, 42.0542145814587],
+      "lng": [-93.6701421049792, -93.6270692102617]
+    }
+  },
+  "evals": [],
+  "jsHooks": []
+}</script>
+<pre class="r"><code># rectangles
+m %&gt;% addRectangles(
+  rand_lng(), rand_lat(), rand_lng(), rand_lat(),
+  color = &#39;red&#39;, fill = FALSE, dashArray = &#39;5,5&#39;, weight = 3
+)</code></pre>
+<div id="htmlwidget-6d8788299161dc56faef" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-6d8788299161dc56faef">{
+  "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
+    "calls": [
+      {
+        "method": "addTiles",
+        "args": [
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          null,
+          null,
+          {
+            "minZoom": 0,
+            "maxZoom": 18,
+            "tileSize": 256,
+            "subdomains": "abc",
+            "errorTileUrl": "",
+            "tms": false,
+            "noWrap": false,
+            "zoomOffset": 0,
+            "zoomReverse": false,
+            "opacity": 1,
+            "zIndex": 1,
+            "detectRetina": false,
+            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+          }
+        ]
+      },
+      {
+        "method": "addRectangles",
+        "args": [
+          [42.0362886002978, 42.0376477327086, 42.0227560544782, 42.0447688121419, 42.0246904326071, 42.0274421583235, 42.0425405026771, 42.0414408390615, 42.0176000812759, 42.0197692899958],
+          [-93.6484831949549, -93.6328769502268, -93.6532614389251, -93.646269953442, -93.652276840649, -93.6497954929148, -93.6468594233649, -93.6367178530396, -93.6487868162251, -93.6428715767997],
+          [42.0275485254915, 42.0195405217724, 42.0077924892946, 42.0300012013119, 42.0277078829074, 42.0275263073249, 42.030661525418, 42.037324651644, 42.0305559750448, 42.0223356415713],
+          [-93.6635807905937, -93.6481815280738, -93.6483515913208, -93.6463588531265, -93.6444784228578, -93.6560189284599, -93.659936985911, -93.6397321494393, -93.6424893869739, -93.6650916653733],
+          null,
+          null,
+          {
+            "interactive": true,
+            "className": "",
+            "stroke": true,
+            "color": "red",
+            "weight": 3,
+            "opacity": 0.5,
+            "fill": false,
+            "fillColor": "red",
+            "fillOpacity": 0.2,
+            "dashArray": "5,5",
+            "smoothFactor": 1,
+            "noClip": false
+          },
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      }
+    ],
+    "limits": {
+      "lat": [42.0077924892946, 42.0447688121419],
+      "lng": [-93.6650916653733, -93.6328769502268]
+    }
+  },
+  "evals": [],
+  "jsHooks": []
+}</script>
+<pre class="r"><code># polylines
+m %&gt;% addPolylines(rand_lng(50), rand_lat(50), fill = FALSE)</code></pre>
+<div id="htmlwidget-e90b79b122bd7002e299" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-e90b79b122bd7002e299">{
+  "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
+    "calls": [
+      {
+        "method": "addTiles",
+        "args": [
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          null,
+          null,
+          {
+            "minZoom": 0,
+            "maxZoom": 18,
+            "tileSize": 256,
+            "subdomains": "abc",
+            "errorTileUrl": "",
+            "tms": false,
+            "noWrap": false,
+            "zoomOffset": 0,
+            "zoomReverse": false,
+            "opacity": 1,
+            "zIndex": 1,
+            "detectRetina": false,
+            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+          }
+        ]
+      },
+      {
+        "method": "addPolylines",
+        "args": [
+          [
+            [
+              [
+                {
+                  "lng": [-93.6573479925192, -93.6513180279304, -93.6468998301342, -93.660396803527, -93.6518430886884, -93.6403273273983, -93.6510828009123, -93.6569842066759, -93.6527594516843, -93.6388535145464, -93.6444995603879, -93.6376332419992, -93.6486090214284, -93.6458972490351, -93.6555845691235, -93.6439462933107, -93.6550633354219, -93.664205655047, -93.6487200703432, -93.6305414878227, -93.6419908566043, -93.6383474661005, -93.6464114427691, -93.6560855717832, -93.6520224085511, -93.6527324810681, -93.6546869977978, -93.6429583271607, -93.6619736350237, -93.6413363386789, -93.6413584751377, -93.6619862235907, -93.643605080021, -93.6256977334766, -93.6555721548194, -93.6415509575859, -93.6578220184562, -93.638892885818, -93.6475017528007, -93.6334808460838, -93.6645897072854, -93.6505129788613, -93.6552692517613, -93.6519726486908, -93.6562957874269, -93.6583384358054, -93.6442127762538, -93.6608758071408, -93.6351596906844, -93.6618620658531],
+                  "lat": [42.029510791514, 42.0338298928683, 42.0343673533909, 42.0254825333613, 42.0292950199533, 42.0381126415181, 42.0139353408292, 42.0206826028847, 42.0317040231432, 42.0240521802166, 42.0422000399397, 42.0352325386336, 42.0292216675241, 42.0134224268246, 42.0287610022533, 42.025335841318, 42.0274765348648, 42.0166844077294, 42.0334865804383, 42.0181104355969, 42.0262377801856, 42.0323142582945, 42.0206648421099, 42.0343299140568, 42.0153348959835, 42.0004022532104, 42.0331496799079, 42.0369053982696, 42.0256415457641, 42.0335412625459, 42.0169408347492, 42.0272285139317, 42.0090848162396, 42.0403118089144, 42.0470991086154, 42.0392401226028, 42.0282265303359, 42.0281666965772, 42.0133393237685, 42.0364038534389, 42.0263926581931, 42.0219325707464, 42.0143797420734, 42.0255023750335, 42.0200093886498, 42.0245296947967, 42.0163240001224, 42.0453758948295, 42.0283399747279, 42.0392494507727]
+                }
+              ]
+            ]
+          ],
+          null,
+          null,
+          {
+            "interactive": true,
+            "className": "",
+            "stroke": true,
+            "color": "#03F",
+            "weight": 5,
+            "opacity": 0.5,
+            "fill": false,
+            "fillColor": "#03F",
+            "fillOpacity": 0.2,
+            "smoothFactor": 1,
+            "noClip": false
+          },
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      }
+    ],
+    "limits": {
+      "lat": [42.0004022532104, 42.0470991086154],
+      "lng": [-93.6645897072854, -93.6256977334766]
+    }
+  },
+  "evals": [],
+  "jsHooks": []
+}</script>
+<pre class="r"><code># polygons
+m %&gt;% addPolygons(
+  c(rand_lng(3), NA, rand_lng(4), NA, rand_lng(5)),
+  c(rand_lat(3), NA, rand_lat(4), NA, rand_lat(5)),
+  color = c(&#39;red&#39;, &#39;green&#39;, &#39;blue&#39;)
+)</code></pre>
+<div id="htmlwidget-fb93f5535b798302ff62" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-fb93f5535b798302ff62">{
+  "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
+    "calls": [
+      {
+        "method": "addTiles",
+        "args": [
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          null,
+          null,
+          {
+            "minZoom": 0,
+            "maxZoom": 18,
+            "tileSize": 256,
+            "subdomains": "abc",
+            "errorTileUrl": "",
+            "tms": false,
+            "noWrap": false,
+            "zoomOffset": 0,
+            "zoomReverse": false,
+            "opacity": 1,
+            "zIndex": 1,
+            "detectRetina": false,
+            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+          }
+        ]
+      },
+      {
+        "method": "addPolygons",
+        "args": [
+          [
+            [
+              [
+                {
+                  "lng": [-93.6760169967026, -93.6545319783, -93.6567548229159],
+                  "lat": [42.0178650209362, 42.014619509524, 42.0493671743449]
+                }
+              ]
+            ],
+            [
+              [
+                {
+                  "lng": [-93.6622292617937, -93.6345339084578, -93.6641528191977, -93.6468160973959],
+                  "lat": [42.0217149685458, 42.0099442834608, 42.0338325936275, 42.0316023025606]
+                }
+              ]
+            ],
+            [
+              [
+                {
+                  "lng": [-93.6415356371442, -93.6482180981158, -93.658752554775, -93.6405883419328, -93.6482941191816],
+                  "lat": [42.0149616566428, 42.0090704358642, 42.0273369748284, 42.0398939629171, 42.0348612403518]
+                }
+              ]
+            ]
+          ],
+          null,
+          null,
+          {
+            "interactive": true,
+            "className": "",
+            "stroke": true,
+            "color": ["red", "green", "blue"],
+            "weight": 5,
+            "opacity": 0.5,
+            "fill": true,
+            "fillColor": ["red", "green", "blue"],
+            "fillOpacity": 0.2,
+            "smoothFactor": 1,
+            "noClip": false
+          },
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      }
+    ],
+    "limits": {
+      "lat": [42.0090704358642, 42.0493671743449],
+      "lng": [-93.6760169967026, -93.6345339084578]
+    }
+  },
+  "evals": [],
+  "jsHooks": []
+}</script>
+</div>
+<div id="other-layers" class="section level1">
+<h1>Other Layers</h1>
+<p><a href="http://geojson.org">GeoJSON</a> is a JSON format for encoding geographic data structures such as points, lines, and polygons. The function <code>addGeoJSON()</code> allows us to add a GeoJSON layer to the map, and the layer data is normally represented as an R list. For example, the GeoJSON data</p>
+<pre class="javascript"><code>var MPoint = {
+  &quot;type&quot;: &quot;MultiPoint&quot;,
+  &quot;coordinates&quot;: [ [100.0, 0.0], [101.0, 1.0] ]
+};</code></pre>
+<p>can be represented in R as</p>
+<pre class="r"><code>MPoint = list(
+  type = &#39;MultiPoint&#39;,
+  coordinates = rbind(c(100.0, 0.0), c(101.0, 1.0))
+)</code></pre>
+<p>You can pass this list to <code>addGeoJSON()</code> to draw two points on the map.</p>
+<p>For a GeoJSON feature layer, you can use the <code>style</code> element in the <code>properties</code> list to define its style, and the <code>popup</code> element in <code>properties</code> to define the popup text. Here is an example:</p>
+<pre class="r"><code>m = leaflet() %&gt;% addCircles(lat = 1:26, lng = 1:26, popup = LETTERS)
+shapes = list(
+  list(
+    type = &#39;Feature&#39;,
+    properties = list(
+      popup = &#39;Here are some markers!&#39;
+    ),
+    geometry = list(
+      type = &#39;MultiPoint&#39;,
+      coordinates = cbind(10:1, 1:10)
+    )
+  ),
+  list(
+    type = &#39;Feature&#39;,
+    properties = list(
+      style = list(color = &#39;red&#39;, fillColor = &#39;yellow&#39;),
+      popup = &#39;Here is a polygon, or perhaps a flower...&#39;
+    ),
+    geometry = list(
+      type = &#39;Polygon&#39;,
+      coordinates = list(26 + 10 * t(sapply(seq(0, 2 * pi, length = 10), function(x) {
+        c(cos(x), sin(x))
+      })))
+    )
+  )
+)
+m %&gt;% addGeoJSON(shapes)</code></pre>
+<div id="htmlwidget-a81d84882e3b64c1a840" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-a81d84882e3b64c1a840">{
+  "x": {
+    "options": {
+      "crs": {
+        "crsClass": "L.CRS.EPSG3857",
+        "code": null,
+        "proj4def": null,
+        "projectedBounds": null,
+        "options": {}
+      }
+    },
+    "calls": [
+      {
+        "method": "addCircles",
+        "args": [
+          [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26],
+          [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26],
+          10,
+          null,
+          null,
+          {
+            "interactive": true,
+            "className": "",
+            "stroke": true,
+            "color": "#03F",
+            "weight": 5,
+            "opacity": 0.5,
+            "fill": true,
+            "fillColor": "#03F",
+            "fillOpacity": 0.2
+          },
+          ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"],
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      {
+        "method": "addGeoJSON",
+        "args": [
+          [
+            {
+              "type": "Feature",
+              "properties": {
+                "popup": "Here are some markers!"
+              },
+              "geometry": {
+                "type": "MultiPoint",
+                "coordinates": [
+                  [10, 1],
+                  [9, 2],
+                  [8, 3],
+                  [7, 4],
+                  [6, 5],
+                  [5, 6],
+                  [4, 7],
+                  [3, 8],
+                  [2, 9],
+                  [1, 10]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "style": {
+                  "color": "red",
+                  "fillColor": "yellow"
+                },
+                "popup": "Here is a polygon, or perhaps a flower..."
+              },
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [36, 26],
+                    [33.6604444311898, 32.4278760968654],
+                    [27.7364817766693, 35.8480775301221],
+                    [21, 34.6602540378444],
+                    [16.6030737921409, 29.4202014332567],
+                    [16.6030737921409, 22.5797985667433],
+                    [21, 17.3397459621556],
+                    [27.7364817766693, 16.1519224698779],
+                    [33.6604444311898, 19.5721239031346],
+                    [36, 26]
+                  ]
+                ]
+              }
+            }
+          ],
+          null,
+          null,
+          {
+            "interactive": true,
+            "className": "",
+            "stroke": true,
+            "color": "#03F",
+            "weight": 5,
+            "opacity": 0.5,
+            "fill": true,
+            "fillColor": "#03F",
+            "fillOpacity": 0.2,
+            "smoothFactor": 1,
+            "noClip": false
+          }
+        ]
+      }
+    ],
+    "limits": {
+      "lat": [1, 26],
+      "lng": [1, 26]
+    }
+  },
+  "evals": [],
+  "jsHooks": []
+}</script>
+</div>
+
+<footer>
+<p><small>The "leaflet" R package is copyright &copy; 2014-2016 RStudio, Inc.<br/>
+The Leaflet JavaScript library is &copy; 2010–2016 <a href="http://agafonkin.com/en">Vladimir Agafonkin</a>, 2010–2011 <a href="http://cloudmade.com">CloudMade</a>.<br/>
+Maps &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors unless otherwise noted.
+</small></p>
+</footer>
+
+  </div>
+</div>
+
+<a href="https://github.com/rstudio/leaflet"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

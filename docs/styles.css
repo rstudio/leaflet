@@ -1,0 +1,89 @@
+.mainbody>p:first-child {
+  display: none;
+}
+p.intro {
+
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: Georgia;
+}
+
+.header-section-number:after {
+  content: '.';
+}
+
+footer {
+  margin-top: 60px;
+}
+
+#header {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 20px;
+    background: url("leaves.jpg") #FFF no-repeat;
+    background-size: contain;
+  }
+
+  div.leaf-separator.hide {
+    display: block !important;
+    text-align: center;
+    margin: 12px 0;
+  }
+
+  #TOC {
+    font-family: Georgia;
+    text-align: center;
+  }
+  #TOC a {
+    color: inherit;
+  }
+
+  #TOC ul {
+    list-style: none;
+    padding-left: 0;
+    font-size: 1.3em;
+  }
+  #TOC ul ul {
+    font-size: 0.8em;
+  }
+  #TOC .toc-section-number:after {
+    content: '.';
+  }
+  #TOC>ul>li {
+    padding-bottom: 12px;
+  }
+  #TOC>ul>li:last-child {
+    padding-bottom: 0;
+  }
+
+  div.container-fluid.main-container {
+    margin-top: 180px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 700px;
+  }
+
+  .main-container h1.main-headline {
+    font-size: 72px;
+    text-align: center;
+    border-top: none;
+    margin-bottom: 9px;
+  }
+  p.intro {
+    font-family: Georgia;
+    margin-top: 0;
+    padding-bottom: 30px;
+    margin: 0 auto;
+    max-width: 500px;
+    text-align: center;
+  }
+
+  .section.level1 {
+    border-top: 1px solid #CCC;
+    margin-top: 60px;
+  }
+}

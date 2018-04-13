@@ -27,10 +27,9 @@ smaller step sizes and more points in the polygon. The default value is 2.}
 See \url{https://github.com/joergdietrich/Leaflet.Terminator}
 }
 \examples{
-library(leaflet)
-
 leaf <- leaflet() \%>\%
   addTiles() \%>\%
   addTerminator()
+leaf
 
 }

@@ -12,6 +12,7 @@ import LayerManager from "./layer-manager";
 import defaultMethods from "./methods";
 
 import "./fixup-default-icon";
+import "./fixup-default-tooltip";
 
 import DataFrame from "./dataframe";
 import ClusterLayerStore from "./cluster-layer-store";
@@ -201,6 +202,14 @@ HTMLWidgets.widget({
         if (data.fitBounds) {
           explicitView = true;
           methods.fitBounds.apply(map, data.fitBounds);
+        }
+        if (data.flyTo) {
+          explicitView = true;
+          map.flyTo.apply(map, data.flyTo);
+        }
+        if (data.flyToBounds) {
+          explicitView = true;
+          methods.flyToBounds.apply(map, data.flyToBounds);
         }
         if(data.options.center) {
           explicitView = true;

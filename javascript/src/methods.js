@@ -44,11 +44,22 @@ methods.setView = function(center, zoom, options) {
   this.setView(center, zoom, options);
 };
 
-methods.fitBounds = function(lat1, lng1, lat2, lng2) {
+methods.fitBounds = function(lat1, lng1, lat2, lng2, options) {
   this.fitBounds([
     [lat1, lng1], [lat2, lng2]
-  ]);
+  ], options);
 };
+
+methods.flyTo = function(center, zoom, options) {
+  this.flyTo(center, zoom, options);
+};
+
+methods.flyToBounds = function(lat1, lng1, lat2, lng2, options) {
+  this.flyToBounds([
+    [lat1, lng1], [lat2, lng2]
+  ], options);
+};
+
 
 methods.setMaxBounds = function(lat1, lng1, lat2, lng2) {
   this.setMaxBounds([
@@ -165,18 +176,19 @@ function addMarkers(map, df, group, clusterOptions, clusterId, markerFunc) {
           let labelOptions = df.get(i, "labelOptions");
           if (label !== null) {
             if (labelOptions !== null) {
-              if(labelOptions.noHide) {
-                marker.bindLabel(label, labelOptions).showLabel();
+              if(labelOptions.permanent) {
+                marker.bindTooltip(label, labelOptions).openTooltip();
               } else {
-                marker.bindLabel(label, labelOptions);
+                marker.bindTooltip(label, labelOptions);
               }
             } else {
-              marker.bindLabel(label);
+              marker.bindTooltip(label);
             }
           }
           marker.on("click", mouseHandler(this.id, thisId, thisGroup, "marker_click", extraInfo), this);
           marker.on("mouseover", mouseHandler(this.id, thisId, thisGroup, "marker_mouseover", extraInfo), this);
           marker.on("mouseout", mouseHandler(this.id, thisId, thisGroup, "marker_mouseout", extraInfo), this);
+          marker.on("dragend", mouseHandler(this.id, thisId, thisGroup, "marker_dragend", extraInfo), this);
         }).call(this);
       }
     }
@@ -329,14 +341,14 @@ function addLayers(map, category, df, layerFunc) {
             }
           }
         }
-        if (layer.bindLabel) {
+        if (layer.bindTooltip) {
           let label = df.get(i, "label");
           let labelOptions = df.get(i, "labelOptions");
           if (label !== null) {
             if (labelOptions !== null) {
-              layer.bindLabel(label, labelOptions);
+              layer.bindTooltip(label, labelOptions);
             } else {
-              layer.bindLabel(label);
+              layer.bindTooltip(label);
             }
           }
         }
@@ -448,8 +460,8 @@ methods.addPolylines = function(polygons, layerId, group, options, popup, popupO
     addLayers(this, "shape", df, function(df, i) {
       let shapes = df.get(i, "shapes");
       shapes = shapes.map(shape => HTMLWidgets.dataframeToD3(shape[0]));
-      if(shapes.length>1) {
-        return L.multiPolyline(shapes, df.get(i));
+      if(shapes.length > 1) {
+        return L.polyline(shapes, df.get(i));
       } else {
         return L.polyline(shapes[0], df.get(i));
       }
@@ -727,7 +739,7 @@ methods.addLegend = function(options) {
         rightDiv = $("<div/>").css("float", "left");
       leftDiv.append(gradSpan);
       $(div).append(leftDiv).append(rightDiv)
-        .append($("<br clear=\"both\"/>"));
+        .append($("<br>"));
 
       // Have to attach the div to the body at this early point, so that the
       // svg text getComputedTextLength() actually works, below.
@@ -776,19 +788,21 @@ methods.addLegend = function(options) {
         height: totalHeight + vMargin*2 + "px"
       });
 
-      if (options.na_color) {
-        $(div).append("<div><i style=\"background:" + options.na_color +
+      if (options.na_color && ($.inArray(options.na_label, labels)<0) ) {
+        $(div).append("<div><i style=\"" +
+                      "background:" + options.na_color +
                       ";opacity:" + options.opacity +
-                      ";\"></i> " + options.na_label + "</div>");
+                      ";margin-right:" + labelPadding + "px" +
+                      ";\"></i>" + options.na_label + "</div>");
       }
     } else {
-      if (options.na_color) {
+      if (options.na_color && ($.inArray(options.na_label, labels)<0) ) {
         colors.push(options.na_color);
         labels.push(options.na_label);
       }
       for (let i = 0; i < colors.length; i++) {
         legendHTML += "<i style=\"background:" + colors[i] + ";opacity:" +
-                      options.opacity + "\"></i> " + labels[i] + "<br clear='both'/>";
+                      options.opacity + "\"></i> " + labels[i] + "<br>";
       }
       div.innerHTML = legendHTML;
     }
@@ -801,7 +815,7 @@ methods.addLegend = function(options) {
   if(options.group) {
     // Auto generate a layerID if not provided
     if(!options.layerId) {
-      options.layerId = L.stamp(legend);
+      options.layerId = L.Util.stamp(legend);
     }
 
     let map = this;
@@ -860,13 +874,13 @@ methods.addLayersControl = function(baseGroups, overlayGroups, options) {
     }
   });
 
-  let layersControl = L.control.layers(base, overlay, options).addTo(this);
-  this.currentLayersControl = layersControl;
+  this.currentLayersControl = L.control.layers(base, overlay, options);
+  this.addControl(this.currentLayersControl);
 };
 
 methods.removeLayersControl = function() {
   if (this.currentLayersControl) {
-    this.currentLayersControl.removeFrom(this);
+    this.removeControl(this.currentLayersControl);
     this.currentLayersControl = null;
   }
 };
@@ -1031,11 +1045,15 @@ methods.addRasterImage = function(uri, bounds, opacity, attribution, layerId, gr
   let imgDataCallbacks = [];
 
   // Consumers of imgData, w, and h can call this to be notified when data
-  // is available. Unlike most async/promise-based APIs, the callback will
-  // be invoked immediately/synchronously if the data is already available.
+  // is available.
   function getImageData(callback) {
     if (imgData != null) {
-      callback(imgData, w, h, imgDataMipMapper);
+      // Must not invoke the callback immediately; it's too confusing and
+      // fragile to have a function invoke the callback *either* immediately
+      // or in the future. Better to be consistent here.
+      setTimeout(() => {
+        callback(imgData, w, h, imgDataMipMapper);
+      }, 0);
     } else {
       imgDataCallbacks.push(callback);
     }
@@ -1072,14 +1090,26 @@ methods.addRasterImage = function(uri, bounds, opacity, attribution, layerId, gr
   };
   img.src = uri;
 
-  let canvasTiles = L.tileLayer.canvas({
+  let canvasTiles = L.gridLayer({
     opacity: opacity,
     attribution: attribution,
     detectRetina: true,
     async: true
   });
 
-  canvasTiles.drawTile = function(canvas, tilePoint, zoom) {
+  // NOTE: The done() function MUST NOT be invoked until after the current
+  // tick; done() looks in Leaflet's tile cache for the current tile, and
+  // since it's still being constructed, it won't be found.
+  canvasTiles.createTile = function(tilePoint, done) {
+    let zoom = tilePoint.z;
+    let canvas = L.DomUtil.create("canvas");
+    let error;
+
+    // setup tile width and height according to the options
+    var size = this.getTileSize();
+    canvas.width = size.x;
+    canvas.height = size.y;
+
     getImageData(function(imgData, w, h, mipmapper) {
       try {
         // The Context2D we'll being drawing onto. It's always 256x256.
@@ -1208,10 +1238,13 @@ methods.addRasterImage = function(uri, bounds, opacity, attribution, layerId, gr
             }
           }
         }
+      } catch(e) {
+        error = e;
       } finally {
-        canvasTiles.tileDrawn(canvas);
+        done(error, canvas);
       }
     });
+    return canvas;
   };
 
   this.layerManager.addLayer(canvasTiles, "image", layerId, group);
@@ -1228,16 +1261,16 @@ methods.clearImages = function() {
 methods.addMeasure = function(options){
   // if a measureControl already exists, then remove it and
   //   replace with a new one
-  if(this.measureControl) {
-    this.measureControl.removeFrom( this );
-  }
+  methods.removeMeasure.call(this);
   this.measureControl = L.control.measure(options);
-  this.measureControl.addTo(this);
+  this.addControl(this.measureControl);
 };
 
 methods.removeMeasure = function() {
-  this.measureControl.removeFrom( this );
-  delete this.measureControl;
+  if(this.measureControl) {
+    this.removeControl(this.measureControl);
+    this.measureControl = null;
+  }
 };
 
 methods.addSelect = function(ctGroup) {

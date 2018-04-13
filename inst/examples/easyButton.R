@@ -5,23 +5,23 @@ library(leaflet)
 #' second to find your self
 leaflet() %>% addTiles() %>%
   addEasyButton(easyButton(
-    icon='fa-globe', title='Zoom to Level 1',
-    onClick=JS("function(btn, map){ map.setZoom(1);}"))) %>%
+    icon = "fa-globe", title = "Zoom to Level 1",
+    onClick = JS("function(btn, map){ map.setZoom(1);}"))) %>%
   addEasyButton(easyButton(
-    icon='fa-crosshairs', title='Locate Me',
-    onClick=JS("function(btn, map){ map.locate({setView: true});}")))
+    icon = "fa-crosshairs", title = "Locate Me",
+    onClick = JS("function(btn, map){ map.locate({setView: true});}")))
 
 #' <br/><br/>Toggle Button to freeze/unfreeze clustering at a zoom level.
 leaflet() %>% addTiles() %>%
-  addMarkers(data=quakes,
+  addMarkers(data = quakes,
              clusterOptions = markerClusterOptions(),
-             clusterId = 'quakesCluster') %>%
+             clusterId = "quakesCluster") %>%
   addEasyButton(easyButton(
     states = list(
       easyButtonState(
-        stateName='unfrozen-markers',
-        icon='ion-toggle',
-        title='Freeze Clusters',
+        stateName = "unfrozen-markers",
+        icon = "ion-toggle",
+        title = "Freeze Clusters",
         onClick = JS("
           function(btn, map) {
             var clusterManager =
@@ -32,9 +32,9 @@ leaflet() %>% addTiles() %>%
           }")
       ),
       easyButtonState(
-        stateName='frozen-markers',
-        icon='ion-toggle-filled',
-        title='UnFreeze Clusters',
+        stateName = "frozen-markers",
+        icon = "ion-toggle-filled",
+        title = "UnFreeze Clusters",
         onClick = JS("
           function(btn, map) {
             var clusterManager =
@@ -53,9 +53,9 @@ leaflet() %>% addTiles() %>%
 leaflet() %>% addTiles() %>%
   addEasyButtonBar(
     easyButton(
-      icon='fa-globe', title='Zoom to Level 1',
-      onClick=JS("function(btn, map){ map.setZoom(1);}")),
+      icon = "fa-globe", title = "Zoom to Level 1",
+      onClick = JS("function(btn, map){ map.setZoom(1);}")),
     easyButton(
-      icon='fa-crosshairs', title='Locate Me',
-      onClick=JS("function(btn, map){ map.locate({setView: true});}"))
+      icon = "fa-crosshairs", title = "Locate Me",
+      onClick = JS("function(btn, map){ map.locate({setView: true});}"))
   )

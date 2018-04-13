@@ -39,7 +39,7 @@ export default class LayerManager {
     let hasId = typeof(layerId) === "string";
     let grouped = typeof(group) === "string";
 
-    let stamp = L.Util.stamp(layer);
+    let stamp = L.Util.stamp(layer) + "";
 
     // This will be the default layer group to add the layer to.
     // We may overwrite this let before using it (i.e. if a group is assigned).

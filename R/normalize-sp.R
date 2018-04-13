@@ -59,7 +59,7 @@ polygonData.SpatialLinesDataFrame <- function(obj) {
     polygonData(sp::SpatialLines(obj@lines))
   } else {
     warning("Empty SpatialLinesDataFrame object passed and will be skipped")
-    structure(list(), bbox=obj@bbox)
+    structure(list(), bbox = obj@bbox)
   }
 }
 

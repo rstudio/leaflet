@@ -24,10 +24,11 @@ addControl(map, html, position = c("topleft", "topright", "bottomleft",
 addTiles(map,
   urlTemplate = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
   attribution = NULL, layerId = NULL, group = NULL,
-  options = tileOptions())
+  options = tileOptions(), data = getMapData(map))
 
 addWMSTiles(map, baseUrl, layerId = NULL, group = NULL,
-  options = WMSTileOptions(), attribution = NULL, layers = "")
+  options = WMSTileOptions(), attribution = NULL, layers = "",
+  data = getMapData(map))
 
 addPopups(map, lng = NULL, lat = NULL, popup, layerId = NULL,
   group = NULL, options = popupOptions(), data = getMapData(map))
@@ -85,7 +86,8 @@ addPolygons(map, lng = NULL, lat = NULL, layerId = NULL, group = NULL,
 addGeoJSON(map, geojson, layerId = NULL, group = NULL, stroke = TRUE,
   color = "#03F", weight = 5, opacity = 0.5, fill = TRUE,
   fillColor = color, fillOpacity = 0.2, dashArray = NULL,
-  smoothFactor = 1, noClip = FALSE, options = pathOptions())
+  smoothFactor = 1, noClip = FALSE, options = pathOptions(),
+  data = getMapData(map))
 
 addTopoJSON(map, topojson, layerId = NULL, group = NULL, stroke = TRUE,
   color = "#03F", weight = 5, opacity = 0.5, fill = TRUE,
@@ -98,8 +100,8 @@ addTopoJSON(map, topojson, layerId = NULL, group = NULL, stroke = TRUE,
 \item{html}{the content of the control. May be provided as string or as HTML
 generated with Shiny/htmltools tags}
 
-\item{position}{position of control: 'topleft', 'topright', 'bottomleft', or
-'bottomright'}
+\item{position}{position of control: "topleft", "topright", "bottomleft", or
+"bottomright"}
 
 \item{layerId}{the layer id}
 
@@ -140,7 +142,7 @@ the latitude column from \code{data})}
 recommended to escape the text using \code{\link[htmltools]{htmlEscape}()}}
 
 \item{icon}{the icon(s) for markers; an icon is represented by an R list of
-the form \code{list(iconUrl = '?', iconSize = c(x, y))}, and you can use
+the form \code{list(iconUrl = "?", iconSize = c(x, y))}, and you can use
 \code{\link{icons}()} to create multiple icons; note when you use an R list
 that contains images as local files, these local image files will be base64
 encoded into the HTML page so the icon images will still be available even
@@ -244,7 +246,7 @@ Options to highlight shapes (polylines/polygons/circles/rectangles)
 
 \references{
 The Leaflet API documentation:
-  \url{http://leafletjs.com/reference.html}
+  \url{http://leafletjs.com/reference-1.3.1.html}
 }
 \seealso{
 \code{\link{tileOptions}}, \code{\link{WMSTileOptions}},

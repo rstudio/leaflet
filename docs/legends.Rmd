@@ -1,0 +1,53 @@
+---
+pagetitle: Leaflet for R - Legends
+---
+
+## Legends
+
+The Leaflet package includes convenience functions for creating color legends. In this section, we will build on the example from the [Colors](colors.html) page.
+
+```{r echo=FALSE,results='hide',message=FALSE,warning=FALSE}
+library(rgdal)
+```
+```{r}
+library(rgdal)
+
+# From http://data.okfn.org/data/datasets/geo-boundaries-world-110m
+countries <- readOGR("json/countries.geojson", "OGRGeoJSON")
+map <- leaflet(countries) %>% addTiles()
+```
+
+Use the `addLegend` function to add a legend. The easiest way to use `addLegend` is to provide `pal` (a palette function, as generated from `colorNumeric` et al.) and `values`, and let it calculate the colors and labels for you.
+
+In most cases you will simply be separating the function and argument you passed into `addPolygons(color=...)`, as in this example:
+
+```{r fig.height=2.75}
+pal <- colorNumeric(
+  palette = "YlGnBu",
+  domain = countries$gdp_md_est
+)
+map %>%
+  addPolygons(stroke = FALSE, smoothFactor = 0.2, fillOpacity = 1,
+    color = ~pal(gdp_md_est)
+  ) %>%
+  addLegend("bottomright", pal = pal, values = ~gdp_md_est,
+    title = "Est. GDP (2010)",
+    labFormat = labelFormat(prefix = "$"),
+    opacity = 1
+  )
+```
+
+The `addLegend()` function is aware of the different types of palette functions, and will create an appropriate default rendering for each type. For example, contrast the legend created for the `colorNumeric`-based palette above with the `colorQuantile`-based palette below. The latter shows probability ranges, with a value range tooltip.
+
+```{r}
+qpal <- colorQuantile("RdYlBu", countries$gdp_md_est, n = 5)
+map %>%
+  addPolygons(stroke = FALSE, smoothFactor = 0.2, fillOpacity = 1,
+    color = ~qpal(gdp_md_est)
+  ) %>%
+  addLegend(pal = qpal, values = ~gdp_md_est, opacity = 1)
+```
+
+`addLegend()` has several other parameters that allows you to customize the legend in various ways. Rather than using `pal` and `values`, you can explicitly pass in `colors` and `labels`. You can change the title and color opacity.
+
+You can also conveniently customize the label appearance by passing `labFormat=labelFormat()`. `labelFormat()` has parameters that customize the separator between ranges, the number of digits to render, and prefix/suffix for each label. If your label formatting needs extend beyond what `labelFormat()` can provide, you can also use a custom function as the `labFormat` argument; see the Details section in `?addLegend` for a description.

@@ -17,8 +17,8 @@ removeScaleBar(map)
 \arguments{
 \item{map}{the map to add the scale bar to}
 
-\item{position}{position of control: 'topleft', 'topright', 'bottomleft', or
-'bottomright'}
+\item{position}{position of control: "topleft", "topright", "bottomleft", or
+"bottomright"}
 
 \item{options}{a list of additional options, intended to be provided by
 a call to \code{scaleBarOptions}}
@@ -37,7 +37,7 @@ on \code{moveend}.}
 }
 \description{
 Uses Leaflet's built-in
-\href{http://leafletjs.com/reference.html#control-scale}{scale bar}
+\href{http://leafletjs.com/reference-1.3.1.html#control-scale}{scale bar}
 feature to add a scale bar.
 }
 \examples{

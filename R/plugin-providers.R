@@ -2,7 +2,7 @@ leafletProviderDependencies <- function() {
   list(
     htmltools::htmlDependency(
       "leaflet-providers",
-      "1.0.27",
+      "1.1.17",
       system.file("htmlwidgets/lib/leaflet-providers", package = "leaflet"),
       script = "leaflet-providers.js"
     ),
@@ -43,28 +43,26 @@ addProviderTiles <- function(
   options = providerTileOptions()
 ) {
   map$dependencies <- c(map$dependencies, leafletProviderDependencies())
-  invokeMethod(map, getMapData(map), 'addProviderTiles',
+  invokeMethod(map, getMapData(map), "addProviderTiles",
     provider, layerId, group, options)
 }
 
 #' @param
-#' errorTileUrl,noWrap,opacity,zIndex,unloadInvisibleTiles,updateWhenIdle,detectRetina,reuseTiles
+#' errorTileUrl,noWrap,opacity,zIndex,updateWhenIdle,detectRetina
 #' the tile layer options; see
-#' \url{http://leafletjs.com/reference.html#tilelayer}
+#' \url{http://leafletjs.com/reference-1.3.1.html#tilelayer}
 #' @param ... named parameters to add to the options
 #' @rdname addProviderTiles
 #' @export
-providerTileOptions <- function(errorTileUrl = '', noWrap = FALSE,
-  opacity = NULL, zIndex = NULL, unloadInvisibleTiles = NULL,
-  updateWhenIdle = NULL, detectRetina = FALSE, reuseTiles = FALSE, ...
+providerTileOptions <- function(errorTileUrl = "", noWrap = FALSE,
+  opacity = NULL, zIndex = NULL,
+  updateWhenIdle = NULL, detectRetina = FALSE, ...
 ) {
-  opts <- list(errorTileUrl = errorTileUrl, noWrap = noWrap,
-    zIndex = zIndex, unloadInvisibleTiles = unloadInvisibleTiles,
+  opts <- filterNULL(list(
+    errorTileUrl = errorTileUrl, noWrap = noWrap,
+    opacity = opacity,  zIndex = zIndex,
     updateWhenIdle = updateWhenIdle, detectRetina = detectRetina,
-    reuseTiles = reuseTiles, ...)
-  # Don't include opacity=NULL--it overrides the provider's default opacity
-  if (!is.null(opacity))
-    opts$opacity <- opacity
+    ...))
   opts
 }
 
@@ -83,5 +81,3 @@ providerTileOptions <- function(errorTileUrl = '', noWrap = FALSE,
 #' @format A list of lists (JSON)
 #' @source \url{https://github.com/leaflet-extras/leaflet-providers/blob/master/leaflet-providers.js}
 "providers.details"
-
-

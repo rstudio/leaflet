@@ -7,3 +7,7 @@ inst/htmlwidgets/sources
 inst/examples/rsconnect
 inst/examples/*.html
 R/tags
+revdep/checks.noindex
+revdep/library.noindex
+revdep/data.sqlite
+viztest-*

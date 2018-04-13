@@ -2,13 +2,13 @@
 # which columns represent latitude and longitude.
 guessLatLongCols <- function(names, stopOnFailure = TRUE) {
 
-  lats = names[grep("^(lat|latitude)$", names, ignore.case = TRUE)]
-  lngs = names[grep("^(lon|lng|long|longitude)$", names, ignore.case = TRUE)]
+  lats <- names[grep("^(lat|latitude)$", names, ignore.case = TRUE)]
+  lngs <- names[grep("^(lon|lng|long|longitude)$", names, ignore.case = TRUE)]
 
   if (length(lats) == 1 && length(lngs) == 1) {
     if (length(names) > 2) {
-      message("Assuming '", lngs, "' and '", lats,
-        "' are longitude and latitude, respectively")
+      message("Assuming \"", lngs, "\" and \"", lats,
+        "\" are longitude and latitude, respectively")
     }
     return(list(lng = lngs, lat = lats))
   }
@@ -22,7 +22,7 @@ guessLatLongCols <- function(names, stopOnFailure = TRUE) {
 }
 
 resolveFormula <- function(f, data) {
-  if (!inherits(f, 'formula')) return(f)
+  if (!inherits(f, "formula")) return(f)
   if (length(f) != 2L) stop("Unexpected two-sided formula: ", deparse(f))
 
   eval(f[[2]], metaData(data), environment(f))
@@ -54,13 +54,13 @@ derivePoints <- function(data, lng = NULL, lat = NULL,
       stop("Point data not found; please provide ", funcName,
         " with data and/or lng/lat arguments")
     }
-    pts = pointData(data)
-    if (is.null(lng)) lng = pts$lng
-    if (is.null(lat)) lat = pts$lat
+    pts <- pointData(data)
+    if (is.null(lng)) lng <- pts$lng
+    if (is.null(lat)) lat <- pts$lat
   }
 
-  lng = resolveFormula(lng, data)
-  lat = resolveFormula(lat, data)
+  lng <- resolveFormula(lng, data)
+  lat <- resolveFormula(lat, data)
 
   validateCoords(lng, lat, funcName)
 }
@@ -89,10 +89,10 @@ derivePolygons <- function(data, lng = NULL, lat = NULL,
     }
     return(polygonData(data))
   }
-  lng = resolveFormula(lng, data)
-  lat = resolveFormula(lat, data)
+  lng <- resolveFormula(lng, data)
+  lat <- resolveFormula(lat, data)
 
-  df <- validateCoords(lng, lat, funcName)
+  df <- validateCoords(lng, lat, funcName, mode = "polygon")
   polygonData(cbind(df$lng, df$lat))
 }
 
@@ -109,7 +109,7 @@ pointData.default <- function(obj) {
 
 #' @export
 pointData.data.frame <- function(obj) {
-  cols = guessLatLongCols(names(obj))
+  cols <- guessLatLongCols(names(obj))
   data.frame(
     lng = obj[[cols$lng]],
     lat = obj[[cols$lat]]
@@ -122,9 +122,9 @@ pointData.matrix <- function(obj) {
   data.frame(lng = obj[, 1], lat = obj[, 2])
 }
 
-# A simple polygon is a list(lng=numeric(), lat=numeric()). A compound polygon
+# A simple polygon is a list(lng = numeric(), lat = numeric()). A compound polygon
 # is a list of simple polygons. This function returns a list of compound
-# polygons, so list(list(list(lng=..., lat=...))). There is also a bbox
+# polygons, so list(list(list(lng = ..., lat = ...))). There is also a bbox
 # attribute attached that gives the bounding box, same as sp::bbox().
 polygonData <- function(obj) {
   UseMethod("polygonData")
@@ -148,7 +148,7 @@ polygonData.matrix <- function(obj) {
   # Split into polygons wherever there is a row of NA
   missing <- !stats::complete.cases(df)
   group <- cumsum(missing)
-  polys <- split(df[!missing, , drop = FALSE], group[!missing])
+  polys <- split(df[!missing, , drop = FALSE], group[!missing]) # nolint
 
   structure(
     lapply(unname(polys), function(x) list(list(x))),

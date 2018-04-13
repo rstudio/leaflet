@@ -5,14 +5,14 @@
 #' <br/>
 library(leaflet)
 
-m <- leaflet() %>% setView(0,0,1)
+m <- leaflet() %>% setView(0, 0, 1)
 
 # Take out ESRI provided tiles
 esri <- providers %>%
-  purrr::keep(~ grepl('^Esri',.))
+  purrr::keep(~ grepl("^Esri", .))
 
 esri %>%
-  purrr::walk(function(x) m <<- m %>% addProviderTiles(x,group=x))
+  purrr::walk(function(x) m <<- m %>% addProviderTiles(x, group = x))
 
 m %>%
   addLayersControl(
@@ -24,12 +24,12 @@ m %>%
 #' providers with options
 #' Change the accessToken with your mapbox token in options below
 #' The one here may not work always
-mapbox.tileIds <- list(Satellite='mapbox.satellite',
-                       Terrian='mapbox.mapbox-terrain-v2',
-                       Comic='bhaskarvk.1cm89o4e',
-                       'High Contrast'='bhaskarvk.1biainl5')
+mapbox.tileIds <- list(Satellite = "mapbox.satellite",
+                       Terrian = "mapbox.mapbox-terrain-v2",
+                       Comic = "bhaskarvk.1cm89o4e",
+                       "High Contrast" = "bhaskarvk.1biainl5")
 
-m <- leaflet() %>% setView(0,0,1)
+m <- leaflet() %>% setView(0, 0, 1)
 
 names(mapbox.tileIds) %>%
   purrr::walk(function(x) {
@@ -38,8 +38,8 @@ names(mapbox.tileIds) %>%
                        options = providerTileOptions(
                          detectRetina = TRUE,
                          # id and accessToken are Mapbox specific options
-                         id = mapbox.tileIds[[x]] ,
-                         accessToken = Sys.getenv('MAPBOX_ACCESS_TOKEN')
+                         id = mapbox.tileIds[[x]],
+                         accessToken = Sys.getenv("MAPBOX_ACCESS_TOKEN")
                        ))
                  })
 

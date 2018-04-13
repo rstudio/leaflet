@@ -8,7 +8,8 @@
 \usage{
 addLayersControl(map, baseGroups = character(0),
   overlayGroups = character(0), position = c("topright", "bottomright",
-  "bottomleft", "topleft"), options = layersControlOptions())
+  "bottomleft", "topleft"), options = layersControlOptions(),
+  data = getMapData(map))
 
 layersControlOptions(collapsed = TRUE, autoZIndex = TRUE, ...)
 
@@ -24,11 +25,15 @@ most commonly used for mostly-opaque tile layers.}
 \item{overlayGroups}{character vector where each element is the name of a
 group. The user can turn each overlay group on or off independently.}
 
-\item{position}{position of control: 'topleft', 'topright', 'bottomleft', or
-'bottomright'}
+\item{position}{position of control: "topleft", "topright", "bottomleft", or
+"bottomright"}
 
 \item{options}{a list of additional options, intended to be provided by
 a call to \code{layersControlOptions}}
+
+\item{data}{the data object from which the argument values are derived; by
+default, it is the \code{data} object provided to \code{leaflet()}
+initially, but can be overridden}
 
 \item{collapsed}{if \code{TRUE} (the default), the layers control will be
 rendered as an icon that expands when hovered over. Set to \code{FALSE}
@@ -41,7 +46,7 @@ the z-order of its various groups as overlays are switched on and off.}
 }
 \description{
 Uses Leaflet's built-in
-\href{http://leafletjs.com/reference.html#control-layers}{layers control}
+\href{http://leafletjs.com/reference-1.3.1.html#control-layers}{layers control}
 feature to allow users to choose one of several base layers, and to choose
 any number of overlay layers to view.
 }

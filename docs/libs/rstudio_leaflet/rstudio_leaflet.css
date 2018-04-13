@@ -1,0 +1,20 @@
+.leaflet-tooltip.leaflet-tooltip-text-only,
+.leaflet-tooltip.leaflet-tooltip-text-only:before,
+.leaflet-tooltip.leaflet-tooltip-text-only:after {
+  background: none;
+  border: none;
+  box-shadow: none;
+}
+
+.leaflet-tooltip.leaflet-tooltip-text-only.leaflet-tooltip-left {
+  margin-left: 5px;
+}
+
+.leaflet-tooltip.leaflet-tooltip-text-only.leaflet-tooltip-right {
+  margin-left: -5px;
+}
+
+.leaflet-tooltip:after {
+  border-right: 6px solid transparent;
+  /* right: -16px; */
+}
