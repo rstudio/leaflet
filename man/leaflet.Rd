@@ -10,7 +10,7 @@ leaflet(data = NULL, width = NULL, height = NULL, padding = 0,
   options = leafletOptions(), elementId = NULL)
 
 leafletOptions(minZoom = NULL, maxZoom = NULL, crs = leafletCRS(),
-  worldCopyJump = NULL, preferCanvas = FALSE, ...)
+  worldCopyJump = NULL, preferCanvas = NULL, ...)
 
 leafletCRS(crsClass = "L.CRS.EPSG3857", code = NULL, proj4def = NULL,
   projectedBounds = NULL, origin = NULL, transformation = NULL,
@@ -44,7 +44,7 @@ spatial data frames from the \pkg{sf} package.}
 
 \item{worldCopyJump}{With this option enabled, the map tracks when you pan to another "copy" of the world and seamlessly jumps to the original one so that all overlays like markers and vector layers are still visible.}
 
-\item{preferCanvas}{Whether leaflet.js Paths should be rendered on a Canvas renderer. By default, all Paths are rendered in a SVG renderer.}
+\item{preferCanvas}{Whether leaflet.js Paths should be rendered on a Canvas renderer.}
 
 \item{...}{other options used for leaflet.js map creation.}
 

@@ -64,7 +64,7 @@ BUG FIXES AND FEATURES
 
 * Added `data` parameter to remaining `addXXX()` methods, including addLegend. (f273edd, #491, #485)
 
-* Added `preferCanvas = FALSE` argument to `leafletOptions()` (#521)
+* Added `preferCanvas` argument to `leafletOptions()` (#521)
 
 
 leaflet 1.1.0
