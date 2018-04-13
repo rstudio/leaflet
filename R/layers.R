@@ -251,6 +251,20 @@ addRasterImage <- function(
 ) {
   stopifnot(inherits(x, "RasterLayer"))
 
+  options$detectRetina <- TRUE
+  # options$async <- TRUE removed in 1.x
+
+  # if opacity is set
+  if (!missing(opacity)) {
+    warning("argument 'opacity' is deprecated. Use `options = tileOptions(opacity = ", as.character(opacity), ")` instead.")
+    options$opacity <- opacity
+  }
+  # if attribution is set
+  if (!missing(attribution)) {
+    warning("argument 'attribution' is deprecated. Use `options = tileOptions(attribution = ", as.character(attribution), ")` instead.")
+    options$attribution <- attribution
+  }
+
   raster_is_factor <- raster::is.factor(x)
   method <- match.arg(method)
   if (method == "auto") {
@@ -307,19 +321,6 @@ addRasterImage <- function(
     list(raster::ymax(bounds), raster::xmin(bounds)),
     list(raster::ymin(bounds), raster::xmax(bounds))
   )
-
-  options$detectRetina = TRUE
-  options$async = TRUE
-  # if attribution is set
-  if (!missing(attribution)) {
-    warning("argument 'attribution' is deprecated. Use options= instead.")
-    options$attribution <- attribution
-  }
-  # if opacity is set
-  if (!missing(opacity)) {
-    warning("argument 'opacity' is deprecated. Use options= instead.")
-    options$opacity <- opacity
-  }
 
   invokeMethod(map, data, "addRasterImage", uri, latlng, layerId, group, options) %>%
     expandLimits(
