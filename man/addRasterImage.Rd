@@ -22,11 +22,9 @@ projectRasterForLeaflet(x, method)
 to use to color the raster values (hint: if providing a function, set
 \code{na.color} to \code{"#00000000"} to make \code{NA} areas transparent)}
 
-\item{opacity}{the base opacity of the raster, expressed from 0 to 1
-(deprecated, if set will overwrite \code{options})}
+\item{opacity}{Deprecated. If set, will overwrite \code{options$opacity}).}
 
-\item{attribution}{the HTML string to show as the attribution for this layer
-(deprecated, if set will overwrite \code{options})}
+\item{attribution}{Deprecated. If set, will overwrite \code{options$attribution}.}
 
 \item{layerId}{the layer id}
 
@@ -47,8 +45,7 @@ Ignored if \code{project = FALSE}. See \code{\link{projectRaster}} for details.}
 \item{maxBytes}{the maximum number of bytes to allow for the projected image
 (before base64 encoding); defaults to 4MB.}
 
-\item{options}{a list of extra options for tile layers, popups, paths
-(circles, rectangles, polygons, ...), or other map elements}
+\item{options}{a list of extra options for tile layers.  See \code{\link{tileOptions}}.}
 
 \item{data}{the data object from which the argument values are derived; by
 default, it is the \code{data} object provided to \code{leaflet()}

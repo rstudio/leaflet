@@ -202,10 +202,8 @@ epsg3857 <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y
 #' @param colors the color palette (see \code{\link{colorNumeric}}) or function
 #'   to use to color the raster values (hint: if providing a function, set
 #'   \code{na.color} to \code{"#00000000"} to make \code{NA} areas transparent)
-#' @param opacity the base opacity of the raster, expressed from 0 to 1
-#'   (deprecated, if set will overwrite \code{options})
-#' @param attribution the HTML string to show as the attribution for this layer
-#'   (deprecated, if set will overwrite \code{options})
+#' @param opacity Deprecated. If set, will overwrite \code{options$opacity}).
+#' @param attribution Deprecated. If set, will overwrite \code{options$attribution}. 
 #' @param layerId the layer id
 #' @param group the name of the group this raster image should belong to (see
 #'   the same parameter under \code{\link{addTiles}})
@@ -220,8 +218,7 @@ epsg3857 <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y
 #'   Ignored if \code{project = FALSE}. See \code{\link{projectRaster}} for details.
 #' @param maxBytes the maximum number of bytes to allow for the projected image
 #'   (before base64 encoding); defaults to 4MB.
-#' @param options a list of extra options for tile layers, popups, paths
-#'   (circles, rectangles, polygons, ...), or other map elements
+#' @param options a list of extra options for tile layers.  See \code{\link{tileOptions}}.
 #' @seealso \code{\link{tileOptions}}
 #' @template data-getMapData
 #'
@@ -239,8 +236,8 @@ addRasterImage <- function(
   map,
   x,
   colors = if (raster::is.factor(x)) "Set1" else "Spectral",
-  opacity = NULL,
-  attribution = NULL,
+  opacity = NULL, # deprecated
+  attribution = NULL, # deprecated
   layerId = NULL,
   group = NULL,
   project = TRUE,
@@ -573,7 +570,7 @@ safeLabel <- function(label, data) {
 #' @param textsize Change the text size of a single tooltip
 #' @param textOnly Display only the text, no regular surrounding box.
 #' @param style list of css style to be added to the tooltip
-#' @param zoomAnimation deprecated. See \url{https://github.com/Leaflet/Leaflet/blob/master/CHANGELOG.md#api-changes-5}
+#' @param zoomAnimation Deprecated. See \url{https://github.com/Leaflet/Leaflet/blob/master/CHANGELOG.md#api-changes-5}
 #' @param sticky If true, the tooltip will follow the mouse instead of being fixed at the feature center. Default value is \code{TRUE} (different from leaflet.js \code{FALSE}); see \url{http://leafletjs.com/reference-1.3.1.html#tooltip-sticky}
 #' @describeIn map-options Options for labels
 #' @export
@@ -895,7 +892,7 @@ b64EncodePackedIcons <- function(packedIcons) {
 }
 
 #' @param interactive whether the element emits mouse events
-#' @param clickable DEPRECATED! Use the \code{interactive} option.
+#' @param clickable Deprecated. Use the \code{interactive} option.
 #' @param
 #'   draggable,keyboard,title,alt,zIndexOffset,riseOnHover,riseOffset
 #'   marker options; see \url{http://leafletjs.com/reference-1.3.1.html#marker-option}
@@ -1367,5 +1364,5 @@ removeLayersControl <- function(map) {
 
 
 zoomAnimationWarning <- function() {
-  warning("zoomAnimation has been deprecated by Leaflet.js. See https://github.com/Leaflet/Leaflet/blob/master/CHANGELOG.md#api-changes-5\nignoring 'zoomAnimation' parameter")
+  warning("zoomAnimation has been deprecated by Leaflet.js. See https://github.com/Leaflet/Leaflet/blob/master/CHANGELOG.md#api-changes-5\nignoring 'zoomAnimation' argument")
 }

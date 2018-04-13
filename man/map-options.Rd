@@ -62,13 +62,13 @@ transparency}
 
 \item{maxWidth, minWidth, maxHeight, autoPan, keepInView, closeButton, closeOnClick}{popup options; see \url{http://leafletjs.com/reference-1.3.1.html#popup-option}}
 
-\item{zoomAnimation}{deprecated. See \url{https://github.com/Leaflet/Leaflet/blob/master/CHANGELOG.md#api-changes-5}}
+\item{zoomAnimation}{Deprecated. See \url{https://github.com/Leaflet/Leaflet/blob/master/CHANGELOG.md#api-changes-5}}
 
 \item{className}{a CSS class name set on an element}
 
 \item{interactive}{whether the element emits mouse events}
 
-\item{clickable}{DEPRECATED! Use the \code{interactive} option.}
+\item{clickable}{Deprecated. Use the \code{interactive} option.}
 
 \item{noHide, direction, offset, permanent}{label options; see \url{http://leafletjs.com/reference-1.3.1.html#tooltip-option}}
 
