@@ -119,15 +119,17 @@ mapOptions <- function(map, zoomToLimits = c("always", "first", "never")) {
 #' @param  crs Coordinate Reference System to use. Don't change this if you're not sure what it means.
 #' @seealso \code{\link{leafletCRS}} for creating a custom CRS.
 #' @param  worldCopyJump With this option enabled, the map tracks when you pan to another "copy" of the world and seamlessly jumps to the original one so that all overlays like markers and vector layers are still visible.
-#' @param ... other options.
+#' @param preferCanvas Whether leaflet.js Paths should be rendered on a Canvas renderer. By default, all Paths are rendered in a SVG renderer.
+#' @param ... other options used for leaflet.js map creation.
 #' @describeIn leaflet Options for map creation
-#' @seealso \url{http://leafletjs.com/reference-1.3.1.html#map-option} for details.
+#' @seealso See \url{http://leafletjs.com/reference-1.3.1.html#map-option} for details and more options.
 #' @export
 leafletOptions <- function(
   minZoom = NULL,
   maxZoom = NULL,
   crs = leafletCRS(),
   worldCopyJump = NULL,
+  preferCanvas = FALSE,
   ...) {
   filterNULL(
     list(
@@ -135,6 +137,7 @@ leafletOptions <- function(
       maxZoom = maxZoom,
       crs = crs,
       worldCopyJump = worldCopyJump,
+      preferCanvas = preferCanvas,
       ...)
   )
 }
