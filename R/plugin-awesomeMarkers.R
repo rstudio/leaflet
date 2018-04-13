@@ -260,6 +260,7 @@ addAwesomeMarkers <- function(
   clusterId = NULL,
   data = getMapData(map)
 ) {
+  if (missing(labelOptions)) labelOptions <- labelOptions()
   map$dependencies <- c(map$dependencies, leafletAwesomeMarkersDependencies())
 
   if (!is.null(icon)) {

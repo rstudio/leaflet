@@ -21,12 +21,12 @@ WMSTileOptions(styles = "", format = "image/jpeg", transparent = FALSE,
 
 popupOptions(maxWidth = 300, minWidth = 50, maxHeight = NULL,
   autoPan = TRUE, keepInView = FALSE, closeButton = TRUE,
-  zoomAnimation = TRUE, closeOnClick = NULL, className = "", ...)
+  zoomAnimation = NULL, closeOnClick = NULL, className = "", ...)
 
 labelOptions(interactive = FALSE, clickable = NULL, noHide = NULL,
   permanent = FALSE, className = "", direction = "auto", offset = c(0,
   0), opacity = 1, textsize = "10px", textOnly = FALSE, style = NULL,
-  zoomAnimation = TRUE, ...)
+  zoomAnimation = NULL, sticky = TRUE, ...)
 
 markerOptions(interactive = TRUE, clickable = NULL, draggable = FALSE,
   keyboard = TRUE, title = "", alt = "", zIndexOffset = 0,
@@ -44,6 +44,8 @@ pathOptions(lineCap = NULL, lineJoin = NULL, clickable = NULL,
 \item{minZoom, maxZoom, maxNativeZoom, tileSize, subdomains, errorTileUrl, tms, noWrap, zoomOffset, zoomReverse, zIndex, unloadInvisibleTiles, updateWhenIdle, detectRetina}{the tile layer options; see
 \url{http://leafletjs.com/reference-1.3.1.html#tilelayer}}
 
+\item{opacity}{Tooltip container opacity. Ranges from 0 to 1. Default value is \code{1} (different from leaflet.js \code{0.9}); see \url{http://leafletjs.com/reference-1.3.1.html#tooltip-opacity}}
+
 \item{...}{extra options passed to underlying Javascript object constructor.}
 
 \item{styles}{comma-separated list of WMS styles}
@@ -58,7 +60,9 @@ transparency}
 
 \item{crs}{Coordinate Reference System to use for the WMS requests, defaults.}
 
-\item{maxWidth, minWidth, maxHeight, autoPan, keepInView, closeButton, zoomAnimation, closeOnClick}{popup options; see \url{http://leafletjs.com/reference-1.3.1.html#popup-option}}
+\item{maxWidth, minWidth, maxHeight, autoPan, keepInView, closeButton, closeOnClick}{popup options; see \url{http://leafletjs.com/reference-1.3.1.html#popup-option}}
+
+\item{zoomAnimation}{deprecated. See \url{https://github.com/Leaflet/Leaflet/blob/master/CHANGELOG.md#api-changes-5}}
 
 \item{className}{a CSS class name set on an element}
 
@@ -66,9 +70,17 @@ transparency}
 
 \item{clickable}{DEPRECATED! Use the \code{interactive} option.}
 
-\item{noHide, direction, offset, textsize, textOnly, style, permanent}{label options; see \url{http://leafletjs.com/reference-1.3.1.html#tooltip-option}}
+\item{noHide, direction, offset, permanent}{label options; see \url{http://leafletjs.com/reference-1.3.1.html#tooltip-option}}
 
-\item{draggable, keyboard, title, alt, zIndexOffset, opacity, riseOnHover, riseOffset}{marker options; see \url{http://leafletjs.com/reference-1.3.1.html#marker-option}}
+\item{textsize}{Change the text size of a single tooltip}
+
+\item{textOnly}{Display only the text, no regular surrounding box.}
+
+\item{style}{list of css style to be added to the tooltip}
+
+\item{sticky}{If true, the tooltip will follow the mouse instead of being fixed at the feature center. Default value is \code{TRUE} (different from leaflet.js \code{FALSE}); see \url{http://leafletjs.com/reference-1.3.1.html#tooltip-sticky}}
+
+\item{draggable, keyboard, title, alt, zIndexOffset, riseOnHover, riseOffset}{marker options; see \url{http://leafletjs.com/reference-1.3.1.html#marker-option}}
 
 \item{showCoverageOnHover}{when you mouse over a cluster it shows the bounds
 of its markers}

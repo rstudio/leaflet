@@ -152,8 +152,11 @@ assert(
   identical(mockSession$.calls, list())
 )
 mockSession$.flush()
-expected <- list(structure(list(type = "leaflet-calls", message = structure("{\"id\":\"map\",\"calls\":[{\"dependencies\":[],\"method\":\"addPolygons\",\"args\":[[[[{\"lng\":[1,2,3,4,5],\"lat\":[1,2,3,4,5]}]]],null,null,{\"interactive\":true,\"className\":\"\",\"stroke\":true,\"color\":\"#03F\",\"weight\":5,\"opacity\":0.5,\"fill\":true,\"fillColor\":\"#03F\",\"fillOpacity\":0.2,\"smoothFactor\":1,\"noClip\":false},null,null,null,null,null]}]}", class = "json")), .Names = c("type", # nolint
-  "message")))
+# nolint start
+expected <- list(structure(list(type = "leaflet-calls", message = structure("{\"id\":\"map\",\"calls\":[{\"dependencies\":[],\"method\":\"addPolygons\",\"args\":[[[[{\"lng\":[1,2,3,4,5],\"lat\":[1,2,3,4,5]}]]],null,null,{\"interactive\":true,\"className\":\"\",\"stroke\":true,\"color\":\"#03F\",\"weight\":5,\"opacity\":0.5,\"fill\":true,\"fillColor\":\"#03F\",\"fillOpacity\":0.2,\"smoothFactor\":1,\"noClip\":false},null,null,null,{\"interactive\":false,\"permanent\":false,\"direction\":\"auto\",\"opacity\":1,\"offset\":[0,0],\"textsize\":\"10px\",\"textOnly\":false,\"className\":\"\",\"sticky\":true},null]}]}", class = "json")), .Names = c("type",
+"message")))
+# nolint end
+
 dput(mockSession$.calls)
 assert(identical(mockSession$.calls, expected))
 
@@ -168,7 +171,8 @@ remote2 <- leafletProxy("map", mockSession,
 )
 # Check that addMarkers() takes effect immediately, no flush required
 remote2 %>% addMarkers()
-expected2 <- list(list(type = "leaflet-calls", message = structure("{\"id\":\"map\",\"calls\":[{\"dependencies\":[],\"method\":\"addMarkers\",\"args\":[[10,9,8,7,6,5,4,3,2,1],[10,9,8,7,6,5,4,3,2,1],null,null,null,{\"interactive\":true,\"draggable\":false,\"keyboard\":true,\"title\":\"\",\"alt\":\"\",\"zIndexOffset\":0,\"opacity\":1,\"riseOnHover\":false,\"riseOffset\":250},null,null,null,null,null,null,null]}]}", class = "json"))) # nolint
+expected2 <- list(structure(list(type = "leaflet-calls", message = structure("{\"id\":\"map\",\"calls\":[{\"dependencies\":[],\"method\":\"addMarkers\",\"args\":[[10,9,8,7,6,5,4,3,2,1],[10,9,8,7,6,5,4,3,2,1],null,null,null,{\"interactive\":true,\"draggable\":false,\"keyboard\":true,\"title\":\"\",\"alt\":\"\",\"zIndexOffset\":0,\"opacity\":1,\"riseOnHover\":false,\"riseOffset\":250},null,null,null,null,null,{\"interactive\":false,\"permanent\":false,\"direction\":\"auto\",\"opacity\":1,\"offset\":[0,0],\"textsize\":\"10px\",\"textOnly\":false,\"className\":\"\",\"sticky\":true},null]}]}", class = "json")), .Names = c("type",
+"message"))) # nolint
 # cat(deparse(mockSession$.calls), "\n")
 assert(identical(mockSession$.calls, expected2))
 # Flushing should do nothing
@@ -185,7 +189,11 @@ remote3 <- leafletProxy("map", mockSession,
 remote3 %>% clearShapes() %>% addMarkers()
 assert(identical(mockSession$.calls, list()))
 mockSession$.flush()
-expected3 <- list(structure(list(type = "leaflet-calls", message = structure("{\"id\":\"map\",\"calls\":[{\"dependencies\":[],\"method\":\"clearShapes\",\"args\":[]}]}", class = "json")), .Names = c("type", "message")), structure(list(type = "leaflet-calls", message = structure("{\"id\":\"map\",\"calls\":[{\"dependencies\":[],\"method\":\"addMarkers\",\"args\":[[10,9,8,7,6,5,4,3,2,1],[10,9,8,7,6,5,4,3,2,1],null,null,null,{\"interactive\":true,\"draggable\":false,\"keyboard\":true,\"title\":\"\",\"alt\":\"\",\"zIndexOffset\":0,\"opacity\":1,\"riseOnHover\":false,\"riseOffset\":250},null,null,null,null,null,null,null]}]}", class = "json")), .Names = c("type", "message"))) # nolint
+# nolint start
+expected3 <- list(structure(list(type = "leaflet-calls", message = structure("{\"id\":\"map\",\"calls\":[{\"dependencies\":[],\"method\":\"clearShapes\",\"args\":[]}]}", class = "json")), .Names = c("type",
+"message")), structure(list(type = "leaflet-calls", message = structure("{\"id\":\"map\",\"calls\":[{\"dependencies\":[],\"method\":\"addMarkers\",\"args\":[[10,9,8,7,6,5,4,3,2,1],[10,9,8,7,6,5,4,3,2,1],null,null,null,{\"interactive\":true,\"draggable\":false,\"keyboard\":true,\"title\":\"\",\"alt\":\"\",\"zIndexOffset\":0,\"opacity\":1,\"riseOnHover\":false,\"riseOffset\":250},null,null,null,null,null,{\"interactive\":false,\"permanent\":false,\"direction\":\"auto\",\"opacity\":1,\"offset\":[0,0],\"textsize\":\"10px\",\"textOnly\":false,\"className\":\"\",\"sticky\":true},null]}]}", class = "json")), .Names = c("type",
+"message")))
+# nolint end
 
 # Check that multiple calls are invoked in order
 assert(identical(mockSession$.calls, expected3))

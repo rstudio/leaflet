@@ -479,7 +479,7 @@ addPopups <- function(
 
 #' @param className a CSS class name set on an element
 #' @param
-#' maxWidth,minWidth,maxHeight,autoPan,keepInView,closeButton,zoomAnimation,closeOnClick
+#' maxWidth,minWidth,maxHeight,autoPan,keepInView,closeButton,closeOnClick
 #' popup options; see \url{http://leafletjs.com/reference-1.3.1.html#popup-option}
 #' @describeIn map-options Options for popups
 #' @export
@@ -490,15 +490,18 @@ popupOptions <- function(
   autoPan = TRUE,
   keepInView = FALSE,
   closeButton = TRUE,
-  zoomAnimation = TRUE,
+  zoomAnimation = NULL,
   closeOnClick = NULL,
   className = "",
   ...
 ) {
+  if (!missing(zoomAnimation)) {
+    zoomAnimationWarning()
+  }
   filterNULL(list(
     maxWidth = maxWidth, minWidth = minWidth, maxHeight = maxHeight,
     autoPan = autoPan, keepInView = keepInView, closeButton = closeButton,
-    zoomAnimation = zoomAnimation, closeOnClick = closeOnClick, className = className, ...
+    closeOnClick = closeOnClick, className = className, ...
   ))
 }
 
@@ -544,8 +547,14 @@ safeLabel <- function(label, data) {
 }
 
 #' @param
-#' noHide,direction,offset,textsize,textOnly,style,permanent
+#' noHide,direction,offset,permanent
 #' label options; see \url{http://leafletjs.com/reference-1.3.1.html#tooltip-option}
+#' @param opacity Tooltip container opacity. Ranges from 0 to 1. Default value is \code{1} (different from leaflet.js \code{0.9}); see \url{http://leafletjs.com/reference-1.3.1.html#tooltip-opacity}
+#' @param textsize Change the text size of a single tooltip
+#' @param textOnly Display only the text, no regular surrounding box.
+#' @param style list of css style to be added to the tooltip
+#' @param zoomAnimation deprecated. See \url{https://github.com/Leaflet/Leaflet/blob/master/CHANGELOG.md#api-changes-5}
+#' @param sticky If true, the tooltip will follow the mouse instead of being fixed at the feature center. Default value is \code{TRUE} (different from leaflet.js \code{FALSE}); see \url{http://leafletjs.com/reference-1.3.1.html#tooltip-sticky}
 #' @describeIn map-options Options for labels
 #' @export
 labelOptions <- function(
@@ -560,19 +569,24 @@ labelOptions <- function(
   textsize = "10px",
   textOnly = FALSE,
   style = NULL,
-  zoomAnimation = TRUE,
+  zoomAnimation = NULL,
+  sticky = TRUE,
   ...
 ) {
   # use old (Leaflet 0.7.x) clickable if provided
  if (!is.null(clickable) && interactive != clickable) interactive <- clickable
   # use old noHide if provided
  if (!is.null(noHide) && permanent != noHide) permanent <- noHide
+ if (!missing(zoomAnimation)) {
+   zoomAnimationWarning()
+ }
+
 
   filterNULL(list(
     interactive = interactive, permanent = permanent, direction = direction,
     opacity = opacity, offset = offset,
     textsize = textsize, textOnly = textOnly, style = style,
-    zoomAnimation = zoomAnimation, className = className, ...
+    className = className, sticky = sticky, ...
   ))
 }
 
@@ -604,6 +618,8 @@ addMarkers <- function(
   clusterId = NULL,
   data = getMapData(map)
 ) {
+  if (missing(labelOptions)) labelOptions <- labelOptions()
+
   if (!is.null(icon)) {
     # If custom icons are specified, we need to 1) deduplicate any URLs/files,
     # so we can efficiently send e.g. 1000 markers that all use the same 2
@@ -666,6 +682,8 @@ addLabelOnlyMarkers <- function(
   clusterId = NULL,
   data = getMapData(map)
 ) {
+  if (missing(labelOptions)) labelOptions <- labelOptions()
+
   do.call(addMarkers, filterNULL(list(
     map = map, lng = lng, lat = lat, layerId = layerId,
     group = group,
@@ -859,7 +877,7 @@ b64EncodePackedIcons <- function(packedIcons) {
 #' @param interactive whether the element emits mouse events
 #' @param clickable DEPRECATED! Use the \code{interactive} option.
 #' @param
-#'   draggable,keyboard,title,alt,zIndexOffset,opacity,riseOnHover,riseOffset
+#'   draggable,keyboard,title,alt,zIndexOffset,riseOnHover,riseOffset
 #'   marker options; see \url{http://leafletjs.com/reference-1.3.1.html#marker-option}
 #' @describeIn map-options Options for markers
 #' @export
@@ -952,6 +970,8 @@ addCircleMarkers <- function(
   clusterId = NULL,
   data = getMapData(map)
 ) {
+  if (missing(labelOptions)) labelOptions <- labelOptions()
+
   options <- c(options, filterNULL(list(
     stroke = stroke, color = color, weight = weight, opacity = opacity,
     fill = fill, fillColor = fillColor, fillOpacity = fillOpacity,
@@ -1077,6 +1097,8 @@ addCircles <- function(
   highlightOptions = NULL,
   data = getMapData(map)
 ) {
+  if (missing(labelOptions)) labelOptions <- labelOptions()
+
   options <- c(options, filterNULL(list(
     stroke = stroke, color = color, weight = weight, opacity = opacity,
     fill = fill, fillColor = fillColor, fillOpacity = fillOpacity,
@@ -1115,6 +1137,8 @@ addPolylines <- function(
   highlightOptions = NULL,
   data = getMapData(map)
 ) {
+  if (missing(labelOptions)) labelOptions <- labelOptions()
+
   options <- c(options, filterNULL(list(
     stroke = stroke, color = color, weight = weight, opacity = opacity,
     fill = fill, fillColor = fillColor, fillOpacity = fillOpacity,
@@ -1150,6 +1174,8 @@ addRectangles <- function(
   highlightOptions = NULL,
   data = getMapData(map)
 ) {
+  if (missing(labelOptions)) labelOptions <- labelOptions()
+
   options <- c(options, filterNULL(list(
     stroke = stroke, color = color, weight = weight, opacity = opacity,
     fill = fill, fillColor = fillColor, fillOpacity = fillOpacity,
@@ -1192,6 +1218,8 @@ addPolygons <- function(
   highlightOptions = NULL,
   data = getMapData(map)
 ) {
+  if (missing(labelOptions)) labelOptions <- labelOptions()
+
   options <- c(options, filterNULL(list(
     stroke = stroke, color = color, weight = weight, opacity = opacity,
     fill = fill, fillColor = fillColor, fillOpacity = fillOpacity,
@@ -1314,4 +1342,10 @@ layersControlOptions <- function(collapsed = TRUE, autoZIndex = TRUE, ...) {
 #' @export
 removeLayersControl <- function(map) {
   invokeMethod(map, NULL, "removeLayersControl")
+}
+
+
+
+zoomAnimationWarning <- function() {
+  warning("zoomAnimation has been deprecated by Leaflet.js. See https://github.com/Leaflet/Leaflet/blob/master/CHANGELOG.md#api-changes-5\nignoring 'zoomAnimation' parameter")
 }
