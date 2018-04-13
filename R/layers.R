@@ -481,8 +481,6 @@ addPopups <- function(
 #' @param
 #' maxWidth,minWidth,maxHeight,autoPan,keepInView,closeButton,closeOnClick
 #' popup options; see \url{http://leafletjs.com/reference-1.3.1.html#popup-option}
-#' @param zoomAnimation deprecated. See https://github.com/Leaflet/Leaflet/blob/master/CHANGELOG.md#api-changes-5
-#' @param ... extra arguments supplied to Leaflet.js popupOptions. See \url{http://leafletjs.com/reference-1.3.1.html#popup-option}
 #' @describeIn map-options Options for popups
 #' @export
 popupOptions <- function(
@@ -549,9 +547,9 @@ safeLabel <- function(label, data) {
 }
 
 #' @param
-#' noHide,direction,offset,style,permanent
+#' noHide,direction,offset,permanent
 #' label options; see \url{http://leafletjs.com/reference-1.3.1.html#tooltip-option}
-#' @param opacity Tooltip container opacity. Default value is \code{1} (different from leaflet.js \code{0.9}); see \url{http://leafletjs.com/reference-1.3.1.html#tooltip-opacity}
+#' @param opacity Tooltip container opacity. Ranges from 0 to 1. Default value is \code{1} (different from leaflet.js \code{0.9}); see \url{http://leafletjs.com/reference-1.3.1.html#tooltip-opacity}
 #' @param textsize Change the text size of a single tooltip
 #' @param textOnly Display only the text, no regular surrounding box.
 #' @param style list of css style to be added to the tooltip
@@ -879,7 +877,7 @@ b64EncodePackedIcons <- function(packedIcons) {
 #' @param interactive whether the element emits mouse events
 #' @param clickable DEPRECATED! Use the \code{interactive} option.
 #' @param
-#'   draggable,keyboard,title,alt,zIndexOffset,opacity,riseOnHover,riseOffset
+#'   draggable,keyboard,title,alt,zIndexOffset,riseOnHover,riseOffset
 #'   marker options; see \url{http://leafletjs.com/reference-1.3.1.html#marker-option}
 #' @describeIn map-options Options for markers
 #' @export
