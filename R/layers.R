@@ -152,7 +152,7 @@ groupOptions <- function(map, group, zoomLevels = NULL) {
 #' @export
 addTiles <- function(
   map,
-  urlTemplate = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+  urlTemplate = "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
   attribution = NULL,
   layerId = NULL,
   group = NULL,
