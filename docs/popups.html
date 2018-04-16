@@ -259,7 +259,6 @@ leaflet() %&gt;% addTiles() %&gt;%
             "autoPan": true,
             "keepInView": false,
             "closeButton": false,
-            "zoomAnimation": true,
             "className": ""
           }
         ]
@@ -345,7 +344,17 @@ leaflet(df) %&gt;% addTiles() %&gt;%
           null,
           null,
           null,
-          null,
+          {
+            "interactive": false,
+            "permanent": false,
+            "direction": "auto",
+            "opacity": 1,
+            "offset": [0, 0],
+            "textsize": "10px",
+            "textOnly": false,
+            "className": "",
+            "sticky": true
+          },
           null
         ]
       }
@@ -434,7 +443,17 @@ leaflet(df) %&gt;% addTiles() %&gt;%
           null,
           null,
           ["Samurai Noodle", "Kukai Ramen", "Tsukushinbo"],
-          null,
+          {
+            "interactive": false,
+            "permanent": false,
+            "direction": "auto",
+            "opacity": 1,
+            "offset": [0, 0],
+            "textsize": "10px",
+            "textOnly": false,
+            "className": "",
+            "sticky": true
+          },
           null
         ]
       }
@@ -544,8 +563,8 @@ leaflet() %&gt;% addTiles() %&gt;% setView(-118.456554, 34.09, 13) %&gt;%
             "offset": [0, 0],
             "textsize": "10px",
             "textOnly": false,
-            "zoomAnimation": true,
-            "className": ""
+            "className": "",
+            "sticky": true
           },
           null
         ]
@@ -582,8 +601,8 @@ leaflet() %&gt;% addTiles() %&gt;% setView(-118.456554, 34.09, 13) %&gt;%
             "offset": [0, 0],
             "textsize": "10px",
             "textOnly": true,
-            "zoomAnimation": true,
-            "className": ""
+            "className": "",
+            "sticky": true
           },
           null
         ]
@@ -620,8 +639,8 @@ leaflet() %&gt;% addTiles() %&gt;% setView(-118.456554, 34.09, 13) %&gt;%
             "offset": [0, 0],
             "textsize": "15px",
             "textOnly": false,
-            "zoomAnimation": true,
-            "className": ""
+            "className": "",
+            "sticky": true
           },
           null
         ]
@@ -666,8 +685,8 @@ leaflet() %&gt;% addTiles() %&gt;% setView(-118.456554, 34.09, 13) %&gt;%
               "font-size": "12px",
               "border-color": "rgba(0,0,0,0.5)"
             },
-            "zoomAnimation": true,
-            "className": ""
+            "className": "",
+            "sticky": true
           },
           null
         ]
