@@ -59,7 +59,7 @@ var ClusterLayerStore = function () {
 exports.default = ClusterLayerStore;
 
 
-},{"./util":16}],2:[function(require,module,exports){
+},{"./util":17}],2:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -194,7 +194,7 @@ function getCRS(crsOptions) {
 }
 
 
-},{"./global/leaflet":9,"./global/proj4leaflet":10}],4:[function(require,module,exports){
+},{"./global/leaflet":10,"./global/proj4leaflet":11}],4:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -320,7 +320,7 @@ var DataFrame = function () {
 exports.default = DataFrame;
 
 
-},{"./util":16}],5:[function(require,module,exports){
+},{"./util":17}],5:[function(require,module,exports){
 "use strict";
 
 var _leaflet = require("./global/leaflet");
@@ -352,7 +352,7 @@ if (typeof _leaflet2.default.Icon.Default.imagePath === "undefined") {
 }
 
 
-},{"./global/leaflet":9}],6:[function(require,module,exports){
+},{"./global/leaflet":10}],6:[function(require,module,exports){
 "use strict";
 
 var _leaflet = require("./global/leaflet");
@@ -385,7 +385,41 @@ _leaflet2.default.Tooltip.prototype._initLayout = function () {
 };
 
 
-},{"./global/leaflet":9}],7:[function(require,module,exports){
+},{"./global/leaflet":10}],7:[function(require,module,exports){
+"use strict";
+
+var _leaflet = require("./global/leaflet");
+
+var _leaflet2 = _interopRequireDefault(_leaflet);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var protocolRegex = /^\/\//;
+var upgrade_protocol = function upgrade_protocol(urlTemplate) {
+  if (protocolRegex.test(urlTemplate)) {
+    if (window.location.protocol === "file:") {
+      // if in a local file, support http
+      // http should auto upgrade if necessary
+      urlTemplate = "http:" + urlTemplate;
+    }
+  }
+  return urlTemplate;
+};
+
+var originalLTileLayerInitialize = _leaflet2.default.TileLayer.prototype.initialize;
+_leaflet2.default.TileLayer.prototype.initialize = function (urlTemplate, options) {
+  urlTemplate = upgrade_protocol(urlTemplate);
+  originalLTileLayerInitialize.call(this, urlTemplate, options);
+};
+
+var originalLTileLayerWMSInitialize = _leaflet2.default.TileLayer.WMS.prototype.initialize;
+_leaflet2.default.TileLayer.WMS.prototype.initialize = function (urlTemplate, options) {
+  urlTemplate = upgrade_protocol(urlTemplate);
+  originalLTileLayerWMSInitialize.call(this, urlTemplate, options);
+};
+
+
+},{"./global/leaflet":10}],8:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -396,7 +430,7 @@ exports.default = global.HTMLWidgets;
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -407,7 +441,7 @@ exports.default = global.jQuery;
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -418,7 +452,7 @@ exports.default = global.L;
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -429,7 +463,7 @@ exports.default = global.L.Proj;
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -440,7 +474,7 @@ exports.default = global.Shiny;
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 "use strict";
 
 var _jquery = require("./global/jquery");
@@ -478,6 +512,8 @@ var _methods2 = _interopRequireDefault(_methods);
 require("./fixup-default-icon");
 
 require("./fixup-default-tooltip");
+
+require("./fixup-url-protocol");
 
 var _dataframe = require("./dataframe");
 
@@ -760,7 +796,7 @@ if (_htmlwidgets2.default.shinyMode) {
 }
 
 
-},{"./cluster-layer-store":1,"./control-store":2,"./crs_utils":3,"./dataframe":4,"./fixup-default-icon":5,"./fixup-default-tooltip":6,"./global/htmlwidgets":7,"./global/jquery":8,"./global/leaflet":9,"./global/shiny":11,"./layer-manager":13,"./methods":14,"./util":16}],13:[function(require,module,exports){
+},{"./cluster-layer-store":1,"./control-store":2,"./crs_utils":3,"./dataframe":4,"./fixup-default-icon":5,"./fixup-default-tooltip":6,"./fixup-url-protocol":7,"./global/htmlwidgets":8,"./global/jquery":9,"./global/leaflet":10,"./global/shiny":12,"./layer-manager":14,"./methods":15,"./util":17}],14:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -1185,7 +1221,7 @@ exports.default = LayerManager;
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./global/jquery":8,"./global/leaflet":9,"./util":16}],14:[function(require,module,exports){
+},{"./global/jquery":9,"./global/leaflet":10,"./util":17}],15:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -2467,7 +2503,7 @@ methods.removeSelect = function () {
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./cluster-layer-store":1,"./crs_utils":3,"./dataframe":4,"./global/htmlwidgets":7,"./global/jquery":8,"./global/leaflet":9,"./global/shiny":11,"./mipmapper":15,"./util":16}],15:[function(require,module,exports){
+},{"./cluster-layer-store":1,"./crs_utils":3,"./dataframe":4,"./global/htmlwidgets":8,"./global/jquery":9,"./global/leaflet":10,"./global/shiny":12,"./mipmapper":16,"./util":17}],16:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2574,7 +2610,7 @@ var Mipmapper = function () {
 exports.default = Mipmapper;
 
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2616,4 +2652,4 @@ function asArray(value) {
 }
 
 
-},{}]},{},[12]);
+},{}]},{},[13]);
