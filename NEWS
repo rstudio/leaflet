@@ -30,6 +30,10 @@ BREAKING CHANGES
 
 BUG FIXES AND FEATURES
 
+* Relative protocols are used where possible when adding tiles.  Known issue of 'https://' routes fail to load within RStudio (but works within browsers). (#526)
+
+* Added more providers for `addProviderTiles()`: "OpenStreetMap.CH", "OpenInfraMap", "OpenInfraMap.Power", "OpenInfraMap.Telecom", "OpenInfraMap.Petroleum", "OpenInfraMap.Water", "OpenPtMap", "OpenRailwayMap", "OpenFireMap", "SafeCast". (4aea447)
+
 * `L.multiPolyline` was absorbed into `L.polyline`, which accepts multiple an array of polyline information. http://leafletjs.com/reference-1.3.0.html#polyline. (#515)
 
 * Fix bug where icons where anchored to the top-center, not center-center (2a60751)

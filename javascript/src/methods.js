@@ -99,13 +99,6 @@ methods.clearPopups = function() {
 };
 
 methods.addTiles = function(urlTemplate, layerId, group, options) {
-  if (/^\/\//.test(urlTemplate)) {
-    if (window.location.protocol === "file:") {
-      // if in a local file, support http
-      // http should auto upgrade if necessary
-      urlTemplate = "http:" + urlTemplate;
-    }
-  }
   this.layerManager.addLayer(L.tileLayer(urlTemplate, options), "tile", layerId, group);
 };
 
