@@ -30,7 +30,7 @@ BREAKING CHANGES
 
 BUG FIXES AND FEATURES
 
-* Relative protocols are used where possible when adding tiles.  Known issue of 'https://' routes fail to load within RStudio (but works within browsers). (#526)
+* Relative protocols are used where possible when adding tiles (#526). In RStudio 1.1.x on linux and windows, a known issue of 'https://' routes fail to load, but works within browsers (rstudio/rstudio#2661).
 
 * Added more providers for `addProviderTiles()`: "OpenStreetMap.CH", "OpenInfraMap", "OpenInfraMap.Power", "OpenInfraMap.Telecom", "OpenInfraMap.Petroleum", "OpenInfraMap.Water", "OpenPtMap", "OpenRailwayMap", "OpenFireMap", "SafeCast". (4aea447)
 
