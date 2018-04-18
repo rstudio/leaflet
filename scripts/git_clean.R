@@ -1,2 +1,2 @@
 # run without --dry-run
-system("git clean -xfd --dry-run -e node_modules")
+system("git clean -xfd -e node_modules")

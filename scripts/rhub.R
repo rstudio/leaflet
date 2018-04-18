@@ -1,3 +1,4 @@
+source("scripts/git_clean.R")
 
 if (!require("rhub")) install.packages("rhub")
 

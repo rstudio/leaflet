@@ -1,3 +1,5 @@
+source("scripts/git_clean.R")
+
 devtools::install_github("schloerke/viztest")
 # source("scripts/viztest.R")
 
