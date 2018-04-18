@@ -90,7 +90,7 @@
 
 	L.TileLayer.Provider.providers = {
 		OpenStreetMap: {
-			url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+			url: '//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 			options: {
 				maxZoom: 19,
 				attribution:
@@ -105,26 +105,32 @@
 					}
 				},
 				DE: {
-					url: 'https://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png',
+					url: '//{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png',
+					options: {
+						maxZoom: 18
+					}
+				},
+				CH: {
+					url: '//tile.osm.ch/switzerland/{z}/{x}/{y}.png',
 					options: {
 						maxZoom: 18
 					}
 				},
 				France: {
-					url: 'https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png',
+					url: '//{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png',
 					options: {
 						maxZoom: 20,
 						attribution: '&copy; Openstreetmap France | {attribution.OpenStreetMap}'
 					}
 				},
 				HOT: {
-					url: 'https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
+					url: '//{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
 					options: {
 						attribution: '{attribution.OpenStreetMap}, Tiles courtesy of <a href="http://hot.openstreetmap.org/" target="_blank">Humanitarian OpenStreetMap Team</a>'
 					}
 				},
 				BZH: {
-					url: 'http://tile.openstreetmap.bzh/br/{z}/{x}/{y}.png',
+					url: 'https://tile.openstreetmap.bzh/br/{z}/{x}/{y}.png',
 					options: {
 						attribution: '{attribution.OpenStreetMap}, Tiles courtesy of <a href="http://www.openstreetmap.bzh/" target="_blank">Breton OpenStreetMap Team</a>',
 						bounds: [[46.2, -5.5], [50, 0.7]]
@@ -132,10 +138,31 @@
 				}
 			}
 		},
+		OpenInfraMap: {
+			url: 'https://tiles-{s}.openinframap.org/{variant}/{z}/{x}/{y}.png',
+			options: {
+				maxZoom: 18,
+				attribution:
+					'{attribution.OpenStreetMap}, <a href="http://www.openinframap.org/about.html">About OpenInfraMap</a>'
+			},
+			variants: {
+				  Power:       'power' ,
+				  Telecom:     'telecoms' ,
+				  Petroleum:   'petroleum' ,
+				  Water:       'water'
+			}
+		},
 		OpenSeaMap: {
-			url: 'https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png',
+			url: '//tiles.openseamap.org/seamark/{z}/{x}/{y}.png',
 			options: {
 				attribution: 'Map data: &copy; <a href="http://www.openseamap.org">OpenSeaMap</a> contributors'
+			}
+		},
+		OpenPtMap: {
+			url: 'http://openptmap.org/tiles/{z}/{x}/{y}.png',
+			options: {
+				maxZoom: 17,
+				attribution: 'Map data: &copy; <a href="http://www.openptmap.org">OpenPtMap</a> contributors'
 			}
 		},
 		OpenTopoMap: {
@@ -143,6 +170,27 @@
 			options: {
 				maxZoom: 17,
 				attribution: 'Map data: {attribution.OpenStreetMap}, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+			}
+		},
+		OpenRailwayMap: {
+			url: 'https://{s}.tiles.openrailwaymap.org/standard/{z}/{x}/{y}.png',
+			options: {
+				maxZoom: 19,
+				attribution: 'Map data: {attribution.OpenStreetMap} | Map style: &copy; <a href="https://www.OpenRailwayMap.org">OpenRailwayMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+			}
+		},
+		OpenFireMap: {
+			url: 'http://openfiremap.org/hytiles/{z}/{x}/{y}.png',
+			options: {
+				maxZoom: 19,
+				attribution: 'Map data: {attribution.OpenStreetMap} | Map style: &copy; <a href="http://www.openfiremap.org">OpenFireMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+			}
+		},
+		SafeCast: {
+			url: '//s3.amazonaws.com/te512.safecast.org/{z}/{x}/{y}.png',
+			options: {
+				maxZoom: 16,
+				attribution: 'Map data: {attribution.OpenStreetMap} | Map style: &copy; <a href="https://blog.safecast.org/about/">SafeCast</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
 			}
 		},
 		Thunderforest: {
@@ -200,7 +248,7 @@
 			}
 		},
 		Hydda: {
-			url: 'https://{s}.tile.openstreetmap.se/hydda/{variant}/{z}/{x}/{y}.png',
+			url: '//{s}.tile.openstreetmap.se/hydda/{variant}/{z}/{x}/{y}.png',
 			options: {
 				maxZoom: 18,
 				variant: 'full',
@@ -224,7 +272,7 @@
 			}
 		},
 		Stamen: {
-			url: 'https://stamen-tiles-{s}.a.ssl.fastly.net/{variant}/{z}/{x}/{y}.{ext}',
+			url: '//stamen-tiles-{s}.a.ssl.fastly.net/{variant}/{z}/{x}/{y}.{ext}',
 			options: {
 				attribution:
 					'Map tiles by <a href="http://stamen.com">Stamen Design</a>, ' +
@@ -281,7 +329,7 @@
 			}
 		},
 		Esri: {
-			url: 'https://server.arcgisonline.com/ArcGIS/rest/services/{variant}/MapServer/tile/{z}/{y}/{x}',
+			url: '//server.arcgisonline.com/ArcGIS/rest/services/{variant}/MapServer/tile/{z}/{y}/{x}',
 			options: {
 				variant: 'World_Street_Map',
 				attribution: 'Tiles &copy; Esri'
@@ -397,7 +445,7 @@
 			 * envirionments.
 			 */
 			url:
-				'https://{s}.{base}.maps.cit.api.here.com/maptile/2.1/' +
+				'//{s}.{base}.maps.cit.api.here.com/maptile/2.1/' +
 				'{type}/{mapID}/{variant}/{z}/{x}/{y}/{size}/{format}?' +
 				'app_id={app_id}&app_code={app_code}&lg={language}',
 			options: {
@@ -533,10 +581,10 @@
 			}
 		},
 		BasemapAT: {
-			url: 'https://maps{s}.wien.gv.at/basemap/{variant}/normal/google3857/{z}/{y}/{x}.{format}',
+			url: '//maps{s}.wien.gv.at/basemap/{variant}/normal/google3857/{z}/{y}/{x}.{format}',
 			options: {
 				maxZoom: 19,
-				attribution: 'Datenquelle: <a href="www.basemap.at">basemap.at</a>',
+				attribution: 'Datenquelle: <a href="https://www.basemap.at">basemap.at</a>',
 				subdomains: ['', '1', '2', '3', '4'],
 				format: 'png',
 				bounds: [[46.358770, 8.782379], [49.037872, 17.189532]],
@@ -567,7 +615,7 @@
 			}
 		},
 		nlmaps: {
-			url: 'https://geodata.nationaalgeoregister.nl/tiles/service/wmts/{variant}/EPSG:3857/{z}/{x}/{y}.png',
+			url: '//geodata.nationaalgeoregister.nl/tiles/service/wmts/{variant}/EPSG:3857/{z}/{x}/{y}.png',
 			options: {
 				minZoom: 6,
 				maxZoom: 19,
@@ -579,7 +627,7 @@
 				'pastel': 'brtachtergrondkaartpastel',
 				'grijs': 'brtachtergrondkaartgrijs',
 				'luchtfoto': {
-					'url': 'https://geodata.nationaalgeoregister.nl/luchtfoto/rgb/wmts/1.0.0/2016_ortho25/EPSG:3857/{z}/{x}/{y}.png',
+					'url': '//geodata.nationaalgeoregister.nl/luchtfoto/rgb/wmts/1.0.0/2016_ortho25/EPSG:3857/{z}/{x}/{y}.png',
 				}
 			}
 		},
@@ -648,7 +696,7 @@
 			//   z0-9  - 1:1m
 			//  z10-11 - quarter inch (1:253440)
 			//  z12-18 - one inch (1:63360)
-			url: 'https://nls-{s}.tileserver.com/nls/{z}/{x}/{y}.jpg',
+			url: '//nls-{s}.tileserver.com/nls/{z}/{x}/{y}.jpg',
 			options: {
 				attribution: '<a href="http://geo.nls.uk/maps/">National Library of Scotland Historic Maps</a>',
 				bounds: [[49.6, -12], [61.7, 3]],
@@ -679,6 +727,14 @@
 				nonWhite: 'nonwhite',
 				white: 'white',
 				plurality: 'plural'
+			}
+		},
+		Wikimedia: {
+			url: 'https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png',
+			options: {
+				attribution: '<a href="https://wikimediafoundation.org/wiki/Maps_Terms_of_Use">Wikimedia</a>',
+				minZoom: 1,
+				maxZoom: 18
 			}
 		}
 	};
