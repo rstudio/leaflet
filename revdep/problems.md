@@ -99,6 +99,31 @@ Version: 0.3.0
       Note: found 502 marked UTF-8 strings
     ```
 
+# lawn
+
+Version: 0.4.2
+
+## In both
+
+*   checking package dependencies ... NOTE
+    ```
+    Packages which this enhances but not available for checking:
+      ‘maps’ ‘geojsonio’
+    ```
+
+# leaflet.esri
+
+Version: 0.2
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespaces in Imports field not imported from:
+      ‘htmlwidgets’ ‘shiny’
+      All declared Imports should be used.
+    ```
+
 # leaflet.extras
 
 Version: 0.2
@@ -197,24 +222,63 @@ Version: 0.2.1
 
 ## In both
 
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    Error in re-building vignettes:
+      ...
+    Linking to GEOS 3.6.1, GDAL 2.1.3, proj.4 4.9.3
+    
+    Attaching package: 'dplyr'
+    
+    The following objects are masked from 'package:stats':
+    
+        filter, lag
+    
+    The following objects are masked from 'package:base':
+    
+        intersect, setdiff, setequal, union
+    
+    Downloading constituency data
+    Quitting from lines 67-110 (introduction.Rmd) 
+    Error: processing vignette 'introduction.Rmd' failed with diagnostics:
+    HTTP error 524.
+    Execution halted
+    ```
+
 *   checking data for non-ASCII characters ... NOTE
     ```
       Note: found 13 marked UTF-8 strings
     ```
 
-# rdwd
+# RgoogleMaps
 
-Version: 0.9.0
+Version: 1.4.1
 
 ## In both
 
-*   checking re-building of vignette outputs ... WARNING
+*   checking examples ... ERROR
     ```
-    Error in re-building vignettes:
-      ...
-    Quitting from lines 112-121 (rdwd.Rmd) 
-    Error: processing vignette 'rdwd.Rmd' failed with diagnostics:
-    cannot open URL 'ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/monthly/kl/historical/monatswerte_KL_03987_18930101_20161231_hist.zip'
+    ...
+    > 
+    > 
+    >    #points with a few additional options such as quantile boxes, additional buffers, etc.  
+    > 
+    > 
+    >   bb <- qbbox(c(40.702147,40.711614,40.718217),c(-74.015794,-74.012318,-73.998284), 
+    + 
+    + 
+    +             TYPE = "all", margin = list(m=rep(5,4), TYPE = c("perc", "abs")[1]));
+    > 
+    > 
+    >  ##download the map:           
+    > 
+    > 
+    > MyMap <- GetMap.bbox(bb$lonR, bb$latR,destfile = "MyTile3.png", maptype = "satellite") 
+    Warning in download.file(urlStr, destfile, mode = "wb", quiet = TRUE) :
+      cannot open URL 'http://maps.google.com/maps/api/staticmap?center=40.710182,-74.007039&zoom=15&size=640x640&maptype=satellite&format=png32&sensor=true': HTTP status was '403 Forbidden'
+    Error in download.file(urlStr, destfile, mode = "wb", quiet = TRUE) : 
+      cannot open URL 'http://maps.google.com/maps/api/staticmap?center=40.710182,-74.007039&zoom=15&size=640x640&maptype=satellite&format=png32&sensor=true'
+    Calls: GetMap.bbox -> GetMap -> download.file
     Execution halted
     ```
 
@@ -319,6 +383,19 @@ Version: 0.4.1
       installed size is  8.1Mb
     ```
 
+# SWMPrExtension
+
+Version: 0.3.12
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespaces in Imports field not imported from:
+      ‘rgeos’ ‘stringr’
+      All declared Imports should be used.
+    ```
+
 # teachingApps
 
 Version: 1.0.2
@@ -351,7 +428,7 @@ Version: 0.2.0
 
 # tmap
 
-Version: 1.11-1
+Version: 1.11-2
 
 ## In both
 
@@ -375,6 +452,17 @@ Version: 1.0.0
       sub-directories of 1Mb or more:
         data   1.2Mb
         doc    2.7Mb
+    ```
+
+# USAboundaries
+
+Version: 0.3.1
+
+## In both
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘USAboundariesData’
     ```
 
 # wallace
