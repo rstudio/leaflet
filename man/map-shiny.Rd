@@ -37,5 +37,5 @@ app <- shinyApp(
   }
 )
 
-\dontrun{app}
+\donttest{if (interactive()) app}
 }

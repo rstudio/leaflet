@@ -17,7 +17,7 @@
 #'   }
 #' )
 #'
-#' \dontrun{app}
+#' \donttest{if (interactive()) app}
 leafletOutput <- function(outputId, width = "100%", height = 400) {
   htmlwidgets::shinyWidgetOutput(outputId, "leaflet", width, height, "leaflet")
 }

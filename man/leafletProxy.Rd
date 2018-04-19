@@ -66,6 +66,6 @@ server <- function(input, output, session) {
 }
 
 app <- shinyApp(ui, server)
-\dontrun{app}
+\donttest{if (interactive()) app}
 
 }
