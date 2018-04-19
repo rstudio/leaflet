@@ -83,6 +83,7 @@ test_that("derivePolygons normalizes polygon data across sp line classes", {
   slinesdf <- sp::SpatialLinesDataFrame(slines, df)
   expect_equal(derivePolygons(slinesdf), out)
 
+  skip_if_not_installed("sf")
   expect_equal(derivePolygons(sf::st_as_sfc(slines)[[1]]), out)
   expect_equal(derivePolygons(sf::st_as_sfc(slines)), out)
 })
