@@ -9,7 +9,7 @@
 |language |(EN)                         |
 |collate  |en_US.UTF-8                  |
 |tz       |America/New_York             |
-|date     |2018-04-18                   |
+|date     |2018-04-19                   |
 
 # Dependencies
 
@@ -29,7 +29,7 @@
 |gridExtra    |2.3     |2.3     |   |
 |gtable       |0.2.0   |0.2.0   |   |
 |htmltools    |0.3.6   |0.3.6   |   |
-|htmlwidgets  |1.0     |1.0     |   |
+|htmlwidgets  |1.2     |1.2     |   |
 |httpuv       |1.3.6.2 |1.3.6.2 |   |
 |jsonlite     |1.5     |1.5     |   |
 |labeling     |0.3     |0.3     |   |
@@ -68,7 +68,7 @@
 |:------------------------------------|:-------|:-----|:-------|:----|
 |[segclust2d](problems.md#segclust2d) |0.1.0   |1     |        |     |
 
-## All (59)
+## All (60)
 
 |package                                            |version |error |warning |note |
 |:--------------------------------------------------|:-------|:-----|:-------|:----|
@@ -103,13 +103,14 @@
 |nyctaxi                                            |0.0.1   |      |        |     |
 |openadds                                           |0.2.0   |      |        |     |
 |owmr                                               |0.7.2   |      |        |     |
-|[parlitools](problems.md#parlitools)               |0.2.1   |      |1       |1    |
+|[parlitools](problems.md#parlitools)               |0.2.1   |      |        |1    |
+|[phenocamr](problems.md#phenocamr)                 |1.1.0   |      |        |1    |
 |ppcSpatial                                         |0.2.0   |      |        |     |
-|PWFSLSmoke                                         |1.0.16  |      |        |     |
+|PWFSLSmoke                                         |1.0.16  |      |-1      |     |
 |QRAGadget                                          |0.1.0   |      |        |     |
 |rdefra                                             |0.3.4   |      |        |     |
 |rdwd                                               |0.10.1  |      |        |     |
-|[RgoogleMaps](problems.md#rgooglemaps)             |1.4.1   |1     |        |     |
+|RgoogleMaps                                        |1.4.1   |-1    |        |     |
 |Rnightlights                                       |0.1.5   |      |        |     |
 |rnoaa                                              |0.7.0   |      |        |     |
 |robis                                              |1.0.0   |      |        |     |

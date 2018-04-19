@@ -222,64 +222,22 @@ Version: 0.2.1
 
 ## In both
 
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error in re-building vignettes:
-      ...
-    Linking to GEOS 3.6.1, GDAL 2.1.3, proj.4 4.9.3
-    
-    Attaching package: 'dplyr'
-    
-    The following objects are masked from 'package:stats':
-    
-        filter, lag
-    
-    The following objects are masked from 'package:base':
-    
-        intersect, setdiff, setequal, union
-    
-    Downloading constituency data
-    Quitting from lines 67-110 (introduction.Rmd) 
-    Error: processing vignette 'introduction.Rmd' failed with diagnostics:
-    HTTP error 524.
-    Execution halted
-    ```
-
 *   checking data for non-ASCII characters ... NOTE
     ```
       Note: found 13 marked UTF-8 strings
     ```
 
-# RgoogleMaps
+# phenocamr
 
-Version: 1.4.1
+Version: 1.1.0
 
 ## In both
 
-*   checking examples ... ERROR
+*   checking dependencies in R code ... NOTE
     ```
-    ...
-    > 
-    > 
-    >    #points with a few additional options such as quantile boxes, additional buffers, etc.  
-    > 
-    > 
-    >   bb <- qbbox(c(40.702147,40.711614,40.718217),c(-74.015794,-74.012318,-73.998284), 
-    + 
-    + 
-    +             TYPE = "all", margin = list(m=rep(5,4), TYPE = c("perc", "abs")[1]));
-    > 
-    > 
-    >  ##download the map:           
-    > 
-    > 
-    > MyMap <- GetMap.bbox(bb$lonR, bb$latR,destfile = "MyTile3.png", maptype = "satellite") 
-    Warning in download.file(urlStr, destfile, mode = "wb", quiet = TRUE) :
-      cannot open URL 'http://maps.google.com/maps/api/staticmap?center=40.710182,-74.007039&zoom=15&size=640x640&maptype=satellite&format=png32&sensor=true': HTTP status was '403 Forbidden'
-    Error in download.file(urlStr, destfile, mode = "wb", quiet = TRUE) : 
-      cannot open URL 'http://maps.google.com/maps/api/staticmap?center=40.710182,-74.007039&zoom=15&size=640x640&maptype=satellite&format=png32&sensor=true'
-    Calls: GetMap.bbox -> GetMap -> download.file
-    Execution halted
+    Namespaces in Imports field not imported from:
+      ‘DT’ ‘leaflet’ ‘plotly’ ‘shinydashboard’
+      All declared Imports should be used.
     ```
 
 # rpostgisLT
