@@ -227,8 +227,10 @@ epsg3857 <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y
 #' values(r) <- matrix(1:900, nrow(r), ncol(r), byrow = TRUE)
 #' crs(r) <- CRS("+init=epsg:4326")
 #'
-#' leaflet() %>% addTiles() %>%
-#'   addRasterImage(r, colors = "Spectral", opacity = 0.8)
+#' if (requireNamespace("rgdal")) {
+#'   leaflet() %>% addTiles() %>%
+#'     addRasterImage(r, colors = "Spectral", opacity = 0.8)
+#' }
 #' @export
 addRasterImage <- function(
   map,
