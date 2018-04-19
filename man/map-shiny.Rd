@@ -37,5 +37,5 @@ app <- shinyApp(
   }
 )
 
-\donttest{app}
+\dontrun{app}
 }
