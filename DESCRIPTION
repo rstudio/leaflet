@@ -30,7 +30,7 @@ Authors@R: c(
 Maintainer: Joe Cheng <joe@rstudio.com>
 Description: Create and customize interactive maps using the 'Leaflet'
     JavaScript library and the 'htmlwidgets' package. These maps can be used
-    directly from the R console, from 'RStudio', in Shiny apps and R Markdown
+    directly from the R console, from 'RStudio', in Shiny applications and R Markdown
     documents.
 License: GPL-3
 URL: http://rstudio.github.io/leaflet/

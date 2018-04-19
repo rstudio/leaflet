@@ -260,7 +260,7 @@ m  # Print the map</code></pre>
       {
         "method": "addTiles",
         "args": [
-          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -304,7 +304,17 @@ m  # Print the map</code></pre>
           null,
           null,
           null,
-          null,
+          {
+            "interactive": false,
+            "permanent": false,
+            "direction": "auto",
+            "opacity": 1,
+            "offset": [0, 0],
+            "textsize": "10px",
+            "textOnly": false,
+            "className": "",
+            "sticky": true
+          },
           null
         ]
       }

@@ -99,6 +99,31 @@ Version: 0.3.0
       Note: found 502 marked UTF-8 strings
     ```
 
+# lawn
+
+Version: 0.4.2
+
+## In both
+
+*   checking package dependencies ... NOTE
+    ```
+    Packages which this enhances but not available for checking:
+      ‘maps’ ‘geojsonio’
+    ```
+
+# leaflet.esri
+
+Version: 0.2
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespaces in Imports field not imported from:
+      ‘htmlwidgets’ ‘shiny’
+      All declared Imports should be used.
+    ```
+
 # leaflet.extras
 
 Version: 0.2
@@ -202,20 +227,17 @@ Version: 0.2.1
       Note: found 13 marked UTF-8 strings
     ```
 
-# rdwd
+# phenocamr
 
-Version: 0.9.0
+Version: 1.1.0
 
 ## In both
 
-*   checking re-building of vignette outputs ... WARNING
+*   checking dependencies in R code ... NOTE
     ```
-    Error in re-building vignettes:
-      ...
-    Quitting from lines 112-121 (rdwd.Rmd) 
-    Error: processing vignette 'rdwd.Rmd' failed with diagnostics:
-    cannot open URL 'ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/monthly/kl/historical/monatswerte_KL_03987_18930101_20161231_hist.zip'
-    Execution halted
+    Namespaces in Imports field not imported from:
+      ‘DT’ ‘leaflet’ ‘plotly’ ‘shinydashboard’
+      All declared Imports should be used.
     ```
 
 # rpostgisLT
@@ -319,6 +341,19 @@ Version: 0.4.1
       installed size is  8.1Mb
     ```
 
+# SWMPrExtension
+
+Version: 0.3.12
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespaces in Imports field not imported from:
+      ‘rgeos’ ‘stringr’
+      All declared Imports should be used.
+    ```
+
 # teachingApps
 
 Version: 1.0.2
@@ -351,7 +386,7 @@ Version: 0.2.0
 
 # tmap
 
-Version: 1.11-1
+Version: 1.11-2
 
 ## In both
 
@@ -375,6 +410,17 @@ Version: 1.0.0
       sub-directories of 1Mb or more:
         data   1.2Mb
         doc    2.7Mb
+    ```
+
+# USAboundaries
+
+Version: 0.3.1
+
+## In both
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘USAboundariesData’
     ```
 
 # wallace
