@@ -109,7 +109,7 @@ The \code{palette} argument can be any of the following:
 pal <- colorBin("Greens", domain = 0:100)
 pal(runif(10, 60, 100))
 
-if (interactive()) {
+\donttest{
  # Exponential distribution, mapped continuously
  previewColors(colorNumeric("Blues", domain = NULL), sort(rexp(16)))
  # Exponential distribution, mapped by interval
