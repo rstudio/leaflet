@@ -221,7 +221,7 @@ epsg3857 <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y
 #' @template data-getMapData
 #'
 #' @examples
-#' library(raster)
+#' \donttest{library(raster)
 #'
 #' r <- raster(xmn = -2.8, xmx = -2.79, ymn = 54.04, ymx = 54.05, nrows = 30, ncols = 30)
 #' values(r) <- matrix(1:900, nrow(r), ncol(r), byrow = TRUE)
@@ -230,7 +230,7 @@ epsg3857 <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y
 #' if (requireNamespace("rgdal")) {
 #'   leaflet() %>% addTiles() %>%
 #'     addRasterImage(r, colors = "Spectral", opacity = 0.8)
-#' }
+#' }}
 #' @export
 addRasterImage <- function(
   map,

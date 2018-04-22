@@ -3,6 +3,7 @@ library(leaflet)
 m <- leaflet() %>% addTiles()
 m  # a map with the default OSM tile layer
 
+\donttest{
 # set bounds
 m %>% fitBounds(0, 40, 10, 50)
 
@@ -156,3 +157,5 @@ m %>% addCircleMarkers(~lng, ~lat, radius = ~size,
 greens <- colorNumeric("Greens", domain = NULL)
 m %>% addCircleMarkers(~lng, ~lat, radius = ~size,
   color = ~greens(value), fillOpacity = 0.5)
+
+}

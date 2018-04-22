@@ -8,6 +8,8 @@ leaflet() %>% addTiles() %>% addLegend(
   title = "An Obvious Legend"
 )
 
+\donttest{
+
 # an automatic legend derived from the color palette
 df <- local({
   n <- 300; x <- rnorm(n); y <- rnorm(n)
@@ -38,3 +40,4 @@ leaflet(df) %>%
     transform = function(x) 100 * x
   ),  group = "circles", position = "bottomleft" ) %>%
   addLayersControl(overlayGroups = c("circles"))
+}
