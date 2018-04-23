@@ -13,6 +13,7 @@ import defaultMethods from "./methods";
 
 import "./fixup-default-icon";
 import "./fixup-default-tooltip";
+import "./fixup-url-protocol";
 
 import DataFrame from "./dataframe";
 import ClusterLayerStore from "./cluster-layer-store";

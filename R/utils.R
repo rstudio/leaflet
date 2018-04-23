@@ -129,7 +129,7 @@ invokeMethod <- function(map, data, method, ...) {
 #' }
 #'
 #' app <- shinyApp(ui, server)
-#' \donttest{app}
+#' \donttest{if (interactive()) app}
 #'
 #' @export
 leafletProxy <- function(mapId, session = shiny::getDefaultReactiveDomain(),
