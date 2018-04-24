@@ -31,8 +31,8 @@ Add a simple Graticule on the map
 see \url{https://github.com/ablakey/Leaflet.SimpleGraticule}
 }
 \examples{
-leaflet() \%>\%
+\donttest{leaflet() \%>\%
   addTiles() \%>\%
-  addSimpleGraticule()
+  addSimpleGraticule()}
 
 }

@@ -20,6 +20,7 @@ leaflet() %>% addMarkers(
   )
 )
 
+\donttest{
 
 # use point symbols from base R graphics as icons
 pchIcons <- function(pch = 0:14, width = 30, height = 30, ...) {
@@ -63,3 +64,5 @@ leaflet() %>% addMarkers(
 )
 
 unlink(iconFiles)  # clean up the tmp png files that have been embedded
+
+}

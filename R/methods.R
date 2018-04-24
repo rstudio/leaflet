@@ -12,10 +12,11 @@
 #' @describeIn map-methods Set the view of the map (center and zoom level)
 #' @export
 #' @examples
-#' m <- leaflet() %>% addTiles() %>% setView(-71.0382679, 42.3489054, zoom = 18)
+#' \donttest{m <- leaflet() %>% addTiles() %>% setView(-71.0382679, 42.3489054, zoom = 18)
 #' m  # the RStudio 'headquarter'
 #' m %>% fitBounds(-72, 40, -70, 43)
 #' m %>% clearBounds()  # world view
+#' }
 setView <- function(map, lng, lat, zoom, options = list()) {
   view <- evalFormula(list(c(lat, lng), zoom, options))
 

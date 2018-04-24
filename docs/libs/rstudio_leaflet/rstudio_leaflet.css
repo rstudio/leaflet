@@ -18,3 +18,10 @@
   border-right: 6px solid transparent;
   /* right: -16px; */
 }
+
+.leaflet-popup-pane .leaflet-popup-tip-container {
+  /* when the tooltip container is clicked, it is closed */
+  pointer-events: all;
+  /* tooltips should display the "hand" icon, just like .leaflet-interactive*/
+  cursor: pointer;
+}
