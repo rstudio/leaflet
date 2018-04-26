@@ -25,3 +25,8 @@
   /* tooltips should display the "hand" icon, just like .leaflet-interactive*/
   cursor: pointer;
 }
+
+/* have the widget be displayed in the right 'layer' */
+.leaflet-map-pane {
+  z-index: auto;
+}
