@@ -5,11 +5,17 @@ import L from "./global/leaflet";
 // data URIs for the default marker, and let any others be loaded via CDN.
 if (typeof(L.Icon.Default.imagePath) === "undefined") {
   // if in a local file, support http
-  if (window.location.protocol === "file:") {
+  switch (window.location.protocol) {
+  case "http:":
+    // don't force http site to be done with https
     L.Icon.Default.imagePath = "http://cdn.leafletjs.com/leaflet/v1.3.1/images/";
-  } else {
-    // otherwise use same protocol
-    L.Icon.Default.imagePath = "//cdn.leafletjs.com/leaflet/v1.3.1/images/";
+    break;
+  default:
+    // file
+    // https
+    // otherwise use https as it works on files and https
+    L.Icon.Default.imagePath = "https://unpkg.com/leaflet@1.3.1/dist/images/";
+    break;
   }
   // don't know how to make this dataURI work since
   //  will be appended to Defaul.imagePath above
