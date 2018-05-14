@@ -325,10 +325,10 @@ proxy %&gt;% clearShapes()</code></pre>
 <p>When you give an object a layer ID, if a similar object exists with the same ID, it will be removed from the map when the new object is added.</p>
 <p>All layer-adding functions take a <code>layerId</code> argument. Generally this is a vectorized argument; if adding 50 polygons, you’ll need to pass either <code>NULL</code> or a 50-element character vector as your <code>layerId</code> value. (If you use a single-element character vector as your <code>layerId</code>, then all of the 50 polygons will have the same ID, and all but the last polygon will be removed; so don’t do that!)</p>
 <p>Layer IDs are namespaced by category. Layer IDs only need be unique within their category; a call to <code>addCircles</code> will not cause any tile layers to be removed, regardless of layer ID, because circles and tiles are in different categories.</p>
-<table>
+<table style="width:100%;">
 <colgroup>
 <col width="13%" />
-<col width="57%" />
+<col width="58%" />
 <col width="14%" />
 <col width="14%" />
 </colgroup>
