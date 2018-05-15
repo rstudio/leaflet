@@ -334,11 +334,17 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 // data URIs for the default marker, and let any others be loaded via CDN.
 if (typeof _leaflet2.default.Icon.Default.imagePath === "undefined") {
   // if in a local file, support http
-  if (window.location.protocol === "file:") {
-    _leaflet2.default.Icon.Default.imagePath = "http://cdn.leafletjs.com/leaflet/v1.3.1/images/";
-  } else {
-    // otherwise use same protocol
-    _leaflet2.default.Icon.Default.imagePath = "//cdn.leafletjs.com/leaflet/v1.3.1/images/";
+  switch (window.location.protocol) {
+    case "http:":
+      // don't force http site to be done with https
+      _leaflet2.default.Icon.Default.imagePath = "http://cdn.leafletjs.com/leaflet/v1.3.1/images/";
+      break;
+    default:
+      // file
+      // https
+      // otherwise use https as it works on files and https
+      _leaflet2.default.Icon.Default.imagePath = "https://unpkg.com/leaflet@1.3.1/dist/images/";
+      break;
   }
   // don't know how to make this dataURI work since
   //  will be appended to Defaul.imagePath above
@@ -2058,7 +2064,7 @@ methods.addScaleBar = function (options) {
 
 methods.removeScaleBar = function () {
   if (this.currentScaleBar) {
-    this.currentScaleBar.removeFrom(this);
+    this.currentScaleBar.remove();
     this.currentScaleBar = null;
   }
 };
