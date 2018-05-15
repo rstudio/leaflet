@@ -3,7 +3,7 @@
 #' Sizing policy used withing leaflet htmlwidgets.  All arguments are passed directly to \code{htmlwidgets::\link[htmlwidgets]{sizingPolicy}}
 #'
 #' @export
-#' @param defaultWidth defaults to "100%" of the available with
+#' @param defaultWidth defaults to \code{"100\%"} of the available width
 #' @param defaultHeight defaults to 400px tall
 #' @param padding defaults to 0px
 #' @param browser.fill defaults to \code{TRUE}
@@ -52,6 +52,7 @@ leafletSizingPolicy <- function(
 #' @param options the map options
 #' @param elementId Use an explicit element ID for the widget
 #'   (rather than an automatically generated one).
+#' @param sizingPolicy htmlwidgets sizing policy object. Defaults to \code{\link{leafletSizingPolicy}()}
 #' @return A HTML widget object, on which we can add graphics layers using
 #'   \code{\%>\%} (see examples).
 #' @example inst/examples/leaflet.R

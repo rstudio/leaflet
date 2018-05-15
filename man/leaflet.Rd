@@ -37,6 +37,8 @@ spatial data frames from the \pkg{sf} package.}
 \item{elementId}{Use an explicit element ID for the widget
 (rather than an automatically generated one).}
 
+\item{sizingPolicy}{htmlwidgets sizing policy object. Defaults to \code{\link{leafletSizingPolicy}()}}
+
 \item{minZoom}{Minimum zoom level of the map. Overrides any minZoom set on map layers.}
 
 \item{maxZoom}{Maximum zoom level of the map. This overrides any maxZoom set on map layers.}

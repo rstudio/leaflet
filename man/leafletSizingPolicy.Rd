@@ -8,7 +8,7 @@ leafletSizingPolicy(defaultWidth = "100\%", defaultHeight = 400,
   padding = 0, browser.fill = TRUE, ...)
 }
 \arguments{
-\item{defaultWidth}{defaults to "100%" of the available with}
+\item{defaultWidth}{defaults to \code{"100\%"} of the available width}
 
 \item{defaultHeight}{defaults to 400px tall}
 
