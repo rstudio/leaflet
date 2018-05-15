@@ -7,7 +7,8 @@
 \title{Create a Leaflet map widget}
 \usage{
 leaflet(data = NULL, width = NULL, height = NULL, padding = 0,
-  options = leafletOptions(), elementId = NULL)
+  options = leafletOptions(), elementId = NULL,
+  sizingPolicy = leafletSizingPolicy(padding = padding))
 
 leafletOptions(minZoom = NULL, maxZoom = NULL, crs = leafletCRS(),
   worldCopyJump = NULL, preferCanvas = NULL, ...)

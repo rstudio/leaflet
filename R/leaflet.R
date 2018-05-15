@@ -1,10 +1,21 @@
+#' Leaflet sizing policy
+#'
+#' Sizing policy used withing leaflet htmlwidgets.  All arguments are passed directly to \code{htmlwidgets::\link[htmlwidgets]{sizingPolicy}}
+#'
+#' @export
+#' @param defaultWidth defaults to "100%" of the available with
+#' @param defaultHeight defaults to 400px tall
+#' @param padding defaults to 0px
+#' @param browser.fill defaults to \code{TRUE}
+#' @param ... all other arguments supplied to \code{htmlwidgets::\link[htmlwidgets]{sizingPolicy}}
+#' @return An \code{htmlwidgets::sizingPolicy} object
 leafletSizingPolicy <- function(
   defaultWidth = "100%",
   defaultHeight = 400,
-  padding = padding,
+  padding = 0,
   browser.fill = TRUE,
   ...
-  # TODO add regular sizing policy args for autocomplete
+  # not adding extra arguments as htmlwidgets::sizingPolicy can change their own args
 ) {
   htmlwidgets::sizingPolicy(
     defaultWidth = defaultWidth,
