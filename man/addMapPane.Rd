@@ -31,8 +31,6 @@ sure the pane being used for used for display has already been added to the map.
 \examples{
 \donttest{rand_lng <- function(n = 10) rnorm(n, -93.65, .01)
 rand_lat <- function(n = 10) rnorm(n, 42.0285, .01)
-# use automatic bounds derived from lng/lat data
-m <- m \%>\% clearBounds()
 
 random_data <- data.frame(
   lng = rand_lng(50),
