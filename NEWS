@@ -7,6 +7,8 @@ BUG FIXES
 
 
 * `.leaflet-map-pane` `z-index` switched to 'auto'. Allows for map panes to appear above the map if they appear later in the dom. (#537)
+* Use correct Leaflet.js scale control remove method (#547)
+
 
 leaflet 2.0.0
 --------------------------------------------------------------------------------
