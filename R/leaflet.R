@@ -1,3 +1,21 @@
+leafletSizingPolicy <- function(
+  defaultWidth = "100%",
+  defaultHeight = 400,
+  padding = padding,
+  browser.fill = TRUE,
+  ...
+  # TODO add regular sizing policy args for autocomplete
+) {
+  htmlwidgets::sizingPolicy(
+    defaultWidth = defaultWidth,
+    defaultHeight = defaultHeight,
+    padding = padding,
+    browser.fill = browser.fill,
+    ...
+  )
+}
+
+
 #' Create a Leaflet map widget
 #'
 #' This function creates a Leaflet map widget using \pkg{htmlwidgets}. The
@@ -29,7 +47,7 @@
 #' @export
 leaflet <- function(data = NULL, width = NULL, height = NULL,
                    padding = 0, options = leafletOptions(),
-                   elementId = NULL) {
+                   elementId = NULL, sizingPolicy = leafletSizingPolicy(padding = padding)) {
 
   # Validate the CRS if specified
  if (!is.null(options[["crs"]]) &&
@@ -44,12 +62,7 @@ leaflet <- function(data = NULL, width = NULL, height = NULL,
       leafletData = data
     ),
     width = width, height = height,
-    sizingPolicy = htmlwidgets::sizingPolicy(
-      defaultWidth = "100%",
-      defaultHeight = 400,
-      padding = padding,
-      browser.fill = TRUE
-    ),
+    sizingPolicy = sizingPolicy,
     preRenderHook = function(widget) {
       if (!is.null(widget$jsHooks$render)) {
         widget$jsHooks$render <- lapply(widget$jsHooks$render, function(hook) {
@@ -119,7 +132,7 @@ mapOptions <- function(map, zoomToLimits = c("always", "first", "never")) {
 #' @param  crs Coordinate Reference System to use. Don't change this if you're not sure what it means.
 #' @seealso \code{\link{leafletCRS}} for creating a custom CRS.
 #' @param  worldCopyJump With this option enabled, the map tracks when you pan to another "copy" of the world and seamlessly jumps to the original one so that all overlays like markers and vector layers are still visible.
-#' @param preferCanvas Whether leaflet.js Paths should be rendered on a Canvas renderer. 
+#' @param preferCanvas Whether leaflet.js Paths should be rendered on a Canvas renderer.
 #' @param ... other options used for leaflet.js map creation.
 #' @describeIn leaflet Options for map creation
 #' @seealso See \url{http://leafletjs.com/reference-1.3.1.html#map-option} for details and more options.
