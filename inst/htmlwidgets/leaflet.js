@@ -2058,7 +2058,7 @@ methods.addScaleBar = function (options) {
 
 methods.removeScaleBar = function () {
   if (this.currentScaleBar) {
-    this.currentScaleBar.removeFrom(this);
+    this.currentScaleBar.remove();
     this.currentScaleBar = null;
   }
 };
