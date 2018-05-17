@@ -7,7 +7,8 @@
 \title{Create a Leaflet map widget}
 \usage{
 leaflet(data = NULL, width = NULL, height = NULL, padding = 0,
-  options = leafletOptions(), elementId = NULL)
+  options = leafletOptions(), elementId = NULL,
+  sizingPolicy = leafletSizingPolicy(padding = padding))
 
 leafletOptions(minZoom = NULL, maxZoom = NULL, crs = leafletCRS(),
   worldCopyJump = NULL, preferCanvas = NULL, ...)
@@ -35,6 +36,8 @@ spatial data frames from the \pkg{sf} package.}
 
 \item{elementId}{Use an explicit element ID for the widget
 (rather than an automatically generated one).}
+
+\item{sizingPolicy}{htmlwidgets sizing policy object. Defaults to \code{\link{leafletSizingPolicy}()}}
 
 \item{minZoom}{Minimum zoom level of the map. Overrides any minZoom set on map layers.}
 

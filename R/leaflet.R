@@ -1,3 +1,32 @@
+#' Leaflet sizing policy
+#'
+#' Sizing policy used withing leaflet htmlwidgets.  All arguments are passed directly to \code{htmlwidgets::\link[htmlwidgets]{sizingPolicy}}
+#'
+#' @export
+#' @param defaultWidth defaults to \code{"100\%"} of the available width
+#' @param defaultHeight defaults to 400px tall
+#' @param padding defaults to 0px
+#' @param browser.fill defaults to \code{TRUE}
+#' @param ... all other arguments supplied to \code{htmlwidgets::\link[htmlwidgets]{sizingPolicy}}
+#' @return An \code{htmlwidgets::sizingPolicy} object
+leafletSizingPolicy <- function(
+  defaultWidth = "100%",
+  defaultHeight = 400,
+  padding = 0,
+  browser.fill = TRUE,
+  ...
+  # not adding extra arguments as htmlwidgets::sizingPolicy can change their own args
+) {
+  htmlwidgets::sizingPolicy(
+    defaultWidth = defaultWidth,
+    defaultHeight = defaultHeight,
+    padding = padding,
+    browser.fill = browser.fill,
+    ...
+  )
+}
+
+
 #' Create a Leaflet map widget
 #'
 #' This function creates a Leaflet map widget using \pkg{htmlwidgets}. The
@@ -23,13 +52,14 @@
 #' @param options the map options
 #' @param elementId Use an explicit element ID for the widget
 #'   (rather than an automatically generated one).
+#' @param sizingPolicy htmlwidgets sizing policy object. Defaults to \code{\link{leafletSizingPolicy}()}
 #' @return A HTML widget object, on which we can add graphics layers using
 #'   \code{\%>\%} (see examples).
 #' @example inst/examples/leaflet.R
 #' @export
 leaflet <- function(data = NULL, width = NULL, height = NULL,
                    padding = 0, options = leafletOptions(),
-                   elementId = NULL) {
+                   elementId = NULL, sizingPolicy = leafletSizingPolicy(padding = padding)) {
 
   # Validate the CRS if specified
  if (!is.null(options[["crs"]]) &&
@@ -44,12 +74,7 @@ leaflet <- function(data = NULL, width = NULL, height = NULL,
       leafletData = data
     ),
     width = width, height = height,
-    sizingPolicy = htmlwidgets::sizingPolicy(
-      defaultWidth = "100%",
-      defaultHeight = 400,
-      padding = padding,
-      browser.fill = TRUE
-    ),
+    sizingPolicy = sizingPolicy,
     preRenderHook = function(widget) {
       if (!is.null(widget$jsHooks$render)) {
         widget$jsHooks$render <- lapply(widget$jsHooks$render, function(hook) {
@@ -119,7 +144,7 @@ mapOptions <- function(map, zoomToLimits = c("always", "first", "never")) {
 #' @param  crs Coordinate Reference System to use. Don't change this if you're not sure what it means.
 #' @seealso \code{\link{leafletCRS}} for creating a custom CRS.
 #' @param  worldCopyJump With this option enabled, the map tracks when you pan to another "copy" of the world and seamlessly jumps to the original one so that all overlays like markers and vector layers are still visible.
-#' @param preferCanvas Whether leaflet.js Paths should be rendered on a Canvas renderer. 
+#' @param preferCanvas Whether leaflet.js Paths should be rendered on a Canvas renderer.
 #' @param ... other options used for leaflet.js map creation.
 #' @describeIn leaflet Options for map creation
 #' @seealso See \url{http://leafletjs.com/reference-1.3.1.html#map-option} for details and more options.
