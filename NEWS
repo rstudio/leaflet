@@ -1,6 +1,10 @@
 leaflet 2.0.0.9000
 --------------------------------------------------------------------------------
 
+FEATURES
+
+* Exposed htmlwidgets sizingPolicy in leaflet() (#548)
+
 BUG FIXES
 
 * Default marker icon locations will now use unpkg.com instead of the leaflet cdn when using https or file protocols. (#544)
