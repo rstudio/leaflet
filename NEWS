@@ -1,11 +1,15 @@
 leaflet 2.0.0.9000
 --------------------------------------------------------------------------------
 
+FEATURES
+
+* Added method `addMapPane` to add custom pane layers to have fine tune control over layer ordering. New feature from within leaflet.js v1.x. (#549)
+
 BUG FIXES
 
 * Default marker icon locations will now use unpkg.com instead of the leaflet cdn when using https or file protocols. (#544)
 * `.leaflet-map-pane` `z-index` switched to 'auto'. Allows for map panes to appear above the map if they appear later in the dom. (#537)
-* Use correct Leaflet.js scale control remove method (#547)
+* Use correct Leaflet.js scale control remove method. (#547)
 
 
 leaflet 2.0.0
