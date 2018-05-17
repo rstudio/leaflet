@@ -4,6 +4,7 @@ leaflet 2.0.0.9000
 FEATURES
 
 * Added method `addMapPane` to add custom pane layers to have fine tune control over layer ordering. New feature from within leaflet.js v1.x. (#549)
+* Exposed htmlwidgets sizingPolicy in leaflet() (#548)
 
 BUG FIXES
 
