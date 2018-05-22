@@ -1339,3 +1339,10 @@ methods.removeSelect = function() {
     this._selectButton = null;
   }
 };
+
+
+
+methods.createMapPane = function (name, zIndex) {
+  this.createPane(name);
+  this.getPane(name).style.zIndex = zIndex;
+};
