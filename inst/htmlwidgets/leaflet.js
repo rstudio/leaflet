@@ -2515,6 +2515,11 @@ methods.removeSelect = function () {
   }
 };
 
+methods.createMapPane = function (name, zIndex) {
+  this.createPane(name);
+  this.getPane(name).style.zIndex = zIndex;
+};
+
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./cluster-layer-store":1,"./crs_utils":3,"./dataframe":4,"./global/htmlwidgets":8,"./global/jquery":9,"./global/leaflet":10,"./global/shiny":12,"./mipmapper":16,"./util":17}],16:[function(require,module,exports){
