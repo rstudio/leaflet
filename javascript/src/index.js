@@ -205,16 +205,16 @@ HTMLWidgets.widget({
           methods.fitBounds.apply(map, data.fitBounds);
         }
         if (data.flyTo) {
-          if (!explicitView) {
-            // must be done to give a starting point
+          if (!explicitView && !map.leafletr.hasRendered) {
+            // must be done to give a initial starting point
             map.fitWorld();
           }
           explicitView = true;
           map.flyTo.apply(map, data.flyTo);
         }
         if (data.flyToBounds) {
-          if (!explicitView) {
-            // must be done to give a starting point
+          if (!explicitView && !map.leafletr.hasRendered) {
+            // must be done to give a initial starting point
             map.fitWorld();
           }
           explicitView = true;
