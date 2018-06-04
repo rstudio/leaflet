@@ -2,6 +2,8 @@ source("scripts/git_clean.R")
 
 if (!require("rhub", quietly = TRUE)) install.packages("rhub")
 
+cat("building...\n")
+dir.create("../builds", recursive = TRUE, showWarnings = FALSE)
 build_file <- rhub:::build_package(".", "../builds")
 
 platforms <- c("windows-x86_64-release", rhub:::default_cran_check_platforms(build_file))

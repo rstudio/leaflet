@@ -7,6 +7,7 @@ expect_maps_equal <- function(m1, m2) {
 
 test_that("normalize", {
   skip_if_not_installed("sf")
+  skip_if_not_installed("rgeos")
 
   library(sf)
   library(sp)

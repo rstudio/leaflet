@@ -1,18 +1,48 @@
 # amt
 
-Version: 0.0.3.0
+Version: 0.0.4.0
 
 ## In both
 
 *   checking dependencies in R code ... NOTE
     ```
-    Namespace in Imports field not imported from: ‘Rcpp’
+    Namespaces in Imports field not imported from:
+      ‘Rcpp’ ‘magrittr’
       All declared Imports should be used.
+    ```
+
+# blscrapeR
+
+Version: 3.1.2
+
+## In both
+
+*   checking examples ... ERROR
+    ```
+    Running examples in ‘blscrapeR-Ex.R’ failed
+    The error most likely occurred in:
+    
+    > ### Name: qcew_api
+    > ### Title: Request data from the Quarterly Census of Employment and Wages.
+    > ### Aliases: qcew_api
+    > ### Keywords: api bls cpi economics inflation unemployment
+    > 
+    > ### ** Examples
+    > 
+    > 
+    > # A request for the employment levels and wages for NIACS 5112: Software Publishers.
+    > dat <- qcew_api(year=2015, qtr="A", slice="area", sliceCode="US000")
+    Please set a numeric year.
+    Trying BLS servers...
+    URL caused a warning. Please check your parameters and try again: https://data.bls.gov/cew/data/api/2015/A/area/US000.csv
+    Error in qcew_api(year = 2015, qtr = "A", slice = "area", sliceCode = "US000") : 
+      object 'qcewDat' not found
+    Execution halted
     ```
 
 # CDECRetrieve
 
-Version: 0.1.0
+Version: 0.1.1
 
 ## In both
 
@@ -32,8 +62,6 @@ Version: 0.17.4
 *   checking examples ... ERROR
     ```
     ...
-    [1] NA
-    
     $header$Latitude
     [1] NA
     
@@ -51,8 +79,42 @@ Version: 0.17.4
     > attr(df2, "Wavelengths") <- c(500, 600)
     > attr(df2, "ShortName") <- "abs"
     > as(df2, "Spectra")
-    Error: tz1.set == tz2.set is not TRUE
+    Error in validityMethod(as(object, superClass)) : 
+      tz1.set == tz2.set is not TRUE
+    Calls: as ... anyStrings -> isTRUE -> validityMethod -> stopifnot
     Execution halted
+    ```
+
+# inlmisc
+
+Version: 0.4.0
+
+## In both
+
+*   checking examples ... ERROR
+    ```
+    ...
+    The error most likely occurred in:
+    
+    > ### Name: AddInsetMap
+    > ### Title: Add Inset Map to Plot
+    > ### Aliases: AddInsetMap
+    > ### Keywords: hplot
+    > 
+    > ### ** Examples
+    > 
+    > nc <- rgdal::readOGR(system.file("shapes/sids.shp", package = "maptools")[1],
+    +                      p4s = "+proj=longlat +datum=NAD27")
+    OGR data source with driver: ESRI Shapefile 
+    Source: "/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/library.noindex/inlmisc/maptools/shapes/sids.shp", layer: "sids"
+    with 100 features
+    It has 14 fields
+    Integer64 fields read as strings:  CNTY_ CNTY_ID FIPSNO 
+    > bb <- sp::bbox(nc[100, ])
+    > xlim <- grDevices::extendrange(bb["x", ])
+    > ylim <- grDevices::extendrange(bb["y", ])
+    > PlotMap(raster::crs(nc), xlim = xlim, ylim = ylim, dms.tick = TRUE)
+    Assertion failed: (0), function query, file ../../../../src/geos-3.6.1/src/index/strtree/AbstractSTRtree.cpp, line 287.
     ```
 
 # jpmesh
@@ -68,31 +130,9 @@ Version: 1.1.0
 
 # jpndistrict
 
-Version: 0.3.0
+Version: 0.3.1
 
 ## In both
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      Loading required package: jpmesh
-      This package provide map data is based on the Digital Map 25000(Map
-      Image) published by Geospatial Information Authorityof Japan (Approval
-      No.603FY2017 information usage <http://www.gsi.go.jp>)
-      > 
-      > test_check("jpndistrict")
-      ── 1. Failure: jpn_pref (@test-spdf_jpn.R#20)  ─────────────────────────────────
-      Names of `df_pref2` ('jis_code', 'prefecture', 'geometry') don't match 'jis_code', 'prefecture', '.'
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 41 SKIPPED: 0 FAILED: 1
-      1. Failure: jpn_pref (@test-spdf_jpn.R#20) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
 
 *   checking data for non-ASCII characters ... NOTE
     ```
@@ -109,31 +149,6 @@ Version: 0.4.2
     ```
     Packages which this enhances but not available for checking:
       ‘maps’ ‘geojsonio’
-    ```
-
-# leaflet.esri
-
-Version: 0.2
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘htmlwidgets’ ‘shiny’
-      All declared Imports should be used.
-    ```
-
-# leaflet.extras
-
-Version: 0.2
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘shiny’
-      All declared Imports should be used.
     ```
 
 # leafletCN
@@ -216,9 +231,45 @@ Version: 1.2.0
       Note: found 6 marked UTF-8 strings
     ```
 
+# mgwrsar
+
+Version: 0.1
+
+## In both
+
+*   checking Rd cross-references ... NOTE
+    ```
+    Packages unavailable to check Rd xrefs: ‘McSpatial’, ‘locfit’
+    ```
+
 # parlitools
 
 Version: 0.2.1
+
+## Newly fixed
+
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    Error in re-building vignettes:
+      ...
+    Linking to GEOS 3.6.1, GDAL 2.1.3, proj.4 4.9.3
+    
+    Attaching package: 'dplyr'
+    
+    The following objects are masked from 'package:stats':
+    
+        filter, lag
+    
+    The following objects are masked from 'package:base':
+    
+        intersect, setdiff, setequal, union
+    
+    Downloading constituency data
+    Quitting from lines 67-110 (introduction.Rmd) 
+    Error: processing vignette 'introduction.Rmd' failed with diagnostics:
+    HTTP error 404.
+    Execution halted
+    ```
 
 ## In both
 
@@ -240,6 +291,20 @@ Version: 1.1.0
       All declared Imports should be used.
     ```
 
+# rdwd
+
+Version: 0.10.2
+
+## In both
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  5.1Mb
+      sub-directories of 1Mb or more:
+        R     2.0Mb
+        doc   2.1Mb
+    ```
+
 # rpostgisLT
 
 Version: 0.6.0
@@ -252,46 +317,6 @@ Version: 0.6.0
       All declared Imports should be used.
     ```
 
-# segclust2d
-
-Version: 0.1.0
-
-## In both
-
-*   checking whether package ‘segclust2d’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/checks.noindex/segclust2d/new/segclust2d.Rcheck/00install.out’ for details.
-    ```
-
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘segclust2d’ ...
-** package ‘segclust2d’ successfully unpacked and MD5 sums checked
-** libs
-clang++  -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I"/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/library.noindex/leaflet/new/Rcpp/include" -I"/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/library.noindex/segclust2d/RcppArmadillo/include" -I/usr/local/include  -fopenmp -fPIC  -Wall -g -O2  -c RcppExports.cpp -o RcppExports.o
-clang: error: unsupported option '-fopenmp'
-make: *** [RcppExports.o] Error 1
-ERROR: compilation failed for package ‘segclust2d’
-* removing ‘/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/checks.noindex/segclust2d/new/segclust2d.Rcheck/segclust2d’
-
-```
-### CRAN
-
-```
-* installing *source* package ‘segclust2d’ ...
-** package ‘segclust2d’ successfully unpacked and MD5 sums checked
-** libs
-clang++  -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I"/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/library.noindex/leaflet/old/Rcpp/include" -I"/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/library.noindex/segclust2d/RcppArmadillo/include" -I/usr/local/include  -fopenmp -fPIC  -Wall -g -O2  -c RcppExports.cpp -o RcppExports.o
-clang: error: unsupported option '-fopenmp'
-make: *** [RcppExports.o] Error 1
-ERROR: compilation failed for package ‘segclust2d’
-* removing ‘/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/checks.noindex/segclust2d/old/segclust2d.Rcheck/segclust2d’
-
-```
 # SpatialEpiApp
 
 Version: 0.3
@@ -338,19 +363,39 @@ Version: 0.4.1
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  8.1Mb
+      installed size is  8.2Mb
     ```
 
 # SWMPrExtension
 
-Version: 0.3.12
+Version: 0.3.14
 
 ## In both
 
+*   checking examples ... ERROR
+    ```
+    Running examples in ‘SWMPrExtension-Ex.R’ failed
+    The error most likely occurred in:
+    
+    > ### Name: national_sk_map
+    > ### Title: Reserve National Map with Seasonal Kendall Results
+    > ### Aliases: national_sk_map
+    > 
+    > ### ** Examples
+    > 
+    > ##National map highlighting west coast states and NERRS (including AK)
+    > nerr_states_west <- c('02', '06', '41', '53')
+    > 
+    > nerrs_codes <- c('pdb', 'sos', 'sfb', 'elk', 'tjr', 'kac')
+    > nerrs_sk_results <- c('inc', 'inc', 'dec', 'insig', 'insuff', 'dec')
+    > 
+    > national_sk_map(sk_reserve = nerrs_codes, sk_results = nerrs_sk_results)
+    Assertion failed: (!"should never be reached"), function itemsTree, file ../../../../src/geos-3.6.1/src/index/strtree/AbstractSTRtree.cpp, line 373.
+    ```
+
 *   checking dependencies in R code ... NOTE
     ```
-    Namespaces in Imports field not imported from:
-      ‘rgeos’ ‘stringr’
+    Namespace in Imports field not imported from: ‘rgeos’
       All declared Imports should be used.
     ```
 
@@ -390,9 +435,36 @@ Version: 1.11-2
 
 ## In both
 
+*   checking examples ... ERROR
+    ```
+    Running examples in ‘tmap-Ex.R’ failed
+    The error most likely occurred in:
+    
+    > ### Name: tm_xlab
+    > ### Title: Axis labels
+    > ### Aliases: tm_xlab tm_ylab
+    > 
+    > ### ** Examples
+    > 
+    > data(World)
+    > 
+    > qtm(World, fill="#FFF8DC", projection="longlat", inner.margins=0) +
+    + 	tm_grid(x = seq(-180, 180, by=20), y=seq(-90,90,by=10), col = "gray70") +
+    + 	tm_xlab("Longitude") +
+    + 	tm_ylab("Latitude")
+    Assertion failed: (0), function query, file ../../../../src/geos-3.6.1/src/index/strtree/AbstractSTRtree.cpp, line 287.
+    ```
+
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    Error in re-building vignettes:
+      ...
+    Assertion failed: (0), function query, file ../../../../src/geos-3.6.1/src/index/strtree/AbstractSTRtree.cpp, line 287.
+    ```
+
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.3Mb
+      installed size is  5.8Mb
       sub-directories of 1Mb or more:
         data   1.5Mb
         doc    3.3Mb
@@ -406,7 +478,7 @@ Version: 1.0.0
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.0Mb
+      installed size is  5.2Mb
       sub-directories of 1Mb or more:
         data   1.2Mb
         doc    2.7Mb
@@ -429,6 +501,11 @@ Version: 1.0.4
 
 ## In both
 
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘RSelenium’
+    ```
+
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
@@ -443,6 +520,32 @@ Version: 1.0.4
 Version: 1.2.1
 
 ## In both
+
+*   checking examples ... ERROR
+    ```
+    ...
+    > ### Name: GridFilter
+    > ### Title: Make a grid from a Polygon
+    > ### Aliases: GridFilter
+    > 
+    > ### ** Examples
+    > 
+    > library(sp)
+    > 
+    > ## Exemplary input Polygon with 2km x 2km:
+    > Polygon1 <- Polygon(rbind(c(0, 0), c(0, 2000),
+    + c(2000, 2000), c(2000, 0)))
+    > Polygon1 <- Polygons(list(Polygon1),1);
+    > Polygon1 <- SpatialPolygons(list(Polygon1))
+    > Projection <- "+proj=laea +lat_0=52 +lon_0=10 +x_0=4321000 +y_0=3210000
+    + +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"
+    > proj4string(Polygon1) <- CRS(Projection)
+    > plot(Polygon1,axes=TRUE)
+    > 
+    > ## Create a Grid
+    > GridFilter(Polygon1,200,1,TRUE)
+    Assertion failed: (0), function query, file ../../../../src/geos-3.6.1/src/index/strtree/AbstractSTRtree.cpp, line 287.
+    ```
 
 *   checking dependencies in R code ... NOTE
     ```
