@@ -2,6 +2,7 @@ source("scripts/git_clean.R")
 
 if (!require("rhub", quietly = TRUE)) install.packages("rhub")
 
+cat("building...\n")
 dir.create("../builds", recursive = TRUE, showWarnings = FALSE)
 build_file <- rhub:::build_package(".", "../builds")
 
