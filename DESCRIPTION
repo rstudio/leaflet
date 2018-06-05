@@ -50,7 +50,7 @@ Imports:
     scales (>= 0.2.5),
     sp,
     stats,
-    viridis
+    viridis (>= 0.5.1)
 Suggests:
     knitr,
     maps,
