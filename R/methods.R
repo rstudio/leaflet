@@ -32,6 +32,26 @@ setView <- function(map, lng, lat, zoom, options = list()) {
   )
 }
 
+#' Efficiently style a group that has already been added to the map
+#'
+#' Call with a group and a vector of style lists of length N. The first N
+#' features of the group will be restyled.
+#'
+#' @examples
+#' \donttest{
+#' renderLeaflet("map", {
+#'   leaflet() %>% addPolygons(data = zones, group = "zones", color = "red")
+#' })
+#' colour = "blue"
+#' styles = lapply(pal(values), function(colour) {list(fillColor=colour, color=colour)})
+#' leafletProxy("map") %>%
+#'   setStyle("zones", styles)
+#' }
+#' @export
+setStyle = function(map, group, styles) {
+    invokeMethod(map, NULL, "setStyle", group, styles)
+}
+
 #' @describeIn map-methods Flys to a given location/zoom-level using smooth pan-zoom.
 #' @export
 flyTo <- function(map, lng, lat, zoom, options = list()) {

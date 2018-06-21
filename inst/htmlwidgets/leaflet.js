@@ -1282,6 +1282,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var methods = {};
 exports.default = methods;
 
+/** Much more performant way to style loaded geometry */
+
+methods.setStyle = function (group, styles) {
+  window.map = this;
+  var layers = this.layerManager.getLayerGroup(group).getLayers();
+  for (var i = 0; i < styles.length; i++) {
+    layers[i].setStyle(styles[i]);
+  }
+};
 
 function mouseHandler(mapId, layerId, group, eventName, extraInfo) {
   return function (e) {
