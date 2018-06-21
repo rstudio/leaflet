@@ -48,8 +48,8 @@ setView <- function(map, lng, lat, zoom, options = list()) {
 #'   setStyle("zones", styles)
 #' }
 #' @export
-setStyle = function(map, group, styles) {
-    invokeMethod(map, NULL, "setStyle", group, styles)
+setStyle = function(map, group, styles, label = NULL) {
+    invokeMethod(map, NULL, "setStyle", group, styles, label)
 }
 
 #' @describeIn map-methods Flys to a given location/zoom-level using smooth pan-zoom.

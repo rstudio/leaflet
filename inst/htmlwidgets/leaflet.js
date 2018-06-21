@@ -1284,11 +1284,19 @@ exports.default = methods;
 
 /** Much more performant way to style loaded geometry */
 
-methods.setStyle = function (group, styles) {
+methods.setStyle = function (group, styles, labels) {
   window.map = this;
   var layers = this.layerManager.getLayerGroup(group).getLayers();
-  for (var i = 0; i < styles.length; i++) {
-    layers[i].setStyle(styles[i]);
+
+  if (styles) {
+    for (var i = 0; i < styles.length; i++) {
+      layers[i].setStyle(styles[i]);
+    }
+  }
+  if (labels) {
+    for (var _i = 0; _i < styles.length; _i++) {
+      layers[_i].bindTooltip(labels[_i]);
+    }
   }
 };
 

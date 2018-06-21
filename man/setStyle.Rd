@@ -4,7 +4,7 @@
 \alias{setStyle}
 \title{Efficiently style a group that has already been added to the map}
 \usage{
-setStyle(map, group, styles)
+setStyle(map, group, styles, label = NULL)
 }
 \description{
 Call with a group and a vector of style lists of length N. The first N
