@@ -1051,7 +1051,7 @@ pathOptions <- function(
 #' Options to highlight shapes (polylines/polygons/circles/rectangles)
 #' @param bringToFront Whether the shape should be brought to front on hover.
 #' @param sendToBack whether the shape should be sent to back on mouse out.
-#' @describeIn map-layers Options to highligh a shape on hover
+#' @describeIn map-layers Options to highlight a shape on hover
 #' @export
 highlightOptions <- function(
   stroke = NULL,
