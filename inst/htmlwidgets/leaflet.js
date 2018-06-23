@@ -1285,18 +1285,31 @@ exports.default = methods;
 /** Much more performant way to style loaded geometry */
 
 methods.setStyle = function (group, styles, labels) {
+  var offset = arguments.length <= 3 || arguments[3] === undefined ? 0 : arguments[3];
+
   window.map = this;
   var layers = this.layerManager.getLayerGroup(group).getLayers();
 
   if (styles) {
     for (var i = 0; i < styles.length; i++) {
-      layers[i].setStyle(styles[i]);
+      layers[i + offset].setStyle(styles[i]);
     }
   }
   if (labels) {
     for (var _i = 0; _i < styles.length; _i++) {
-      layers[_i].bindTooltip(labels[_i]);
+      layers[_i + offset].bindTooltip(labels[_i]);
     }
+  }
+};
+
+/** Much more performant way to style loaded geometry */
+methods.setStyleFast = function (group, colors, labels) {
+  window.map = this;
+  var layers = this.layerManager.getLayerGroup(group).getLayers();
+
+  for (var i = 0; i < colors.length; i++) {
+    layers[i].setStyle({ color: colors[i], fillColor: colors[i] });
+    layers[i].bindTooltip(labels[i]);
   }
 };
 
