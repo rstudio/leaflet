@@ -18,13 +18,21 @@ function mouseHandler(mapId, layerId, group, eventName, extraInfo) {
   return function(e) {
     if (!HTMLWidgets.shinyMode) return;
 
+    let latLng = e.target.getLatLng ? e.target.getLatLng() : e.latlng;
+    if (latLng) {
+      // retrieve only lat, lon values to remove prototype
+      //   and extra parameters added by 3rd party modules
+      // these objects are for json serialization, not javascript
+      let latLngVal = L.latLng(latLng); // make sure it has consistent shape
+      latLng = {lat: latLngVal.lat, lon: latLngVal.lon};
+    }
     let eventInfo = $.extend(
       {
         id: layerId,
         ".nonce": Math.random()  // force reactivity
       },
       group !== null ? {group: group} : null,
-      e.target.getLatLng ? e.target.getLatLng() : e.latlng,
+      latLng,
       extraInfo
     );
 
