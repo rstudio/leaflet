@@ -52,8 +52,8 @@ setStyle = function(map, group, styles, label = NULL, offset = 0) {
     invokeMethod(map, NULL, "setStyle", group, styles, label, offset)
 }
 
-setStyleFast = function(map, group, color, label = NULL) {
-    invokeMethod(map, NULL, "setStyleFast", group, color, label)
+setStyleFast = function(map, group, color = NULL, weight = NULL, label = NULL) {
+    invokeMethod(map, NULL, "setStyleFast", group, color, weight, label)
 }
 
 #' @describeIn map-methods Flys to a given location/zoom-level using smooth pan-zoom.

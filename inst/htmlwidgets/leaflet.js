@@ -1303,13 +1303,26 @@ methods.setStyle = function (group, styles, labels) {
 };
 
 /** Much more performant way to style loaded geometry */
-methods.setStyleFast = function (group, colors, labels) {
+methods.setStyleFast = function (group, colors, weights, labels) {
   window.map = this;
   var layers = this.layerManager.getLayerGroup(group).getLayers();
 
-  for (var i = 0; i < colors.length; i++) {
-    layers[i].setStyle({ color: colors[i], fillColor: colors[i] });
-    layers[i].bindTooltip(labels[i]);
+  if (labels) {
+    for (var i = 0; i < labels.length; i++) {
+      layers[i].bindTooltip(labels[i]);
+    }
+  }
+
+  if (colors) {
+    for (var _i2 = 0; _i2 < colors.length; _i2++) {
+      layers[_i2].setStyle({ color: colors[_i2], fillColor: colors[_i2] });
+    }
+  }
+
+  if (weights) {
+    for (var _i3 = 0; _i3 < weights.length; _i3++) {
+      layers[_i3].setStyle({ weight: weights[_i3] });
+    }
   }
 };
 

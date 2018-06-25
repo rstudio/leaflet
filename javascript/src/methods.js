@@ -31,13 +31,26 @@ methods.setStyle = function(group, styles, labels, offset = 0) {
 };
 
 /** Much more performant way to style loaded geometry */
-methods.setStyleFast = function(group, colors, labels) {
+methods.setStyleFast = function(group, colors, weights, labels) {
   window.map = this;
   let layers = this.layerManager.getLayerGroup(group).getLayers();
 
-  for (let i = 0; i < colors.length; i++) {
-    layers[i].setStyle({color: colors[i], fillColor: colors[i]})
-    layers[i].bindTooltip(labels[i]);
+  if (labels) {
+    for (let i = 0; i < labels.length; i++) {
+      layers[i].bindTooltip(labels[i]);
+    }
+  }
+
+  if (colors) {
+    for (let i = 0; i < colors.length; i++) {
+      layers[i].setStyle({color: colors[i], fillColor: colors[i]})
+    }
+  }
+
+  if (weights) {
+    for (let i = 0; i < weights.length; i++) {
+      layers[i].setStyle({weight: weights[i]})
+    }
   }
 };
 
