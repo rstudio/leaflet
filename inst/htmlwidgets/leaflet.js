@@ -1293,7 +1293,7 @@ function mouseHandler(mapId, layerId, group, eventName, extraInfo) {
       //   and extra parameters added by 3rd party modules
       // these objects are for json serialization, not javascript
       var latLngVal = _leaflet2.default.latLng(latLng); // make sure it has consistent shape
-      latLng = { lat: latLngVal.lat, lon: latLngVal.lon };
+      latLng = { lat: latLngVal.lat, lng: latLngVal.lng };
     }
     var eventInfo = _jquery2.default.extend({
       id: layerId,

@@ -24,7 +24,7 @@ function mouseHandler(mapId, layerId, group, eventName, extraInfo) {
       //   and extra parameters added by 3rd party modules
       // these objects are for json serialization, not javascript
       let latLngVal = L.latLng(latLng); // make sure it has consistent shape
-      latLng = {lat: latLngVal.lat, lon: latLngVal.lon};
+      latLng = {lat: latLngVal.lat, lng: latLngVal.lng};
     }
     let eventInfo = $.extend(
       {
