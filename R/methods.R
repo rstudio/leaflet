@@ -49,7 +49,7 @@ setView <- function(map, lng, lat, zoom, options = list()) {
 #' }
 #' @export
 setStyle = function(map, group, styles, label = NULL, offset = 0) {
-    invokeMethod(map, NULL, "setStyle", group, styles, label, offset)
+    invokeMethod(map, NULL, "setStyle", group, styles, label, offset - 1)
 }
 
 #' @export
