@@ -140,7 +140,13 @@ HTMLWidgets.widget({
             Shiny.onInputChange(map.id + "_click", {
               lat: e.latlng.lat,
               lng: e.latlng.lng,
-              ".nonce": Math.random() // Force reactivity if lat/lng hasn't changed
+              ".nonce": Math.random(), // Force reactivity if lat/lng hasn't changed
+              modifiers: {
+                alt: e.originalEvent.altKey,
+                ctrl: e.originalEvent.ctrlKey,
+                meta: e.originalEvent.metaKey,
+                shift: e.originalEvent.shiftKey
+              }
             });
           });
 

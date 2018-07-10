@@ -655,7 +655,13 @@ _htmlwidgets2.default.widget({
               _shiny2.default.onInputChange(map.id + "_click", {
                 lat: e.latlng.lat,
                 lng: e.latlng.lng,
-                ".nonce": Math.random() // Force reactivity if lat/lng hasn't changed
+                ".nonce": Math.random(), // Force reactivity if lat/lng hasn't changed
+                modifiers: {
+                  alt: e.originalEvent.altKey,
+                  ctrl: e.originalEvent.ctrlKey,
+                  meta: e.originalEvent.metaKey,
+                  shift: e.originalEvent.shiftKey
+                }
               });
             });
 
@@ -1352,7 +1358,13 @@ function mouseHandler(mapId, layerId, group, eventName, extraInfo) {
     }
     var eventInfo = _jquery2.default.extend({
       id: layerId,
-      ".nonce": Math.random() // force reactivity
+      ".nonce": Math.random(), // force reactivity
+      modifiers: {
+        alt: e.originalEvent.altKey,
+        ctrl: e.originalEvent.ctrlKey,
+        meta: e.originalEvent.metaKey,
+        shift: e.originalEvent.shiftKey
+      }
     }, group !== null ? { group: group } : null, latLng, extraInfo);
 
     _shiny2.default.onInputChange(mapId + "_" + eventName, eventInfo);
