@@ -4,7 +4,7 @@ leaflet 2.0.1.9000
 BUG FIXES and IMPROVEMENTS
 * Require viridis >= 0.5.1 to avoid namespace issues with viridisLite (#557)
 * Fixed broken mouse events after using leaflet-search from leaflet.extras within shiny applications (#563)
-
+* Fixed addMiniMap to make it accessible in other packages (https://github.com/mtennekes/tmap/issues/231)
 
 
 leaflet 2.0.1
