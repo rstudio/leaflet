@@ -458,8 +458,8 @@ WMSTileOptions <- function(
 #'   the latitude column from \code{data})
 #' @param popup a character vector of the HTML content for the popups (you are
 #'   recommended to escape the text using \code{\link[htmltools]{htmlEscape}()}
-#' @param popupOptions A Vector of \code{\link{popupOptions}} to provide popups
 #'   for security reasons)
+#' @param popupOptions A Vector of \code{\link{popupOptions}} to provide popups
 #' @param layerId the layer id
 #' @param group the name of the group the newly created layers should belong to
 #'   (for \code{\link{clearGroup}} and \code{\link{addLayersControl}} purposes).

@@ -138,7 +138,8 @@ argument; the names \code{lat} and \code{latitude} are used when guessing
 the latitude column from \code{data})}
 
 \item{popup}{a character vector of the HTML content for the popups (you are
-recommended to escape the text using \code{\link[htmltools]{htmlEscape}()}}
+recommended to escape the text using \code{\link[htmltools]{htmlEscape}()}
+for security reasons)}
 
 \item{icon}{the icon(s) for markers; an icon is represented by an R list of
 the form \code{list(iconUrl = "?", iconSize = c(x, y))}, and you can use
@@ -147,8 +148,7 @@ that contains images as local files, these local image files will be base64
 encoded into the HTML page so the icon images will still be available even
 when you publish the map elsewhere}
 
-\item{popupOptions}{A Vector of \code{\link{popupOptions}} to provide popups
-for security reasons)}
+\item{popupOptions}{A Vector of \code{\link{popupOptions}} to provide popups}
 
 \item{label}{a character vector of the HTML content for the labels}
 
