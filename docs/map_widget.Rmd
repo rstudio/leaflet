@@ -7,7 +7,7 @@ pagetitle: Leaflet for R - The Map Widget
 The function `leaflet()` returns a Leaflet map widget, which stores a list of objects that can be modified or updated later. Most functions in this package have an argument `map` as their first argument, which makes it easy to use the pipe operator `%>%` in the **magrittr** package, as you have seen from the example in the [Introduction](./).
 
 ### Initializing Options
-The map widget can initialized with certain parameters. This is achieved by populating the `options` argument as shown below.
+The map widget can be initialized with certain parameters. This is achieved by populating the `options` argument as shown below.
 
 ```{r eval=FALSE}
 # Set value for the minZoom and maxZoom settings.

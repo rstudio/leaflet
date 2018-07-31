@@ -200,7 +200,7 @@ $(document).ready(function () {
 <p>The function <code>leaflet()</code> returns a Leaflet map widget, which stores a list of objects that can be modified or updated later. Most functions in this package have an argument <code>map</code> as their first argument, which makes it easy to use the pipe operator <code>%&gt;%</code> in the <strong>magrittr</strong> package, as you have seen from the example in the <a href="./">Introduction</a>.</p>
 <div id="initializing-options" class="section level3">
 <h3>Initializing Options</h3>
-<p>The map widget can initialized with certain parameters. This is achieved by populating the <code>options</code> argument as shown below.</p>
+<p>The map widget can be initialized with certain parameters. This is achieved by populating the <code>options</code> argument as shown below.</p>
 <pre class="r"><code># Set value for the minZoom and maxZoom settings.
 leaflet(options = leafletOptions(minZoom = 0, maxZoom = 18))</code></pre>
 <p>The <code>leafletOptions()</code> can be passed any option described in the leaflet <a href="http://leafletjs.com/reference-1.0.0.html#map-option">reference document</a>. Using the <code>leafletOptions()</code>, you can set a custom <a href="https://en.wikipedia.org/wiki/Spatial_reference_system">CRS</a> and have your map displayed in a non spherical mercator projection as described in <a href="projections.html">projections</a>.</p>
