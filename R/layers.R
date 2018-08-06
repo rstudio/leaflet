@@ -202,8 +202,8 @@ epsg3857 <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y
 #' @param colors the color palette (see \code{\link{colorNumeric}}) or function
 #'   to use to color the raster values (hint: if providing a function, set
 #'   \code{na.color} to \code{"#00000000"} to make \code{NA} areas transparent)
-#' @param opacity the base opacity of the raster, expressed from 0 to 1
-#' @param attribution the HTML string to show as the attribution for this layer
+#' @param opacity Deprecated. If set, will overwrite \code{options$opacity}).
+#' @param attribution Deprecated. If set, will overwrite \code{options$attribution}. 
 #' @param layerId the layer id
 #' @param group the name of the group this raster image should belong to (see
 #'   the same parameter under \code{\link{addTiles}})
@@ -218,6 +218,8 @@ epsg3857 <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y
 #'   Ignored if \code{project = FALSE}. See \code{\link{projectRaster}} for details.
 #' @param maxBytes the maximum number of bytes to allow for the projected image
 #'   (before base64 encoding); defaults to 4MB.
+#' @param options a list of extra options for tile layers.  See \code{\link{tileOptions}}.
+#' @seealso \code{\link{tileOptions}}
 #' @template data-getMapData
 #'
 #' @examples
@@ -236,16 +238,31 @@ addRasterImage <- function(
   map,
   x,
   colors = if (raster::is.factor(x)) "Set1" else "Spectral",
-  opacity = 1,
-  attribution = NULL,
+  opacity = NULL, # deprecated
+  attribution = NULL, # deprecated
   layerId = NULL,
   group = NULL,
   project = TRUE,
   method = c("auto", "bilinear", "ngb"),
   maxBytes = 4 * 1024 * 1024,
+  options = tileOptions(),
   data = getMapData(map)
 ) {
   stopifnot(inherits(x, "RasterLayer"))
+
+  options$detectRetina <- TRUE
+  # options$async <- TRUE removed in 1.x
+
+  # if opacity is set
+  if (!missing(opacity)) {
+    warning("argument 'opacity' is deprecated. Use `options = tileOptions(opacity = ", as.character(opacity), ")` instead.")
+    options$opacity <- opacity
+  }
+  # if attribution is set
+  if (!missing(attribution)) {
+    warning("argument 'attribution' is deprecated. Use `options = tileOptions(attribution = ", as.character(attribution), ")` instead.")
+    options$attribution <- attribution
+  }
 
   raster_is_factor <- raster::is.factor(x)
   method <- match.arg(method)
@@ -304,7 +321,7 @@ addRasterImage <- function(
     list(raster::ymin(bounds), raster::xmax(bounds))
   )
 
-  invokeMethod(map, data, "addRasterImage", uri, latlng, opacity, attribution, layerId, group) %>%
+  invokeMethod(map, data, "addRasterImage", uri, latlng, layerId, group, options) %>%
     expandLimits(
       c(raster::ymin(bounds), raster::ymax(bounds)),
       c(raster::xmin(bounds), raster::xmax(bounds))
@@ -555,7 +572,7 @@ safeLabel <- function(label, data) {
 #' @param textsize Change the text size of a single tooltip
 #' @param textOnly Display only the text, no regular surrounding box.
 #' @param style list of css style to be added to the tooltip
-#' @param zoomAnimation deprecated. See \url{https://github.com/Leaflet/Leaflet/blob/master/CHANGELOG.md#api-changes-5}
+#' @param zoomAnimation Deprecated. See \url{https://github.com/Leaflet/Leaflet/blob/master/CHANGELOG.md#api-changes-5}
 #' @param sticky If true, the tooltip will follow the mouse instead of being fixed at the feature center. Default value is \code{TRUE} (different from leaflet.js \code{FALSE}); see \url{http://leafletjs.com/reference-1.3.1.html#tooltip-sticky}
 #' @describeIn map-options Options for labels
 #' @export
@@ -877,7 +894,7 @@ b64EncodePackedIcons <- function(packedIcons) {
 }
 
 #' @param interactive whether the element emits mouse events
-#' @param clickable DEPRECATED! Use the \code{interactive} option.
+#' @param clickable Deprecated. Use the \code{interactive} option.
 #' @param
 #'   draggable,keyboard,title,alt,zIndexOffset,riseOnHover,riseOffset
 #'   marker options; see \url{http://leafletjs.com/reference-1.3.1.html#marker-option}
@@ -1349,5 +1366,5 @@ removeLayersControl <- function(map) {
 
 
 zoomAnimationWarning <- function() {
-  warning("zoomAnimation has been deprecated by Leaflet.js. See https://github.com/Leaflet/Leaflet/blob/master/CHANGELOG.md#api-changes-5\nignoring 'zoomAnimation' parameter")
+  warning("zoomAnimation has been deprecated by Leaflet.js. See https://github.com/Leaflet/Leaflet/blob/master/CHANGELOG.md#api-changes-5\nignoring 'zoomAnimation' argument")
 }

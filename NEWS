@@ -89,6 +89,8 @@ BUG FIXES AND FEATURES
 
 * Added `method` argument to `addRasterImage()` to enable nearest neighbor interpolation when projecting categorical rasters (#462)
 
+* Added `options` argument to `addRasterImage()` to give finer control over the added tile. (#507)
+
 * Added an `'auto'` method for `addRasterImage()`. Projected factor results are coerced into factors. (9accc7e)
 
 * Added `data` parameter to remaining `addXXX()` methods, including addLegend. (f273edd, #491, #485)
