@@ -5,6 +5,7 @@ if (!require("rhub", quietly = TRUE)) install.packages("rhub")
 cat("building...\n")
 dir.create("../builds", recursive = TRUE, showWarnings = FALSE)
 build_file <- rhub:::build_package(".", "../builds")
+build_file <- build_file[length(build_file)]
 
 platforms <- c("windows-x86_64-release", rhub:::default_cran_check_platforms(build_file))
 check_output <- rhub::check_for_cran(
