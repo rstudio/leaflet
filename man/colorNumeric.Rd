@@ -5,17 +5,18 @@
 \alias{colorBin}
 \alias{colorQuantile}
 \alias{colorFactor}
-\alias{colorNumeric}
 \title{Color mapping}
 \usage{
 colorNumeric(palette, domain, na.color = "#808080", alpha = FALSE,
   reverse = FALSE)
 
-colorBin(palette, domain, bins = 7, pretty = TRUE, na.color = "#808080",
-  alpha = FALSE, reverse = FALSE, right = FALSE)
+colorBin(palette, domain, bins = 7, pretty = TRUE,
+  na.color = "#808080", alpha = FALSE, reverse = FALSE,
+  right = FALSE)
 
-colorQuantile(palette, domain, n = 4, probs = seq(0, 1, length.out = n + 1),
-  na.color = "#808080", alpha = FALSE, reverse = FALSE, right = FALSE)
+colorQuantile(palette, domain, n = 4, probs = seq(0, 1, length.out = n
+  + 1), na.color = "#808080", alpha = FALSE, reverse = FALSE,
+  right = FALSE)
 
 colorFactor(palette, domain, levels = NULL, ordered = FALSE,
   na.color = "#808080", alpha = FALSE, reverse = FALSE)
