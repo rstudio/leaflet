@@ -47,7 +47,7 @@ Imports:
     png,
     RColorBrewer,
     raster,
-    scales (>= 0.2.5),
+    scales (>= 1.0.0),
     sp,
     stats,
     viridis (>= 0.5.1)
@@ -64,4 +64,5 @@ Suggests:
     purrr,
     testthat
 RoxygenNote: 6.0.1
+Encoding: UTF-8
 LazyData: true
