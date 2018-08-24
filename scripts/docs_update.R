@@ -1,3 +1,5 @@
+source("scripts/git_clean.R")
+
 
 require_pkg <- function(pkg, githubRepo = NULL) {
   if (! requireNamespace(pkg, quietly = TRUE)) {
