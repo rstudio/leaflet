@@ -1,3 +1,4 @@
+cat("\n\n\n\n\n\n\n\n\n", commandArgs(TRUE), "\n")
 set.seed(0102)
 options(htmlwidgets.TOJSON_ARGS = list(pretty = TRUE))
 Sys.setenv(R_KNITR_OPTIONS = 'knitr.chunk.tidy = FALSE')
@@ -17,4 +18,4 @@ i = duplicated(v2)
 unlink(c(v1[i], v2), recursive = TRUE)
 file.rename(v1[!i], v2[!i])
 writeLines(x, f)
-
+invisible(TRUE)
