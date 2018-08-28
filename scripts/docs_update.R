@@ -22,4 +22,4 @@ message("Removing ./docs/libs folder")
 unlink("docs/libs", recursive = TRUE)
 cat("\n")
 
-system("cd docs && make clean && make")
+system("cd docs && make clean && make -j 1")

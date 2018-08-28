@@ -17,4 +17,3 @@ html: $(HTML_FILES)
 clean:
 	$(RM) $(HTML_FILES)
 	$(RM) -r libs examples/libs
-
