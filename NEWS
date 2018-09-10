@@ -1,3 +1,11 @@
+leaflet 2.0.3
+--------------------------------------------------------------------------------
+
+BUG FIXES and IMPROVEMENTS
+* Fixed [rstudio/crosstalk#58](https://github.com/rstudio/crosstalk/issues/58), which caused Leaflet maps that used Crosstalk shared data in Shiny apps, to be redrawn at incorrect times.
+
+
+
 leaflet 2.0.2
 --------------------------------------------------------------------------------
 
