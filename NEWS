@@ -1,10 +1,18 @@
-leaflet 2.0.1.9000
+leaflet 2.0.3
+--------------------------------------------------------------------------------
+
+BUG FIXES and IMPROVEMENTS
+* Fixed [rstudio/crosstalk#58](https://github.com/rstudio/crosstalk/issues/58), which caused Leaflet maps that used Crosstalk shared data in Shiny apps, to be redrawn at incorrect times.
+
+
+
+leaflet 2.0.2
 --------------------------------------------------------------------------------
 
 BUG FIXES and IMPROVEMENTS
 * Require viridis >= 0.5.1 to avoid namespace issues with viridisLite (#557)
 * Fixed broken mouse events after using leaflet-search from leaflet.extras within shiny applications (#563)
-* Update st version in leaflet-omnivore to 1.2.2 due to a vulnerability issue
+* Require scales >= 1.0.0 to avoid exact color matching issues (#578)
 
 
 

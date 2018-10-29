@@ -11,29 +11,32 @@
 \title{Extra options for map elements and layers}
 \usage{
 tileOptions(minZoom = 0, maxZoom = 18, maxNativeZoom = NULL,
-  tileSize = 256, subdomains = "abc", errorTileUrl = "", tms = FALSE,
-  noWrap = FALSE, zoomOffset = 0, zoomReverse = FALSE, opacity = 1,
-  zIndex = 1, unloadInvisibleTiles = NULL, updateWhenIdle = NULL,
-  detectRetina = FALSE, ...)
+  tileSize = 256, subdomains = "abc", errorTileUrl = "",
+  tms = FALSE, noWrap = FALSE, zoomOffset = 0, zoomReverse = FALSE,
+  opacity = 1, zIndex = 1, unloadInvisibleTiles = NULL,
+  updateWhenIdle = NULL, detectRetina = FALSE, ...)
 
-WMSTileOptions(styles = "", format = "image/jpeg", transparent = FALSE,
-  version = "1.1.1", crs = NULL, ...)
+WMSTileOptions(styles = "", format = "image/jpeg",
+  transparent = FALSE, version = "1.1.1", crs = NULL, ...)
 
 popupOptions(maxWidth = 300, minWidth = 50, maxHeight = NULL,
   autoPan = TRUE, keepInView = FALSE, closeButton = TRUE,
   zoomAnimation = NULL, closeOnClick = NULL, className = "", ...)
 
 labelOptions(interactive = FALSE, clickable = NULL, noHide = NULL,
-  permanent = FALSE, className = "", direction = "auto", offset = c(0,
-  0), opacity = 1, textsize = "10px", textOnly = FALSE, style = NULL,
-  zoomAnimation = NULL, sticky = TRUE, ...)
+  permanent = FALSE, className = "", direction = "auto",
+  offset = c(0, 0), opacity = 1, textsize = "10px",
+  textOnly = FALSE, style = NULL, zoomAnimation = NULL,
+  sticky = TRUE, ...)
 
-markerOptions(interactive = TRUE, clickable = NULL, draggable = FALSE,
-  keyboard = TRUE, title = "", alt = "", zIndexOffset = 0,
-  opacity = 1, riseOnHover = FALSE, riseOffset = 250, ...)
+markerOptions(interactive = TRUE, clickable = NULL,
+  draggable = FALSE, keyboard = TRUE, title = "", alt = "",
+  zIndexOffset = 0, opacity = 1, riseOnHover = FALSE,
+  riseOffset = 250, ...)
 
-markerClusterOptions(showCoverageOnHover = TRUE, zoomToBoundsOnClick = TRUE,
-  spiderfyOnMaxZoom = TRUE, removeOutsideVisibleBounds = TRUE,
+markerClusterOptions(showCoverageOnHover = TRUE,
+  zoomToBoundsOnClick = TRUE, spiderfyOnMaxZoom = TRUE,
+  removeOutsideVisibleBounds = TRUE,
   spiderLegPolylineOptions = list(weight = 1.5, color = "#222", opacity =
   0.5), freezeAtZoom = FALSE, ...)
 

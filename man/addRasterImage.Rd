@@ -7,8 +7,8 @@
 \usage{
 addRasterImage(map, x, colors = if (raster::is.factor(x)) "Set1" else
   "Spectral", opacity = 1, attribution = NULL, layerId = NULL,
-  group = NULL, project = TRUE, method = c("auto", "bilinear", "ngb"),
-  maxBytes = 4 * 1024 * 1024, data = getMapData(map))
+  group = NULL, project = TRUE, method = c("auto", "bilinear",
+  "ngb"), maxBytes = 4 * 1024 * 1024, data = getMapData(map))
 
 projectRasterForLeaflet(x, method)
 }

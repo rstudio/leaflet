@@ -8,8 +8,9 @@
 addProviderTiles(map, provider, layerId = NULL, group = NULL,
   options = providerTileOptions())
 
-providerTileOptions(errorTileUrl = "", noWrap = FALSE, opacity = NULL,
-  zIndex = NULL, updateWhenIdle = NULL, detectRetina = FALSE, ...)
+providerTileOptions(errorTileUrl = "", noWrap = FALSE,
+  opacity = NULL, zIndex = NULL, updateWhenIdle = NULL,
+  detectRetina = FALSE, ...)
 }
 \arguments{
 \item{map}{the map to add the tile layer to}
