@@ -88,7 +88,7 @@ addMiniMap <- function(
   tilesURL <- NULL
   tilesProvider <- NULL
  if (!is.null(tiles)) {
-   if (tiles %in% providers) {
+   if (tiles %in% leaflet::providers) {
       map$dependencies <- c(map$dependencies, leafletProviderDependencies())
       tilesProvider <- tiles
     } else {
