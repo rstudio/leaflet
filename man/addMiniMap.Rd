@@ -8,11 +8,12 @@
 addMiniMap(map, position = "bottomright", width = 150, height = 150,
   collapsedWidth = 19, collapsedHeight = 19, zoomLevelOffset = -5,
   zoomLevelFixed = FALSE, centerFixed = FALSE, zoomAnimation = FALSE,
-  toggleDisplay = FALSE, autoToggleDisplay = FALSE, minimized = FALSE,
-  aimingRectOptions = list(color = "#ff7800", weight = 1, clickable = FALSE),
-  shadowRectOptions = list(color = "#000000", weight = 1, clickable = FALSE,
-  opacity = 0, fillOpacity = 0), strings = list(hideText = "Hide MiniMap",
-  showText = "Show MiniMap"), tiles = NULL, mapOptions = list())
+  toggleDisplay = FALSE, autoToggleDisplay = FALSE,
+  minimized = FALSE, aimingRectOptions = list(color = "#ff7800", weight
+  = 1, clickable = FALSE), shadowRectOptions = list(color = "#000000",
+  weight = 1, clickable = FALSE, opacity = 0, fillOpacity = 0),
+  strings = list(hideText = "Hide MiniMap", showText = "Show MiniMap"),
+  tiles = NULL, mapOptions = list())
 }
 \arguments{
 \item{map}{a map widget object}

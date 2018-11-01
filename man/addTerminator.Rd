@@ -5,8 +5,8 @@
 \title{Add a daylight layer on top of the map}
 \usage{
 addTerminator(map, resolution = 2, time = NULL, layerId = NULL,
-  group = NULL, options = pathOptions(pointerEvents = "none", clickable =
-  FALSE))
+  group = NULL, options = pathOptions(pointerEvents = "none", clickable
+  = FALSE))
 }
 \arguments{
 \item{map}{a map widget object}

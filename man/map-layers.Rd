@@ -21,7 +21,8 @@ addControl(map, html, position = c("topleft", "topright", "bottomleft",
   "bottomright"), layerId = NULL, className = "info legend",
   data = getMapData(map))
 
-addTiles(map, urlTemplate = "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+addTiles(map,
+  urlTemplate = "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
   attribution = NULL, layerId = NULL, group = NULL,
   options = tileOptions(), data = getMapData(map))
 
@@ -32,10 +33,10 @@ addWMSTiles(map, baseUrl, layerId = NULL, group = NULL,
 addPopups(map, lng = NULL, lat = NULL, popup, layerId = NULL,
   group = NULL, options = popupOptions(), data = getMapData(map))
 
-addMarkers(map, lng = NULL, lat = NULL, layerId = NULL, group = NULL,
-  icon = NULL, popup = NULL, popupOptions = NULL, label = NULL,
-  labelOptions = NULL, options = markerOptions(), clusterOptions = NULL,
-  clusterId = NULL, data = getMapData(map))
+addMarkers(map, lng = NULL, lat = NULL, layerId = NULL,
+  group = NULL, icon = NULL, popup = NULL, popupOptions = NULL,
+  label = NULL, labelOptions = NULL, options = markerOptions(),
+  clusterOptions = NULL, clusterId = NULL, data = getMapData(map))
 
 addLabelOnlyMarkers(map, lng = NULL, lat = NULL, layerId = NULL,
   group = NULL, icon = NULL, label = NULL, labelOptions = NULL,
@@ -51,36 +52,41 @@ addCircleMarkers(map, lng = NULL, lat = NULL, radius = 10,
   data = getMapData(map))
 
 highlightOptions(stroke = NULL, color = NULL, weight = NULL,
-  opacity = NULL, fill = NULL, fillColor = NULL, fillOpacity = NULL,
-  dashArray = NULL, bringToFront = NULL, sendToBack = NULL)
+  opacity = NULL, fill = NULL, fillColor = NULL,
+  fillOpacity = NULL, dashArray = NULL, bringToFront = NULL,
+  sendToBack = NULL)
 
-addCircles(map, lng = NULL, lat = NULL, radius = 10, layerId = NULL,
-  group = NULL, stroke = TRUE, color = "#03F", weight = 5,
-  opacity = 0.5, fill = TRUE, fillColor = color, fillOpacity = 0.2,
-  dashArray = NULL, popup = NULL, popupOptions = NULL, label = NULL,
-  labelOptions = NULL, options = pathOptions(), highlightOptions = NULL,
+addCircles(map, lng = NULL, lat = NULL, radius = 10,
+  layerId = NULL, group = NULL, stroke = TRUE, color = "#03F",
+  weight = 5, opacity = 0.5, fill = TRUE, fillColor = color,
+  fillOpacity = 0.2, dashArray = NULL, popup = NULL,
+  popupOptions = NULL, label = NULL, labelOptions = NULL,
+  options = pathOptions(), highlightOptions = NULL,
   data = getMapData(map))
 
-addPolylines(map, lng = NULL, lat = NULL, layerId = NULL, group = NULL,
-  stroke = TRUE, color = "#03F", weight = 5, opacity = 0.5,
-  fill = FALSE, fillColor = color, fillOpacity = 0.2, dashArray = NULL,
-  smoothFactor = 1, noClip = FALSE, popup = NULL, popupOptions = NULL,
-  label = NULL, labelOptions = NULL, options = pathOptions(),
+addPolylines(map, lng = NULL, lat = NULL, layerId = NULL,
+  group = NULL, stroke = TRUE, color = "#03F", weight = 5,
+  opacity = 0.5, fill = FALSE, fillColor = color,
+  fillOpacity = 0.2, dashArray = NULL, smoothFactor = 1,
+  noClip = FALSE, popup = NULL, popupOptions = NULL, label = NULL,
+  labelOptions = NULL, options = pathOptions(),
   highlightOptions = NULL, data = getMapData(map))
 
-addRectangles(map, lng1, lat1, lng2, lat2, layerId = NULL, group = NULL,
-  stroke = TRUE, color = "#03F", weight = 5, opacity = 0.5,
-  fill = TRUE, fillColor = color, fillOpacity = 0.2, dashArray = NULL,
-  smoothFactor = 1, noClip = FALSE, popup = NULL, popupOptions = NULL,
-  label = NULL, labelOptions = NULL, options = pathOptions(),
-  highlightOptions = NULL, data = getMapData(map))
+addRectangles(map, lng1, lat1, lng2, lat2, layerId = NULL,
+  group = NULL, stroke = TRUE, color = "#03F", weight = 5,
+  opacity = 0.5, fill = TRUE, fillColor = color, fillOpacity = 0.2,
+  dashArray = NULL, smoothFactor = 1, noClip = FALSE, popup = NULL,
+  popupOptions = NULL, label = NULL, labelOptions = NULL,
+  options = pathOptions(), highlightOptions = NULL,
+  data = getMapData(map))
 
-addPolygons(map, lng = NULL, lat = NULL, layerId = NULL, group = NULL,
-  stroke = TRUE, color = "#03F", weight = 5, opacity = 0.5,
-  fill = TRUE, fillColor = color, fillOpacity = 0.2, dashArray = NULL,
-  smoothFactor = 1, noClip = FALSE, popup = NULL, popupOptions = NULL,
-  label = NULL, labelOptions = NULL, options = pathOptions(),
-  highlightOptions = NULL, data = getMapData(map))
+addPolygons(map, lng = NULL, lat = NULL, layerId = NULL,
+  group = NULL, stroke = TRUE, color = "#03F", weight = 5,
+  opacity = 0.5, fill = TRUE, fillColor = color, fillOpacity = 0.2,
+  dashArray = NULL, smoothFactor = 1, noClip = FALSE, popup = NULL,
+  popupOptions = NULL, label = NULL, labelOptions = NULL,
+  options = pathOptions(), highlightOptions = NULL,
+  data = getMapData(map))
 
 addGeoJSON(map, geojson, layerId = NULL, group = NULL, stroke = TRUE,
   color = "#03F", weight = 5, opacity = 0.5, fill = TRUE,
@@ -88,10 +94,11 @@ addGeoJSON(map, geojson, layerId = NULL, group = NULL, stroke = TRUE,
   smoothFactor = 1, noClip = FALSE, options = pathOptions(),
   data = getMapData(map))
 
-addTopoJSON(map, topojson, layerId = NULL, group = NULL, stroke = TRUE,
-  color = "#03F", weight = 5, opacity = 0.5, fill = TRUE,
-  fillColor = color, fillOpacity = 0.2, dashArray = NULL,
-  smoothFactor = 1, noClip = FALSE, options = pathOptions())
+addTopoJSON(map, topojson, layerId = NULL, group = NULL,
+  stroke = TRUE, color = "#03F", weight = 5, opacity = 0.5,
+  fill = TRUE, fillColor = color, fillOpacity = 0.2,
+  dashArray = NULL, smoothFactor = 1, noClip = FALSE,
+  options = pathOptions())
 }
 \arguments{
 \item{map}{a map widget object created from \code{\link{leaflet}()}}
@@ -138,7 +145,8 @@ argument; the names \code{lat} and \code{latitude} are used when guessing
 the latitude column from \code{data})}
 
 \item{popup}{a character vector of the HTML content for the popups (you are
-recommended to escape the text using \code{\link[htmltools]{htmlEscape}()}}
+recommended to escape the text using \code{\link[htmltools]{htmlEscape}()}
+for security reasons)}
 
 \item{icon}{the icon(s) for markers; an icon is represented by an R list of
 the form \code{list(iconUrl = "?", iconSize = c(x, y))}, and you can use
@@ -147,8 +155,7 @@ that contains images as local files, these local image files will be base64
 encoded into the HTML page so the icon images will still be available even
 when you publish the map elsewhere}
 
-\item{popupOptions}{A Vector of \code{\link{popupOptions}} to provide popups
-for security reasons)}
+\item{popupOptions}{A Vector of \code{\link{popupOptions}} to provide popups}
 
 \item{label}{a character vector of the HTML content for the labels}
 
@@ -209,8 +216,6 @@ the new \code{map} object
 }
 \description{
 Add graphics elements and layers to the map widget.
-
-Options to highlight shapes (polylines/polygons/circles/rectangles)
 }
 \section{Functions}{
 \itemize{
@@ -228,7 +233,7 @@ Options to highlight shapes (polylines/polygons/circles/rectangles)
 
 \item \code{addCircleMarkers}: Add circle markers to the map
 
-\item \code{highlightOptions}: Options to highligh a shape on hover
+\item \code{highlightOptions}: Options to highlight a shape on hover
 
 \item \code{addCircles}: Add circles to the map
 

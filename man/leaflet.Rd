@@ -15,7 +15,8 @@ leafletOptions(minZoom = NULL, maxZoom = NULL, crs = leafletCRS(),
 
 leafletCRS(crsClass = "L.CRS.EPSG3857", code = NULL, proj4def = NULL,
   projectedBounds = NULL, origin = NULL, transformation = NULL,
-  scales = NULL, resolutions = NULL, bounds = NULL, tileSize = NULL)
+  scales = NULL, resolutions = NULL, bounds = NULL,
+  tileSize = NULL)
 }
 \arguments{
 \item{data}{a data object. Currently supported objects are matrices, data
@@ -84,11 +85,6 @@ A HTML widget object, on which we can add graphics layers using
 This function creates a Leaflet map widget using \pkg{htmlwidgets}. The
 widget can be rendered on HTML pages generated from R Markdown, Shiny, or
 other applications.
-
-Options for Map creation
-
-creates a custom CRS
-Refer to \url{https://kartena.github.io/Proj4Leaflet/api/} for details.
 }
 \details{
 The \code{data} argument is only needed if you are going to reference

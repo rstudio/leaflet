@@ -1,3 +1,5 @@
+source("scripts/git_clean.R")
+
 
 require_pkg <- function(pkg, githubRepo = NULL) {
   if (! requireNamespace(pkg, quietly = TRUE)) {
@@ -20,4 +22,4 @@ message("Removing ./docs/libs folder")
 unlink("docs/libs", recursive = TRUE)
 cat("\n")
 
-system("cd docs; make clean; make;")
+system("cd docs && make clean && make -j 1")

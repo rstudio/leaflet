@@ -11,45 +11,51 @@ Version: 0.0.4.0
       All declared Imports should be used.
     ```
 
-# blscrapeR
-
-Version: 3.1.2
-
-## In both
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘blscrapeR-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: qcew_api
-    > ### Title: Request data from the Quarterly Census of Employment and Wages.
-    > ### Aliases: qcew_api
-    > ### Keywords: api bls cpi economics inflation unemployment
-    > 
-    > ### ** Examples
-    > 
-    > 
-    > # A request for the employment levels and wages for NIACS 5112: Software Publishers.
-    > dat <- qcew_api(year=2015, qtr="A", slice="area", sliceCode="US000")
-    Please set a numeric year.
-    Trying BLS servers...
-    URL caused a warning. Please check your parameters and try again: https://data.bls.gov/cew/data/api/2015/A/area/US000.csv
-    Error in qcew_api(year = 2015, qtr = "A", slice = "area", sliceCode = "US000") : 
-      object 'qcewDat' not found
-    Execution halted
-    ```
-
 # CDECRetrieve
 
 Version: 0.1.1
 
 ## In both
 
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    Error in re-building vignettes:
+      ...
+    Quitting from lines 100-102 (CDECRetrieve.Rmd) 
+    Error: processing vignette 'CDECRetrieve.Rmd' failed with diagnostics:
+    Table has inconsistent number of columns. Do you want fill = TRUE?
+    Execution halted
+    ```
+
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
       ‘lazyeval’ ‘purrr’ ‘roxygen2’
+      All declared Imports should be used.
+    ```
+
+# epiflows
+
+Version: 0.2.0
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘htmlwidgets’
+      All declared Imports should be used.
+    ```
+
+# fingertipscharts
+
+Version: 0.0.1
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespaces in Imports field not imported from:
+      ‘fingertipsR’ ‘mapproj’
       All declared Imports should be used.
     ```
 
@@ -85,41 +91,9 @@ Version: 0.17.4
     Execution halted
     ```
 
-# inlmisc
-
-Version: 0.4.0
-
-## In both
-
-*   checking examples ... ERROR
-    ```
-    ...
-    The error most likely occurred in:
-    
-    > ### Name: AddInsetMap
-    > ### Title: Add Inset Map to Plot
-    > ### Aliases: AddInsetMap
-    > ### Keywords: hplot
-    > 
-    > ### ** Examples
-    > 
-    > nc <- rgdal::readOGR(system.file("shapes/sids.shp", package = "maptools")[1],
-    +                      p4s = "+proj=longlat +datum=NAD27")
-    OGR data source with driver: ESRI Shapefile 
-    Source: "/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/library.noindex/inlmisc/maptools/shapes/sids.shp", layer: "sids"
-    with 100 features
-    It has 14 fields
-    Integer64 fields read as strings:  CNTY_ CNTY_ID FIPSNO 
-    > bb <- sp::bbox(nc[100, ])
-    > xlim <- grDevices::extendrange(bb["x", ])
-    > ylim <- grDevices::extendrange(bb["y", ])
-    > PlotMap(raster::crs(nc), xlim = xlim, ylim = ylim, dms.tick = TRUE)
-    Assertion failed: (0), function query, file ../../../../src/geos-3.6.1/src/index/strtree/AbstractSTRtree.cpp, line 287.
-    ```
-
 # jpmesh
 
-Version: 1.1.0
+Version: 1.1.1
 
 ## In both
 
@@ -130,7 +104,7 @@ Version: 1.1.0
 
 # jpndistrict
 
-Version: 0.3.1
+Version: 0.3.2
 
 ## In both
 
@@ -177,18 +151,18 @@ Version: 0.2.1
 
 # lingtypology
 
-Version: 1.0.12
+Version: 1.0.13
 
 ## In both
 
 *   checking data for non-ASCII characters ... NOTE
     ```
-      Note: found 118 marked UTF-8 strings
+      Note: found 120 marked UTF-8 strings
     ```
 
 # mapedit
 
-Version: 0.4.1
+Version: 0.4.3
 
 ## In both
 
@@ -210,13 +184,25 @@ Version: 0.4.0
 
 # mapsapi
 
-Version: 0.3.5
+Version: 0.3.7
 
 ## In both
 
 *   checking dependencies in R code ... NOTE
     ```
     Namespace in Imports field not imported from: ‘plyr’
+      All declared Imports should be used.
+    ```
+
+# mapview
+
+Version: 2.5.0
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘stars’
       All declared Imports should be used.
     ```
 
@@ -242,34 +228,23 @@ Version: 0.1
     Packages unavailable to check Rd xrefs: ‘McSpatial’, ‘locfit’
     ```
 
+# MODIStsp
+
+Version: 1.3.6
+
+## In both
+
+*   checking package dependencies ... ERROR
+    ```
+    Package required but not available: ‘gWidgetsRGtk2’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
+    ```
+
 # parlitools
 
 Version: 0.2.1
-
-## Newly fixed
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error in re-building vignettes:
-      ...
-    Linking to GEOS 3.6.1, GDAL 2.1.3, proj.4 4.9.3
-    
-    Attaching package: 'dplyr'
-    
-    The following objects are masked from 'package:stats':
-    
-        filter, lag
-    
-    The following objects are masked from 'package:base':
-    
-        intersect, setdiff, setequal, union
-    
-    Downloading constituency data
-    Quitting from lines 67-110 (introduction.Rmd) 
-    Error: processing vignette 'introduction.Rmd' failed with diagnostics:
-    HTTP error 404.
-    Execution halted
-    ```
 
 ## In both
 
@@ -278,17 +253,32 @@ Version: 0.2.1
       Note: found 13 marked UTF-8 strings
     ```
 
-# phenocamr
+# pkgdown
 
 Version: 1.1.0
 
 ## In both
 
-*   checking dependencies in R code ... NOTE
+*   checking tests ...
     ```
-    Namespaces in Imports field not imported from:
-      ‘DT’ ‘leaflet’ ‘plotly’ ‘shinydashboard’
-      All declared Imports should be used.
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      nrow(out) not equal to 1.
+      1/1 mismatches
+      [1] 0 - 1 == -1
+      
+      ── 2. Failure: can autodetect published tutorials (@test-tutorials.R#31)  ──────
+      out$name not equal to "test-1".
+      Lengths differ: 0 is not 1
+      
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      OK: 241 SKIPPED: 9 FAILED: 2
+      1. Failure: can autodetect published tutorials (@test-tutorials.R#30) 
+      2. Failure: can autodetect published tutorials (@test-tutorials.R#31) 
+      
+      Error: testthat unit tests failed
+      Execution halted
     ```
 
 # rdwd
@@ -317,6 +307,82 @@ Version: 0.6.0
       All declared Imports should be used.
     ```
 
+# rtrek
+
+Version: 0.1.0
+
+## In both
+
+*   checking data for non-ASCII characters ... NOTE
+    ```
+      Note: found 992 marked UTF-8 strings
+    ```
+
+# segclust2d
+
+Version: 0.1.0
+
+## In both
+
+*   checking whether package ‘segclust2d’ can be installed ... ERROR
+    ```
+    Installation failed.
+    See ‘/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/checks.noindex/segclust2d/new/segclust2d.Rcheck/00install.out’ for details.
+    ```
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘depmixS4’
+    ```
+
+## Installation
+
+### Devel
+
+```
+* installing *source* package ‘segclust2d’ ...
+** package ‘segclust2d’ successfully unpacked and MD5 sums checked
+** libs
+clang++  -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/library.noindex/leaflet/new/Rcpp/include" -I"/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/library.noindex/segclust2d/RcppArmadillo/include" -I/usr/local/include  -fopenmp -fPIC  -Wall -g -O2  -c RcppExports.cpp -o RcppExports.o
+clang++  -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/library.noindex/leaflet/new/Rcpp/include" -I"/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/library.noindex/segclust2d/RcppArmadillo/include" -I/usr/local/include  -fopenmp -fPIC  -Wall -g -O2  -c SegTraj_DynProg.cpp -o SegTraj_DynProg.o
+clang++  -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/library.noindex/leaflet/new/Rcpp/include" -I"/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/library.noindex/segclust2d/RcppArmadillo/include" -I/usr/local/include  -fopenmp -fPIC  -Wall -g -O2  -c SegTraj_EM.cpp -o SegTraj_EM.o
+clang++  -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/library.noindex/leaflet/new/Rcpp/include" -I"/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/library.noindex/segclust2d/RcppArmadillo/include" -I/usr/local/include  -fopenmp -fPIC  -Wall -g -O2  -c SegTraj_Gmixt.cpp -o SegTraj_Gmixt.o
+clang: error: unsupported option '-fopenmp'
+clang: clang: errorerror: unsupported option '-fopenmp': unsupported option '-fopenmp'
+
+clang: error: unsupported option '-fopenmp'
+make: *** [SegTraj_EM.o] Error 1
+make: *** Waiting for unfinished jobs....
+make: *** [SegTraj_Gmixt.o] Error 1
+make: *** [SegTraj_DynProg.o] Error 1
+make: *** [RcppExports.o] Error 1
+ERROR: compilation failed for package ‘segclust2d’
+* removing ‘/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/checks.noindex/segclust2d/new/segclust2d.Rcheck/segclust2d’
+
+```
+### CRAN
+
+```
+* installing *source* package ‘segclust2d’ ...
+** package ‘segclust2d’ successfully unpacked and MD5 sums checked
+** libs
+clang++  -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/library.noindex/leaflet/old/Rcpp/include" -I"/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/library.noindex/segclust2d/RcppArmadillo/include" -I/usr/local/include  -fopenmp -fPIC  -Wall -g -O2  -c RcppExports.cpp -o RcppExports.o
+clang++  -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/library.noindex/leaflet/old/Rcpp/include" -I"/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/library.noindex/segclust2d/RcppArmadillo/include" -I/usr/local/include  -fopenmp -fPIC  -Wall -g -O2  -c SegTraj_DynProg.cpp -o SegTraj_DynProg.o
+clang++  -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/library.noindex/leaflet/old/Rcpp/include" -I"/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/library.noindex/segclust2d/RcppArmadillo/include" -I/usr/local/include  -fopenmp -fPIC  -Wall -g -O2  -c SegTraj_EM.cpp -o SegTraj_EM.o
+clang++  -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I"/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/library.noindex/leaflet/old/Rcpp/include" -I"/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/library.noindex/segclust2d/RcppArmadillo/include" -I/usr/local/include  -fopenmp -fPIC  -Wall -g -O2  -c SegTraj_Gmixt.cpp -o SegTraj_Gmixt.o
+clang: error: unsupported option '-fopenmp'clang: clang: error: error
+: unsupported option '-fopenmp'
+unsupported option '-fopenmp'
+clang: error: unsupported option '-fopenmp'
+make: *** [SegTraj_EM.o] Error 1
+make: *** Waiting for unfinished jobs....
+make: *** [SegTraj_Gmixt.o] Error 1
+make: *** [SegTraj_DynProg.o] Error 1
+make: *** [RcppExports.o] Error 1
+ERROR: compilation failed for package ‘segclust2d’
+* removing ‘/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/revdep/checks.noindex/segclust2d/old/segclust2d.Rcheck/segclust2d’
+
+```
 # SpatialEpiApp
 
 Version: 0.3
@@ -355,60 +421,15 @@ Version: 0.1.0
       Note: found 34 marked UTF-8 strings
     ```
 
-# stationaRy
-
-Version: 0.4.1
-
-## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  8.2Mb
-    ```
-
 # SWMPrExtension
 
-Version: 0.3.14
+Version: 0.3.16
 
 ## In both
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘SWMPrExtension-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: national_sk_map
-    > ### Title: Reserve National Map with Seasonal Kendall Results
-    > ### Aliases: national_sk_map
-    > 
-    > ### ** Examples
-    > 
-    > ##National map highlighting west coast states and NERRS (including AK)
-    > nerr_states_west <- c('02', '06', '41', '53')
-    > 
-    > nerrs_codes <- c('pdb', 'sos', 'sfb', 'elk', 'tjr', 'kac')
-    > nerrs_sk_results <- c('inc', 'inc', 'dec', 'insig', 'insuff', 'dec')
-    > 
-    > national_sk_map(sk_reserve = nerrs_codes, sk_results = nerrs_sk_results)
-    Assertion failed: (!"should never be reached"), function itemsTree, file ../../../../src/geos-3.6.1/src/index/strtree/AbstractSTRtree.cpp, line 373.
-    ```
 
 *   checking dependencies in R code ... NOTE
     ```
     Namespace in Imports field not imported from: ‘rgeos’
-      All declared Imports should be used.
-    ```
-
-# teachingApps
-
-Version: 1.0.2
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘data.table’ ‘datasets’ ‘stats’
       All declared Imports should be used.
     ```
 
@@ -427,47 +448,6 @@ Version: 0.2.0
 *   checking data for non-ASCII characters ... NOTE
     ```
       Note: found 341 marked UTF-8 strings
-    ```
-
-# tmap
-
-Version: 1.11-2
-
-## In both
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘tmap-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: tm_xlab
-    > ### Title: Axis labels
-    > ### Aliases: tm_xlab tm_ylab
-    > 
-    > ### ** Examples
-    > 
-    > data(World)
-    > 
-    > qtm(World, fill="#FFF8DC", projection="longlat", inner.margins=0) +
-    + 	tm_grid(x = seq(-180, 180, by=20), y=seq(-90,90,by=10), col = "gray70") +
-    + 	tm_xlab("Longitude") +
-    + 	tm_ylab("Latitude")
-    Assertion failed: (0), function query, file ../../../../src/geos-3.6.1/src/index/strtree/AbstractSTRtree.cpp, line 287.
-    ```
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error in re-building vignettes:
-      ...
-    Assertion failed: (0), function query, file ../../../../src/geos-3.6.1/src/index/strtree/AbstractSTRtree.cpp, line 287.
-    ```
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  5.8Mb
-      sub-directories of 1Mb or more:
-        data   1.5Mb
-        doc    3.3Mb
     ```
 
 # trackeR
@@ -497,21 +477,16 @@ Version: 0.3.1
 
 # wallace
 
-Version: 1.0.4
+Version: 1.0.5
 
 ## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘RSelenium’
-    ```
 
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
-      ‘DT’ ‘ENMeval’ ‘RColorBrewer’ ‘dismo’ ‘dplyr’ ‘leaflet.extras’
-      ‘maptools’ ‘raster’ ‘rgdal’ ‘rgeos’ ‘shinyjs’ ‘shinythemes’ ‘spThin’
-      ‘spocc’
+      ‘DT’ ‘ENMeval’ ‘RColorBrewer’ ‘XML’ ‘dismo’ ‘dplyr’ ‘leaflet.extras’
+      ‘maptools’ ‘raster’ ‘rgdal’ ‘rgeos’ ‘rmarkdown’ ‘shinyjs’
+      ‘shinythemes’ ‘spThin’ ‘spocc’ ‘testthat’
       All declared Imports should be used.
     ```
 
@@ -520,32 +495,6 @@ Version: 1.0.4
 Version: 1.2.1
 
 ## In both
-
-*   checking examples ... ERROR
-    ```
-    ...
-    > ### Name: GridFilter
-    > ### Title: Make a grid from a Polygon
-    > ### Aliases: GridFilter
-    > 
-    > ### ** Examples
-    > 
-    > library(sp)
-    > 
-    > ## Exemplary input Polygon with 2km x 2km:
-    > Polygon1 <- Polygon(rbind(c(0, 0), c(0, 2000),
-    + c(2000, 2000), c(2000, 0)))
-    > Polygon1 <- Polygons(list(Polygon1),1);
-    > Polygon1 <- SpatialPolygons(list(Polygon1))
-    > Projection <- "+proj=laea +lat_0=52 +lon_0=10 +x_0=4321000 +y_0=3210000
-    + +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"
-    > proj4string(Polygon1) <- CRS(Projection)
-    > plot(Polygon1,axes=TRUE)
-    > 
-    > ## Create a Grid
-    > GridFilter(Polygon1,200,1,TRUE)
-    Assertion failed: (0), function query, file ../../../../src/geos-3.6.1/src/index/strtree/AbstractSTRtree.cpp, line 287.
-    ```
 
 *   checking dependencies in R code ... NOTE
     ```

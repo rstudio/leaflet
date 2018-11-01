@@ -33,10 +33,10 @@ layers (e.g. markers and polygons) can share the same group name.}
 \item{icon}{the icon(s) for markers;}
 
 \item{popup}{a character vector of the HTML content for the popups (you are
-recommended to escape the text using \code{\link[htmltools]{htmlEscape}()}}
-
-\item{popupOptions}{A Vector of \code{\link{popupOptions}} to provide popups
+recommended to escape the text using \code{\link[htmltools]{htmlEscape}()}
 for security reasons)}
+
+\item{popupOptions}{A Vector of \code{\link{popupOptions}} to provide popups}
 
 \item{label}{a character vector of the HTML content for the labels}
 
