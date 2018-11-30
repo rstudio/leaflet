@@ -9,7 +9,9 @@ metaData.sf <- function(obj) {
 
 #' @export
 pointData.sf <- function(obj) {
-  pointData(sf::st_geometry(obj))
+  sanitised_sf <- sf::st_geometry(obj)
+  attr(sanitised_sf, "names") <- NULL
+  pointData(sanitised_sf)
 }
 
 #' @export
@@ -67,7 +69,9 @@ pointData.sfc_GEOMETRY <- function(obj) {
 
 #' @export
 polygonData.sf <- function(obj) {
-  polygonData(sf::st_geometry(obj))
+  sanitised_sf <- sf::st_geometry(obj)
+  attr(sanitised_sf, "names") <- NULL
+  polygonData(sanitised_sf)
 }
 
 #' @export
