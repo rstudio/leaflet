@@ -16,7 +16,7 @@ renderLeaflet(expr, env = parent.frame(), quoted = FALSE)
 \code{\link[htmlwidgets]{shinyWidgetOutput}})}
 
 \item{expr}{An expression that generates an HTML widget (or a
-\href{{https://rstudio.github.io/promises/}{promise}} of an HTML widget).}
+\href{https://rstudio.github.io/promises/}{promise} of an HTML widget).}
 
 \item{env}{The environment in which to evaluate \code{expr}.}
 

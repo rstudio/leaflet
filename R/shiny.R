@@ -22,6 +22,9 @@ leafletOutput <- function(outputId, width = "100%", height = 400) {
   htmlwidgets::shinyWidgetOutput(outputId, "leaflet", width, height, "leaflet")
 }
 
+# use expr description from htmlwidgets to avoid bad inherit params code
+#' @param expr An expression that generates an HTML widget (or a
+#'   \href{https://rstudio.github.io/promises/}{promise} of an HTML widget).
 #' @rdname map-shiny
 #' @export
 renderLeaflet <- function(expr, env = parent.frame(), quoted = FALSE) {
