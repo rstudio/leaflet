@@ -1128,6 +1128,7 @@ addPolylines <- function(
   fill = FALSE,
   fillColor = color,
   fillOpacity = 0.2,
+  offset = NULL,
   dashArray = NULL,
   smoothFactor = 1.0,
   noClip = FALSE,
@@ -1143,9 +1144,12 @@ addPolylines <- function(
 
   options <- c(options, filterNULL(list(
     stroke = stroke, color = color, weight = weight, opacity = opacity,
-    fill = fill, fillColor = fillColor, fillOpacity = fillOpacity,
+    fill = fill, fillColor = fillColor, fillOpacity = fillOpacity, offset = offset,
     dashArray = dashArray, smoothFactor = smoothFactor, noClip = noClip
   )))
+
+  map$dependencies <- c(map$dependencies, leafletPolylineoffsetDependencies())
+
   pgons <- derivePolygons(data, lng, lat, missing(lng), missing(lat), "addPolylines")
   invokeMethod(map, data, "addPolylines", pgons, layerId, group, options,
                popup, popupOptions, safeLabel(label, data), labelOptions, highlightOptions) %>%

@@ -452,7 +452,7 @@ methods.addCircleMarkers = function(lat, lng, radius, layerId, group, options, c
  * @param lat Array of arrays of latitude coordinates for polylines
  * @param lng Array of arrays of longitude coordinates for polylines
  */
-methods.addPolylines = function(polygons, layerId, group, options, popup, popupOptions, label, labelOptions, highlightOptions) {
+methods.addPolylines = function(polygons, layerId, group, options, popup, popupOptions, label, labelOptions, highlightOptions, offset) {
   if(polygons.length>0) {
     let df = new DataFrame()
       .col("shapes", polygons)
@@ -463,6 +463,7 @@ methods.addPolylines = function(polygons, layerId, group, options, popup, popupO
       .col("label", label)
       .col("labelOptions", labelOptions)
       .col("highlightOptions", highlightOptions)
+      .col("offset", offset)
       .cbind(options);
 
     addLayers(this, "shape", df, function(df, i) {
