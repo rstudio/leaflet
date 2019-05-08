@@ -5,6 +5,7 @@ BUG FIXES and IMPROVEMENTS
 * Fixed [rstudio/crosstalk#58](https://github.com/rstudio/crosstalk/issues/58), which caused Leaflet maps that used Crosstalk shared data in Shiny apps, to be redrawn at incorrect times.
 * Upgrade leaflet-provider to 1.4.0, enable more map variants such as CartoDB.Voyager (#567)
 * `sf` objects with `names` attributes in the `st_geometry` now visualise correctly (#595)
+* GeoJSON objects missing `properties` can now be displayed (#622)
 
 
 
