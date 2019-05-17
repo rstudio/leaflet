@@ -194,11 +194,13 @@ invokeRemote <- function(map, method, args = list()) {
   if (!inherits(map, "leaflet_proxy"))
     stop("Invalid map parameter; map proxy object was expected")
 
+  deps <- htmltools::resolveDependencies(map$dependencies)
+
   msg <- list(
     id = map$id,
     calls = list(
       list(
-        dependencies = lapply(map$dependencies, shiny::createWebDependency),
+        dependencies = lapply(deps, shiny::createWebDependency),
         method = method,
         args = args
       )
