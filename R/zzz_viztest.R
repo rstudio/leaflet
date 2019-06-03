@@ -2,8 +2,8 @@
 #'
 #' Visual testing examples to be used by the vistest package.
 #'
-#' @name zzz-test-viztest
-#' @rdname zzz-test-viztest
+#' @name aaa-test-viztest
+#' @rdname aaa-test-viztest
 #' @examples
 #'
 #'
@@ -24,6 +24,7 @@
 #' ##
 #' library_(leaflet)
 #'
+#' ### Start addGeoJSON properties - https://github.com/rstudio/leaflet/pull/625
 #' polygon = list(
 #'   type = "Polygon",
 #'   coordinates = list(
@@ -42,6 +43,7 @@
 #'   addTiles() %>%
 #'   addGeoJSON(polygon, color="#F00") %>%
 #'   setView(lng = 8.330469, lat = 48.26157, zoom = 15)
+#' ### End PR #625
 #'
 #'
 #' } # end donttest
