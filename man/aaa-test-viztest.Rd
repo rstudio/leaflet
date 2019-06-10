@@ -11,20 +11,7 @@ Visual testing examples to be used by the vistest package.
 
 
 \donttest{
-## Helper function to load extra libraries
-library_ <- function(...) {
-  pkg <- as.character(substitute(...))
-  pkgDesc <- base::suppressWarnings(utils::packageDescription(pkg))
-  if (identical(pkgDesc, NA)) {
-    install.packages(pkg)
-  }
-  base::library(pkg, character.only = TRUE)
-}
 
-
-
-##
-library_(leaflet)
 
 ### Start addGeoJSON properties - https://github.com/rstudio/leaflet/pull/625
 polygon = list(
@@ -50,3 +37,4 @@ leaflet() \%>\%
 
 } # end donttest
 }
+\keyword{internal}
