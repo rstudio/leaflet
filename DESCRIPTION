@@ -51,7 +51,7 @@ Imports:
     sp,
     stats,
     viridis (>= 0.5.1),
-    leaflet.providers
+    leaflet.providers (>= 0.1.0)
 Suggests:
     knitr,
     maps,
@@ -67,3 +67,5 @@ Suggests:
 RoxygenNote: 6.1.1
 Encoding: UTF-8
 LazyData: true
+Remotes:  
+    leslie-huang/leaflet.providers
