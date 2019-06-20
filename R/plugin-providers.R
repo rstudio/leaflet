@@ -1,6 +1,6 @@
 leafletProviderDependencies <- function() {
   list(
-    leaflet.providers::providers()$html_dependency,
+    providers.html_dependency,
     htmltools::htmlDependency(
       "leaflet-providers-plugin",
       packageVersion("leaflet"),
@@ -67,7 +67,9 @@ providerTileOptions <- function(errorTileUrl = "", noWrap = FALSE,
 #'
 #' @format A list of characters
 #' @source \url{https://github.com/leaflet-extras/leaflet-providers/blob/master/leaflet-providers.js}
-"providers"
+#'
+#' @export
+providers <- NULL
 
 #' Providers Details
 #'
@@ -75,4 +77,19 @@ providerTileOptions <- function(errorTileUrl = "", noWrap = FALSE,
 #'
 #' @format A list of lists (JSON)
 #' @source \url{https://github.com/leaflet-extras/leaflet-providers/blob/master/leaflet-providers.js}
-"providers.details"
+#'
+#' @export
+providers.details <- NULL
+
+
+#' Providers version number
+#'
+#' Version number of the providers data.
+#'
+#' @format character
+#' @source \url{https://github.com/leaflet-extras/leaflet-providers/blob/master/leaflet-providers.js}
+#'
+#' @export
+providers.version_num <- NULL
+
+providers.html_dependency <- NULL

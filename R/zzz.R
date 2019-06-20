@@ -1,5 +1,8 @@
 .onLoad <- function(libname, pkgname) {
-  providers <<- leaflet.providers::providers()$providers
-  providers.details <<- leaflet.providers::providers()$providers_details
-  providers.version_num <<- leaflet.providers::providers()$version_num
+  providers_info <- leaflet.providers::providers()
+
+  providers <<- providers_info$providers
+  providers.details <<- providers_info$providers_details
+  providers.version_num <<- providers_info$version_num
+  providers.html_dependency <<- providers_info$html_dependency
 }
