@@ -4,5 +4,5 @@
   providers <<- providers_info$providers
   providers.details <<- providers_info$providers_details
   providers.version_num <<- providers_info$version_num
-  providers.html_dependency <<- providers_info$html_dependency
+  providers.src <<- providers_info$src
 }

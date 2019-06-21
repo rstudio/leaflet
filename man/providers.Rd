@@ -3,6 +3,7 @@
 \docType{data}
 \name{providers}
 \alias{providers}
+\alias{providers.details}
 \title{Providers}
 \format{A list of characters}
 \source{
@@ -10,6 +11,8 @@
 }
 \usage{
 providers
+
+providers.details
 }
 \description{
 List of all providers with their variations

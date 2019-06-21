@@ -69,35 +69,49 @@ providerTileOptions <- function(errorTileUrl = "", noWrap = FALSE,
 #' @source \url{https://github.com/leaflet-extras/leaflet-providers/blob/master/leaflet-providers.js}
 #'
 #' @export
+#' @rdname providers
 providers <- NULL
 get_providers <- function() {
-  getOption("leaflet.providers", default = providers)
+  get_leaflet_providers_options("leaflet_providers", default = providers)
 }
 
-#' Providers Details
-#'
-#' List of all providers with their variations and additional info
-#'
-#' @format A list of lists (JSON)
-#' @source \url{https://github.com/leaflet-extras/leaflet-providers/blob/master/leaflet-providers.js}
-#'
 #' @export
+#' @rdname providers
 providers.details <- NULL
 get_providers_details <- function() {
-  getOption("leaflet.providers.details", default = providers.details)
+  get_leaflet_providers_options("providers_details", default = providers.details)
 }
 
-#' Providers version number
-#'
-#' Version number of the providers data.
-#'
-#' @format character
-#' @source \url{https://github.com/leaflet-extras/leaflet-providers/blob/master/leaflet-providers.js}
-#'
-#' @export
 providers.version_num <- NULL
 
-providers.html_dependency <- NULL
+get_providers_version_num <- function() {
+  get_leaflet_providers_options("version_num", default = providers.version_num)
+}
+
+providers.src <- NULL
+
 get_providers_html_dependency <- function() {
-  getOption("leaflet.providers.html_dependency", default = providers.html_dependency)
+  tmpfile <- file.path(tempdir(), paste0("leaflet-providers_", get_providers_version_num(), ".js"))
+
+  if (!file.exists(tmpfile)) {
+    src <- get_leaflet_providers_options("src", default = providers.src)
+    writeLines(src, tmpfile)
+  }
+
+  html_dependency <- htmltools::htmlDependency(
+    "leaflet-providers",
+    get_providers_version_num(),
+    src = tmpfile
+  )
+}
+
+get_leaflet_providers_options <- function(key, default) {
+  info <- getOption("leaflet.providers")
+  if (!is.null(info)) {
+    val <- info[[key]]
+    if (!is.null(val)) {
+      return(val)
+    }
+  }
+  return(default)
 }
