@@ -1,6 +1,6 @@
 leafletProviderDependencies <- function() {
   list(
-    providers.html_dependency,
+    get_providers_html_dependency(),
     htmltools::htmlDependency(
       "leaflet-providers-plugin",
       packageVersion("leaflet"),
@@ -70,6 +70,9 @@ providerTileOptions <- function(errorTileUrl = "", noWrap = FALSE,
 #'
 #' @export
 providers <- NULL
+get_providers <- function() {
+  getOption("leaflet.providers", default = providers)
+}
 
 #' Providers Details
 #'
@@ -80,7 +83,9 @@ providers <- NULL
 #'
 #' @export
 providers.details <- NULL
-
+get_providers_details <- function() {
+  getOption("leaflet.providers.details", default = providers.details)
+}
 
 #' Providers version number
 #'
@@ -93,3 +98,6 @@ providers.details <- NULL
 providers.version_num <- NULL
 
 providers.html_dependency <- NULL
+get_providers_html_dependency <- function() {
+  getOption("leaflet.providers.html_dependency", default = providers.html_dependency)
+}
