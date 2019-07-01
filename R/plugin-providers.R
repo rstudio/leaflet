@@ -70,48 +70,35 @@ providerTileOptions <- function(errorTileUrl = "", noWrap = FALSE,
 #'
 #' @export
 #' @rdname providers
-providers <- NULL
-get_providers <- function() {
-  get_leaflet_providers_options("leaflet_providers", default = providers)
-}
+makeActiveBinding("providers", function() {
+  leaflet.providers::loaded_providers()$providers
+}, env = environment())
 
 #' @export
 #' @rdname providers
-providers.details <- NULL
-get_providers_details <- function() {
-  get_leaflet_providers_options("providers_details", default = providers.details)
-}
+makeActiveBinding("providers.details", function() {
+  leaflet.providers::loaded_providers()$providers.details
+}, env = environment())
 
-providers.version_num <- NULL
+makeActiveBinding("providers.version_num", function() {
+  leaflet.providers::loaded_providers()$version_num
+}, env = environment())
 
-get_providers_version_num <- function() {
-  get_leaflet_providers_options("version_num", default = providers.version_num)
-}
-
-providers.src <- NULL
+makeActiveBinding("html_src", function() {
+  leaflet.providers::loaded_providers()$html_dependency
+}, env = environment())
 
 get_providers_html_dependency <- function() {
-  tmpfile <- file.path(tempdir(), paste0("leaflet-providers_", get_providers_version_num(), ".js"))
+  tmpfile <- file.path(tempdir(), paste0("leaflet-providers_", version_num, ".js"))
 
   if (!file.exists(tmpfile)) {
-    src <- get_leaflet_providers_options("src", default = providers.src)
+    src <- html_src
     writeLines(src, tmpfile)
   }
 
   html_dependency <- htmltools::htmlDependency(
     "leaflet-providers",
-    get_providers_version_num(),
+    providers.version_num,
     src = tmpfile
   )
-}
-
-get_leaflet_providers_options <- function(key, default) {
-  info <- getOption("leaflet.providers")
-  if (!is.null(info)) {
-    val <- info[[key]]
-    if (!is.null(val)) {
-      return(val)
-    }
-  }
-  return(default)
 }
