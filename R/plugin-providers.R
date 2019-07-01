@@ -68,37 +68,39 @@ providerTileOptions <- function(errorTileUrl = "", noWrap = FALSE,
 #' @format A list of characters
 #' @source \url{https://github.com/leaflet-extras/leaflet-providers/blob/master/leaflet-providers.js}
 #'
-#' @export
+#' @name providers
+#' @export providers
 #' @rdname providers
-makeActiveBinding("providers", function() {
-  leaflet.providers::loaded_providers()$providers
-}, env = environment())
+NULL
+# Active binding added in zzz.R
+"providers"
 
-#' @export
+#' @name providers.details
+#' @export providers.details
 #' @rdname providers
-makeActiveBinding("providers.details", function() {
-  leaflet.providers::loaded_providers()$providers.details
-}, env = environment())
+NULL
+# Active binding added in zzz.R
+"providers.details"
 
-makeActiveBinding("providers.version_num", function() {
-  leaflet.providers::loaded_providers()$version_num
-}, env = environment())
+# Active binding added in zzz.R
+"providers.version_num"
 
-makeActiveBinding("html_src", function() {
-  leaflet.providers::loaded_providers()$html_dependency
-}, env = environment())
+# Active binding added in zzz.R
+"providers.src"
 
 get_providers_html_dependency <- function() {
-  tmpfile <- file.path(tempdir(), paste0("leaflet-providers_", version_num, ".js"))
+  tmpfile <- file.path(tempdir(), paste0("leaflet-providers_", providers.version_num, ".js"))
 
   if (!file.exists(tmpfile)) {
-    src <- html_src
+    src <- providers.src
     writeLines(src, tmpfile)
   }
 
-  html_dependency <- htmltools::htmlDependency(
+  htmltools::htmlDependency(
     "leaflet-providers",
     providers.version_num,
-    src = tmpfile
+    src = dirname(tmpfile),
+    script = basename(tmpfile),
+    all_files = FALSE
   )
 }
