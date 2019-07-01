@@ -68,4 +68,4 @@ RoxygenNote: 6.1.1
 Encoding: UTF-8
 LazyData: true
 Remotes:  
-    leslie-huang/leaflet.providers
+    rstudio/leaflet.providers
