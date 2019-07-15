@@ -1,11 +1,6 @@
 leafletProviderDependencies <- function() {
   list(
-    htmltools::htmlDependency(
-      "leaflet-providers",
-      "1.1.17",
-      system.file("htmlwidgets/lib/leaflet-providers", package = "leaflet"),
-      script = "leaflet-providers.js"
-    ),
+    get_providers_html_dependency(),
     htmltools::htmlDependency(
       "leaflet-providers-plugin",
       packageVersion("leaflet"),
@@ -72,12 +67,40 @@ providerTileOptions <- function(errorTileUrl = "", noWrap = FALSE,
 #'
 #' @format A list of characters
 #' @source \url{https://github.com/leaflet-extras/leaflet-providers/blob/master/leaflet-providers.js}
+#'
+#' @name providers
+#' @export providers
+#' @rdname providers
+NULL
+# Active binding added in zzz.R
 "providers"
 
-#' Providers Details
-#'
-#' List of all providers with their variations and additional info
-#'
-#' @format A list of lists (JSON)
-#' @source \url{https://github.com/leaflet-extras/leaflet-providers/blob/master/leaflet-providers.js}
+#' @name providers.details
+#' @export providers.details
+#' @rdname providers
+NULL
+# Active binding added in zzz.R
 "providers.details"
+
+# Active binding added in zzz.R
+"providers.version_num"
+
+# Active binding added in zzz.R
+"providers.src"
+
+get_providers_html_dependency <- function() {
+  tmpfile <- file.path(tempdir(), paste0("leaflet-providers_", providers.version_num, ".js"))
+
+  if (!file.exists(tmpfile)) {
+    src <- providers.src
+    writeLines(src, tmpfile)
+  }
+
+  htmltools::htmlDependency(
+    "leaflet-providers",
+    providers.version_num,
+    src = dirname(tmpfile),
+    script = basename(tmpfile),
+    all_files = FALSE
+  )
+}
