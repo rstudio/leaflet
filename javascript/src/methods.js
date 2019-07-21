@@ -13,6 +13,58 @@ import Mipmapper from "./mipmapper";
 let methods = {};
 export default methods;
 
+/** Much more performant way to style loaded geometry */
+methods.setStyle = function(group, styles, labels, offset = 0) {
+  window.map = this;
+  let layers = this.layerManager.getLayerGroup(group).getLayers();
+
+  if (styles) {
+    for (let i = 0; i < styles.length; i++) {
+      layers[i + offset].setStyle(styles[i]);
+    }
+  }
+  if (labels) {
+    for (let i = 0; i < styles.length; i++) {
+      layers[i + offset].bindTooltip(labels[i]);
+    }
+  }
+};
+
+/** Much more performant way to style loaded geometry */
+methods.setStyleFast = function(group, colors, weights, labels, strokes, fills) {
+  window.map = this;
+  let layers = this.layerManager.getLayerGroup(group).getLayers();
+
+  if (labels) {
+    for (let i = 0; i < labels.length; i++) {
+      layers[i].bindTooltip(labels[i]);
+    }
+  }
+
+  if (colors) {
+    for (let i = 0; i < colors.length; i++) {
+      layers[i].setStyle({color: colors[i], fillColor: colors[i]});
+    }
+  }
+
+  if (weights) {
+    for (let i = 0; i < weights.length; i++) {
+      layers[i].setStyle({weight: weights[i]});
+    }
+  }
+
+  if (strokes) {
+    for (let i = 0; i < strokes.length; i++) {
+      layers[i].setStyle({stroke: strokes[i]});
+    }
+  }
+
+  if (fills) {
+    for (let i = 0; i < fills.length; i++) {
+      layers[i].setStyle({fill: fills[i]});
+    }
+  }
+};
 
 function mouseHandler(mapId, layerId, group, eventName, extraInfo) {
   return function(e) {
@@ -29,7 +81,13 @@ function mouseHandler(mapId, layerId, group, eventName, extraInfo) {
     let eventInfo = $.extend(
       {
         id: layerId,
-        ".nonce": Math.random()  // force reactivity
+        ".nonce": Math.random(),  // force reactivity
+        modifiers: {
+          alt: e.originalEvent.altKey,
+          ctrl: e.originalEvent.ctrlKey,
+          meta: e.originalEvent.metaKey,
+          shift: e.originalEvent.shiftKey
+        }
       },
       group !== null ? {group: group} : null,
       latLng,

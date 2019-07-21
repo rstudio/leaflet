@@ -655,7 +655,13 @@ _htmlwidgets2.default.widget({
               _shiny2.default.onInputChange(map.id + "_click", {
                 lat: e.latlng.lat,
                 lng: e.latlng.lng,
-                ".nonce": Math.random() // Force reactivity if lat/lng hasn't changed
+                ".nonce": Math.random(), // Force reactivity if lat/lng hasn't changed
+                modifiers: {
+                  alt: e.originalEvent.altKey,
+                  ctrl: e.originalEvent.ctrlKey,
+                  meta: e.originalEvent.metaKey,
+                  shift: e.originalEvent.shiftKey
+                }
               });
             });
 
@@ -1282,6 +1288,61 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var methods = {};
 exports.default = methods;
 
+/** Much more performant way to style loaded geometry */
+
+methods.setStyle = function (group, styles, labels) {
+  var offset = arguments.length <= 3 || arguments[3] === undefined ? 0 : arguments[3];
+
+  window.map = this;
+  var layers = this.layerManager.getLayerGroup(group).getLayers();
+
+  if (styles) {
+    for (var i = 0; i < styles.length; i++) {
+      layers[i + offset].setStyle(styles[i]);
+    }
+  }
+  if (labels) {
+    for (var _i = 0; _i < styles.length; _i++) {
+      layers[_i + offset].bindTooltip(labels[_i]);
+    }
+  }
+};
+
+/** Much more performant way to style loaded geometry */
+methods.setStyleFast = function (group, colors, weights, labels, strokes, fills) {
+  window.map = this;
+  var layers = this.layerManager.getLayerGroup(group).getLayers();
+
+  if (labels) {
+    for (var i = 0; i < labels.length; i++) {
+      layers[i].bindTooltip(labels[i]);
+    }
+  }
+
+  if (colors) {
+    for (var _i2 = 0; _i2 < colors.length; _i2++) {
+      layers[_i2].setStyle({ color: colors[_i2], fillColor: colors[_i2] });
+    }
+  }
+
+  if (weights) {
+    for (var _i3 = 0; _i3 < weights.length; _i3++) {
+      layers[_i3].setStyle({ weight: weights[_i3] });
+    }
+  }
+
+  if (strokes) {
+    for (var _i4 = 0; _i4 < strokes.length; _i4++) {
+      layers[_i4].setStyle({ stroke: strokes[_i4] });
+    }
+  }
+
+  if (fills) {
+    for (var _i5 = 0; _i5 < fills.length; _i5++) {
+      layers[_i5].setStyle({ fill: fills[_i5] });
+    }
+  }
+};
 
 function mouseHandler(mapId, layerId, group, eventName, extraInfo) {
   return function (e) {
@@ -1297,7 +1358,13 @@ function mouseHandler(mapId, layerId, group, eventName, extraInfo) {
     }
     var eventInfo = _jquery2.default.extend({
       id: layerId,
-      ".nonce": Math.random() // force reactivity
+      ".nonce": Math.random(), // force reactivity
+      modifiers: {
+        alt: e.originalEvent.altKey,
+        ctrl: e.originalEvent.ctrlKey,
+        meta: e.originalEvent.metaKey,
+        shift: e.originalEvent.shiftKey
+      }
     }, group !== null ? { group: group } : null, latLng, extraInfo);
 
     _shiny2.default.onInputChange(mapId + "_" + eventName, eventInfo);
