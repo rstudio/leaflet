@@ -8,11 +8,14 @@
 \alias{addMarkers}
 \alias{addLabelOnlyMarkers}
 \alias{addCircleMarkers}
+\alias{setCircleMarkerRadius}
+\alias{setCircleMarkerStyle}
 \alias{highlightOptions}
 \alias{addCircles}
 \alias{addPolylines}
 \alias{addRectangles}
 \alias{addPolygons}
+\alias{setShapeStyle}
 \alias{addGeoJSON}
 \alias{addTopoJSON}
 \title{Graphics elements and layers}
@@ -51,6 +54,13 @@ addCircleMarkers(map, lng = NULL, lat = NULL, radius = 10,
   options = pathOptions(), clusterOptions = NULL, clusterId = NULL,
   data = getMapData(map))
 
+setCircleMarkerRadius(map, layerId, radius, data = getMapData(map))
+
+setCircleMarkerStyle(map, layerId, radius = NULL, stroke = NULL,
+  color = NULL, weight = NULL, opacity = NULL, fill = NULL,
+  fillColor = NULL, fillOpacity = NULL, dashArray = NULL,
+  options = NULL, data = getMapData(map))
+
 highlightOptions(stroke = NULL, color = NULL, weight = NULL,
   opacity = NULL, fill = NULL, fillColor = NULL,
   fillOpacity = NULL, dashArray = NULL, bringToFront = NULL,
@@ -87,6 +97,11 @@ addPolygons(map, lng = NULL, lat = NULL, layerId = NULL,
   popupOptions = NULL, label = NULL, labelOptions = NULL,
   options = pathOptions(), highlightOptions = NULL,
   data = getMapData(map))
+
+setShapeStyle(map, data = getMapData(map), layerId, stroke = NULL,
+  color = NULL, weight = NULL, opacity = NULL, fill = NULL,
+  fillColor = NULL, fillOpacity = NULL, dashArray = NULL,
+  smoothFactor = NULL, noClip = NULL, options = NULL)
 
 addGeoJSON(map, geojson, layerId = NULL, group = NULL, stroke = TRUE,
   color = "#03F", weight = 5, opacity = 0.5, fill = TRUE,
@@ -233,6 +248,10 @@ Add graphics elements and layers to the map widget.
 
 \item \code{addCircleMarkers}: Add circle markers to the map
 
+\item \code{setCircleMarkerRadius}: Change radius of rendered circlemarkers.
+
+\item \code{setCircleMarkerStyle}: Change radius of rendered circlemarkers.
+
 \item \code{highlightOptions}: Options to highlight a shape on hover
 
 \item \code{addCircles}: Add circles to the map
@@ -242,6 +261,8 @@ Add graphics elements and layers to the map widget.
 \item \code{addRectangles}: Add rectangles to the map
 
 \item \code{addPolygons}: Add polygons to the map
+
+\item \code{setShapeStyle}: Change style of rendered layers (leafletproxy)
 
 \item \code{addGeoJSON}: Add GeoJSON layers to the map
 

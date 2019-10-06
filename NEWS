@@ -1,3 +1,9 @@
+
+leaflet 2.0.4
+
+* Added new functions setShapeStyle, setCircleMarkerStyle and setCircleMarkerRadius to change
+style and radius of already generated polygons, polylines and circle markers (leafletProxy)
+
 leaflet 2.0.3
 --------------------------------------------------------------------------------
 
