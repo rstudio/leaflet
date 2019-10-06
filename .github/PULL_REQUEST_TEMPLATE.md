@@ -47,5 +47,7 @@ Brief description of the solution
 
 PR task list:
 - [ ] Update NEWS
-- [ ] Add tests (if appropriate)
+- [ ] Add tests (where appropriate)
+  - R code tests: `tests/testthat/`
+  - Visual tests: `R/zzz_viztest.R`
 - [ ] Update documentation with `devtools::document()`
