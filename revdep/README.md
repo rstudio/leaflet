@@ -10,7 +10,7 @@
 |collate  |en_US.UTF-8                  |
 |ctype    |en_US.UTF-8                  |
 |tz       |America/New_York             |
-|date     |2019-11-06                   |
+|date     |2019-11-08                   |
 
 # Dependencies
 
@@ -19,10 +19,4 @@
 |leaflet |2.0.2 |2.0.3 |*  |
 
 # Revdeps
-
-## Failed to check (1)
-
-|package   |version |error |warning |note |
-|:---------|:-------|:-----|:-------|:----|
-|tricolore |1.2.1   |1     |        |     |
 
