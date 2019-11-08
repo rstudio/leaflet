@@ -7,11 +7,12 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
 
-<title>scratch.utf8</title>
+<title>scratch.utf8.md</title>
 
 <script src="libs/jquery/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -77,9 +78,7 @@ h6 {
 </style>
 
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -93,7 +92,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -104,11 +102,12 @@ img {
 button.code-folding-btn:focus {
   outline: none;
 }
+summary {
+  display: list-item;
+}
 </style>
 
 
-
-<div class="container-fluid main-container">
 
 <!-- tabsets -->
 
@@ -166,20 +165,17 @@ button.code-folding-btn:focus {
 }
 </style>
 
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
 <!-- code folding -->
 
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
 
 
 
@@ -271,8 +267,8 @@ $(document).ready(function () {
     iconWidth = 40, iconHeight = 40
   )) %&gt;%
   addPopups(174.7690922, -36.8523071, &#39;R was born here!&#39;)</code></pre>
-<div id="htmlwidget-927ec88a166bf954e46a" style="width:100%;height:216px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-927ec88a166bf954e46a">{
+<div id="htmlwidget-562da05387aef08f69fb" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-562da05387aef08f69fb">{
   "x": {
     "options": {
       "crs": {
@@ -389,8 +385,8 @@ $(document).ready(function () {
     &#39;http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}&#39;,
     attribution = &#39;Tiles &amp;copy; Esri &amp;mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community&#39;) %&gt;%
   setView(-93.65, 42.0285, zoom = 17)</code></pre>
-<div id="htmlwidget-e2aad06f99e8b55df8d8" style="width:100%;height:216px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-e2aad06f99e8b55df8d8">{
+<div id="htmlwidget-92aa9ec4a26e6d2eb4c3" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-92aa9ec4a26e6d2eb4c3">{
   "x": {
     "options": {
       "crs": {
@@ -446,8 +442,8 @@ rand_lat = function(n = 10) rnorm(n, 42.0285, .01)
 
 # circles (units in metres)
 m %&gt;% addCircles(rand_lng(50), rand_lat(50), radius = runif(50, 10, 200))</code></pre>
-<div id="htmlwidget-ec9d8b9e435c1a666871" style="width:100%;height:216px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-ec9d8b9e435c1a666871">{
+<div id="htmlwidget-fb03bf98e7202586eee1" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-fb03bf98e7202586eee1">{
   "x": {
     "options": {
       "crs": {
@@ -530,8 +526,8 @@ m %&gt;% addCircles(rand_lng(50), rand_lat(50), radius = runif(50, 10, 200))</co
 }</script>
 <pre class="r"><code># circle markers (units in pixels)
 m %&gt;% addCircleMarkers(rand_lng(50), rand_lat(50), color = &#39;#ff0000&#39;)</code></pre>
-<div id="htmlwidget-65e60ed4f5440bdab363" style="width:100%;height:216px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-65e60ed4f5440bdab363">{
+<div id="htmlwidget-b182c7e3d7d2f09bcc5e" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b182c7e3d7d2f09bcc5e">{
   "x": {
     "options": {
       "crs": {
@@ -614,8 +610,8 @@ m %&gt;% addCircleMarkers(rand_lng(50), rand_lat(50), color = &#39;#ff0000&#39;)
   "jsHooks": []
 }</script>
 <pre class="r"><code>m %&gt;% addCircleMarkers(rand_lng(100), rand_lat(100), radius = runif(100, 5, 15))</code></pre>
-<div id="htmlwidget-c6a36a601760297b5cca" style="width:100%;height:216px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-c6a36a601760297b5cca">{
+<div id="htmlwidget-2e17ae06f223c72250d9" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2e17ae06f223c72250d9">{
   "x": {
     "options": {
       "crs": {
@@ -702,8 +698,8 @@ m %&gt;% addRectangles(
   rand_lng(), rand_lat(), rand_lng(), rand_lat(),
   color = &#39;red&#39;, fill = FALSE, dashArray = &#39;5,5&#39;, weight = 3
 )</code></pre>
-<div id="htmlwidget-6d8788299161dc56faef" style="width:100%;height:216px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-6d8788299161dc56faef">{
+<div id="htmlwidget-2f386608a10ed269577b" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2f386608a10ed269577b">{
   "x": {
     "options": {
       "crs": {
@@ -789,8 +785,8 @@ m %&gt;% addRectangles(
 }</script>
 <pre class="r"><code># polylines
 m %&gt;% addPolylines(rand_lng(50), rand_lat(50), fill = FALSE)</code></pre>
-<div id="htmlwidget-e90b79b122bd7002e299" style="width:100%;height:216px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-e90b79b122bd7002e299">{
+<div id="htmlwidget-e92079a3c1d734b37e44" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-e92079a3c1d734b37e44">{
   "x": {
     "options": {
       "crs": {
@@ -885,8 +881,8 @@ m %&gt;% addPolygons(
   c(rand_lat(3), NA, rand_lat(4), NA, rand_lat(5)),
   color = c(&#39;red&#39;, &#39;green&#39;, &#39;blue&#39;)
 )</code></pre>
-<div id="htmlwidget-fb93f5535b798302ff62" style="width:100%;height:216px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-fb93f5535b798302ff62">{
+<div id="htmlwidget-9dda01f0cde950eac35a" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-9dda01f0cde950eac35a">{
   "x": {
     "options": {
       "crs": {
@@ -1033,8 +1029,8 @@ shapes = list(
   )
 )
 m %&gt;% addGeoJSON(shapes)</code></pre>
-<div id="htmlwidget-a81d84882e3b64c1a840" style="width:100%;height:216px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-a81d84882e3b64c1a840">{
+<div id="htmlwidget-7ce6ee426e138be93a89" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-7ce6ee426e138be93a89">{
   "x": {
     "options": {
       "crs": {
@@ -1192,6 +1188,23 @@ $(document).ready(function () {
 
 
 </script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
