@@ -18,7 +18,7 @@ This submission is done by Barret Schloerke <barret@rstudio.com> on behalf of Jo
   * 0 errors | 0 warnings | 0 notes
 
 * win-builder (oldrelease, release, and devel)
-  * 0 errors | 0 warnings | 0 notes
+  * Could not get a response from winbuilder
 
 * R-hub windows-x86_64-devel (r-devel)
   * 0 errors | 0 warnings | 0 notes
