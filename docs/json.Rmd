@@ -14,7 +14,7 @@ The first approach is to use either `rgdal` or `geojsonio` (packages) to read Ge
 # From http://eric.clst.org/Stuff/USGeoJSON and
 # https://en.wikipedia.org/wiki/List_of_United_States_counties_and_county_equivalents
 nycounties <- rgdal::readOGR("json/nycounties.geojson")
-# Or use the rgdal equivalent:
+# Or use the geojsonio equivalent:
 # nycounties <- geojsonio::geojson_read("json/nycounties.geojson", what = "sp")
 
 pal <- colorNumeric("viridis", NULL)
