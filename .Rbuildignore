@@ -31,3 +31,4 @@
 ^viztest-.*
 ^scripts
 ^cran-comments\.md$
+^revdep$
