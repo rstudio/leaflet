@@ -87,9 +87,11 @@ methods.addPopups = function(lat, lng, popup, layerId, group, options) {
   for (let i = 0; i < df.nrow(); i++) {
     if($.isNumeric(df.get(i, "lat")) && $.isNumeric(df.get(i, "lng"))) {
       (function() {
-        let popup = L.popup(df.get(i))
-                     .setLatLng([df.get(i, "lat"), df.get(i, "lng")])
-                     .setContent(df.get(i, "popup"));
+        let popup =
+          L
+            .popup(df.get(i))
+            .setLatLng([df.get(i, "lat"), df.get(i, "lng")])
+            .setContent(df.get(i, "popup"));
         let thisId = df.get(i, "layerId");
         let thisGroup = df.get(i, "group");
         this.layerManager.addLayer(popup, "popup", thisId, thisGroup);
@@ -209,8 +211,10 @@ function addMarkers(map, df, group, clusterOptions, clusterId, markerFunc) {
 
 methods.addGenericMarkers = addMarkers;
 
-methods.addMarkers = function(lat, lng, icon, layerId, group, options, popup, popupOptions,
-                              clusterOptions, clusterId, label, labelOptions, crosstalkOptions) {
+methods.addMarkers = function(
+  lat, lng, icon, layerId, group, options, popup, popupOptions,
+  clusterOptions, clusterId, label, labelOptions, crosstalkOptions
+) {
   let icondf;
   let getIcon;
 
@@ -281,8 +285,10 @@ methods.addMarkers = function(lat, lng, icon, layerId, group, options, popup, po
   }
 };
 
-methods.addAwesomeMarkers = function(lat, lng, icon, layerId, group, options, popup, popupOptions,
-clusterOptions, clusterId, label, labelOptions, crosstalkOptions) {
+methods.addAwesomeMarkers = function(
+  lat, lng, icon, layerId, group, options, popup, popupOptions,
+  clusterOptions, clusterId, label, labelOptions, crosstalkOptions
+) {
   let icondf;
   let getIcon;
   if (icon) {
@@ -519,7 +525,7 @@ methods.addRectangles = function(lat1, lng1, lat2, lng2, layerId, group, options
     .col("popupOptions", popupOptions)
     .col("label", label)
     .col("labelOptions", labelOptions)
-      .col("highlightOptions", highlightOptions)
+    .col("highlightOptions", highlightOptions)
     .cbind(options);
 
   addLayers(this, "shape", df, function(df, i) {
@@ -717,11 +723,11 @@ methods.addLegend = function(options) {
       // # Formatting constants.
       let singleBinHeight = 20;  // The distance between tick marks, in px
       let vMargin = 8; // If 1st tick mark starts at top of gradient, how
-                       // many extra px are needed for the top half of the
-                       // 1st label? (ditto for last tick mark/label)
+      // many extra px are needed for the top half of the
+      // 1st label? (ditto for last tick mark/label)
       let tickWidth = 4;     // How wide should tick marks be, in px?
       let labelPadding = 6;  // How much distance to reserve for tick mark?
-                             // (Must be >= tickWidth)
+      // (Must be >= tickWidth)
 
       // # Derived formatting parameters.
 

@@ -23,16 +23,14 @@ export function getCRS(crsOptions) {
       crsOptions.options.bounds = L.bounds(crsOptions.options.bounds);
     }
     if(crsOptions.options && crsOptions.options.transformation) {
-      crsOptions.options.transformation = new
-        L.Transformation(
-          crsOptions.options.transformation[0],
-          crsOptions.options.transformation[1],
-          crsOptions.options.transformation[2],
-          crsOptions.options.transformation[3]
-        );
+      crsOptions.options.transformation = new L.Transformation(
+        crsOptions.options.transformation[0],
+        crsOptions.options.transformation[1],
+        crsOptions.options.transformation[2],
+        crsOptions.options.transformation[3]
+      );
     }
-    crs = new Proj4Leaflet.CRS(crsOptions.code, crsOptions.proj4def,
-                     crsOptions.options);
+    crs = new Proj4Leaflet.CRS(crsOptions.code, crsOptions.proj4def, crsOptions.options);
     break;
   case "L.Proj.CRS.TMS":
     if(crsOptions.options && crsOptions.options.bounds) {
@@ -48,10 +46,8 @@ export function getCRS(crsOptions) {
         );
     }
     // L.Proj.CRS.TMS is deprecated as of Leaflet 1.x, fall back to L.Proj.CRS
-    //crs = new Proj4Leaflet.CRS.TMS(crsOptions.code, crsOptions.proj4def,
-                         //crsOptions.projectedBounds, crsOptions.options);
-    crs = new Proj4Leaflet.CRS(crsOptions.code, crsOptions.proj4def,
-                         crsOptions.options);
+    //crs = new Proj4Leaflet.CRS.TMS(crsOptions.code, crsOptions.proj4def, crsOptions.projectedBounds, crsOptions.options);
+    crs = new Proj4Leaflet.CRS(crsOptions.code, crsOptions.proj4def, crsOptions.options);
     break;
   }
   return crs;
