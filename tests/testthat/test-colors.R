@@ -154,9 +154,16 @@ test_that("color production is correct", {
     c("#000000", "#7F7F7F", "#FFFFFF"),
     colorNumeric(colorRamp(bw), NULL)(c(0, 0.5, 1))
   )
+
+  ramp_with_na_cols <- colorNumeric(c(bw, "#FFFFFF00"), NULL, na.color = "blue", alpha = TRUE)(c(0, 0.25, 0.5, 1, NA))
+  no_alpha_pos <- grepl("^#[0-9a-fA-F]{6}$", ramp_with_na_cols)
+  if (any(no_alpha_pos)) {
+    ramp_with_na_cols[no_alpha_pos] <- paste0(ramp_with_na_cols[no_alpha_pos], "FF")
+  }
+
   expect_equal(
     c("#000000FF", "#777777FF", "#FFFFFFFF", "#FFFFFF00", "blue"),
-    colorNumeric(c(bw, "#FFFFFF00"), NULL, na.color = "blue", alpha = TRUE)(c(0, 0.25, 0.5, 1, NA))
+    ramp_with_na_cols
   )
 
   expect_equal(
