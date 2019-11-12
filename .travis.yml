@@ -22,3 +22,12 @@ r:
   - oldrel
   - release
   - devel
+
+include:
+  jobs:
+    - name: "Javascript check"
+      language: node_js
+      cache: yarn
+      script: ./scripts/checkJSCurrent.sh
+      node_js:
+        - "12"
