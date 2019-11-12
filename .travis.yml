@@ -17,3 +17,8 @@ r_packages:
   - jimhester/lintr
 after_success:
   - Rscript -e 'lintr::lint_package()'
+
+r:
+  - oldrel
+  - release
+  - devel
