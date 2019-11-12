@@ -23,8 +23,8 @@ r:
   - release
   - devel
 
-include:
-  jobs:
+jobs:
+  include:
     - name: "Javascript check"
       language: node_js
       cache: yarn
