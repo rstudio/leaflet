@@ -14,7 +14,7 @@ notifications:
     on_failure: change
 
 r_packages:
-  - jimhester/lintr
+  - lintr
 after_success:
   - Rscript -e 'lintr::lint_package()'
 
