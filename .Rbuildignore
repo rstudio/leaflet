@@ -13,7 +13,7 @@
 ^package\.json$
 ^node_modules$
 ^data-raw$
-^npm-shrinkwrap\.json$
+^yarnk\.lock$
 ^\.Rprofile\.local$
 ^inst/htmlwidgets/lib/.*/.*\.map$
 ^inst/htmlwidgets/plugins/.*/.*\.map$
