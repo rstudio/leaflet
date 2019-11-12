@@ -30,12 +30,12 @@ jobs:
       r: devel
 
 
-    - name: "Roxygen check"
-      r: release
-      r_packages:
-        - devtools
-        - roxygen2
-      script: ./scripts/checkDocsCurrent.sh
+    # - name: "Roxygen check"
+    #   r: release
+    #   r_packages:
+    #     - devtools
+    #     - roxygen2
+    #   script: ./scripts/checkDocsCurrent.sh
 
     - name: "Javascript check"
       language: node_js
