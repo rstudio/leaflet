@@ -13,7 +13,7 @@ notifications:
     on_success: change
     on_failure: change
 
-r_github_packages:
+r_packages:
   - jimhester/lintr
 after_success:
   - Rscript -e 'lintr::lint_package()'
