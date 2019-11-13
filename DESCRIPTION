@@ -26,7 +26,6 @@ Authors@R: c(
       person("Michael Bostock", role = c("ctb", "cph"), comment = "topojson"),
       person("RStudio", role = c("cph"))
     )
-Maintainer: Joe Cheng <joe@rstudio.com>
 Description: Create and customize interactive maps using the 'Leaflet'
     JavaScript library and the 'htmlwidgets' package. These maps can be used
     directly from the R console, from 'RStudio', in Shiny applications and R Markdown
