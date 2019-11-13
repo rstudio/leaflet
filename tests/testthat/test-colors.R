@@ -156,6 +156,7 @@ test_that("color production is correct", {
   )
 
   ramp_with_na_cols <- colorNumeric(c(bw, "#FFFFFF00"), NULL, na.color = "blue", alpha = TRUE)(c(0, 0.25, 0.5, 1, NA))
+  # upgrade below can be removed if requiring scales >= 1.1.0
   no_alpha_pos <- grepl("^#[0-9a-fA-F]{6}$", ramp_with_na_cols)
   if (any(no_alpha_pos)) {
     ramp_with_na_cols[no_alpha_pos] <- paste0(ramp_with_na_cols[no_alpha_pos], "FF")
