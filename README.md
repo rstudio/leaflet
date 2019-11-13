@@ -36,18 +36,33 @@ http://rstudio.github.io/leaflet You may use [GitHub issues](https://github.com/
 
 ## Development
 
-To make additions or modifications to the JavaScript htmlwidgets binding layer,
-you must use Grunt to build and test. Please make sure Node.js is installed on
-your system, then run:
+`leaflet`'s JavaScript build tools use Node.js, along with [yarn](https://yarnpkg.com/) to manage the JavaScript packages.
 
-```
-npm install -g grunt-cli
-npm install
+Install `yarn` using the [official instructions](https://yarnpkg.com/en/docs/install).
+
+You can test that Node.js and yarn are installed properly by running the following commands:
+
+```bash
+node --version
+yarn --version
 ```
 
-Now you can build/minify/lint/test using `grunt build`, or run in "watch" mode
-by just running `grunt`. JS sources go into `javascript/src` and tests go into
+To make additions or modifications to the JavaScript `htmlwidgets` binding layer,
+you must have all Node.js dependencies installed. Now you can build/minify/lint/test using `yarn build`, or run in "watch" mode
+by just running `yarn watch`. JS sources go into `javascript/src` and tests go into
 `javascript/tests`.
+
+```bash
+# install dependencies
+yarn
+
+# compile
+yarn build
+
+# watch
+yarn watch
+```
+
 
 ## License
 

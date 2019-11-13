@@ -115,3 +115,124 @@ test_that("colorFactor can be reversed", {
   result2 <- colorFactor("Accent", NULL, reverse = TRUE)(letters[1:5])
   expect_identical(result2, rev(head(accent, 5)))
 })
+
+
+
+
+
+
+
+
+
+test_that("color production is correct", {
+  bw <- c("black", "white")
+
+  # Do these cases make sense?
+  expect_equal(colorBin(bw, NULL)(1), "#777777")
+  expect_equal(colorBin(bw, 1)(1), "#FFFFFF")
+
+  # Outside of domain? Return na.color
+  # suppressWarnings(
+    expect_true(identical("#808080", suppressWarnings(colorFactor(bw, letters)("foo"))))
+    expect_true(identical("#808080", suppressWarnings(colorQuantile(bw, 0:1)(-1))))
+    expect_true(identical("#808080", suppressWarnings(colorQuantile(bw, 0:1)(2))))
+    expect_true(identical("#808080", suppressWarnings(colorNumeric(bw, c(0, 1))(-1))))
+    expect_true(identical("#808080", suppressWarnings(colorNumeric(bw, c(0, 1))(2))))
+    expect_true(is.na(suppressWarnings(colorFactor(bw, letters, na.color = NA)("foo"))))
+    expect_true(is.na(suppressWarnings(colorQuantile(bw, 0:1, na.color = NA)(-1))))
+    expect_true(is.na(suppressWarnings(colorQuantile(bw, 0:1, na.color = NA)(2))))
+    expect_true(is.na(suppressWarnings(colorNumeric(bw, c(0, 1), na.color = NA)(-1))))
+    expect_true(is.na(suppressWarnings(colorNumeric(bw, c(0, 1), na.color = NA)(2))))
+    expect_warning(colorFactor(bw, letters, na.color = NA)("foo"))
+    expect_warning(colorQuantile(bw, 0:1, na.color = NA)(-1))
+    expect_warning(colorQuantile(bw, 0:1, na.color = NA)(2))
+    expect_warning(colorNumeric(bw, c(0, 1), na.color = NA)(-1))
+    expect_warning(colorNumeric(bw, c(0, 1), na.color = NA)(2))
+  # )
+
+  expect_equal(
+    c("#000000", "#7F7F7F", "#FFFFFF"),
+    colorNumeric(colorRamp(bw), NULL)(c(0, 0.5, 1))
+  )
+
+  ramp_with_na_cols <- colorNumeric(c(bw, "#FFFFFF00"), NULL, na.color = "blue", alpha = TRUE)(c(0, 0.25, 0.5, 1, NA))
+  # upgrade below can be removed if requiring scales >= 1.1.0
+  no_alpha_pos <- grepl("^#[0-9a-fA-F]{6}$", ramp_with_na_cols)
+  if (any(no_alpha_pos)) {
+    ramp_with_na_cols[no_alpha_pos] <- paste0(ramp_with_na_cols[no_alpha_pos], "FF")
+  }
+
+  expect_equal(
+    c("#000000FF", "#777777FF", "#FFFFFFFF", "#FFFFFF00", "blue"),
+    ramp_with_na_cols
+  )
+
+  expect_equal(
+    c("#000000", "#FFFFFF"),
+    colorBin(bw, NULL)(c(1, 2))
+  )
+
+  expect_equal(
+    c("#000000", "#FFFFFF"),
+    colorBin(bw, c(1, 2))(c(1, 2))
+  )
+
+  expect_equal(
+    c("#000000", "#FFFFFF"),
+    colorBin(bw, c(1, 2), 2)(c(1, 2))
+  )
+
+  expect_equal(
+    c("#000000", "#FFFFFF"),
+    colorBin(bw, NULL, bins = c(1, 1.5, 2))(c(1, 2))
+  )
+
+  expect_equal(
+    c("#000000", "#FFFFFF"),
+    colorBin(bw, c(1, 2), bins = c(1, 1.5, 2))(c(1, 2))
+  )
+
+  expect_equal(
+    c("#000000", "#777777", "#FFFFFF"),
+    colorNumeric(bw, NULL)(1:3)
+  )
+
+  expect_equal(
+    c("#000000", "#777777", "#FFFFFF"),
+    colorNumeric(bw, c(1:3))(1:3)
+  )
+
+  expect_equal(
+    rev(c("#000000", "#777777", "#FFFFFF")),
+    colorNumeric(rev(bw), c(1:3))(1:3)
+  )
+
+    # domain != unique(x)
+  expect_equal(
+    c("#000000", "#0E0E0E", "#181818"),
+    colorFactor(bw, LETTERS)(LETTERS[1:3])
+  )
+
+    # domain == unique(x)
+  expect_equal(
+    c("#000000", "#777777", "#FFFFFF"),
+    colorFactor(bw, LETTERS[1:3])(LETTERS[1:3])
+  )
+
+  # no domain
+  expect_equal(
+    c("#000000", "#777777", "#FFFFFF"),
+    colorFactor(bw, NULL)(LETTERS[1:3])
+  )
+
+  # Non-factor domains are sorted unless instructed otherwise
+  expect_equal(
+    c("#000000", "#777777", "#FFFFFF"),
+    colorFactor(bw, rev(LETTERS[1:3]))(LETTERS[1:3])
+  )
+  expect_equal(
+    rev(c("#000000", "#777777", "#FFFFFF")),
+  colorFactor(bw, rev(LETTERS[1:3]), ordered = TRUE)(LETTERS[1:3])
+  )
+
+})
