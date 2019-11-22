@@ -18,7 +18,7 @@ m %>% addPopups(-93.65, 42.0285, 'Here is the <b>Department of Statistics</b>, I
 
 ## Installation
 
-You can install this package from CRAN, or the development version from Github:
+You can install this package from CRAN, or the development version from GitHub:
 
 ```r
 # CRAN version
@@ -32,7 +32,7 @@ devtools::install_github('rstudio/leaflet')
 ## Documentation
 
 In addition to the usual R package documentation, we also have extensive docs and examples at:
-http://rstudio.github.io/leaflet You may use [Github issues](https://github.com/rstudio/leaflet/issues) to file bug reports or feature requests, and ask questions on [StackOverflow](http://stackoverflow.com/questions/tagged/r+leaflet) or in the [Shiny mailing list](https://groups.google.com/forum/#!forum/shiny-discuss).
+http://rstudio.github.io/leaflet You may use [GitHub issues](https://github.com/rstudio/leaflet/issues) to file bug reports or feature requests, and ask questions on [StackOverflow](http://stackoverflow.com/questions/tagged/r+leaflet) or in the [Shiny mailing list](https://groups.google.com/forum/#!forum/shiny-discuss).
 
 ## Development
 

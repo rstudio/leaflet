@@ -40,7 +40,7 @@ library(rgdal)
 library(rgdal)
 
 # From http://data.okfn.org/data/datasets/geo-boundaries-world-110m
-countries <- readOGR("json/countries.geojson", "OGRGeoJSON")
+countries <- readOGR("json/countries.geojson")
 map <- leaflet(countries)
 ```
 

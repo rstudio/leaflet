@@ -7,6 +7,7 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
@@ -85,9 +86,7 @@ h6 {
 </style>
 
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -101,7 +100,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -112,11 +110,12 @@ img {
 button.code-folding-btn:focus {
   outline: none;
 }
+summary {
+  display: list-item;
+}
 </style>
 
 
-
-<div class="container-fluid main-container">
 
 <!-- tabsets -->
 
@@ -174,20 +173,17 @@ button.code-folding-btn:focus {
 }
 </style>
 
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
 <!-- code folding -->
 
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
 
 
 
@@ -289,8 +285,8 @@ $(document).ready(function () {
 # Show first 20 rows from the `quakes` dataset
 leaflet(data = quakes[1:20,]) %&gt;% addTiles() %&gt;%
   addMarkers(~long, ~lat, popup = ~as.character(mag), label = ~as.character(mag))</code></pre>
-<div id="htmlwidget-927ec88a166bf954e46a" style="width:100%;height:216px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-927ec88a166bf954e46a">{
+<div id="htmlwidget-562da05387aef08f69fb" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-562da05387aef08f69fb">{
   "x": {
     "options": {
       "crs": {
@@ -387,8 +383,8 @@ leaflet(data = quakes[1:20,]) %&gt;% addTiles() %&gt;%
 
 leaflet(data = quakes[1:4,]) %&gt;% addTiles() %&gt;%
   addMarkers(~long, ~lat, icon = greenLeafIcon)</code></pre>
-<div id="htmlwidget-e2aad06f99e8b55df8d8" style="width:100%;height:168px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-e2aad06f99e8b55df8d8">{
+<div id="htmlwidget-92aa9ec4a26e6d2eb4c3" style="width:100%;height:168px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-92aa9ec4a26e6d2eb4c3">{
   "x": {
     "options": {
       "crs": {
@@ -504,8 +500,8 @@ leafIcons &lt;- icons(
 
 leaflet(data = quakes1) %&gt;% addTiles() %&gt;%
   addMarkers(~long, ~lat, icon = leafIcons)</code></pre>
-<div id="htmlwidget-ec9d8b9e435c1a666871" style="width:100%;height:192px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-ec9d8b9e435c1a666871">{
+<div id="htmlwidget-fb03bf98e7202586eee1" style="width:100%;height:192px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-fb03bf98e7202586eee1">{
   "x": {
     "options": {
       "crs": {
@@ -626,8 +622,8 @@ df &lt;- sp::SpatialPointsDataFrame(
 leaflet(df) %&gt;% addTiles() %&gt;%
   # Select from oceanIcons based on df$type
   addMarkers(icon = ~oceanIcons[type])</code></pre>
-<div id="htmlwidget-65e60ed4f5440bdab363" style="width:100%;height:168px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-65e60ed4f5440bdab363">{
+<div id="htmlwidget-b182c7e3d7d2f09bcc5e" style="width:100%;height:168px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b182c7e3d7d2f09bcc5e">{
   "x": {
     "options": {
       "crs": {
@@ -749,8 +745,8 @@ icons &lt;- awesomeIcons(
 
 leaflet(df.20) %&gt;% addTiles() %&gt;%
   addAwesomeMarkers(~long, ~lat, icon=icons, label=~as.character(mag))</code></pre>
-<div id="htmlwidget-c6a36a601760297b5cca" style="width:100%;height:216px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-c6a36a601760297b5cca">{
+<div id="htmlwidget-2e17ae06f223c72250d9" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2e17ae06f223c72250d9">{
   "x": {
     "options": {
       "crs": {
@@ -849,8 +845,8 @@ leaflet(df.20) %&gt;% addTiles() %&gt;%
 <pre class="r"><code>leaflet(quakes) %&gt;% addTiles() %&gt;% addMarkers(
   clusterOptions = markerClusterOptions()
 )</code></pre>
-<div id="htmlwidget-6d8788299161dc56faef" style="width:100%;height:240px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-6d8788299161dc56faef">{
+<div id="htmlwidget-2f386608a10ed269577b" style="width:100%;height:240px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2f386608a10ed269577b">{
   "x": {
     "options": {
       "crs": {
@@ -951,8 +947,8 @@ leaflet(df.20) %&gt;% addTiles() %&gt;%
 <p>Circle markers are much like regular circles (see <a href="shapes.html">Lines and Shapes</a>), except that their radius in onscreen pixels stays constant regardless of zoom level.</p>
 <p>You can use their default appearance:</p>
 <pre class="r"><code>leaflet(df) %&gt;% addTiles() %&gt;% addCircleMarkers()</code></pre>
-<div id="htmlwidget-e90b79b122bd7002e299" style="width:100%;height:168px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-e90b79b122bd7002e299">{
+<div id="htmlwidget-e92079a3c1d734b37e44" style="width:100%;height:168px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-e92079a3c1d734b37e44">{
   "x": {
     "options": {
       "crs": {
@@ -1044,8 +1040,8 @@ leaflet(df) %&gt;% addTiles() %&gt;%
     color = ~pal(type),
     stroke = FALSE, fillOpacity = 0.5
   )</code></pre>
-<div id="htmlwidget-fb93f5535b798302ff62" style="width:100%;height:168px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-fb93f5535b798302ff62">{
+<div id="htmlwidget-9dda01f0cde950eac35a" style="width:100%;height:168px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-9dda01f0cde950eac35a">{
   "x": {
     "options": {
       "crs": {
@@ -1158,6 +1154,23 @@ $(document).ready(function () {
 
 
 </script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

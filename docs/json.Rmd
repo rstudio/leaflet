@@ -8,15 +8,14 @@ For working with GeoJSON/TopoJSON data you have two options: either read it into
 
 ### Reading as `sp`
 
-The first approach is to use either `geojsonio` or `rgdal` (packages) to read GeoJSON/TopoJSON as `sp` objects. Then, you can use the full functionality of [polygons](shapes.html), [markers](markers.html), [colors](colors.html), [legends](legends.html), etc.
+The first approach is to use either `rgdal` or `geojsonio` (packages) to read GeoJSON/TopoJSON as `sp` objects. Then, you can use the full functionality of [polygons](shapes.html), [markers](markers.html), [colors](colors.html), [legends](legends.html), etc.
 
 ```{r message=FALSE,warning=FALSE}
 # From http://eric.clst.org/Stuff/USGeoJSON and
 # https://en.wikipedia.org/wiki/List_of_United_States_counties_and_county_equivalents
-nycounties <- geojsonio::geojson_read("json/nycounties.geojson",
-  what = "sp")
-# Or use the rgdal equivalent:
-# nycounties <- rgdal::readOGR("json/nycounties.geojson", "OGRGeoJSON")
+nycounties <- rgdal::readOGR("json/nycounties.geojson")
+# Or use the geojsonio equivalent:
+# nycounties <- geojsonio::geojson_read("json/nycounties.geojson", what = "sp")
 
 pal <- colorNumeric("viridis", NULL)
 
