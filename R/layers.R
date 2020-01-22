@@ -1116,6 +1116,9 @@ addCircles <- function(
 #' @param smoothFactor how much to simplify the polyline on each zoom level
 #'   (more means better performance and less accurate representation)
 #' @param highlightOptions Options for highlighting the shape on mouse over.
+#' @param offset relative pixel offset from their actual LatLngs. The offset
+#' value can be either negative or positive, for left- or right-side offset,
+#' and remains constant across zoom levels.
 #' @param noClip whether to disable polyline clipping
 #' @describeIn map-layers Add polylines to the map
 #' @export
@@ -1128,7 +1131,6 @@ addPolylines <- function(
   fill = FALSE,
   fillColor = color,
   fillOpacity = 0.2,
-  offset = NULL,
   dashArray = NULL,
   smoothFactor = 1.0,
   noClip = FALSE,
@@ -1138,7 +1140,8 @@ addPolylines <- function(
   labelOptions = NULL,
   options = pathOptions(),
   highlightOptions = NULL,
-  data = getMapData(map)
+  data = getMapData(map),
+  offset = NULL
 ) {
   if (missing(labelOptions)) labelOptions <- labelOptions()
 
