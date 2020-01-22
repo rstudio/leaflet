@@ -1,5 +1,7 @@
 # example
-# allows bidirectional flow not to overlap
-leaflet(corunaroads) %>%
+
+leaflet(atlStorms2005[1,]) %>%
   addTiles() %>%
-  addPolylines(offset = 2.5)
+  addPolylines(color = "blue", offset = 10) %>%
+  addPolylines(color = "black", offset = 0)
+

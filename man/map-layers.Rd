@@ -70,7 +70,7 @@ addPolylines(map, lng = NULL, lat = NULL, layerId = NULL,
   fillOpacity = 0.2, dashArray = NULL, smoothFactor = 1,
   noClip = FALSE, popup = NULL, popupOptions = NULL, label = NULL,
   labelOptions = NULL, options = pathOptions(),
-  highlightOptions = NULL, data = getMapData(map))
+  highlightOptions = NULL, data = getMapData(map), offset = NULL)
 
 addRectangles(map, lng1, lat1, lng2, lat2, layerId = NULL,
   group = NULL, stroke = TRUE, color = "#03F", weight = 5,
@@ -203,6 +203,10 @@ pattern}}
 (more means better performance and less accurate representation)}
 
 \item{noClip}{whether to disable polyline clipping}
+
+\item{offset}{relative pixel offset from their actual LatLngs. The offset
+value can be either negative or positive, for left- or right-side offset,
+and remains constant across zoom levels.}
 
 \item{lng1, lat1, lng2, lat2}{latitudes and longitudes of the south-west and
 north-east corners of rectangles}
