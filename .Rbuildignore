@@ -13,7 +13,7 @@
 ^package\.json$
 ^node_modules$
 ^data-raw$
-^npm-shrinkwrap\.json$
+^yarn\.lock$
 ^\.Rprofile\.local$
 ^inst/htmlwidgets/lib/.*/.*\.map$
 ^inst/htmlwidgets/plugins/.*/.*\.map$
@@ -31,3 +31,4 @@
 ^viztest-.*
 ^scripts
 ^cran-comments\.md$
+^revdep$

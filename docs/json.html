@@ -7,6 +7,7 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
@@ -78,9 +79,7 @@ h6 {
 </style>
 
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -94,7 +93,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -105,11 +103,12 @@ img {
 button.code-folding-btn:focus {
   outline: none;
 }
+summary {
+  display: list-item;
+}
 </style>
 
 
-
-<div class="container-fluid main-container">
 
 <!-- tabsets -->
 
@@ -167,20 +166,17 @@ button.code-folding-btn:focus {
 }
 </style>
 
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
 <!-- code folding -->
 
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
 
 
 
@@ -264,13 +260,16 @@ $(document).ready(function () {
 <p>For working with GeoJSON/TopoJSON data you have two options: either read it into <code>sp</code> objects; or use the <code>addGeoJSON()</code> and <code>addTopoJSON()</code> functions.</p>
 <div id="reading-as-sp" class="section level3">
 <h3>Reading as <code>sp</code></h3>
-<p>The first approach is to use either <code>geojsonio</code> or <code>rgdal</code> (packages) to read GeoJSON/TopoJSON as <code>sp</code> objects. Then, you can use the full functionality of <a href="shapes.html">polygons</a>, <a href="markers.html">markers</a>, <a href="colors.html">colors</a>, <a href="legends.html">legends</a>, etc.</p>
+<p>The first approach is to use either <code>rgdal</code> or <code>geojsonio</code> (packages) to read GeoJSON/TopoJSON as <code>sp</code> objects. Then, you can use the full functionality of <a href="shapes.html">polygons</a>, <a href="markers.html">markers</a>, <a href="colors.html">colors</a>, <a href="legends.html">legends</a>, etc.</p>
 <pre class="r"><code># From http://eric.clst.org/Stuff/USGeoJSON and
 # https://en.wikipedia.org/wiki/List_of_United_States_counties_and_county_equivalents
-nycounties &lt;- geojsonio::geojson_read(&quot;json/nycounties.geojson&quot;,
-  what = &quot;sp&quot;)
-# Or use the rgdal equivalent:
-# nycounties &lt;- rgdal::readOGR(&quot;json/nycounties.geojson&quot;, &quot;OGRGeoJSON&quot;)
+nycounties &lt;- rgdal::readOGR(&quot;json/nycounties.geojson&quot;)</code></pre>
+<pre><code>## OGR data source with driver: GeoJSON 
+## Source: &quot;/Users/barret/Documents/git/rstudio/leaflet/leaflet/docs/json/nycounties.geojson&quot;, layer: &quot;nycounties&quot;
+## with 62 features
+## It has 4 fields</code></pre>
+<pre class="r"><code># Or use the geojsonio equivalent:
+# nycounties &lt;- geojsonio::geojson_read(&quot;json/nycounties.geojson&quot;, what = &quot;sp&quot;)
 
 pal &lt;- colorNumeric(&quot;viridis&quot;, NULL)
 
@@ -281,8 +280,8 @@ leaflet(nycounties) %&gt;%
     label = ~paste0(county, &quot;: &quot;, formatC(pop, big.mark = &quot;,&quot;))) %&gt;%
   addLegend(pal = pal, values = ~log10(pop), opacity = 1.0,
     labFormat = labelFormat(transform = function(x) round(10^x)))</code></pre>
-<div id="htmlwidget-927ec88a166bf954e46a" style="width:100%;height:216px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-927ec88a166bf954e46a">{
+<div id="htmlwidget-562da05387aef08f69fb" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-562da05387aef08f69fb">{
   "x": {
     "options": {
       "crs": {
@@ -936,8 +935,8 @@ leaflet(nycounties) %&gt;%
 leaflet() %&gt;% setView(lng = -98.583, lat = 39.833, zoom = 3) %&gt;%
   addTiles() %&gt;%
   addTopoJSON(topoData, weight = 1, color = &quot;#444444&quot;, fill = FALSE)</code></pre>
-<div id="htmlwidget-e2aad06f99e8b55df8d8" style="width:100%;height:216px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-e2aad06f99e8b55df8d8">{
+<div id="htmlwidget-92aa9ec4a26e6d2eb4c3" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-92aa9ec4a26e6d2eb4c3">{
   "x": {
     "options": {
       "crs": {
@@ -1050,8 +1049,8 @@ geojson$features &lt;- lapply(geojson$features, function(feat) {
 
 # Add the now-styled GeoJSON object to the map
 leaflet() %&gt;% addGeoJSON(geojson)</code></pre>
-<div id="htmlwidget-ec9d8b9e435c1a666871" style="width:100%;height:216px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-ec9d8b9e435c1a666871">{
+<div id="htmlwidget-fb03bf98e7202586eee1" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-fb03bf98e7202586eee1">{
   "x": {
     "options": {
       "crs": {
@@ -46978,6 +46977,23 @@ $(document).ready(function () {
 
 
 </script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

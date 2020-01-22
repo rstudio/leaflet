@@ -7,6 +7,7 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
@@ -77,9 +78,7 @@ h6 {
 </style>
 
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -93,7 +92,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -104,11 +102,12 @@ img {
 button.code-folding-btn:focus {
   outline: none;
 }
+summary {
+  display: list-item;
+}
 </style>
 
 
-
-<div class="container-fluid main-container">
 
 <!-- tabsets -->
 
@@ -166,20 +165,17 @@ button.code-folding-btn:focus {
 }
 </style>
 
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
 <!-- code folding -->
 
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
 
 
 
@@ -277,7 +273,7 @@ $(document).ready(function () {
 states &lt;- readOGR(&quot;shp/cb_2013_us_state_20m.shp&quot;,
   layer = &quot;cb_2013_us_state_20m&quot;, GDAL1_integer64_policy = TRUE)</code></pre>
 <pre><code>## OGR data source with driver: ESRI Shapefile 
-## Source: &quot;/Users/barret/odrive/AmazonCloudDrive/git/rstudio/leaflet/leaflet/docs/shp/cb_2013_us_state_20m.shp&quot;, layer: &quot;cb_2013_us_state_20m&quot;
+## Source: &quot;/Users/barret/Documents/git/rstudio/leaflet/leaflet/docs/shp/cb_2013_us_state_20m.shp&quot;, layer: &quot;cb_2013_us_state_20m&quot;
 ## with 52 features
 ## It has 9 fields
 ## Integer64 fields read as doubles:  ALAND AWATER</code></pre>
@@ -291,8 +287,8 @@ leaflet(neStates) %&gt;%
     fillColor = ~colorQuantile(&quot;YlOrRd&quot;, ALAND)(ALAND),
     highlightOptions = highlightOptions(color = &quot;white&quot;, weight = 2,
       bringToFront = TRUE))</code></pre>
-<div id="htmlwidget-927ec88a166bf954e46a" style="width:100%;height:216px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-927ec88a166bf954e46a">{
+<div id="htmlwidget-562da05387aef08f69fb" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-562da05387aef08f69fb">{
   "x": {
     "options": {
       "crs": {
@@ -683,8 +679,8 @@ leaflet(cities) %&gt;% addTiles() %&gt;%
   addCircles(lng = ~Long, lat = ~Lat, weight = 1,
     radius = ~sqrt(Pop) * 30, popup = ~City
   )</code></pre>
-<div id="htmlwidget-e2aad06f99e8b55df8d8" style="width:100%;height:216px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-e2aad06f99e8b55df8d8">{
+<div id="htmlwidget-92aa9ec4a26e6d2eb4c3" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-92aa9ec4a26e6d2eb4c3">{
   "x": {
     "options": {
       "crs": {
@@ -775,8 +771,8 @@ leaflet(cities) %&gt;% addTiles() %&gt;%
     lng2=-118.436383, lat2=34.062717,
     fillColor = &quot;transparent&quot;
   )</code></pre>
-<div id="htmlwidget-ec9d8b9e435c1a666871" style="width:100%;height:192px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-ec9d8b9e435c1a666871">{
+<div id="htmlwidget-fb03bf98e7202586eee1" style="width:100%;height:192px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-fb03bf98e7202586eee1">{
   "x": {
     "options": {
       "crs": {
@@ -890,6 +886,23 @@ $(document).ready(function () {
 
 
 </script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

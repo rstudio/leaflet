@@ -1,4 +1,4 @@
-devtools::install_github("schloerke/viztest")
+remotes::install_github("schloerke/viztest")
 # source("scripts/viztest.R")
 
 

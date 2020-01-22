@@ -23,3 +23,5 @@ for (i in seq_along(platforms)) {
 # check_output$web()
 
 print(check_output)
+
+cat(capture.output({check_output$cran_summary()}), sep = "\n")

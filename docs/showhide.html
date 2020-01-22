@@ -7,6 +7,7 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
@@ -30,7 +31,7 @@
 <script src="libs/Proj4Leaflet/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet/rstudio_leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-binding/leaflet.js"></script>
-<script src="libs/leaflet-providers/leaflet-providers.js"></script>
+<script src="libs/leaflet-providers/leaflet-providers_1.9.0.js"></script>
 <script src="libs/leaflet-providers-plugin/leaflet-providers-plugin.js"></script>
 <link href="libs/leaflet-markercluster/MarkerCluster.css" rel="stylesheet" />
 <link href="libs/leaflet-markercluster/MarkerCluster.Default.css" rel="stylesheet" />
@@ -84,9 +85,7 @@ h6 {
 </style>
 
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -100,7 +99,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -111,11 +109,12 @@ img {
 button.code-folding-btn:focus {
   outline: none;
 }
+summary {
+  display: list-item;
+}
 </style>
 
 
-
-<div class="container-fluid main-container">
 
 <!-- tabsets -->
 
@@ -173,20 +172,17 @@ button.code-folding-btn:focus {
 }
 </style>
 
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
 <!-- code folding -->
 
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
 
 
 
@@ -312,8 +308,8 @@ map &lt;- leaflet(quakes) %&gt;%
     options = layersControlOptions(collapsed = FALSE)
   )
 map</code></pre>
-<div id="htmlwidget-927ec88a166bf954e46a" style="width:100%;height:288px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-927ec88a166bf954e46a">{
+<div id="htmlwidget-562da05387aef08f69fb" style="width:100%;height:288px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-562da05387aef08f69fb">{
   "x": {
     "options": {
       "crs": {
@@ -486,8 +482,8 @@ map</code></pre>
 <p>You can use the <code>showGroup</code> and <code>hideGroup</code> functions to show and hide groups from code. This mostly makes sense in a <a href="shiny.html">Shiny context with <code>leafletProxy</code></a>, where perhaps you might toggle group visibility based on input controls in a sidebar.</p>
 <p>You can also use <code>showGroup</code>/<code>hideGroup</code> in conjuction with <code>addLayersControl</code> to set which groups are checked by default.</p>
 <pre class="r"><code>map %&gt;% hideGroup(&quot;Outline&quot;)</code></pre>
-<div id="htmlwidget-e2aad06f99e8b55df8d8" style="width:100%;height:216px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-e2aad06f99e8b55df8d8">{
+<div id="htmlwidget-92aa9ec4a26e6d2eb4c3" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-92aa9ec4a26e6d2eb4c3">{
   "x": {
     "options": {
       "crs": {
@@ -689,8 +685,8 @@ l %&gt;%
     overlayGroups = names(quakes.df),
     options = layersControlOptions(collapsed = FALSE)
   )</code></pre>
-<div id="htmlwidget-ec9d8b9e435c1a666871" style="width:100%;height:216px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-ec9d8b9e435c1a666871">{
+<div id="htmlwidget-fb03bf98e7202586eee1" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-fb03bf98e7202586eee1">{
   "x": {
     "options": {
       "crs": {
@@ -923,6 +919,23 @@ $(document).ready(function () {
 
 
 </script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

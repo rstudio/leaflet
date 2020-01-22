@@ -13,7 +13,33 @@ notifications:
     on_success: change
     on_failure: change
 
-r_github_packages:
-  - jimhester/lintr
-after_success:
-  - Rscript -e 'lintr::lint_package()'
+jobs:
+  include:
+    - name: "R: oldrel"
+      r: oldrel
+
+    - name: "R: release"
+      r: release
+      # TODO fix all lints
+      # r_packages:
+      #   - lintr
+      # after_success:
+      #   - Rscript -e 'lintr::lint_package()'
+
+    - name: "R: devel"
+      r: devel
+
+
+    # - name: "Roxygen check"
+    #   r: release
+    #   r_packages:
+    #     - devtools
+    #     - roxygen2
+    #   script: ./scripts/checkDocsCurrent.sh
+
+    - name: "Javascript check"
+      language: node_js
+      cache: yarn
+      script: ./scripts/checkJSCurrent.sh
+      node_js:
+        - "12"

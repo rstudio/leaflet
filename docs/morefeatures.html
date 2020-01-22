@@ -7,6 +7,7 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
@@ -36,7 +37,7 @@
 <script src="libs/leaflet-graticule/Graticule-binding.js"></script>
 <script src="libs/leaflet-terminator/L.Terminator.js"></script>
 <script src="libs/leaflet-terminator/Terminator-binding.js"></script>
-<script src="libs/leaflet-providers/leaflet-providers.js"></script>
+<script src="libs/leaflet-providers/leaflet-providers_1.9.0.js"></script>
 <script src="libs/leaflet-providers-plugin/leaflet-providers-plugin.js"></script>
 <link href="libs/leaflet-minimap/Control.MiniMap.min.css" rel="stylesheet" />
 <script src="libs/leaflet-minimap/Control.MiniMap.min.js"></script>
@@ -98,9 +99,7 @@ h6 {
 </style>
 
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -114,7 +113,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -125,11 +123,12 @@ img {
 button.code-folding-btn:focus {
   outline: none;
 }
+summary {
+  display: list-item;
+}
 </style>
 
 
-
-<div class="container-fluid main-container">
 
 <!-- tabsets -->
 
@@ -187,20 +186,17 @@ button.code-folding-btn:focus {
 }
 </style>
 
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
 <!-- code folding -->
 
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
 
 
 
@@ -309,8 +305,8 @@ m %&gt;%
   # Central Park
   fitBounds(-73.9, 40.75, -73.95,40.8) %&gt;%
   addMeasure()</code></pre>
-<div id="htmlwidget-927ec88a166bf954e46a" style="width:100%;height:216px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-927ec88a166bf954e46a">{
+<div id="htmlwidget-562da05387aef08f69fb" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-562da05387aef08f69fb">{
   "x": {
     "options": {
       "crs": {
@@ -387,8 +383,8 @@ m %&gt;%
     primaryAreaUnit = &quot;sqmeters&quot;,
     activeColor = &quot;#3D535D&quot;,
     completedColor = &quot;#7D4479&quot;)</code></pre>
-<div id="htmlwidget-e2aad06f99e8b55df8d8" style="width:100%;height:216px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-e2aad06f99e8b55df8d8">{
+<div id="htmlwidget-92aa9ec4a26e6d2eb4c3" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-92aa9ec4a26e6d2eb4c3">{
   "x": {
     "options": {
       "crs": {
@@ -464,8 +460,8 @@ m %&gt;%
 m &lt;- leaflet() %&gt;% addTiles() %&gt;% setView(0,0,2)
 
 m %&gt;% addGraticule()</code></pre>
-<div id="htmlwidget-ec9d8b9e435c1a666871" style="width:100%;height:216px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-ec9d8b9e435c1a666871">{
+<div id="htmlwidget-fb03bf98e7202586eee1" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-fb03bf98e7202586eee1">{
   "x": {
     "options": {
       "crs": {
@@ -529,8 +525,8 @@ m %&gt;% addGraticule()</code></pre>
   "jsHooks": []
 }</script>
 <pre class="r"><code>m %&gt;% addGraticule(interval = 40, style = list(color = &quot;#FF0000&quot;, weight = 1))</code></pre>
-<div id="htmlwidget-65e60ed4f5440bdab363" style="width:100%;height:216px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-65e60ed4f5440bdab363">{
+<div id="htmlwidget-b182c7e3d7d2f09bcc5e" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b182c7e3d7d2f09bcc5e">{
   "x": {
     "options": {
       "crs": {
@@ -598,8 +594,8 @@ m %&gt;% addGraticule()</code></pre>
   addGraticule(group = &quot;Graticule&quot;) %&gt;%
   addLayersControl(overlayGroups = c(&quot;Graticule&quot;),
     options = layersControlOptions(collapsed = FALSE))</code></pre>
-<div id="htmlwidget-c6a36a601760297b5cca" style="width:100%;height:216px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-c6a36a601760297b5cca">{
+<div id="htmlwidget-2e17ae06f223c72250d9" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2e17ae06f223c72250d9">{
   "x": {
     "options": {
       "crs": {
@@ -681,8 +677,8 @@ m %&gt;% addGraticule()</code></pre>
 
 # Default Resolution
 leaflet() %&gt;% addTiles() %&gt;% addTerminator()</code></pre>
-<div id="htmlwidget-6d8788299161dc56faef" style="width:100%;height:216px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-6d8788299161dc56faef">{
+<div id="htmlwidget-2f386608a10ed269577b" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2f386608a10ed269577b">{
   "x": {
     "options": {
       "crs": {
@@ -746,8 +742,8 @@ leaflet() %&gt;%
   addLayersControl(
     overlayGroups = &quot;daylight&quot;,
     options = layersControlOptions(collapsed = FALSE))</code></pre>
-<div id="htmlwidget-e90b79b122bd7002e299" style="width:100%;height:216px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-e90b79b122bd7002e299">{
+<div id="htmlwidget-e92079a3c1d734b37e44" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-e92079a3c1d734b37e44">{
   "x": {
     "options": {
       "crs": {
@@ -824,8 +820,8 @@ l &lt;- leaflet() %&gt;% setView(0,0,3)
 l %&gt;%
   addProviderTiles(providers$Esri.WorldStreetMap) %&gt;%
   addMiniMap()</code></pre>
-<div id="htmlwidget-fb93f5535b798302ff62" style="width:100%;height:216px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-fb93f5535b798302ff62">{
+<div id="htmlwidget-9dda01f0cde950eac35a" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-9dda01f0cde950eac35a">{
   "x": {
     "options": {
       "crs": {
@@ -902,8 +898,8 @@ l %&gt;%
   addMiniMap(
     tiles = providers$Esri.WorldStreetMap,
     toggleDisplay = TRUE)</code></pre>
-<div id="htmlwidget-a81d84882e3b64c1a840" style="width:100%;height:216px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-a81d84882e3b64c1a840">{
+<div id="htmlwidget-7ce6ee426e138be93a89" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-7ce6ee426e138be93a89">{
   "x": {
     "options": {
       "crs": {
@@ -989,8 +985,8 @@ library(htmlwidgets)</code></pre>
   addEasyButton(easyButton(
     icon=&quot;fa-crosshairs&quot;, title=&quot;Locate Me&quot;,
     onClick=JS(&quot;function(btn, map){ map.locate({setView: true}); }&quot;)))</code></pre>
-<div id="htmlwidget-2865ff85215eaa474969" style="width:100%;height:216px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-2865ff85215eaa474969">{
+<div id="htmlwidget-bf6034a99884de3a2a25" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-bf6034a99884de3a2a25">{
   "x": {
     "options": {
       "crs": {
@@ -1085,8 +1081,8 @@ library(htmlwidgets)</code></pre>
       )
     )
   ))</code></pre>
-<div id="htmlwidget-eb5bdc7f1bfa77cf3949" style="width:100%;height:216px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-eb5bdc7f1bfa77cf3949">{
+<div id="htmlwidget-15fc5571ed284b8860f3" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-15fc5571ed284b8860f3">{
   "x": {
     "options": {
       "crs": {
@@ -1207,9 +1203,9 @@ library(htmlwidgets)</code></pre>
 </div>
 <div id="advanced-features" class="section level3">
 <h3>Advanced Features</h3>
-<div id="custom-javascript-with-htmlwidgetonrender" class="section level4">
-<h4>Custom JavaScript with <code>htmlwidget::onRender</code></h4>
-<p>The <code>htmlwidget::onRender</code> function can be used to add custom behavior to the leaflet map using native Javascript. This is a some what advanced use case and requires you to know Javascript. Using <code>onRender</code> you can customize your map’s behavior using any of the APIs as defined in the Leaflet.js <a href="leafletjs.com/reference.html">documentation</a>.</p>
+<div id="custom-javascript-with-htmlwidgetsonrender" class="section level4">
+<h4>Custom JavaScript with <code>htmlwidgets::onRender</code></h4>
+<p>The <code>htmlwidgets::onRender</code> function can be used to add custom behavior to the leaflet map using native Javascript. This is a some what advanced use case and requires you to know Javascript. Using <code>onRender</code> you can customize your map’s behavior using any of the APIs as defined in the Leaflet.js <a href="leafletjs.com/reference.html">documentation</a>.</p>
 <p>Below is an example where we sync the base layer of the mini-map with the baselayer of the main map, using the ‘baselayerchange’ event.</p>
 <pre class="r"><code>l &lt;- leaflet() %&gt;% setView(0,0,3)
 
@@ -1232,8 +1228,8 @@ l %&gt;%
           myMap.minimap.changeLayer(L.tileLayer.provider(e.name));
         })
     }&quot;)</code></pre>
-<div id="htmlwidget-b316575cf157472f8301" style="width:100%;height:384px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-b316575cf157472f8301">{
+<div id="htmlwidget-eb6714d1999a75cd525a" style="width:100%;height:384px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-eb6714d1999a75cd525a">{
   "x": {
     "options": {
       "crs": {
@@ -1485,6 +1481,23 @@ $(document).ready(function () {
 
 
 </script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

@@ -1,8 +1,8 @@
-# Comments
+## Comments
 
-## 2018-8-24
+#### 2019-11-08
 
-This submission is done to correct the testing issue from a scales update.
+This submission is done to correct a testing issue with `scales`.
 
 This submission is done by Barret Schloerke <barret@rstudio.com> on behalf of Joe Cheng <joe@rstudio.com>. Please submit any changes to be made to <barret@rstudio.com>.
 
@@ -10,21 +10,31 @@ This submission is done by Barret Schloerke <barret@rstudio.com> on behalf of Jo
 
 
 ## Test environments
-* local OS X install, R 3.5.1, --run-dontcheck
-  * 0 errors | 0 warnings | 0 notes
-* ubuntu 14.04.5 (on travis-ci), R version 3.5.0 (2017-01-27)
-  * 0 errors | 0 warnings | 0 notes
-* devtools::build_win() x86_64-w64-mingw32, R version 3.5.1 (2018-07-02)
-  * 0 errors | 0 warnings | 0 notes
-* devtools::build_win() x86_64-w64-mingw32, R Under development (unstable) (2018-08-22 r75177)
+
+* local OS X install, R 3.6.1, --run-dontcheck
   * 0 errors | 0 warnings | 0 notes
 
-## Reverse dependencies
+* ubuntu 14.04.5 (on travis-ci), R version 3.6.1 (2017-01-27)
+  * 0 errors | 0 warnings | 0 notes
 
-* Revdep maintainers were not contacted as this release is for documentation fixes and to fix the cran test error.
+* win-builder (oldrelease, release, and devel)
+  * 0 errors | 0 warnings | 0 notes
 
-* I have run R CMD check on the 66 downstream dependencies.
-  * https://github.com/rstudio/leaflet/blob/master/revdep/problems.md
-  * No errors, warnings, or notes were introduced due to changes in leaflet
+* R-hub windows-x86_64-devel (r-devel)
+  * 0 errors | 0 warnings | 0 notes
 
-* All revdeps except segclust2d were able to be tested
+* R-hub ubuntu-gcc-release (r-release)
+  ❯ On ubuntu-gcc-release (r-release)
+    checking package dependencies ... NOTE
+    Packages suggested but not available for checking: 'sf', 'rgdal'
+  * 0 errors ✖ | 0 warnings ✔ | 1 note ✖
+
+* R-hub fedora-clang-devel (r-devel)
+  * 0 errors | 0 warnings | 0 notes
+
+## revdepcheck results
+
+We checked 95 reverse dependencies, comparing R CMD check results across CRAN and dev versions of this package.
+
+* We saw 0 new problems
+* We failed to check 0 packages
