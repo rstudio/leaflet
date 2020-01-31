@@ -1145,7 +1145,11 @@ addPolylines <- function(
 ) {
   if (missing(labelOptions)) labelOptions <- labelOptions()
 
-  if(offset == 0) offset <- NULL
+  if (is.numeric(offset)) {
+    if (offset == 0) offset <- NULL
+  } else {
+    offset <- NULL
+  }
 
   options <- c(options, filterNULL(list(
     stroke = stroke, color = color, weight = weight, opacity = opacity,
