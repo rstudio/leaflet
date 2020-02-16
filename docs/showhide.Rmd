@@ -80,7 +80,7 @@ Finally, you can remove the layers in a group using `clearGroup`. Note that this
 
 ## With Marker Clusters
 
-If markers are addeded to different groups, and when using marker clustering as described in the [marker](markers.html) page, leaflet will generate different sets of clusters for differnet groups. This allows showing/hiding of marker clusters belonging to a group independenly of other marker clusers in other groups.
+If markers are added to different groups, and when using marker clustering as described in the [marker](markers.html) page, leaflet will generate different sets of clusters for different groups. This allows showing/hiding of marker clusters belonging to a group independently of other marker clusters in other groups.
 
 ```{r}
 
