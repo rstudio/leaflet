@@ -48,6 +48,8 @@
 .leaflet-container img.leaflet-image-layer {
 	max-width: none !important;
 	max-height: none !important;
+	border: none;
+	box-shadow: none;
 	}
 
 .leaflet-container.leaflet-touch-zoom {
