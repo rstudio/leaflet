@@ -8,7 +8,7 @@ FEATURES
 *
 
 BUG FIXES and IMPROVEMENTS
-*
+* Updated CSS to specify `none` for `border` and `box-shadow` properties of `img` tags in leaflet. This avoids unexpected inheritance of these properties for example in `revealjs::revealjs_presentation`.
 
 
 
