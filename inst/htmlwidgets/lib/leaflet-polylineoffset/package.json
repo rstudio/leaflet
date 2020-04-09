@@ -1,0 +1,58 @@
+{
+  "_from": "leaflet-polylineoffset",
+  "_id": "leaflet-polylineoffset@1.1.1",
+  "_inBundle": false,
+  "_integrity": "sha512-WcEjAROx9IhIVwSMoFy9p2QBCG9YeuGtJl4ZdunIgj4xbCdTrUkBj8JdonUeCyLPnD2/Vrem/raOPHm5LvebSw==",
+  "_location": "/leaflet-polylineoffset",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "leaflet-polylineoffset",
+    "name": "leaflet-polylineoffset",
+    "escapedName": "leaflet-polylineoffset",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/leaflet-polylineoffset/-/leaflet-polylineoffset-1.1.1.tgz",
+  "_shasum": "021b717d4f7d462f742c1ac1ac0e83e8eef74615",
+  "_spec": "leaflet-polylineoffset",
+  "_where": "C:\\Users\\Fernando.Munozmendez\\OneDrive - AECOM Directory\\Projects\\Leaflet_dev\\leaflet",
+  "author": {
+    "name": "Benjamin Becquet"
+  },
+  "bugs": {
+    "url": "https://github.com/bbecquet/Leaflet.PolylineOffset/issues"
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "Apply a relative pixel offset to polylines without changing their coordinates.",
+  "directories": {
+    "example": "examples"
+  },
+  "homepage": "https://github.com/bbecquet/Leaflet.PolylineOffset#readme",
+  "keywords": [
+    "map",
+    "leaflet",
+    "polyline",
+    "offset",
+    "layer",
+    "vector"
+  ],
+  "license": "MIT",
+  "main": "leaflet.polylineoffset.js",
+  "name": "leaflet-polylineoffset",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bbecquet/Leaflet.PolylineOffset.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "1.1.1"
+}

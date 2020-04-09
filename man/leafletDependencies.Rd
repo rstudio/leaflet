@@ -4,7 +4,7 @@
 \name{leafletDependencies}
 \alias{leafletDependencies}
 \title{Various leaflet dependency functions for use in downstream packages}
-\format{An object of class \code{list} of length 13.}
+\format{An object of class \code{list} of length 14.}
 \usage{
 leafletDependencies
 }

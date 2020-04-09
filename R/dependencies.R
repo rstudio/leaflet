@@ -25,6 +25,9 @@ leafletDependencies <- list(
   omnivore = function() {
     leafletOmnivoreDependencies()
   },
+  polylineoffset = function() {
+    leafletPolylineoffsetDependencies()
+  },
 
   # the ones below are not really expected to be used directly
   # but are included for completeness sake.
