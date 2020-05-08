@@ -68,6 +68,14 @@ m %>%
     options = layersControlOptions(collapsed = FALSE))
 ```
 
+You can also consider using the `addSimpleGraticule` function (via the [Leaflet.SimpleGraticule](https://github.com/ablakey/Leaflet.SimpleGraticule) plugin) to add a graticule, which displays corresponding latitudes and longitudes in the map margin.  
+
+```{r }
+m <- leaflet() %>% addTiles() %>% setView(0,0,2)
+m %>% addSimpleGraticule()
+m %>% addSimpleGraticule(interval = 10, showOriginLabel = FALSE)
+```
+
 #### Terminator (day/night indicator)
 
 ```{r}
