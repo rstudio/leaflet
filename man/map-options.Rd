@@ -2,6 +2,7 @@
 % Please edit documentation in R/layers.R
 \name{tileOptions}
 \alias{tileOptions}
+\alias{gridOptions}
 \alias{WMSTileOptions}
 \alias{popupOptions}
 \alias{labelOptions}
@@ -26,6 +27,15 @@ tileOptions(
   unloadInvisibleTiles = NULL,
   updateWhenIdle = NULL,
   detectRetina = FALSE,
+  ...
+)
+
+gridOptions(
+  tileSize = 256,
+  updateWhenIdle = NULL,
+  zIndex = 1,
+  minZoom = 0,
+  maxZoom = NULL,
   ...
 )
 
@@ -182,6 +192,8 @@ listed in the layer functions.
 \section{Functions}{
 \itemize{
 \item \code{tileOptions()}: Options for tile layers
+
+\item \code{gridOptions()}: Options for grid layers
 
 \item \code{WMSTileOptions()}: Options for WMS tile layers
 
