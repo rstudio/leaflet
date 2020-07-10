@@ -16,7 +16,7 @@ addRasterImage(
   project = TRUE,
   method = c("auto", "bilinear", "ngb"),
   maxBytes = 4 * 1024 * 1024,
-  options = tileOptions(),
+  options = gridOptions(),
   data = getMapData(map)
 )
 
