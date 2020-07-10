@@ -983,7 +983,7 @@ methods.setGroupOptions = function(group, options) {
   this.showHideGroupsOnZoom();
 };
 
-methods.addRasterImage = function(uri, bounds, opacity, attribution, layerId, group) {
+methods.addRasterImage = function(uri, bounds, opacity, attribution, layerId, group, options) {
   // uri is a data URI containing an image. We want to paint this image as a
   // layer at (top-left) bounds[0] to (bottom-right) bounds[1].
 
@@ -1104,12 +1104,10 @@ methods.addRasterImage = function(uri, bounds, opacity, attribution, layerId, gr
   };
   img.src = uri;
 
-  let canvasTiles = L.gridLayer({
-    opacity: opacity,
-    attribution: attribution,
+  let canvasTiles = L.gridLayer(Object.assign({}, options, {
     detectRetina: true,
     async: true
-  });
+  }));
 
   // NOTE: The done() function MUST NOT be invoked until after the current
   // tick; done() looks in Leaflet's tile cache for the current tile, and

@@ -8,7 +8,7 @@ FEATURES
 *
 
 BUG FIXES and IMPROVEMENTS
-*
+* `addRasterImage` now takes `options = gridOptions()`, so that arbitrary Leaflet layer options can be controlled.
 
 
 

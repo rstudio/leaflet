@@ -5,10 +5,18 @@
 \title{Create a list of awesome icon data see
 \url{https://github.com/lvoogdt/Leaflet.awesome-markers}}
 \usage{
-awesomeIcons(icon = "home", library = "glyphicon",
-  markerColor = "blue", iconColor = "white", spin = FALSE,
-  extraClasses = NULL, squareMarker = FALSE, iconRotate = 0,
-  fontFamily = "monospace", text = NULL)
+awesomeIcons(
+  icon = "home",
+  library = "glyphicon",
+  markerColor = "blue",
+  iconColor = "white",
+  spin = FALSE,
+  extraClasses = NULL,
+  squareMarker = FALSE,
+  iconRotate = 0,
+  fontFamily = "monospace",
+  text = NULL
+)
 }
 \arguments{
 \item{icon}{Name of the icon}

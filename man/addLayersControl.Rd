@@ -6,10 +6,14 @@
 \alias{removeLayersControl}
 \title{Add UI controls to switch layers on and off}
 \usage{
-addLayersControl(map, baseGroups = character(0),
-  overlayGroups = character(0), position = c("topright", "bottomright",
-  "bottomleft", "topleft"), options = layersControlOptions(),
-  data = getMapData(map))
+addLayersControl(
+  map,
+  baseGroups = character(0),
+  overlayGroups = character(0),
+  position = c("topright", "bottomright", "bottomleft", "topleft"),
+  options = layersControlOptions(),
+  data = getMapData(map)
+)
 
 layersControlOptions(collapsed = TRUE, autoZIndex = TRUE, ...)
 

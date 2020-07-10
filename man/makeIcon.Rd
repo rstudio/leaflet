@@ -4,11 +4,23 @@
 \alias{makeIcon}
 \title{Define icon sets}
 \usage{
-makeIcon(iconUrl = NULL, iconRetinaUrl = NULL, iconWidth = NULL,
-  iconHeight = NULL, iconAnchorX = NULL, iconAnchorY = NULL,
-  shadowUrl = NULL, shadowRetinaUrl = NULL, shadowWidth = NULL,
-  shadowHeight = NULL, shadowAnchorX = NULL, shadowAnchorY = NULL,
-  popupAnchorX = NULL, popupAnchorY = NULL, className = NULL)
+makeIcon(
+  iconUrl = NULL,
+  iconRetinaUrl = NULL,
+  iconWidth = NULL,
+  iconHeight = NULL,
+  iconAnchorX = NULL,
+  iconAnchorY = NULL,
+  shadowUrl = NULL,
+  shadowRetinaUrl = NULL,
+  shadowWidth = NULL,
+  shadowHeight = NULL,
+  shadowAnchorX = NULL,
+  shadowAnchorY = NULL,
+  popupAnchorX = NULL,
+  popupAnchorY = NULL,
+  className = NULL
+)
 }
 \arguments{
 \item{iconUrl}{the URL or file path to the icon image}

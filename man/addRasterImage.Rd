@@ -5,10 +5,20 @@
 \alias{projectRasterForLeaflet}
 \title{Add a raster image as a layer}
 \usage{
-addRasterImage(map, x, colors = if (raster::is.factor(x)) "Set1" else
-  "Spectral", opacity = 1, attribution = NULL, layerId = NULL,
-  group = NULL, project = TRUE, method = c("auto", "bilinear",
-  "ngb"), maxBytes = 4 * 1024 * 1024, data = getMapData(map))
+addRasterImage(
+  map,
+  x,
+  colors = if (raster::is.factor(x)) "Set1" else "Spectral",
+  opacity = 1,
+  attribution = NULL,
+  layerId = NULL,
+  group = NULL,
+  project = TRUE,
+  method = c("auto", "bilinear", "ngb"),
+  maxBytes = 4 * 1024 * 1024,
+  options = gridOptions(),
+  data = getMapData(map)
+)
 
 projectRasterForLeaflet(x, method)
 }
@@ -43,6 +53,9 @@ Ignored if \code{project = FALSE}. See \code{\link{projectRaster}} for details.}
 
 \item{maxBytes}{the maximum number of bytes to allow for the projected image
 (before base64 encoding); defaults to 4MB.}
+
+\item{options}{a list of additional options, intended to be provided by
+a call to \code{\link{gridOptions}}}
 
 \item{data}{the data object from which the argument values are derived; by
 default, it is the \code{data} object provided to \code{leaflet()}

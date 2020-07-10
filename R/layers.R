@@ -218,6 +218,8 @@ epsg3857 <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y
 #'   Ignored if \code{project = FALSE}. See \code{\link{projectRaster}} for details.
 #' @param maxBytes the maximum number of bytes to allow for the projected image
 #'   (before base64 encoding); defaults to 4MB.
+#' @param options a list of additional options, intended to be provided by
+#'   a call to \code{\link{gridOptions}}
 #' @template data-getMapData
 #'
 #' @examples
@@ -243,9 +245,13 @@ addRasterImage <- function(
   project = TRUE,
   method = c("auto", "bilinear", "ngb"),
   maxBytes = 4 * 1024 * 1024,
+  options = gridOptions(),
   data = getMapData(map)
 ) {
   stopifnot(inherits(x, "RasterLayer"))
+
+  options$opacity <- opacity
+  options$attribution <- attribution
 
   raster_is_factor <- raster::is.factor(x)
   method <- match.arg(method)
@@ -304,7 +310,7 @@ addRasterImage <- function(
     list(raster::ymin(bounds), raster::xmax(bounds))
   )
 
-  invokeMethod(map, data, "addRasterImage", uri, latlng, opacity, attribution, layerId, group) %>%
+  invokeMethod(map, data, "addRasterImage", uri, latlng, opacity, attribution, layerId, group, options) %>%
     expandLimits(
       c(raster::ymin(bounds), raster::ymax(bounds)),
       c(raster::xmin(bounds), raster::xmax(bounds))
@@ -369,6 +375,23 @@ tileOptions <- function(
     zoomOffset = zoomOffset, zoomReverse = zoomReverse, opacity = opacity,
     zIndex = zIndex, unloadInvisibleTiles = unloadInvisibleTiles,
     updateWhenIdle = updateWhenIdle, detectRetina = detectRetina,
+    ...
+  ))
+}
+
+#' @describeIn map-options Options for grid layers
+#' @export
+gridOptions <- function(
+  tileSize = 256,
+  updateWhenIdle = NULL,
+  zIndex = 1,
+  minZoom = 0,
+  maxZoom = NULL,
+  ...
+) {
+  filterNULL(list(
+    tileSize = tileSize, updateWhenIdle = updateWhenIdle, zIndex = zIndex,
+    minZoom = minZoom, maxZoom = maxZoom,
     ...
   ))
 }

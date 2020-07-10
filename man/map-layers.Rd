@@ -17,88 +17,254 @@
 \alias{addTopoJSON}
 \title{Graphics elements and layers}
 \usage{
-addControl(map, html, position = c("topleft", "topright", "bottomleft",
-  "bottomright"), layerId = NULL, className = "info legend",
-  data = getMapData(map))
+addControl(
+  map,
+  html,
+  position = c("topleft", "topright", "bottomleft", "bottomright"),
+  layerId = NULL,
+  className = "info legend",
+  data = getMapData(map)
+)
 
-addTiles(map,
+addTiles(
+  map,
   urlTemplate = "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-  attribution = NULL, layerId = NULL, group = NULL,
-  options = tileOptions(), data = getMapData(map))
+  attribution = NULL,
+  layerId = NULL,
+  group = NULL,
+  options = tileOptions(),
+  data = getMapData(map)
+)
 
-addWMSTiles(map, baseUrl, layerId = NULL, group = NULL,
-  options = WMSTileOptions(), attribution = NULL, layers = "",
-  data = getMapData(map))
+addWMSTiles(
+  map,
+  baseUrl,
+  layerId = NULL,
+  group = NULL,
+  options = WMSTileOptions(),
+  attribution = NULL,
+  layers = "",
+  data = getMapData(map)
+)
 
-addPopups(map, lng = NULL, lat = NULL, popup, layerId = NULL,
-  group = NULL, options = popupOptions(), data = getMapData(map))
+addPopups(
+  map,
+  lng = NULL,
+  lat = NULL,
+  popup,
+  layerId = NULL,
+  group = NULL,
+  options = popupOptions(),
+  data = getMapData(map)
+)
 
-addMarkers(map, lng = NULL, lat = NULL, layerId = NULL,
-  group = NULL, icon = NULL, popup = NULL, popupOptions = NULL,
-  label = NULL, labelOptions = NULL, options = markerOptions(),
-  clusterOptions = NULL, clusterId = NULL, data = getMapData(map))
+addMarkers(
+  map,
+  lng = NULL,
+  lat = NULL,
+  layerId = NULL,
+  group = NULL,
+  icon = NULL,
+  popup = NULL,
+  popupOptions = NULL,
+  label = NULL,
+  labelOptions = NULL,
+  options = markerOptions(),
+  clusterOptions = NULL,
+  clusterId = NULL,
+  data = getMapData(map)
+)
 
-addLabelOnlyMarkers(map, lng = NULL, lat = NULL, layerId = NULL,
-  group = NULL, icon = NULL, label = NULL, labelOptions = NULL,
-  options = markerOptions(), clusterOptions = NULL, clusterId = NULL,
-  data = getMapData(map))
+addLabelOnlyMarkers(
+  map,
+  lng = NULL,
+  lat = NULL,
+  layerId = NULL,
+  group = NULL,
+  icon = NULL,
+  label = NULL,
+  labelOptions = NULL,
+  options = markerOptions(),
+  clusterOptions = NULL,
+  clusterId = NULL,
+  data = getMapData(map)
+)
 
-addCircleMarkers(map, lng = NULL, lat = NULL, radius = 10,
-  layerId = NULL, group = NULL, stroke = TRUE, color = "#03F",
-  weight = 5, opacity = 0.5, fill = TRUE, fillColor = color,
-  fillOpacity = 0.2, dashArray = NULL, popup = NULL,
-  popupOptions = NULL, label = NULL, labelOptions = NULL,
-  options = pathOptions(), clusterOptions = NULL, clusterId = NULL,
-  data = getMapData(map))
+addCircleMarkers(
+  map,
+  lng = NULL,
+  lat = NULL,
+  radius = 10,
+  layerId = NULL,
+  group = NULL,
+  stroke = TRUE,
+  color = "#03F",
+  weight = 5,
+  opacity = 0.5,
+  fill = TRUE,
+  fillColor = color,
+  fillOpacity = 0.2,
+  dashArray = NULL,
+  popup = NULL,
+  popupOptions = NULL,
+  label = NULL,
+  labelOptions = NULL,
+  options = pathOptions(),
+  clusterOptions = NULL,
+  clusterId = NULL,
+  data = getMapData(map)
+)
 
-highlightOptions(stroke = NULL, color = NULL, weight = NULL,
-  opacity = NULL, fill = NULL, fillColor = NULL,
-  fillOpacity = NULL, dashArray = NULL, bringToFront = NULL,
-  sendToBack = NULL)
+highlightOptions(
+  stroke = NULL,
+  color = NULL,
+  weight = NULL,
+  opacity = NULL,
+  fill = NULL,
+  fillColor = NULL,
+  fillOpacity = NULL,
+  dashArray = NULL,
+  bringToFront = NULL,
+  sendToBack = NULL
+)
 
-addCircles(map, lng = NULL, lat = NULL, radius = 10,
-  layerId = NULL, group = NULL, stroke = TRUE, color = "#03F",
-  weight = 5, opacity = 0.5, fill = TRUE, fillColor = color,
-  fillOpacity = 0.2, dashArray = NULL, popup = NULL,
-  popupOptions = NULL, label = NULL, labelOptions = NULL,
-  options = pathOptions(), highlightOptions = NULL,
-  data = getMapData(map))
+addCircles(
+  map,
+  lng = NULL,
+  lat = NULL,
+  radius = 10,
+  layerId = NULL,
+  group = NULL,
+  stroke = TRUE,
+  color = "#03F",
+  weight = 5,
+  opacity = 0.5,
+  fill = TRUE,
+  fillColor = color,
+  fillOpacity = 0.2,
+  dashArray = NULL,
+  popup = NULL,
+  popupOptions = NULL,
+  label = NULL,
+  labelOptions = NULL,
+  options = pathOptions(),
+  highlightOptions = NULL,
+  data = getMapData(map)
+)
 
-addPolylines(map, lng = NULL, lat = NULL, layerId = NULL,
-  group = NULL, stroke = TRUE, color = "#03F", weight = 5,
-  opacity = 0.5, fill = FALSE, fillColor = color,
-  fillOpacity = 0.2, dashArray = NULL, smoothFactor = 1,
-  noClip = FALSE, popup = NULL, popupOptions = NULL, label = NULL,
-  labelOptions = NULL, options = pathOptions(),
-  highlightOptions = NULL, data = getMapData(map))
+addPolylines(
+  map,
+  lng = NULL,
+  lat = NULL,
+  layerId = NULL,
+  group = NULL,
+  stroke = TRUE,
+  color = "#03F",
+  weight = 5,
+  opacity = 0.5,
+  fill = FALSE,
+  fillColor = color,
+  fillOpacity = 0.2,
+  dashArray = NULL,
+  smoothFactor = 1,
+  noClip = FALSE,
+  popup = NULL,
+  popupOptions = NULL,
+  label = NULL,
+  labelOptions = NULL,
+  options = pathOptions(),
+  highlightOptions = NULL,
+  data = getMapData(map)
+)
 
-addRectangles(map, lng1, lat1, lng2, lat2, layerId = NULL,
-  group = NULL, stroke = TRUE, color = "#03F", weight = 5,
-  opacity = 0.5, fill = TRUE, fillColor = color, fillOpacity = 0.2,
-  dashArray = NULL, smoothFactor = 1, noClip = FALSE, popup = NULL,
-  popupOptions = NULL, label = NULL, labelOptions = NULL,
-  options = pathOptions(), highlightOptions = NULL,
-  data = getMapData(map))
+addRectangles(
+  map,
+  lng1,
+  lat1,
+  lng2,
+  lat2,
+  layerId = NULL,
+  group = NULL,
+  stroke = TRUE,
+  color = "#03F",
+  weight = 5,
+  opacity = 0.5,
+  fill = TRUE,
+  fillColor = color,
+  fillOpacity = 0.2,
+  dashArray = NULL,
+  smoothFactor = 1,
+  noClip = FALSE,
+  popup = NULL,
+  popupOptions = NULL,
+  label = NULL,
+  labelOptions = NULL,
+  options = pathOptions(),
+  highlightOptions = NULL,
+  data = getMapData(map)
+)
 
-addPolygons(map, lng = NULL, lat = NULL, layerId = NULL,
-  group = NULL, stroke = TRUE, color = "#03F", weight = 5,
-  opacity = 0.5, fill = TRUE, fillColor = color, fillOpacity = 0.2,
-  dashArray = NULL, smoothFactor = 1, noClip = FALSE, popup = NULL,
-  popupOptions = NULL, label = NULL, labelOptions = NULL,
-  options = pathOptions(), highlightOptions = NULL,
-  data = getMapData(map))
+addPolygons(
+  map,
+  lng = NULL,
+  lat = NULL,
+  layerId = NULL,
+  group = NULL,
+  stroke = TRUE,
+  color = "#03F",
+  weight = 5,
+  opacity = 0.5,
+  fill = TRUE,
+  fillColor = color,
+  fillOpacity = 0.2,
+  dashArray = NULL,
+  smoothFactor = 1,
+  noClip = FALSE,
+  popup = NULL,
+  popupOptions = NULL,
+  label = NULL,
+  labelOptions = NULL,
+  options = pathOptions(),
+  highlightOptions = NULL,
+  data = getMapData(map)
+)
 
-addGeoJSON(map, geojson, layerId = NULL, group = NULL, stroke = TRUE,
-  color = "#03F", weight = 5, opacity = 0.5, fill = TRUE,
-  fillColor = color, fillOpacity = 0.2, dashArray = NULL,
-  smoothFactor = 1, noClip = FALSE, options = pathOptions(),
-  data = getMapData(map))
+addGeoJSON(
+  map,
+  geojson,
+  layerId = NULL,
+  group = NULL,
+  stroke = TRUE,
+  color = "#03F",
+  weight = 5,
+  opacity = 0.5,
+  fill = TRUE,
+  fillColor = color,
+  fillOpacity = 0.2,
+  dashArray = NULL,
+  smoothFactor = 1,
+  noClip = FALSE,
+  options = pathOptions(),
+  data = getMapData(map)
+)
 
-addTopoJSON(map, topojson, layerId = NULL, group = NULL,
-  stroke = TRUE, color = "#03F", weight = 5, opacity = 0.5,
-  fill = TRUE, fillColor = color, fillOpacity = 0.2,
-  dashArray = NULL, smoothFactor = 1, noClip = FALSE,
-  options = pathOptions())
+addTopoJSON(
+  map,
+  topojson,
+  layerId = NULL,
+  group = NULL,
+  stroke = TRUE,
+  color = "#03F",
+  weight = 5,
+  opacity = 0.5,
+  fill = TRUE,
+  fillColor = color,
+  fillOpacity = 0.2,
+  dashArray = NULL,
+  smoothFactor = 1,
+  noClip = FALSE,
+  options = pathOptions()
+)
 }
 \arguments{
 \item{map}{a map widget object created from \code{\link{leaflet}()}}

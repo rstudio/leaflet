@@ -4,10 +4,22 @@
 \alias{addAwesomeMarkers}
 \title{Add Awesome Markers}
 \usage{
-addAwesomeMarkers(map, lng = NULL, lat = NULL, layerId = NULL,
-  group = NULL, icon = NULL, popup = NULL, popupOptions = NULL,
-  label = NULL, labelOptions = NULL, options = markerOptions(),
-  clusterOptions = NULL, clusterId = NULL, data = getMapData(map))
+addAwesomeMarkers(
+  map,
+  lng = NULL,
+  lat = NULL,
+  layerId = NULL,
+  group = NULL,
+  icon = NULL,
+  popup = NULL,
+  popupOptions = NULL,
+  label = NULL,
+  labelOptions = NULL,
+  options = markerOptions(),
+  clusterOptions = NULL,
+  clusterId = NULL,
+  data = getMapData(map)
+)
 }
 \arguments{
 \item{map}{the map to add awesome Markers to.}
