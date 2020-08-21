@@ -285,9 +285,9 @@ function unpackArgs(arg) {
     throw new Error("Malformed argument; .arg and .evals expected");
   }
   for (let i = 0; i < arg.evals.length; i++) {
-    window.HTMLWidgets.evaluateStringMember(arg.arg, arg.evals[i]);
+    window.HTMLWidgets.evaluateStringMember(arg.value, arg.evals[i]);
   }
-  return arg.arg;
+  return arg.value;
 }
 
 if (HTMLWidgets.shinyMode) {

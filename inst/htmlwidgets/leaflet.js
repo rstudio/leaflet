@@ -839,10 +839,10 @@ function unpackArgs(arg) {
   }
 
   for (var i = 0; i < arg.evals.length; i++) {
-    window.HTMLWidgets.evaluateStringMember(arg.arg, arg.evals[i]);
+    window.HTMLWidgets.evaluateStringMember(arg.value, arg.evals[i]);
   }
 
-  return arg.arg;
+  return arg.value;
 }
 
 if (_htmlwidgets2["default"].shinyMode) {
