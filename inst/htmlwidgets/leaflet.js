@@ -833,6 +833,18 @@ _htmlwidgets2["default"].widget({
   }
 });
 
+function unpackArgs(arg) {
+  if (!arg.hasOwnProperty("arg") && !arg.hasOwnProperty("evals")) {
+    throw new Error("Malformed argument; .arg and .evals expected");
+  }
+
+  for (var i = 0; i < arg.evals.length; i++) {
+    window.HTMLWidgets.evaluateStringMember(arg.arg, arg.evals[i]);
+  }
+
+  return arg.arg;
+}
+
 if (_htmlwidgets2["default"].shinyMode) {
   _shiny2["default"].addCustomMessageHandler("leaflet-calls", function (data) {
     var id = data.id;
@@ -846,12 +858,13 @@ if (_htmlwidgets2["default"].shinyMode) {
 
     for (var i = 0; i < data.calls.length; i++) {
       var call = data.calls[i];
+      var args = call.args.map(unpackArgs);
 
       if (call.dependencies) {
         _shiny2["default"].renderDependencies(call.dependencies);
       }
 
-      if (methods[call.method]) methods[call.method].apply(map, call.args);else (0, _util.log)("Unknown method " + call.method);
+      if (methods[call.method]) methods[call.method].apply(map, args);else (0, _util.log)("Unknown method " + call.method);
     }
   });
 }

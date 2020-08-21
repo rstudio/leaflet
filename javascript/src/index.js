@@ -280,6 +280,16 @@ HTMLWidgets.widget({
   }
 });
 
+function unpackArgs(arg) {
+  if (!arg.hasOwnProperty("arg") && !arg.hasOwnProperty("evals")) {
+    throw new Error("Malformed argument; .arg and .evals expected");
+  }
+  for (let i = 0; i < arg.evals.length; i++) {
+    window.HTMLWidgets.evaluateStringMember(arg.arg, arg.evals[i]);
+  }
+  return arg.arg;
+}
+
 if (HTMLWidgets.shinyMode) {
   Shiny.addCustomMessageHandler("leaflet-calls", function(data) {
     let id = data.id;
@@ -292,11 +302,12 @@ if (HTMLWidgets.shinyMode) {
 
     for (let i = 0; i < data.calls.length; i++) {
       let call = data.calls[i];
+      let args = call.args.map(unpackArgs);
       if (call.dependencies) {
         Shiny.renderDependencies(call.dependencies);
       }
       if (methods[call.method])
-        methods[call.method].apply(map, call.args);
+        methods[call.method].apply(map, args);
       else
         log("Unknown method " + call.method);
     }
