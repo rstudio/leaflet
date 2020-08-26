@@ -53,7 +53,7 @@ Imports:
 Suggests:
     knitr,
     maps,
-    sf,
+    sf (>= 0.9-6),
     shiny,
     rgdal,
     rgeos,
