@@ -42,7 +42,7 @@ jobs:
         run: ./scripts/checkJSCurrent.sh
 
   docs:
-    runs-on: ubuntu-16.04
+    runs-on: macos-latest
     name: docs
 
     env:
@@ -71,18 +71,11 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
           restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
 
-      - name: Install system dependencies
-        if: runner.os == 'Linux'
-        run: |
-          while read -r cmd
-          do
-            eval sudo $cmd
-          done < <(Rscript -e 'writeLines(remotes::system_requirements("ubuntu", "16.04"))')
-
       - name: Install dependencies
         run: |
           remotes::install_deps(dependencies = TRUE)
-          remotes::install_cran("roxygen2")
+          remotes::install_cran("devtools")
+          remotes::install_cran("sessioninfo")
         shell: Rscript {0}
 
       - name: Session info
@@ -158,6 +151,7 @@ jobs:
         run: |
           remotes::install_deps(dependencies = TRUE)
           remotes::install_cran("rcmdcheck")
+          remotes::install_cran("sessioninfo")
         shell: Rscript {0}
 
       - name: Session info
