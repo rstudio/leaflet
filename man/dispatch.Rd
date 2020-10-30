@@ -5,9 +5,12 @@
 \alias{invokeMethod}
 \title{Extension points for plugins}
 \usage{
-dispatch(map, funcName, leaflet = stop(paste(funcName,
-  "requires a map proxy object")), leaflet_proxy = stop(paste(funcName,
-  "does not support map proxy objects")))
+dispatch(
+  map,
+  funcName,
+  leaflet = stop(paste(funcName, "requires a map proxy object")),
+  leaflet_proxy = stop(paste(funcName, "does not support map proxy objects"))
+)
 
 invokeMethod(map, data, method, ...)
 }

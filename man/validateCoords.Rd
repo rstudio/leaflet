@@ -4,8 +4,7 @@
 \alias{validateCoords}
 \title{Utility function to check if a coordinates is valid}
 \usage{
-validateCoords(lng, lat, funcName, warn = TRUE, mode = c("point",
-  "polygon"))
+validateCoords(lng, lat, funcName, warn = TRUE, mode = c("point", "polygon"))
 }
 \arguments{
 \item{lng}{vector with longitude values}
