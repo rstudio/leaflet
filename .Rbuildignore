@@ -32,3 +32,4 @@
 ^scripts
 ^cran-comments\.md$
 ^revdep$
+^\.github$

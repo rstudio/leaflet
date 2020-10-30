@@ -5,9 +5,16 @@
 \title{Add a simple Graticule on the map
 see \url{https://github.com/ablakey/Leaflet.SimpleGraticule}}
 \usage{
-addSimpleGraticule(map, interval = 20, showOriginLabel = TRUE,
-  redraw = "move", hidden = FALSE, zoomIntervals = list(),
-  layerId = NULL, group = NULL)
+addSimpleGraticule(
+  map,
+  interval = 20,
+  showOriginLabel = TRUE,
+  redraw = "move",
+  hidden = FALSE,
+  zoomIntervals = list(),
+  layerId = NULL,
+  group = NULL
+)
 }
 \arguments{
 \item{map}{a map widget object}

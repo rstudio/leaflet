@@ -4,8 +4,12 @@
 \alias{leafletProxy}
 \title{Send commands to a Leaflet instance in a Shiny app}
 \usage{
-leafletProxy(mapId, session = shiny::getDefaultReactiveDomain(),
-  data = NULL, deferUntilFlush = TRUE)
+leafletProxy(
+  mapId,
+  session = shiny::getDefaultReactiveDomain(),
+  data = NULL,
+  deferUntilFlush = TRUE
+)
 }
 \arguments{
 \item{mapId}{single-element character vector indicating the output ID of the
