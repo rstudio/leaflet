@@ -5,14 +5,32 @@
 \alias{labelFormat}
 \title{Add a color legend to a map}
 \usage{
-addLegend(map, position = c("topright", "bottomright", "bottomleft",
-  "topleft"), pal, values, na.label = "NA", bins = 7, colors,
-  opacity = 0.5, labels = NULL, labFormat = labelFormat(),
-  title = NULL, className = "info legend", layerId = NULL,
-  group = NULL, data = getMapData(map))
+addLegend(
+  map,
+  position = c("topright", "bottomright", "bottomleft", "topleft"),
+  pal,
+  values,
+  na.label = "NA",
+  bins = 7,
+  colors,
+  opacity = 0.5,
+  labels = NULL,
+  labFormat = labelFormat(),
+  title = NULL,
+  className = "info legend",
+  layerId = NULL,
+  group = NULL,
+  data = getMapData(map)
+)
 
-labelFormat(prefix = "", suffix = "", between = " &ndash; ",
-  digits = 3, big.mark = ",", transform = identity)
+labelFormat(
+  prefix = "",
+  suffix = "",
+  between = " &ndash; ",
+  digits = 3,
+  big.mark = ",",
+  transform = identity
+)
 }
 \arguments{
 \item{map}{a map widget object created from \code{\link{leaflet}()}}

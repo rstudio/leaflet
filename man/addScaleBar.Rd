@@ -6,11 +6,18 @@
 \alias{removeScaleBar}
 \title{Add or remove a scale bar}
 \usage{
-addScaleBar(map, position = c("topright", "bottomright", "bottomleft",
-  "topleft"), options = scaleBarOptions())
+addScaleBar(
+  map,
+  position = c("topright", "bottomright", "bottomleft", "topleft"),
+  options = scaleBarOptions()
+)
 
-scaleBarOptions(maxWidth = 100, metric = TRUE, imperial = TRUE,
-  updateWhenIdle = TRUE)
+scaleBarOptions(
+  maxWidth = 100,
+  metric = TRUE,
+  imperial = TRUE,
+  updateWhenIdle = TRUE
+)
 
 removeScaleBar(map)
 }

@@ -4,10 +4,18 @@
 \alias{makeAwesomeIcon}
 \title{Make Awesome Icon}
 \usage{
-makeAwesomeIcon(icon = "home", library = "glyphicon",
-  markerColor = "blue", iconColor = "white", spin = FALSE,
-  extraClasses = NULL, squareMarker = FALSE, iconRotate = 0,
-  fontFamily = "monospace", text = NULL)
+makeAwesomeIcon(
+  icon = "home",
+  library = "glyphicon",
+  markerColor = "blue",
+  iconColor = "white",
+  spin = FALSE,
+  extraClasses = NULL,
+  squareMarker = FALSE,
+  iconRotate = 0,
+  fontFamily = "monospace",
+  text = NULL
+)
 }
 \arguments{
 \item{icon}{Name of the icon}

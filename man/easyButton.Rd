@@ -9,8 +9,14 @@
 \usage{
 easyButtonState(stateName, icon, title, onClick)
 
-easyButton(icon = NULL, title = NULL, onClick = NULL,
-  position = "topleft", id = NULL, states = NULL)
+easyButton(
+  icon = NULL,
+  title = NULL,
+  onClick = NULL,
+  position = "topleft",
+  id = NULL,
+  states = NULL
+)
 
 addEasyButton(map, button)
 
@@ -70,10 +76,10 @@ leaf <- leaflet() \%>\%
   addEasyButtonBar(
    easyButton(
      icon = htmltools::span(class = "star", htmltools::HTML("&starf;")),
-     onClick = JS("function(btn, map){ alert(\\"Button 1\\");}")),
+     onClick = JS("function(btn, map){ alert(\"Button 1\");}")),
    easyButton(
      icon = htmltools::span(class = "star", htmltools::HTML("&target;")),
-     onClick = JS("function(btn, map){ alert(\\"Button 2\\");}")))
+     onClick = JS("function(btn, map){ alert(\"Button 2\");}")))
 leaf
 
 

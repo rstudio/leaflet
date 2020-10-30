@@ -7,9 +7,14 @@
 \usage{
 createLeafletMap(session, outputId)
 
-leafletMap(outputId, width, height,
+leafletMap(
+  outputId,
+  width,
+  height,
   initialTileLayer = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-  initialTileLayerAttribution = NULL, options = NULL)
+  initialTileLayerAttribution = NULL,
+  options = NULL
+)
 }
 \arguments{
 \item{session, outputId}{Deprecated}

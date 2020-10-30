@@ -4,8 +4,13 @@
 \alias{leafletSizingPolicy}
 \title{Leaflet sizing policy}
 \usage{
-leafletSizingPolicy(defaultWidth = "100\%", defaultHeight = 400,
-  padding = 0, browser.fill = TRUE, ...)
+leafletSizingPolicy(
+  defaultWidth = "100\%",
+  defaultHeight = 400,
+  padding = 0,
+  browser.fill = TRUE,
+  ...
+)
 }
 \arguments{
 \item{defaultWidth}{defaults to \code{"100\%"} of the available width}
