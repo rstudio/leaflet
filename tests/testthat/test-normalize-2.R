@@ -2,7 +2,7 @@
 expect_maps_equal <- function(m1, m2) {
   attr(m1$x, "leafletData") <- NULL
   attr(m2$x, "leafletData") <- NULL
-  expect_equal(m1, m2)
+  expect_equal(m1, m2, check.environment = FALSE)
 }
 
 test_that("normalize", {
