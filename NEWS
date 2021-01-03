@@ -1,14 +1,11 @@
-leaflet 2.0.3.9000
+leaflet 2.0.4
 --------------------------------------------------------------------------------
-
-BREAKING CHANGES
-*
 
 FEATURES
 * Updated proj4.js to 2.6.2
 
 BUG FIXES and IMPROVEMENTS
-*
+* Minor tweaks to example data and tests, required to stay on CRAN
 
 
 
