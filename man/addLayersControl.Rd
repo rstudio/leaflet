@@ -50,7 +50,7 @@ the z-order of its various groups as overlays are switched on and off.}
 }
 \description{
 Uses Leaflet's built-in
-\href{http://leafletjs.com/reference-1.3.1.html#control-layers}{layers control}
+\href{http://leafletjs.com/reference-1.3.4.html#control-layers}{layers control}
 feature to allow users to choose one of several base layers, and to choose
 any number of overlay layers to view.
 }
