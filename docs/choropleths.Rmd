@@ -33,7 +33,7 @@ leaflet(states) %>%
     color = "white",
     dashArray = "3",
     fillOpacity = 0.7,
-    highlight = highlightOptions(
+    highlightOptions = highlightOptions(
       weight = 5,
       color = "#666",
       dashArray = "",
@@ -117,7 +117,7 @@ m %>% addPolygons(
   color = "white",
   dashArray = "3",
   fillOpacity = 0.7,
-  highlight = highlightOptions(
+  highlightOptions = highlightOptions(
     weight = 5,
     color = "#666",
     dashArray = "",
@@ -148,7 +148,7 @@ m <- m %>% addPolygons(
   color = "white",
   dashArray = "3",
   fillOpacity = 0.7,
-  highlight = highlightOptions(
+  highlightOptions = highlightOptions(
     weight = 5,
     color = "#666",
     dashArray = "",
@@ -199,7 +199,7 @@ leaflet(states) %>%
     color = "white",
     dashArray = "3",
     fillOpacity = 0.7,
-    highlight = highlightOptions(
+    highlightOptions = highlightOptions(
       weight = 5,
       color = "#666",
       dashArray = "",
