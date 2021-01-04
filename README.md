@@ -37,7 +37,7 @@ devtools::install_github('rstudio/leaflet')
 ## Documentation
 
 In addition to the usual R package documentation, we also have extensive docs and examples at:
-[https://rstudio.github.io/leaflet](http://rstudio.github.io/leaflet)
+[https://rstudio.github.io/leaflet/](https://rstudio.github.io/leaflet/)
 
 ## Development
 
