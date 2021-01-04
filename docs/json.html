@@ -1020,7 +1020,7 @@ leaflet() %&gt;% setView(lng = -98.583, lat = 39.833, zoom = 3) %&gt;%
 <p>You can modify the style of GeoJSON/TopoJSON features in a few ways. (Currently only paths and shapes can be styled; marker styling is not supported.)</p>
 <p>One way to apply styles to all of the features is to use the arguments directly on the <code>addGeoJSON</code>/<code>addTopoJSON</code> functions. Another way is to encode styling information directly in the JSON object/string by putting a <code>style</code> object directly underneath the top level JSON object.</p>
 <p>You can provide feature-specific styles by annotating each feature’s property object with a <code>style: {...}</code> object. The feature-specific styles have the highest precedence, then the top-level style object, and finally the style-related arguments passed to the function.</p>
-<p>See Leaflet’s <a href="http://leafletjs.com/reference.html#path-options">path</a> options for available style properties.</p>
+<p>See Leaflet’s <a href="https://leafletjs.com/reference.html#path-options">path</a> options for available style properties.</p>
 <p>The previous example demonstrated the style arguments. Below is a more involved example that sets both global styles and per-feature styles directly into the JSON object.</p>
 <p>(This approach is not recommended for applying styling in R; instead, use the approach described above where we convert to <code>sp</code> first. However, if you have control over the process that generates the GeoJSON in the first place, you might use these techniques to put the styling information directly in the JSON.)</p>
 <pre class="r"><code>library(jsonlite)

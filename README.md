@@ -7,7 +7,7 @@
 [![RStudio community](https://img.shields.io/badge/community-leaflet-blue?style=social&logo=rstudio&logoColor=75AADB)](https://community.rstudio.com/new-topic?title=&tags=leaflet&body=%0A%0A%0A%20%20--------%0A%20%20%0A%20%20%3Csup%3EReferred%20here%20by%20%60leaflet%60%27s%20GitHub%3C/sup%3E%0A&u=barret)
 <!-- badges: end -->
 
-[Leaflet](http://leafletjs.com) is an open-source JavaScript library for
+[Leaflet](https://leafletjs.com) is an open-source JavaScript library for
 interactive maps. This R package makes it easy to create Leaflet maps from R.
 
 ```r

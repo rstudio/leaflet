@@ -385,10 +385,10 @@ leaflet(data = quakes[1:20,]) %&gt;% addTiles() %&gt;%
 <p>You can provide custom markers in one of several ways, depending on the scenario. For each of these ways, the icon can be provided as either a URL or as a file path.</p>
 <p>For the simple case of applying a single icon to a set of markers, use <code>makeIcon()</code>.</p>
 <pre class="r"><code>greenLeafIcon &lt;- makeIcon(
-  iconUrl = &quot;http://leafletjs.com/examples/custom-icons/leaf-green.png&quot;,
+  iconUrl = &quot;https://leafletjs.com/examples/custom-icons/leaf-green.png&quot;,
   iconWidth = 38, iconHeight = 95,
   iconAnchorX = 22, iconAnchorY = 94,
-  shadowUrl = &quot;http://leafletjs.com/examples/custom-icons/leaf-shadow.png&quot;,
+  shadowUrl = &quot;https://leafletjs.com/examples/custom-icons/leaf-shadow.png&quot;,
   shadowWidth = 50, shadowHeight = 64,
   shadowAnchorX = 4, shadowAnchorY = 62
 )
@@ -438,7 +438,7 @@ leaflet(data = quakes[1:4,]) %&gt;% addTiles() %&gt;%
           [181.62, 181.03, 184.1, 181.66],
           {
             "iconUrl": {
-              "data": "http://leafletjs.com/examples/custom-icons/leaf-green.png",
+              "data": "https://leafletjs.com/examples/custom-icons/leaf-green.png",
               "index": 0
             },
             "iconWidth": 38,
@@ -446,7 +446,7 @@ leaflet(data = quakes[1:4,]) %&gt;% addTiles() %&gt;%
             "iconAnchorX": 22,
             "iconAnchorY": 94,
             "shadowUrl": {
-              "data": "http://leafletjs.com/examples/custom-icons/leaf-shadow.png",
+              "data": "https://leafletjs.com/examples/custom-icons/leaf-shadow.png",
               "index": 0
             },
             "shadowWidth": 50,
@@ -500,12 +500,12 @@ leaflet(data = quakes[1:4,]) %&gt;% addTiles() %&gt;%
 
 leafIcons &lt;- icons(
   iconUrl = ifelse(quakes1$mag &lt; 4.6,
-    &quot;http://leafletjs.com/examples/custom-icons/leaf-green.png&quot;,
-    &quot;http://leafletjs.com/examples/custom-icons/leaf-red.png&quot;
+    &quot;https://leafletjs.com/examples/custom-icons/leaf-green.png&quot;,
+    &quot;https://leafletjs.com/examples/custom-icons/leaf-red.png&quot;
   ),
   iconWidth = 38, iconHeight = 95,
   iconAnchorX = 22, iconAnchorY = 94,
-  shadowUrl = &quot;http://leafletjs.com/examples/custom-icons/leaf-shadow.png&quot;,
+  shadowUrl = &quot;https://leafletjs.com/examples/custom-icons/leaf-shadow.png&quot;,
   shadowWidth = 50, shadowHeight = 64,
   shadowAnchorX = 4, shadowAnchorY = 62
 )
@@ -555,7 +555,7 @@ leaflet(data = quakes1) %&gt;% addTiles() %&gt;%
           [181.62, 181.03, 184.1, 181.66, 181.96, 184.31, 166.1, 181.93, 181.74, 179.59],
           {
             "iconUrl": {
-              "data": ["http://leafletjs.com/examples/custom-icons/leaf-red.png", "http://leafletjs.com/examples/custom-icons/leaf-green.png"],
+              "data": ["https://leafletjs.com/examples/custom-icons/leaf-red.png", "https://leafletjs.com/examples/custom-icons/leaf-green.png"],
               "index": [0, 1, 0, 1, 1, 1, 0, 1, 0, 1]
             },
             "iconWidth": 38,
@@ -563,7 +563,7 @@ leaflet(data = quakes1) %&gt;% addTiles() %&gt;%
             "iconAnchorX": 22,
             "iconAnchorY": 94,
             "shadowUrl": {
-              "data": "http://leafletjs.com/examples/custom-icons/leaf-shadow.png",
+              "data": "https://leafletjs.com/examples/custom-icons/leaf-shadow.png",
               "index": 0
             },
             "shadowWidth": 50,
