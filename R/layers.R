@@ -949,7 +949,7 @@ markerClusterOptions <- function(
 #' @param fillColor fill color
 #' @param fillOpacity fill opacity
 #' @param dashArray a string that defines the stroke
-#'   \href{https://developer.mozilla.org/en/SVG/Attribute/stroke-dasharray}{dash
+#'   \href{https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray}{dash
 #'   pattern}
 #' @describeIn map-layers Add circle markers to the map
 #' @export
