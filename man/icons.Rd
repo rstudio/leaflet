@@ -62,7 +62,7 @@ values for these arguments will be ignored.
 \examples{
 library(leaflet)
 
-# adapted from http://leafletjs.com/examples/custom-icons.html
+# adapted from https://leafletjs.com/examples/custom-icons.html
 
 iconData <- data.frame(
   lat = c(rnorm(10, 0), rnorm(10, 1), rnorm(10, 2)),
@@ -74,8 +74,8 @@ iconData <- data.frame(
 leaflet() \%>\% addMarkers(
   data = iconData,
   icon = ~ icons(
-    iconUrl = sprintf("http://leafletjs.com/examples/custom-icons/leaf-\%s.png", group),
-    shadowUrl = "http://leafletjs.com/examples/custom-icons/leaf-shadow.png",
+    iconUrl = sprintf("https://leafletjs.com/examples/custom-icons/leaf-\%s.png", group),
+    shadowUrl = "https://leafletjs.com/examples/custom-icons/leaf-shadow.png",
     iconWidth = 38, iconHeight = 95, shadowWidth = 50, shadowHeight = 64,
     iconAnchorX = 22, iconAnchorY = 94, shadowAnchorX = 4, shadowAnchorY = 62,
     popupAnchorX = -3, popupAnchorY = -76

@@ -1,7 +1,7 @@
 #' Add or remove a scale bar
 #'
 #' Uses Leaflet's built-in
-#' \href{http://leafletjs.com/reference-1.3.1.html#control-scale}{scale bar}
+#' \href{https://leafletjs.com/reference-1.3.4.html#control-scale}{scale bar}
 #' feature to add a scale bar.
 #'
 #' @param map the map to add the scale bar to

@@ -31,7 +31,7 @@ clearBounds(map)
 \item{zoom}{the zoom level}
 
 \item{options}{a list of zoom/pan options (see
-\url{http://leafletjs.com/reference-1.3.1.html#zoom/pan-options})}
+\url{https://leafletjs.com/reference-1.3.4.html#zoom/pan-options})}
 
 \item{lng1, lat1, lng2, lat2}{the coordinates of the map bounds}
 }
@@ -66,5 +66,5 @@ m \%>\% clearBounds()  # world view
 }
 }
 \references{
-\url{http://leafletjs.com/reference-1.3.1.html#map-methods-for-modifying-map-state}
+\url{https://leafletjs.com/reference-1.3.4.html#map-methods-for-modifying-map-state}
 }

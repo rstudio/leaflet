@@ -2,7 +2,7 @@
  Leaflet.AwesomeMarkers, a plugin that adds colorful iconic markers for Leaflet, based on the Font Awesome icons
  (c) 2012-2013, Lennard Voogdt
 
- http://leafletjs.com
+ https://leafletjs.com
  https://github.com/lvoogdt
  */
 

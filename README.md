@@ -7,7 +7,7 @@
 [![RStudio community](https://img.shields.io/badge/community-leaflet-blue?style=social&logo=rstudio&logoColor=75AADB)](https://community.rstudio.com/new-topic?title=&tags=leaflet&body=%0A%0A%0A%20%20--------%0A%20%20%0A%20%20%3Csup%3EReferred%20here%20by%20%60leaflet%60%27s%20GitHub%3C/sup%3E%0A&u=barret)
 <!-- badges: end -->
 
-[Leaflet](http://leafletjs.com) is an open-source JavaScript library for
+[Leaflet](https://leafletjs.com) is an open-source JavaScript library for
 interactive maps. This R package makes it easy to create Leaflet maps from R.
 
 ```r
@@ -37,13 +37,13 @@ devtools::install_github('rstudio/leaflet')
 ## Documentation
 
 In addition to the usual R package documentation, we also have extensive docs and examples at:
-http://rstudio.github.io/leaflet You may use [GitHub issues](https://github.com/rstudio/leaflet/issues) to file bug reports or feature requests, and ask questions on [StackOverflow](http://stackoverflow.com/questions/tagged/r+leaflet) or in the [Shiny mailing list](https://groups.google.com/forum/#!forum/shiny-discuss).
+[https://rstudio.github.io/leaflet/](https://rstudio.github.io/leaflet/)
 
 ## Development
 
 `leaflet`'s JavaScript build tools use Node.js, along with [yarn](https://yarnpkg.com/) to manage the JavaScript packages.
 
-Install `yarn` using the [official instructions](https://yarnpkg.com/en/docs/install).
+Install `yarn` using the [official instructions](https://classic.yarnpkg.com/en/docs/install).
 
 You can test that Node.js and yarn are installed properly by running the following commands:
 
@@ -72,6 +72,6 @@ yarn watch
 ## License
 
 This package is licensed to you under the terms of the [GNU General Public
-License](http://www.gnu.org/licenses/gpl.html) version 3 or later.
+License](https://www.gnu.org/licenses/gpl-3.0.html) version 3 or later.
 
 Copyright 2013-2015 RStudio, Inc.

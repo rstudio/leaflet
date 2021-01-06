@@ -13,7 +13,7 @@ leafletMeasureDependencies <- function() {
 #' Add a measure control to the map.
 #'
 #' @param map a map widget object
-#' @param position standard \href{http://leafletjs.com/reference-1.3.1.html#control-positions}{Leaflet control position options}.
+#' @param position standard \href{https://leafletjs.com/reference-1.3.4.html#control-positions}{Leaflet control position options}.
 #' @param primaryLengthUnit,secondaryLengthUnit units used to display length
 #'           results. secondaryLengthUnit is optional.
 #'           Valid values are \code{"feet"}, \code{"meters"}, \code{"miles"}, and \code{"kilometers"}.
@@ -28,7 +28,7 @@ leafletMeasureDependencies <- function() {
 #'           Value should be a color represented as a hexadecimal string.
 #' @param popupOptions \code{list} of options applied to the popup
 #'           of the resulting measure feature.
-#'           Properties may be any \href{http://leafletjs.com/reference-1.3.1.html#popup-option}{standard Leaflet popup options}.
+#'           Properties may be any \href{https://leafletjs.com/reference-1.3.4.html#popup-option}{standard Leaflet popup options}.
 #' @param captureZIndex Z-index of the marker used to capture measure clicks.
 #'           Set this value higher than the z-index of all other map layers to
 #'           disable click events on other layers while a measurement is active.

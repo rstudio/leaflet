@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
@@ -14,6 +13,7 @@
 
 <title>Leaflet for R - Using Leaflet with Shiny</title>
 
+<script src="libs/header-attrs/header-attrs.js"></script>
 <script src="libs/jquery/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="libs/bootstrap/css/flatly.min.css" rel="stylesheet" />
@@ -23,6 +23,17 @@
 <script src="libs/navigation/tabsets.js"></script>
 <link href="libs/highlightjs/default.css" rel="stylesheet" />
 <script src="libs/highlightjs/highlight.js"></script>
+<link href="libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections/anchor-sections.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -145,6 +156,7 @@ summary {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -250,7 +262,7 @@ summary {
 <h2>Using Leaflet with Shiny</h2>
 <p><em>Shiny is a web framework for R. To learn more about Shiny, visit <a href="http://shiny.rstudio.com/">shiny.rstudio.com</a>.</em></p>
 <p>The Leaflet package includes powerful and convenient features for integrating with Shiny applications.</p>
-<p>Most Shiny output widgets are incorporated into an app by including an output (e.g. <code>plotOutput</code>) for the widget in the UI definition, and using a render function (e.g. <code>renderPlot</code>) in the server function. Leaflet maps are no different; in the UI you call <code>leafletOutput</code>, and on the server side you assign a <code>renderLeaflet</code> call to the output. Inside the <code>renderLeaflet</code> expression, you return a Leaflet map object.</p>
+<p>Most Shiny output widgets are incorporated into an app by including an output (e.g. <code>plotOutput</code>) for the widget in the UI definition, and using a render function (e.g. <code>renderPlot</code>) in the server function. Leaflet maps are no different; in the UI you call <code>leafletOutput</code>, and on the server side you assign a <code>renderLeaflet</code> call to the output. Inside the <code>renderLeaflet</code> expression, you return a Leaflet map object.</p>
 <pre class="r"><code>library(shiny)
 library(leaflet)
 
@@ -280,7 +292,7 @@ server &lt;- function(input, output, session) {
 
 shinyApp(ui, server)</code></pre>
 <div class="figure">
-<img src="images/shiny1.png" alt="Screenshot of a simple Shiny app" />
+<img src="images/shiny1.png" alt="" />
 <p class="caption">Screenshot of a simple Shiny app</p>
 </div>
 <div id="modifying-existing-maps-with-leafletproxy" class="section level3">
@@ -360,7 +372,7 @@ server &lt;- function(input, output, session) {
 
 shinyApp(ui, server)</code></pre>
 <div class="figure">
-<img src="images/shiny2.png" alt="Screenshot of a Shiny app" />
+<img src="images/shiny2.png" alt="" />
 <p class="caption">Screenshot of a Shiny app</p>
 </div>
 <p>Besides adding layers, you can set the map bounds, remove specific objects by ID, or clear categories of layers.</p>
@@ -448,7 +460,7 @@ proxy %&gt;% clearShapes()</code></pre>
 <blockquote>
 <p><code>input$<em>MAPID</em>_<em>OBJCATEGORY</em>_<em>EVENTNAME</em></code></p>
 </blockquote>
-<p>So for a <code>leafletOutput(&quot;mymap&quot;)</code> had a circle on it, clicking on that circle would update the Shiny input at <code>input$mymap_shape_click</code>. (Note that the layer ID is not part of the name, though it is part of the value.)</p>
+<p>So for a <code>leafletOutput("mymap")</code> had a circle on it, clicking on that circle would update the Shiny input at <code>input$mymap_shape_click</code>. (Note that the layer ID is not part of the name, though it is part of the value.)</p>
 <p>If no shape has ever been clicked on this map, then <code>input$mymap_shape_click</code> is null.</p>
 <p>Valid values for <em>OBJCATEGORY</em> above are <code>marker</code>, <code>shape</code>, <code>geojson</code>, and <code>topojson</code>. (Tiles and controls don’t raise mouse events.) Valid values for <em>EVENTNAME</em> are <code>click</code>, <code>mouseover</code>, and <code>mouseout</code>.</p>
 <p>All of these events are set to either <code>NULL</code> if the event has never happened, or a <code>list()</code> that includes:</p>
@@ -499,7 +511,7 @@ Maps &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contr
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();

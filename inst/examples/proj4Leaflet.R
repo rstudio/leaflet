@@ -71,7 +71,7 @@ leaflet(options = leafletOptions(
     var myMap = this;
     var bounds = myMap.getBounds();
     var image = new L.ImageOverlay(
-                      'http://leafletjs.com/examples/crs-simple/uqm_map_full.png',
+                      'https://leafletjs.com/examples/crs-simple/uqm_map_full.png',
                       bounds);
     image.addTo(myMap);
   }")

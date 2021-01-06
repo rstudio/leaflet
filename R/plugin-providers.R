@@ -45,7 +45,7 @@ addProviderTiles <- function(
 #' @param
 #' errorTileUrl,noWrap,opacity,zIndex,updateWhenIdle,detectRetina
 #' the tile layer options; see
-#' \url{http://leafletjs.com/reference-1.3.1.html#tilelayer}
+#' \url{https://leafletjs.com/reference-1.3.4.html#tilelayer}
 #' @param ... named parameters to add to the options
 #' @rdname addProviderTiles
 #' @export
