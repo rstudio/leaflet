@@ -43,7 +43,7 @@ In addition to the usual R package documentation, we also have extensive docs an
 
 `leaflet`'s JavaScript build tools use Node.js, along with [yarn](https://yarnpkg.com/) to manage the JavaScript packages.
 
-Install `yarn` using the [official instructions](https://yarnpkg.com/en/docs/install).
+Install `yarn` using the [official instructions](https://classic.yarnpkg.com/en/docs/install).
 
 You can test that Node.js and yarn are installed properly by running the following commands:
 
@@ -72,6 +72,6 @@ yarn watch
 ## License
 
 This package is licensed to you under the terms of the [GNU General Public
-License](http://www.gnu.org/licenses/gpl.html) version 3 or later.
+License](https://www.gnu.org/licenses/gpl-3.0.html) version 3 or later.
 
 Copyright 2013-2015 RStudio, Inc.
