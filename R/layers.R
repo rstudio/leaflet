@@ -537,6 +537,11 @@ safeLabel <- function(label, data) {
   }
 
   label <- evalFormula(label, data)
+
+  if(length(label) == 0) {
+    return(label)
+  }
+  
  if (
     ! (
       inherits(label, "html") ||
