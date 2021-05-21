@@ -8,7 +8,7 @@ FEATURES
 * Updated proj4.js to 2.6.2
 
 BUG FIXES and IMPROVEMENTS
-*
+* Enable JS function literals (wrapped in `htmlwidgets::JS()`) to be included in arguments to methods invoked on `leafletProxy` objects. (JS function literals could already be included with methods invoked on `leaflet` objects, so this change just brings `leafletProxy` to parity.) (#420)
 
 
 

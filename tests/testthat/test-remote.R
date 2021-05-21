@@ -152,8 +152,7 @@ test_that("mockSession tests", {
 
   mockSession$.flush()
   # nolint start
-  expected <- list(structure(list(type = "leaflet-calls", message = structure("{\"id\":\"map\",\"calls\":[{\"dependencies\":[],\"method\":\"addPolygons\",\"args\":[[[[{\"lng\":[1,2,3,4,5],\"lat\":[1,2,3,4,5]}]]],null,null,{\"interactive\":true,\"className\":\"\",\"stroke\":true,\"color\":\"#03F\",\"weight\":5,\"opacity\":0.5,\"fill\":true,\"fillColor\":\"#03F\",\"fillOpacity\":0.2,\"smoothFactor\":1,\"noClip\":false},null,null,null,{\"interactive\":false,\"permanent\":false,\"direction\":\"auto\",\"opacity\":1,\"offset\":[0,0],\"textsize\":\"10px\",\"textOnly\":false,\"className\":\"\",\"sticky\":true},null]}]}", class = "json")), .Names = c("type",
-  "message")))
+  expected <- list(list(type = "leaflet-calls", message = structure("{\"id\":\"map\",\"calls\":[{\"dependencies\":[],\"method\":\"addPolygons\",\"args\":[{\"value\":[[[{\"lng\":[1,2,3,4,5],\"lat\":[1,2,3,4,5]}]]],\"evals\":[]},{\"value\":null,\"evals\":[]},{\"value\":null,\"evals\":[]},{\"value\":{\"interactive\":true,\"className\":\"\",\"stroke\":true,\"color\":\"#03F\",\"weight\":5,\"opacity\":0.5,\"fill\":true,\"fillColor\":\"#03F\",\"fillOpacity\":0.2,\"smoothFactor\":1,\"noClip\":false},\"evals\":[]},{\"value\":null,\"evals\":[]},{\"value\":null,\"evals\":[]},{\"value\":null,\"evals\":[]},{\"value\":{\"interactive\":false,\"permanent\":false,\"direction\":\"auto\",\"opacity\":1,\"offset\":[0,0],\"textsize\":\"10px\",\"textOnly\":false,\"className\":\"\",\"sticky\":true},\"evals\":[]},{\"value\":null,\"evals\":[]}]}]}", class = "json")))
   # nolint end
 
   # dput(mockSession$.calls)
@@ -170,8 +169,7 @@ test_that("mockSession tests", {
   )
   # Check that addMarkers() takes effect immediately, no flush required
   remote2 %>% addMarkers()
-  expected2 <- list(structure(list(type = "leaflet-calls", message = structure("{\"id\":\"map\",\"calls\":[{\"dependencies\":[],\"method\":\"addMarkers\",\"args\":[[10,9,8,7,6,5,4,3,2,1],[10,9,8,7,6,5,4,3,2,1],null,null,null,{\"interactive\":true,\"draggable\":false,\"keyboard\":true,\"title\":\"\",\"alt\":\"\",\"zIndexOffset\":0,\"opacity\":1,\"riseOnHover\":false,\"riseOffset\":250},null,null,null,null,null,{\"interactive\":false,\"permanent\":false,\"direction\":\"auto\",\"opacity\":1,\"offset\":[0,0],\"textsize\":\"10px\",\"textOnly\":false,\"className\":\"\",\"sticky\":true},null]}]}", class = "json")), .Names = c("type",
-  "message"))) # nolint
+  expected2 <- list(list(type = "leaflet-calls", message = structure("{\"id\":\"map\",\"calls\":[{\"dependencies\":[],\"method\":\"addMarkers\",\"args\":[{\"value\":[10,9,8,7,6,5,4,3,2,1],\"evals\":[]},{\"value\":[10,9,8,7,6,5,4,3,2,1],\"evals\":[]},{\"value\":null,\"evals\":[]},{\"value\":null,\"evals\":[]},{\"value\":null,\"evals\":[]},{\"value\":{\"interactive\":true,\"draggable\":false,\"keyboard\":true,\"title\":\"\",\"alt\":\"\",\"zIndexOffset\":0,\"opacity\":1,\"riseOnHover\":false,\"riseOffset\":250},\"evals\":[]},{\"value\":null,\"evals\":[]},{\"value\":null,\"evals\":[]},{\"value\":null,\"evals\":[]},{\"value\":null,\"evals\":[]},{\"value\":null,\"evals\":[]},{\"value\":{\"interactive\":false,\"permanent\":false,\"direction\":\"auto\",\"opacity\":1,\"offset\":[0,0],\"textsize\":\"10px\",\"textOnly\":false,\"className\":\"\",\"sticky\":true},\"evals\":[]},{\"value\":null,\"evals\":[]}]}]}", class = "json"))) # nolint
   # cat(deparse(mockSession$.calls), "\n")
   expect_equal(mockSession$.calls, expected2)
   # Flushing should do nothing
@@ -189,9 +187,8 @@ test_that("mockSession tests", {
   expect_equal(mockSession$.calls, list())
   mockSession$.flush()
   # nolint start
-  expected3 <- list(structure(list(type = "leaflet-calls", message = structure("{\"id\":\"map\",\"calls\":[{\"dependencies\":[],\"method\":\"clearShapes\",\"args\":[]}]}", class = "json")), .Names = c("type",
-  "message")), structure(list(type = "leaflet-calls", message = structure("{\"id\":\"map\",\"calls\":[{\"dependencies\":[],\"method\":\"addMarkers\",\"args\":[[10,9,8,7,6,5,4,3,2,1],[10,9,8,7,6,5,4,3,2,1],null,null,null,{\"interactive\":true,\"draggable\":false,\"keyboard\":true,\"title\":\"\",\"alt\":\"\",\"zIndexOffset\":0,\"opacity\":1,\"riseOnHover\":false,\"riseOffset\":250},null,null,null,null,null,{\"interactive\":false,\"permanent\":false,\"direction\":\"auto\",\"opacity\":1,\"offset\":[0,0],\"textsize\":\"10px\",\"textOnly\":false,\"className\":\"\",\"sticky\":true},null]}]}", class = "json")), .Names = c("type",
-  "message")))
+  expected3 <- list(list(type = "leaflet-calls", message = structure("{\"id\":\"map\",\"calls\":[{\"dependencies\":[],\"method\":\"clearShapes\",\"args\":[]}]}", class = "json")),
+    list(type = "leaflet-calls", message = structure("{\"id\":\"map\",\"calls\":[{\"dependencies\":[],\"method\":\"addMarkers\",\"args\":[{\"value\":[10,9,8,7,6,5,4,3,2,1],\"evals\":[]},{\"value\":[10,9,8,7,6,5,4,3,2,1],\"evals\":[]},{\"value\":null,\"evals\":[]},{\"value\":null,\"evals\":[]},{\"value\":null,\"evals\":[]},{\"value\":{\"interactive\":true,\"draggable\":false,\"keyboard\":true,\"title\":\"\",\"alt\":\"\",\"zIndexOffset\":0,\"opacity\":1,\"riseOnHover\":false,\"riseOffset\":250},\"evals\":[]},{\"value\":null,\"evals\":[]},{\"value\":null,\"evals\":[]},{\"value\":null,\"evals\":[]},{\"value\":null,\"evals\":[]},{\"value\":null,\"evals\":[]},{\"value\":{\"interactive\":false,\"permanent\":false,\"direction\":\"auto\",\"opacity\":1,\"offset\":[0,0],\"textsize\":\"10px\",\"textOnly\":false,\"className\":\"\",\"sticky\":true},\"evals\":[]},{\"value\":null,\"evals\":[]}]}]}", class = "json")))
   # nolint end
 
   # Check that multiple calls are invoked in order
