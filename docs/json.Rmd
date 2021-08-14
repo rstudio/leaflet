@@ -10,12 +10,17 @@ For working with GeoJSON/TopoJSON data you have two options: either read it into
 
 The first approach is to use either `rgdal` or `geojsonio` (packages) to read GeoJSON/TopoJSON as `sp` objects. Then, you can use the full functionality of [polygons](shapes.html), [markers](markers.html), [colors](colors.html), [legends](legends.html), etc.
 
+```{r, include = FALSE}
+library(leaflet)
+library(magrittr)
+```
+
 ```{r message=FALSE,warning=FALSE}
 # From http://eric.clst.org/Stuff/USGeoJSON and
 # https://en.wikipedia.org/wiki/List_of_United_States_counties_and_county_equivalents
-nycounties <- rgdal::readOGR("json/nycounties.geojson")
+nycounties <- rgdal::readOGR(system.file("json/nycounties.geojson", package="leaflet")) 
 # Or use the geojsonio equivalent:
-# nycounties <- geojsonio::geojson_read("json/nycounties.geojson", what = "sp")
+# nycounties <- geojsonio::geojson_read(system.file("json/nycounties.geojson", package="leaflet"), what = "sp") 
 
 pal <- colorNumeric("viridis", NULL)
 
@@ -41,7 +46,7 @@ Note that for larger JSON data, using parsed is significantly slower than using 
 A simple example using stringified data:
 
 ```{r}
-topoData <- readLines("json/us-10m.json") %>% paste(collapse = "\n")
+topoData <- readLines(system.file("json/us-10m.json", package="leaflet")) %>% paste(collapse = "\n") 
 
 leaflet() %>% setView(lng = -98.583, lat = 39.833, zoom = 3) %>%
   addTiles() %>%
@@ -69,7 +74,7 @@ library(jsonlite, quietly = TRUE)
 library(jsonlite)
 
 # From http://data.okfn.org/data/datasets/geo-boundaries-world-110m
-geojson <- readLines("json/countries.geojson", warn = FALSE) %>%
+geojson <- readLines(system.file("json/countries.geojson", package="leaflet"), warn = FALSE) %>%
   paste(collapse = "\n") %>%
   fromJSON(simplifyVector = FALSE)
 

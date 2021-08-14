@@ -8,6 +8,12 @@ An important part of spatial visualization is mapping variables to colors. While
 
 To that end, we've created a family of `color*` convenience functions that can be used to easily generate *palette functions*. Essentially, you call the appropriate color function with 1) the colors you want to use and 2) optionally, the range of inputs (i.e. *domain*) that are expected. The color function returns a palette function that can be passed a vector of input values, and it'll return a vector of colors in `#RRGGBB(AA)` format.
 
+```{r, include = FALSE}
+library(leaflet)
+library(magrittr)
+```
+
+
 ```{r}
 # Call the color function (colorNumeric) to create a new palette function
 pal <- colorNumeric(c("red", "green", "blue"), 1:10)
@@ -33,14 +39,12 @@ The `domain` argument tells the color function the range of input values. You ca
 
 ### Coloring continuous data
 
-```{r echo=FALSE,results='hide',message=FALSE,warning=FALSE}
-library(rgdal)
-```
+
 ```{r message=FALSE,warning=FALSE,results='hide'}
 library(rgdal)
 
 # From http://data.okfn.org/data/datasets/geo-boundaries-world-110m
-countries <- readOGR("json/countries.geojson")
+countries <- readOGR(system.file("json/countries.geojson", package="leaflet"))
 map <- leaflet(countries)
 ```
 

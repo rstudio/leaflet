@@ -6,14 +6,16 @@ pagetitle: Leaflet for R - Legends
 
 The Leaflet package includes convenience functions for creating color legends. In this section, we will build on the example from the [Colors](colors.html) page.
 
-```{r echo=FALSE,results='hide',message=FALSE,warning=FALSE}
-library(rgdal)
+```{r, include = FALSE}
+library(leaflet)
+library(magrittr)
 ```
+
 ```{r}
 library(rgdal)
 
 # From http://data.okfn.org/data/datasets/geo-boundaries-world-110m
-countries <- readOGR("json/countries.geojson")
+countries <- readOGR(system.file("json/countries.geojson", package="leaflet"))
 map <- leaflet(countries) %>% addTiles()
 ```
 
