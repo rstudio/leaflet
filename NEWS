@@ -8,7 +8,7 @@ FEATURES
 * Updated proj4.js to 2.6.2
 
 BUG FIXES and IMPROVEMENTS
-*
+* Fixes broken URL (#742) and updated examples to run from system files (#576) including updated .Rmd and .html docs.
 
 
 
