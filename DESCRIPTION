@@ -37,7 +37,7 @@ Depends: R (>= 3.1.0)
 Imports:
     base64enc,
     crosstalk,
-    htmlwidgets (>= 1.5.1.9002),
+    htmlwidgets (>= 1.5.4),
     htmltools,
     magrittr,
     markdown,
@@ -61,8 +61,6 @@ Suggests:
     RJSONIO,
     purrr,
     testthat (>= 3.0.0)
-Remotes:
-    ramnathv/htmlwidgets
 RoxygenNote: 7.1.1
 Encoding: UTF-8
 LazyData: true
