@@ -64,5 +64,3 @@ Suggests:
 RoxygenNote: 7.1.1
 Encoding: UTF-8
 LazyData: true
-Config/needs/website:
-    devtools

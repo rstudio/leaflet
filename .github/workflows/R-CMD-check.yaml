@@ -72,7 +72,7 @@ jobs:
       - uses: r-lib/actions/setup-r-dependencies@v1
         with:
           cache-version: docs-1
-          needs: website
+          extra-packages: roxygen2
 
       - name: Check Docs
         shell: bash
