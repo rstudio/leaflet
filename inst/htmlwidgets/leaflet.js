@@ -834,8 +834,8 @@ _htmlwidgets2["default"].widget({
 });
 
 function unpackArgs(arg) {
-  if (!arg.hasOwnProperty("arg") && !arg.hasOwnProperty("evals")) {
-    throw new Error("Malformed argument; .arg and .evals expected");
+  if (!Object.prototype.hasOwnProperty.call(arg, "value") || !Object.prototype.hasOwnProperty.call(arg, "evals")) {
+    throw new Error("Malformed argument; .value and .evals expected");
   }
 
   for (var i = 0; i < arg.evals.length; i++) {
