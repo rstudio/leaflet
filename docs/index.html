@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
@@ -14,6 +13,7 @@
 
 <title>Leaflet for R - Introduction</title>
 
+<script src="libs/header-attrs/header-attrs.js"></script>
 <script src="libs/jquery/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="libs/bootstrap/css/flatly.min.css" rel="stylesheet" />
@@ -23,14 +23,25 @@
 <script src="libs/navigation/tabsets.js"></script>
 <link href="libs/highlightjs/default.css" rel="stylesheet" />
 <script src="libs/highlightjs/highlight.js"></script>
+<link href="libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections/anchor-sections.js"></script>
 <script src="libs/htmlwidgets/htmlwidgets.js"></script>
 <link href="libs/leaflet/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet/leaflet.js"></script>
 <link href="libs/leafletfix/leafletfix.css" rel="stylesheet" />
-<script src="libs/Proj4Leaflet/proj4-compressed.js"></script>
+<script src="libs/proj4/proj4.min.js"></script>
 <script src="libs/Proj4Leaflet/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet/rstudio_leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-binding/leaflet.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -153,6 +164,7 @@ summary {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -256,7 +268,7 @@ summary {
 
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
-<p><a href="http://leafletjs.com">Leaflet</a> is one of the most popular open-source JavaScript libraries for interactive maps. It’s used by websites ranging from <a href="http://www.nytimes.com/projects/elections/2013/nyc-primary/mayor/map.html">The New York Times</a> and <a href="http://www.washingtonpost.com/sf/local/2013/11/09/washington-a-world-apart/">The Washington Post</a> to <a href="https://github.com/blog/1528-there-s-a-map-for-that">GitHub</a> and <a href="https://www.flickr.com/map">Flickr</a>, as well as GIS specialists like <a href="http://www.openstreetmap.org/">OpenStreetMap</a>, <a href="http://www.mapbox.com/">Mapbox</a>, and <a href="http://cartodb.com/">CartoDB</a>.</p>
+<p><a href="https://leafletjs.com">Leaflet</a> is one of the most popular open-source JavaScript libraries for interactive maps. It’s used by websites ranging from <a href="http://www.nytimes.com/projects/elections/2013/nyc-primary/mayor/map.html">The New York Times</a> and <a href="http://www.washingtonpost.com/sf/local/2013/11/09/washington-a-world-apart/">The Washington Post</a> to <a href="https://github.com/blog/1528-there-s-a-map-for-that">GitHub</a> and <a href="https://www.flickr.com/map">Flickr</a>, as well as GIS specialists like <a href="http://www.openstreetmap.org/">OpenStreetMap</a>, <a href="http://www.mapbox.com/">Mapbox</a>, and <a href="http://cartodb.com/">CartoDB</a>.</p>
 <p>This R package makes it easy to integrate and control Leaflet maps in R.</p>
 <div id="features" class="section level3">
 <h3>Features</h3>
@@ -276,7 +288,7 @@ summary {
 <li>Easily render spatial objects from the <code>sp</code> or <code>sf</code> packages, or data frames with latitude/longitude columns</li>
 <li>Use map bounds and mouse events to drive Shiny logic</li>
 <li>Display maps in non spherical mercator projections</li>
-<li>Augment map features using chosen plugins from <a href="http://leafletjs.com/plugins">leaflet plugins repository</a></li>
+<li>Augment map features using chosen plugins from <a href="https://leafletjs.com/plugins">leaflet plugins repository</a></li>
 </ul>
 </div>
 <div id="installation" class="section level3">
@@ -292,7 +304,7 @@ summary {
 <p>You create a Leaflet map with these basic steps:</p>
 <ol style="list-style-type: decimal">
 <li>Create a map widget by calling <code>leaflet()</code>.</li>
-<li>Add <em>layers</em> (i.e., features) to the map by using layer functions (e.g. <code>addTiles</code>, <code>addMarkers</code>, <code>addPolygons</code>) to modify the map widget.</li>
+<li>Add <em>layers</em> (i.e., features) to the map by using layer functions (e.g. <code>addTiles</code>, <code>addMarkers</code>, <code>addPolygons</code>) to modify the map widget.</li>
 <li>Repeat step 2 as desired.</li>
 <li>Print the map widget to display it.</li>
 </ol>
@@ -395,7 +407,7 @@ m</code></pre>
 <div id="next-steps" class="section level3">
 <h3>Next Steps</h3>
 <p>We highly recommend that you proceed to <a href="map_widget.html">The Map Widget</a> page before exploring the rest of this site, as it describes common idioms we’ll use throughout the examples on the other pages.</p>
-<p>Although we have tried to provide an R-like interface to Leaflet, you may want to check out the <a href="http://leafletjs.com/reference.html">API documentation</a> of Leaflet occasionally when the meanings of certain parameters are not clear to you.</p>
+<p>Although we have tried to provide an R-like interface to Leaflet, you may want to check out the <a href="https://leafletjs.com/reference.html">API documentation</a> of Leaflet occasionally when the meanings of certain parameters are not clear to you.</p>
 </div>
 </div>
 
@@ -419,7 +431,7 @@ Maps &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contr
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();

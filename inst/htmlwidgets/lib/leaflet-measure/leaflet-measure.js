@@ -7081,7 +7081,7 @@ L.Control.Measure = L.Control.extend({
     activeColor: '#ABE67E',     // base color for map features while actively measuring
     completedColor: '#C8F2BE',  // base color for permenant features generated from completed measure
     captureZIndex: 10000,       // z-index of the marker used to capture measure events
-    popupOptions: {             // standard leaflet popup options http://leafletjs.com/reference.html#popup-options
+    popupOptions: {             // standard leaflet popup options https://leafletjs.com/reference.html#popup-options
       className: 'leaflet-measure-resultpopup',
       autoPanPadding: [10, 10]
     }

@@ -4,12 +4,12 @@ pagetitle: Leaflet for R - Choropleths
 
 ## Choropleths
 
-Making choropleths with leaflet is easy. In this example, we'll duplicate the [step-by-step choropleth tutorial](http://leafletjs.com/examples/choropleth/) from the Leaflet.js website.
+Making choropleths with leaflet is easy. In this example, we'll duplicate the [step-by-step choropleth tutorial](https://leafletjs.com/examples/choropleth/) from the Leaflet.js website.
 
 The final result will look like this (scroll to the end to see the completed code):
 
 ```{r fig.height = 4.75, echo = FALSE}
-# From http://leafletjs.com/examples/choropleth/us-states.js
+# From https://leafletjs.com/examples/choropleth/us-states.js
 # Data Referenced from https://github.com/rstudio/leaflet/tree/master/docs/json/
 states <- geojsonio::geojson_read("./json/us-states.geojson", what = "sp")
 
@@ -33,7 +33,7 @@ leaflet(states) %>%
     color = "white",
     dashArray = "3",
     fillOpacity = 0.7,
-    highlight = highlightOptions(
+    highlightOptions = highlightOptions(
       weight = 5,
       color = "#666",
       dashArray = "",
@@ -117,7 +117,7 @@ m %>% addPolygons(
   color = "white",
   dashArray = "3",
   fillOpacity = 0.7,
-  highlight = highlightOptions(
+  highlightOptions = highlightOptions(
     weight = 5,
     color = "#666",
     dashArray = "",
@@ -148,7 +148,7 @@ m <- m %>% addPolygons(
   color = "white",
   dashArray = "3",
   fillOpacity = 0.7,
-  highlight = highlightOptions(
+  highlightOptions = highlightOptions(
     weight = 5,
     color = "#666",
     dashArray = "",
@@ -176,7 +176,7 @@ m %>% addLegend(pal = pal, values = ~density, opacity = 0.7, title = NULL,
 ### Complete code
 
 ```{r results = 'hide'}
-# From http://leafletjs.com/examples/choropleth/us-states.js
+# From https://leafletjs.com/examples/choropleth/us-states.js
 states <- geojsonio::geojson_read("json/us-states.geojson", what = "sp")
 
 bins <- c(0, 10, 20, 50, 100, 200, 500, 1000, Inf)
@@ -199,7 +199,7 @@ leaflet(states) %>%
     color = "white",
     dashArray = "3",
     fillOpacity = 0.7,
-    highlight = highlightOptions(
+    highlightOptions = highlightOptions(
       weight = 5,
       color = "#666",
       dashArray = "",
