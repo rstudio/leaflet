@@ -139,6 +139,8 @@ MockSession <- R6Class("MockSession",
 
 
 test_that("mockSession tests", {
+  testthat::local_edition(3)
+
   local <- leaflet()
 
   mockSession <- MockSession$new()
@@ -151,13 +153,8 @@ test_that("mockSession tests", {
   expect_equal(mockSession$.calls, list())
 
   mockSession$.flush()
-  # nolint start
-  expected <- list(list(type = "leaflet-calls", message = structure("{\"id\":\"map\",\"calls\":[{\"dependencies\":[],\"method\":\"addPolygons\",\"args\":[{\"value\":[[[{\"lng\":[1,2,3,4,5],\"lat\":[1,2,3,4,5]}]]],\"evals\":[]},{\"value\":null,\"evals\":[]},{\"value\":null,\"evals\":[]},{\"value\":{\"interactive\":true,\"className\":\"\",\"stroke\":true,\"color\":\"#03F\",\"weight\":5,\"opacity\":0.5,\"fill\":true,\"fillColor\":\"#03F\",\"fillOpacity\":0.2,\"smoothFactor\":1,\"noClip\":false},\"evals\":[]},{\"value\":null,\"evals\":[]},{\"value\":null,\"evals\":[]},{\"value\":null,\"evals\":[]},{\"value\":{\"interactive\":false,\"permanent\":false,\"direction\":\"auto\",\"opacity\":1,\"offset\":[0,0],\"textsize\":\"10px\",\"textOnly\":false,\"className\":\"\",\"sticky\":true},\"evals\":[]},{\"value\":null,\"evals\":[]}]}]}", class = "json")))
-  # nolint end
 
-  # dput(mockSession$.calls)
-  expect_equal(mockSession$.calls, expected)
-
+  expect_snapshot_output(mockSession$.calls)
 
   # Reset mock session
   mockSession$.calls <- list()
@@ -169,13 +166,11 @@ test_that("mockSession tests", {
   )
   # Check that addMarkers() takes effect immediately, no flush required
   remote2 %>% addMarkers()
-  expected2 <- list(list(type = "leaflet-calls", message = structure("{\"id\":\"map\",\"calls\":[{\"dependencies\":[],\"method\":\"addMarkers\",\"args\":[{\"value\":[10,9,8,7,6,5,4,3,2,1],\"evals\":[]},{\"value\":[10,9,8,7,6,5,4,3,2,1],\"evals\":[]},{\"value\":null,\"evals\":[]},{\"value\":null,\"evals\":[]},{\"value\":null,\"evals\":[]},{\"value\":{\"interactive\":true,\"draggable\":false,\"keyboard\":true,\"title\":\"\",\"alt\":\"\",\"zIndexOffset\":0,\"opacity\":1,\"riseOnHover\":false,\"riseOffset\":250},\"evals\":[]},{\"value\":null,\"evals\":[]},{\"value\":null,\"evals\":[]},{\"value\":null,\"evals\":[]},{\"value\":null,\"evals\":[]},{\"value\":null,\"evals\":[]},{\"value\":{\"interactive\":false,\"permanent\":false,\"direction\":\"auto\",\"opacity\":1,\"offset\":[0,0],\"textsize\":\"10px\",\"textOnly\":false,\"className\":\"\",\"sticky\":true},\"evals\":[]},{\"value\":null,\"evals\":[]}]}]}", class = "json"))) # nolint
-  # cat(deparse(mockSession$.calls), "\n")
-  expect_equal(mockSession$.calls, expected2)
+  expect_snapshot_output(mockSession$.calls)
+  beforeFlush <- mockSession$.calls
   # Flushing should do nothing
   mockSession$.flush()
-  # cat(deparse(mockSession$.calls), "\n")
-  expect_equal(mockSession$.calls, expected2)
+  expect_identical(mockSession$.calls, beforeFlush)
 
   # Reset mock session
   mockSession$.calls <- list()
@@ -186,11 +181,36 @@ test_that("mockSession tests", {
   remote3 %>% clearShapes() %>% addMarkers()
   expect_equal(mockSession$.calls, list())
   mockSession$.flush()
-  # nolint start
-  expected3 <- list(list(type = "leaflet-calls", message = structure("{\"id\":\"map\",\"calls\":[{\"dependencies\":[],\"method\":\"clearShapes\",\"args\":[]}]}", class = "json")),
-    list(type = "leaflet-calls", message = structure("{\"id\":\"map\",\"calls\":[{\"dependencies\":[],\"method\":\"addMarkers\",\"args\":[{\"value\":[10,9,8,7,6,5,4,3,2,1],\"evals\":[]},{\"value\":[10,9,8,7,6,5,4,3,2,1],\"evals\":[]},{\"value\":null,\"evals\":[]},{\"value\":null,\"evals\":[]},{\"value\":null,\"evals\":[]},{\"value\":{\"interactive\":true,\"draggable\":false,\"keyboard\":true,\"title\":\"\",\"alt\":\"\",\"zIndexOffset\":0,\"opacity\":1,\"riseOnHover\":false,\"riseOffset\":250},\"evals\":[]},{\"value\":null,\"evals\":[]},{\"value\":null,\"evals\":[]},{\"value\":null,\"evals\":[]},{\"value\":null,\"evals\":[]},{\"value\":null,\"evals\":[]},{\"value\":{\"interactive\":false,\"permanent\":false,\"direction\":\"auto\",\"opacity\":1,\"offset\":[0,0],\"textsize\":\"10px\",\"textOnly\":false,\"className\":\"\",\"sticky\":true},\"evals\":[]},{\"value\":null,\"evals\":[]}]}]}", class = "json")))
-  # nolint end
+  expect_snapshot_output(mockSession$.calls)
+})
 
-  # Check that multiple calls are invoked in order
-  expect_equal(mockSession$.calls, expected3)
+test_that("leafletProxy with JS()", {
+  testthat::local_edition(3)
+
+  some_data <- data.frame(
+    "lon"=c(4.905167,4.906357,4.905831),
+    "lat"=c(52.37712,52.37783,52.37755),
+    "number_var"=c(5,9,7),
+    "name"=c("Jane","Harold","Mike"),
+    stringsAsFactors = F
+  )
+
+  mockSession <- MockSession$new()
+  remote <- leafletProxy("map", mockSession)
+  remote %>% addMarkers(
+    lng = some_data$lon,
+    lat = some_data$lat,
+    clusterOptions = markerClusterOptions(
+      iconCreateFunction = JS(paste0("function(cluster) {",
+        "console.log('Here comes cluster',cluster); ",
+        "return new L.DivIcon({",
+        "html: '<div style=\"background-color:rgba(77,77,77,0.5)\"><span>' + cluster.getChildCount() + '</div><span>',",
+        "className: 'marker-cluster'",
+        "});",
+        "}"))
+    )
+  )
+  mockSession$.flush()
+
+  expect_snapshot_output(mockSession$.calls)
 })

@@ -202,9 +202,8 @@ invokeRemote <- function(map, method, args = list()) {
       list(
         dependencies = lapply(deps, shiny::createWebDependency),
         method = method,
-        args = lapply(args, function(arg) {
-          list(value = arg, evals = htmlwidgets::JSEvals(arg))
-        })
+        args = args,
+        evals = htmlwidgets::JSEvals(args)
       )
     )
   )

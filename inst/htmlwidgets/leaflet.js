@@ -833,18 +833,6 @@ _htmlwidgets2["default"].widget({
   }
 });
 
-function unpackArgs(arg) {
-  if (!Object.prototype.hasOwnProperty.call(arg, "value") || !Object.prototype.hasOwnProperty.call(arg, "evals")) {
-    throw new Error("Malformed argument; .value and .evals expected");
-  }
-
-  for (var i = 0; i < arg.evals.length; i++) {
-    window.HTMLWidgets.evaluateStringMember(arg.value, arg.evals[i]);
-  }
-
-  return arg.value;
-}
-
 if (_htmlwidgets2["default"].shinyMode) {
   _shiny2["default"].addCustomMessageHandler("leaflet-calls", function (data) {
     var id = data.id;
@@ -858,7 +846,11 @@ if (_htmlwidgets2["default"].shinyMode) {
 
     for (var i = 0; i < data.calls.length; i++) {
       var call = data.calls[i];
-      var args = call.args.map(unpackArgs);
+      var args = call.args;
+
+      for (var _i = 0; _i < call.evals.length; _i++) {
+        window.HTMLWidgets.evaluateStringMember(args, call.evals[_i]);
+      }
 
       if (call.dependencies) {
         _shiny2["default"].renderDependencies(call.dependencies);

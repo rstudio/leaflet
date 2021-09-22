@@ -60,7 +60,7 @@ Suggests:
     R6,
     RJSONIO,
     purrr,
-    testthat
+    testthat (>= 3.0.0)
 Remotes:
     ramnathv/htmlwidgets
 RoxygenNote: 7.1.1
