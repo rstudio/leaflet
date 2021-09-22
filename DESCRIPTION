@@ -37,7 +37,7 @@ Depends: R (>= 3.1.0)
 Imports:
     base64enc,
     crosstalk,
-    htmlwidgets,
+    htmlwidgets (>= 1.5.4),
     htmltools,
     magrittr,
     markdown,
@@ -60,7 +60,7 @@ Suggests:
     R6,
     RJSONIO,
     purrr,
-    testthat
+    testthat (>= 3.0.0)
 RoxygenNote: 7.1.1
 Encoding: UTF-8
 LazyData: true

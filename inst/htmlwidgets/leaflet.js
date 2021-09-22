@@ -846,12 +846,17 @@ if (_htmlwidgets2["default"].shinyMode) {
 
     for (var i = 0; i < data.calls.length; i++) {
       var call = data.calls[i];
+      var args = call.args;
+
+      for (var _i = 0; _i < call.evals.length; _i++) {
+        window.HTMLWidgets.evaluateStringMember(args, call.evals[_i]);
+      }
 
       if (call.dependencies) {
         _shiny2["default"].renderDependencies(call.dependencies);
       }
 
-      if (methods[call.method]) methods[call.method].apply(map, call.args);else (0, _util.log)("Unknown method " + call.method);
+      if (methods[call.method]) methods[call.method].apply(map, args);else (0, _util.log)("Unknown method " + call.method);
     }
   });
 }

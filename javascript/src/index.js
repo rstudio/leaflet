@@ -292,11 +292,15 @@ if (HTMLWidgets.shinyMode) {
 
     for (let i = 0; i < data.calls.length; i++) {
       let call = data.calls[i];
+      let args = call.args;
+      for (let i = 0; i < call.evals.length; i++) {
+        window.HTMLWidgets.evaluateStringMember(args, call.evals[i]);
+      }
       if (call.dependencies) {
         Shiny.renderDependencies(call.dependencies);
       }
       if (methods[call.method])
-        methods[call.method].apply(map, call.args);
+        methods[call.method].apply(map, args);
       else
         log("Unknown method " + call.method);
     }
