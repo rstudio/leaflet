@@ -98,7 +98,8 @@ jobs:
           - {os: ubuntu-20.04,   r: '${{ needs.rversions.outputs.oldrel1 }}'}
           - {os: ubuntu-20.04,   r: '${{ needs.rversions.outputs.oldrel2 }}'}
           - {os: ubuntu-20.04,   r: '${{ needs.rversions.outputs.oldrel3 }}'}
-          - {os: ubuntu-20.04,   r: '${{ needs.rversions.outputs.oldrel4 }}'}
+          # Currently can not test on R 3.4; Need R 3.5 (raster, rgdal)
+          # - {os: ubuntu-20.04,   r: '${{ needs.rversions.outputs.oldrel4 }}'}
 
     env:
       RSPM: ${{ matrix.config.rspm }}
