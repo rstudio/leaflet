@@ -107,6 +107,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Install mac deps
+        if: runner.os == 'macOS'
+        # OE> configure: error: geos-config not found or not executable.
+        # OE> ERROR: configuration failed for package ‘rgeos’
+        run: |
+          brew install geos gdal
+
       - uses: r-lib/actions/setup-pandoc@v1
       - uses: r-lib/actions/setup-r@v1
         with:
