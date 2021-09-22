@@ -3,7 +3,7 @@
 set -e
 
 # Generate package docs in the working directory
-Rscript -e "devtools::document(roclets=c('rd', 'collate', 'namespace'))"
+Rscript -e "roxygen2::roxygenise(roclets=c('rd', 'collate', 'namespace'))"
 
 if [ -n "$(git status --porcelain man)" ]
 then
