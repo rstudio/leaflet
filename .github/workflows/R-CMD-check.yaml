@@ -4,12 +4,12 @@ on:
   pull_request:
     branches: [main]
   schedule:
-    - cron: '0 8 * * 1' # every monday
+    - cron: '0 7 * * 1' # every monday
 
 name: Package checks
 
 jobs:
-  ## Website is not pkgdown; Run `source("tools/docs_update.R")` on release
+  ## Website is not pkgdown; Run `source("tools/docs_update.R")` on release!
   # website:
   #   uses: rstudio/shinycoreci/.github/workflows/call-website.yaml@v1
   routine:
