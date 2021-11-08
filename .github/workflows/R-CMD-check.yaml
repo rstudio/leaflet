@@ -1,134 +1,20 @@
 on:
   push:
-    branches: [main, master, rc-**]
+    branches: [main, rc-**]
   pull_request:
-    branches: [main, master]
+    branches: [main]
+  schedule:
+    - cron: '0 7 * * 1' # every monday
 
-name: R-CMD-check
+name: Package checks
 
 jobs:
-  rversions:
-    name: R Versions
-    runs-on: ubuntu-latest
-    outputs:
-      devel:   ${{ steps.devel.outputs.installed-r-version }}
-      release: ${{ steps.release.outputs.installed-r-version }}
-      oldrel1: ${{ steps.oldrel-1.outputs.installed-r-version }}
-      oldrel2: ${{ steps.oldrel-2.outputs.installed-r-version }}
-      oldrel3: ${{ steps.oldrel-3.outputs.installed-r-version }}
-      oldrel4: ${{ steps.oldrel-4.outputs.installed-r-version }}
-    steps:
-    - { name: devel,    uses: r-lib/actions/setup-r@v1, id: devel,    with: { r-version: devel,    install-r: false } }
-    - { name: release,  uses: r-lib/actions/setup-r@v1, id: release,  with: { r-version: release,  install-r: false } }
-    - { name: oldrel-1, uses: r-lib/actions/setup-r@v1, id: oldrel-1, with: { r-version: oldrel-1, install-r: false } }
-    - { name: oldrel-2, uses: r-lib/actions/setup-r@v1, id: oldrel-2, with: { r-version: oldrel-2, install-r: false } }
-    - { name: oldrel-3, uses: r-lib/actions/setup-r@v1, id: oldrel-3, with: { r-version: oldrel-3, install-r: false } }
-    - { name: oldrel-4, uses: r-lib/actions/setup-r@v1, id: oldrel-4, with: { r-version: oldrel-4, install-r: false } }
-
-  javascript:
-    runs-on: ubuntu-latest
-    name: javascript
-
-    env:
-      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - uses: actions/setup-node@v1
-        with:
-          node-version: '12'
-
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
-      - uses: actions/cache@v2
-        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-
-      - name: Check JavaScript
-        shell: bash
-        run: ./scripts/checkJSCurrent.sh
-
-  docs:
-    runs-on: ubuntu-20.04
-    name: docs
-
-    env:
-      R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
-      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - uses: r-lib/actions/setup-pandoc@v1
-      - uses: r-lib/actions/setup-r@v1
-        with:
-          use-public-rspm: true
-      - uses: r-lib/actions/setup-r-dependencies@v1
-        with:
-          cache-version: docs-1
-          extra-packages: roxygen2
-
-      - name: Check Docs
-        shell: bash
-        run: ./scripts/checkDocsCurrent.sh
-
-
+  ## Website is not pkgdown; Run `source("tools/docs_update.R")` on release!
+  # website:
+  #   uses: rstudio/shinycoreci/.github/workflows/call-website.yaml@v1
+  routine:
+    uses: rstudio/shinycoreci/.github/workflows/call-routine.yaml@v1
+    with:
+      node-version: '12'
   R-CMD-check:
-    runs-on: ${{ matrix.config.os }}
-
-    name: ${{ matrix.config.os }} (${{ matrix.config.r }})
-
-    needs:
-      - rversions
-    strategy:
-      fail-fast: false
-      matrix:
-        config:
-          - {os: macOS-latest,   r: '${{ needs.rversions.outputs.release }}'}
-          - {os: windows-latest, r: '${{ needs.rversions.outputs.release }}'}
-          - {os: windows-latest, r: '3.6'}
-          - {os: ubuntu-20.04,   r: '${{ needs.rversions.outputs.devel }}', http-user-agent: "release" }
-          - {os: ubuntu-20.04,   r: '${{ needs.rversions.outputs.release }}'}
-          - {os: ubuntu-20.04,   r: '${{ needs.rversions.outputs.oldrel1 }}'}
-          - {os: ubuntu-20.04,   r: '${{ needs.rversions.outputs.oldrel2 }}'}
-          - {os: ubuntu-20.04,   r: '${{ needs.rversions.outputs.oldrel3 }}'}
-          # Currently can not test on R 3.4; Need R 3.5 (raster, rgdal)
-          # - {os: ubuntu-20.04,   r: '${{ needs.rversions.outputs.oldrel4 }}'}
-
-    env:
-      RSPM: ${{ matrix.config.rspm }}
-      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Install mac deps
-        if: runner.os == 'macOS'
-        # OE> configure: error: geos-config not found or not executable.
-        # OE> ERROR: configuration failed for package ‘rgeos’
-        run: |
-          brew install geos gdal
-
-      - uses: r-lib/actions/setup-pandoc@v1
-      - uses: r-lib/actions/setup-r@v1
-        with:
-          r-version: ${{ matrix.config.r }}
-          http-user-agent: ${{ matrix.config.http-user-agent }}
-          use-public-rspm: true
-      - uses: r-lib/actions/setup-r-dependencies@v1
-        with:
-          extra-packages: rcmdcheck
-      - uses: r-lib/actions/check-r-package@v1
-
-      - name: Upload check results
-        if: failure()
-        uses: actions/upload-artifact@main
-        with:
-          name: ${{ runner.os }}-r${{ matrix.config.r }}-results
-          path: check
+    uses: rstudio/shinycoreci/.github/workflows/call-R-CMD-check.yaml@v1

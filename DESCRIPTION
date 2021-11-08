@@ -61,6 +61,6 @@ Suggests:
     RJSONIO,
     purrr,
     testthat (>= 3.0.0)
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Encoding: UTF-8
 LazyData: true

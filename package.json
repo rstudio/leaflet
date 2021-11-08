@@ -24,5 +24,7 @@
     "grunt-mocha-test": "^0.13.3",
     "mocha": "^9.1.2",
     "source-map-support": "^0.5.19"
-  }
+  },
+  "version": "2.0.4-alpha.9000",
+  "files": []
 }
