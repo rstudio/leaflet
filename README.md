@@ -1,7 +1,7 @@
 # An R Interface to Leaflet Maps
 
 <!-- badges: start -->
-[![R build status](https://github.com/rstudio/leaflet/workflows/R-CMD-check/badge.svg)](https://github.com/rstudio/leaflet/actions)
+[![R build status](https://github.com/rstudio/leaflet/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/rstudio/leaflet/actions)
 [![CRAN RStudio mirror downloads](https://cranlogs.r-pkg.org/badges/leaflet)](https://www.r-pkg.org/pkg/leaflet)
 [![](https://www.r-pkg.org/badges/version/leaflet)](https://www.r-pkg.org/pkg/leaflet)
 [![RStudio community](https://img.shields.io/badge/community-leaflet-blue?style=social&logo=rstudio&logoColor=75AADB)](https://community.rstudio.com/new-topic?title=&tags=leaflet&body=%0A%0A%0A%20%20--------%0A%20%20%0A%20%20%3Csup%3EReferred%20here%20by%20%60leaflet%60%27s%20GitHub%3C/sup%3E%0A&u=barret)
