@@ -690,7 +690,7 @@ addLabelOnlyMarkers <- function(
     map = map, lng = lng, lat = lat, layerId = layerId,
     group = group,
     icon = makeIcon(
-      iconUrl = system.file("htmlwidgets/lib/rstudio_leaflet/images/1px.png", package = "leaflet"),
+      iconUrl = system_file("htmlwidgets/lib/rstudio_leaflet/images/1px.png", package = "leaflet"),
       iconWidth = 1, iconHeight = 1),
       label = label,
       labelOptions = labelOptions,
@@ -707,7 +707,8 @@ markerClusterDependencies <- function() {
     htmltools::htmlDependency(
       "leaflet-markercluster",
       "1.0.5",
-      system.file("htmlwidgets/plugins/Leaflet.markercluster", package = "leaflet"),
+      "htmlwidgets/plugins/Leaflet.markercluster",
+      package = "leaflet",
       script = c(
         "leaflet.markercluster.js",
         "leaflet.markercluster.freezable.js",
