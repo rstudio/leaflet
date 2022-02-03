@@ -3,7 +3,8 @@ leafletAwesomeMarkersDependencies <- function() {
     htmltools::htmlDependency(
       "leaflet-awesomemarkers",
       "2.0.3",
-      system.file("htmlwidgets/plugins/Leaflet.awesome-markers", package = "leaflet"),
+      "htmlwidgets/plugins/Leaflet.awesome-markers",
+      package = "leaflet",
       script = c("leaflet.awesome-markers.min.js"),
       stylesheet = c("leaflet.awesome-markers.css")
     )
@@ -15,7 +16,8 @@ leafletAmBootstrapDependencies <- function(map) {
     htmltools::htmlDependency(
       "bootstrap",
       "3.3.7",
-      system.file("htmlwidgets/plugins/Leaflet.awesome-markers", package = "leaflet"),
+      "htmlwidgets/plugins/Leaflet.awesome-markers",
+      package = "leaflet",
       script = c("bootstrap.min.js"),
       stylesheet = c("bootstrap.min.css")
     )
@@ -34,7 +36,8 @@ leafletAmFontAwesomeDependencies <- function(map) {
     htmltools::htmlDependency(
       "fontawesome",
       "4.7.0",
-      system.file("htmlwidgets/plugins/Leaflet.awesome-markers", package = "leaflet"),
+      "htmlwidgets/plugins/Leaflet.awesome-markers",
+      package = "leaflet",
       stylesheet = c("font-awesome.min.css")
     )
   )
@@ -52,7 +55,8 @@ leafletAmIonIconDependencies <- function(map) {
     htmltools::htmlDependency(
       "ionicons",
       "2.0.1",
-      system.file("htmlwidgets/plugins/Leaflet.awesome-markers", package = "leaflet"),
+      "htmlwidgets/plugins/Leaflet.awesome-markers",
+      package = "leaflet",
       stylesheet = c("ionicons.min.css")
     )
   )

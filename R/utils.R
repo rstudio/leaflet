@@ -1,3 +1,6 @@
+# @staticimports pkg:staticimports
+#  is_installed system_file get_package_version
+
 # Given a local and/or remote operation and a map, execute one or the other
 # depending on the type of the map object (regular or map proxy). If code was
 # not provided for the appropriate mode, an error will be raised.
@@ -210,7 +213,7 @@ invokeRemote <- function(map, method, args = list()) {
 
   sess <- map$session
   if (map$deferUntilFlush) {
-    if (packageVersion("shiny") < "0.12.1.9000") {
+    if (is_installed("shiny", "0.12.1.9000")) {
 
       # See comment on sessionFlushQueue.
 
