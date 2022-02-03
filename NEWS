@@ -7,7 +7,9 @@ FEATURES
 BUG FIXES and IMPROVEMENTS
 * Enable JS function literals (wrapped in `htmlwidgets::JS()`) to be included in arguments to methods invoked on `leafletProxy` objects. (JS function literals could already be included with methods invoked on `leaflet` objects, so this change just brings `leafletProxy` to parity.) (#420)
 
-* Add missing CSS rule to show `<img>` in right-pane and left-pane (rstudio/rmarkdown/issues#1949).
+* Add missing CSS rule to show `<img>` in right-pane and left-pane (rstudio/rmarkdown/issues#1949, #770)
+
+* Allow for _hidden_ but not suspended leaflet maps to queue calls (such as add raster images) until they are rendered. If a new leaflet map is created, all pending calls are removed. (#771)
 
 leaflet 2.0.4.1
 --------------------------------------------------------------------------------
