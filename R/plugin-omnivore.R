@@ -3,7 +3,8 @@ leafletOmnivoreDependencies <- function() {
     htmltools::htmlDependency(
       "leaflet-omnivore",
       "0.3.3",
-      system.file("htmlwidgets/lib/leaflet-omnivore", package = "leaflet"),
+      "htmlwidgets/lib/leaflet-omnivore",
+      package = "leaflet",
       script = "leaflet-omnivore.min.js"
     )
   )
