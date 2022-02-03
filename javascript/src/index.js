@@ -290,6 +290,14 @@ if (HTMLWidgets.shinyMode) {
       return;
     }
 
+    // If the map has not rendered, stash the proposed call
+    // in `pendingRenderData.calls` to be run on display via `doRenderValue()`.
+    // This is necessary if the map has not been rendered.
+    // If new pendingRenderData is set, the previous calls will be discarded.
+    if (!map.leafletr.hasRendered) {
+      map.leafletr.pendingRenderData.calls = map.leafletr.pendingRenderData.calls.concat(data.calls);
+      return;
+    }
     for (let i = 0; i < data.calls.length; i++) {
       let call = data.calls[i];
       let args = call.args;
