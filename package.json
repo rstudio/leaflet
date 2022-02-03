@@ -3,8 +3,7 @@
   "private": true,
   "scripts": {
     "build": "grunt build",
-    "watch": "grunt",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "watch": "grunt"
   },
   "license": "GPL-3.0",
   "devDependencies": {
