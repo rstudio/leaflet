@@ -174,10 +174,6 @@ HTMLWidgets.widget({
         // are off. Therefore we wait until the map is actually showing to
         // render the value (we rely on the resize() callback being invoked
         // at the appropriate time).
-        //
-        // There may be an issue with leafletProxy() calls being made while
-        // the map is not being viewed--not sure what the right solution is
-        // there.
         if (el.offsetWidth === 0 || el.offsetHeight === 0) {
           map.leafletr.pendingRenderData = data;
           return;
@@ -290,10 +286,10 @@ if (HTMLWidgets.shinyMode) {
       return;
     }
 
-    // If the map has not rendered, stash the proposed call
+    // If the map has not rendered, stash the proposed `leafletProxy()` calls
     // in `pendingRenderData.calls` to be run on display via `doRenderValue()`.
     // This is necessary if the map has not been rendered.
-    // If new pendingRenderData is set, the previous calls will be discarded.
+    // If new pendingRenderData is set via a new `leaflet()`, the previous calls will be discarded.
     if (!map.leafletr.hasRendered) {
       map.leafletr.pendingRenderData.calls = map.leafletr.pendingRenderData.calls.concat(data.calls);
       return;
