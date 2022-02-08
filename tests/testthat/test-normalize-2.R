@@ -95,7 +95,7 @@ test_that("normalize", {
     }
   }
 
-  spolys <- SpatialPolygons(list(
+  polys <-
     Polygons(list(
       create_square(),
       create_square(, 5, 5),
@@ -103,6 +103,10 @@ test_that("normalize", {
       create_square(1, 5, 5, hole = TRUE),
       create_square(0.4, 4.25, 4.25, hole = TRUE)
     ), "A")
+  comment(polys) <- rgeos::createPolygonsComment(polys)
+
+  spolys <- SpatialPolygons(list(
+    polys
   ))
   stspolys <- st_as_sf(spolys)
   (l101 <- leaflet(spolys) %>% addPolygons())
