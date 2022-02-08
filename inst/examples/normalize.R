@@ -72,6 +72,7 @@ Sr3 <- Polygon(cbind(c(4, 4, 5, 10, 4), c(5, 3, 2, 5, 5)))
 Sr4 <- Polygon(cbind(c(5, 6, 6, 5, 5), c(4, 4, 3, 3, 4)), hole = TRUE)
 Srs1 <- Polygons(list(Sr1), "s1")
 Srs2 <- Polygons(list(Sr2), "s2")
+# Leaflet will automatically add comment about the hole from Sr4
 Srs3 <- Polygons(list(Sr4, Sr3), "s3/4")
 SpP <- SpatialPolygons(list(Srs1, Srs2, Srs3), 1:3)
 
