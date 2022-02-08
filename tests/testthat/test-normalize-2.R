@@ -15,7 +15,6 @@ test_that("normalize", {
   ### polygons --------------------------------------------------------------
 
   pgontest <- function(x) {
-    cat(class(x), "\n")
     leaflet(x) %>% addTiles() %>% addPolygons()
   }
 
@@ -39,7 +38,6 @@ test_that("normalize", {
   lindata <- st_as_sf(atlStorms2005)
 
   plinetest <- function(x) {
-    cat(class(x), "\n")
     leaflet(x) %>% addTiles() %>% addPolylines()
   }
 
