@@ -88,7 +88,11 @@ test_that("normalize", {
       lats <- rev(lats)
     }
 
-    type(cbind(lng = lngs, lat = lats))
+    if ("hole" %in% names(formals(type))) {
+      type(cbind(lng = lngs, lat = lats), hole = hole)
+    } else {
+      type(cbind(lng = lngs, lat = lats))
+    }
   }
 
   spolys <- SpatialPolygons(list(
