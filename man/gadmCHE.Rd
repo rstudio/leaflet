@@ -8,12 +8,12 @@
 \code{sp::SpatialPolygonsDataFrame}
 }
 \source{
-\url{http://gadm.org}
+\url{https://gadm.org}
 }
 \description{
 Administrative borders of Switzerland (level 1)
 }
 \details{
-This dataset comes from \url{http://gadm.org}.
+This dataset comes from \url{https://gadm.org}.
 It was downloaded using \code{\link{getData}}.
 }

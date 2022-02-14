@@ -15,7 +15,6 @@ test_that("normalize", {
   ### polygons --------------------------------------------------------------
 
   pgontest <- function(x) {
-    cat(class(x), "\n")
     leaflet(x) %>% addTiles() %>% addPolygons()
   }
 
@@ -39,7 +38,6 @@ test_that("normalize", {
   lindata <- st_as_sf(atlStorms2005)
 
   plinetest <- function(x) {
-    cat(class(x), "\n")
     leaflet(x) %>% addTiles() %>% addPolylines()
   }
 
@@ -88,10 +86,14 @@ test_that("normalize", {
       lats <- rev(lats)
     }
 
-    type(cbind(lng = lngs, lat = lats))
+    if ("hole" %in% names(formals(type))) {
+      type(cbind(lng = lngs, lat = lats), hole = hole)
+    } else {
+      type(cbind(lng = lngs, lat = lats))
+    }
   }
 
-  spolys <- SpatialPolygons(list(
+  polys <-
     Polygons(list(
       create_square(),
       create_square(, 5, 5),
@@ -99,6 +101,10 @@ test_that("normalize", {
       create_square(1, 5, 5, hole = TRUE),
       create_square(0.4, 4.25, 4.25, hole = TRUE)
     ), "A")
+  comment(polys) <- rgeos::createPolygonsComment(polys)
+
+  spolys <- SpatialPolygons(list(
+    polys
   ))
   stspolys <- st_as_sf(spolys)
   (l101 <- leaflet(spolys) %>% addPolygons())

@@ -3,7 +3,8 @@ leafletTerminatorDependencies <- function() {
     htmltools::htmlDependency(
       "leaflet-terminator",
       "0.1.0",
-      system.file("htmlwidgets/plugins/Leaflet.Terminator", package = "leaflet"),
+      "htmlwidgets/plugins/Leaflet.Terminator",
+      package = "leaflet",
       script = c("L.Terminator.js", "Terminator-binding.js")
     )
   )
