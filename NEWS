@@ -20,6 +20,7 @@ FEATURES
 BUG FIXES and IMPROVEMENTS
 * Minor tweaks to example data and tests, required to stay on CRAN
 
+* Fixes broken URL (#742) and updated examples to run from system files (#576) including updated .Rmd and .html docs.
 
 
 leaflet 2.0.3

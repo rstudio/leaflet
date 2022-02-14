@@ -9,6 +9,12 @@ The function `leaflet()` returns a Leaflet map widget, which stores a list of ob
 ### Initializing Options
 The map widget can be initialized with certain parameters. This is achieved by populating the `options` argument as shown below.
 
+```{r, include = FALSE}
+library(leaflet)
+library(magrittr)
+```
+
+
 ```{r eval=FALSE}
 # Set value for the minZoom and maxZoom settings.
 leaflet(options = leafletOptions(minZoom = 0, maxZoom = 18))

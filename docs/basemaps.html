@@ -14,17 +14,24 @@
 <title>Leaflet for R - Using Basemaps</title>
 
 <script src="libs/header-attrs/header-attrs.js"></script>
-<script src="libs/jquery/jquery.min.js"></script>
+<script src="libs/jquery/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="libs/bootstrap/css/flatly.min.css" rel="stylesheet" />
 <script src="libs/bootstrap/js/bootstrap.min.js"></script>
 <script src="libs/bootstrap/shim/html5shiv.min.js"></script>
 <script src="libs/bootstrap/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="libs/navigation/tabsets.js"></script>
 <link href="libs/highlightjs/default.css" rel="stylesheet" />
 <script src="libs/highlightjs/highlight.js"></script>
-<link href="libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections/anchor-sections.js"></script>
 <script src="libs/htmlwidgets/htmlwidgets.js"></script>
 <link href="libs/leaflet/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet/leaflet.js"></script>
@@ -46,11 +53,6 @@
     </style>
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -63,32 +65,7 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+
 
 
 
@@ -98,10 +75,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -118,6 +91,9 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+pre code {
+  padding: 0;
+}
 </style>
 
 
@@ -130,7 +106,6 @@ summary {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -260,7 +235,7 @@ summary {
   </div>
   <div class="col-sm-9 content-body">
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
@@ -628,7 +603,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>
