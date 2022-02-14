@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
@@ -14,22 +13,36 @@
 
 <title>Leaflet for R - Using Leaflet with Shiny</title>
 
-<script src="libs/jquery/jquery.min.js"></script>
+<script src="libs/header-attrs/header-attrs.js"></script>
+<script src="libs/jquery/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="libs/bootstrap/css/flatly.min.css" rel="stylesheet" />
 <script src="libs/bootstrap/js/bootstrap.min.js"></script>
 <script src="libs/bootstrap/shim/html5shiv.min.js"></script>
 <script src="libs/bootstrap/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="libs/navigation/tabsets.js"></script>
 <link href="libs/highlightjs/default.css" rel="stylesheet" />
 <script src="libs/highlightjs/highlight.js"></script>
 
-<style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -42,32 +55,7 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+
 
 
 
@@ -77,10 +65,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -97,6 +81,9 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+pre code {
+  padding: 0;
+}
 </style>
 
 
@@ -109,7 +96,6 @@ summary {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -145,6 +131,7 @@ summary {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -238,7 +225,7 @@ summary {
   </div>
   <div class="col-sm-9 content-body">
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
@@ -250,7 +237,7 @@ summary {
 <h2>Using Leaflet with Shiny</h2>
 <p><em>Shiny is a web framework for R. To learn more about Shiny, visit <a href="http://shiny.rstudio.com/">shiny.rstudio.com</a>.</em></p>
 <p>The Leaflet package includes powerful and convenient features for integrating with Shiny applications.</p>
-<p>Most Shiny output widgets are incorporated into an app by including an output (e.g. <code>plotOutput</code>) for the widget in the UI definition, and using a render function (e.g. <code>renderPlot</code>) in the server function. Leaflet maps are no different; in the UI you call <code>leafletOutput</code>, and on the server side you assign a <code>renderLeaflet</code> call to the output. Inside the <code>renderLeaflet</code> expression, you return a Leaflet map object.</p>
+<p>Most Shiny output widgets are incorporated into an app by including an output (e.g. <code>plotOutput</code>) for the widget in the UI definition, and using a render function (e.g. <code>renderPlot</code>) in the server function. Leaflet maps are no different; in the UI you call <code>leafletOutput</code>, and on the server side you assign a <code>renderLeaflet</code> call to the output. Inside the <code>renderLeaflet</code> expression, you return a Leaflet map object.</p>
 <pre class="r"><code>library(shiny)
 library(leaflet)
 
@@ -280,7 +267,7 @@ server &lt;- function(input, output, session) {
 
 shinyApp(ui, server)</code></pre>
 <div class="figure">
-<img src="images/shiny1.png" alt="Screenshot of a simple Shiny app" />
+<img src="images/shiny1.png" alt="" />
 <p class="caption">Screenshot of a simple Shiny app</p>
 </div>
 <div id="modifying-existing-maps-with-leafletproxy" class="section level3">
@@ -360,7 +347,7 @@ server &lt;- function(input, output, session) {
 
 shinyApp(ui, server)</code></pre>
 <div class="figure">
-<img src="images/shiny2.png" alt="Screenshot of a Shiny app" />
+<img src="images/shiny2.png" alt="" />
 <p class="caption">Screenshot of a Shiny app</p>
 </div>
 <p>Besides adding layers, you can set the map bounds, remove specific objects by ID, or clear categories of layers.</p>
@@ -448,7 +435,7 @@ proxy %&gt;% clearShapes()</code></pre>
 <blockquote>
 <p><code>input$<em>MAPID</em>_<em>OBJCATEGORY</em>_<em>EVENTNAME</em></code></p>
 </blockquote>
-<p>So for a <code>leafletOutput(&quot;mymap&quot;)</code> had a circle on it, clicking on that circle would update the Shiny input at <code>input$mymap_shape_click</code>. (Note that the layer ID is not part of the name, though it is part of the value.)</p>
+<p>So for a <code>leafletOutput("mymap")</code> had a circle on it, clicking on that circle would update the Shiny input at <code>input$mymap_shape_click</code>. (Note that the layer ID is not part of the name, though it is part of the value.)</p>
 <p>If no shape has ever been clicked on this map, then <code>input$mymap_shape_click</code> is null.</p>
 <p>Valid values for <em>OBJCATEGORY</em> above are <code>marker</code>, <code>shape</code>, <code>geojson</code>, and <code>topojson</code>. (Tiles and controls don’t raise mouse events.) Valid values for <em>EVENTNAME</em> are <code>click</code>, <code>mouseover</code>, and <code>mouseout</code>.</p>
 <p>All of these events are set to either <code>NULL</code> if the event has never happened, or a <code>list()</code> that includes:</p>
@@ -499,7 +486,7 @@ Maps &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contr
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
@@ -517,7 +504,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>

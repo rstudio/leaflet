@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
@@ -14,12 +13,22 @@
 
 <title>Leaflet for R - Shapes</title>
 
-<script src="libs/jquery/jquery.min.js"></script>
+<script src="libs/header-attrs/header-attrs.js"></script>
+<script src="libs/jquery/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="libs/bootstrap/css/flatly.min.css" rel="stylesheet" />
 <script src="libs/bootstrap/js/bootstrap.min.js"></script>
 <script src="libs/bootstrap/shim/html5shiv.min.js"></script>
 <script src="libs/bootstrap/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="libs/navigation/tabsets.js"></script>
 <link href="libs/highlightjs/default.css" rel="stylesheet" />
 <script src="libs/highlightjs/highlight.js"></script>
@@ -27,17 +36,21 @@
 <link href="libs/leaflet/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet/leaflet.js"></script>
 <link href="libs/leafletfix/leafletfix.css" rel="stylesheet" />
-<script src="libs/Proj4Leaflet/proj4-compressed.js"></script>
+<script src="libs/proj4/proj4.min.js"></script>
 <script src="libs/Proj4Leaflet/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet/rstudio_leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-binding/leaflet.js"></script>
 
-<style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -50,32 +63,7 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+
 
 
 
@@ -85,10 +73,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -105,6 +89,9 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+pre code {
+  padding: 0;
+}
 </style>
 
 
@@ -117,7 +104,6 @@ summary {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -153,6 +139,7 @@ summary {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -246,7 +233,7 @@ summary {
   </div>
   <div class="col-sm-9 content-body">
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
@@ -273,7 +260,7 @@ summary {
 states &lt;- readOGR(&quot;shp/cb_2013_us_state_20m.shp&quot;,
   layer = &quot;cb_2013_us_state_20m&quot;, GDAL1_integer64_policy = TRUE)</code></pre>
 <pre><code>## OGR data source with driver: ESRI Shapefile 
-## Source: &quot;/Users/barret/Documents/git/rstudio/leaflet/leaflet/docs/shp/cb_2013_us_state_20m.shp&quot;, layer: &quot;cb_2013_us_state_20m&quot;
+## Source: &quot;/Users/barret/Documents/git/rstudio/leaflet/leaflet.nosync/docs/shp/cb_2013_us_state_20m.shp&quot;, layer: &quot;cb_2013_us_state_20m&quot;
 ## with 52 features
 ## It has 9 fields
 ## Integer64 fields read as doubles:  ALAND AWATER</code></pre>
@@ -656,9 +643,13 @@ leaflet(neStates) %&gt;%
 fullsize &lt;- usa_sf()
 object.size(fullsize)</code></pre>
 <pre><code>## 933016 bytes</code></pre>
-<pre class="r"><code>simplified &lt;- rmapshaper::ms_simplify(fullsize)
-object.size(simplified)</code></pre>
-<pre><code>## 120496 bytes</code></pre>
+<pre class="r"><code>simplified &lt;- rmapshaper::ms_simplify(fullsize)</code></pre>
+<pre><code>## Registered S3 method overwritten by &#39;geojsonlint&#39;:
+##   method         from 
+##   print.location dplyr</code></pre>
+<pre><code>## old-style crs object detected; please recreate object with a recent sf::st_crs()</code></pre>
+<pre class="r"><code>object.size(simplified)</code></pre>
+<pre><code>## 121504 bytes</code></pre>
 </div>
 </div>
 <div id="circles" class="section level3">
@@ -878,7 +869,7 @@ Maps &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contr
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
@@ -896,7 +887,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>

@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
@@ -14,12 +13,22 @@
 
 <title>Leaflet for R - Show/Hide Layers</title>
 
-<script src="libs/jquery/jquery.min.js"></script>
+<script src="libs/header-attrs/header-attrs.js"></script>
+<script src="libs/jquery/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="libs/bootstrap/css/flatly.min.css" rel="stylesheet" />
 <script src="libs/bootstrap/js/bootstrap.min.js"></script>
 <script src="libs/bootstrap/shim/html5shiv.min.js"></script>
 <script src="libs/bootstrap/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="libs/navigation/tabsets.js"></script>
 <link href="libs/highlightjs/default.css" rel="stylesheet" />
 <script src="libs/highlightjs/highlight.js"></script>
@@ -27,7 +36,7 @@
 <link href="libs/leaflet/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet/leaflet.js"></script>
 <link href="libs/leafletfix/leafletfix.css" rel="stylesheet" />
-<script src="libs/Proj4Leaflet/proj4-compressed.js"></script>
+<script src="libs/proj4/proj4.min.js"></script>
 <script src="libs/Proj4Leaflet/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet/rstudio_leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-binding/leaflet.js"></script>
@@ -39,12 +48,16 @@
 <script src="libs/leaflet-markercluster/leaflet.markercluster.freezable.js"></script>
 <script src="libs/leaflet-markercluster/leaflet.markercluster.layersupport.js"></script>
 
-<style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -57,32 +70,7 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+
 
 
 
@@ -92,10 +80,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -112,6 +96,9 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+pre code {
+  padding: 0;
+}
 </style>
 
 
@@ -124,7 +111,6 @@ summary {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -160,6 +146,7 @@ summary {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -253,7 +240,7 @@ summary {
   </div>
   <div class="col-sm-9 content-body">
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
@@ -283,7 +270,7 @@ Groups vs. Layer IDs
 <div class="panel-body">
 <p>Groups and <a href="shiny.html#understanding-layer-ids">Layer IDs</a> may appear similar, in that both are used to assign a name to a layer. However, they differ in that layer IDs are used to provide a <em>unique identifier</em> to <em>individual</em> markers and shapes, etc., while groups are used to give <em>shared labels</em> to <em>many</em> items.</p>
 <p>You generally provide one <code>group</code> value for the entire <code>addMarkers</code> call, and you can reuse that same <code>group</code> value in future <code>addXXX</code> calls to add to that group’s membership (as in the example above).</p>
-<p><code>layerId</code> arguments are <em>always</em> vectorized: when calling e.g. <code>addMarkers</code> you need to provide one layer ID per marker, and they must all be unique. If you add a circle with a layer ID of <code>&quot;foo&quot;</code> and later add a different shape with the same layer ID, the original circle will be removed.</p>
+<p><code>layerId</code> arguments are <em>always</em> vectorized: when calling e.g. <code>addMarkers</code> you need to provide one layer ID per marker, and they must all be unique. If you add a circle with a layer ID of <code>"foo"</code> and later add a different shape with the same layer ID, the original circle will be removed.</p>
 </div>
 </div>
 </div>
@@ -658,7 +645,7 @@ map</code></pre>
 </div>
 <div id="with-marker-clusters" class="section level2">
 <h2>With Marker Clusters</h2>
-<p>If markers are addeded to different groups, and when using marker clustering as described in the <a href="markers.html">marker</a> page, leaflet will generate different sets of clusters for differnet groups. This allows showing/hiding of marker clusters belonging to a group independenly of other marker clusers in other groups.</p>
+<p>If markers are added to different groups, and when using marker clustering as described in the <a href="markers.html">marker</a> page, leaflet will generate different sets of clusters for different groups. This allows showing/hiding of marker clusters belonging to a group independently of other marker clusters in other groups.</p>
 <pre class="r"><code>quakes &lt;- quakes %&gt;%
   dplyr::mutate(mag.level = cut(mag,c(3,4,5,6),
                                 labels = c(&#39;&gt;3 &amp; &lt;=4&#39;, &#39;&gt;4 &amp; &lt;=5&#39;, &#39;&gt;5 &amp; &lt;=6&#39;)))
@@ -911,7 +898,7 @@ Maps &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contr
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
@@ -929,7 +916,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>
