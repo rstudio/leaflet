@@ -103,7 +103,7 @@ leafletMap <- function(
       "contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>"
     )
 
-  shiny::addResourcePath("leaflet-legacy", system.file("legacy/www", package = "leaflet"))
+  shiny::addResourcePath("leaflet-legacy", system_file("legacy/www", package = "leaflet"))
 
   if (is.numeric(width))
     width <- sprintf("%dpx", width)

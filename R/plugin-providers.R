@@ -3,8 +3,9 @@ leafletProviderDependencies <- function() {
     get_providers_html_dependency(),
     htmltools::htmlDependency(
       "leaflet-providers-plugin",
-      packageVersion("leaflet"),
-      system.file("htmlwidgets/plugins/leaflet-providers-plugin", package = "leaflet"),
+      get_package_version("leaflet"),
+      "htmlwidgets/plugins/leaflet-providers-plugin",
+      package = "leaflet",
       script = "leaflet-providers-plugin.js"
     )
   )
@@ -45,7 +46,7 @@ addProviderTiles <- function(
 #' @param
 #' errorTileUrl,noWrap,opacity,zIndex,updateWhenIdle,detectRetina
 #' the tile layer options; see
-#' \url{http://leafletjs.com/reference-1.3.1.html#tilelayer}
+#' \url{https://leafletjs.com/reference-1.3.4.html#tilelayer}
 #' @param ... named parameters to add to the options
 #' @rdname addProviderTiles
 #' @export
@@ -66,7 +67,7 @@ providerTileOptions <- function(errorTileUrl = "", noWrap = FALSE,
 #' List of all providers with their variations
 #'
 #' @format A list of characters
-#' @source \url{https://github.com/leaflet-extras/leaflet-providers/blob/master/leaflet-providers.js}
+#' @source \url{https://github.com/leaflet-extras/leaflet-providers/blob/main/leaflet-providers.js}
 #'
 #' @name providers
 #' @export providers

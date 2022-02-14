@@ -3,7 +3,8 @@ leafletGraticuleDependencies <- function() {
     htmltools::htmlDependency(
       "leaflet-graticule",
       "0.1.0",
-      system.file("htmlwidgets/plugins/Leaflet.Graticule", package = "leaflet"),
+      "htmlwidgets/plugins/Leaflet.Graticule",
+      package = "leaflet",
       script = c("L.Graticule.js", "Graticule-binding.js")
     )
   )
@@ -15,7 +16,7 @@ leafletGraticuleDependencies <- function() {
 #' @param map a map widget object
 #' @param interval The spacing in map units between horizontal and vertical lines.
 #' @param sphere boolean. Default FALSE
-#' @param style path options for the generated lines. See \url{http://leafletjs.com/reference-1.3.1.html#path-option}
+#' @param style path options for the generated lines. See \url{https://leafletjs.com/reference-1.3.4.html#path-option}
 #' @param layerId the layer id
 #' @param group the name of the group this layer belongs to.
 #' @param options the path options for the graticule layer

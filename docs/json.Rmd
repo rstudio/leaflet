@@ -61,7 +61,7 @@ One way to apply styles to all of the features is to use the arguments directly 
 
 You can provide feature-specific styles by annotating each feature's property object with a `style: {...}` object. The feature-specific styles have the highest precedence, then the top-level style object, and finally the style-related arguments passed to the function.
 
-See Leaflet's [path](http://leafletjs.com/reference.html#path-options) options for available style properties.
+See Leaflet's [path](https://leafletjs.com/reference.html#path-options) options for available style properties.
 
 The previous example demonstrated the style arguments. Below is a more involved example that sets both global styles and per-feature styles directly into the JSON object.
 

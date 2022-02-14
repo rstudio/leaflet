@@ -147,7 +147,7 @@ mapOptions <- function(map, zoomToLimits = c("always", "first", "never")) {
 #' @param preferCanvas Whether leaflet.js Paths should be rendered on a Canvas renderer.
 #' @param ... other options used for leaflet.js map creation.
 #' @describeIn leaflet Options for map creation
-#' @seealso See \url{http://leafletjs.com/reference-1.3.1.html#map-option} for details and more options.
+#' @seealso See \url{https://leafletjs.com/reference-1.3.4.html#map-option} for details and more options.
 #' @export
 leafletOptions <- function(
   minZoom = NULL,

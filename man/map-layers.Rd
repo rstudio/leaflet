@@ -356,7 +356,7 @@ circles)}
 \item{fillOpacity}{fill opacity}
 
 \item{dashArray}{a string that defines the stroke
-\href{https://developer.mozilla.org/en/SVG/Attribute/stroke-dasharray}{dash
+\href{https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray}{dash
 pattern}}
 
 \item{bringToFront}{Whether the shape should be brought to front on hover.}
@@ -416,7 +416,7 @@ Add graphics elements and layers to the map widget.
 
 \references{
 The Leaflet API documentation:
-  \url{http://leafletjs.com/reference-1.3.1.html}
+  \url{https://leafletjs.com/reference-1.3.4.html}
 }
 \seealso{
 \code{\link{tileOptions}}, \code{\link{WMSTileOptions}},
