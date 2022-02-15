@@ -263,9 +263,9 @@ pre code {
 ## use options(&quot;rgdal_show_exportToProj4_warnings&quot;=&quot;none&quot;) before loading sp or rgdal.
 ## Overwritten PROJ_LIB was /Library/Frameworks/R.framework/Versions/4.0/Resources/library/rgdal/proj</code></pre>
 <pre class="r"><code># From http://data.okfn.org/data/datasets/geo-boundaries-world-110m
-countries &lt;- readOGR(system.file(&quot;json/countries.geojson&quot;, package=&quot;leaflet&quot;))</code></pre>
+countries &lt;- readOGR(&quot;https://rstudio.github.io/leaflet/json/countries.geojson&quot;)</code></pre>
 <pre><code>## OGR data source with driver: GeoJSON 
-## Source: &quot;/Library/Frameworks/R.framework/Versions/4.0/Resources/library/leaflet/json/countries.geojson&quot;, layer: &quot;countries&quot;
+## Source: &quot;https://rstudio.github.io/leaflet/json/countries.geojson&quot;, layer: &quot;countries&quot;
 ## with 177 features
 ## It has 2 fields</code></pre>
 <pre class="r"><code>map &lt;- leaflet(countries) %&gt;% addTiles()</code></pre>

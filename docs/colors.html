@@ -268,7 +268,7 @@ pal(c(1,6,9))</code></pre>
 <pre class="r"><code>library(rgdal)
 
 # From http://data.okfn.org/data/datasets/geo-boundaries-world-110m
-countries &lt;- readOGR(system.file(&quot;json/countries.geojson&quot;, package=&quot;leaflet&quot;))
+countries &lt;- readOGR(&quot;https://rstudio.github.io/leaflet/json/countries.geojson&quot;)
 map &lt;- leaflet(countries)</code></pre>
 <p>We’ve loaded some shape data for countries, including a numeric field <code>gdp_md_est</code> which contains GDP estimates.</p>
 <pre class="r"><code>par(mar = c(5,5,0,0), cex = 0.8)

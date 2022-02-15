@@ -250,13 +250,13 @@ pre code {
 <p>The first approach is to use either <code>rgdal</code> or <code>geojsonio</code> (packages) to read GeoJSON/TopoJSON as <code>sp</code> objects. Then, you can use the full functionality of <a href="shapes.html">polygons</a>, <a href="markers.html">markers</a>, <a href="colors.html">colors</a>, <a href="legends.html">legends</a>, etc.</p>
 <pre class="r"><code># From http://eric.clst.org/Stuff/USGeoJSON and
 # https://en.wikipedia.org/wiki/List_of_United_States_counties_and_county_equivalents
-nycounties &lt;- rgdal::readOGR(system.file(&quot;json/nycounties.geojson&quot;, package=&quot;leaflet&quot;)) </code></pre>
+nycounties &lt;- rgdal::readOGR(&quot;https://rstudio.github.io/leaflet/json/nycounties.geojson&quot;) </code></pre>
 <pre><code>## OGR data source with driver: GeoJSON 
-## Source: &quot;/Library/Frameworks/R.framework/Versions/4.0/Resources/library/leaflet/json/nycounties.geojson&quot;, layer: &quot;nycounties&quot;
+## Source: &quot;https://rstudio.github.io/leaflet/json/nycounties.geojson&quot;, layer: &quot;nycounties&quot;
 ## with 62 features
 ## It has 4 fields</code></pre>
 <pre class="r"><code># Or use the geojsonio equivalent:
-# nycounties &lt;- geojsonio::geojson_read(system.file(&quot;json/nycounties.geojson&quot;, package=&quot;leaflet&quot;), what = &quot;sp&quot;) 
+# nycounties &lt;- geojsonio::geojson_read(&quot;https://rstudio.github.io/leaflet/json/nycounties.geojson&quot;, what = &quot;sp&quot;) 
 
 pal &lt;- colorNumeric(&quot;viridis&quot;, NULL)
 
@@ -917,7 +917,7 @@ leaflet(nycounties) %&gt;%
 <p>The <code>addGeoJSON()</code> and <code>addTopoJSON()</code> functions accept GeoJSON data in either parsed (nested lists) or stringified (single-element character vector) format.</p>
 <p>Note that for larger JSON data, using parsed is significantly slower than using stringified, because parsed data must go through a JSON encoding step.</p>
 <p>A simple example using stringified data:</p>
-<pre class="r"><code>topoData &lt;- readLines(system.file(&quot;json/us-10m.json&quot;, package=&quot;leaflet&quot;)) %&gt;% paste(collapse = &quot;\n&quot;) 
+<pre class="r"><code>topoData &lt;- readLines(&quot;https://rstudio.github.io/leaflet/json/us-10m.json&quot;) %&gt;% paste(collapse = &quot;\n&quot;) 
 
 leaflet() %&gt;% setView(lng = -98.583, lat = 39.833, zoom = 3) %&gt;%
   addTiles() %&gt;%
@@ -1001,7 +1001,7 @@ leaflet() %&gt;% setView(lng = -98.583, lat = 39.833, zoom = 3) %&gt;%
 <pre class="r"><code>library(jsonlite)
 
 # From http://data.okfn.org/data/datasets/geo-boundaries-world-110m
-geojson &lt;- readLines(system.file(&quot;json/countries.geojson&quot;, package=&quot;leaflet&quot;), warn = FALSE) %&gt;%
+geojson &lt;- readLines(&quot;https://rstudio.github.io/leaflet/json/countries.geojson&quot;, warn = FALSE) %&gt;%
   paste(collapse = &quot;\n&quot;) %&gt;%
   fromJSON(simplifyVector = FALSE)
 
