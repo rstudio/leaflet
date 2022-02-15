@@ -65,6 +65,3 @@ Suggests:
 RoxygenNote: 7.1.2
 Encoding: UTF-8
 LazyData: true
-Remotes:
-    r-spatial/s2,
-    r-spatial/sf
