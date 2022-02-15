@@ -1,13 +1,8 @@
 ## Comments
 
-#### 2019-11-08
+#### 2022-02-15
 
-This submission is done to correct a testing issue with `scales`.
-
-This submission is done by Barret Schloerke <barret@rstudio.com> on behalf of Joe Cheng <joe@rstudio.com>. Please submit any changes to be made to <barret@rstudio.com>.
-
-- Barret
-
+This submission is at Dr. Ripley's request; it fixes some unit tests that broke with a recent update to sf.
 
 ## Test environments
 
@@ -17,7 +12,7 @@ This submission is done by Barret Schloerke <barret@rstudio.com> on behalf of Jo
 * ubuntu 14.04.5 (on travis-ci), R version 3.6.1 (2017-01-27)
   * 0 errors | 0 warnings | 0 notes
 
-* win-builder (oldrelease, release, and devel)
+* win-builder (devel)
   * 0 errors | 0 warnings | 0 notes
 
 * R-hub windows-x86_64-devel (r-devel)
@@ -34,7 +29,7 @@ This submission is done by Barret Schloerke <barret@rstudio.com> on behalf of Jo
 
 ## revdepcheck results
 
-We checked 95 reverse dependencies, comparing R CMD check results across CRAN and dev versions of this package.
+We checked 151 reverse dependencies (145 from CRAN + 6 from BioConductor), comparing R CMD check results across CRAN and dev versions of this package.
 
-* We saw 0 new problems
-* We failed to check 0 packages
+ * We saw 0 new problems
+ * We failed to check 0 packages

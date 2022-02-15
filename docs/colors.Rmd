@@ -44,7 +44,7 @@ The `domain` argument tells the color function the range of input values. You ca
 library(rgdal)
 
 # From http://data.okfn.org/data/datasets/geo-boundaries-world-110m
-countries <- readOGR(system.file("json/countries.geojson", package="leaflet"))
+countries <- readOGR("https://rstudio.github.io/leaflet/json/countries.geojson")
 map <- leaflet(countries)
 ```
 

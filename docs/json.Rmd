@@ -18,9 +18,9 @@ library(magrittr)
 ```{r message=FALSE,warning=FALSE}
 # From http://eric.clst.org/Stuff/USGeoJSON and
 # https://en.wikipedia.org/wiki/List_of_United_States_counties_and_county_equivalents
-nycounties <- rgdal::readOGR(system.file("json/nycounties.geojson", package="leaflet")) 
+nycounties <- rgdal::readOGR("https://rstudio.github.io/leaflet/json/nycounties.geojson") 
 # Or use the geojsonio equivalent:
-# nycounties <- geojsonio::geojson_read(system.file("json/nycounties.geojson", package="leaflet"), what = "sp") 
+# nycounties <- geojsonio::geojson_read("https://rstudio.github.io/leaflet/json/nycounties.geojson", what = "sp") 
 
 pal <- colorNumeric("viridis", NULL)
 
@@ -46,7 +46,7 @@ Note that for larger JSON data, using parsed is significantly slower than using 
 A simple example using stringified data:
 
 ```{r}
-topoData <- readLines(system.file("json/us-10m.json", package="leaflet")) %>% paste(collapse = "\n") 
+topoData <- readLines("https://rstudio.github.io/leaflet/json/us-10m.json") %>% paste(collapse = "\n") 
 
 leaflet() %>% setView(lng = -98.583, lat = 39.833, zoom = 3) %>%
   addTiles() %>%
@@ -74,7 +74,7 @@ library(jsonlite, quietly = TRUE)
 library(jsonlite)
 
 # From http://data.okfn.org/data/datasets/geo-boundaries-world-110m
-geojson <- readLines(system.file("json/countries.geojson", package="leaflet"), warn = FALSE) %>%
+geojson <- readLines("https://rstudio.github.io/leaflet/json/countries.geojson", warn = FALSE) %>%
   paste(collapse = "\n") %>%
   fromJSON(simplifyVector = FALSE)
 

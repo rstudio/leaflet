@@ -15,7 +15,7 @@ library(magrittr)
 
 ```{r fig.height = 4.75, echo = FALSE}
 # From http://leafletjs.com/examples/choropleth/us-states.js
-states <- geojsonio::geojson_read(system.file("json/us-states.geojson", package="leaflet"), what = "sp")
+states <- geojsonio::geojson_read("https://rstudio.github.io/leaflet/json/us-states.geojson", what = "sp")
 
 bins <- c(0, 10, 20, 50, 100, 200, 500, 1000, Inf)
 pal <- colorBin("YlOrRd", domain = states$density, bins = bins)
@@ -59,7 +59,7 @@ We'll start by loading the data from JSON. While the Leaflet.js example loads th
 In this case, we'll use the `geojsonio` package to load the data into `sp` objects, which will let us easily manipulate the geographic features, and their properties, in R.
 
 ```{r}
-states <- geojsonio::geojson_read(system.file("json/us-states.geojson", package="leaflet"), what = "sp")
+states <- geojsonio::geojson_read("https://rstudio.github.io/leaflet/json/us-states.geojson", what = "sp")
 class(states)
 names(states)
 ```
@@ -181,7 +181,7 @@ m %>% addLegend(pal = pal, values = ~density, opacity = 0.7, title = NULL,
 
 ```{r results = 'hide'}
 # From http://leafletjs.com/examples/choropleth/us-states.js
-states <- geojsonio::geojson_read(system.file("json/us-states.geojson", package="leaflet"), what = "sp")
+states <- geojsonio::geojson_read("https://rstudio.github.io/leaflet/json/us-states.geojson", what = "sp")
 
 bins <- c(0, 10, 20, 50, 100, 200, 500, 1000, Inf)
 pal <- colorBin("YlOrRd", domain = states$density, bins = bins)
