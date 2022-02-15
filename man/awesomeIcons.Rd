@@ -3,7 +3,7 @@
 \name{awesomeIcons}
 \alias{awesomeIcons}
 \title{Create a list of awesome icon data see
-\url{https://github.com/lvoogdt/Leaflet.awesome-markers}}
+\url{https://github.com/lennardv2/Leaflet.awesome-markers}}
 \usage{
 awesomeIcons(
   icon = "home",

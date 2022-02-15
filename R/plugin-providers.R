@@ -67,7 +67,7 @@ providerTileOptions <- function(errorTileUrl = "", noWrap = FALSE,
 #' List of all providers with their variations
 #'
 #' @format A list of characters
-#' @source \url{https://github.com/leaflet-extras/leaflet-providers/blob/main/leaflet-providers.js}
+#' @source \url{https://github.com/leaflet-extras/leaflet-providers/blob/0a9e27f8c6c26956b4e78c26e1945d748e3c2869/leaflet-providers.js}
 #'
 #' @name providers
 #' @export providers

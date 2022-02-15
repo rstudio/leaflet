@@ -160,7 +160,7 @@ makeAwesomeIcon <- function(
 }
 
 #' Create a list of awesome icon data see
-#' \url{https://github.com/lvoogdt/Leaflet.awesome-markers}
+#' \url{https://github.com/lennardv2/Leaflet.awesome-markers}
 #'
 #' An icon can be represented as a list of the form \code{list(icon, library,
 #' ...)}. This function is vectorized over its arguments to create a list of
