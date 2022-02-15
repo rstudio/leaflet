@@ -6,10 +6,7 @@ This submission is at Dr. Ripley's request; it fixes some unit tests that broke 
 
 ## Test environments
 
-* local OS X install, R 3.6.1, --run-dontcheck
-  * 0 errors | 0 warnings | 0 notes
-
-* ubuntu 14.04.5 (on travis-ci), R version 3.6.1 (2017-01-27)
+* local macOS M1 install, R 4.1.2, --run-dontcheck
   * 0 errors | 0 warnings | 0 notes
 
 * win-builder (devel)
@@ -19,10 +16,7 @@ This submission is at Dr. Ripley's request; it fixes some unit tests that broke 
   * 0 errors | 0 warnings | 0 notes
 
 * R-hub ubuntu-gcc-release (r-release)
-  ❯ On ubuntu-gcc-release (r-release)
-    checking package dependencies ... NOTE
-    Packages suggested but not available for checking: 'sf', 'rgdal'
-  * 0 errors ✖ | 0 warnings ✔ | 1 note ✖
+  * 0 errors | 0 warnings | 0 notes
 
 * R-hub fedora-clang-devel (r-devel)
   * 0 errors | 0 warnings | 0 notes
