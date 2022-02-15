@@ -60,11 +60,11 @@ Suggests:
     R6,
     RJSONIO,
     purrr,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    s2
 RoxygenNote: 7.1.2
 Encoding: UTF-8
 LazyData: true
 Remotes:
+    r-spatial/s2,
     r-spatial/sf
-Config/Needs/check:
-    r-spatial/s2
