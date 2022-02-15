@@ -72,7 +72,7 @@
 
 	/**
 	 * Definition of providers.
-	 * see https://leafletjs.com/reference.html#tilelayer for options in the options map.
+	 * see http://leafletjs.com/reference.html#tilelayer for options in the options map.
 	 */
 
 	L.TileLayer.Provider.providers = {
