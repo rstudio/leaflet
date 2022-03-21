@@ -163,13 +163,6 @@ m \%>\% addMarkers(rnorm(30, 175), rnorm(30, -37), icon = list(
   iconUrl = Rlogo, iconSize = c(25, 19)
 ))
 
-m \%>\% addMarkers(
-  c(-71.0382679, -122.1217866), c(42.3489054, 47.6763144), icon = list(
-    iconUrl = "http://www.rstudio.com/wp-content/uploads/2014/03/blue-125.png"
-  ), popup = c("RStudio @ Boston", "RStudio @ Seattle")
-)
-
-
 # circle (units in metres)
 m \%>\% addCircles(rand_lng(50), rand_lat(50), radius = runif(50, 50, 150))
 
@@ -254,10 +247,10 @@ m \%>\% setView(-122.36075812146, 47.6759920119894, zoom = 13) \%>\% addGeoJSON(
 
 
 # use the Dark Matter layer from CartoDB
-leaflet() \%>\% addTiles("http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png",
+leaflet() \%>\% addTiles("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png",
   attribution = paste(
-    "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors",
-    "&copy; <a href=\"http://cartodb.com/attributions\">CartoDB</a>"
+    "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap</a> contributors",
+    "&copy; <a href=\"https://cartodb.com/attributions\">CartoDB</a>"
   )
 ) \%>\% setView(-122.36, 47.67, zoom = 10)
 
@@ -283,6 +276,7 @@ m \%>\% addCircleMarkers(~lng, ~lat, radius = ~size,
   color = ~greens(value), fillOpacity = 0.5)
 
 }
+
 }
 \seealso{
 \code{\link{leafletCRS}} for creating a custom CRS.

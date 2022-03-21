@@ -11,7 +11,7 @@ leafletMap(
   outputId,
   width,
   height,
-  initialTileLayer = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+  initialTileLayer = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
   initialTileLayerAttribution = NULL,
   options = NULL
 )
