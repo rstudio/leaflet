@@ -243,24 +243,52 @@ pre code {
 
 <div id="working-with-projections-in-leaflet" class="section level2">
 <h2>Working with projections in Leaflet</h2>
-<p><strong>Note:</strong> This functionality is for advanced users and may not be supported across all functions (for example, <code>addRasterImage</code> currently works only with EPSG:3857 Web Mercator).</p>
-<p>The Leaflet package expects all point, line, and shape data to be specified in latitude and longitude using WGS 84 (a.k.a. EPSG:4326). By default, when displaying this data it projects everything to <a href="http://epsg.io/3857">EPSG:3857</a> and expects that any map tiles are also displayed in EPSG:3857.</p>
-<p>For users that need to display data with a different projection, we’ve integrated the <a href="https://github.com/kartena/Proj4Leaflet">Proj4Leaflet</a> plugin, which in theory gives Leaflet access to any CRS that is supported by <a href="http://proj4js.org/">Proj4js</a>.</p>
-<p>Note that whatever map tiles you use <em>must</em> be designed to work with the CRS of your Leaflet map.</p>
+<p><strong>Note:</strong> This functionality is for advanced users and
+may not be supported across all functions (for example,
+<code>addRasterImage</code> currently works only with EPSG:3857 Web
+Mercator).</p>
+<p>The Leaflet package expects all point, line, and shape data to be
+specified in latitude and longitude using WGS 84 (a.k.a. EPSG:4326). By
+default, when displaying this data it projects everything to <a
+href="http://epsg.io/3857">EPSG:3857</a> and expects that any map tiles
+are also displayed in EPSG:3857.</p>
+<p>For users that need to display data with a different projection,
+we’ve integrated the <a
+href="https://github.com/kartena/Proj4Leaflet">Proj4Leaflet</a> plugin,
+which in theory gives Leaflet access to any CRS that is supported by <a
+href="http://proj4js.org/">Proj4js</a>.</p>
+<p>Note that whatever map tiles you use <em>must</em> be designed to
+work with the CRS of your Leaflet map.</p>
 <div id="defining-a-custom-crs" class="section level3">
 <h3>Defining a custom CRS</h3>
-<p>Once you’ve decided on a custom projection, and have map tiles to match it (if necessary), you can use the <code>leafletCRS</code> function to create a custom projection.</p>
+<p>Once you’ve decided on a custom projection, and have map tiles to
+match it (if necessary), you can use the <code>leafletCRS</code>
+function to create a custom projection.</p>
 <pre class="r"><code>crs &lt;- leafletCRS(crsClass = &quot;L.Proj.CRS&quot;, code = &quot;ESRI:102003&quot;,
   proj4def = &quot;+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs&quot;,
   resolutions = 1.5^(25:15))</code></pre>
-<p>The <code>crsClass</code> parameter lets you specify the JavaScript constructor to use to generate the Leaflet.js CRS object. In this case, we’re using <code>L.Proj.CRS</code>, which is the class that comes with Proj4Leaflet. (Only a specific list of CRS classes can be used here; see <code>?leafletCRS</code> for more details.)</p>
-<p>The <code>code</code> parameter is the CRS identifier, usually an EPSG identifier or similar. (For the most part, this doesn’t affect us, and you can treat it like documentation; it’s primarily used by Proj4Leaflet for purposes that don’t apply to the R package.)</p>
-<p>The <code>proj4def</code> parameter is either a PROJ.4 or WKT string that defines the CRS. If you don’t know the PROJ.4 or WKT string, you can generally find these on <a href="https://epsg.io/">epsg.io</a> or <a href="http://spatialreference.org/">spatialreference.org</a>.</p>
-<p>The resulting object can be passed to the <code>leaflet</code> function via the parameter <code>crs = leafletOptions(crs = ...)</code>.</p>
+<p>The <code>crsClass</code> parameter lets you specify the JavaScript
+constructor to use to generate the Leaflet.js CRS object. In this case,
+we’re using <code>L.Proj.CRS</code>, which is the class that comes with
+Proj4Leaflet. (Only a specific list of CRS classes can be used here; see
+<code>?leafletCRS</code> for more details.)</p>
+<p>The <code>code</code> parameter is the CRS identifier, usually an
+EPSG identifier or similar. (For the most part, this doesn’t affect us,
+and you can treat it like documentation; it’s primarily used by
+Proj4Leaflet for purposes that don’t apply to the R package.)</p>
+<p>The <code>proj4def</code> parameter is either a PROJ.4 or WKT string
+that defines the CRS. If you don’t know the PROJ.4 or WKT string, you
+can generally find these on <a href="https://epsg.io/">epsg.io</a> or <a
+href="http://spatialreference.org/">spatialreference.org</a>.</p>
+<p>The resulting object can be passed to the <code>leaflet</code>
+function via the parameter
+<code>crs = leafletOptions(crs = ...)</code>.</p>
 </div>
-<div id="displaying-basemap-tiles-with-custom-projections" class="section level3">
+<div id="displaying-basemap-tiles-with-custom-projections"
+class="section level3">
 <h3>Displaying basemap tiles with custom projections</h3>
-<p>This example shows Gothenberg, Sweden in <a href="http://epsg.io/3006">EPSG:3006</a> (SWEREF99 TM) projection.</p>
+<p>This example shows Gothenberg, Sweden in <a
+href="http://epsg.io/3006">EPSG:3006</a> (SWEREF99 TM) projection.</p>
 <pre class="r"><code>epsg3006 &lt;- leafletCRS(crsClass = &quot;L.Proj.CRS&quot;, code = &quot;EPSG:3006&quot;,
   proj4def = &quot;+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs&quot;,
   resolutions = 2^(13:-1), # 8192 down to 0.5
@@ -369,8 +397,13 @@ leaflet(options = leafletOptions(worldCopyJump = F, crs = epsg3006)) %&gt;%
   "evals": [],
   "jsHooks": []
 }</script>
-<p>Again, it’s critical to use basemap tiles that are in the same projection that is specified in the <code>leafletCRS</code> function. In this case the api.geosition.com server does indeed uses EPSG:3006 for its tiles.</p>
-<p>We can render a similar map with the default EPSG:3857 projection for comparison. If the custom projection worked correctly, the markers should appear at the same position.</p>
+<p>Again, it’s critical to use basemap tiles that are in the same
+projection that is specified in the <code>leafletCRS</code> function. In
+this case the api.geosition.com server does indeed uses EPSG:3006 for
+its tiles.</p>
+<p>We can render a similar map with the default EPSG:3857 projection for
+comparison. If the custom projection worked correctly, the markers
+should appear at the same position.</p>
 <pre class="r"><code>leaflet() %&gt;%
   setView(11.965053, 57.70451, 16) %&gt;%
   addTiles() %&gt;%
@@ -396,7 +429,7 @@ leaflet(options = leafletOptions(worldCopyJump = F, crs = epsg3006)) %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -412,7 +445,7 @@ leaflet(options = leafletOptions(worldCopyJump = F, crs = epsg3006)) %&gt;%
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
           }
         ]
       },
@@ -464,10 +497,19 @@ leaflet(options = leafletOptions(worldCopyJump = F, crs = epsg3006)) %&gt;%
   "jsHooks": []
 }</script>
 </div>
-<div id="displaying-shapes-with-custom-projections" class="section level3">
+<div id="displaying-shapes-with-custom-projections"
+class="section level3">
 <h3>Displaying shapes with custom projections</h3>
-<p>While tiles must be in the same projection as used in the <code>leafletCRS</code> function, you must always use WGS 84 longitude/latitude data for markers, circles, polygons, and lines. Leaflet will automatically project the coordinates when displaying.</p>
-<p>This example uses <a href="http://epsg.io/2163">EPSG:2163</a> (US National Atlas Equal Area projection). The dataset we use (<code>usa_sf</code> from the <code>albersusa</code> package, though we’re not actually using Albers projection here) has Alaska and Hawaii moved closer to mainland US as well as rotated and resized accordingly.</p>
+<p>While tiles must be in the same projection as used in the
+<code>leafletCRS</code> function, you must always use WGS 84
+longitude/latitude data for markers, circles, polygons, and lines.
+Leaflet will automatically project the coordinates when displaying.</p>
+<p>This example uses <a href="http://epsg.io/2163">EPSG:2163</a> (US
+National Atlas Equal Area projection). The dataset we use
+(<code>usa_sf</code> from the <code>albersusa</code> package, though
+we’re not actually using Albers projection here) has Alaska and Hawaii
+moved closer to mainland US as well as rotated and resized
+accordingly.</p>
 <pre class="r"><code>library(sp)
 library(albersusa)
 
@@ -1298,7 +1340,11 @@ leaflet(spdf, options = leafletOptions(crs = epsg2163)) %&gt;%
 </div>
 <div id="polar-projections" class="section level3">
 <h3>Polar projections</h3>
-<p>It’s possible to use polar projections, though you may encounter even more problems and incompatibilities with other Leaflet.js plugins than when using other types of custom projections. You can refer to <a href="http://rpubs.com/bhaskarvk/leaflet-polarmaps">this set of examples</a> by Bhaskar Karambelkar to get started.</p>
+<p>It’s possible to use polar projections, though you may encounter even
+more problems and incompatibilities with other Leaflet.js plugins than
+when using other types of custom projections. You can refer to <a
+href="http://rpubs.com/bhaskarvk/leaflet-polarmaps">this set of
+examples</a> by Bhaskar Karambelkar to get started.</p>
 </div>
 </div>
 

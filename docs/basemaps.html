@@ -245,10 +245,16 @@ pre code {
 
 <div id="using-basemaps" class="section level2">
 <h2>Using Basemaps</h2>
-<p>Leaflet supports basemaps using <a href="https://www.mapbox.com/guides/how-web-maps-work/">map tiles</a>, popularized by Google Maps and now used by nearly all interactive web maps.</p>
+<p>Leaflet supports basemaps using <a
+href="https://www.mapbox.com/guides/how-web-maps-work/">map tiles</a>,
+popularized by Google Maps and now used by nearly all interactive web
+maps.</p>
 <div id="default-openstreetmap-tiles" class="section level3">
 <h3>Default (OpenStreetMap) Tiles</h3>
-<p>The easiest way to add tiles is by calling <code>addTiles()</code> with no arguments; by default, <a href="https://www.openstreetmap.org/">OpenStreetMap</a> tiles are used.</p>
+<p>The easiest way to add tiles is by calling <code>addTiles()</code>
+with no arguments; by default, <a
+href="https://www.openstreetmap.org/">OpenStreetMap</a> tiles are
+used.</p>
 <pre class="r"><code>m &lt;- leaflet() %&gt;% setView(lng = -71.0589, lat = 42.3601, zoom = 12)
 m %&gt;% addTiles()</code></pre>
 <div id="htmlwidget-562da05387aef08f69fb" style="width:100%;height:240px;" class="leaflet html-widget"></div>
@@ -272,7 +278,7 @@ m %&gt;% addTiles()</code></pre>
       {
         "method": "addTiles",
         "args": [
-          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -288,7 +294,7 @@ m %&gt;% addTiles()</code></pre>
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
           }
         ]
       }
@@ -300,8 +306,20 @@ m %&gt;% addTiles()</code></pre>
 </div>
 <div id="third-party-tiles" class="section level3">
 <h3>Third-Party Tiles</h3>
-<p>Alternatively, many popular free third-party basemaps can be added using the <code>addProviderTiles()</code> function, which is implemented using the <a href="https://github.com/leaflet-extras/leaflet-providers">leaflet-providers plugin</a>. See <a href="http://leaflet-extras.github.io/leaflet-providers/preview/index.html">here</a> for the complete set.</p>
-<p>As a convenience, leaflet also provides a named list of all the third-party tile providers that are supported by the plugin. This enables you to use auto-completion feature of your favorite R IDE (like RStudio) and not have to remember or look up supported tile providers; just type <code>providers$</code> and choose from one of the options. You can also use <code>names(providers)</code> to view all of the options.</p>
+<p>Alternatively, many popular free third-party basemaps can be added
+using the <code>addProviderTiles()</code> function, which is implemented
+using the <a
+href="https://github.com/leaflet-extras/leaflet-providers">leaflet-providers
+plugin</a>. See <a
+href="http://leaflet-extras.github.io/leaflet-providers/preview/index.html">here</a>
+for the complete set.</p>
+<p>As a convenience, leaflet also provides a named list of all the
+third-party tile providers that are supported by the plugin. This
+enables you to use auto-completion feature of your favorite R IDE (like
+RStudio) and not have to remember or look up supported tile providers;
+just type <code>providers$</code> and choose from one of the options.
+You can also use <code>names(providers)</code> to view all of the
+options.</p>
 <pre class="r"><code>m %&gt;% addProviderTiles(providers$Stamen.Toner)</code></pre>
 <div id="htmlwidget-92aa9ec4a26e6d2eb4c3" style="width:100%;height:120px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-92aa9ec4a26e6d2eb4c3">{
@@ -413,15 +431,25 @@ m %&gt;% addTiles()</code></pre>
   "evals": [],
   "jsHooks": []
 }</script>
-<p>Note that some tile set providers require you to register; see the <a href="https://github.com/leaflet-extras/leaflet-providers">project page</a> for more information. You can pass access tokens/keys, and other options, to the tile provider by populating the <code>options</code> argument with the <code>providerTileOptions()</code> function.</p>
+<p>Note that some tile set providers require you to register; see the <a
+href="https://github.com/leaflet-extras/leaflet-providers">project
+page</a> for more information. You can pass access tokens/keys, and
+other options, to the tile provider by populating the
+<code>options</code> argument with the
+<code>providerTileOptions()</code> function.</p>
 </div>
 <div id="custom-tile-url-template" class="section level3">
 <h3>Custom Tile URL Template</h3>
-<p>If you happen to have a custom map tile URL template to use, you can provide it as an argument to <code>addTiles()</code>.</p>
+<p>If you happen to have a custom map tile URL template to use, you can
+provide it as an argument to <code>addTiles()</code>.</p>
 </div>
 <div id="wms-tiles" class="section level3">
 <h3>WMS Tiles</h3>
-<p>You can use <code>addWMSTiles()</code> to add WMS (Web Map Service) tiles. The map below shows the Base Reflectivity (a measure of the intensity of precipitation occurring) using the WMS from the <a href="http://mesonet.agron.iastate.edu">Iowa Environmental Mesonet</a>:</p>
+<p>You can use <code>addWMSTiles()</code> to add WMS (Web Map Service)
+tiles. The map below shows the Base Reflectivity (a measure of the
+intensity of precipitation occurring) using the WMS from the <a
+href="http://mesonet.agron.iastate.edu">Iowa Environmental
+Mesonet</a>:</p>
 <pre class="r"><code>leaflet() %&gt;% addTiles() %&gt;% setView(-93.65, 42.0285, zoom = 4) %&gt;%
   addWMSTiles(
     &quot;http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi&quot;,
@@ -445,7 +473,7 @@ m %&gt;% addTiles()</code></pre>
       {
         "method": "addTiles",
         "args": [
-          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -461,7 +489,7 @@ m %&gt;% addTiles()</code></pre>
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
           }
         ]
       },
@@ -494,7 +522,10 @@ m %&gt;% addTiles()</code></pre>
 </div>
 <div id="combining-tile-layers" class="section level3">
 <h3>Combining Tile Layers</h3>
-<p>You aren’t restricted to using a single basemap on a map; you can stack them by adding multiple tile layers. This generally only makes sense if the front tiles consist of semi transparent tiles, or have an adjusted opacity via the <code>options</code> argument.</p>
+<p>You aren’t restricted to using a single basemap on a map; you can
+stack them by adding multiple tile layers. This generally only makes
+sense if the front tiles consist of semi transparent tiles, or have an
+adjusted opacity via the <code>options</code> argument.</p>
 <pre class="r"><code>m %&gt;% addProviderTiles(providers$MtbMap) %&gt;%
   addProviderTiles(providers$Stamen.TonerLines,
     options = providerTileOptions(opacity = 0.35)) %&gt;%

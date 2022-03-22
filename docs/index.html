@@ -243,8 +243,21 @@ pre code {
 
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
-<p><a href="https://leafletjs.com">Leaflet</a> is one of the most popular open-source JavaScript libraries for interactive maps. It’s used by websites ranging from <a href="http://www.nytimes.com/projects/elections/2013/nyc-primary/mayor/map.html">The New York Times</a> and <a href="http://www.washingtonpost.com/sf/local/2013/11/09/washington-a-world-apart/">The Washington Post</a> to <a href="https://github.com/blog/1528-there-s-a-map-for-that">GitHub</a> and <a href="https://www.flickr.com/map">Flickr</a>, as well as GIS specialists like <a href="http://www.openstreetmap.org/">OpenStreetMap</a>, <a href="http://www.mapbox.com/">Mapbox</a>, and <a href="http://cartodb.com/">CartoDB</a>.</p>
-<p>This R package makes it easy to integrate and control Leaflet maps in R.</p>
+<p><a href="https://leafletjs.com">Leaflet</a> is one of the most
+popular open-source JavaScript libraries for interactive maps. It’s used
+by websites ranging from <a
+href="http://www.nytimes.com/projects/elections/2013/nyc-primary/mayor/map.html">The
+New York Times</a> and <a
+href="http://www.washingtonpost.com/sf/local/2013/11/09/washington-a-world-apart/">The
+Washington Post</a> to <a
+href="https://github.com/blog/1528-there-s-a-map-for-that">GitHub</a>
+and <a href="https://www.flickr.com/map">Flickr</a>, as well as GIS
+specialists like <a
+href="http://www.openstreetmap.org/">OpenStreetMap</a>, <a
+href="http://www.mapbox.com/">Mapbox</a>, and <a
+href="http://cartodb.com/">CartoDB</a>.</p>
+<p>This R package makes it easy to integrate and control Leaflet maps in
+R.</p>
 <div id="features" class="section level3">
 <h3>Features</h3>
 <ul>
@@ -259,11 +272,16 @@ pre code {
 <li>GeoJSON</li>
 </ul></li>
 <li>Create maps right from the R console or RStudio</li>
-<li>Embed maps in <a href="http://yihui.name/knitr/">knitr</a>/<a href="http://rmarkdown.rstudio.com/">R Markdown</a> documents and <a href="http://shiny.rstudio.com/">Shiny</a> apps</li>
-<li>Easily render spatial objects from the <code>sp</code> or <code>sf</code> packages, or data frames with latitude/longitude columns</li>
+<li>Embed maps in <a href="http://yihui.name/knitr/">knitr</a>/<a
+href="http://rmarkdown.rstudio.com/">R Markdown</a> documents and <a
+href="http://shiny.rstudio.com/">Shiny</a> apps</li>
+<li>Easily render spatial objects from the <code>sp</code> or
+<code>sf</code> packages, or data frames with latitude/longitude
+columns</li>
 <li>Use map bounds and mouse events to drive Shiny logic</li>
 <li>Display maps in non spherical mercator projections</li>
-<li>Augment map features using chosen plugins from <a href="https://leafletjs.com/plugins">leaflet plugins repository</a></li>
+<li>Augment map features using chosen plugins from <a
+href="https://leafletjs.com/plugins">leaflet plugins repository</a></li>
 </ul>
 </div>
 <div id="installation" class="section level3">
@@ -272,14 +290,18 @@ pre code {
 <pre class="r"><code>install.packages(&quot;leaflet&quot;)
 # to install the development version from Github, run
 # devtools::install_github(&quot;rstudio/leaflet&quot;)</code></pre>
-<p>Once installed, you can use this package at the R console, within <a href="http://rmarkdown.rstudio.com/">R Markdown</a> documents, and within <a href="http://shiny.rstudio.com/">Shiny</a> applications.</p>
+<p>Once installed, you can use this package at the R console, within <a
+href="http://rmarkdown.rstudio.com/">R Markdown</a> documents, and
+within <a href="http://shiny.rstudio.com/">Shiny</a> applications.</p>
 </div>
 <div id="basic-usage" class="section level3">
 <h3>Basic Usage</h3>
 <p>You create a Leaflet map with these basic steps:</p>
 <ol style="list-style-type: decimal">
 <li>Create a map widget by calling <code>leaflet()</code>.</li>
-<li>Add <em>layers</em> (i.e., features) to the map by using layer functions (e.g. <code>addTiles</code>, <code>addMarkers</code>, <code>addPolygons</code>) to modify the map widget.</li>
+<li>Add <em>layers</em> (i.e., features) to the map by using layer
+functions (e.g. <code>addTiles</code>, <code>addMarkers</code>,
+<code>addPolygons</code>) to modify the map widget.</li>
 <li>Repeat step 2 as desired.</li>
 <li>Print the map widget to display it.</li>
 </ol>
@@ -306,7 +328,7 @@ m  # Print the map</code></pre>
       {
         "method": "addTiles",
         "args": [
-          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -322,7 +344,7 @@ m  # Print the map</code></pre>
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
           }
         ]
       },
@@ -373,7 +395,9 @@ m  # Print the map</code></pre>
   "evals": [],
   "jsHooks": []
 }</script>
-<p>In case you’re not familiar with the <a href="https://github.com/smbache/magrittr">magrittr</a> pipe operator (<code>%&gt;%</code>), here is the equivalent without using pipes:</p>
+<p>In case you’re not familiar with the <a
+href="https://github.com/smbache/magrittr">magrittr</a> pipe operator
+(<code>%&gt;%</code>), here is the equivalent without using pipes:</p>
 <pre class="r"><code>m &lt;- leaflet()
 m &lt;- addTiles(m)
 m &lt;- addMarkers(m, lng=174.768, lat=-36.852, popup=&quot;The birthplace of R&quot;)
@@ -381,8 +405,15 @@ m</code></pre>
 </div>
 <div id="next-steps" class="section level3">
 <h3>Next Steps</h3>
-<p>We highly recommend that you proceed to <a href="map_widget.html">The Map Widget</a> page before exploring the rest of this site, as it describes common idioms we’ll use throughout the examples on the other pages.</p>
-<p>Although we have tried to provide an R-like interface to Leaflet, you may want to check out the <a href="https://leafletjs.com/reference.html">API documentation</a> of Leaflet occasionally when the meanings of certain parameters are not clear to you.</p>
+<p>We highly recommend that you proceed to <a href="map_widget.html">The
+Map Widget</a> page before exploring the rest of this site, as it
+describes common idioms we’ll use throughout the examples on the other
+pages.</p>
+<p>Although we have tried to provide an R-like interface to Leaflet, you
+may want to check out the <a
+href="https://leafletjs.com/reference.html">API documentation</a> of
+Leaflet occasionally when the meanings of certain parameters are not
+clear to you.</p>
 </div>
 </div>
 

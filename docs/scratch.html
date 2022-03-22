@@ -243,11 +243,16 @@ pre code {
 
 <div id="shiny" class="section level2">
 <h2>Shiny</h2>
-<p>There are two wrapper functions <code>leafletOutput()</code> and <code>renderLeaflet()</code> in this package for using Leaflet maps in <strong>shiny</strong>. The function <code>leafletProxy()</code> allows you to manipulate a map after it has been rendered.</p>
+<p>There are two wrapper functions <code>leafletOutput()</code> and
+<code>renderLeaflet()</code> in this package for using Leaflet maps in
+<strong>shiny</strong>. The function <code>leafletProxy()</code> allows
+you to manipulate a map after it has been rendered.</p>
 </div>
 <div id="ui-layers" class="section level1">
 <h1>UI Layers</h1>
-<p>The UI elements markers and popups are supported via <code>addMarkers()</code> and <code>addPopups()</code>, respectively. In the example below, we add a marker with a custom icon, and a popup:</p>
+<p>The UI elements markers and popups are supported via
+<code>addMarkers()</code> and <code>addPopups()</code>, respectively. In
+the example below, we add a marker with a custom icon, and a popup:</p>
 <pre class="r"><code>leaflet() %&gt;% addTiles() %&gt;%
   addMarkers(174.7690922, -36.8523071, icon = icons(
     iconUrl = &#39;http://cran.rstudio.com/Rlogo.jpg&#39;,
@@ -270,7 +275,7 @@ pre code {
       {
         "method": "addTiles",
         "args": [
-          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -286,7 +291,7 @@ pre code {
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
           }
         ]
       },
@@ -365,8 +370,14 @@ pre code {
 </div>
 <div id="raster-layers" class="section level1">
 <h1>Raster Layers</h1>
-<p>Currently tile layers are supported via <code>addTiles()</code>. By default, the OpenStreetMap tiles are used, and you can certainly use other tiles of your choice.</p>
-<p>A live demo of many tile sets is available <a href="http://leaflet-extras.github.io/leaflet-providers/preview/index.html">here</a>. Note that some tile set providers require you to register. See the <a href="https://github.com/leaflet-extras/leaflet-providers">project page</a> for more information.</p>
+<p>Currently tile layers are supported via <code>addTiles()</code>. By
+default, the OpenStreetMap tiles are used, and you can certainly use
+other tiles of your choice.</p>
+<p>A live demo of many tile sets is available <a
+href="http://leaflet-extras.github.io/leaflet-providers/preview/index.html">here</a>.
+Note that some tile set providers require you to register. See the <a
+href="https://github.com/leaflet-extras/leaflet-providers">project
+page</a> for more information.</p>
 <pre class="r"><code>leaflet() %&gt;%
   addTiles(
     &#39;http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}&#39;,
@@ -421,7 +432,18 @@ pre code {
 </div>
 <div id="vector-layers" class="section level1">
 <h1>Vector Layers</h1>
-<p>Vector layers contain elements of vector graphics, such as circles, rectangles, and polylines, etc. All vector layer functions have the arguments <code>lng</code> and <code>lat</code>, with additional arguments specifying the attributes of the graphical elements. Note the terminology is slightly different with R graphics. For example, the border of elements is controlled by the argument <code>stroke</code> (e.g., <code>leaflet::addRectangles(stroke = FALSE)</code> is like <code>graphics::rect(border = NA)</code>), the <code>color</code> argument only specifies the color of the border (in base R, <code>col</code>/<code>color</code> often means the <em>fill</em> color), and the <code>weight</code> argument is like <code>lwd</code> in base R graphics.</p>
+<p>Vector layers contain elements of vector graphics, such as circles,
+rectangles, and polylines, etc. All vector layer functions have the
+arguments <code>lng</code> and <code>lat</code>, with additional
+arguments specifying the attributes of the graphical elements. Note the
+terminology is slightly different with R graphics. For example, the
+border of elements is controlled by the argument <code>stroke</code>
+(e.g., <code>leaflet::addRectangles(stroke = FALSE)</code> is like
+<code>graphics::rect(border = NA)</code>), the <code>color</code>
+argument only specifies the color of the border (in base R,
+<code>col</code>/<code>color</code> often means the <em>fill</em>
+color), and the <code>weight</code> argument is like <code>lwd</code> in
+base R graphics.</p>
 <pre class="r"><code>set.seed(123)
 m = leaflet() %&gt;% addTiles()
 rand_lng = function(n = 10) rnorm(n, -93.65, .01)
@@ -445,7 +467,7 @@ m %&gt;% addCircles(rand_lng(50), rand_lat(50), radius = runif(50, 10, 200))</co
       {
         "method": "addTiles",
         "args": [
-          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -461,7 +483,7 @@ m %&gt;% addCircles(rand_lng(50), rand_lat(50), radius = runif(50, 10, 200))</co
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
           }
         ]
       },
@@ -529,7 +551,7 @@ m %&gt;% addCircleMarkers(rand_lng(50), rand_lat(50), color = &#39;#ff0000&#39;)
       {
         "method": "addTiles",
         "args": [
-          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -545,7 +567,7 @@ m %&gt;% addCircleMarkers(rand_lng(50), rand_lat(50), color = &#39;#ff0000&#39;)
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
           }
         ]
       },
@@ -613,7 +635,7 @@ m %&gt;% addCircleMarkers(rand_lng(50), rand_lat(50), color = &#39;#ff0000&#39;)
       {
         "method": "addTiles",
         "args": [
-          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -629,7 +651,7 @@ m %&gt;% addCircleMarkers(rand_lng(50), rand_lat(50), color = &#39;#ff0000&#39;)
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
           }
         ]
       },
@@ -701,7 +723,7 @@ m %&gt;% addRectangles(
       {
         "method": "addTiles",
         "args": [
-          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -717,7 +739,7 @@ m %&gt;% addRectangles(
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
           }
         ]
       },
@@ -788,7 +810,7 @@ m %&gt;% addPolylines(rand_lng(50), rand_lat(50), fill = FALSE)</code></pre>
       {
         "method": "addTiles",
         "args": [
-          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -804,7 +826,7 @@ m %&gt;% addPolylines(rand_lng(50), rand_lat(50), fill = FALSE)</code></pre>
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
           }
         ]
       },
@@ -884,7 +906,7 @@ m %&gt;% addPolygons(
       {
         "method": "addTiles",
         "args": [
-          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -900,7 +922,7 @@ m %&gt;% addPolygons(
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
           }
         ]
       },
@@ -977,7 +999,11 @@ m %&gt;% addPolygons(
 </div>
 <div id="other-layers" class="section level1">
 <h1>Other Layers</h1>
-<p><a href="http://geojson.org">GeoJSON</a> is a JSON format for encoding geographic data structures such as points, lines, and polygons. The function <code>addGeoJSON()</code> allows us to add a GeoJSON layer to the map, and the layer data is normally represented as an R list. For example, the GeoJSON data</p>
+<p><a href="http://geojson.org">GeoJSON</a> is a JSON format for
+encoding geographic data structures such as points, lines, and polygons.
+The function <code>addGeoJSON()</code> allows us to add a GeoJSON layer
+to the map, and the layer data is normally represented as an R list. For
+example, the GeoJSON data</p>
 <pre class="javascript"><code>var MPoint = {
   &quot;type&quot;: &quot;MultiPoint&quot;,
   &quot;coordinates&quot;: [ [100.0, 0.0], [101.0, 1.0] ]
@@ -987,8 +1013,12 @@ m %&gt;% addPolygons(
   type = &#39;MultiPoint&#39;,
   coordinates = rbind(c(100.0, 0.0), c(101.0, 1.0))
 )</code></pre>
-<p>You can pass this list to <code>addGeoJSON()</code> to draw two points on the map.</p>
-<p>For a GeoJSON feature layer, you can use the <code>style</code> element in the <code>properties</code> list to define its style, and the <code>popup</code> element in <code>properties</code> to define the popup text. Here is an example:</p>
+<p>You can pass this list to <code>addGeoJSON()</code> to draw two
+points on the map.</p>
+<p>For a GeoJSON feature layer, you can use the <code>style</code>
+element in the <code>properties</code> list to define its style, and the
+<code>popup</code> element in <code>properties</code> to define the
+popup text. Here is an example:</p>
 <pre class="r"><code>m = leaflet() %&gt;% addCircles(lat = 1:26, lng = 1:26, popup = LETTERS)
 shapes = list(
   list(

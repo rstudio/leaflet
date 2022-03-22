@@ -243,7 +243,9 @@ pre code {
 
 <div id="legends" class="section level2">
 <h2>Legends</h2>
-<p>The Leaflet package includes convenience functions for creating color legends. In this section, we will build on the example from the <a href="colors.html">Colors</a> page.</p>
+<p>The Leaflet package includes convenience functions for creating color
+legends. In this section, we will build on the example from the <a
+href="colors.html">Colors</a> page.</p>
 <pre class="r"><code>library(rgdal)</code></pre>
 <pre><code>## Loading required package: sp</code></pre>
 <pre><code>## Please note that rgdal will be retired by the end of 2023,
@@ -252,16 +254,16 @@ pre code {
 ## 
 ## rgdal: version: 1.5-28, (SVN revision 1158)
 ## Geospatial Data Abstraction Library extensions to R successfully loaded
-## Loaded GDAL runtime: GDAL 3.2.1, released 2020/12/29
-## Path to GDAL shared files: /Library/Frameworks/R.framework/Versions/4.0/Resources/library/rgdal/gdal
+## Loaded GDAL runtime: GDAL 3.2.3, released 2021/04/27
+## Path to GDAL shared files: /Library/Frameworks/R.framework/Versions/4.1-arm64/Resources/library/rgdal/gdal
 ## GDAL binary built with GEOS: TRUE 
 ## Loaded PROJ runtime: Rel. 7.2.1, January 1st, 2021, [PJ_VERSION: 721]
-## Path to PROJ shared files: /Library/Frameworks/R.framework/Versions/4.0/Resources/library/rgdal/proj
+## Path to PROJ shared files: /Library/Frameworks/R.framework/Versions/4.1-arm64/Resources/library/rgdal/proj
 ## PROJ CDN enabled: FALSE
 ## Linking to sp version:1.4-6
 ## To mute warnings of possible GDAL/OSR exportToProj4() degradation,
 ## use options(&quot;rgdal_show_exportToProj4_warnings&quot;=&quot;none&quot;) before loading sp or rgdal.
-## Overwritten PROJ_LIB was /Library/Frameworks/R.framework/Versions/4.0/Resources/library/rgdal/proj</code></pre>
+## Overwritten PROJ_LIB was /Library/Frameworks/R.framework/Versions/4.1-arm64/Resources/library/rgdal/proj</code></pre>
 <pre class="r"><code># From http://data.okfn.org/data/datasets/geo-boundaries-world-110m
 countries &lt;- readOGR(&quot;https://rstudio.github.io/leaflet/json/countries.geojson&quot;)</code></pre>
 <pre><code>## OGR data source with driver: GeoJSON 
@@ -269,8 +271,14 @@ countries &lt;- readOGR(&quot;https://rstudio.github.io/leaflet/json/countries.g
 ## with 177 features
 ## It has 2 fields</code></pre>
 <pre class="r"><code>map &lt;- leaflet(countries) %&gt;% addTiles()</code></pre>
-<p>Use the <code>addLegend</code> function to add a legend. The easiest way to use <code>addLegend</code> is to provide <code>pal</code> (a palette function, as generated from <code>colorNumeric</code> et al.) and <code>values</code>, and let it calculate the colors and labels for you.</p>
-<p>In most cases you will simply be separating the function and argument you passed into <code>addPolygons(color=...)</code>, as in this example:</p>
+<p>Use the <code>addLegend</code> function to add a legend. The easiest
+way to use <code>addLegend</code> is to provide <code>pal</code> (a
+palette function, as generated from <code>colorNumeric</code> et al.)
+and <code>values</code>, and let it calculate the colors and labels for
+you.</p>
+<p>In most cases you will simply be separating the function and argument
+you passed into <code>addPolygons(color=...)</code>, as in this
+example:</p>
 <pre class="r"><code>pal &lt;- colorNumeric(
   palette = &quot;YlGnBu&quot;,
   domain = countries$gdp_md_est
@@ -300,7 +308,7 @@ map %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -316,7 +324,7 @@ map %&gt;%
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
           }
         ]
       },
@@ -2462,7 +2470,12 @@ map %&gt;%
   "evals": [],
   "jsHooks": []
 }</script>
-<p>The <code>addLegend()</code> function is aware of the different types of palette functions, and will create an appropriate default rendering for each type. For example, contrast the legend created for the <code>colorNumeric</code>-based palette above with the <code>colorQuantile</code>-based palette below. The latter shows probability ranges, with a value range tooltip.</p>
+<p>The <code>addLegend()</code> function is aware of the different types
+of palette functions, and will create an appropriate default rendering
+for each type. For example, contrast the legend created for the
+<code>colorNumeric</code>-based palette above with the
+<code>colorQuantile</code>-based palette below. The latter shows
+probability ranges, with a value range tooltip.</p>
 <pre class="r"><code>qpal &lt;- colorQuantile(&quot;RdYlBu&quot;, countries$gdp_md_est, n = 5)
 map %&gt;%
   addPolygons(stroke = FALSE, smoothFactor = 0.2, fillOpacity = 1,
@@ -2485,7 +2498,7 @@ map %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -2501,7 +2514,7 @@ map %&gt;%
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
           }
         ]
       },
@@ -4644,8 +4657,19 @@ map %&gt;%
   "evals": [],
   "jsHooks": []
 }</script>
-<p><code>addLegend()</code> has several other parameters that allows you to customize the legend in various ways. Rather than using <code>pal</code> and <code>values</code>, you can explicitly pass in <code>colors</code> and <code>labels</code>. You can change the title and color opacity.</p>
-<p>You can also conveniently customize the label appearance by passing <code>labFormat=labelFormat()</code>. <code>labelFormat()</code> has parameters that customize the separator between ranges, the number of digits to render, and prefix/suffix for each label. If your label formatting needs extend beyond what <code>labelFormat()</code> can provide, you can also use a custom function as the <code>labFormat</code> argument; see the Details section in <code>?addLegend</code> for a description.</p>
+<p><code>addLegend()</code> has several other parameters that allows you
+to customize the legend in various ways. Rather than using
+<code>pal</code> and <code>values</code>, you can explicitly pass in
+<code>colors</code> and <code>labels</code>. You can change the title
+and color opacity.</p>
+<p>You can also conveniently customize the label appearance by passing
+<code>labFormat=labelFormat()</code>. <code>labelFormat()</code> has
+parameters that customize the separator between ranges, the number of
+digits to render, and prefix/suffix for each label. If your label
+formatting needs extend beyond what <code>labelFormat()</code> can
+provide, you can also use a custom function as the
+<code>labFormat</code> argument; see the Details section in
+<code>?addLegend</code> for a description.</p>
 </div>
 
 <footer>

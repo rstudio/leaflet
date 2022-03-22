@@ -243,16 +243,29 @@ pre code {
 
 <div id="lines-and-shapes" class="section level2">
 <h2>Lines and Shapes</h2>
-<p>Leaflet makes it easy to take spatial lines and shapes from R and add them to maps.</p>
+<p>Leaflet makes it easy to take spatial lines and shapes from R and add
+them to maps.</p>
 <div id="polygons-and-polylines" class="section level3">
 <h3>Polygons and Polylines</h3>
 <p>Line and polygon data can come from a variety of sources:</p>
 <ul>
-<li><code>SpatialPolygons</code>, <code>SpatialPolygonsDataFrame</code>, <code>Polygons</code>, and <code>Polygon</code> objects (from the <code>sp</code> package)</li>
-<li><code>SpatialLines</code>, <code>SpatialLinesDataFrame</code>, <code>Lines</code>, and <code>Line</code> objects (from the <code>sp</code> package)</li>
-<li><code>MULTIPOLYGON</code>, <code>POLYGON</code>, <code>MULTILINESTRING</code>, and <code>LINESTRING</code> objects (from the <code>sf</code> package)</li>
-<li><code>map</code> objects (from the <code>maps</code> package’s <code>map()</code> function); use <code>map(fill = TRUE)</code> for polygons, <code>FALSE</code> for polylines</li>
-<li>Two-column numeric matrix; the first column is longitude and the second is latitude. Polygons are separated by rows of <code>(NA, NA)</code>. It is not possible to represent multi-polygons nor polygons with holes using this method; use <code>SpatialPolygons</code> instead.</li>
+<li><code>SpatialPolygons</code>, <code>SpatialPolygonsDataFrame</code>,
+<code>Polygons</code>, and <code>Polygon</code> objects (from the
+<code>sp</code> package)</li>
+<li><code>SpatialLines</code>, <code>SpatialLinesDataFrame</code>,
+<code>Lines</code>, and <code>Line</code> objects (from the
+<code>sp</code> package)</li>
+<li><code>MULTIPOLYGON</code>, <code>POLYGON</code>,
+<code>MULTILINESTRING</code>, and <code>LINESTRING</code> objects (from
+the <code>sf</code> package)</li>
+<li><code>map</code> objects (from the <code>maps</code> package’s
+<code>map()</code> function); use <code>map(fill = TRUE)</code> for
+polygons, <code>FALSE</code> for polylines</li>
+<li>Two-column numeric matrix; the first column is longitude and the
+second is latitude. Polygons are separated by rows of
+<code>(NA, NA)</code>. It is not possible to represent multi-polygons
+nor polygons with holes using this method; use
+<code>SpatialPolygons</code> instead.</li>
 </ul>
 <pre class="r"><code>library(rgdal)
 
@@ -260,7 +273,7 @@ pre code {
 states &lt;- readOGR(&quot;shp/cb_2013_us_state_20m.shp&quot;,
   layer = &quot;cb_2013_us_state_20m&quot;, GDAL1_integer64_policy = TRUE)</code></pre>
 <pre><code>## OGR data source with driver: ESRI Shapefile 
-## Source: &quot;/Users/barret/Documents/git/rstudio/leaflet/leaflet.nosync/docs/shp/cb_2013_us_state_20m.shp&quot;, layer: &quot;cb_2013_us_state_20m&quot;
+## Source: &quot;/Users/jcheng/Development/rstudio/leaflet/docs/shp/cb_2013_us_state_20m.shp&quot;, layer: &quot;cb_2013_us_state_20m&quot;
 ## with 52 features
 ## It has 9 fields
 ## Integer64 fields read as doubles:  ALAND AWATER</code></pre>
@@ -633,11 +646,22 @@ leaflet(neStates) %&gt;%
 }</script>
 <div id="highlighting-shapes" class="section level4">
 <h4>Highlighting shapes</h4>
-<p>The above example uses the <code>highlightOptions</code> parameter to emphasize the currently moused-over polygon. (The <code>bringToFront = TRUE</code> argument is necessary to prevent the thicker, white border of the active polygon from being hidden behind the borders of other polygons that happen to be higher in the z-order.) You can use <code>highlightOptions</code> with all of the shape layers described on this page.</p>
+<p>The above example uses the <code>highlightOptions</code> parameter to
+emphasize the currently moused-over polygon. (The
+<code>bringToFront = TRUE</code> argument is necessary to prevent the
+thicker, white border of the active polygon from being hidden behind the
+borders of other polygons that happen to be higher in the z-order.) You
+can use <code>highlightOptions</code> with all of the shape layers
+described on this page.</p>
 </div>
 <div id="simplifying-complex-polygonspolylines" class="section level4">
 <h4>Simplifying complex polygons/polylines</h4>
-<p>Very detailed (i.e. large) shape data can present a problem for Leafet, since it is all eventually passed into the browser and rendered as SVG, which is very expressive and convenient but has scalability limits. In these cases, consider using <code>rmapshaper::ms_simplify</code>, which does topology-preserving simplification conveniently from R.</p>
+<p>Very detailed (i.e. large) shape data can present a problem for
+Leafet, since it is all eventually passed into the browser and rendered
+as SVG, which is very expressive and convenient but has scalability
+limits. In these cases, consider using
+<code>rmapshaper::ms_simplify</code>, which does topology-preserving
+simplification conveniently from R.</p>
 <pre class="r"><code>library(albersusa)
 
 fullsize &lt;- usa_sf()
@@ -649,13 +673,21 @@ object.size(fullsize)</code></pre>
 ##   print.location dplyr</code></pre>
 <pre><code>## old-style crs object detected; please recreate object with a recent sf::st_crs()</code></pre>
 <pre class="r"><code>object.size(simplified)</code></pre>
-<pre><code>## 121504 bytes</code></pre>
+<pre><code>## 121136 bytes</code></pre>
 </div>
 </div>
 <div id="circles" class="section level3">
 <h3>Circles</h3>
-<p>Circles are added using <code>addCircles()</code>. Circles are similar to <a href="markers.html#circle-markers">circle markers</a>; the only difference is that circles have their radii specified in meters, while circle markers are specified in pixels. As a result, circles are scaled with the map as the user zooms in and out, while circle markers remain a constant size on the screen regardless of zoom level.</p>
-<p>When plotting circles, only the circle centers (and radii) are required, so the set of valid data sources is different than for polygons and the same as for markers. See the introduction to <a href="markers.html">Markers</a> for specifics.</p>
+<p>Circles are added using <code>addCircles()</code>. Circles are
+similar to <a href="markers.html#circle-markers">circle markers</a>; the
+only difference is that circles have their radii specified in meters,
+while circle markers are specified in pixels. As a result, circles are
+scaled with the map as the user zooms in and out, while circle markers
+remain a constant size on the screen regardless of zoom level.</p>
+<p>When plotting circles, only the circle centers (and radii) are
+required, so the set of valid data sources is different than for
+polygons and the same as for markers. See the introduction to <a
+href="markers.html">Markers</a> for specifics.</p>
 <pre class="r"><code>cities &lt;- read.csv(textConnection(&quot;
 City,Lat,Long,Pop
 Boston,42.3601,-71.0589,645966
@@ -686,7 +718,7 @@ leaflet(cities) %&gt;% addTiles() %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -702,7 +734,7 @@ leaflet(cities) %&gt;% addTiles() %&gt;%
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
           }
         ]
       },
@@ -755,7 +787,11 @@ leaflet(cities) %&gt;% addTiles() %&gt;%
 </div>
 <div id="rectangles" class="section level3">
 <h3>Rectangles</h3>
-<p>Rectangles are added using the <code>addRectangles()</code> function. It takes <code>lng1</code>, <code>lng2</code>, <code>lat1</code>, and <code>lat2</code> vector arguments that define the corners of the rectangles. These arguments are always required; the rectangle geometry cannot be inferred from the data object.</p>
+<p>Rectangles are added using the <code>addRectangles()</code> function.
+It takes <code>lng1</code>, <code>lng2</code>, <code>lat1</code>, and
+<code>lat2</code> vector arguments that define the corners of the
+rectangles. These arguments are always required; the rectangle geometry
+cannot be inferred from the data object.</p>
 <pre class="r"><code>leaflet() %&gt;% addTiles() %&gt;%
   addRectangles(
     lng1=-118.456554, lat1=34.078039,
@@ -778,7 +814,7 @@ leaflet(cities) %&gt;% addTiles() %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -794,7 +830,7 @@ leaflet(cities) %&gt;% addTiles() %&gt;%
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
           }
         ]
       },

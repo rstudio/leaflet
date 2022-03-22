@@ -243,33 +243,56 @@ pre code {
 
 <div id="the-map-widget" class="section level2">
 <h2>The Map Widget</h2>
-<p>The function <code>leaflet()</code> returns a Leaflet map widget, which stores a list of objects that can be modified or updated later. Most functions in this package have an argument <code>map</code> as their first argument, which makes it easy to use the pipe operator <code>%&gt;%</code> in the <strong>magrittr</strong> package, as you have seen from the example in the <a href="./">Introduction</a>.</p>
+<p>The function <code>leaflet()</code> returns a Leaflet map widget,
+which stores a list of objects that can be modified or updated later.
+Most functions in this package have an argument <code>map</code> as
+their first argument, which makes it easy to use the pipe operator
+<code>%&gt;%</code> in the <strong>magrittr</strong> package, as you
+have seen from the example in the <a href="./">Introduction</a>.</p>
 <div id="initializing-options" class="section level3">
 <h3>Initializing Options</h3>
-<p>The map widget can be initialized with certain parameters. This is achieved by populating the <code>options</code> argument as shown below.</p>
+<p>The map widget can be initialized with certain parameters. This is
+achieved by populating the <code>options</code> argument as shown
+below.</p>
 <pre class="r"><code># Set value for the minZoom and maxZoom settings.
 leaflet(options = leafletOptions(minZoom = 0, maxZoom = 18))</code></pre>
-<p>The <code>leafletOptions()</code> can be passed any option described in the leaflet <a href="https://leafletjs.com/reference-1.3.4.html#map-option">reference document</a>. Using the <code>leafletOptions()</code>, you can set a custom <a href="https://en.wikipedia.org/wiki/Spatial_reference_system">CRS</a> and have your map displayed in a non spherical mercator projection as described in <a href="projections.html">projections</a>.</p>
+<p>The <code>leafletOptions()</code> can be passed any option described
+in the leaflet <a
+href="https://leafletjs.com/reference-1.3.4.html#map-option">reference
+document</a>. Using the <code>leafletOptions()</code>, you can set a
+custom <a
+href="https://en.wikipedia.org/wiki/Spatial_reference_system">CRS</a>
+and have your map displayed in a non spherical mercator projection as
+described in <a href="projections.html">projections</a>.</p>
 </div>
 <div id="map-methods" class="section level3">
 <h3>Map Methods</h3>
-<p>You can manipulate the attributes of the map widget using a series of methods. Please see the help page <code>?setView</code> for details.</p>
+<p>You can manipulate the attributes of the map widget using a series of
+methods. Please see the help page <code>?setView</code> for details.</p>
 <ul>
-<li><code>setView()</code> sets the center of the map view and the zoom level;</li>
-<li><code>fitBounds()</code> fits the view into the rectangle <code>[lng1, lat1]</code> – <code>[lng2, lat2]</code>;</li>
-<li><code>clearBounds()</code> clears the bound, so that the view will be automatically determined by the range of latitude/longitude data in the map layers if provided;</li>
+<li><code>setView()</code> sets the center of the map view and the zoom
+level;</li>
+<li><code>fitBounds()</code> fits the view into the rectangle
+<code>[lng1, lat1]</code> – <code>[lng2, lat2]</code>;</li>
+<li><code>clearBounds()</code> clears the bound, so that the view will
+be automatically determined by the range of latitude/longitude data in
+the map layers if provided;</li>
 </ul>
 </div>
 <div id="the-data-object" class="section level3">
 <h3>The Data Object</h3>
-<p>Both <code>leaflet()</code> and the map layer functions have an optional <code>data</code> parameter that is designed to receive spatial data in one of several forms:</p>
+<p>Both <code>leaflet()</code> and the map layer functions have an
+optional <code>data</code> parameter that is designed to receive spatial
+data in one of several forms:</p>
 <ul>
 <li>From base R:
 <ul>
 <li>lng/lat matrix</li>
 <li>data frame with lng/lat columns</li>
 </ul></li>
-<li>From the <a href="http://cran.rstudio.com/package=sp"><strong>sp</strong> package</a>:
+<li>From the <a
+href="http://cran.rstudio.com/package=sp"><strong>sp</strong>
+package</a>:
 <ul>
 <li><code>SpatialPoints[DataFrame]</code></li>
 <li><code>Line</code>/<code>Lines</code></li>
@@ -277,28 +300,50 @@ leaflet(options = leafletOptions(minZoom = 0, maxZoom = 18))</code></pre>
 <li><code>Polygon</code>/<code>Polygons</code></li>
 <li><code>SpatialPolygons[DataFrame]</code></li>
 </ul></li>
-<li>From the <a href="http://cran.rstudio.com/package=maps"><strong>maps</strong> package</a>:
+<li>From the <a
+href="http://cran.rstudio.com/package=maps"><strong>maps</strong>
+package</a>:
 <ul>
 <li>the data frame from returned from <code>map()</code></li>
 </ul></li>
 </ul>
-<p>The <code>data</code> argument is used to derive spatial data for functions that need it; for example, if <code>data</code> is a <code>SpatialPolygonsDataFrame</code> object, then calling <code>addPolygons</code> on that map widget will know to add the polygons from that <code>SpatialPolygonsDataFrame</code>.</p>
-<p>It is straightforward to derive these variables from <strong>sp</strong> objects since they always represent spatial data in the same way. On the other hand, for a normal matrix or data frame, any numeric column could potentially contain spatial data. So we resort to guessing based on column names:</p>
+<p>The <code>data</code> argument is used to derive spatial data for
+functions that need it; for example, if <code>data</code> is a
+<code>SpatialPolygonsDataFrame</code> object, then calling
+<code>addPolygons</code> on that map widget will know to add the
+polygons from that <code>SpatialPolygonsDataFrame</code>.</p>
+<p>It is straightforward to derive these variables from
+<strong>sp</strong> objects since they always represent spatial data in
+the same way. On the other hand, for a normal matrix or data frame, any
+numeric column could potentially contain spatial data. So we resort to
+guessing based on column names:</p>
 <ul>
-<li>the latitude variable is guessed by looking for columns named <code>lat</code> or <code>latitude</code> (case-insensitive)</li>
-<li>the longitude variable is guessed by looking for <code>lng</code>, <code>long</code>, or <code>longitude</code></li>
+<li>the latitude variable is guessed by looking for columns named
+<code>lat</code> or <code>latitude</code> (case-insensitive)</li>
+<li>the longitude variable is guessed by looking for <code>lng</code>,
+<code>long</code>, or <code>longitude</code></li>
 </ul>
-<p>You can always explicitly identify latitude/longitude columns by providing <code>lng</code> and <code>lat</code> arguments to the layer function.</p>
-<p>For example, we do not specify the values for the arguments <code>lat</code> and <code>lng</code> in <code>addCircles()</code> below, but the columns <code>Lat</code> and <code>Long</code> in the data frame <code>df</code> will be automatically used:</p>
+<p>You can always explicitly identify latitude/longitude columns by
+providing <code>lng</code> and <code>lat</code> arguments to the layer
+function.</p>
+<p>For example, we do not specify the values for the arguments
+<code>lat</code> and <code>lng</code> in <code>addCircles()</code>
+below, but the columns <code>Lat</code> and <code>Long</code> in the
+data frame <code>df</code> will be automatically used:</p>
 <pre class="r"><code># add some circles to a map
 df = data.frame(Lat = 1:10, Long = rnorm(10))
 leaflet(df) %&gt;% addCircles()</code></pre>
-<p>You can also explicitly specify the <code>Lat</code> and <code>Long</code> columns (see below for more info on the <code>~</code> syntax):</p>
+<p>You can also explicitly specify the <code>Lat</code> and
+<code>Long</code> columns (see below for more info on the <code>~</code>
+syntax):</p>
 <pre class="r"><code>leaflet(df) %&gt;% addCircles(lng = ~Long, lat = ~Lat)</code></pre>
-<p>A map layer may use a different data object to override the data provided in <code>leaflet()</code>. We can rewrite the above example as:</p>
+<p>A map layer may use a different data object to override the data
+provided in <code>leaflet()</code>. We can rewrite the above example
+as:</p>
 <pre class="r"><code>leaflet() %&gt;% addCircles(data = df)
 leaflet() %&gt;% addCircles(data = df, lat = ~ Lat, lng = ~ Long)</code></pre>
-<p>Below are examples of using <strong>sp</strong> and <strong>maps</strong>, respectively:</p>
+<p>Below are examples of using <strong>sp</strong> and
+<strong>maps</strong>, respectively:</p>
 <pre class="r"><code>library(sp)
 Sr1 = Polygon(cbind(c(2, 4, 4, 1, 2), c(2, 3, 5, 4, 2)))
 Sr2 = Polygon(cbind(c(5, 4, 2, 5), c(2, 3, 2, 2)))
@@ -416,7 +461,7 @@ leaflet(data = mapStates) %&gt;% addTiles() %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -432,7 +477,7 @@ leaflet(data = mapStates) %&gt;% addTiles() %&gt;%
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
           }
         ]
       },
@@ -989,7 +1034,14 @@ leaflet(data = mapStates) %&gt;% addTiles() %&gt;%
 </div>
 <div id="the-formula-interface" class="section level3">
 <h3>The Formula Interface</h3>
-<p>The arguments of all layer functions can take normal R objects, such as a numeric vector for the <code>lat</code> argument, or a character vector of colors for the <code>color</code> argument. They can also take a one-sided formula, in which case the formula will be evaluated using the <code>data</code> argument as the environment. For example, <code>~ x</code> means the variable <code>x</code> in the data object, and you can write arbitrary expressions on the right-hand side, e.g., <code>~ sqrt(x + 1)</code>.</p>
+<p>The arguments of all layer functions can take normal R objects, such
+as a numeric vector for the <code>lat</code> argument, or a character
+vector of colors for the <code>color</code> argument. They can also take
+a one-sided formula, in which case the formula will be evaluated using
+the <code>data</code> argument as the environment. For example,
+<code>~ x</code> means the variable <code>x</code> in the data object,
+and you can write arbitrary expressions on the right-hand side, e.g.,
+<code>~ sqrt(x + 1)</code>.</p>
 <pre class="r"><code>m = leaflet() %&gt;% addTiles()
 df = data.frame(
   lat = rnorm(100),

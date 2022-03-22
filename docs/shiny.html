@@ -235,9 +235,18 @@ pre code {
 
 <div id="using-leaflet-with-shiny" class="section level2">
 <h2>Using Leaflet with Shiny</h2>
-<p><em>Shiny is a web framework for R. To learn more about Shiny, visit <a href="http://shiny.rstudio.com/">shiny.rstudio.com</a>.</em></p>
-<p>The Leaflet package includes powerful and convenient features for integrating with Shiny applications.</p>
-<p>Most Shiny output widgets are incorporated into an app by including an output (e.g. <code>plotOutput</code>) for the widget in the UI definition, and using a render function (e.g. <code>renderPlot</code>) in the server function. Leaflet maps are no different; in the UI you call <code>leafletOutput</code>, and on the server side you assign a <code>renderLeaflet</code> call to the output. Inside the <code>renderLeaflet</code> expression, you return a Leaflet map object.</p>
+<p><em>Shiny is a web framework for R. To learn more about Shiny, visit
+<a href="http://shiny.rstudio.com/">shiny.rstudio.com</a>.</em></p>
+<p>The Leaflet package includes powerful and convenient features for
+integrating with Shiny applications.</p>
+<p>Most Shiny output widgets are incorporated into an app by including
+an output (e.g. <code>plotOutput</code>) for the widget in the UI
+definition, and using a render function (e.g. <code>renderPlot</code>)
+in the server function. Leaflet maps are no different; in the UI you
+call <code>leafletOutput</code>, and on the server side you assign a
+<code>renderLeaflet</code> call to the output. Inside the
+<code>renderLeaflet</code> expression, you return a Leaflet map
+object.</p>
 <pre class="r"><code>library(shiny)
 library(leaflet)
 
@@ -270,12 +279,23 @@ shinyApp(ui, server)</code></pre>
 <img src="images/shiny1.png" alt="" />
 <p class="caption">Screenshot of a simple Shiny app</p>
 </div>
-<div id="modifying-existing-maps-with-leafletproxy" class="section level3">
+<div id="modifying-existing-maps-with-leafletproxy"
+class="section level3">
 <h3>Modifying Existing Maps with <code>leafletProxy</code></h3>
-<p>This works, but reactive inputs and expressions that affect the <code>renderLeaflet</code> expression will cause the entire map to be redrawn from scratch and reset the map position and zoom level.</p>
-<p>For some situations that may be acceptable or desirable behavior. But in other situations, you may want finer-grained control over the map, such as changing the color of a single polygon or adding a marker at the point of a click – without redrawing the entire map.</p>
-<p>To modify a map that’s already running in the page, you use the <code>leafletProxy()</code> function in place of the <code>leaflet()</code> call, but otherwise use Leaflet function calls as normal.</p>
-<p>Normally you use <code>leaflet</code> to create the static aspects of the map, and <code>leafletProxy</code> to manage the dynamic elements, like so:</p>
+<p>This works, but reactive inputs and expressions that affect the
+<code>renderLeaflet</code> expression will cause the entire map to be
+redrawn from scratch and reset the map position and zoom level.</p>
+<p>For some situations that may be acceptable or desirable behavior. But
+in other situations, you may want finer-grained control over the map,
+such as changing the color of a single polygon or adding a marker at the
+point of a click – without redrawing the entire map.</p>
+<p>To modify a map that’s already running in the page, you use the
+<code>leafletProxy()</code> function in place of the
+<code>leaflet()</code> call, but otherwise use Leaflet function calls as
+normal.</p>
+<p>Normally you use <code>leaflet</code> to create the static aspects of
+the map, and <code>leafletProxy</code> to manage the dynamic elements,
+like so:</p>
 <pre class="r"><code>library(shiny)
 library(leaflet)
 library(RColorBrewer)
@@ -350,7 +370,8 @@ shinyApp(ui, server)</code></pre>
 <img src="images/shiny2.png" alt="" />
 <p class="caption">Screenshot of a Shiny app</p>
 </div>
-<p>Besides adding layers, you can set the map bounds, remove specific objects by ID, or clear categories of layers.</p>
+<p>Besides adding layers, you can set the map bounds, remove specific
+objects by ID, or clear categories of layers.</p>
 <pre class="r"><code>proxy &lt;- leafletProxy(&quot;mymap&quot;)
 
 # Fit the view to within these bounds (can also use setView)
@@ -367,10 +388,23 @@ proxy %&gt;% clearShapes()</code></pre>
 </div>
 <div id="understanding-layer-ids" class="section level3">
 <h3>Understanding Layer IDs</h3>
-<p>Layer IDs can be used to replace or remove specific map elements. (<strong>Note:</strong> For managing groups of map elements, see the <a href="showhide.html">Show/Hide Layers</a> topic.)</p>
-<p>When you give an object a layer ID, if a similar object exists with the same ID, it will be removed from the map when the new object is added.</p>
-<p>All layer-adding functions take a <code>layerId</code> argument. Generally this is a vectorized argument; if adding 50 polygons, you’ll need to pass either <code>NULL</code> or a 50-element character vector as your <code>layerId</code> value. (If you use a single-element character vector as your <code>layerId</code>, then all of the 50 polygons will have the same ID, and all but the last polygon will be removed; so don’t do that!)</p>
-<p>Layer IDs are namespaced by category. Layer IDs only need be unique within their category; a call to <code>addCircles</code> will not cause any tile layers to be removed, regardless of layer ID, because circles and tiles are in different categories.</p>
+<p>Layer IDs can be used to replace or remove specific map elements.
+(<strong>Note:</strong> For managing groups of map elements, see the <a
+href="showhide.html">Show/Hide Layers</a> topic.)</p>
+<p>When you give an object a layer ID, if a similar object exists with
+the same ID, it will be removed from the map when the new object is
+added.</p>
+<p>All layer-adding functions take a <code>layerId</code> argument.
+Generally this is a vectorized argument; if adding 50 polygons, you’ll
+need to pass either <code>NULL</code> or a 50-element character vector
+as your <code>layerId</code> value. (If you use a single-element
+character vector as your <code>layerId</code>, then all of the 50
+polygons will have the same ID, and all but the last polygon will be
+removed; so don’t do that!)</p>
+<p>Layer IDs are namespaced by category. Layer IDs only need be unique
+within their category; a call to <code>addCircles</code> will not cause
+any tile layers to be removed, regardless of layer ID, because circles
+and tiles are in different categories.</p>
 <table style="width:100%;">
 <colgroup>
 <col width="13%" />
@@ -401,7 +435,8 @@ proxy %&gt;% clearShapes()</code></pre>
 </tr>
 <tr class="odd">
 <td>shape</td>
-<td><code>addPolygons</code>, <code>addPolylines</code>, <code>addCircles</code>, <code>addRectangles</code></td>
+<td><code>addPolygons</code>, <code>addPolylines</code>,
+<code>addCircles</code>, <code>addRectangles</code></td>
 <td><code>removeShape</code></td>
 <td><code>clearShapes</code></td>
 </tr>
@@ -428,20 +463,32 @@ proxy %&gt;% clearShapes()</code></pre>
 </div>
 <div id="inputsevents" class="section level3">
 <h3>Inputs/Events</h3>
-<p>Leaflet maps and objects send input values (which we’ll refer to as “events” in this document) to Shiny as the user interacts with them.</p>
+<p>Leaflet maps and objects send input values (which we’ll refer to as
+“events” in this document) to Shiny as the user interacts with them.</p>
 <div id="object-events" class="section level4">
 <h4>Object events</h4>
 <p>Object event names generally use this pattern:</p>
 <blockquote>
 <p><code>input$<em>MAPID</em>_<em>OBJCATEGORY</em>_<em>EVENTNAME</em></code></p>
 </blockquote>
-<p>So for a <code>leafletOutput("mymap")</code> had a circle on it, clicking on that circle would update the Shiny input at <code>input$mymap_shape_click</code>. (Note that the layer ID is not part of the name, though it is part of the value.)</p>
-<p>If no shape has ever been clicked on this map, then <code>input$mymap_shape_click</code> is null.</p>
-<p>Valid values for <em>OBJCATEGORY</em> above are <code>marker</code>, <code>shape</code>, <code>geojson</code>, and <code>topojson</code>. (Tiles and controls don’t raise mouse events.) Valid values for <em>EVENTNAME</em> are <code>click</code>, <code>mouseover</code>, and <code>mouseout</code>.</p>
-<p>All of these events are set to either <code>NULL</code> if the event has never happened, or a <code>list()</code> that includes:</p>
+<p>So for a <code>leafletOutput("mymap")</code> had a circle on it,
+clicking on that circle would update the Shiny input at
+<code>input$mymap_shape_click</code>. (Note that the layer ID is not
+part of the name, though it is part of the value.)</p>
+<p>If no shape has ever been clicked on this map, then
+<code>input$mymap_shape_click</code> is null.</p>
+<p>Valid values for <em>OBJCATEGORY</em> above are <code>marker</code>,
+<code>shape</code>, <code>geojson</code>, and <code>topojson</code>.
+(Tiles and controls don’t raise mouse events.) Valid values for
+<em>EVENTNAME</em> are <code>click</code>, <code>mouseover</code>, and
+<code>mouseout</code>.</p>
+<p>All of these events are set to either <code>NULL</code> if the event
+has never happened, or a <code>list()</code> that includes:</p>
 <ul>
-<li><code>lat</code> - The latitude of the object, if available; otherwise, the mouse cursor</li>
-<li><code>lng</code> - The longitude of the object, if available; otherwise, the mouse cursor</li>
+<li><code>lat</code> - The latitude of the object, if available;
+otherwise, the mouse cursor</li>
+<li><code>lng</code> - The longitude of the object, if available;
+otherwise, the mouse cursor</li>
 <li><code>id</code> - The <code>layerId</code>, if any</li>
 </ul>
 <p>GeoJSON events also include additional properties:</p>
@@ -453,16 +500,33 @@ proxy %&gt;% clearShapes()</code></pre>
 <div id="map-events" class="section level4">
 <h4>Map events</h4>
 <p>The map itself also has a few input values/events.</p>
-<p><code>input$<em>MAPID</em>_click</code> is an event that is sent when the map background or basemap is clicked. The value is a list with <code>lat</code> and <code>lng</code>.</p>
-<p><code>input$<em>MAPID</em>_bounds</code> provides the latitude/longitude bounds of the currently visible map area; the value is a <code>list()</code> that has named elements <code>north</code>, <code>east</code>, <code>south</code>, and <code>west</code>.</p>
-<p><code>input$<em>MAPID</em>_zoom</code> is an integer that indicates the <a href="http://wiki.openstreetmap.org/wiki/Zoom_levels">zoom level</a>.</p>
-<p><code>input$<em>MAPID</em>_center</code> provides the latitude/longtitude of the center of the currently visible map area; the value is a <code>list()</code> that has named elements <code>lat</code> and <code>lng</code>.</p>
+<p><code>input$<em>MAPID</em>_click</code> is an event that is sent when
+the map background or basemap is clicked. The value is a list with
+<code>lat</code> and <code>lng</code>.</p>
+<p><code>input$<em>MAPID</em>_bounds</code> provides the
+latitude/longitude bounds of the currently visible map area; the value
+is a <code>list()</code> that has named elements <code>north</code>,
+<code>east</code>, <code>south</code>, and <code>west</code>.</p>
+<p><code>input$<em>MAPID</em>_zoom</code> is an integer that indicates
+the <a href="http://wiki.openstreetmap.org/wiki/Zoom_levels">zoom
+level</a>.</p>
+<p><code>input$<em>MAPID</em>_center</code> provides the
+latitude/longtitude of the center of the currently visible map area; the
+value is a <code>list()</code> that has named elements <code>lat</code>
+and <code>lng</code>.</p>
 </div>
 </div>
 <div id="putting-it-all-together" class="section level3">
 <h3>Putting it all together</h3>
-<p>For an extensive example of Shiny and Leaflet working together, take a look at the <a href="http://shiny.rstudio.com/gallery/superzip-example.html">SuperZip Explorer</a> example app (note the “Get Code” button at the top of the page). (Hint: Try clicking on the bubbles, and also notice that the plots in the sidebar change as you pan and zoom around the map.)</p>
-<p><a href="http://shiny.rstudio.com/gallery/superzip-example.html"><img src="images/shiny3.png" alt="Screenshot of SuperZip Explorer example app" /></a></p>
+<p>For an extensive example of Shiny and Leaflet working together, take
+a look at the <a
+href="http://shiny.rstudio.com/gallery/superzip-example.html">SuperZip
+Explorer</a> example app (note the “Get Code” button at the top of the
+page). (Hint: Try clicking on the bubbles, and also notice that the
+plots in the sidebar change as you pan and zoom around the map.)</p>
+<p><a href="http://shiny.rstudio.com/gallery/superzip-example.html"><img
+src="images/shiny3.png"
+alt="Screenshot of SuperZip Explorer example app" /></a></p>
 </div>
 </div>
 

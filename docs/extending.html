@@ -244,36 +244,59 @@ pre code {
 
 <div id="extending-leaflet-package" class="section level2">
 <h2>Extending Leaflet package</h2>
-<p>The Leaflet Javascript library has a plethora of <a href="leafletjs.com/plugins">plugins</a> available that extend the functionality of the core package. We have incorporated a chosen few in the R package. It may be desirable to use plugins availble outside of what are supported by this pakage.</p>
-<p>The way to achieve that is by extending the Leaflet package. By extending we mean writing your own code/package that incorporate your desired leaflet plugins and hook into the leaflet package.</p>
-<p>Certain functions have been made available for you to use in your code while extending Leaflet.</p>
+<p>The Leaflet Javascript library has a plethora of <a
+href="leafletjs.com/plugins">plugins</a> available that extend the
+functionality of the core package. We have incorporated a chosen few in
+the R package. It may be desirable to use plugins availble outside of
+what are supported by this pakage.</p>
+<p>The way to achieve that is by extending the Leaflet package. By
+extending we mean writing your own code/package that incorporate your
+desired leaflet plugins and hook into the leaflet package.</p>
+<p>Certain functions have been made available for you to use in your
+code while extending Leaflet.</p>
 <div id="derivepointsderivepolygons" class="section level4">
 <h4>derivePoints/derivePolygons</h4>
-<p>These functions can be used to extract point or shape (polygon/line/circle/rectangle) data from a <code>data.frame</code> or a spatial object from the <code>sp</code> package. It tries to auto determine the latitude/longitude colnames if not specified or use user supplied column mappings.</p>
+<p>These functions can be used to extract point or shape
+(polygon/line/circle/rectangle) data from a <code>data.frame</code> or a
+spatial object from the <code>sp</code> package. It tries to auto
+determine the latitude/longitude colnames if not specified or use user
+supplied column mappings.</p>
 </div>
 <div id="evalformula" class="section level4">
 <h4>evalFormula</h4>
-<p><code>evalFormula</code> is used to evaluate a formula on a given data and return the results. e.g. <code>leaflet(some.data.frame) %&gt;% addMarkers(label=~name)</code> internally uses <code>evalFormula</code> to calculate the correct label values from the data using the <code>~name</code> formula.</p>
+<p><code>evalFormula</code> is used to evaluate a formula on a given
+data and return the results.
+e.g. <code>leaflet(some.data.frame) %&gt;% addMarkers(label=~name)</code>
+internally uses <code>evalFormula</code> to calculate the correct label
+values from the data using the <code>~name</code> formula.</p>
 </div>
 <div id="expandlimits" class="section level4">
 <h4>expandLimits</h4>
-<p>You can call <code>expandLimits</code> to make sure that your map’s view is just enough to show every point/shape in your data. This way you don’t have to determine the exact bounds for your map.</p>
+<p>You can call <code>expandLimits</code> to make sure that your map’s
+view is just enough to show every point/shape in your data. This way you
+don’t have to determine the exact bounds for your map.</p>
 </div>
 <div id="filternull" class="section level4">
 <h4>filterNULL</h4>
-<p>Often when passing a list from R to Javascript it is desirable to remove any null elements, and that’s exactly what <code>filterNULL</code> does.</p>
+<p>Often when passing a list from R to Javascript it is desirable to
+remove any null elements, and that’s exactly what
+<code>filterNULL</code> does.</p>
 </div>
 <div id="getmapdata" class="section level4">
 <h4>getMapData</h4>
-<p>Accesses the data object passed when calling <code>leaflet()</code> funtion.</p>
+<p>Accesses the data object passed when calling <code>leaflet()</code>
+funtion.</p>
 </div>
 <div id="invokemethod" class="section level4">
 <h4>invokeMethod</h4>
-<p>The glue between the R code and Javascript code. Requires a corresponding method on the Javascript side.</p>
+<p>The glue between the R code and Javascript code. Requires a
+corresponding method on the Javascript side.</p>
 </div>
 <div id="example" class="section level3">
 <h3>Example</h3>
-<p>Here is a small example which shows how you can integrate the Bing.com basemap layer <a href="https://github.com/shramov/leaflet-plugins">plugin</a></p>
+<p>Here is a small example which shows how you can integrate the
+Bing.com basemap layer <a
+href="https://github.com/shramov/leaflet-plugins">plugin</a></p>
 <pre class="r"><code>library(leaflet)
 library(htmltools)
 library(htmlwidgets)

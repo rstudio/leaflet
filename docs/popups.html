@@ -243,8 +243,10 @@ pre code {
 
 <div id="popups" class="section level2">
 <h2>Popups</h2>
-<p>Popups are small boxes containing arbitrary HTML, that point to a specific point on the map.</p>
-<p>Use the <code>addPopups()</code> function to add standalone popup to the map.</p>
+<p>Popups are small boxes containing arbitrary HTML, that point to a
+specific point on the map.</p>
+<p>Use the <code>addPopups()</code> function to add standalone popup to
+the map.</p>
 <pre class="r"><code>content &lt;- paste(sep = &quot;&lt;br/&gt;&quot;,
   &quot;&lt;b&gt;&lt;a href=&#39;http://www.samurainoodle.com&#39;&gt;Samurai Noodle&lt;/a&gt;&lt;/b&gt;&quot;,
   &quot;606 5th Ave. S&quot;,
@@ -271,7 +273,7 @@ leaflet() %&gt;% addTiles() %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -287,7 +289,7 @@ leaflet() %&gt;% addTiles() %&gt;%
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
           }
         ]
       },
@@ -318,7 +320,10 @@ leaflet() %&gt;% addTiles() %&gt;%
   "evals": [],
   "jsHooks": []
 }</script>
-<p>A common use for popups is to have them appear when markers or shapes are clicked. Marker and shape functions in the Leaflet package take a <code>popup</code> argument, where you can pass in HTML to easily attach a simple popup.</p>
+<p>A common use for popups is to have them appear when markers or shapes
+are clicked. Marker and shape functions in the Leaflet package take a
+<code>popup</code> argument, where you can pass in HTML to easily attach
+a simple popup.</p>
 <pre class="r"><code>library(htmltools)
 
 df &lt;- read.csv(textConnection(
@@ -346,7 +351,7 @@ leaflet(df) %&gt;% addTiles() %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -362,7 +367,7 @@ leaflet(df) %&gt;% addTiles() %&gt;%
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
           }
         ]
       },
@@ -413,12 +418,19 @@ leaflet(df) %&gt;% addTiles() %&gt;%
   "evals": [],
   "jsHooks": []
 }</script>
-<p>In the preceding example, <code>htmltools::htmlEscape</code> was used to santize any characters in the name that might be interpreted as HTML. While it wasn’t necessary for this example (as the restaurant names contained no HTML markup), doing so is important in any situation where the data may come from a file or database, or from the user.</p>
-<p>In addition to markers you can also add popups on shapes like lines, circles and other polygons.</p>
+<p>In the preceding example, <code>htmltools::htmlEscape</code> was used
+to santize any characters in the name that might be interpreted as HTML.
+While it wasn’t necessary for this example (as the restaurant names
+contained no HTML markup), doing so is important in any situation where
+the data may come from a file or database, or from the user.</p>
+<p>In addition to markers you can also add popups on shapes like lines,
+circles and other polygons.</p>
 </div>
 <div id="labels" class="section level2">
 <h2>Labels</h2>
-<p>A label is a textual or HTML content that can attached to markers and shapes to be always displayed or displayed on mouse over. Unlike popups you don’t need to click a marker/polygon for the label to be shown.</p>
+<p>A label is a textual or HTML content that can attached to markers and
+shapes to be always displayed or displayed on mouse over. Unlike popups
+you don’t need to click a marker/polygon for the label to be shown.</p>
 <pre class="r"><code>library(htmltools)
 
 df &lt;- read.csv(textConnection(
@@ -445,7 +457,7 @@ leaflet(df) %&gt;% addTiles() %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -461,7 +473,7 @@ leaflet(df) %&gt;% addTiles() %&gt;%
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
           }
         ]
       },
@@ -514,7 +526,13 @@ leaflet(df) %&gt;% addTiles() %&gt;%
 }</script>
 <div id="customizing-marker-labels" class="section level4">
 <h4>Customizing Marker Labels</h4>
-<p>You can customize marker labels using the <code>labelOptions</code> argument of the <code>addMarkers</code> function. The <code>labelOptions</code> argument can be populated using the <code>labelOptions()</code> function. If <code>noHide</code> is false (the default) then the label is displayed only when you hover the mouse over the marker; if <code>noHide</code> is set to true then the label is always displayed.</p>
+<p>You can customize marker labels using the <code>labelOptions</code>
+argument of the <code>addMarkers</code> function. The
+<code>labelOptions</code> argument can be populated using the
+<code>labelOptions()</code> function. If <code>noHide</code> is false
+(the default) then the label is displayed only when you hover the mouse
+over the marker; if <code>noHide</code> is set to true then the label is
+always displayed.</p>
 <pre class="r"><code># Change Text Size and text Only and also a custom CSS
 leaflet() %&gt;% addTiles() %&gt;% setView(-118.456554, 34.09, 13) %&gt;%
   addMarkers(
@@ -557,7 +575,7 @@ leaflet() %&gt;% addTiles() %&gt;% setView(-118.456554, 34.09, 13) %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -573,7 +591,7 @@ leaflet() %&gt;% addTiles() %&gt;% setView(-118.456554, 34.09, 13) %&gt;%
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
           }
         ]
       },
@@ -754,7 +772,8 @@ leaflet() %&gt;% addTiles() %&gt;% setView(-118.456554, 34.09, 13) %&gt;%
 </div>
 <div id="labels-without-markers" class="section level4">
 <h4>Labels without markers</h4>
-<p>You can create labels without the accompanying markers using the <code>addLabelOnlyMarkers</code> function.</p>
+<p>You can create labels without the accompanying markers using the
+<code>addLabelOnlyMarkers</code> function.</p>
 </div>
 </div>
 

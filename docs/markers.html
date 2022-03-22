@@ -251,22 +251,41 @@ pre code {
 
 <div id="markers" class="section level2">
 <h2>Markers</h2>
-<p>Use markers to call out points on the map. Marker locations are expressed in latitude/longitude coordinates, and can either appear as icons or as circles.</p>
+<p>Use markers to call out points on the map. Marker locations are
+expressed in latitude/longitude coordinates, and can either appear as
+icons or as circles.</p>
 <div id="data-sources" class="section level3">
 <h3>Data sources</h3>
 <p>Point data for markers can come from a variety of sources:</p>
 <ul>
-<li><code>SpatialPoints</code> or <code>SpatialPointsDataFrame</code> objects (from the <code>sp</code> package)</li>
-<li><code>POINT</code>, <code>sfc_POINT</code>, and <code>sf</code> objects (from the <code>sf</code> package); only <code>X</code> and <code>Y</code> dimensions will be considered</li>
-<li>Two-column numeric matrices (first column is longitude, second is latitude)</li>
-<li>Data frame with latitude and logitude columns. You can explicitly tell the marker function which columns contain the coordinate data (e.g. <code>addMarkers(lng = ~Longitude, lat = ~Latitude)</code>), or let the function look for columns named <code>lat</code>/<code>latitude</code> and <code>lon</code>/<code>lng</code>/<code>long</code>/<code>longitude</code> (case insensitive).</li>
-<li>Simply provide numeric vectors as <code>lng</code> and <code>lat</code> arguments</li>
+<li><code>SpatialPoints</code> or <code>SpatialPointsDataFrame</code>
+objects (from the <code>sp</code> package)</li>
+<li><code>POINT</code>, <code>sfc_POINT</code>, and <code>sf</code>
+objects (from the <code>sf</code> package); only <code>X</code> and
+<code>Y</code> dimensions will be considered</li>
+<li>Two-column numeric matrices (first column is longitude, second is
+latitude)</li>
+<li>Data frame with latitude and logitude columns. You can explicitly
+tell the marker function which columns contain the coordinate data
+(e.g. <code>addMarkers(lng = ~Longitude, lat = ~Latitude)</code>), or
+let the function look for columns named
+<code>lat</code>/<code>latitude</code> and
+<code>lon</code>/<code>lng</code>/<code>long</code>/<code>longitude</code>
+(case insensitive).</li>
+<li>Simply provide numeric vectors as <code>lng</code> and
+<code>lat</code> arguments</li>
 </ul>
-<p>Note that <code>MULTIPOINT</code> objects from <code>sf</code> are not supported at this time.</p>
+<p>Note that <code>MULTIPOINT</code> objects from <code>sf</code> are
+not supported at this time.</p>
 </div>
 <div id="icon-markers" class="section level3">
 <h3>Icon Markers</h3>
-<p>Icon markers are added using the <code>addMarkers</code> or the <code>addAwesomeMarkers</code> functions. Their default appearance is a dropped pin. As with most layer functions, the <code>popup</code> argument can be used to add a message to be displayed on click, and the <code>label</code> option can be used to display a text label either on hover or statically.</p>
+<p>Icon markers are added using the <code>addMarkers</code> or the
+<code>addAwesomeMarkers</code> functions. Their default appearance is a
+dropped pin. As with most layer functions, the <code>popup</code>
+argument can be used to add a message to be displayed on click, and the
+<code>label</code> option can be used to display a text label either on
+hover or statically.</p>
 <pre class="r"><code>data(quakes)
 
 # Show first 20 rows from the `quakes` dataset
@@ -288,7 +307,7 @@ leaflet(data = quakes[1:20,]) %&gt;% addTiles() %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -304,7 +323,7 @@ leaflet(data = quakes[1:20,]) %&gt;% addTiles() %&gt;%
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
           }
         ]
       },
@@ -357,8 +376,11 @@ leaflet(data = quakes[1:20,]) %&gt;% addTiles() %&gt;%
 }</script>
 <div id="customizing-marker-icons" class="section level4">
 <h4>Customizing Marker Icons</h4>
-<p>You can provide custom markers in one of several ways, depending on the scenario. For each of these ways, the icon can be provided as either a URL or as a file path.</p>
-<p>For the simple case of applying a single icon to a set of markers, use <code>makeIcon()</code>.</p>
+<p>You can provide custom markers in one of several ways, depending on
+the scenario. For each of these ways, the icon can be provided as either
+a URL or as a file path.</p>
+<p>For the simple case of applying a single icon to a set of markers,
+use <code>makeIcon()</code>.</p>
 <pre class="r"><code>greenLeafIcon &lt;- makeIcon(
   iconUrl = &quot;https://leafletjs.com/examples/custom-icons/leaf-green.png&quot;,
   iconWidth = 38, iconHeight = 95,
@@ -386,7 +408,7 @@ leaflet(data = quakes[1:4,]) %&gt;% addTiles() %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -402,7 +424,7 @@ leaflet(data = quakes[1:4,]) %&gt;% addTiles() %&gt;%
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
           }
         ]
       },
@@ -470,7 +492,12 @@ leaflet(data = quakes[1:4,]) %&gt;% addTiles() %&gt;%
   "evals": [],
   "jsHooks": []
 }</script>
-<p>If you have several icons to apply that vary only by a couple of parameters (i.e. they share the same size and anchor points but have different URLs), use the <code>icons()</code> function. <code>icons()</code> performs similarly to <code>data.frame()</code>, in that any arguments that are shorter than the number of markers will be recycled to fit.</p>
+<p>If you have several icons to apply that vary only by a couple of
+parameters (i.e. they share the same size and anchor points but have
+different URLs), use the <code>icons()</code> function.
+<code>icons()</code> performs similarly to <code>data.frame()</code>, in
+that any arguments that are shorter than the number of markers will be
+recycled to fit.</p>
 <pre class="r"><code>quakes1 &lt;- quakes[1:10,]
 
 leafIcons &lt;- icons(
@@ -503,7 +530,7 @@ leaflet(data = quakes1) %&gt;% addTiles() %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -519,7 +546,7 @@ leaflet(data = quakes1) %&gt;% addTiles() %&gt;%
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
           }
         ]
       },
@@ -587,7 +614,10 @@ leaflet(data = quakes1) %&gt;% addTiles() %&gt;%
   "evals": [],
   "jsHooks": []
 }</script>
-<p>Finally, if you have a set of icons that vary in multiple parameters, it may be more convenient to use the <code>iconList()</code> function. It lets you create a list of (named or unnamed) <code>makeIcon()</code> icons, and select from that list by position or name.</p>
+<p>Finally, if you have a set of icons that vary in multiple parameters,
+it may be more convenient to use the <code>iconList()</code> function.
+It lets you create a list of (named or unnamed) <code>makeIcon()</code>
+icons, and select from that list by position or name.</p>
 <pre class="r"><code># Make a list of icons. We&#39;ll index into it based on name.
 oceanIcons &lt;- iconList(
   ship = makeIcon(&quot;ferry-18.png&quot;, &quot;ferry-18@2x.png&quot;, 18, 18),
@@ -625,7 +655,7 @@ leaflet(df) %&gt;% addTiles() %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -641,7 +671,7 @@ leaflet(df) %&gt;% addTiles() %&gt;%
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
           }
         ]
       },
@@ -706,9 +736,20 @@ leaflet(df) %&gt;% addTiles() %&gt;%
 </div>
 <div id="awesome-icons" class="section level4">
 <h4>Awesome Icons</h4>
-<p>Leaflet supports even more customizable markers using the <a href="https://github.com/lvoogdt/Leaflet.awesome-markers">awesome markers</a> leaflet plugin.</p>
-<p>The <code>addAwesomeMarkers()</code> function is similar to <code>addMarkers()</code> function but additionally allows you to specify custom colors for the markers as well as icons from the <a href="http://fontawesome.io/icons/">Font Awesome</a>, <a href="https://getbootstrap.com/components/">Bootstrap Glyphicons</a>, and <a href="http://ionicons.com/">Ion icons</a> icon libraries.</p>
-<p>Similar to the <code>makeIcon</code>, <code>icons</code>, and <code>iconList</code> functions described above, you have <code>makeAwesomeIcon</code>, <code>awesomeIcons</code> and <code>awesomeIconList</code> functions, which enable you to add awesome icons.</p>
+<p>Leaflet supports even more customizable markers using the <a
+href="https://github.com/lvoogdt/Leaflet.awesome-markers">awesome
+markers</a> leaflet plugin.</p>
+<p>The <code>addAwesomeMarkers()</code> function is similar to
+<code>addMarkers()</code> function but additionally allows you to
+specify custom colors for the markers as well as icons from the <a
+href="http://fontawesome.io/icons/">Font Awesome</a>, <a
+href="https://getbootstrap.com/components/">Bootstrap Glyphicons</a>,
+and <a href="http://ionicons.com/">Ion icons</a> icon libraries.</p>
+<p>Similar to the <code>makeIcon</code>, <code>icons</code>, and
+<code>iconList</code> functions described above, you have
+<code>makeAwesomeIcon</code>, <code>awesomeIcons</code> and
+<code>awesomeIconList</code> functions, which enable you to add awesome
+icons.</p>
 <pre class="r"><code># first 20 quakes
 df.20 &lt;- quakes[1:20,]
 
@@ -748,7 +789,7 @@ leaflet(df.20) %&gt;% addTiles() %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -764,7 +805,7 @@ leaflet(df.20) %&gt;% addTiles() %&gt;%
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
           }
         ]
       },
@@ -824,11 +865,18 @@ leaflet(df.20) %&gt;% addTiles() %&gt;%
   "evals": [],
   "jsHooks": []
 }</script>
-<p>The <code>library</code> argument has to be one of ‘ion’, ‘fa’, or ‘glyphicon’. The <code>icon</code> argument needs to be the name of any valid icon supported by the the respective library (w/o the prefix of the library name).</p>
+<p>The <code>library</code> argument has to be one of ‘ion’, ‘fa’, or
+‘glyphicon’. The <code>icon</code> argument needs to be the name of any
+valid icon supported by the the respective library (w/o the prefix of
+the library name).</p>
 </div>
 <div id="marker-clusters" class="section level4">
 <h4>Marker Clusters</h4>
-<p>When there are a large number of markers on a map, you can cluster them using the <a href="https://github.com/Leaflet/Leaflet.markercluster">Leaflet.markercluster</a> plug-in. To enable this plug-in, you can provide a list of options to the argument <code>clusterOptions</code>, e.g.</p>
+<p>When there are a large number of markers on a map, you can cluster
+them using the <a
+href="https://github.com/Leaflet/Leaflet.markercluster">Leaflet.markercluster</a>
+plug-in. To enable this plug-in, you can provide a list of options to
+the argument <code>clusterOptions</code>, e.g.</p>
 <pre class="r"><code>leaflet(quakes) %&gt;% addTiles() %&gt;% addMarkers(
   clusterOptions = markerClusterOptions()
 )</code></pre>
@@ -848,7 +896,7 @@ leaflet(df.20) %&gt;% addTiles() %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -864,7 +912,7 @@ leaflet(df.20) %&gt;% addTiles() %&gt;%
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
           }
         ]
       },
@@ -926,12 +974,18 @@ leaflet(df.20) %&gt;% addTiles() %&gt;%
   "evals": [],
   "jsHooks": []
 }</script>
-<p>Using the <code>freezeAtZoom</code> argument of the <code>markerClusterOptions()</code> function you can set the clustering to freeze as a specific zoom level. For example <code>markerClusterOptions(freezeAtZoom = 5)</code> will freeze the cluster at zoom level 5 regardless of the user’s actual zoom level.</p>
+<p>Using the <code>freezeAtZoom</code> argument of the
+<code>markerClusterOptions()</code> function you can set the clustering
+to freeze as a specific zoom level. For example
+<code>markerClusterOptions(freezeAtZoom = 5)</code> will freeze the
+cluster at zoom level 5 regardless of the user’s actual zoom level.</p>
 </div>
 </div>
 <div id="circle-markers" class="section level3">
 <h3>Circle Markers</h3>
-<p>Circle markers are much like regular circles (see <a href="shapes.html">Lines and Shapes</a>), except that their radius in onscreen pixels stays constant regardless of zoom level.</p>
+<p>Circle markers are much like regular circles (see <a
+href="shapes.html">Lines and Shapes</a>), except that their radius in
+onscreen pixels stays constant regardless of zoom level.</p>
 <p>You can use their default appearance:</p>
 <pre class="r"><code>leaflet(df) %&gt;% addTiles() %&gt;% addCircleMarkers()</code></pre>
 <div id="htmlwidget-e92079a3c1d734b37e44" style="width:100%;height:168px;" class="leaflet html-widget"></div>
@@ -950,7 +1004,7 @@ leaflet(df.20) %&gt;% addTiles() %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -966,7 +1020,7 @@ leaflet(df.20) %&gt;% addTiles() %&gt;%
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
           }
         ]
       },
@@ -1043,7 +1097,7 @@ leaflet(df) %&gt;% addTiles() %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -1059,7 +1113,7 @@ leaflet(df) %&gt;% addTiles() %&gt;%
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
           }
         ]
       },

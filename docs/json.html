@@ -244,10 +244,17 @@ pre code {
 
 <div id="working-with-geojson-topojson" class="section level2">
 <h2>Working with GeoJSON &amp; TopoJSON</h2>
-<p>For working with GeoJSON/TopoJSON data you have two options: either read it into <code>sp</code> objects; or use the <code>addGeoJSON()</code> and <code>addTopoJSON()</code> functions.</p>
+<p>For working with GeoJSON/TopoJSON data you have two options: either
+read it into <code>sp</code> objects; or use the
+<code>addGeoJSON()</code> and <code>addTopoJSON()</code> functions.</p>
 <div id="reading-as-sp" class="section level3">
 <h3>Reading as <code>sp</code></h3>
-<p>The first approach is to use either <code>rgdal</code> or <code>geojsonio</code> (packages) to read GeoJSON/TopoJSON as <code>sp</code> objects. Then, you can use the full functionality of <a href="shapes.html">polygons</a>, <a href="markers.html">markers</a>, <a href="colors.html">colors</a>, <a href="legends.html">legends</a>, etc.</p>
+<p>The first approach is to use either <code>rgdal</code> or
+<code>geojsonio</code> (packages) to read GeoJSON/TopoJSON as
+<code>sp</code> objects. Then, you can use the full functionality of <a
+href="shapes.html">polygons</a>, <a href="markers.html">markers</a>, <a
+href="colors.html">colors</a>, <a href="legends.html">legends</a>,
+etc.</p>
 <pre class="r"><code># From http://eric.clst.org/Stuff/USGeoJSON and
 # https://en.wikipedia.org/wiki/List_of_United_States_counties_and_county_equivalents
 nycounties &lt;- rgdal::readOGR(&quot;https://rstudio.github.io/leaflet/json/nycounties.geojson&quot;) </code></pre>
@@ -283,7 +290,7 @@ leaflet(nycounties) %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -299,7 +306,7 @@ leaflet(nycounties) %&gt;%
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
           }
         ]
       },
@@ -909,13 +916,23 @@ leaflet(nycounties) %&gt;%
   "evals": [],
   "jsHooks": []
 }</script>
-<p>This approach is preferred over using <code>addGeoJSON</code>/<code>addTopoJSON</code>, as it makes it easy to use feature properties in determining map colors, labels, etc., or to modify or add new properties.</p>
-<p>The main downside to this approach is that it only supports feature collections where all features are of the same type, whereas in GeoJSON/TopoJSON it’s possible—though uncommon—to have a single feature collection that contains, say, both markers and polygons.</p>
+<p>This approach is preferred over using
+<code>addGeoJSON</code>/<code>addTopoJSON</code>, as it makes it easy to
+use feature properties in determining map colors, labels, etc., or to
+modify or add new properties.</p>
+<p>The main downside to this approach is that it only supports feature
+collections where all features are of the same type, whereas in
+GeoJSON/TopoJSON it’s possible—though uncommon—to have a single feature
+collection that contains, say, both markers and polygons.</p>
 </div>
 <div id="working-with-raw-geojsontopojson" class="section level3">
 <h3>Working with raw GeoJSON/TopoJSON</h3>
-<p>The <code>addGeoJSON()</code> and <code>addTopoJSON()</code> functions accept GeoJSON data in either parsed (nested lists) or stringified (single-element character vector) format.</p>
-<p>Note that for larger JSON data, using parsed is significantly slower than using stringified, because parsed data must go through a JSON encoding step.</p>
+<p>The <code>addGeoJSON()</code> and <code>addTopoJSON()</code>
+functions accept GeoJSON data in either parsed (nested lists) or
+stringified (single-element character vector) format.</p>
+<p>Note that for larger JSON data, using parsed is significantly slower
+than using stringified, because parsed data must go through a JSON
+encoding step.</p>
 <p>A simple example using stringified data:</p>
 <pre class="r"><code>topoData &lt;- readLines(&quot;https://rstudio.github.io/leaflet/json/us-10m.json&quot;) %&gt;% paste(collapse = &quot;\n&quot;) 
 
@@ -943,7 +960,7 @@ leaflet() %&gt;% setView(lng = -98.583, lat = 39.833, zoom = 3) %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -959,7 +976,7 @@ leaflet() %&gt;% setView(lng = -98.583, lat = 39.833, zoom = 3) %&gt;%
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
           }
         ]
       },
@@ -992,12 +1009,31 @@ leaflet() %&gt;% setView(lng = -98.583, lat = 39.833, zoom = 3) %&gt;%
 }</script>
 <div id="styling-raw-geojsontopojson" class="section level4">
 <h4>Styling raw GeoJSON/TopoJSON</h4>
-<p>You can modify the style of GeoJSON/TopoJSON features in a few ways. (Currently only paths and shapes can be styled; marker styling is not supported.)</p>
-<p>One way to apply styles to all of the features is to use the arguments directly on the <code>addGeoJSON</code>/<code>addTopoJSON</code> functions. Another way is to encode styling information directly in the JSON object/string by putting a <code>style</code> object directly underneath the top level JSON object.</p>
-<p>You can provide feature-specific styles by annotating each feature’s property object with a <code>style: {...}</code> object. The feature-specific styles have the highest precedence, then the top-level style object, and finally the style-related arguments passed to the function.</p>
-<p>See Leaflet’s <a href="https://leafletjs.com/reference.html#path-options">path</a> options for available style properties.</p>
-<p>The previous example demonstrated the style arguments. Below is a more involved example that sets both global styles and per-feature styles directly into the JSON object.</p>
-<p>(This approach is not recommended for applying styling in R; instead, use the approach described above where we convert to <code>sp</code> first. However, if you have control over the process that generates the GeoJSON in the first place, you might use these techniques to put the styling information directly in the JSON.)</p>
+<p>You can modify the style of GeoJSON/TopoJSON features in a few ways.
+(Currently only paths and shapes can be styled; marker styling is not
+supported.)</p>
+<p>One way to apply styles to all of the features is to use the
+arguments directly on the
+<code>addGeoJSON</code>/<code>addTopoJSON</code> functions. Another way
+is to encode styling information directly in the JSON object/string by
+putting a <code>style</code> object directly underneath the top level
+JSON object.</p>
+<p>You can provide feature-specific styles by annotating each feature’s
+property object with a <code>style: {...}</code> object. The
+feature-specific styles have the highest precedence, then the top-level
+style object, and finally the style-related arguments passed to the
+function.</p>
+<p>See Leaflet’s <a
+href="https://leafletjs.com/reference.html#path-options">path</a>
+options for available style properties.</p>
+<p>The previous example demonstrated the style arguments. Below is a
+more involved example that sets both global styles and per-feature
+styles directly into the JSON object.</p>
+<p>(This approach is not recommended for applying styling in R; instead,
+use the approach described above where we convert to <code>sp</code>
+first. However, if you have control over the process that generates the
+GeoJSON in the first place, you might use these techniques to put the
+styling information directly in the JSON.)</p>
 <pre class="r"><code>library(jsonlite)
 
 # From http://data.okfn.org/data/datasets/geo-boundaries-world-110m

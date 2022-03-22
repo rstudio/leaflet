@@ -245,8 +245,12 @@ pre code {
 
 <div id="choropleths" class="section level2">
 <h2>Choropleths</h2>
-<p>Making choropleths with leaflet is easy. In this example, we’ll duplicate the <a href="https://leafletjs.com/examples/choropleth/">step-by-step choropleth tutorial</a> from the Leaflet.js website.</p>
-<p>The final result will look like this (scroll to the end to see the completed code):</p>
+<p>Making choropleths with leaflet is easy. In this example, we’ll
+duplicate the <a
+href="https://leafletjs.com/examples/choropleth/">step-by-step
+choropleth tutorial</a> from the Leaflet.js website.</p>
+<p>The final result will look like this (scroll to the end to see the
+completed code):</p>
 <pre><code>## Registered S3 method overwritten by &#39;geojsonsf&#39;:
 ##   method        from   
 ##   print.geojson geojson</code></pre>
@@ -1136,8 +1140,12 @@ pre code {
 }</script>
 <div id="data-source" class="section level3">
 <h3>Data source</h3>
-<p>We’ll start by loading the data from JSON. While the Leaflet.js example loads the JSON directly into JavaScript, with the Leaflet R package we instead want to load the data into R.</p>
-<p>In this case, we’ll use the <code>geojsonio</code> package to load the data into <code>sp</code> objects, which will let us easily manipulate the geographic features, and their properties, in R.</p>
+<p>We’ll start by loading the data from JSON. While the Leaflet.js
+example loads the JSON directly into JavaScript, with the Leaflet R
+package we instead want to load the data into R.</p>
+<p>In this case, we’ll use the <code>geojsonio</code> package to load
+the data into <code>sp</code> objects, which will let us easily
+manipulate the geographic features, and their properties, in R.</p>
 <pre class="r"><code>states &lt;- geojsonio::geojson_read(&quot;https://rstudio.github.io/leaflet/json/us-states.geojson&quot;, what = &quot;sp&quot;)
 class(states)</code></pre>
 <pre><code>## [1] &quot;SpatialPolygonsDataFrame&quot;
@@ -1145,18 +1153,27 @@ class(states)</code></pre>
 ## [1] &quot;sp&quot;</code></pre>
 <pre class="r"><code>names(states)</code></pre>
 <pre><code>## [1] &quot;id&quot;      &quot;name&quot;    &quot;density&quot;</code></pre>
-<p>As you can see, we now have a <code>SpatialPolygonsDataFrame</code> with <code>name</code> (state name) and <code>density</code> (population density in people/mi<sup>2</sup>) columns from the GeoJSON.</p>
+<p>As you can see, we now have a <code>SpatialPolygonsDataFrame</code>
+with <code>name</code> (state name) and <code>density</code> (population
+density in people/mi<sup>2</sup>) columns from the GeoJSON.</p>
 </div>
 <div id="basic-states-map" class="section level3">
 <h3>Basic states map</h3>
-<p>Next, let’s make a basic map with just the outline of the states. For our basemap, we’ll use the same <code>"mapbox.light"</code> MapBox style that the example does; if you don’t have a MapBox account, you can just use <code>addTiles()</code> in place of the <code>addProviderTiles</code> call, or choose a free provider.</p>
+<p>Next, let’s make a basic map with just the outline of the states. For
+our basemap, we’ll use the same <code>"mapbox.light"</code> MapBox style
+that the example does; if you don’t have a MapBox account, you can just
+use <code>addTiles()</code> in place of the
+<code>addProviderTiles</code> call, or choose a free provider.</p>
 <pre class="r"><code>m &lt;- leaflet(states) %&gt;%
   setView(-96, 37.8, 4) %&gt;%
   addProviderTiles(&quot;MapBox&quot;, options = providerTileOptions(
     id = &quot;mapbox.light&quot;,
     accessToken = Sys.getenv(&#39;MAPBOX_ACCESS_TOKEN&#39;)))</code></pre>
-<p>We’ve saved the basic basemap as a separate variable <code>m</code> so we can easily iterate on the <code>addPolygons</code> call as we work through the rest of the tutorial.</p>
-<p>To add uniform polygons with default styling, just call <code>addPolygons</code> with no additional arguments.</p>
+<p>We’ve saved the basic basemap as a separate variable <code>m</code>
+so we can easily iterate on the <code>addPolygons</code> call as we work
+through the rest of the tutorial.</p>
+<p>To add uniform polygons with default styling, just call
+<code>addPolygons</code> with no additional arguments.</p>
 <pre class="r"><code>m %&gt;% addPolygons()</code></pre>
 <div id="htmlwidget-92aa9ec4a26e6d2eb4c3" style="width:100%;height:216px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-92aa9ec4a26e6d2eb4c3">{
@@ -1962,10 +1979,19 @@ class(states)</code></pre>
 </div>
 <div id="adding-some-color" class="section level3">
 <h3>Adding some color</h3>
-<p>Now, let’s color the states according to their population density. You have <a href="../colors.html">various options</a> for mapping data to colors; for this example we’ll match the Leaflet.js tutorial by mapping a specific set of bins into RColorBrewer colors.</p>
-<p>First, we’ll define the bins. This is a numeric vector that defines the boundaries between intervals (<code>(0,10]</code>, <code>(10,20]</code>, and so on).</p>
-<p>Then, we’ll call <code>colorBin</code> to generate a palette function that maps the RColorBrewer <code>"YlOrRd"</code> colors to our bins.</p>
-<p>Finally, we’ll modify <code>addPolygons</code> to use the palette function and the density values to generate a vector of colors for <code>fillColor</code>, and also add some other static style properties.</p>
+<p>Now, let’s color the states according to their population density.
+You have <a href="../colors.html">various options</a> for mapping data
+to colors; for this example we’ll match the Leaflet.js tutorial by
+mapping a specific set of bins into RColorBrewer colors.</p>
+<p>First, we’ll define the bins. This is a numeric vector that defines
+the boundaries between intervals (<code>(0,10]</code>,
+<code>(10,20]</code>, and so on).</p>
+<p>Then, we’ll call <code>colorBin</code> to generate a palette function
+that maps the RColorBrewer <code>"YlOrRd"</code> colors to our bins.</p>
+<p>Finally, we’ll modify <code>addPolygons</code> to use the palette
+function and the density values to generate a vector of colors for
+<code>fillColor</code>, and also add some other static style
+properties.</p>
 <pre class="r"><code>bins &lt;- c(0, 10, 20, 50, 100, 200, 500, 1000, Inf)
 pal &lt;- colorBin(&quot;YlOrRd&quot;, domain = states$density, bins = bins)
 
@@ -2781,7 +2807,9 @@ m %&gt;% addPolygons(
 </div>
 <div id="adding-interaction" class="section level3">
 <h3>Adding interaction</h3>
-<p>The next thing we’ll want is to make the polygons highlight as the mouse passes over them. The <code>addPolygon</code> function has a <code>highlight</code> argument that makes this simple.</p>
+<p>The next thing we’ll want is to make the polygons highlight as the
+mouse passes over them. The <code>addPolygon</code> function has a
+<code>highlight</code> argument that makes this simple.</p>
 <pre class="r"><code>m %&gt;% addPolygons(
   fillColor = ~pal(density),
   weight = 2,
@@ -3603,13 +3631,22 @@ m %&gt;% addPolygons(
   "evals": [],
   "jsHooks": []
 }</script>
-<p>(The Leaflet.js tutorial also adds an event handler that zooms into a state when it’s clicked. This isn’t currently possible with the Leaflet R package, except with either custom JavaScript or using Shiny, both of which are outside the scope of this example.)</p>
+<p>(The Leaflet.js tutorial also adds an event handler that zooms into a
+state when it’s clicked. This isn’t currently possible with the Leaflet
+R package, except with either custom JavaScript or using Shiny, both of
+which are outside the scope of this example.)</p>
 </div>
 <div id="custom-info" class="section level3">
 <h3>Custom info</h3>
 <p>Now let’s expose the state names and values to the user.</p>
-<p>The Leaflet.js tutorial shows the hovered-over state’s information in a custom control. Again, that’s possible by adding custom JavaScript or using Shiny, but for this example we’ll use the built-in labels feature instead.</p>
-<p>We’ll generate the labels by handcrafting some HTML, and passing it to <code>lapply(htmltools::HTML)</code> so that Leaflet knows to treat each label as HTML instead of as plain text. We’ll also set some label options to improve the style of the label element itself.</p>
+<p>The Leaflet.js tutorial shows the hovered-over state’s information in
+a custom control. Again, that’s possible by adding custom JavaScript or
+using Shiny, but for this example we’ll use the built-in labels feature
+instead.</p>
+<p>We’ll generate the labels by handcrafting some HTML, and passing it
+to <code>lapply(htmltools::HTML)</code> so that Leaflet knows to treat
+each label as HTML instead of as plain text. We’ll also set some label
+options to improve the style of the label element itself.</p>
 <pre class="r"><code>labels &lt;- sprintf(
   &quot;&lt;strong&gt;%s&lt;/strong&gt;&lt;br/&gt;%g people / mi&lt;sup&gt;2&lt;/sup&gt;&quot;,
   states$name, states$density
@@ -4499,11 +4536,15 @@ m</code></pre>
   "evals": [],
   "jsHooks": []
 }</script>
-<p>This is the final version of our polygon layer, so let’s save the result back to the <code>m</code> variable.</p>
+<p>This is the final version of our polygon layer, so let’s save the
+result back to the <code>m</code> variable.</p>
 </div>
 <div id="legend" class="section level3">
 <h3>Legend</h3>
-<p>As our final step, let’s add a legend. Because we chose to color our map using <code>colorBin</code>, the <code>addLegend</code> function makes it particularly easy to add a legend with the correct colors and intervals.</p>
+<p>As our final step, let’s add a legend. Because we chose to color our
+map using <code>colorBin</code>, the <code>addLegend</code> function
+makes it particularly easy to add a legend with the correct colors and
+intervals.</p>
 <pre class="r"><code>m %&gt;% addLegend(pal = pal, values = ~density, opacity = 0.7, title = NULL,
   position = &quot;bottomright&quot;)</code></pre>
 <div id="htmlwidget-2f386608a10ed269577b" style="width:100%;height:216px;" class="leaflet html-widget"></div>

@@ -269,21 +269,28 @@ pre code {
 <ul>
 <li><a href="#leaflet-measure">Leaflet Measure</a></li>
 <li><a href="#graticule">Graticule</a></li>
-<li><a href="#terminator-daynight-indicator">Terminator (day/night indicator)</a></li>
+<li><a href="#terminator-daynight-indicator">Terminator (day/night
+indicator)</a></li>
 <li><a href="#minimap">Minimap</a></li>
 <li><a href="#easybutton">EasyButton</a></li>
 </ul></li>
 <li>Advanced Features
 <ul>
-<li><a href="#custom-javascript-with-htmlwidgetonrender">Custom JavaScript with <code>htmlwidgets::onRender</code></a></li>
+<li><a href="#custom-javascript-with-htmlwidgetonrender">Custom
+JavaScript with <code>htmlwidgets::onRender</code></a></li>
 </ul></li>
 </ul>
 <div id="add-ons" class="section level3">
 <h3>Add-ons</h3>
-<p>These are various utility functions that you can use to augment your map with additional elements. Each of the utility function give below supports options of customization, be sure to check the help files for details.</p>
+<p>These are various utility functions that you can use to augment your
+map with additional elements. Each of the utility function give below
+supports options of customization, be sure to check the help files for
+details.</p>
 <div id="leaflet-measure" class="section level4">
 <h4>Leaflet Measure</h4>
-<p>You can use <code>addMeasure()</code> to add the <a href="https://github.com/ljagis/leaflet-measure">leaflet-measure</a> plugin to a map.</p>
+<p>You can use <code>addMeasure()</code> to add the <a
+href="https://github.com/ljagis/leaflet-measure">leaflet-measure</a>
+plugin to a map.</p>
 <pre class="r"><code>library(leaflet)
 
 m &lt;- leaflet() %&gt;% addTiles()
@@ -308,7 +315,7 @@ m %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -324,7 +331,7 @@ m %&gt;%
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
           }
         ]
       },
@@ -360,7 +367,8 @@ m %&gt;%
   "evals": [],
   "jsHooks": []
 }</script>
-<p>Use various options to customize the appearance and behavior of the plugin (see <code>?addMeasure</code> for details).</p>
+<p>Use various options to customize the appearance and behavior of the
+plugin (see <code>?addMeasure</code> for details).</p>
 <pre class="r"><code>m %&gt;%
   # Berlin, Germany
   fitBounds(13.76134, 52.675499, 13.0884, 52.33812) %&gt;%
@@ -386,7 +394,7 @@ m %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -402,7 +410,7 @@ m %&gt;%
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
           }
         ]
       },
@@ -441,7 +449,10 @@ m %&gt;%
 </div>
 <div id="graticule" class="section level4">
 <h4>Graticule</h4>
-<p>Use the <code>addGraticule</code> function to add a graticule (grid) to the map (via the <a href="https://github.com/turban/Leaflet.Graticule">Leaflet.Graticule</a> plugin).</p>
+<p>Use the <code>addGraticule</code> function to add a graticule (grid)
+to the map (via the <a
+href="https://github.com/turban/Leaflet.Graticule">Leaflet.Graticule</a>
+plugin).</p>
 <pre class="r"><code>library(leaflet)
 
 m &lt;- leaflet() %&gt;% addTiles() %&gt;% setView(0,0,2)
@@ -463,7 +474,7 @@ m %&gt;% addGraticule()</code></pre>
       {
         "method": "addTiles",
         "args": [
-          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -479,7 +490,7 @@ m %&gt;% addGraticule()</code></pre>
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
           }
         ]
       },
@@ -528,7 +539,7 @@ m %&gt;% addGraticule()</code></pre>
       {
         "method": "addTiles",
         "args": [
-          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -544,7 +555,7 @@ m %&gt;% addGraticule()</code></pre>
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
           }
         ]
       },
@@ -576,7 +587,8 @@ m %&gt;% addGraticule()</code></pre>
   "evals": [],
   "jsHooks": []
 }</script>
-<p>You can use the <code>group</code> argument to make the graticule toggleable.</p>
+<p>You can use the <code>group</code> argument to make the graticule
+toggleable.</p>
 <pre class="r"><code>m %&gt;%
   addGraticule(group = &quot;Graticule&quot;) %&gt;%
   addLayersControl(overlayGroups = c(&quot;Graticule&quot;),
@@ -597,7 +609,7 @@ m %&gt;% addGraticule()</code></pre>
       {
         "method": "addTiles",
         "args": [
-          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -613,7 +625,7 @@ m %&gt;% addGraticule()</code></pre>
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
           }
         ]
       },
@@ -680,7 +692,7 @@ leaflet() %&gt;% addTiles() %&gt;% addTerminator()</code></pre>
       {
         "method": "addTiles",
         "args": [
-          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -696,7 +708,7 @@ leaflet() %&gt;% addTiles() %&gt;% addTerminator()</code></pre>
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
           }
         ]
       },
@@ -745,7 +757,7 @@ leaflet() %&gt;%
       {
         "method": "addTiles",
         "args": [
-          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -761,7 +773,7 @@ leaflet() %&gt;%
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
           }
         ]
       },
@@ -799,8 +811,12 @@ leaflet() %&gt;%
 </div>
 <div id="minimap" class="section level4">
 <h4>Minimap</h4>
-<p>You can use the <code>addMiniMap()</code> function to add a minimap to aid in navigation. This is implemented via the <a href="https://github.com/Norkart/Leaflet-MiniMap">Leaflet-MiniMap</a> plugin.</p>
-<p>Note that the minimap only shows map tiles; markers, polygons, and other layers on the main map will not be displayed in the minimap.</p>
+<p>You can use the <code>addMiniMap()</code> function to add a minimap
+to aid in navigation. This is implemented via the <a
+href="https://github.com/Norkart/Leaflet-MiniMap">Leaflet-MiniMap</a>
+plugin.</p>
+<p>Note that the minimap only shows map tiles; markers, polygons, and
+other layers on the main map will not be displayed in the minimap.</p>
 <pre class="r"><code>library(leaflet)
 l &lt;- leaflet() %&gt;% setView(0,0,3)
 
@@ -879,7 +895,9 @@ l %&gt;%
   "evals": [],
   "jsHooks": []
 }</script>
-<p>You can use a specific basemap for the minimap via the <code>tiles</code> parameter. This example also allows the minimap to be hidden by setting <code>toggleDisplay = TRUE</code>.</p>
+<p>You can use a specific basemap for the minimap via the
+<code>tiles</code> parameter. This example also allows the minimap to be
+hidden by setting <code>toggleDisplay = TRUE</code>.</p>
 <pre class="r"><code>l %&gt;%
   addProviderTiles(providers$Esri.WorldStreetMap) %&gt;%
   addMiniMap(
@@ -960,11 +978,14 @@ l %&gt;%
 </div>
 <div id="easybutton" class="section level4">
 <h4>EasyButton</h4>
-<p>Use <code>addEasyButton()</code> to add simple buttons (via <a href="https://github.com/CliffCloud/Leaflet.EasyButton">Leaflet.EasyButton</a>) that trigger custom JavaScript logic.</p>
+<p>Use <code>addEasyButton()</code> to add simple buttons (via <a
+href="https://github.com/CliffCloud/Leaflet.EasyButton">Leaflet.EasyButton</a>)
+that trigger custom JavaScript logic.</p>
 <pre class="r"><code>library(leaflet)
 library(htmltools)
 library(htmlwidgets)</code></pre>
-<p>This map adds two buttons: one sets the map zoom level to 1, and the other attempts to locate you.</p>
+<p>This map adds two buttons: one sets the map zoom level to 1, and the
+other attempts to locate you.</p>
 <pre class="r"><code>leaflet() %&gt;% addTiles() %&gt;%
   addEasyButton(easyButton(
     icon=&quot;fa-globe&quot;, title=&quot;Zoom to Level 1&quot;,
@@ -988,7 +1009,7 @@ library(htmlwidgets)</code></pre>
       {
         "method": "addTiles",
         "args": [
-          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -1004,7 +1025,7 @@ library(htmlwidgets)</code></pre>
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
           }
         ]
       },
@@ -1035,7 +1056,9 @@ library(htmlwidgets)</code></pre>
   "evals": ["calls.1.args.0.onClick", "calls.2.args.0.onClick"],
   "jsHooks": []
 }</script>
-<p>The next example demonstrates an easyButton with two distinct states: <code>frozen-markers</code> and <code>unfrozen-markers</code>, each of which has a distinct icon, title, and click handler.</p>
+<p>The next example demonstrates an easyButton with two distinct states:
+<code>frozen-markers</code> and <code>unfrozen-markers</code>, each of
+which has a distinct icon, title, and click handler.</p>
 <pre class="r"><code>leaflet() %&gt;% addTiles() %&gt;%
   addMarkers(data=quakes,
     clusterOptions = markerClusterOptions(),
@@ -1084,7 +1107,7 @@ library(htmlwidgets)</code></pre>
       {
         "method": "addTiles",
         "args": [
-          "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
           null,
           null,
           {
@@ -1100,7 +1123,7 @@ library(htmlwidgets)</code></pre>
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
           }
         ]
       },
@@ -1190,10 +1213,17 @@ library(htmlwidgets)</code></pre>
 </div>
 <div id="advanced-features" class="section level3">
 <h3>Advanced Features</h3>
-<div id="custom-javascript-with-htmlwidgetsonrender" class="section level4">
+<div id="custom-javascript-with-htmlwidgetsonrender"
+class="section level4">
 <h4>Custom JavaScript with <code>htmlwidgets::onRender</code></h4>
-<p>The <code>htmlwidgets::onRender</code> function can be used to add custom behavior to the leaflet map using native Javascript. This is a some what advanced use case and requires you to know Javascript. Using <code>onRender</code> you can customize your map’s behavior using any of the APIs as defined in the Leaflet.js <a href="leafletjs.com/reference.html">documentation</a>.</p>
-<p>Below is an example where we sync the base layer of the mini-map with the baselayer of the main map, using the ‘baselayerchange’ event.</p>
+<p>The <code>htmlwidgets::onRender</code> function can be used to add
+custom behavior to the leaflet map using native Javascript. This is a
+some what advanced use case and requires you to know Javascript. Using
+<code>onRender</code> you can customize your map’s behavior using any of
+the APIs as defined in the Leaflet.js <a
+href="leafletjs.com/reference.html">documentation</a>.</p>
+<p>Below is an example where we sync the base layer of the mini-map with
+the baselayer of the main map, using the ‘baselayerchange’ event.</p>
 <pre class="r"><code>l &lt;- leaflet() %&gt;% setView(0,0,3)
 
 esri &lt;- grep(&quot;^Esri&quot;, providers, value = TRUE)
