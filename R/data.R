@@ -7,7 +7,7 @@
 #'   \code{Long}, and population estimates from 2000 to 2010 (columns
 #'   \code{Pop2000} to \code{Pop2010}).
 #' @source The US Census Bureau:
-#'   \url{http://www.census.gov/popest/data/intercensal/cities/cities2010.html}
+#'   \url{https://www.census.gov/data/datasets/time-series/demo/popest/intercensal-2000-2010-cities-and-towns.html}
 #' @noRd
 #' @examples
 #' str(uspop2000)

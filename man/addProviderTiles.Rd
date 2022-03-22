@@ -27,7 +27,7 @@ providerTileOptions(
 \item{map}{the map to add the tile layer to}
 
 \item{provider}{the name of the provider (see
-\url{http://leaflet-extras.github.io/leaflet-providers/preview/} and
+\url{https://leaflet-extras.github.io/leaflet-providers/preview/} and
 \url{https://github.com/leaflet-extras/leaflet-providers})}
 
 \item{layerId}{the layer id to assign}

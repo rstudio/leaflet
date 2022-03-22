@@ -93,14 +93,14 @@ createLeafletMap <- function(session, outputId) {
 #' @export
 leafletMap <- function(
   outputId, width, height,
-  initialTileLayer = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+  initialTileLayer = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
   initialTileLayerAttribution = NULL,
   options = NULL) {
 
   if (missing(initialTileLayer) && is.null(initialTileLayerAttribution))
     initialTileLayerAttribution <- paste(
-      "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a>",
-      "contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>"
+      "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap</a>",
+      "contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>"
     )
 
   shiny::addResourcePath("leaflet-legacy", system_file("legacy/www", package = "leaflet"))

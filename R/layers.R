@@ -152,7 +152,7 @@ groupOptions <- function(map, group, zoomLevels = NULL) {
 #' @export
 addTiles <- function(
   map,
-  urlTemplate = "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+  urlTemplate = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
   attribution = NULL,
   layerId = NULL,
   group = NULL,
@@ -162,8 +162,8 @@ addTiles <- function(
   options$attribution <- attribution
   if (missing(urlTemplate) && is.null(options$attribution))
     options$attribution <- paste(
-      "&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a>",
-      "contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>"
+      "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap</a>",
+      "contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>"
     )
   invokeMethod(map, data, "addTiles", urlTemplate, layerId, group,
     options)

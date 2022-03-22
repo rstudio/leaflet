@@ -30,7 +30,7 @@ leaflet() %>% addTiles() %>%
 
 #' <br/><br/>
 #' Another examples this time with polygons
-url <- "http://www.partners-popdev.org/wp-content/themes/original-child/vendor/Geojson/States/Maharashtra.geojson"
+url <- "https://www.partners-popdev.org/wp-content/themes/original-child/vendor/Geojson/States/Maharashtra.geojson"
 
 mhSPDF <- geojsonio::geojson_read(url, what = "sp")
 

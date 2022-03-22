@@ -7,7 +7,7 @@ library(leaflet)
 
 #' ## Artic Projections
 
-#' There is a [polarmap.js](http://webmap.arcticconnect.org/)
+#' There is a [polarmap.js](http://webmap.arcticconnect.ca/)
 #' leaflet plugin available, but that one is not easy to integrate in to the R package.<br/>
 #' But thankfully it does provide Tiles in different projections
 #' which can be used with Proj4Leaflet.
@@ -18,9 +18,9 @@ library(leaflet)
 
 #' All these numbers and calculations come from the polarmap.js plugin, specifically from these files
 #'
-#' - http://webmap.arcticconnect.org/polarmap.js/dist/polarmap-src.js
-#' - http://webmap.arcticconnect.org/tiles.html
-#' - http://webmap.arcticconnect.org/usage.html
+#' - http://webmap.arcticconnect.ca/polarmap.js/dist/polarmap-src.js
+#' - http://webmap.arcticconnect.ca/tiles.html
+#' - http://webmap.arcticconnect.ca/usage.html
 #'
 extent <- 11000000 + 9036842.762 + 667
 origin <- c(-extent, extent)
@@ -57,7 +57,7 @@ crses <- purrr::map(projections, function(code) {
 
 # Tile URL Template for each projection
 tileURLtemplates <- purrr::map(projections, function(code) {
-  sprintf("http://{s}.tiles.arcticconnect.org/osm_%s/{z}/{x}/{y}.png",
+  sprintf("https://tiles.arcticconnect.ca/osm_%s/{z}/{x}/{y}.png",
           code)
 })
 
@@ -115,7 +115,7 @@ crsAntartica <-  leafletCRS(
   bounds =  list( c(-4194304, -4194304), c(4194304, 4194304) )
 )
 
-antarticaTilesURL <- "//map1{s}.vis.earthdata.nasa.gov/wmts-antarctic/MODIS_Aqua_CorrectedReflectance_TrueColor/default/2014-12-01/EPSG3031_250m/{z}/{y}/{x}.jpg"
+antarticaTilesURL <- "https://map1{s}.vis.earthdata.nasa.gov/wmts-antarctic/MODIS_Aqua_CorrectedReflectance_TrueColor/default/2014-12-01/EPSG3031_250m/{z}/{y}/{x}.jpg"
 
 leaflet(options = leafletOptions(
   crs = crsAntartica, minZoom = zoom, maxZoom = maxZoom, worldCopyJump = FALSE)) %>%
