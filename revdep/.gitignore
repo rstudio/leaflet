@@ -1,6 +1,7 @@
 checks
 library
 checks.noindex
+cloud.noindex
 library.noindex
 data.sqlite
 *.html
