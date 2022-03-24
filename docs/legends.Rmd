@@ -9,6 +9,9 @@ The Leaflet package includes convenience functions for creating color legends. I
 ```{r, include = FALSE}
 library(leaflet)
 library(magrittr)
+
+# Load rgdal in the include=FALSE block to squelch all of the warnings
+library(rgdal)
 ```
 
 ```{r}

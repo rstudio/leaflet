@@ -246,25 +246,9 @@ pre code {
 <p>The Leaflet package includes convenience functions for creating color
 legends. In this section, we will build on the example from the <a
 href="colors.html">Colors</a> page.</p>
-<pre class="r"><code>library(rgdal)</code></pre>
-<pre><code>## Loading required package: sp</code></pre>
-<pre><code>## Please note that rgdal will be retired by the end of 2023,
-## plan transition to sf/stars/terra functions using GDAL and PROJ
-## at your earliest convenience.
-## 
-## rgdal: version: 1.5-28, (SVN revision 1158)
-## Geospatial Data Abstraction Library extensions to R successfully loaded
-## Loaded GDAL runtime: GDAL 3.2.3, released 2021/04/27
-## Path to GDAL shared files: /Library/Frameworks/R.framework/Versions/4.1-arm64/Resources/library/rgdal/gdal
-## GDAL binary built with GEOS: TRUE 
-## Loaded PROJ runtime: Rel. 7.2.1, January 1st, 2021, [PJ_VERSION: 721]
-## Path to PROJ shared files: /Library/Frameworks/R.framework/Versions/4.1-arm64/Resources/library/rgdal/proj
-## PROJ CDN enabled: FALSE
-## Linking to sp version:1.4-6
-## To mute warnings of possible GDAL/OSR exportToProj4() degradation,
-## use options(&quot;rgdal_show_exportToProj4_warnings&quot;=&quot;none&quot;) before loading sp or rgdal.
-## Overwritten PROJ_LIB was /Library/Frameworks/R.framework/Versions/4.1-arm64/Resources/library/rgdal/proj</code></pre>
-<pre class="r"><code># From http://data.okfn.org/data/datasets/geo-boundaries-world-110m
+<pre class="r"><code>library(rgdal)
+
+# From http://data.okfn.org/data/datasets/geo-boundaries-world-110m
 countries &lt;- readOGR(&quot;https://rstudio.github.io/leaflet/json/countries.geojson&quot;)</code></pre>
 <pre><code>## OGR data source with driver: GeoJSON 
 ## Source: &quot;https://rstudio.github.io/leaflet/json/countries.geojson&quot;, layer: &quot;countries&quot;
