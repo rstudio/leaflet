@@ -15,7 +15,7 @@ library(magrittr)
 
 ```{r fig.height = 4.75, echo = FALSE}
 # From http://leafletjs.com/examples/choropleth/us-states.js
-states <- geojsonio::geojson_read("https://rstudio.github.io/leaflet/json/us-states.geojson", what = "sp")
+states <- sf::st_read("https://rstudio.github.io/leaflet/json/us-states.geojson")
 
 bins <- c(0, 10, 20, 50, 100, 200, 500, 1000, Inf)
 pal <- colorBin("YlOrRd", domain = states$density, bins = bins)
@@ -56,15 +56,15 @@ leaflet(states) %>%
 
 We'll start by loading the data from JSON. While the Leaflet.js example loads the JSON directly into JavaScript, with the Leaflet R package we instead want to load the data into R.
 
-In this case, we'll use the `geojsonio` package to load the data into `sp` objects, which will let us easily manipulate the geographic features, and their properties, in R.
+In this case, we'll use the `sf` package to load the data into `sf` objects, which will let us easily manipulate the geographic features, and their properties, in R.
 
 ```{r}
-states <- geojsonio::geojson_read("https://rstudio.github.io/leaflet/json/us-states.geojson", what = "sp")
+states <- sf::sf_read("https://rstudio.github.io/leaflet/json/us-states.geojson")
 class(states)
 names(states)
 ```
 
-As you can see, we now have a `SpatialPolygonsDataFrame` with `name` (state name) and `density` (population density in people/mi<sup>2</sup>) columns from the GeoJSON.
+As you can see, we now have a `sf` with `name` (state name) and `density` (population density in people/mi<sup>2</sup>) columns from the GeoJSON.
 
 ### Basic states map
 
@@ -181,7 +181,7 @@ m %>% addLegend(pal = pal, values = ~density, opacity = 0.7, title = NULL,
 
 ```{r results = 'hide'}
 # From http://leafletjs.com/examples/choropleth/us-states.js
-states <- geojsonio::geojson_read("https://rstudio.github.io/leaflet/json/us-states.geojson", what = "sp")
+states <- sf::st_read("https://rstudio.github.io/leaflet/json/us-states.geojson")
 
 bins <- c(0, 10, 20, 50, 100, 200, 500, 1000, Inf)
 pal <- colorBin("YlOrRd", domain = states$density, bins = bins)
