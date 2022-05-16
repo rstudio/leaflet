@@ -1,6 +1,6 @@
-leafletProviderDependencies <- function() {
+leafletProviderDependencies <- function(dependencyLocation=tempdir()) {
   list(
-    get_providers_html_dependency(),
+    get_providers_html_dependency(dependencyLocation=dependencyLocation),
     htmltools::htmlDependency(
       "leaflet-providers-plugin",
       get_package_version("leaflet"),
@@ -23,6 +23,7 @@ leafletProviderDependencies <- function() {
 #'   Human-friendly group names are permitted--they need not be short,
 #'   identifier-style names.
 #' @param options tile options
+#' @param dependencyLocation Location to store providers JS file
 #' @return modified map object
 #'
 #' @examples
@@ -36,9 +37,10 @@ addProviderTiles <- function(
   provider,
   layerId = NULL,
   group = NULL,
-  options = providerTileOptions()
+  options = providerTileOptions(),
+  dependencyLocation=tempdir()
 ) {
-  map$dependencies <- c(map$dependencies, leafletProviderDependencies())
+  map$dependencies <- c(map$dependencies, leafletProviderDependencies(dependencyLocation=dependencyLocation))
   invokeMethod(map, getMapData(map), "addProviderTiles",
     provider, layerId, group, options)
 }
@@ -89,19 +91,19 @@ NULL
 # Active binding added in zzz.R
 "providers.src"
 
-get_providers_html_dependency <- function() {
-  tmpfile <- file.path(tempdir(), paste0("leaflet-providers_", providers.version_num, ".js"))
+get_providers_html_dependency <- function(dependencyLocation=tempdir()) {
+  depfile <- file.path(dependencyLocation, paste0("leaflet-providers_", providers.version_num, ".js"))
 
-  if (!file.exists(tmpfile)) {
+  if (!file.exists(depfile)) {
     src <- providers.src
-    writeLines(src, tmpfile)
+    writeLines(src, depfile)
   }
 
   htmltools::htmlDependency(
     "leaflet-providers",
     providers.version_num,
-    src = dirname(tmpfile),
-    script = basename(tmpfile),
+    src = dirname(depfile),
+    script = basename(depfile),
     all_files = FALSE
   )
 }

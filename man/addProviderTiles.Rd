@@ -10,7 +10,8 @@ addProviderTiles(
   provider,
   layerId = NULL,
   group = NULL,
-  options = providerTileOptions()
+  options = providerTileOptions(),
+  dependencyLocation = tempdir()
 )
 
 providerTileOptions(
@@ -38,6 +39,8 @@ Human-friendly group names are permitted--they need not be short,
 identifier-style names.}
 
 \item{options}{tile options}
+
+\item{dependencyLocation}{Location to store providers JS file}
 
 \item{errorTileUrl, noWrap, opacity, zIndex, updateWhenIdle, detectRetina}{the tile layer options; see
 \url{https://leafletjs.com/reference-1.3.4.html#tilelayer}}
