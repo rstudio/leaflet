@@ -1,3 +1,9 @@
+leaflet 2.1.2
+--------------------------------------------------------------------------------
+
+BUG FIXES and IMPROVEMENTS
+* `addProviderTiles` updated to allow the user to specify where to save the .js file. This was needed because the default temp file does not surive cached rebuilds when using when using Quarto.
+
 leaflet 2.1.1
 --------------------------------------------------------------------------------
 
