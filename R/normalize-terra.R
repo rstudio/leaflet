@@ -24,18 +24,19 @@ pointData.SpatVector <- function(obj) {
 polygonData.SpatVector <- function(obj) {
 	check_crs_terra(obj)
 
-	xy <- data.frame(terra::geom(obj))
+	# this is a bit convoluted. I will add a simpler 
+	# and more efficient method to terra to replace the below
+	xy = data.frame(terra::geom(obj))
 	names(xy)[3:4] = c("lng", "lat")
-	
-	xy <- split(xy[,2:5], xy[,1]) # polygons
-	names(xy) <- NULL  # won't work with names
-	xy <- lapply(xy, function(p) {
-		d <- split(p[,-1], p[,1]) # parts
-		names(d) <- NULL
+	xy = split(xy[,2:5], xy[,1]) # polygons
+	names(xy) = NULL  # won't work with names
+	xy = lapply(xy, function(p) {
+		d = split(p[,-1], p[,1]) # parts
+		names(d) = NULL
 		lapply(d, function(p) {   # ring and holes
-			s <- split(p[,1:2], p[,3])
-			names(s) <- NULL
-			s
+			s = split(p[,1:2], p[,3])
+			names(s) = NULL
+			lapply(s, function(i) { rownames(i) = NULL; i }) # for expect_maps_equal
 		})
 	})
 	

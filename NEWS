@@ -6,6 +6,8 @@ BUG FIXES and IMPROVEMENTS
 
 * New behavior from tile.openstreetmap.org caused `addTiles` default tileset to break when viewed under non-https protocol on recent versions of Chrome. Fixed by always using the https protocol to connect to openstreetmap. (#786)
 
+* Added support for SpatRaster and SpatVector objects from the terra package. (#728)
+
 leaflet 2.1.0
 --------------------------------------------------------------------------------
 
