@@ -172,12 +172,13 @@ addTiles <- function(
 epsg4326 <- "+proj=longlat +datum=WGS84 +no_defs"
 epsg3857 <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs" # nolint
 
+
 #' Add a raster image as a layer
 #'
-#' Create an image overlay from a \code{RasterLayer} object. \emph{This is only
-#' suitable for small to medium sized rasters}, as the entire image will be
-#' embedded into the HTML page (or passed over the websocket in a Shiny
-#' context).
+#' Create an image overlay from a \code{RasterLayer} or a \code{SpatRaster} 
+#' object. \emph{This is only suitable for small to medium sized rasters},
+#' as the entire image will be embedded into the HTML page (or passed over
+#' the websocket in a Shiny context).
 #'
 #' The \code{maxBytes} parameter serves to prevent you from accidentally
 #' embedding an excessively large amount of data into your htmlwidget. This
@@ -187,18 +188,22 @@ epsg3857 <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y
 #' aware that very large rasters may not only make your map a large download but
 #' also may cause the browser to become slow or unresponsive.
 #'
-#' By default, the \code{addRasterImage} function will project the RasterLayer
-#' \code{x} to EPSG:3857 using the \code{raster} package's
-#' \code{\link[raster]{projectRaster}} function. This can be a time-consuming
-#' operation for even moderately sized rasters. Upgrading the \code{raster}
-#' package to 2.4 or later will provide a large speedup versus previous
-#' versions. If you are repeatedly adding a particular raster to your Leaflet
+#' To reduce the size of a SpatRaster, you can use \code{\link[terra]{spatSample}}
+#' as in \code{x = spatSample(x, 100000, method="regular", as.raster=TRUE)}. With
+#' a \code{RasterLayer} you can use \code{\link[raster]{sampleRegular}} as in 
+#' \code{sampleRegular(x, 100000, asRaster=TRUE)}.
+#'
+#' By default, the \code{addRasterImage} function will project the raster data
+#' \code{x} to the Pseudo-Mercator projection (EPSG:3857). This can be a 
+#' time-consuming operation for even moderately sized rasters; although it is much
+#' faster for SpatRasters than for RasterLayers. 
+#' If you are repeatedly adding a particular raster to your Leaflet
 #' maps, you can perform the projection ahead of time using
 #' \code{projectRasterForLeaflet()}, and call \code{addRasterImage} with
 #' \code{project = FALSE}.
 #'
 #' @param map a map widget object
-#' @param x a \code{RasterLayer} object--see \code{\link[raster]{raster}}
+#' @param x a \code{\link[terra]{SpatRaster}} or a \code{RasterLayer} object--see \code{\link[raster]{raster}}
 #' @param colors the color palette (see \code{\link{colorNumeric}}) or function
 #'   to use to color the raster values (hint: if providing a function, set
 #'   \code{na.color} to \code{"#00000000"} to make \code{NA} areas transparent)
@@ -235,7 +240,7 @@ epsg3857 <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y
 addRasterImage <- function(
   map,
   x,
-  colors = if (raster::is.factor(x)) "Set1" else "Spectral",
+  colors = if (is.factor(x)[1]) "Set1" else "Spectral",
   opacity = 1,
   attribution = NULL,
   layerId = NULL,
@@ -245,8 +250,55 @@ addRasterImage <- function(
   maxBytes = 4 * 1024 * 1024,
   data = getMapData(map)
 ) {
-  stopifnot(inherits(x, "RasterLayer"))
+	if (inherits(x, "SpatRaster")) {
+		addRasterImage_SpatRaster(
+		  map=map,
+		  x=x,
+		  colors = colors,
+		  opacity = opacity,
+		  attribution = attribution,
+		  layerId = layerId,
+		  group = group,
+		  project = project,
+		  method = method,
+		  maxBytes = maxBytes,
+		  data = data
+		)
+	} else if (inherits(x, "RasterLayer")) {
+		addRasterImage_RasterLayer(
+		  map=map,
+		  x=x,
+		  colors = colors,
+		  opacity = opacity,
+		  attribution = attribution,
+		  layerId = layerId,
+		  group = group,
+		  project = project,
+		  method = method,
+		  maxBytes = maxBytes,
+		  data = data
+		)	
+	} else {
+		stop("Don't know how to get path data from object of class ", class(x)[[1]])
+	}
+}
 
+
+addRasterImage_RasterLayer <- function(
+  map,
+  x,
+  colors = if (is.factor(x)[1]) "Set1" else "Spectral",
+  opacity = 1,
+  attribution = NULL,
+  layerId = NULL,
+  group = NULL,
+  project = TRUE,
+  method = c("auto", "bilinear", "ngb"),
+  maxBytes = 4 * 1024 * 1024,
+  data = getMapData(map)
+) {
+
+ 
   raster_is_factor <- raster::is.factor(x)
   method <- match.arg(method)
   if (method == "auto") {
@@ -260,11 +312,6 @@ addRasterImage <- function(
   if (project) {
     # if we should project the data
     projected <- projectRasterForLeaflet(x, method)
-
-    # if data is factor data, make the result factors as well.
-    if (raster_is_factor) {
-      projected <- raster::as.factor(projected)
-    }
   } else {
     # do not project data
     projected <- x
@@ -311,14 +358,116 @@ addRasterImage <- function(
     )
 }
 
+addRasterImage_SpatRaster <- function(
+  map,
+  x,
+  colors = if (terra::is.factor(x)[1]) "Set1" else "Spectral",
+  opacity = 1,
+  attribution = NULL,
+  layerId = NULL,
+  group = NULL,
+  project = TRUE,
+  method = c("auto", "bilinear", "ngb"),
+  maxBytes = 4 * 1024 * 1024,
+  data = getMapData(map)
+) {
+
+  if (terra::nlyr(x) > 1) {
+	x <- x[[1]]
+	warning("using the first layer in 'x'", call. = FALSE)
+  }
+  
+  raster_is_factor <- terra::is.factor(x)
+  method <- match.arg(method)
+  if (method == "ngb") method = "near"
+  if (method == "auto") {
+    if (raster_is_factor) {
+      method <- "near"
+    } else {
+      method <- "bilinear"
+    }
+  }
+
+  if (project) {
+    # if we should project the data
+    projected <- projectRasterForLeaflet(x, method)
+  } else {
+    # do not project data
+    projected <- x
+  }
+  
+  bounds <- terra::ext(
+    terra::project(
+	  terra::project(
+	    terra::as.points(terra::ext(x), crs=terra::crs(x)), 
+		epsg3857), 
+	  epsg4326)
+  )
+
+  if (!is.function(colors)) {
+    if (method == "near") {
+      # 'factors'
+      colors <- colorFactor(colors, domain = NULL, na.color = "#00000000", alpha = TRUE)
+    } else {
+      # 'numeric'
+      colors <- colorNumeric(colors, domain = NULL, na.color = "#00000000", alpha = TRUE)
+    }
+  }
+
+  tileData <- terra::values(projected) %>% as.vector() %>% colors() %>% col2rgb(alpha = TRUE) %>% as.raw()
+  dim(tileData) <- c(4, ncol(projected), nrow(projected))
+  pngData <- png::writePNG(tileData)
+  if (length(pngData) > maxBytes) {
+    stop(
+      "Raster image too large; ", length(pngData), " bytes is greater than maximum ",
+      maxBytes, " bytes"
+    )
+  }
+  encoded <- base64enc::base64encode(pngData)
+  uri <- paste0("data:image/png;base64,", encoded)
+
+  latlng <- list(
+    list(terra::ymax(bounds), terra::xmin(bounds)),
+    list(terra::ymin(bounds), terra::xmax(bounds))
+  )
+
+  invokeMethod(map, data, "addRasterImage", uri, latlng, opacity, attribution, layerId, group) %>%
+    expandLimits(
+      c(terra::ymin(bounds), terra::ymax(bounds)),
+      c(terra::xmin(bounds), terra::xmax(bounds))
+    )
+}
+
+
+
 #' @rdname addRasterImage
 #' @export
 projectRasterForLeaflet <- function(x, method) {
-  raster::projectRaster(
-    x,
-    raster::projectExtent(x, crs = sp::CRS(epsg3857)),
-    method = method
-  )
+  if (inherits(x, "SpatRaster")) {
+	if (method=="ngb") {
+      method = "near"
+	}
+    terra::project(
+	  x, 
+	  y=epsg3857,
+	  method=method
+	)
+  } else {
+	raster_is_factor <- raster::is.factor(x);
+	projected <- raster::projectRaster(
+	  x,
+	  raster::projectExtent(x, crs = sp::CRS(epsg3857)),
+	  method = method
+    )
+    # if data is factor data, make the result factors as well.
+	# only meaningful if ngb was used
+    if ((raster_is_factor) && (method == "ngb")) {
+      raster::as.factor(projected)
+    } else {
+	  projected
+	}
+	
+  }	
 }
 
 #' @rdname remove

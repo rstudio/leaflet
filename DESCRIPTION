@@ -61,7 +61,8 @@ Suggests:
     RJSONIO,
     purrr,
     testthat (>= 3.0.0),
-    s2
-RoxygenNote: 7.1.2
+    s2,
+	terra
+RoxygenNote: 7.2.0
 Encoding: UTF-8
 LazyData: true

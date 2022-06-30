@@ -39,13 +39,11 @@ leafletSizingPolicy <- function(
 #' we may add a circle layer to the map by \code{leaflet(data) \%>\%
 #' addCircles(lat = ~latitude, lng = ~longtitude)}, where the variables in the
 #' formulae will be evaluated in the \code{data}.
-#' @param data a data object. Currently supported objects are matrices, data
-#'   frames, spatial objects from the \pkg{sp} package
-#'   (\code{SpatialPoints}, \code{SpatialPointsDataFrame}, \code{Polygon},
-#'   \code{Polygons}, \code{SpatialPolygons}, \code{SpatialPolygonsDataFrame},
-#'   \code{Line}, \code{Lines}, \code{SpatialLines}, and
-#'   \code{SpatialLinesDataFrame}), and
-#'   spatial data frames from the \pkg{sf} package.
+#' @param data a data object. Currently supported objects are matrix, data
+#' frame, spatial data from the \pkg{sf} package, 
+#' \code{SpatVector} from the \pkg{terra} package, and the Spatial*
+#' objects from the \pkg{sp} package that represent points, lines, or polygons. 
+#'
 #' @param width the width of the map
 #' @param height the height of the map
 #' @param padding the padding of the map
@@ -66,7 +64,7 @@ leaflet <- function(data = NULL, width = NULL, height = NULL,
      !inherits(options[["crs"]], "leaflet_crs")) {
     stop("CRS in mapOptions should be a return value of leafletCRS() function")
   }
-
+  
   map <- htmlwidgets::createWidget(
     "leaflet",
     structure(
