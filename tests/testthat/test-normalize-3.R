@@ -44,6 +44,7 @@ test_that("normalize terra", {
 
   ### points ----------------------------------------------------------------
   ptsdata <- vect(breweries91)
+  crs(ptsdata) <- "+proj=longlat +datum=WGS84"
 
   (p1 <- leaflet() %>% addTiles() %>% addCircleMarkers(data = ptsdata))
   (p2 <- leaflet() %>% addTiles() %>% addCircleMarkers(data = breweries91))
