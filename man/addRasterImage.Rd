@@ -58,7 +58,7 @@ default, it is the \code{data} object provided to \code{leaflet()}
 initially, but can be overridden}
 }
 \description{
-Create an image overlay from a \code{RasterLayer} or a \code{SpatRaster} 
+Create an image overlay from a \code{RasterLayer} or a \code{SpatRaster}
 object. \emph{This is only suitable for small to medium sized rasters},
 as the entire image will be embedded into the HTML page (or passed over
 the websocket in a Shiny context).
@@ -74,13 +74,13 @@ also may cause the browser to become slow or unresponsive.
 
 To reduce the size of a SpatRaster, you can use \code{\link[terra]{spatSample}}
 as in \code{x = spatSample(x, 100000, method="regular", as.raster=TRUE)}. With
-a \code{RasterLayer} you can use \code{\link[raster]{sampleRegular}} as in 
+a \code{RasterLayer} you can use \code{\link[raster]{sampleRegular}} as in
 \code{sampleRegular(x, 100000, asRaster=TRUE)}.
 
 By default, the \code{addRasterImage} function will project the raster data
-\code{x} to the Pseudo-Mercator projection (EPSG:3857). This can be a 
+\code{x} to the Pseudo-Mercator projection (EPSG:3857). This can be a
 time-consuming operation for even moderately sized rasters; although it is much
-faster for SpatRasters than for RasterLayers. 
+faster for SpatRasters than for RasterLayers.
 If you are repeatedly adding a particular raster to your Leaflet
 maps, you can perform the projection ahead of time using
 \code{projectRasterForLeaflet()}, and call \code{addRasterImage} with
