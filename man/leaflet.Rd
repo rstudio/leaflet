@@ -39,13 +39,10 @@ leafletCRS(
 )
 }
 \arguments{
-\item{data}{a data object. Currently supported objects are matrices, data
-frames, spatial objects from the \pkg{sp} package
-(\code{SpatialPoints}, \code{SpatialPointsDataFrame}, \code{Polygon},
-\code{Polygons}, \code{SpatialPolygons}, \code{SpatialPolygonsDataFrame},
-\code{Line}, \code{Lines}, \code{SpatialLines}, and
-\code{SpatialLinesDataFrame}), and
-spatial data frames from the \pkg{sf} package.}
+\item{data}{a data object. Currently supported objects are matrix, data
+frame, spatial data from the \pkg{sf} package, 
+\code{SpatVector} from the \pkg{terra} package, and the Spatial*
+objects from the \pkg{sp} package that represent points, lines, or polygons.}
 
 \item{width}{the width of the map}
 
