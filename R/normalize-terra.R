@@ -24,8 +24,6 @@ pointData.SpatVector <- function(obj) {
 polygonData.SpatVector <- function(obj) {
   check_crs_terra(obj)
 
-  # this is a bit convoluted. I will add a simpler
-  # and more efficient method to terra to replace the below
   xy = data.frame(terra::geom(obj))
   names(xy)[3:4] = c("lng", "lat")
   xy = split(xy[,2:5], xy[,1]) # polygons
@@ -39,6 +37,9 @@ polygonData.SpatVector <- function(obj) {
       lapply(s, function(i) { rownames(i) = NULL; i }) # for expect_maps_equal
     })
   })
+
+  # with terra >= 1.5-50 you can do this instead
+  # xy = terra::geom(obj, list=TRUE, xnm="lng", ynm="lat")
 
   structure(
     xy,
