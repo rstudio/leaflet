@@ -56,13 +56,13 @@ see \url{https://github.com/CliffCloud/Leaflet.EasyButton}
 }
 \section{Functions}{
 \itemize{
-\item \code{easyButtonState}: state of an easyButton.
+\item \code{easyButtonState()}: state of an easyButton.
 
-\item \code{addEasyButton}: add an EasyButton to the map
+\item \code{addEasyButton()}: add an EasyButton to the map
 
-\item \code{addEasyButtonBar}: add an EasyButton to the map
+\item \code{addEasyButtonBar()}: add an EasyButton to the map
+
 }}
-
 \examples{
 leaf <- leaflet() \%>\%
   addTiles() \%>\%

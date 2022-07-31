@@ -162,8 +162,8 @@ addTiles <- function(
   options$attribution <- attribution
   if (missing(urlTemplate) && is.null(options$attribution))
     options$attribution <- paste(
-      "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap</a>",
-      "contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>"
+      "&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap</a>, ",
+      "<a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL</a>"
     )
   invokeMethod(map, data, "addTiles", urlTemplate, layerId, group,
     options)

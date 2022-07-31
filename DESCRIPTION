@@ -1,15 +1,15 @@
 Package: leaflet
 Type: Package
 Title: Create Interactive Web Maps with the JavaScript 'Leaflet' Library
-Version: 2.1.1
+Version: 2.1.1.9000
 Authors@R: c(
       person("Joe", "Cheng", email = "joe@rstudio.com", role = c("aut", "cre")),
+      person("Barret", "Schloerke", role = c("aut")),
       person("Bhaskar", "Karambelkar", role = c("aut")),
       person("Yihui", "Xie", role = c("aut")),
       person("Hadley", "Wickham", role = c("ctb")),
       person("Kenton", "Russell", role = c("ctb")),
       person("Kent", "Johnson", role = c("ctb")),
-      person("Barret", "Schloerke", role = c("ctb")),
       person("jQuery Foundation and contributors", role = c("ctb", "cph"), comment = "jQuery library"),
       person("Vladimir", "Agafonkin", role = c("ctb", "cph"), comment = "Leaflet library"),
       person("CloudMade", role = c("cph"), comment = "Leaflet library"),
@@ -63,6 +63,6 @@ Suggests:
     testthat (>= 3.0.0),
     s2,
     terra
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.1
 Encoding: UTF-8
 LazyData: true

@@ -43,21 +43,21 @@ A series of methods to manipulate the map.
 }
 \section{Functions}{
 \itemize{
-\item \code{setView}: Set the view of the map (center and zoom level)
+\item \code{setView()}: Set the view of the map (center and zoom level)
 
-\item \code{flyTo}: Flys to a given location/zoom-level using smooth pan-zoom.
+\item \code{flyTo()}: Flys to a given location/zoom-level using smooth pan-zoom.
 
-\item \code{fitBounds}: Set the bounds of a map
+\item \code{fitBounds()}: Set the bounds of a map
 
-\item \code{flyToBounds}: Flys to given bound using smooth pan/zoom.
+\item \code{flyToBounds()}: Flys to given bound using smooth pan/zoom.
 
-\item \code{setMaxBounds}: Restricts the map view to the given bounds
+\item \code{setMaxBounds()}: Restricts the map view to the given bounds
 
-\item \code{clearBounds}: Clear the bounds of a map, and the bounds will be
+\item \code{clearBounds()}: Clear the bounds of a map, and the bounds will be
 automatically determined from latitudes and longitudes of the map elements
 if available (otherwise the full world view is used)
-}}
 
+}}
 \examples{
 \donttest{m <- leaflet() \%>\% addTiles() \%>\% setView(-71.0382679, 42.3489054, zoom = 18)
 m  # the RStudio 'headquarter'
