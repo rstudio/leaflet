@@ -10,7 +10,6 @@ Authors@R: c(
       person("Hadley", "Wickham", role = c("ctb")),
       person("Kenton", "Russell", role = c("ctb")),
       person("Kent", "Johnson", role = c("ctb")),
-      person("jQuery Foundation and contributors", role = c("ctb", "cph"), comment = "jQuery library"),
       person("Vladimir", "Agafonkin", role = c("ctb", "cph"), comment = "Leaflet library"),
       person("CloudMade", role = c("cph"), comment = "Leaflet library"),
       person("Leaflet contributors", role = c("ctb"), comment = "Leaflet library"),
