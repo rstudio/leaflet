@@ -1,6 +1,6 @@
 dependencies:
   - name: jquery
-    version: 1.12.4
+    version: 3.6.0
     src: "htmlwidgets/lib/jquery"
     script: jquery.min.js
   - name: leaflet
