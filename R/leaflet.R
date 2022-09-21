@@ -40,9 +40,9 @@ leafletSizingPolicy <- function(
 #' addCircles(lat = ~latitude, lng = ~longtitude)}, where the variables in the
 #' formulae will be evaluated in the \code{data}.
 #' @param data a data object. Currently supported objects are matrix, data
-#' frame, spatial data from the \pkg{sf} package, 
+#' frame, spatial data from the \pkg{sf} package,
 #' \code{SpatVector} from the \pkg{terra} package, and the Spatial*
-#' objects from the \pkg{sp} package that represent points, lines, or polygons. 
+#' objects from the \pkg{sp} package that represent points, lines, or polygons.
 #'
 #' @param width the width of the map
 #' @param height the height of the map
@@ -64,7 +64,7 @@ leaflet <- function(data = NULL, width = NULL, height = NULL,
      !inherits(options[["crs"]], "leaflet_crs")) {
     stop("CRS in mapOptions should be a return value of leafletCRS() function")
   }
-  
+
   map <- htmlwidgets::createWidget(
     "leaflet",
     structure(
@@ -129,6 +129,16 @@ leaflet <- function(data = NULL, width = NULL, height = NULL,
         src = "htmlwidgets/lib/rstudio_leaflet",
         stylesheet = "rstudio_leaflet.css"
       ),
+      # Include the rstudio leaflet binding last
+      # https://github.com/ramnathv/htmlwidgets/blob/7b9c1ea3d9fbf4736d84f1fd1178fce0af29f8e3/R/utils.R#L59-L68
+      htmltools::htmlDependency(
+        name = "leaflet-binding",
+        version = get_package_version("leaflet"),
+        src = "htmlwidgets/assets",
+        package = "leaflet",
+        script = "leaflet.js",
+        all_files = FALSE
+      )
     )
   )
 
