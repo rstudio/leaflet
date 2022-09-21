@@ -38,6 +38,7 @@ Imports:
     crosstalk,
     htmlwidgets (>= 1.5.4),
     htmltools,
+    jquerylib,
     magrittr,
     markdown,
     methods,

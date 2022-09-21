@@ -88,7 +88,10 @@ leaflet <- function(data = NULL, width = NULL, height = NULL,
       }
       widget
     },
-    elementId = elementId
+    elementId = elementId,
+    dependencies = list(
+      jquerylib::jquery_core(3),
+    )
   )
 
   if (crosstalk::is.SharedData(data)) {
