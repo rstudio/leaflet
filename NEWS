@@ -4,6 +4,9 @@ leaflet 2.1.1.9000
 BUG FIXES and IMPROVEMENTS
 * Use correct license in OpenStreetMap attribution. (#811)
 
+* Update jQuery to v3.6.0. (#816)
+
+
 leaflet 2.1.1
 --------------------------------------------------------------------------------
 
