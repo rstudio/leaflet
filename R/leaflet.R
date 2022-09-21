@@ -40,9 +40,9 @@ leafletSizingPolicy <- function(
 #' addCircles(lat = ~latitude, lng = ~longtitude)}, where the variables in the
 #' formulae will be evaluated in the \code{data}.
 #' @param data a data object. Currently supported objects are matrix, data
-#' frame, spatial data from the \pkg{sf} package, 
+#' frame, spatial data from the \pkg{sf} package,
 #' \code{SpatVector} from the \pkg{terra} package, and the Spatial*
-#' objects from the \pkg{sp} package that represent points, lines, or polygons. 
+#' objects from the \pkg{sp} package that represent points, lines, or polygons.
 #'
 #' @param width the width of the map
 #' @param height the height of the map
@@ -64,7 +64,7 @@ leaflet <- function(data = NULL, width = NULL, height = NULL,
      !inherits(options[["crs"]], "leaflet_crs")) {
     stop("CRS in mapOptions should be a return value of leafletCRS() function")
   }
-  
+
   map <- htmlwidgets::createWidget(
     "leaflet",
     structure(
@@ -88,7 +88,58 @@ leaflet <- function(data = NULL, width = NULL, height = NULL,
       }
       widget
     },
-    elementId = elementId
+    elementId = elementId,
+    dependencies = list(
+      jquerylib::jquery_core(3),
+      htmltools::htmlDependency(
+        name = "leaflet",
+        version = "1.3.1",
+        package = "leaflet",
+        src = "htmlwidgets/lib/leaflet",
+        script = "leaflet.js",
+        stylesheet = "leaflet.css"
+      ),
+      htmltools::htmlDependency(
+        name = "leafletfix",
+        version = "1.0.0",
+        package = "leaflet",
+        src = "htmlwidgets/lib/leafletfix",
+        stylesheet = "leafletfix.css"
+      ),
+      htmltools::htmlDependency(
+        name = "proj4",
+        version = "2.6.2",
+        package = "leaflet",
+        src = "htmlwidgets/plugins/Proj4Leaflet",
+        script = "proj4.min.js",
+        all_files = FALSE
+      ),
+      htmltools::htmlDependency(
+        name = "Proj4Leaflet",
+        version = "1.0.1",
+        package = "leaflet",
+        src = "htmlwidgets/plugins/Proj4Leaflet",
+        script = "proj4leaflet.js",
+        all_files = FALSE
+      ),
+      htmltools::htmlDependency(
+        name = "rstudio_leaflet",
+        version = "1.3.1",
+        package = "leaflet",
+        src = "htmlwidgets/lib/rstudio_leaflet",
+        stylesheet = "rstudio_leaflet.css"
+      ),
+      # Include the rstudio leaflet binding last
+      # https://github.com/ramnathv/htmlwidgets/blob/7b9c1ea3d9fbf4736d84f1fd1178fce0af29f8e3/R/utils.R#L59-L68
+      htmltools::htmlDependency(
+        name = "leaflet-binding",
+        version = get_package_version("leaflet"),
+        src = "htmlwidgets/assets",
+        package = "leaflet",
+        script = "leaflet.js",
+        all_files = FALSE
+      )
+    )
   )
 
   if (crosstalk::is.SharedData(data)) {
