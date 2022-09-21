@@ -91,6 +91,44 @@ leaflet <- function(data = NULL, width = NULL, height = NULL,
     elementId = elementId,
     dependencies = list(
       jquerylib::jquery_core(3),
+      htmltools::htmlDependency(
+        name = "leaflet",
+        version = "1.3.1",
+        package = "leaflet",
+        src = "htmlwidgets/lib/leaflet",
+        script = "leaflet.js",
+        stylesheet = "leaflet.css"
+      ),
+      htmltools::htmlDependency(
+        name = "leafletfix",
+        version = "1.0.0",
+        package = "leaflet",
+        src = "htmlwidgets/lib/leafletfix",
+        stylesheet = "leafletfix.css"
+      ),
+      htmltools::htmlDependency(
+        name = "proj4",
+        version = "2.6.2",
+        package = "leaflet",
+        src = "htmlwidgets/plugins/Proj4Leaflet",
+        script = "proj4.min.js",
+        all_files = FALSE
+      ),
+      htmltools::htmlDependency(
+        name = "Proj4Leaflet",
+        version = "1.0.1",
+        package = "leaflet",
+        src = "htmlwidgets/plugins/Proj4Leaflet",
+        script = "proj4leaflet.js",
+        all_files = FALSE
+      ),
+      htmltools::htmlDependency(
+        name = "rstudio_leaflet",
+        version = "1.3.1",
+        package = "leaflet",
+        src = "htmlwidgets/lib/rstudio_leaflet",
+        stylesheet = "rstudio_leaflet.css"
+      ),
     )
   )
 
