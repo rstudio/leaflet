@@ -39,3 +39,8 @@ Fix for https://github.com/rstudio/rmarkdown/issues/1949 */
 	max-width: none !important;
 	max-height: none !important;
 }
+
+.leaflet.html-widget {
+  height: 400px;
+  width: 100%;
+}
