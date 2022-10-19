@@ -6,6 +6,8 @@ BUG FIXES and IMPROVEMENTS
 
 * Update jQuery to utilize `{jquerylib}`. (#817)
 
+* `leafletOutput()`'s `height` and `width` now defaults to `NULL`, allowing it have more flexible default sizing behavior, which will be primarily useful in combination with `{bslib}`'s new `card()` API. (#2192)
+
 
 leaflet 2.1.1
 --------------------------------------------------------------------------------
