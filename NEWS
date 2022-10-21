@@ -8,6 +8,7 @@ BUG FIXES and IMPROVEMENTS
 
 * `leafletOutput()`'s `height` and `width` now defaults to `NULL`, allowing it have more flexible default sizing behavior, which will be primarily useful in combination with `{bslib}`'s new `card()` API. (#2192)
 
+* Use `xfun::base64_uri()` for base64 encoding instead of **markdown** and **base64enc**. (#823)
 
 leaflet 2.1.1
 --------------------------------------------------------------------------------
