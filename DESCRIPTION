@@ -34,13 +34,12 @@ URL: https://rstudio.github.io/leaflet/
 BugReports: https://github.com/rstudio/leaflet/issues
 Depends: R (>= 3.1.0)
 Imports:
-    base64enc,
+    xfun,
     crosstalk,
     htmlwidgets (>= 1.5.4),
     htmltools,
     jquerylib,
     magrittr,
-    markdown,
     methods,
     png,
     RColorBrewer,

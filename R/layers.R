@@ -343,8 +343,7 @@ addRasterImage_RasterLayer <- function(
       maxBytes, " bytes"
     )
   }
-  encoded <- base64enc::base64encode(pngData)
-  uri <- paste0("data:image/png;base64,", encoded)
+  uri <- xfun::base64_uri(pngData, "image/png")
 
   latlng <- list(
     list(raster::ymax(bounds), raster::xmin(bounds)),
@@ -423,8 +422,7 @@ addRasterImage_SpatRaster <- function(
       maxBytes, " bytes"
     )
   }
-  encoded <- base64enc::base64encode(pngData)
-  uri <- paste0("data:image/png;base64,", encoded)
+  uri <- xfun::base64_uri(pngData, "image/png")
 
   latlng <- list(
     list(terra::ymax(bounds), terra::xmin(bounds)),
@@ -1013,12 +1011,9 @@ b64EncodePackedIcons <- function(packedIcons) {
   if (is.null(packedIcons))
     return(packedIcons)
 
-  # TODO: remove this when we've got our own encoding function
-  markdown::markdownToHTML
-  image_uri <- getFromNamespace(".b64EncodeFile", "markdown")
   packedIcons$data <- sapply(packedIcons$data, function(icon) {
     if (is.character(icon) && file.exists(icon)) {
-      image_uri(icon)
+      xfun::base64_uri(icon)
     } else {
       icon
     }
