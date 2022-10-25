@@ -18,7 +18,7 @@
 #' )
 #'
 #' \donttest{if (interactive()) app}
-leafletOutput <- function(outputId, width = NULL, height = NULL) {
+leafletOutput <- function(outputId, width = "100%", height = 400) {
   htmltools::attachDependencies(
     htmlwidgets::shinyWidgetOutput(outputId, "leaflet", width, height, "leaflet"),
     leafletBindingDependencies(),
