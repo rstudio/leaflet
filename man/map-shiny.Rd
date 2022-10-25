@@ -5,7 +5,7 @@
 \alias{renderLeaflet}
 \title{Wrapper functions for using \pkg{leaflet} in \pkg{shiny}}
 \usage{
-leafletOutput(outputId, width = NULL, height = NULL)
+leafletOutput(outputId, width = "100\%", height = 400)
 
 renderLeaflet(expr, env = parent.frame(), quoted = FALSE)
 }
