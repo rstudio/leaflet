@@ -336,14 +336,16 @@ addRasterImage_RasterLayer <- function(
 
   tileData <- raster::values(projected) %>% colors() %>% col2rgb(alpha = TRUE) %>% as.raw()
   dim(tileData) <- c(4, ncol(projected), nrow(projected))
-  pngData <- png::writePNG(tileData)
+  temp <- tempfile(fileext = 'png')
+  pngData <- png::writePNG(tileData, target = temp)
   if (length(pngData) > maxBytes) {
     stop(
       "Raster image too large; ", length(pngData), " bytes is greater than maximum ",
       maxBytes, " bytes"
     )
   }
-  uri <- xfun::base64_uri(pngData, "image/png")
+
+  uri <- xfun::base64_uri(temp)
 
   latlng <- list(
     list(raster::ymax(bounds), raster::xmin(bounds)),
@@ -415,14 +417,16 @@ addRasterImage_SpatRaster <- function(
 
   tileData <- terra::values(projected) %>% as.vector() %>% colors() %>% col2rgb(alpha = TRUE) %>% as.raw()
   dim(tileData) <- c(4, ncol(projected), nrow(projected))
-  pngData <- png::writePNG(tileData)
+  temp <- tempfile(fileext = 'png')
+  pngData <- png::writePNG(tileData, target = temp)
   if (length(pngData) > maxBytes) {
     stop(
       "Raster image too large; ", length(pngData), " bytes is greater than maximum ",
       maxBytes, " bytes"
     )
   }
-  uri <- xfun::base64_uri(pngData, "image/png")
+
+  uri <- xfun::base64_uri(temp)
 
   latlng <- list(
     list(terra::ymax(bounds), terra::xmin(bounds)),

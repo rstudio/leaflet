@@ -178,22 +178,22 @@ listed in the layer functions.
 }
 \section{Functions}{
 \itemize{
-\item \code{tileOptions()}: Options for tile layers
+\item \code{tileOptions}: Options for tile layers
 
-\item \code{WMSTileOptions()}: Options for WMS tile layers
+\item \code{WMSTileOptions}: Options for WMS tile layers
 
-\item \code{popupOptions()}: Options for popups
+\item \code{popupOptions}: Options for popups
 
-\item \code{labelOptions()}: Options for labels
+\item \code{labelOptions}: Options for labels
 
-\item \code{markerOptions()}: Options for markers
+\item \code{markerOptions}: Options for markers
 
-\item \code{markerClusterOptions()}: Options for marker clusters
+\item \code{markerClusterOptions}: Options for marker clusters
 
-\item \code{pathOptions()}: Options for vector layers (polylines, polygons,
+\item \code{pathOptions}: Options for vector layers (polylines, polygons,
 rectangles, and circles, etc)
-
 }}
+
 \seealso{
 \code{\link{leafletCRS}}
   to map CRS (don't change this if you're not sure what it means)

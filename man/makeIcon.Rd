@@ -28,9 +28,16 @@ makeIcon(
 \item{iconRetinaUrl}{the URL or file path to a retina sized version of the
 icon image}
 
-\item{iconWidth, iconHeight}{size of the icon image in pixels}
+\item{iconWidth}{size of the icon image in pixels}
 
-\item{iconAnchorX, iconAnchorY}{the coordinates of the "tip" of the icon
+\item{iconHeight}{size of the icon image in pixels}
+
+\item{iconAnchorX}{the coordinates of the "tip" of the icon
+(relative to its top left corner, i.e. the top left corner means
+\code{iconAnchorX = 0} and \code{iconAnchorY = 0}), and the icon will be
+aligned so that this point is at the marker's geographical location}
+
+\item{iconAnchorY}{the coordinates of the "tip" of the icon
 (relative to its top left corner, i.e. the top left corner means
 \code{iconAnchorX = 0} and \code{iconAnchorY = 0}), and the icon will be
 aligned so that this point is at the marker's geographical location}
@@ -40,11 +47,18 @@ aligned so that this point is at the marker's geographical location}
 \item{shadowRetinaUrl}{the URL or file path to the retina sized version of
 the icon shadow image}
 
-\item{shadowWidth, shadowHeight}{size of the shadow image in pixels}
+\item{shadowWidth}{size of the shadow image in pixels}
 
-\item{shadowAnchorX, shadowAnchorY}{the coordinates of the "tip" of the shadow}
+\item{shadowHeight}{size of the shadow image in pixels}
 
-\item{popupAnchorX, popupAnchorY}{the coordinates of the point from which
+\item{shadowAnchorX}{the coordinates of the "tip" of the shadow}
+
+\item{shadowAnchorY}{the coordinates of the "tip" of the shadow}
+
+\item{popupAnchorX}{the coordinates of the point from which
+popups will "open", relative to the icon anchor}
+
+\item{popupAnchorY}{the coordinates of the point from which
 popups will "open", relative to the icon anchor}
 
 \item{className}{a custom class name to assign to both icon and shadow images}

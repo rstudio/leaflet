@@ -2,8 +2,6 @@
 % Please edit documentation in R/leaflet.R
 \name{leaflet}
 \alias{leaflet}
-\alias{leafletOptions}
-\alias{leafletCRS}
 \title{Create a Leaflet map widget}
 \usage{
 leaflet(
@@ -14,28 +12,6 @@ leaflet(
   options = leafletOptions(),
   elementId = NULL,
   sizingPolicy = leafletSizingPolicy(padding = padding)
-)
-
-leafletOptions(
-  minZoom = NULL,
-  maxZoom = NULL,
-  crs = leafletCRS(),
-  worldCopyJump = NULL,
-  preferCanvas = NULL,
-  ...
-)
-
-leafletCRS(
-  crsClass = "L.CRS.EPSG3857",
-  code = NULL,
-  proj4def = NULL,
-  projectedBounds = NULL,
-  origin = NULL,
-  transformation = NULL,
-  scales = NULL,
-  resolutions = NULL,
-  bounds = NULL,
-  tileSize = NULL
 )
 }
 \arguments{
@@ -56,43 +32,6 @@ objects from the \pkg{sp} package that represent points, lines, or polygons.}
 (rather than an automatically generated one).}
 
 \item{sizingPolicy}{htmlwidgets sizing policy object. Defaults to \code{\link{leafletSizingPolicy}()}}
-
-\item{minZoom}{Minimum zoom level of the map. Overrides any minZoom set on map layers.}
-
-\item{maxZoom}{Maximum zoom level of the map. This overrides any maxZoom set on map layers.}
-
-\item{crs}{Coordinate Reference System to use. Don't change this if you're not sure what it means.}
-
-\item{worldCopyJump}{With this option enabled, the map tracks when you pan to another "copy" of the world and seamlessly jumps to the original one so that all overlays like markers and vector layers are still visible.}
-
-\item{preferCanvas}{Whether leaflet.js Paths should be rendered on a Canvas renderer.}
-
-\item{...}{other options used for leaflet.js map creation.}
-
-\item{crsClass}{One of L.CRS.EPSG3857, L.CRS.EPSG4326, L.CRS.EPSG3395,
-L.CRS.Simple, L.Proj.CRS}
-
-\item{code}{CRS identifier}
-
-\item{proj4def}{Proj4 string}
-
-\item{projectedBounds}{DEPRECATED! Use the bounds argument.}
-
-\item{origin}{Origin in projected coordinates, if set overrides transformation option.}
-
-\item{transformation}{to use when transforming projected coordinates into pixel coordinates}
-
-\item{scales}{Scale factors (pixels per projection unit, for example pixels/meter)
-for zoom levels; specify either scales or resolutions, not both}
-
-\item{resolutions}{factors (projection units per pixel, for example meters/pixel)
-for zoom levels; specify either scales or resolutions, not both}
-
-\item{bounds}{Bounds of the CRS, in projected coordinates; if defined,
-Proj4Leaflet will use this in the getSize method, otherwise
-defaulting to Leaflet's default CRS size}
-
-\item{tileSize}{DEPRECATED! Specify the tilesize in the \code{\link{tileOptions}()} argument.}
 }
 \value{
 A HTML widget object, on which we can add graphics layers using
@@ -111,13 +50,6 @@ we may add a circle layer to the map by \code{leaflet(data) \%>\%
 addCircles(lat = ~latitude, lng = ~longtitude)}, where the variables in the
 formulae will be evaluated in the \code{data}.
 }
-\section{Functions}{
-\itemize{
-\item \code{leafletOptions()}: Options for map creation
-
-\item \code{leafletCRS()}: class to create a custom CRS
-
-}}
 \examples{
 # !formatR
 library(leaflet)
@@ -274,9 +206,4 @@ m \%>\% addCircleMarkers(~lng, ~lat, radius = ~size,
 
 }
 
-}
-\seealso{
-\code{\link{leafletCRS}} for creating a custom CRS.
-
-See \url{https://leafletjs.com/reference-1.3.4.html#map-option} for details and more options.
 }
