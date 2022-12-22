@@ -68,6 +68,7 @@ if (window.hljs) {
 
 
 
+
 <style type = "text/css">
 .main-container {
   max-width: 940px;
@@ -89,6 +90,9 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+details > summary > p:only-child {
+  display: inline;
+}
 pre code {
   padding: 0;
 }
@@ -108,8 +112,8 @@ pre code {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -117,16 +121,9 @@ pre code {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -259,7 +256,7 @@ the example below, we add a marker with a custom icon, and a popup:</p>
     iconWidth = 40, iconHeight = 40
   )) %&gt;%
   addPopups(174.7690922, -36.8523071, &#39;R was born here!&#39;)</code></pre>
-<div id="htmlwidget-562da05387aef08f69fb" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-562da05387aef08f69fb" style="width:100%;height:216px;"></div>
 <script type="application/json" data-for="htmlwidget-562da05387aef08f69fb">{
   "x": {
     "options": {
@@ -291,7 +288,7 @@ the example below, we add a marker with a custom icon, and a popup:</p>
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"
           }
         ]
       },
@@ -383,7 +380,7 @@ page</a> for more information.</p>
     &#39;http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}&#39;,
     attribution = &#39;Tiles &amp;copy; Esri &amp;mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community&#39;) %&gt;%
   setView(-93.65, 42.0285, zoom = 17)</code></pre>
-<div id="htmlwidget-92aa9ec4a26e6d2eb4c3" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-92aa9ec4a26e6d2eb4c3" style="width:100%;height:216px;"></div>
 <script type="application/json" data-for="htmlwidget-92aa9ec4a26e6d2eb4c3">{
   "x": {
     "options": {
@@ -451,7 +448,7 @@ rand_lat = function(n = 10) rnorm(n, 42.0285, .01)
 
 # circles (units in metres)
 m %&gt;% addCircles(rand_lng(50), rand_lat(50), radius = runif(50, 10, 200))</code></pre>
-<div id="htmlwidget-fb03bf98e7202586eee1" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-fb03bf98e7202586eee1" style="width:100%;height:216px;"></div>
 <script type="application/json" data-for="htmlwidget-fb03bf98e7202586eee1">{
   "x": {
     "options": {
@@ -483,7 +480,7 @@ m %&gt;% addCircles(rand_lng(50), rand_lat(50), radius = runif(50, 10, 200))</co
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"
           }
         ]
       },
@@ -535,7 +532,7 @@ m %&gt;% addCircles(rand_lng(50), rand_lat(50), radius = runif(50, 10, 200))</co
 }</script>
 <pre class="r"><code># circle markers (units in pixels)
 m %&gt;% addCircleMarkers(rand_lng(50), rand_lat(50), color = &#39;#ff0000&#39;)</code></pre>
-<div id="htmlwidget-b182c7e3d7d2f09bcc5e" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-b182c7e3d7d2f09bcc5e" style="width:100%;height:216px;"></div>
 <script type="application/json" data-for="htmlwidget-b182c7e3d7d2f09bcc5e">{
   "x": {
     "options": {
@@ -567,7 +564,7 @@ m %&gt;% addCircleMarkers(rand_lng(50), rand_lat(50), color = &#39;#ff0000&#39;)
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"
           }
         ]
       },
@@ -619,7 +616,7 @@ m %&gt;% addCircleMarkers(rand_lng(50), rand_lat(50), color = &#39;#ff0000&#39;)
   "jsHooks": []
 }</script>
 <pre class="r"><code>m %&gt;% addCircleMarkers(rand_lng(100), rand_lat(100), radius = runif(100, 5, 15))</code></pre>
-<div id="htmlwidget-2e17ae06f223c72250d9" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-2e17ae06f223c72250d9" style="width:100%;height:216px;"></div>
 <script type="application/json" data-for="htmlwidget-2e17ae06f223c72250d9">{
   "x": {
     "options": {
@@ -651,7 +648,7 @@ m %&gt;% addCircleMarkers(rand_lng(50), rand_lat(50), color = &#39;#ff0000&#39;)
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"
           }
         ]
       },
@@ -707,7 +704,7 @@ m %&gt;% addRectangles(
   rand_lng(), rand_lat(), rand_lng(), rand_lat(),
   color = &#39;red&#39;, fill = FALSE, dashArray = &#39;5,5&#39;, weight = 3
 )</code></pre>
-<div id="htmlwidget-2f386608a10ed269577b" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-2f386608a10ed269577b" style="width:100%;height:216px;"></div>
 <script type="application/json" data-for="htmlwidget-2f386608a10ed269577b">{
   "x": {
     "options": {
@@ -739,7 +736,7 @@ m %&gt;% addRectangles(
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"
           }
         ]
       },
@@ -794,7 +791,7 @@ m %&gt;% addRectangles(
 }</script>
 <pre class="r"><code># polylines
 m %&gt;% addPolylines(rand_lng(50), rand_lat(50), fill = FALSE)</code></pre>
-<div id="htmlwidget-e92079a3c1d734b37e44" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-e92079a3c1d734b37e44" style="width:100%;height:216px;"></div>
 <script type="application/json" data-for="htmlwidget-e92079a3c1d734b37e44">{
   "x": {
     "options": {
@@ -826,7 +823,7 @@ m %&gt;% addPolylines(rand_lng(50), rand_lat(50), fill = FALSE)</code></pre>
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"
           }
         ]
       },
@@ -890,7 +887,7 @@ m %&gt;% addPolygons(
   c(rand_lat(3), NA, rand_lat(4), NA, rand_lat(5)),
   color = c(&#39;red&#39;, &#39;green&#39;, &#39;blue&#39;)
 )</code></pre>
-<div id="htmlwidget-9dda01f0cde950eac35a" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-9dda01f0cde950eac35a" style="width:100%;height:216px;"></div>
 <script type="application/json" data-for="htmlwidget-9dda01f0cde950eac35a">{
   "x": {
     "options": {
@@ -922,7 +919,7 @@ m %&gt;% addPolygons(
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"
           }
         ]
       },
@@ -1046,7 +1043,7 @@ shapes = list(
   )
 )
 m %&gt;% addGeoJSON(shapes)</code></pre>
-<div id="htmlwidget-7ce6ee426e138be93a89" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-7ce6ee426e138be93a89" style="width:100%;height:216px;"></div>
 <script type="application/json" data-for="htmlwidget-7ce6ee426e138be93a89">{
   "x": {
     "options": {

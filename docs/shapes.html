@@ -68,6 +68,7 @@ if (window.hljs) {
 
 
 
+
 <style type = "text/css">
 .main-container {
   max-width: 940px;
@@ -89,6 +90,9 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+details > summary > p:only-child {
+  display: inline;
+}
 pre code {
   padding: 0;
 }
@@ -108,8 +112,8 @@ pre code {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -117,16 +121,9 @@ pre code {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -273,7 +270,7 @@ nor polygons with holes using this method; use
 states &lt;- readOGR(&quot;shp/cb_2013_us_state_20m.shp&quot;,
   layer = &quot;cb_2013_us_state_20m&quot;, GDAL1_integer64_policy = TRUE)</code></pre>
 <pre><code>## OGR data source with driver: ESRI Shapefile 
-## Source: &quot;/Users/jcheng/Development/rstudio/leaflet/docs/shp/cb_2013_us_state_20m.shp&quot;, layer: &quot;cb_2013_us_state_20m&quot;
+## Source: &quot;/Users/jcheng/Development/rstudio/leaflet2/docs/shp/cb_2013_us_state_20m.shp&quot;, layer: &quot;cb_2013_us_state_20m&quot;
 ## with 52 features
 ## It has 9 fields
 ## Integer64 fields read as doubles:  ALAND AWATER</code></pre>
@@ -287,7 +284,7 @@ leaflet(neStates) %&gt;%
     fillColor = ~colorQuantile(&quot;YlOrRd&quot;, ALAND)(ALAND),
     highlightOptions = highlightOptions(color = &quot;white&quot;, weight = 2,
       bringToFront = TRUE))</code></pre>
-<div id="htmlwidget-562da05387aef08f69fb" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-562da05387aef08f69fb" style="width:100%;height:216px;"></div>
 <script type="application/json" data-for="htmlwidget-562da05387aef08f69fb">{
   "x": {
     "options": {
@@ -673,7 +670,7 @@ object.size(fullsize)</code></pre>
 ##   print.location dplyr</code></pre>
 <pre><code>## old-style crs object detected; please recreate object with a recent sf::st_crs()</code></pre>
 <pre class="r"><code>object.size(simplified)</code></pre>
-<pre><code>## 121136 bytes</code></pre>
+<pre><code>## 121552 bytes</code></pre>
 </div>
 </div>
 <div id="circles" class="section level3">
@@ -702,7 +699,7 @@ leaflet(cities) %&gt;% addTiles() %&gt;%
   addCircles(lng = ~Long, lat = ~Lat, weight = 1,
     radius = ~sqrt(Pop) * 30, popup = ~City
   )</code></pre>
-<div id="htmlwidget-92aa9ec4a26e6d2eb4c3" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-92aa9ec4a26e6d2eb4c3" style="width:100%;height:216px;"></div>
 <script type="application/json" data-for="htmlwidget-92aa9ec4a26e6d2eb4c3">{
   "x": {
     "options": {
@@ -734,7 +731,7 @@ leaflet(cities) %&gt;% addTiles() %&gt;%
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"
           }
         ]
       },
@@ -798,7 +795,7 @@ cannot be inferred from the data object.</p>
     lng2=-118.436383, lat2=34.062717,
     fillColor = &quot;transparent&quot;
   )</code></pre>
-<div id="htmlwidget-fb03bf98e7202586eee1" style="width:100%;height:192px;" class="leaflet html-widget"></div>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-fb03bf98e7202586eee1" style="width:100%;height:192px;"></div>
 <script type="application/json" data-for="htmlwidget-fb03bf98e7202586eee1">{
   "x": {
     "options": {
@@ -830,7 +827,7 @@ cannot be inferred from the data object.</p>
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"
           }
         ]
       },

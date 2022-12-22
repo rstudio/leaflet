@@ -70,6 +70,7 @@ if (window.hljs) {
 
 
 
+
 <style type = "text/css">
 .main-container {
   max-width: 940px;
@@ -91,6 +92,9 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+details > summary > p:only-child {
+  display: inline;
+}
 pre code {
   padding: 0;
 }
@@ -110,8 +114,8 @@ pre code {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -119,16 +123,9 @@ pre code {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -257,7 +254,7 @@ href="https://www.openstreetmap.org/">OpenStreetMap</a> tiles are
 used.</p>
 <pre class="r"><code>m &lt;- leaflet() %&gt;% setView(lng = -71.0589, lat = 42.3601, zoom = 12)
 m %&gt;% addTiles()</code></pre>
-<div id="htmlwidget-562da05387aef08f69fb" style="width:100%;height:240px;" class="leaflet html-widget"></div>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-562da05387aef08f69fb" style="width:100%;height:240px;"></div>
 <script type="application/json" data-for="htmlwidget-562da05387aef08f69fb">{
   "x": {
     "options": {
@@ -294,7 +291,7 @@ m %&gt;% addTiles()</code></pre>
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"
           }
         ]
       }
@@ -321,7 +318,7 @@ just type <code>providers$</code> and choose from one of the options.
 You can also use <code>names(providers)</code> to view all of the
 options.</p>
 <pre class="r"><code>m %&gt;% addProviderTiles(providers$Stamen.Toner)</code></pre>
-<div id="htmlwidget-92aa9ec4a26e6d2eb4c3" style="width:100%;height:120px;" class="leaflet html-widget"></div>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-92aa9ec4a26e6d2eb4c3" style="width:100%;height:120px;"></div>
 <script type="application/json" data-for="htmlwidget-92aa9ec4a26e6d2eb4c3">{
   "x": {
     "options": {
@@ -358,7 +355,7 @@ options.</p>
   "jsHooks": []
 }</script>
 <pre class="r"><code>m %&gt;% addProviderTiles(providers$CartoDB.Positron)</code></pre>
-<div id="htmlwidget-fb03bf98e7202586eee1" style="width:100%;height:120px;" class="leaflet html-widget"></div>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-fb03bf98e7202586eee1" style="width:100%;height:120px;"></div>
 <script type="application/json" data-for="htmlwidget-fb03bf98e7202586eee1">{
   "x": {
     "options": {
@@ -395,7 +392,7 @@ options.</p>
   "jsHooks": []
 }</script>
 <pre class="r"><code>m %&gt;% addProviderTiles(providers$Esri.NatGeoWorldMap)</code></pre>
-<div id="htmlwidget-b182c7e3d7d2f09bcc5e" style="width:100%;height:120px;" class="leaflet html-widget"></div>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-b182c7e3d7d2f09bcc5e" style="width:100%;height:120px;"></div>
 <script type="application/json" data-for="htmlwidget-b182c7e3d7d2f09bcc5e">{
   "x": {
     "options": {
@@ -457,7 +454,7 @@ Mesonet</a>:</p>
     options = WMSTileOptions(format = &quot;image/png&quot;, transparent = TRUE),
     attribution = &quot;Weather data © 2012 IEM Nexrad&quot;
   )</code></pre>
-<div id="htmlwidget-2e17ae06f223c72250d9" style="width:100%;height:240px;" class="leaflet html-widget"></div>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-2e17ae06f223c72250d9" style="width:100%;height:240px;"></div>
 <script type="application/json" data-for="htmlwidget-2e17ae06f223c72250d9">{
   "x": {
     "options": {
@@ -489,7 +486,7 @@ Mesonet</a>:</p>
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"
           }
         ]
       },
@@ -530,7 +527,7 @@ adjusted opacity via the <code>options</code> argument.</p>
   addProviderTiles(providers$Stamen.TonerLines,
     options = providerTileOptions(opacity = 0.35)) %&gt;%
   addProviderTiles(providers$Stamen.TonerLabels)</code></pre>
-<div id="htmlwidget-2f386608a10ed269577b" style="width:100%;height:168px;" class="leaflet html-widget"></div>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-2f386608a10ed269577b" style="width:100%;height:168px;"></div>
 <script type="application/json" data-for="htmlwidget-2f386608a10ed269577b">{
   "x": {
     "options": {

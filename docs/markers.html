@@ -76,6 +76,7 @@ if (window.hljs) {
 
 
 
+
 <style type = "text/css">
 .main-container {
   max-width: 940px;
@@ -97,6 +98,9 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+details > summary > p:only-child {
+  display: inline;
+}
 pre code {
   padding: 0;
 }
@@ -116,8 +120,8 @@ pre code {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -125,16 +129,9 @@ pre code {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -291,7 +288,7 @@ hover or statically.</p>
 # Show first 20 rows from the `quakes` dataset
 leaflet(data = quakes[1:20,]) %&gt;% addTiles() %&gt;%
   addMarkers(~long, ~lat, popup = ~as.character(mag), label = ~as.character(mag))</code></pre>
-<div id="htmlwidget-562da05387aef08f69fb" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-562da05387aef08f69fb" style="width:100%;height:216px;"></div>
 <script type="application/json" data-for="htmlwidget-562da05387aef08f69fb">{
   "x": {
     "options": {
@@ -323,7 +320,7 @@ leaflet(data = quakes[1:20,]) %&gt;% addTiles() %&gt;%
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"
           }
         ]
       },
@@ -382,17 +379,17 @@ a URL or as a file path.</p>
 <p>For the simple case of applying a single icon to a set of markers,
 use <code>makeIcon()</code>.</p>
 <pre class="r"><code>greenLeafIcon &lt;- makeIcon(
-  iconUrl = &quot;https://leafletjs.com/SlavaUkraini/examples/custom-icons/leaf-green.png&quot;,
+  iconUrl = &quot;https://leafletjs.com/examples/custom-icons/leaf-green.png&quot;,
   iconWidth = 38, iconHeight = 95,
   iconAnchorX = 22, iconAnchorY = 94,
-  shadowUrl = &quot;https://leafletjs.com/SlavaUkraini/examples/custom-icons/leaf-shadow.png&quot;,
+  shadowUrl = &quot;https://leafletjs.com/examples/custom-icons/leaf-shadow.png&quot;,
   shadowWidth = 50, shadowHeight = 64,
   shadowAnchorX = 4, shadowAnchorY = 62
 )
 
 leaflet(data = quakes[1:4,]) %&gt;% addTiles() %&gt;%
   addMarkers(~long, ~lat, icon = greenLeafIcon)</code></pre>
-<div id="htmlwidget-92aa9ec4a26e6d2eb4c3" style="width:100%;height:168px;" class="leaflet html-widget"></div>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-92aa9ec4a26e6d2eb4c3" style="width:100%;height:168px;"></div>
 <script type="application/json" data-for="htmlwidget-92aa9ec4a26e6d2eb4c3">{
   "x": {
     "options": {
@@ -424,7 +421,7 @@ leaflet(data = quakes[1:4,]) %&gt;% addTiles() %&gt;%
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"
           }
         ]
       },
@@ -435,7 +432,7 @@ leaflet(data = quakes[1:4,]) %&gt;% addTiles() %&gt;%
           [181.62, 181.03, 184.1, 181.66],
           {
             "iconUrl": {
-              "data": "https://leafletjs.com/SlavaUkraini/examples/custom-icons/leaf-green.png",
+              "data": "https://leafletjs.com/examples/custom-icons/leaf-green.png",
               "index": 0
             },
             "iconWidth": 38,
@@ -443,7 +440,7 @@ leaflet(data = quakes[1:4,]) %&gt;% addTiles() %&gt;%
             "iconAnchorX": 22,
             "iconAnchorY": 94,
             "shadowUrl": {
-              "data": "https://leafletjs.com/SlavaUkraini/examples/custom-icons/leaf-shadow.png",
+              "data": "https://leafletjs.com/examples/custom-icons/leaf-shadow.png",
               "index": 0
             },
             "shadowWidth": 50,
@@ -502,19 +499,19 @@ recycled to fit.</p>
 
 leafIcons &lt;- icons(
   iconUrl = ifelse(quakes1$mag &lt; 4.6,
-    &quot;https://leafletjs.com/SlavaUkraini/examples/custom-icons/leaf-green.png&quot;,
-    &quot;https://leafletjs.com/SlavaUkraini/examples/custom-icons/leaf-red.png&quot;
+    &quot;https://leafletjs.com/examples/custom-icons/leaf-green.png&quot;,
+    &quot;https://leafletjs.com/examples/custom-icons/leaf-red.png&quot;
   ),
   iconWidth = 38, iconHeight = 95,
   iconAnchorX = 22, iconAnchorY = 94,
-  shadowUrl = &quot;https://leafletjs.com/SlavaUkraini/examples/custom-icons/leaf-shadow.png&quot;,
+  shadowUrl = &quot;https://leafletjs.com/examples/custom-icons/leaf-shadow.png&quot;,
   shadowWidth = 50, shadowHeight = 64,
   shadowAnchorX = 4, shadowAnchorY = 62
 )
 
 leaflet(data = quakes1) %&gt;% addTiles() %&gt;%
   addMarkers(~long, ~lat, icon = leafIcons)</code></pre>
-<div id="htmlwidget-fb03bf98e7202586eee1" style="width:100%;height:192px;" class="leaflet html-widget"></div>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-fb03bf98e7202586eee1" style="width:100%;height:192px;"></div>
 <script type="application/json" data-for="htmlwidget-fb03bf98e7202586eee1">{
   "x": {
     "options": {
@@ -546,7 +543,7 @@ leaflet(data = quakes1) %&gt;% addTiles() %&gt;%
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"
           }
         ]
       },
@@ -557,7 +554,7 @@ leaflet(data = quakes1) %&gt;% addTiles() %&gt;%
           [181.62, 181.03, 184.1, 181.66, 181.96, 184.31, 166.1, 181.93, 181.74, 179.59],
           {
             "iconUrl": {
-              "data": ["https://leafletjs.com/SlavaUkraini/examples/custom-icons/leaf-red.png", "https://leafletjs.com/SlavaUkraini/examples/custom-icons/leaf-green.png"],
+              "data": ["https://leafletjs.com/examples/custom-icons/leaf-red.png", "https://leafletjs.com/examples/custom-icons/leaf-green.png"],
               "index": [0, 1, 0, 1, 1, 1, 0, 1, 0, 1]
             },
             "iconWidth": 38,
@@ -565,7 +562,7 @@ leaflet(data = quakes1) %&gt;% addTiles() %&gt;%
             "iconAnchorX": 22,
             "iconAnchorY": 94,
             "shadowUrl": {
-              "data": "https://leafletjs.com/SlavaUkraini/examples/custom-icons/leaf-shadow.png",
+              "data": "https://leafletjs.com/examples/custom-icons/leaf-shadow.png",
               "index": 0
             },
             "shadowWidth": 50,
@@ -639,7 +636,7 @@ df &lt;- sp::SpatialPointsDataFrame(
 leaflet(df) %&gt;% addTiles() %&gt;%
   # Select from oceanIcons based on df$type
   addMarkers(icon = ~oceanIcons[type])</code></pre>
-<div id="htmlwidget-b182c7e3d7d2f09bcc5e" style="width:100%;height:168px;" class="leaflet html-widget"></div>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-b182c7e3d7d2f09bcc5e" style="width:100%;height:168px;"></div>
 <script type="application/json" data-for="htmlwidget-b182c7e3d7d2f09bcc5e">{
   "x": {
     "options": {
@@ -671,7 +668,7 @@ leaflet(df) %&gt;% addTiles() %&gt;%
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"
           }
         ]
       },
@@ -773,7 +770,7 @@ icons &lt;- awesomeIcons(
 
 leaflet(df.20) %&gt;% addTiles() %&gt;%
   addAwesomeMarkers(~long, ~lat, icon=icons, label=~as.character(mag))</code></pre>
-<div id="htmlwidget-2e17ae06f223c72250d9" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-2e17ae06f223c72250d9" style="width:100%;height:216px;"></div>
 <script type="application/json" data-for="htmlwidget-2e17ae06f223c72250d9">{
   "x": {
     "options": {
@@ -805,7 +802,7 @@ leaflet(df.20) %&gt;% addTiles() %&gt;%
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"
           }
         ]
       },
@@ -880,7 +877,7 @@ the argument <code>clusterOptions</code>, e.g.</p>
 <pre class="r"><code>leaflet(quakes) %&gt;% addTiles() %&gt;% addMarkers(
   clusterOptions = markerClusterOptions()
 )</code></pre>
-<div id="htmlwidget-2f386608a10ed269577b" style="width:100%;height:240px;" class="leaflet html-widget"></div>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-2f386608a10ed269577b" style="width:100%;height:240px;"></div>
 <script type="application/json" data-for="htmlwidget-2f386608a10ed269577b">{
   "x": {
     "options": {
@@ -912,7 +909,7 @@ the argument <code>clusterOptions</code>, e.g.</p>
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"
           }
         ]
       },
@@ -988,7 +985,7 @@ href="shapes.html">Lines and Shapes</a>), except that their radius in
 onscreen pixels stays constant regardless of zoom level.</p>
 <p>You can use their default appearance:</p>
 <pre class="r"><code>leaflet(df) %&gt;% addTiles() %&gt;% addCircleMarkers()</code></pre>
-<div id="htmlwidget-e92079a3c1d734b37e44" style="width:100%;height:168px;" class="leaflet html-widget"></div>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-e92079a3c1d734b37e44" style="width:100%;height:168px;"></div>
 <script type="application/json" data-for="htmlwidget-e92079a3c1d734b37e44">{
   "x": {
     "options": {
@@ -1020,7 +1017,7 @@ onscreen pixels stays constant regardless of zoom level.</p>
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"
           }
         ]
       },
@@ -1081,7 +1078,7 @@ leaflet(df) %&gt;% addTiles() %&gt;%
     color = ~pal(type),
     stroke = FALSE, fillOpacity = 0.5
   )</code></pre>
-<div id="htmlwidget-9dda01f0cde950eac35a" style="width:100%;height:168px;" class="leaflet html-widget"></div>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-9dda01f0cde950eac35a" style="width:100%;height:168px;"></div>
 <script type="application/json" data-for="htmlwidget-9dda01f0cde950eac35a">{
   "x": {
     "options": {
@@ -1113,7 +1110,7 @@ leaflet(df) %&gt;% addTiles() %&gt;%
             "opacity": 1,
             "zIndex": 1,
             "detectRetina": false,
-            "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+            "attribution": "&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"
           }
         ]
       },

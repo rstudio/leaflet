@@ -38,10 +38,10 @@ For the simple case of applying a single icon to a set of markers, use `makeIcon
 
 ```{r fig.height=1.75}
 greenLeafIcon <- makeIcon(
-  iconUrl = "https://leafletjs.com/SlavaUkraini/examples/custom-icons/leaf-green.png",
+  iconUrl = "https://leafletjs.com/examples/custom-icons/leaf-green.png",
   iconWidth = 38, iconHeight = 95,
   iconAnchorX = 22, iconAnchorY = 94,
-  shadowUrl = "https://leafletjs.com/SlavaUkraini/examples/custom-icons/leaf-shadow.png",
+  shadowUrl = "https://leafletjs.com/examples/custom-icons/leaf-shadow.png",
   shadowWidth = 50, shadowHeight = 64,
   shadowAnchorX = 4, shadowAnchorY = 62
 )
@@ -57,12 +57,12 @@ quakes1 <- quakes[1:10,]
 
 leafIcons <- icons(
   iconUrl = ifelse(quakes1$mag < 4.6,
-    "https://leafletjs.com/SlavaUkraini/examples/custom-icons/leaf-green.png",
-    "https://leafletjs.com/SlavaUkraini/examples/custom-icons/leaf-red.png"
+    "https://leafletjs.com/examples/custom-icons/leaf-green.png",
+    "https://leafletjs.com/examples/custom-icons/leaf-red.png"
   ),
   iconWidth = 38, iconHeight = 95,
   iconAnchorX = 22, iconAnchorY = 94,
-  shadowUrl = "https://leafletjs.com/SlavaUkraini/examples/custom-icons/leaf-shadow.png",
+  shadowUrl = "https://leafletjs.com/examples/custom-icons/leaf-shadow.png",
   shadowWidth = 50, shadowHeight = 64,
   shadowAnchorX = 4, shadowAnchorY = 62
 )
