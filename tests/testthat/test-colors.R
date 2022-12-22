@@ -1,5 +1,3 @@
-context("colors")
-
 # Like expect_warning, but returns the result of the expr
 with_warning <- function(expr) {
   expect_warning(result <- force(expr))

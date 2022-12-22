@@ -43,7 +43,7 @@ Imports:
     methods,
     png,
     RColorBrewer,
-    raster,
+    raster (>= 3.6.3),
     scales (>= 1.0.0),
     sp,
     stats,
@@ -54,8 +54,6 @@ Suggests:
     maps,
     sf (>= 0.9-6),
     shiny,
-    rgdal,
-    rgeos,
     R6,
     RJSONIO,
     purrr,
@@ -65,3 +63,4 @@ Suggests:
 RoxygenNote: 7.2.1
 Encoding: UTF-8
 LazyData: true
+Config/testthat/edition: 3

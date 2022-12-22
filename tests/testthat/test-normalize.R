@@ -1,5 +1,3 @@
-context("normalize")
-
 # derivePoints -------------------------------------------------------------
 
 test_that("can get point data from SpatialPointsDataFrame", {
@@ -27,13 +25,13 @@ test_that("derivePolygons works with sf classes", {
 
 verifyPolygonData <- function(x) {
   expect_true(!is.null(attr(x, "bbox", exact = TRUE)))
-  expect_is(x, "list")
+  expect_type(x, "list")
   lapply(x, function(multipolygon) {
-    expect_is(multipolygon, "list")
+    expect_type(multipolygon, "list")
     lapply(multipolygon, function(polygon) {
-      expect_is(polygon, "list")
+      expect_type(polygon, "list")
       lapply(polygon, function(ring) {
-        expect_is(ring, "data.frame")
+        expect_s3_class(ring, "data.frame")
       })
     })
   })
@@ -50,7 +48,7 @@ test_that("derivePolygons normalizes polygon data across sp polygon classes", {
   expect_equal(out[[1]][[1]][[1]]$lng, meuse.riv[, 1])
   expect_equal(out[[1]][[1]][[1]]$lat, meuse.riv[, 2])
   # row/col names are different but values are the same
-  expect_equivalent(attr(out, "bbox"), sp::bbox(meuse.riv))
+  expect_equal(attr(out, "bbox"), sp::bbox(meuse.riv), ignore_attr = TRUE)
 
   polys <- sp::Polygons(list(poly), "river")
   expect_equal(derivePolygons(polys), out)
@@ -72,7 +70,7 @@ test_that("derivePolygons normalizes polygon data across sp line classes", {
   expect_equal(out[[1]][[1]][[1]]$lng, meuse.riv[, 1])
   expect_equal(out[[1]][[1]][[1]]$lat, meuse.riv[, 2])
   # row/col names are different but values are the same
-  expect_equivalent(attr(out, "bbox"), sp::bbox(meuse.riv))
+  expect_equal(attr(out, "bbox"), sp::bbox(meuse.riv), ignore_attr = TRUE)
 
   lines <- sp::Lines(list(line), "river")
   expect_equal(derivePolygons(lines), out)

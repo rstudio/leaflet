@@ -2,12 +2,11 @@
 expect_maps_equal <- function(m1, m2) {
   attr(m1$x, "leafletData") <- NULL
   attr(m2$x, "leafletData") <- NULL
-  expect_equal(m1, m2, check.environment = FALSE)
+  expect_equal(m1, m2, ignore_function_env = TRUE, ignore_formula_env = TRUE)
 }
 
 test_that("normalize", {
   skip_if_not_installed("sf")
-  skip_if_not_installed("rgeos")
 
   library(sf)
   library(sp)
@@ -101,12 +100,15 @@ test_that("normalize", {
       create_square(1, 5, 5, hole = TRUE),
       create_square(0.4, 4.25, 4.25, hole = TRUE)
     ), "A")
-  comment(polys) <- rgeos::createPolygonsComment(polys)
+  comment(polys) <- "0 0 1 2 2"
 
   spolys <- SpatialPolygons(list(
     polys
   ))
   stspolys <- st_as_sf(spolys)
+
+  testthat::expect_snapshot_output(derivePolygons(spolys))
+
   (l101 <- leaflet(spolys) %>% addPolygons())
   (l102 <- leaflet(stspolys) %>% addPolygons())
   expect_maps_equal(l101, l102)

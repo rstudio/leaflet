@@ -1,6 +1,3 @@
-
-context("icon")
-
 test_that("icon deduping works", {
   icons <- c("leaf-green.png", "leaf-red.png")
   m <-
