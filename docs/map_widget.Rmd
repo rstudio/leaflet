@@ -20,7 +20,7 @@ library(magrittr)
 leaflet(options = leafletOptions(minZoom = 0, maxZoom = 18))
 ```
 
-The `leafletOptions()` can be passed any option described in the leaflet [reference document](https://leafletjs.com/reference-1.3.4.html#map-option). Using the `leafletOptions()`, you can set a custom [CRS](https://en.wikipedia.org/wiki/Spatial_reference_system) and have your map displayed in a non spherical mercator projection as described in [projections](projections.html).
+The `leafletOptions()` can be passed any option described in the leaflet [reference document](https://leafletjs.com/reference.html#map-option). Using the `leafletOptions()`, you can set a custom [CRS](https://en.wikipedia.org/wiki/Spatial_reference_system) and have your map displayed in a non spherical mercator projection as described in [projections](projections.html).
 
 ### Map Methods
 
