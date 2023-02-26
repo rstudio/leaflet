@@ -1,3 +1,9 @@
+leaflet (development verison)
+--------------------------------------------------------------------------------
+
+BUG FIXES and IMPROVEMENTS
+* Changed all URLS directing to <https://leafletjs.com/reference-1.3.4.html> to <https://leafletjs.com/reference.html>.
+
 leaflet 2.1.1.9000
 --------------------------------------------------------------------------------
 
