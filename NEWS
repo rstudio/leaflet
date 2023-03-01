@@ -8,6 +8,8 @@ BUG FIXES and IMPROVEMENTS
 
 * Use `xfun::base64_uri()` for base64 encoding instead of **markdown** and **base64enc**. (#823)
 
+* Remove dependencies on rgdal and rgeos. (#837)
+
 leaflet 2.1.1
 --------------------------------------------------------------------------------
 
