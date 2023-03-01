@@ -101,6 +101,11 @@ to_multipolygon.Polygons <- function(pgons) {
             "information. Leaflet can use the {sf} package to infer hole ",
             "assignments, but it is not installed. Please install the {sf} ",
             "package, and try the operation again.")
+        } else if (packageVersion("sf") < "1.0.10") {
+          stop("You attempted to use an sp Polygons object that is missing hole ",
+            "information. Leaflet can use the {sf} package to infer hole ",
+            "assignments, but only with sf v1.0-10 and above. Please upgrade ",
+            "the {sf} package, and try the operation again.")
         }
         x <- to_multipolygon_list(sf::st_geometry(sf::st_as_sf(SpatialPolygons(list(pgons)))))
         return(x[[1]])
