@@ -2,12 +2,41 @@
 expect_maps_equal <- function(m1, m2) {
   attr(m1$x, "leafletData") <- NULL
   attr(m2$x, "leafletData") <- NULL
-  expect_equal(m1, m2, check.environment = FALSE)
+  expect_equal(m1, m2, ignore_function_env = TRUE, ignore_formula_env = TRUE)
+}
+
+normalize_multipolygon <- function(df) {
+  # A multipolygon is a nested list of lng/lat data frames. Each data frame
+  # represents a single polygon (may be an island or a hole), that is, a series
+  # of points where the last point is the same as the first point.
+  #
+  # This function walks the nested list, and for each lng/lat data frame, it
+  # reorders the points so that equivalent polygons always have the same points
+  # in the same order. The data frame rows are rotated so that the first row
+  # contains the smallest lng; ties are broken with lat.
+
+  if (is.list(df) && !is.data.frame(df)) {
+    return(lapply(df, normalize_multipolygon))
+  }
+
+  stopifnot(identical(names(df), c("lng", "lat")))
+  if (nrow(df) <= 1) {
+    return(df)
+  }
+  if (!all(df[1,] == df[nrow(df),])) {
+    stop("Malformed polygon; first and last rows were not identical")
+  }
+  # Remove duplicate point, for now
+  df <- df[-nrow(df),]
+  tip <- order(df[,1], df[,2])[[1]]
+  idx <- seq_len(nrow(df)) >= tip
+  df <- rbind(df[idx,], df[!idx,], df[tip,])
+  row.names(df) <- NULL
+  df
 }
 
 test_that("normalize", {
   skip_if_not_installed("sf")
-  skip_if_not_installed("rgeos")
 
   library(sf)
   library(sp)
@@ -77,36 +106,35 @@ test_that("normalize", {
   expect_maps_equal(p4, p6)
 
   ### lines -----------------------------------------------------------------
-  create_square <- function(width = 2, lng = 0, lat = 0, hole = FALSE, type = Polygon) {
-    lngs <- c(lng - width / 2, lng + width / 2, lng + width / 2, lng - width / 2)
-    lats <- c(lat + width / 2, lat + width / 2, lat - width / 2, lat - width / 2)
-
-    if (hole) {
-      lngs <- rev(lngs)
-      lats <- rev(lats)
-    }
-
-    if ("hole" %in% names(formals(type))) {
-      type(cbind(lng = lngs, lat = lats), hole = hole)
-    } else {
-      type(cbind(lng = lngs, lat = lats))
-    }
-  }
-
   polys <-
     Polygons(list(
       create_square(),
       create_square(, 5, 5),
       create_square(1, hole = TRUE),
-      create_square(1, 5, 5, hole = TRUE),
-      create_square(0.4, 4.25, 4.25, hole = TRUE)
+      create_square(0.4, 4.25, 4.25, hole = TRUE),
+      create_square(1, 5, 5, hole = TRUE)
     ), "A")
-  comment(polys) <- rgeos::createPolygonsComment(polys)
+  comment(polys) <- "0 0 1 2 2"
 
   spolys <- SpatialPolygons(list(
     polys
   ))
   stspolys <- st_as_sf(spolys)
+
+  testthat::expect_snapshot_output(derivePolygons(spolys))
+
+  if (packageVersion("sf") >= "1.0-10") {
+    # Test https://github.com/rstudio/leaflet/issues/833
+    # Ensure that if a Polygons object is missing hole assignment info, we can
+    # infer it using sf v1.0-10 or above.
+    mp1 <- to_multipolygon(polys)
+    mp2 <- to_multipolygon(`comment<-`(polys, NULL))
+    expect_identical(
+      normalize_multipolygon(mp1),
+      normalize_multipolygon(mp2)
+    )
+  }
+
   (l101 <- leaflet(spolys) %>% addPolygons())
   (l102 <- leaflet(stspolys) %>% addPolygons())
   expect_maps_equal(l101, l102)

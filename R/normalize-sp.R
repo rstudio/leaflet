@@ -90,11 +90,29 @@ to_multipolygon_list.SpatialPolygons <- function(pgons) {
 to_multipolygon.Polygons <- function(pgons) {
   if (length(pgons@Polygons) > 1) {
     # If Polygons contains more than one Polygon, then we may be dealing with
-    # a polygon with holes or a multipolygon (potentially with holes). Use
-    # createPolygonsComment to validate and determine what the situation is.
+    # a polygon with holes or a multipolygon (potentially with holes). We used
+    # to use rgeos::createPolygonsComment, but rgeos has been deprecated, so now
+    # we use sf.
     comment <- comment(pgons)
-    if (is.null(comment) || comment == "FALSE")
-      comment <- rgeos::createPolygonsComment(pgons)
+    if (is.null(comment) || comment == "FALSE") {
+      if (any(vapply(pgons@Polygons, methods::slot, logical(1), "hole"))) {
+        if (!require("sf")) {
+          stop("You attempted to use an sp Polygons object that is missing hole ",
+            "information. Leaflet can use the {sf} package to infer hole ",
+            "assignments, but it is not installed. Please install the {sf} ",
+            "package, and try the operation again.")
+        } else if (packageVersion("sf") < "1.0.10") {
+          stop("You attempted to use an sp Polygons object that is missing hole ",
+            "information. Leaflet can use the {sf} package to infer hole ",
+            "assignments, but only with sf v1.0-10 and above. Please upgrade ",
+            "the {sf} package, and try the operation again.")
+        }
+        x <- to_multipolygon_list(sf::st_geometry(sf::st_as_sf(SpatialPolygons(list(pgons)))))
+        return(x[[1]])
+      } else {
+        comment <- paste(collapse = " ", rep_len("0", length(pgons@Polygons)))
+      }
+    }
     pstatus <- as.integer(strsplit(comment, " ")[[1]])
     lapply(which(pstatus == 0L), function(index) {
       # Return a list of rings, exterior first

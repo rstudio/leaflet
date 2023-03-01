@@ -1,9 +1,3 @@
-
-
-context("evalFormula")
-
-
-
 test_that("evalFormula() does not discard the class of a list", {
   res <- evalFormula(structure(list(1, ~x, ~x + 1), class = "FOO"), data.frame(x = 2))
 

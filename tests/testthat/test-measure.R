@@ -1,6 +1,3 @@
-
-context("measure")
-
 test_that("dependency got added", {
   expect_true(
     !is.na(Position(
