@@ -1,25 +1,31 @@
 ## Comments
 
-#### 2022-02-15
+#### 2023-03-09
 
-This submission is at Dr. Ripley's request; it fixes some unit tests that broke with a recent update to sf.
+Fixing S3 method warnings for R Devel.
+
+Please let me know if I can provide any more information.
+
+Thank you,
+Joe
 
 ## Test environments
 
-* local macOS M1 install, R 4.1.2, --run-dontcheck
-  * 0 errors | 0 warnings | 0 notes
+* local macOS, R 4.2
+* GitHub Actions
+  * macOS
+    * 4.2
+  * windows
+    * 4.2
+  * ubuntu20
+    * devel, 4.2, 4.1, 4.0, 3.6, 3.5
+* devtools::
+  * check_win_devel()
 
-* win-builder (devel)
-  * 0 errors | 0 warnings | 0 notes
+## R CMD check results
 
-* R-hub windows-x86_64-devel (r-devel)
-  * 0 errors | 0 warnings | 0 notes
+0 errors ✔ | 0 warnings ✔ | 0 notes ✔
 
-* R-hub ubuntu-gcc-release (r-release)
-  * 0 errors | 0 warnings | 0 notes
-
-* R-hub fedora-clang-devel (r-devel)
-  * 0 errors | 0 warnings | 0 notes
 
 ## revdepcheck results
 
