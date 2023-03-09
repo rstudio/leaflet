@@ -68,6 +68,7 @@ if (window.hljs) {
 
 
 
+
 <style type = "text/css">
 .main-container {
   max-width: 940px;
@@ -89,6 +90,9 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+details > summary > p:only-child {
+  display: inline;
+}
 pre code {
   padding: 0;
 }
@@ -108,8 +112,8 @@ pre code {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -117,16 +121,9 @@ pre code {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -304,7 +301,7 @@ leaflet(options = leafletOptions(worldCopyJump = F, crs = epsg3006)) %&gt;%
     attribution = tile_attrib,
     options = tileOptions(minZoom = 0, maxZoom = 14, continuousWorld = T)) %&gt;%
   addMarkers(11.965053, 57.70451)</code></pre>
-<div id="htmlwidget-562da05387aef08f69fb" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-562da05387aef08f69fb" style="width:100%;height:216px;"></div>
 <script type="application/json" data-for="htmlwidget-562da05387aef08f69fb">{
   "x": {
     "options": {
@@ -408,7 +405,7 @@ should appear at the same position.</p>
   setView(11.965053, 57.70451, 16) %&gt;%
   addTiles() %&gt;%
   addMarkers(11.965053, 57.70451)</code></pre>
-<div id="htmlwidget-92aa9ec4a26e6d2eb4c3" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-92aa9ec4a26e6d2eb4c3" style="width:100%;height:216px;"></div>
 <script type="application/json" data-for="htmlwidget-92aa9ec4a26e6d2eb4c3">{
   "x": {
     "options": {
@@ -526,7 +523,7 @@ leaflet(spdf, options = leafletOptions(crs = epsg2163)) %&gt;%
     fillColor = ~pal(pop_2014), fillOpacity = 0.7, smoothFactor = 0.5,
     label = ~paste(name, pop_2014),
     labelOptions = labelOptions(direction = &quot;auto&quot;))</code></pre>
-<div id="htmlwidget-fb03bf98e7202586eee1" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-fb03bf98e7202586eee1" style="width:100%;height:216px;"></div>
 <script type="application/json" data-for="htmlwidget-fb03bf98e7202586eee1">{
   "x": {
     "options": {

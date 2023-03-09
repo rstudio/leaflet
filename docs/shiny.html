@@ -60,6 +60,7 @@ if (window.hljs) {
 
 
 
+
 <style type = "text/css">
 .main-container {
   max-width: 940px;
@@ -81,6 +82,9 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+details > summary > p:only-child {
+  display: inline;
+}
 pre code {
   padding: 0;
 }
@@ -100,8 +104,8 @@ pre code {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -109,16 +113,9 @@ pre code {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -275,9 +272,9 @@ server &lt;- function(input, output, session) {
 }
 
 shinyApp(ui, server)</code></pre>
-<div class="figure">
-<img src="images/shiny1.png" alt="" />
-<p class="caption">Screenshot of a simple Shiny app</p>
+<div class="float">
+<img src="images/shiny1.png" alt="Screenshot of a simple Shiny app" />
+<div class="figcaption">Screenshot of a simple Shiny app</div>
 </div>
 <div id="modifying-existing-maps-with-leafletproxy"
 class="section level3">
@@ -366,9 +363,9 @@ server &lt;- function(input, output, session) {
 }
 
 shinyApp(ui, server)</code></pre>
-<div class="figure">
-<img src="images/shiny2.png" alt="" />
-<p class="caption">Screenshot of a Shiny app</p>
+<div class="float">
+<img src="images/shiny2.png" alt="Screenshot of a Shiny app" />
+<div class="figcaption">Screenshot of a Shiny app</div>
 </div>
 <p>Besides adding layers, you can set the map bounds, remove specific
 objects by ID, or clear categories of layers.</p>

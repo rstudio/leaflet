@@ -89,6 +89,7 @@ if (window.hljs) {
 
 
 
+
 <style type = "text/css">
 .main-container {
   max-width: 940px;
@@ -110,6 +111,9 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+details > summary > p:only-child {
+  display: inline;
+}
 pre code {
   padding: 0;
 }
@@ -129,8 +133,8 @@ pre code {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -138,16 +142,9 @@ pre code {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -299,7 +296,7 @@ m %&gt;%
   # Central Park
   fitBounds(-73.9, 40.75, -73.95,40.8) %&gt;%
   addMeasure()</code></pre>
-<div id="htmlwidget-562da05387aef08f69fb" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-562da05387aef08f69fb" style="width:100%;height:216px;"></div>
 <script type="application/json" data-for="htmlwidget-562da05387aef08f69fb">{
   "x": {
     "options": {
@@ -378,7 +375,7 @@ plugin (see <code>?addMeasure</code> for details).</p>
     primaryAreaUnit = &quot;sqmeters&quot;,
     activeColor = &quot;#3D535D&quot;,
     completedColor = &quot;#7D4479&quot;)</code></pre>
-<div id="htmlwidget-92aa9ec4a26e6d2eb4c3" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-92aa9ec4a26e6d2eb4c3" style="width:100%;height:216px;"></div>
 <script type="application/json" data-for="htmlwidget-92aa9ec4a26e6d2eb4c3">{
   "x": {
     "options": {
@@ -458,7 +455,7 @@ plugin).</p>
 m &lt;- leaflet() %&gt;% addTiles() %&gt;% setView(0,0,2)
 
 m %&gt;% addGraticule()</code></pre>
-<div id="htmlwidget-fb03bf98e7202586eee1" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-fb03bf98e7202586eee1" style="width:100%;height:216px;"></div>
 <script type="application/json" data-for="htmlwidget-fb03bf98e7202586eee1">{
   "x": {
     "options": {
@@ -523,7 +520,7 @@ m %&gt;% addGraticule()</code></pre>
   "jsHooks": []
 }</script>
 <pre class="r"><code>m %&gt;% addGraticule(interval = 40, style = list(color = &quot;#FF0000&quot;, weight = 1))</code></pre>
-<div id="htmlwidget-b182c7e3d7d2f09bcc5e" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-b182c7e3d7d2f09bcc5e" style="width:100%;height:216px;"></div>
 <script type="application/json" data-for="htmlwidget-b182c7e3d7d2f09bcc5e">{
   "x": {
     "options": {
@@ -593,7 +590,7 @@ toggleable.</p>
   addGraticule(group = &quot;Graticule&quot;) %&gt;%
   addLayersControl(overlayGroups = c(&quot;Graticule&quot;),
     options = layersControlOptions(collapsed = FALSE))</code></pre>
-<div id="htmlwidget-2e17ae06f223c72250d9" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-2e17ae06f223c72250d9" style="width:100%;height:216px;"></div>
 <script type="application/json" data-for="htmlwidget-2e17ae06f223c72250d9">{
   "x": {
     "options": {
@@ -676,7 +673,7 @@ toggleable.</p>
 
 # Default Resolution
 leaflet() %&gt;% addTiles() %&gt;% addTerminator()</code></pre>
-<div id="htmlwidget-2f386608a10ed269577b" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-2f386608a10ed269577b" style="width:100%;height:216px;"></div>
 <script type="application/json" data-for="htmlwidget-2f386608a10ed269577b">{
   "x": {
     "options": {
@@ -741,7 +738,7 @@ leaflet() %&gt;%
   addLayersControl(
     overlayGroups = &quot;daylight&quot;,
     options = layersControlOptions(collapsed = FALSE))</code></pre>
-<div id="htmlwidget-e92079a3c1d734b37e44" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-e92079a3c1d734b37e44" style="width:100%;height:216px;"></div>
 <script type="application/json" data-for="htmlwidget-e92079a3c1d734b37e44">{
   "x": {
     "options": {
@@ -823,7 +820,7 @@ l &lt;- leaflet() %&gt;% setView(0,0,3)
 l %&gt;%
   addProviderTiles(providers$Esri.WorldStreetMap) %&gt;%
   addMiniMap()</code></pre>
-<div id="htmlwidget-9dda01f0cde950eac35a" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-9dda01f0cde950eac35a" style="width:100%;height:216px;"></div>
 <script type="application/json" data-for="htmlwidget-9dda01f0cde950eac35a">{
   "x": {
     "options": {
@@ -903,7 +900,7 @@ hidden by setting <code>toggleDisplay = TRUE</code>.</p>
   addMiniMap(
     tiles = providers$Esri.WorldStreetMap,
     toggleDisplay = TRUE)</code></pre>
-<div id="htmlwidget-7ce6ee426e138be93a89" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-7ce6ee426e138be93a89" style="width:100%;height:216px;"></div>
 <script type="application/json" data-for="htmlwidget-7ce6ee426e138be93a89">{
   "x": {
     "options": {
@@ -993,7 +990,7 @@ other attempts to locate you.</p>
   addEasyButton(easyButton(
     icon=&quot;fa-crosshairs&quot;, title=&quot;Locate Me&quot;,
     onClick=JS(&quot;function(btn, map){ map.locate({setView: true}); }&quot;)))</code></pre>
-<div id="htmlwidget-bf6034a99884de3a2a25" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-bf6034a99884de3a2a25" style="width:100%;height:216px;"></div>
 <script type="application/json" data-for="htmlwidget-bf6034a99884de3a2a25">{
   "x": {
     "options": {
@@ -1091,7 +1088,7 @@ which has a distinct icon, title, and click handler.</p>
       )
     )
   ))</code></pre>
-<div id="htmlwidget-15fc5571ed284b8860f3" style="width:100%;height:216px;" class="leaflet html-widget"></div>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-15fc5571ed284b8860f3" style="width:100%;height:216px;"></div>
 <script type="application/json" data-for="htmlwidget-15fc5571ed284b8860f3">{
   "x": {
     "options": {
@@ -1245,7 +1242,7 @@ l %&gt;%
           myMap.minimap.changeLayer(L.tileLayer.provider(e.name));
         })
     }&quot;)</code></pre>
-<div id="htmlwidget-eb6714d1999a75cd525a" style="width:100%;height:384px;" class="leaflet html-widget"></div>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-eb6714d1999a75cd525a" style="width:100%;height:384px;"></div>
 <script type="application/json" data-for="htmlwidget-eb6714d1999a75cd525a">{
   "x": {
     "options": {
