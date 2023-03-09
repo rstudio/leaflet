@@ -22,7 +22,7 @@ addGraticule(
 
 \item{sphere}{boolean. Default FALSE}
 
-\item{style}{path options for the generated lines. See \url{https://leafletjs.com/reference-1.3.4.html#path-option}}
+\item{style}{path options for the generated lines. See \url{https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#path-option}}
 
 \item{layerId}{the layer id}
 

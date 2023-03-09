@@ -147,7 +147,7 @@ groupOptions <- function(map, group, zoomLevels = NULL) {
 #'   \code{\link{popupOptions}}, \code{\link{markerOptions}},
 #'   \code{\link{pathOptions}}
 #' @references The Leaflet API documentation:
-#'   \url{https://leafletjs.com/reference-1.3.4.html}
+#'   \url{https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html}
 #' @describeIn map-layers Add a tile layer to the map
 #' @export
 addTiles <- function(
@@ -340,7 +340,7 @@ clearImages <- function(map) {
 #' @param
 #' minZoom,maxZoom,maxNativeZoom,tileSize,subdomains,errorTileUrl,tms,noWrap,zoomOffset,zoomReverse,zIndex,unloadInvisibleTiles,updateWhenIdle,detectRetina
 #' the tile layer options; see
-#' \url{https://leafletjs.com/reference-1.3.4.html#tilelayer}
+#' \url{https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#tilelayer}
 #' @param ... extra options passed to underlying Javascript object constructor.
 #' @describeIn map-options Options for tile layers
 #' @export
@@ -482,7 +482,7 @@ addPopups <- function(
 #' @param className a CSS class name set on an element
 #' @param
 #' maxWidth,minWidth,maxHeight,autoPan,keepInView,closeButton,closeOnClick
-#' popup options; see \url{https://leafletjs.com/reference-1.3.4.html#popup-option}
+#' popup options; see \url{https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#popup-option}
 #' @describeIn map-options Options for popups
 #' @export
 popupOptions <- function(
@@ -550,13 +550,13 @@ safeLabel <- function(label, data) {
 
 #' @param
 #' noHide,direction,offset,permanent
-#' label options; see \url{https://leafletjs.com/reference-1.3.4.html#tooltip-option}
-#' @param opacity Tooltip container opacity. Ranges from 0 to 1. Default value is \code{1} (different from leaflet.js \code{0.9}); see \url{https://leafletjs.com/reference-1.3.4.html#tooltip-opacity}
+#' label options; see \url{https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#tooltip-option}
+#' @param opacity Tooltip container opacity. Ranges from 0 to 1. Default value is \code{1} (different from leaflet.js \code{0.9}); see \url{https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#tooltip-opacity}
 #' @param textsize Change the text size of a single tooltip
 #' @param textOnly Display only the text, no regular surrounding box.
 #' @param style list of css style to be added to the tooltip
 #' @param zoomAnimation deprecated. See \url{https://github.com/Leaflet/Leaflet/blob/master/CHANGELOG.md#api-changes-5}
-#' @param sticky If true, the tooltip will follow the mouse instead of being fixed at the feature center. Default value is \code{TRUE} (different from leaflet.js \code{FALSE}); see \url{https://leafletjs.com/reference-1.3.4.html#tooltip-sticky}
+#' @param sticky If true, the tooltip will follow the mouse instead of being fixed at the feature center. Default value is \code{TRUE} (different from leaflet.js \code{FALSE}); see \url{https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#tooltip-sticky}
 #' @describeIn map-options Options for labels
 #' @export
 labelOptions <- function(
@@ -881,7 +881,7 @@ b64EncodePackedIcons <- function(packedIcons) {
 #' @param clickable DEPRECATED! Use the \code{interactive} option.
 #' @param
 #'   draggable,keyboard,title,alt,zIndexOffset,riseOnHover,riseOffset
-#'   marker options; see \url{https://leafletjs.com/reference-1.3.4.html#marker-option}
+#'   marker options; see \url{https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#marker-option}
 #' @describeIn map-options Options for markers
 #' @export
 markerOptions <- function(
@@ -914,7 +914,7 @@ markerOptions <- function(
 #'   spiderfy it so you can see all of its markers
 #' @param removeOutsideVisibleBounds clusters and markers too far from the
 #'   viewport are removed from the map for performance
-#' @param spiderLegPolylineOptions Allows you to specify PolylineOptions (\url{https://leafletjs.com/reference-1.3.4.html#polyline-option}) to style spider legs. By default, they are { weight: 1.5, color: "#222", opacity: 0.5 }
+#' @param spiderLegPolylineOptions Allows you to specify PolylineOptions (\url{https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#polyline-option}) to style spider legs. By default, they are { weight: 1.5, color: "#222", opacity: 0.5 }
 #' @param freezeAtZoom Allows you to freeze cluster expansion to a zoom level.
 #' Can be a zoom level e.g. 10, 12 or "max" or "maxKeepSpiderify"
 #' See \url{https://github.com/ghybs/Leaflet.MarkerCluster.Freezable#api-reference}
@@ -1288,7 +1288,7 @@ clearGeoJSON <- function(map) {
 #' Add UI controls to switch layers on and off
 #'
 #' Uses Leaflet's built-in
-#' \href{https://leafletjs.com/reference-1.3.4.html#control-layers}{layers control}
+#' \href{https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#control-layers}{layers control}
 #' feature to allow users to choose one of several base layers, and to choose
 #' any number of overlay layers to view.
 #'
