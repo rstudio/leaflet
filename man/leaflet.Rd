@@ -116,11 +116,11 @@ formulae will be evaluated in the \code{data}.
 }
 \section{Functions}{
 \itemize{
-\item \code{leafletOptions}: Options for map creation
+\item \code{leafletOptions()}: Options for map creation
 
-\item \code{leafletCRS}: class to create a custom CRS
+\item \code{leafletCRS()}: class to create a custom CRS
+
 }}
-
 \examples{
 # !formatR
 library(leaflet)
