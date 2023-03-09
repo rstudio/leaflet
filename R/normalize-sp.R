@@ -82,12 +82,13 @@ sp_bbox <- function(x) {
 }
 
 #' @export
-to_multipolygon_list.SpatialPolygons <- function(pgons) {
-  lapply(pgons@polygons, to_multipolygon)
+to_multipolygon_list.SpatialPolygons <- function(x) {
+  lapply(x@polygons, to_multipolygon)
 }
 
 #' @export
-to_multipolygon.Polygons <- function(pgons) {
+to_multipolygon.Polygons <- function(x) {
+  pgons <- x
   if (length(pgons@Polygons) > 1) {
     # If Polygons contains more than one Polygon, then we may be dealing with
     # a polygon with holes or a multipolygon (potentially with holes). We used
@@ -96,7 +97,7 @@ to_multipolygon.Polygons <- function(pgons) {
     comment <- comment(pgons)
     if (is.null(comment) || comment == "FALSE") {
       if (any(vapply(pgons@Polygons, methods::slot, logical(1), "hole"))) {
-        if (!require("sf")) {
+        if (!requireNamespace("sf")) {
           stop("You attempted to use an sp Polygons object that is missing hole ",
             "information. Leaflet can use the {sf} package to infer hole ",
             "assignments, but it is not installed. Please install the {sf} ",
@@ -107,7 +108,7 @@ to_multipolygon.Polygons <- function(pgons) {
             "assignments, but only with sf v1.0-10 and above. Please upgrade ",
             "the {sf} package, and try the operation again.")
         }
-        x <- to_multipolygon_list(sf::st_geometry(sf::st_as_sf(SpatialPolygons(list(pgons)))))
+        x <- to_multipolygon_list(sf::st_geometry(sf::st_as_sf(sp::SpatialPolygons(list(pgons)))))
         return(x[[1]])
       } else {
         comment <- paste(collapse = " ", rep_len("0", length(pgons@Polygons)))
@@ -127,21 +128,21 @@ to_multipolygon.Polygons <- function(pgons) {
 }
 
 #' @export
-to_ring.Polygon <- function(pgon) {
-  sp_coords(pgon)
+to_ring.Polygon <- function(x) {
+  sp_coords(x)
 }
 
 #' @export
-to_multipolygon_list.SpatialLines <- function(lines) {
-  lapply(lines@lines, to_multipolygon)
+to_multipolygon_list.SpatialLines <- function(x) {
+  lapply(x@lines, to_multipolygon)
 }
 
 #' @export
-to_multipolygon.Lines <- function(lines) {
-  lapply(lines@Lines, to_polygon)
+to_multipolygon.Lines <- function(x) {
+  lapply(x@Lines, to_polygon)
 }
 
 #' @export
-to_ring.Line <- function(line) {
-  sp_coords(line)
+to_ring.Line <- function(x) {
+  sp_coords(x)
 }
