@@ -82,12 +82,13 @@ sp_bbox <- function(x) {
 }
 
 #' @export
-to_multipolygon_list.SpatialPolygons <- function(pgons) {
-  lapply(pgons@polygons, to_multipolygon)
+to_multipolygon_list.SpatialPolygons <- function(x) {
+  lapply(x@polygons, to_multipolygon)
 }
 
 #' @export
-to_multipolygon.Polygons <- function(pgons) {
+to_multipolygon.Polygons <- function(x) {
+  pgons <- x
   if (length(pgons@Polygons) > 1) {
     # If Polygons contains more than one Polygon, then we may be dealing with
     # a polygon with holes or a multipolygon (potentially with holes). Use
@@ -109,21 +110,21 @@ to_multipolygon.Polygons <- function(pgons) {
 }
 
 #' @export
-to_ring.Polygon <- function(pgon) {
-  sp_coords(pgon)
+to_ring.Polygon <- function(x) {
+  sp_coords(x)
 }
 
 #' @export
-to_multipolygon_list.SpatialLines <- function(lines) {
-  lapply(lines@lines, to_multipolygon)
+to_multipolygon_list.SpatialLines <- function(x) {
+  lapply(x@lines, to_multipolygon)
 }
 
 #' @export
-to_multipolygon.Lines <- function(lines) {
-  lapply(lines@Lines, to_polygon)
+to_multipolygon.Lines <- function(x) {
+  lapply(x@Lines, to_polygon)
 }
 
 #' @export
-to_ring.Line <- function(line) {
-  sp_coords(line)
+to_ring.Line <- function(x) {
+  sp_coords(x)
 }
