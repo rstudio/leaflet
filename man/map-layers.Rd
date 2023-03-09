@@ -385,35 +385,35 @@ Add graphics elements and layers to the map widget.
 }
 \section{Functions}{
 \itemize{
-\item \code{addControl}: Add arbitrary HTML controls to the map
+\item \code{addControl()}: Add arbitrary HTML controls to the map
 
-\item \code{addTiles}: Add a tile layer to the map
+\item \code{addTiles()}: Add a tile layer to the map
 
-\item \code{addWMSTiles}: Add a WMS tile layer to the map
+\item \code{addWMSTiles()}: Add a WMS tile layer to the map
 
-\item \code{addPopups}: Add popups to the map
+\item \code{addPopups()}: Add popups to the map
 
-\item \code{addMarkers}: Add markers to the map
+\item \code{addMarkers()}: Add markers to the map
 
-\item \code{addLabelOnlyMarkers}: Add Label only markers to the map
+\item \code{addLabelOnlyMarkers()}: Add Label only markers to the map
 
-\item \code{addCircleMarkers}: Add circle markers to the map
+\item \code{addCircleMarkers()}: Add circle markers to the map
 
-\item \code{highlightOptions}: Options to highlight a shape on hover
+\item \code{highlightOptions()}: Options to highlight a shape on hover
 
-\item \code{addCircles}: Add circles to the map
+\item \code{addCircles()}: Add circles to the map
 
-\item \code{addPolylines}: Add polylines to the map
+\item \code{addPolylines()}: Add polylines to the map
 
-\item \code{addRectangles}: Add rectangles to the map
+\item \code{addRectangles()}: Add rectangles to the map
 
-\item \code{addPolygons}: Add polygons to the map
+\item \code{addPolygons()}: Add polygons to the map
 
-\item \code{addGeoJSON}: Add GeoJSON layers to the map
+\item \code{addGeoJSON()}: Add GeoJSON layers to the map
 
-\item \code{addTopoJSON}: Add TopoJSON layers to the map
+\item \code{addTopoJSON()}: Add TopoJSON layers to the map
+
 }}
-
 \references{
 The Leaflet API documentation:
   \url{https://leafletjs.com/reference-1.3.4.html}
