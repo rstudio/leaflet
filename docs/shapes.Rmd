@@ -20,11 +20,9 @@ Line and polygon data can come from a variety of sources:
 library(rgdal, quietly = TRUE)
 ```
 ```{r states,message=FALSE,warning=FALSE}
-library(rgdal)
-
 # From https://www.census.gov/geo/maps-data/data/cbf/cbf_state.html
-states <- readOGR("shp/cb_2013_us_state_20m.shp",
-  layer = "cb_2013_us_state_20m", GDAL1_integer64_policy = TRUE)
+states <- sf::st_read("shp/cb_2013_us_state_20m.shp",
+  layer = "cb_2013_us_state_20m")
 
 neStates <- subset(states, states$STUSPS %in% c(
   "CT","ME","MA","NH","RI","VT","NY","NJ","PA"
@@ -46,7 +44,7 @@ The above example uses the `highlightOptions` parameter to emphasize the current
 
 Very detailed (i.e. large) shape data can present a problem for Leafet, since it is all eventually passed into the browser and rendered as SVG, which is very expressive and convenient but has scalability limits. In these cases, consider using `rmapshaper::ms_simplify`, which does topology-preserving simplification conveniently from R.
 
-```{r}
+```{r message=FALSE,warning=FALSE}
 library(albersusa)
 
 fullsize <- usa_sf()

@@ -416,7 +416,7 @@ Add graphics elements and layers to the map widget.
 }}
 \references{
 The Leaflet API documentation:
-  \url{https://leafletjs.com/reference-1.3.4.html}
+  \url{https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html}
 }
 \seealso{
 \code{\link{tileOptions}}, \code{\link{WMSTileOptions}},

@@ -243,21 +243,16 @@ pre code {
 <p>The Leaflet package includes convenience functions for creating color
 legends. In this section, we will build on the example from the <a
 href="colors.html">Colors</a> page.</p>
-<pre class="r"><code>library(rgdal)
-
-# From http://data.okfn.org/data/datasets/geo-boundaries-world-110m
-countries &lt;- readOGR(&quot;https://rstudio.github.io/leaflet/json/countries.geojson&quot;)</code></pre>
-<pre><code>## Warning: OGR support is provided by the sf and terra packages among others</code></pre>
-<pre><code>## Warning: OGR support is provided by the sf and terra packages among others</code></pre>
-<pre><code>## Warning: OGR support is provided by the sf and terra packages among others</code></pre>
-<pre><code>## Warning: OGR support is provided by the sf and terra packages among others</code></pre>
-<pre><code>## Warning: OGR support is provided by the sf and terra packages among others</code></pre>
-<pre><code>## Warning: OGR support is provided by the sf and terra packages among others</code></pre>
-<pre><code>## Warning: OGR support is provided by the sf and terra packages among others</code></pre>
-<pre><code>## OGR data source with driver: GeoJSON 
-## Source: &quot;https://rstudio.github.io/leaflet/json/countries.geojson&quot;, layer: &quot;countries&quot;
-## with 177 features
-## It has 2 fields</code></pre>
+<pre class="r"><code># From http://data.okfn.org/data/datasets/geo-boundaries-world-110m
+countries &lt;- sf::st_read(&quot;https://rstudio.github.io/leaflet/json/countries.geojson&quot;)</code></pre>
+<pre><code>## Reading layer `countries&#39; from data source 
+##   `https://rstudio.github.io/leaflet/json/countries.geojson&#39; 
+##   using driver `GeoJSON&#39;
+## Simple feature collection with 177 features and 2 fields
+## Geometry type: MULTIPOLYGON
+## Dimension:     XY
+## Bounding box:  xmin: -180 ymin: -90 xmax: 180 ymax: 83.64513
+## Geodetic CRS:  WGS 84</code></pre>
 <pre class="r"><code>map &lt;- leaflet(countries) %&gt;% addTiles()</code></pre>
 <p>Use the <code>addLegend</code> function to add a legend. The easiest
 way to use <code>addLegend</code> is to provide <code>pal</code> (a

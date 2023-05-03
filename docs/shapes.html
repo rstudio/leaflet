@@ -264,16 +264,17 @@ second is latitude. Polygons are separated by rows of
 nor polygons with holes using this method; use
 <code>SpatialPolygons</code> instead.</li>
 </ul>
-<pre class="r"><code>library(rgdal)
-
-# From https://www.census.gov/geo/maps-data/data/cbf/cbf_state.html
-states &lt;- readOGR(&quot;shp/cb_2013_us_state_20m.shp&quot;,
-  layer = &quot;cb_2013_us_state_20m&quot;, GDAL1_integer64_policy = TRUE)</code></pre>
-<pre><code>## OGR data source with driver: ESRI Shapefile 
-## Source: &quot;/Users/jcheng/Development/rstudio/leaflet2/docs/shp/cb_2013_us_state_20m.shp&quot;, layer: &quot;cb_2013_us_state_20m&quot;
-## with 52 features
-## It has 9 fields
-## Integer64 fields read as doubles:  ALAND AWATER</code></pre>
+<pre class="r"><code># From https://www.census.gov/geo/maps-data/data/cbf/cbf_state.html
+states &lt;- sf::st_read(&quot;shp/cb_2013_us_state_20m.shp&quot;,
+  layer = &quot;cb_2013_us_state_20m&quot;)</code></pre>
+<pre><code>## Reading layer `cb_2013_us_state_20m&#39; from data source 
+##   `/Users/jcheng/Development/rstudio/leaflet/docs/shp/cb_2013_us_state_20m.shp&#39; 
+##   using driver `ESRI Shapefile&#39;
+## Simple feature collection with 52 features and 9 fields
+## Geometry type: MULTIPOLYGON
+## Dimension:     XY
+## Bounding box:  xmin: -179.1473 ymin: 17.88481 xmax: 179.7785 ymax: 71.35256
+## Geodetic CRS:  NAD83</code></pre>
 <pre class="r"><code>neStates &lt;- subset(states, states$STUSPS %in% c(
   &quot;CT&quot;,&quot;ME&quot;,&quot;MA&quot;,&quot;NH&quot;,&quot;RI&quot;,&quot;VT&quot;,&quot;NY&quot;,&quot;NJ&quot;,&quot;PA&quot;
 ))
@@ -664,12 +665,8 @@ simplification conveniently from R.</p>
 fullsize &lt;- usa_sf()
 object.size(fullsize)</code></pre>
 <pre><code>## 933016 bytes</code></pre>
-<pre class="r"><code>simplified &lt;- rmapshaper::ms_simplify(fullsize)</code></pre>
-<pre><code>## Registered S3 method overwritten by &#39;geojsonlint&#39;:
-##   method         from 
-##   print.location dplyr</code></pre>
-<pre><code>## old-style crs object detected; please recreate object with a recent sf::st_crs()</code></pre>
-<pre class="r"><code>object.size(simplified)</code></pre>
+<pre class="r"><code>simplified &lt;- rmapshaper::ms_simplify(fullsize)
+object.size(simplified)</code></pre>
 <pre><code>## 121552 bytes</code></pre>
 </div>
 </div>

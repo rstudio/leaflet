@@ -23,7 +23,7 @@ argument in \code{leafletOptions}. This will give you control
 over the order of the layers, e.g. points always on top of polygons.
 If two layers are provided to the same pane, overlay will be determined by
 order of adding. See examples below.
-See \url{https://leafletjs.com/reference-1.3.4.html#map-pane} for details.
+See \url{https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#map-pane} for details.
 
 If the error "Cannot read property 'appendChild' of undefined" occurs, make
 sure the pane being used for used for display has already been added to the map.

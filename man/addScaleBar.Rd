@@ -44,7 +44,7 @@ on \code{moveend}.}
 }
 \description{
 Uses Leaflet's built-in
-\href{https://leafletjs.com/reference-1.3.4.html#control-scale}{scale bar}
+\href{https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#control-scale}{scale bar}
 feature to add a scale bar.
 }
 \examples{
