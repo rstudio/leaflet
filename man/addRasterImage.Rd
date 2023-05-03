@@ -28,8 +28,8 @@ projectRasterForLeaflet(x, method)
 
 \item{colors}{the color palette (see \code{\link{colorNumeric}}) or function
 to use to color the raster values (hint: if providing a function, set
-\code{na.color} to \code{"#00000000"} to make \code{NA} areas transparent). 
-The palette is ignored if \code{x} is a SpatRaster with a color table or if 
+\code{na.color} to \code{"#00000000"} to make \code{NA} areas transparent).
+The palette is ignored if \code{x} is a SpatRaster with a color table or if
 it has RGB channels.}
 
 \item{opacity}{the base opacity of the raster, expressed from 0 to 1}
@@ -95,7 +95,13 @@ r <- raster(xmn = -2.8, xmx = -2.79, ymn = 54.04, ymx = 54.05, nrows = 30, ncols
 values(r) <- matrix(1:900, nrow(r), ncol(r), byrow = TRUE)
 crs(r) <- CRS("+init=epsg:4326")
 
+pal <- colorNumeric("Spectral", domain = c(0, 1000))
 leaflet() \%>\% addTiles() \%>\%
-  addRasterImage(r, colors = "Spectral", opacity = 0.8)
+  addRasterImage(r, colors = pal, opacity = 0.8) \%>\%
+  addLegend(pal = pal, values = c(0, 1000))
 }
+}
+\seealso{
+\code{\link{addRasterLegend}} for an easy way to add a legend for a
+  SpatRaster with a color table.
 }

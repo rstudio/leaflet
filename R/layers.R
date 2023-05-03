@@ -206,8 +206,8 @@ epsg3857 <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y
 #' @param x a \code{\link[terra]{SpatRaster}} or a \code{RasterLayer} object--see \code{\link[raster]{raster}}
 #' @param colors the color palette (see \code{\link{colorNumeric}}) or function
 #'   to use to color the raster values (hint: if providing a function, set
-#'   \code{na.color} to \code{"#00000000"} to make \code{NA} areas transparent). 
-#'   The palette is ignored if \code{x} is a SpatRaster with a color table or if 
+#'   \code{na.color} to \code{"#00000000"} to make \code{NA} areas transparent).
+#'   The palette is ignored if \code{x} is a SpatRaster with a color table or if
 #'   it has RGB channels.
 #' @param opacity the base opacity of the raster, expressed from 0 to 1
 #' @param attribution the HTML string to show as the attribution for this layer
@@ -227,6 +227,9 @@ epsg3857 <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y
 #'   (before base64 encoding); defaults to 4MB.
 #' @template data-getMapData
 #'
+#' @seealso \code{\link{addRasterLegend}} for an easy way to add a legend for a
+#'   SpatRaster with a color table.
+#'
 #' @examples
 #' \donttest{library(raster)
 #'
@@ -234,8 +237,10 @@ epsg3857 <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y
 #' values(r) <- matrix(1:900, nrow(r), ncol(r), byrow = TRUE)
 #' crs(r) <- CRS("+init=epsg:4326")
 #'
+#' pal <- colorNumeric("Spectral", domain = c(0, 1000))
 #' leaflet() %>% addTiles() %>%
-#'   addRasterImage(r, colors = "Spectral", opacity = 0.8)
+#'   addRasterImage(r, colors = pal, opacity = 0.8) %>%
+#'   addLegend(pal = pal, values = c(0, 1000))
 #' }
 #' @export
 addRasterImage <- function(
@@ -283,6 +288,76 @@ addRasterImage <- function(
     stop("Don't know how to get path data from object of class ", class(x)[[1]])
   }
 }
+
+
+#' Add a color legend for a SpatRaster to a map
+#'
+#' A function for adding a [legend][addLegend()] that is specifically designed
+#' for [terra::SpatRaster] objects, with categorical values, that carry their
+#' own [color table][terra::coltab()].
+#'
+#' @param map a map widget object
+#' @param x a [SpatRaster][terra::SpatRaster] object with a color table
+#' @param layer the layer of the raster to target
+#' @param ... additional arguments to pass through to [addLegend()]
+#' @seealso [addRasterImage()]
+#' @examples
+#'
+#' library(terra)
+#'
+#' r <- rast("/vsicurl/https://geodata.ucdavis.edu/test/pr_nlcd.tif")
+#' leaflet() |>
+#'   addTiles() |>
+#'   addRasterImage(r, opacity = 0.75) |>
+#'   addRasterLegend(r, opacity = 0.75)
+#'
+#' plot.new() # pause in interactive mode
+#'
+#' rr <- r
+#' levels(rr)  <- NULL
+#' leaflet() |>
+#'   addTiles() |>
+#'   addRasterImage(rr, opacity = 0.75) |>
+#'   addRasterLegend(rr, opacity = 0.75)
+#'
+#' @md
+#' @export
+addRasterLegend <- function(map, x, layer = 1, ...) {
+  stopifnot(inherits(x, "SpatRaster"))
+  stopifnot(length(layer) == 1 && layer > 0 && layer <= terra::nlyr(x))
+
+  # Retrieve the color table from the layer. If one doesn't exist, that means
+  # the raster was colored some other way, like using colorFactor or something,
+  # and the regular addLegend() is designed for those cases.
+  ct <- terra::coltab(x)[[layer]]
+  if (is.null(ct)) {
+    stop("addRasterLegend() can only be used on layers with color tables (see ?terra::coltab). Otherwise, use addLegend().")
+  }
+
+  # Create a data frame that has value and color columns
+  # Extract the colors in #RRGGBBAA format
+  color_info <- data.frame(
+    value = ct[[1]],
+    color = grDevices::rgb(ct$red/255, ct$green/255, ct$blue/255, ct$alpha/255)
+  )
+
+  lvls <- terra::levels(x)[[layer]]
+
+  res <- if (is.data.frame(lvls)) {
+    # Use the labels from levels(x), and look up the matching colors in the
+    # color table
+    colnames(lvls) <- c("value", "label")
+    base::merge(color_info, lvls, by.x = "value", by.y = 1)
+  } else {
+    cbind(color_info, label = color_info$value)
+  }
+
+  # Drop values that aren't part of the layer
+  res <- res[res[["value"]] %in% terra::values(x),]
+
+  addLegend(map, colors = res[["color"]], labels = res[["label"]], ...)
+}
+
 
 
 addRasterImage_RasterLayer <- function(
@@ -382,11 +457,11 @@ addRasterImage_SpatRaster <- function(
   }
 
   raster_is_factor <- terra::is.factor(x)
-  
+
   # there 1.5-50 has terra::has.colors(x)
   ctab <- terra::coltab(x)[[1]]
   has_colors <- !is.null(ctab)
-  
+
   method <- match.arg(method)
   if (method == "ngb") method = "near"
   if (method == "auto") {
@@ -426,7 +501,7 @@ addRasterImage_SpatRaster <- function(
       if (has_colors) {
         colors <- rgb(ctab[,2], ctab[,3], ctab[,4], ctab[,5], maxColorValue=255)
         domain <- ctab[,1]
-      }  
+      }
       colors <- colorFactor(colors, domain = domain, na.color = "#00000000", alpha = TRUE)
     } else {
       # 'numeric'
