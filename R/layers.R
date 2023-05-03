@@ -306,18 +306,18 @@ addRasterImage <- function(
 #' library(terra)
 #'
 #' r <- rast("/vsicurl/https://geodata.ucdavis.edu/test/pr_nlcd.tif")
-#' leaflet() |>
-#'   addTiles() |>
-#'   addRasterImage(r, opacity = 0.75) |>
+#' leaflet() %>%
+#'   addTiles() %>%
+#'   addRasterImage(r, opacity = 0.75) %>%
 #'   addRasterLegend(r, opacity = 0.75)
 #'
 #' plot.new() # pause in interactive mode
 #'
 #' rr <- r
 #' levels(rr)  <- NULL
-#' leaflet() |>
-#'   addTiles() |>
-#'   addRasterImage(rr, opacity = 0.75) |>
+#' leaflet() %>%
+#'   addTiles() %>%
+#'   addRasterImage(rr, opacity = 0.75) %>%
 #'   addRasterLegend(rr, opacity = 0.75)
 #'
 #' @md
