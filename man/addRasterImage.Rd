@@ -28,7 +28,9 @@ projectRasterForLeaflet(x, method)
 
 \item{colors}{the color palette (see \code{\link{colorNumeric}}) or function
 to use to color the raster values (hint: if providing a function, set
-\code{na.color} to \code{"#00000000"} to make \code{NA} areas transparent)}
+\code{na.color} to \code{"#00000000"} to make \code{NA} areas transparent). 
+The palette is ignored if \code{x} is a SpatRaster with a color table or if 
+it has RGB channels.}
 
 \item{opacity}{the base opacity of the raster, expressed from 0 to 1}
 

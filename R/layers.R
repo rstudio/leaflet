@@ -206,7 +206,9 @@ epsg3857 <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y
 #' @param x a \code{\link[terra]{SpatRaster}} or a \code{RasterLayer} object--see \code{\link[raster]{raster}}
 #' @param colors the color palette (see \code{\link{colorNumeric}}) or function
 #'   to use to color the raster values (hint: if providing a function, set
-#'   \code{na.color} to \code{"#00000000"} to make \code{NA} areas transparent)
+#'   \code{na.color} to \code{"#00000000"} to make \code{NA} areas transparent). 
+#'   The palette is ignored if \code{x} is a SpatRaster with a color table or if 
+#'   it has RGB channels.
 #' @param opacity the base opacity of the raster, expressed from 0 to 1
 #' @param attribution the HTML string to show as the attribution for this layer
 #' @param layerId the layer id
@@ -370,28 +372,29 @@ addRasterImage_SpatRaster <- function(
   data = getMapData(map)
 ) {
 
-  if (terra::nlyr(x) > 1) {
+  # terra 1.5-50 has terra::has.RGB()
+  if (x@ptr$rgb) {
+    # RGB(A) channels to color table
+    x <- terra::colorize(x, "col")
+  } else if (terra::nlyr(x) > 1) {
     x <- x[[1]]
     warning("using the first layer in 'x'", call. = FALSE)
   }
 
   raster_is_factor <- terra::is.factor(x)
+  
+  # there 1.5-50 has terra::has.colors(x)
+  ctab <- terra::coltab(x)[[1]]
+  has_colors <- !is.null(ctab)
+  
   method <- match.arg(method)
   if (method == "ngb") method = "near"
   if (method == "auto") {
-    if (raster_is_factor) {
+    if (raster_is_factor || has_colors) {
       method <- "near"
     } else {
       method <- "bilinear"
     }
-  }
-
-  if (project) {
-    # if we should project the data
-    projected <- projectRasterForLeaflet(x, method)
-  } else {
-    # do not project data
-    projected <- x
   }
 
   bounds <- terra::ext(
@@ -401,19 +404,38 @@ addRasterImage_SpatRaster <- function(
         epsg3857),
       epsg4326)
   )
+## can't the above be simplified to this?
+#  bounds <- terra::ext(
+#    terra::project(
+#        terra::as.points(terra::ext(x), crs=terra::crs(x)),
+#        epsg4326)
+#  )
+
+  if (project) {
+    # if we should project the data
+    x <- projectRasterForLeaflet(x, method)
+    if (method=="bilinear") {
+      has_colors <- FALSE
+    }
+  }
 
   if (!is.function(colors)) {
-    if (method == "near") {
+    if (method == "near" || has_colors) {
       # 'factors'
-      colors <- colorFactor(colors, domain = NULL, na.color = "#00000000", alpha = TRUE)
+      domain <- NULL
+      if (has_colors) {
+        colors <- rgb(ctab[,2], ctab[,3], ctab[,4], ctab[,5], maxColorValue=255)
+        domain <- ctab[,1]
+      }  
+      colors <- colorFactor(colors, domain = domain, na.color = "#00000000", alpha = TRUE)
     } else {
       # 'numeric'
       colors <- colorNumeric(colors, domain = NULL, na.color = "#00000000", alpha = TRUE)
     }
   }
 
-  tileData <- terra::values(projected) %>% as.vector() %>% colors() %>% col2rgb(alpha = TRUE) %>% as.raw()
-  dim(tileData) <- c(4, ncol(projected), nrow(projected))
+  tileData <- terra::values(x) %>% as.vector() %>% colors() %>% col2rgb(alpha = TRUE) %>% as.raw()
+  dim(tileData) <- c(4, ncol(x), nrow(x))
   pngData <- png::writePNG(tileData)
   if (length(pngData) > maxBytes) {
     stop(
