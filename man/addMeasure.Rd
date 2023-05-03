@@ -24,7 +24,7 @@ addMeasure(
 \arguments{
 \item{map}{a map widget object}
 
-\item{position}{standard \href{https://leafletjs.com/reference-1.3.4.html#control-positions}{Leaflet control position options}.}
+\item{position}{standard \href{https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#control-positions}{Leaflet control position options}.}
 
 \item{primaryLengthUnit, secondaryLengthUnit}{units used to display length
 results. secondaryLengthUnit is optional.
@@ -44,7 +44,7 @@ Value should be a color represented as a hexadecimal string.}
 
 \item{popupOptions}{\code{list} of options applied to the popup
 of the resulting measure feature.
-Properties may be any \href{https://leafletjs.com/reference-1.3.4.html#popup-option}{standard Leaflet popup options}.}
+Properties may be any \href{https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#popup-option}{standard Leaflet popup options}.}
 
 \item{captureZIndex}{Z-index of the marker used to capture measure clicks.
 Set this value higher than the z-index of all other map layers to

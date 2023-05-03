@@ -2,13 +2,13 @@
 
 <details>
 
-* Version: 0.2.0
-* GitHub: https://github.com/JeremyGelb/geocmeans
-* Source code: https://github.com/cran/geocmeans
-* Date/Publication: 2021-08-23 07:11:35 UTC
-* Number of recursive dependencies: 203
+- Version: 0.3.3
+- GitHub: https://github.com/JeremyGelb/geocmeans
+- Source code: https://github.com/cran/geocmeans
+- Date/Publication: 2023-02-07 01:02:31 UTC
+- Number of recursive dependencies: 197
 
-Run `cloud_details(, "geocmeans")` for more info
+Run `revdepcheck::cloud_details(, "geocmeans")` for more info
 
 </details>
 
@@ -24,22 +24,27 @@ Run `cloud_details(, "geocmeans")` for more info
 * using option ‘--no-manual’
 * checking for file ‘geocmeans/DESCRIPTION’ ... OK
 * checking extension type ... Package
-* this is package ‘geocmeans’ version ‘0.2.0’
+* this is package ‘geocmeans’ version ‘0.3.3’
 * package encoding: UTF-8
 * checking package namespace information ... OK
-* checking package dependencies ... ERROR
-Package required but not available: ‘reldist’
+...
+--- finished re-building ‘rasters.Rmd’
 
-See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-manual.
+SUMMARY: processing the following file failed:
+  ‘introduction.Rmd’
+
+Error: Vignette re-building failed.
+Execution halted
+
 * DONE
-Status: 1 ERROR
+Status: 2 ERRORs, 1 WARNING, 1 NOTE
 
 
 
 
 
 ```
+
 ### CRAN
 
 ```
@@ -50,16 +55,20 @@ Status: 1 ERROR
 * using option ‘--no-manual’
 * checking for file ‘geocmeans/DESCRIPTION’ ... OK
 * checking extension type ... Package
-* this is package ‘geocmeans’ version ‘0.2.0’
+* this is package ‘geocmeans’ version ‘0.3.3’
 * package encoding: UTF-8
 * checking package namespace information ... OK
-* checking package dependencies ... ERROR
-Package required but not available: ‘reldist’
+...
+--- finished re-building ‘rasters.Rmd’
 
-See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-manual.
+SUMMARY: processing the following file failed:
+  ‘introduction.Rmd’
+
+Error: Vignette re-building failed.
+Execution halted
+
 * DONE
-Status: 1 ERROR
+Status: 2 ERRORs, 1 WARNING, 1 NOTE
 
 
 

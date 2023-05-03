@@ -71,11 +71,11 @@ Especially useful when 'zoomLevelFixed' is set.}
 \item{minimized}{Sets whether the minimap should start in a minimized position.}
 
 \item{aimingRectOptions}{Sets the style of the aiming rectangle by passing in
-a Path.Options (\url{https://leafletjs.com/reference-1.3.4.html#path-options}) object.
+a Path.Options (\url{https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#path-options}) object.
 (Clickable will always be overridden and set to false.)}
 
 \item{shadowRectOptions}{Sets the style of the aiming shadow rectangle by passing in
-a Path.Options (\url{https://leafletjs.com/reference-1.3.4.html#path-option}) object.
+a Path.Options (\url{https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#path-option}) object.
 (Clickable will always be overridden and set to false.)}
 
 \item{strings}{Overrides the default strings allowing for translation.}

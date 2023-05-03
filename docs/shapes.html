@@ -270,7 +270,7 @@ nor polygons with holes using this method; use
 states &lt;- readOGR(&quot;shp/cb_2013_us_state_20m.shp&quot;,
   layer = &quot;cb_2013_us_state_20m&quot;, GDAL1_integer64_policy = TRUE)</code></pre>
 <pre><code>## OGR data source with driver: ESRI Shapefile 
-## Source: &quot;/Users/jcheng/Development/rstudio/leaflet2/docs/shp/cb_2013_us_state_20m.shp&quot;, layer: &quot;cb_2013_us_state_20m&quot;
+## Source: &quot;/Users/barret/Documents/git/rstudio/leaflet/leaflet.nosync/docs/shp/cb_2013_us_state_20m.shp&quot;, layer: &quot;cb_2013_us_state_20m&quot;
 ## with 52 features
 ## It has 9 fields
 ## Integer64 fields read as doubles:  ALAND AWATER</code></pre>
@@ -665,9 +665,6 @@ fullsize &lt;- usa_sf()
 object.size(fullsize)</code></pre>
 <pre><code>## 933016 bytes</code></pre>
 <pre class="r"><code>simplified &lt;- rmapshaper::ms_simplify(fullsize)</code></pre>
-<pre><code>## Registered S3 method overwritten by &#39;geojsonlint&#39;:
-##   method         from 
-##   print.location dplyr</code></pre>
 <pre><code>## old-style crs object detected; please recreate object with a recent sf::st_crs()</code></pre>
 <pre class="r"><code>object.size(simplified)</code></pre>
 <pre><code>## 121552 bytes</code></pre>
