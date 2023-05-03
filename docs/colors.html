@@ -293,10 +293,8 @@ scaling between data and colors is consistent.</p>
 </div>
 <div id="coloring-continuous-data" class="section level3">
 <h3>Coloring continuous data</h3>
-<pre class="r"><code>library(rgdal)
-
-# From http://data.okfn.org/data/datasets/geo-boundaries-world-110m
-countries &lt;- readOGR(&quot;https://rstudio.github.io/leaflet/json/countries.geojson&quot;)
+<pre class="r"><code># From http://data.okfn.org/data/datasets/geo-boundaries-world-110m
+countries &lt;- sf::st_read(&quot;https://rstudio.github.io/leaflet/json/countries.geojson&quot;)
 map &lt;- leaflet(countries)</code></pre>
 <p>We’ve loaded some shape data for countries, including a numeric field
 <code>gdp_md_est</code> which contains GDP estimates.</p>

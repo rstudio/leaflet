@@ -240,20 +240,22 @@ pre code {
 
 <div id="raster-images" class="section level2">
 <h2>Raster Images</h2>
-<p>Two-dimensional <code>RasterLayer</code> objects (from the <a
-href="http://CRAN.R-project.org/package=raster"><code>raster</code>
+<p>Two-dimensional <code>SpatRaster</code> objects (from the <a
+href="https://CRAN.R-project.org/package=terra"><code>terra</code>
+package</a>) or <code>RasterLayer</code> objects (from the <a
+href="https://CRAN.R-project.org/package=raster"><code>raster</code>
 package</a>) can be turned into images and added to Leaflet maps using
 the <code>addRasterImage</code> function.</p>
 <p>The <code>addRasterImage</code> function works by projecting the
-<code>RasterLayer</code> object to <a
+<code>SpatRaster</code> or <code>RasterLayer</code> object to <a
 href="http://spatialreference.org/ref/sr-org/7483/">EPSG:3857</a> and
 encoding each cell to an RGBA color, to produce a PNG image. That image
 is then embedded in the map widget.</p>
-<p>It’s important that the <code>RasterLayer</code> object is tagged
-with a proper coordinate reference system. Many raster files contain
-this information, but some do not. Here is how you’d tag a raster layer
-object “<code>r</code>” which contains WGS84 data:</p>
-<pre class="r"><code>crs(r) &lt;- sp::CRS(&quot;+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs&quot;)</code></pre>
+<p>It’s important that the raster object is tagged with a proper
+coordinate reference system. Many raster files contain this information,
+but some do not. Here is how you’d tag a raster object “<code>r</code>”
+which contains WGS84 data:</p>
+<pre class="r"><code>crs(r) &lt;- &quot;+proj=longlat +datum=WGS84&quot;</code></pre>
 <div id="large-raster-warning" class="section level3">
 <h3>Large Raster Warning</h3>
 <p>Because the <code>addRasterImage</code> function embeds the image in
@@ -263,22 +265,17 @@ usage, <code>addRasterImage</code> will error when the PNG is beyond the
 size indicated by the <code>maxBytes</code> argument (defaults to 4
 megabytes).</p>
 <p>If you have a large raster layer, you can provide a larger number of
-bytes and see how it goes, or use <code>raster::resample</code> or
-<code>raster::aggregate</code> to decrease the number of cells.</p>
+bytes and see how it goes, or use <code>terra::resample</code>,
+<code>raster::resample</code>, or <code>raster::aggregate</code> to
+decrease the number of cells.</p>
 </div>
 <div id="projection-performance" class="section level3">
 <h3>Projection Performance</h3>
 <p>The <code>addRasterImage</code> function projects using
-<code>raster::projectRaster</code>, which can take a while on all but
-the smallest rasters. To improve performance, the first thing to do is
-install a new version of <code>raster</code>; version 2.4 includes
-optimizations that speed up bilinear projection by about 10X. This
-version has not yet been released to CRAN at the time of this writing
-(June 17, 2015) but can be installed directly from R-Forge:</p>
-<pre class="r"><code>install.packages(&#39;raster&#39;, repos = &#39;http://r-forge.r-project.org/&#39;, type = &#39;source&#39;)</code></pre>
-<p>If you have a large raster layer or expect to call
-<code>addRasterImage</code> on the same raster layer many times, you can
-perform the <a
+<code>terra::project</code> or <code>raster::projectRaster</code>, which
+can take a while on all but the smallest rasters. If you have a large
+raster layer or expect to call <code>addRasterImage</code> on the same
+raster layer many times, you can perform the <a
 href="http://spatialreference.org/ref/sr-org/7483/">EPSG:3857</a>
 projection yourself (either using
 <code>leaflet::projectRasterForLeaflet</code> or using another GIS
@@ -290,10 +287,10 @@ image in the proper position on the map.</p>
 </div>
 <div id="coloring" class="section level3">
 <h3>Coloring</h3>
-<p>In order to render the <code>RasterLayer</code> as an image, each
-cell value must be converted to an RGB(A) color. You can specify the
-color scale using the <code>colors</code> argument, which accepts a
-variety of color specifications:</p>
+<p>In order to render the raster object as an image, each cell value
+must be converted to an RGB(A) color. You can specify the color scale
+using the <code>colors</code> argument, which accepts a variety of color
+specifications:</p>
 <ul>
 <li>The name of a <a href="http://colorbrewer2.org/">Color Brewer 2</a>
 palette. If no <code>colors</code> argument is provided, then

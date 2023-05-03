@@ -9,16 +9,11 @@ The Leaflet package includes convenience functions for creating color legends. I
 ```{r, include = FALSE}
 library(leaflet)
 library(magrittr)
-
-# Load rgdal in the include=FALSE block to squelch all of the warnings
-library(rgdal)
 ```
 
 ```{r}
-library(rgdal)
-
 # From http://data.okfn.org/data/datasets/geo-boundaries-world-110m
-countries <- readOGR("https://rstudio.github.io/leaflet/json/countries.geojson")
+countries <- sf::st_read("https://rstudio.github.io/leaflet/json/countries.geojson")
 map <- leaflet(countries) %>% addTiles()
 ```
 

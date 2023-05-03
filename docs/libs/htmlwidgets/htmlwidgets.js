@@ -1,24 +1,23 @@
-(function () {
+(function() {
   // If window.HTMLWidgets is already defined, then use it; otherwise create a
   // new object. This allows preceding code to set options that affect the
   // initialization process (though none currently exist).
   window.HTMLWidgets = window.HTMLWidgets || {};
 
   // See if we're running in a viewer pane. If not, we're in a web browser.
-  var viewerMode = (window.HTMLWidgets.viewerMode = /\bviewer_pane=1\b/.test(
-    window.location
-  ));
+  var viewerMode = window.HTMLWidgets.viewerMode =
+      /\bviewer_pane=1\b/.test(window.location);
 
   // See if we're running in Shiny mode. If not, it's a static document.
   // Note that static widgets can appear in both Shiny and static modes, but
   // obviously, Shiny widgets can only appear in Shiny apps/documents.
-  var shinyMode = (window.HTMLWidgets.shinyMode =
-    typeof window.Shiny !== "undefined" && !!window.Shiny.outputBindings);
+  var shinyMode = window.HTMLWidgets.shinyMode =
+      typeof(window.Shiny) !== "undefined" && !!window.Shiny.outputBindings;
 
   // We can't count on jQuery being available, so we implement our own
   // version if necessary.
   function querySelectorAll(scope, selector) {
-    if (typeof jQuery !== "undefined" && scope instanceof jQuery) {
+    if (typeof(jQuery) !== "undefined" && scope instanceof jQuery) {
       return scope.find(selector);
     }
     if (scope.querySelectorAll) {
@@ -27,8 +26,10 @@
   }
 
   function asArray(value) {
-    if (value === null) return [];
-    if ($.isArray(value)) return value;
+    if (value === null)
+      return [];
+    if ($.isArray(value))
+      return value;
     return [value];
   }
 
@@ -67,8 +68,8 @@
   // method can be called like a regular function, it has the target permanently
   // bound to it so "this" will work correctly.
   function overrideMethod(target, methodName, funcSource) {
-    var superFunc = target[methodName] || function () {};
-    var superFuncBound = function () {
+    var superFunc = target[methodName] || function() {};
+    var superFuncBound = function() {
       return superFunc.apply(target, arguments);
     };
     target[methodName] = funcSource(superFuncBound);
@@ -96,7 +97,7 @@
   // The output would be "b1", "a2".
   function delegateMethod(delegator, delegatee, methodName) {
     var inherited = delegator[methodName];
-    delegator[methodName] = function () {
+    delegator[methodName] = function() {
       var target = delegatee;
       var method = delegatee[methodName];
 
@@ -121,9 +122,8 @@
       el["htmlwidget_data_" + name] = value;
       return el;
     } else {
-      throw new Error(
-        "Wrong number of arguments for elementData: " + arguments.length
-      );
+      throw new Error("Wrong number of arguments for elementData: " +
+        arguments.length);
     }
   }
 
@@ -170,69 +170,42 @@
   // the "padding" CSS property
   // https://developer.mozilla.org/en-US/docs/Web/CSS/padding
   function unpackPadding(value) {
-    if (typeof value === "number") value = [value];
+    if (typeof(value) === "number")
+      value = [value];
     if (value.length === 1) {
-      return {
-        top: value[0],
-        right: value[0],
-        bottom: value[0],
-        left: value[0],
-      };
+      return {top: value[0], right: value[0], bottom: value[0], left: value[0]};
     }
     if (value.length === 2) {
-      return {
-        top: value[0],
-        right: value[1],
-        bottom: value[0],
-        left: value[1],
-      };
+      return {top: value[0], right: value[1], bottom: value[0], left: value[1]};
     }
     if (value.length === 3) {
-      return {
-        top: value[0],
-        right: value[1],
-        bottom: value[2],
-        left: value[1],
-      };
+      return {top: value[0], right: value[1], bottom: value[2], left: value[1]};
     }
     if (value.length === 4) {
-      return {
-        top: value[0],
-        right: value[1],
-        bottom: value[2],
-        left: value[3],
-      };
+      return {top: value[0], right: value[1], bottom: value[2], left: value[3]};
     }
   }
 
   // Convert an unpacked padding object to a CSS value
   function paddingToCss(paddingObj) {
-    return (
-      paddingObj.top +
-      "px " +
-      paddingObj.right +
-      "px " +
-      paddingObj.bottom +
-      "px " +
-      paddingObj.left +
-      "px"
-    );
+    return paddingObj.top + "px " + paddingObj.right + "px " + paddingObj.bottom + "px " + paddingObj.left + "px";
   }
 
   // Makes a number suitable for CSS
   function px(x) {
-    if (typeof x === "number") return x + "px";
-    else return x;
+    if (typeof(x) === "number")
+      return x + "px";
+    else
+      return x;
   }
 
   // Retrieves runtime widget sizing information for an element.
   // The return value is either null, or an object with fill, padding,
   // defaultWidth, defaultHeight fields.
   function sizingPolicy(el) {
-    var sizingEl = document.querySelector(
-      "script[data-for='" + el.id + "'][type='application/htmlwidget-sizing']"
-    );
-    if (!sizingEl) return null;
+    var sizingEl = document.querySelector("script[data-for='" + el.id + "'][type='application/htmlwidget-sizing']");
+    if (!sizingEl)
+      return null;
     var sp = JSON.parse(sizingEl.textContent || sizingEl.text || "{}");
     if (viewerMode) {
       return sp.viewer;
@@ -254,14 +227,14 @@
   //   same arguments will be passed to all functions.)
   function evalAndRun(tasks, target, args) {
     if (tasks) {
-      forEach(tasks, function (task) {
+      forEach(tasks, function(task) {
         var theseArgs = args;
-        if (typeof task === "object") {
+        if (typeof(task) === "object") {
           theseArgs = theseArgs.concat([task.data]);
           task = task.code;
         }
         var taskFunc = tryEval(task);
-        if (typeof taskFunc !== "function") {
+        if (typeof(taskFunc) !== "function") {
           throw new Error("Task must be a function! Source:\n" + task);
         }
         taskFunc.apply(target, theseArgs);
@@ -277,13 +250,13 @@
     var result = null;
     try {
       result = eval("(" + code + ")");
-    } catch (error) {
+    } catch(error) {
       if (!(error instanceof SyntaxError)) {
         throw error;
       }
       try {
         result = eval(code);
-      } catch (e) {
+      } catch(e) {
         if (e instanceof SyntaxError) {
           throw error;
         } else {
@@ -296,12 +269,14 @@
 
   function initSizing(el) {
     var sizing = sizingPolicy(el);
-    if (!sizing) return;
+    if (!sizing)
+      return;
 
     var cel = document.getElementById("htmlwidget_container");
-    if (!cel) return;
+    if (!cel)
+      return;
 
-    if (typeof sizing.padding !== "undefined") {
+    if (typeof(sizing.padding) !== "undefined") {
       document.body.style.margin = "0";
       document.body.style.padding = paddingToCss(unpackPadding(sizing.padding));
     }
@@ -322,36 +297,27 @@
       el.style.height = "100%";
 
       return {
-        getWidth: function () {
-          return cel.getBoundingClientRect().width;
-        },
-        getHeight: function () {
-          return cel.getBoundingClientRect().height;
-        },
+        getWidth: function() { return cel.getBoundingClientRect().width; },
+        getHeight: function() { return cel.getBoundingClientRect().height; }
       };
+
     } else {
       el.style.width = px(sizing.width);
       el.style.height = px(sizing.height);
 
-      var rect = cel.getBoundingClientRect();
-
       return {
-        getWidth: function () {
-          return cel.getBoundingClientRect().width;
-        },
-        getHeight: function () {
-          return cel.getBoundingClientRect().height;
-        },
+        getWidth: function() { return cel.getBoundingClientRect().width; },
+        getHeight: function() { return cel.getBoundingClientRect().height; }
       };
     }
   }
 
   // Default implementations for methods
   var defaults = {
-    find: function (scope) {
+    find: function(scope) {
       return querySelectorAll(scope, "." + this.name);
     },
-    renderError: function (el, err) {
+    renderError: function(el, err) {
       var $el = $(el);
 
       this.clearError(el);
@@ -360,12 +326,9 @@
       var errClass = "shiny-output-error";
       if (err.type !== null) {
         // use the classes of the error condition as CSS class names
-        errClass =
-          errClass +
-          " " +
-          $.map(asArray(err.type), function (type) {
-            return errClass + "-" + type;
-          }).join(" ");
+        errClass = errClass + " " + $.map(asArray(err.type), function(type) {
+          return errClass + "-" + type;
+        }).join(" ");
       }
       errClass = errClass + " htmlwidgets-error";
 
@@ -387,9 +350,7 @@
         // Mark it with a unique ID and CSS class so we can remove it later.
         $el.css("visibility", "hidden");
         if (err.message !== "") {
-          var errorDiv = $("<div>")
-            .addClass(errClass)
-            .css("position", "absolute")
+          var errorDiv = $("<div>").addClass(errClass).css("position", "absolute")
             .css("top", el.offsetTop)
             .css("left", el.offsetLeft)
             // setting width can push out the page size, forcing otherwise
@@ -402,7 +363,7 @@
 
           // Really dumb way to keep the size/position of the error in sync with
           // the parent element as the window is resized or whatever.
-          var intId = setInterval(function () {
+          var intId = setInterval(function() {
             if (!errorDiv[0].parentElement) {
               clearInterval(intId);
               return;
@@ -416,20 +377,21 @@
         }
       }
     },
-    clearError: function (el) {
+    clearError: function(el) {
       var $el = $(el);
       var display = $el.data("restore-display-mode");
       $el.data("restore-display-mode", null);
 
       if (display === "inline" || display === "inline-block") {
-        if (display) $el.css("display", display);
+        if (display)
+          $el.css("display", display);
         $(el.nextSibling).filter(".htmlwidgets-error").remove();
-      } else if (display === "block") {
+      } else if (display === "block"){
         $el.css("visibility", "inherit");
         $(el.nextSibling).filter(".htmlwidgets-error").remove();
       }
     },
-    sizing: {},
+    sizing: {}
   };
 
   // Called by widget bindings to register a new type of widget. The definition
@@ -443,7 +405,7 @@
   //   called with data. Static contexts will cause this to be called once per
   //   element; Shiny apps will cause this to be called multiple times per
   //   element, as the data changes.
-  window.HTMLWidgets.widget = function (definition) {
+  window.HTMLWidgets.widget = function(definition) {
     if (!definition.name) {
       throw new Error("Widget must have a name");
     }
@@ -484,8 +446,8 @@
     window.HTMLWidgets.widgets = window.HTMLWidgets.widgets || [];
     // Merge defaults into the definition; don't mutate the original definition.
     var staticBinding = extend({}, defaults, definition);
-    overrideMethod(staticBinding, "find", function (superfunc) {
-      return function (scope) {
+    overrideMethod(staticBinding, "find", function(superfunc) {
+      return function(scope) {
         var results = superfunc(scope);
         // Filter out Shiny outputs, we only want the static kind
         return filterByClass(results, "html-widget-output", false);
@@ -529,7 +491,7 @@
       // The find, renderValue, and resize are handled differently, because we
       // want to actually decorate the behavior of the bindingDef methods.
 
-      shinyBinding.find = function (scope) {
+      shinyBinding.find = function(scope) {
         var results = bindingDef.find(scope);
 
         // Only return elements that are Shiny outputs, not static ones
@@ -540,7 +502,8 @@
         // Since there might be lots of different htmlwidgets bindings, we
         // schedule execution for later--no need to staticRender multiple
         // times.
-        if (results.length !== dynamicResults.length) scheduleStaticRender();
+        if (results.length !== dynamicResults.length)
+          scheduleStaticRender();
 
         return dynamicResults;
       };
@@ -548,7 +511,7 @@
       // Wrap renderValue to handle initialization, which unfortunately isn't
       // supported natively by Shiny at the time of this writing.
 
-      shinyBinding.renderValue = function (el, data) {
+      shinyBinding.renderValue = function(el, data) {
         Shiny.renderDependencies(data.deps);
         // Resolve strings marked as javascript literals to objects
         if (!(data.evals instanceof Array)) data.evals = [data.evals];
@@ -574,24 +537,16 @@
           }
         }
         bindingDef.renderValue(el, data.x, elementData(el, "init_result"));
-        evalAndRun(data.jsHooks.render, elementData(el, "init_result"), [
-          el,
-          data.x,
-        ]);
+        evalAndRun(data.jsHooks.render, elementData(el, "init_result"), [el, data.x]);
       };
 
       // Only override resize if bindingDef implements it
       if (bindingDef.resize) {
-        shinyBinding.resize = function (el, width, height) {
+        shinyBinding.resize = function(el, width, height) {
           // Shiny can call resize before initialize/renderValue have been
           // called, which doesn't make sense for widgets.
           if (elementData(el, "initialized")) {
-            bindingDef.resize(
-              el,
-              width,
-              height,
-              elementData(el, "init_result")
-            );
+            bindingDef.resize(el, width, height, elementData(el, "init_result"));
           }
         };
       }
@@ -603,7 +558,7 @@
   var scheduleStaticRenderTimerId = null;
   function scheduleStaticRender() {
     if (!scheduleStaticRenderTimerId) {
-      scheduleStaticRenderTimerId = setTimeout(function () {
+      scheduleStaticRenderTimerId = setTimeout(function() {
         scheduleStaticRenderTimerId = null;
         window.HTMLWidgets.staticRender();
       }, 1);
@@ -612,23 +567,24 @@
 
   // Render static widgets after the document finishes loading
   // Statically render all elements that are of this widget's class
-  window.HTMLWidgets.staticRender = function () {
+  window.HTMLWidgets.staticRender = function() {
     var bindings = window.HTMLWidgets.widgets || [];
-    forEach(bindings, function (binding) {
+    forEach(bindings, function(binding) {
       var matches = binding.find(document.documentElement);
-      forEach(matches, function (el) {
+      forEach(matches, function(el) {
         var sizeObj = initSizing(el, binding);
 
-        var getSize = function (el) {
+        var getSize = function(el) {
           if (sizeObj) {
-            return { w: sizeObj.getWidth(), h: sizeObj.getHeight() };
+            return {w: sizeObj.getWidth(), h: sizeObj.getHeight()}
           } else {
             var rect = el.getBoundingClientRect();
-            return { w: rect.width, h: rect.height };
+            return {w: rect.width, h: rect.height}
           }
         };
 
-        if (hasClass(el, "html-widget-static-bound")) return;
+        if (hasClass(el, "html-widget-static-bound"))
+          return;
         el.className = el.className + " html-widget-static-bound";
 
         var initResult;
@@ -640,10 +596,12 @@
 
         if (binding.resize) {
           var lastSize = getSize(el);
-          var resizeHandler = function (e) {
+          var resizeHandler = function(e) {
             var size = getSize(el);
-            if (size.w === 0 && size.h === 0) return;
-            if (size.w === lastSize.w && size.h === lastSize.h) return;
+            if (size.w === 0 && size.h === 0)
+              return;
+            if (size.w === lastSize.w && size.h === lastSize.h)
+              return;
             lastSize = size;
             binding.resize(el, size.w, size.h, initResult);
           };
@@ -658,18 +616,14 @@
           // call resize handlers for Shiny outputs, not for static
           // widgets, so we do it ourselves.
           if (window.jQuery) {
-            window
-              .jQuery(document)
-              .on(
-                "shown.htmlwidgets shown.bs.tab.htmlwidgets shown.bs.collapse.htmlwidgets",
-                resizeHandler
-              );
-            window
-              .jQuery(document)
-              .on(
-                "hidden.htmlwidgets hidden.bs.tab.htmlwidgets hidden.bs.collapse.htmlwidgets",
-                resizeHandler
-              );
+            window.jQuery(document).on(
+              "shown.htmlwidgets shown.bs.tab.htmlwidgets shown.bs.collapse.htmlwidgets",
+              resizeHandler
+            );
+            window.jQuery(document).on(
+              "hidden.htmlwidgets hidden.bs.tab.htmlwidgets hidden.bs.collapse.htmlwidgets",
+              resizeHandler
+            );
           }
 
           // This is needed for the specific case of ioslides, which
@@ -687,9 +641,7 @@
           }
         }
 
-        var scriptData = document.querySelector(
-          "script[data-for='" + el.id + "'][type='application/json']"
-        );
+        var scriptData = document.querySelector("script[data-for='" + el.id + "'][type='application/json']");
         if (scriptData) {
           var data = JSON.parse(scriptData.textContent || scriptData.text);
           // Resolve strings marked as javascript literals to objects
@@ -704,7 +656,8 @@
     });
 
     invokePostRenderHandlers();
-  };
+  }
+
 
   function has_jQuery3() {
     if (!window.jQuery) {
@@ -746,20 +699,12 @@
   }
 
   if (document.addEventListener) {
-    document.addEventListener(
-      "DOMContentLoaded",
-      function () {
-        document.removeEventListener(
-          "DOMContentLoaded",
-          arguments.callee,
-          false
-        );
-        maybeStaticRenderLater();
-      },
-      false
-    );
+    document.addEventListener("DOMContentLoaded", function() {
+      document.removeEventListener("DOMContentLoaded", arguments.callee, false);
+      maybeStaticRenderLater();
+    }, false);
   } else if (document.attachEvent) {
-    document.attachEvent("onreadystatechange", function () {
+    document.attachEvent("onreadystatechange", function() {
       if (document.readyState === "complete") {
         document.detachEvent("onreadystatechange", arguments.callee);
         maybeStaticRenderLater();
@@ -767,54 +712,52 @@
     });
   }
 
-  window.HTMLWidgets.getAttachmentUrl = function (depname, key) {
+
+  window.HTMLWidgets.getAttachmentUrl = function(depname, key) {
     // If no key, default to the first item
-    if (typeof key === "undefined") key = 1;
+    if (typeof(key) === "undefined")
+      key = 1;
 
     var link = document.getElementById(depname + "-" + key + "-attachment");
     if (!link) {
-      throw new Error(
-        "Attachment " + depname + "/" + key + " not found in document"
-      );
+      throw new Error("Attachment " + depname + "/" + key + " not found in document");
     }
     return link.getAttribute("href");
   };
 
-  window.HTMLWidgets.dataframeToD3 = function (df) {
+  window.HTMLWidgets.dataframeToD3 = function(df) {
     var names = [];
     var length;
     for (var name in df) {
-      if (df.hasOwnProperty(name)) names.push(name);
-      if (
-        typeof df[name] !== "object" ||
-        typeof df[name].length === "undefined"
-      ) {
-        throw new Error("All fields must be arrays");
-      } else if (typeof length !== "undefined" && length !== df[name].length) {
-        throw new Error("All fields must be arrays of the same length");
-      }
-      length = df[name].length;
+        if (df.hasOwnProperty(name))
+            names.push(name);
+        if (typeof(df[name]) !== "object" || typeof(df[name].length) === "undefined") {
+            throw new Error("All fields must be arrays");
+        } else if (typeof(length) !== "undefined" && length !== df[name].length) {
+            throw new Error("All fields must be arrays of the same length");
+        }
+        length = df[name].length;
     }
     var results = [];
     var item;
     for (var row = 0; row < length; row++) {
-      item = {};
-      for (var col = 0; col < names.length; col++) {
-        item[names[col]] = df[names[col]][row];
-      }
-      results.push(item);
+        item = {};
+        for (var col = 0; col < names.length; col++) {
+            item[names[col]] = df[names[col]][row];
+        }
+        results.push(item);
     }
     return results;
   };
 
-  window.HTMLWidgets.transposeArray2D = function (array) {
-    if (array.length === 0) return array;
-    var newArray = array[0].map(function (col, i) {
-      return array.map(function (row) {
-        return row[i];
+  window.HTMLWidgets.transposeArray2D = function(array) {
+      if (array.length === 0) return array;
+      var newArray = array[0].map(function(col, i) {
+          return array.map(function(row) {
+              return row[i]
+          })
       });
-    });
-    return newArray;
+      return newArray;
   };
   // Split value at splitChar, but allow splitChar to be escaped
   // using escapeChar. Any other characters escaped by escapeChar
@@ -844,17 +787,16 @@
     return results;
   }
   // Function authored by Yihui/JJ Allaire
-  window.HTMLWidgets.evaluateStringMember = function (o, member) {
-    var parts = splitWithEscape(member, ".", "\\");
+  window.HTMLWidgets.evaluateStringMember = function(o, member) {
+    var parts = splitWithEscape(member, '.', '\\');
     for (var i = 0, l = parts.length; i < l; i++) {
       var part = parts[i];
       // part may be a character or 'numeric' member name
       if (o !== null && typeof o === "object" && part in o) {
-        if (i == l - 1) {
-          // if we are at the end of the line then evalulate
-          if (typeof o[part] === "string") o[part] = tryEval(o[part]);
-        } else {
-          // otherwise continue to next embedded object
+        if (i == (l - 1)) { // if we are at the end of the line then evalulate
+          if (typeof o[part] === "string")
+            o[part] = tryEval(o[part]);
+        } else { // otherwise continue to next embedded object
           o = o[part];
         }
       }
@@ -864,7 +806,7 @@
   // Retrieve the HTMLWidget instance (i.e. the return value of an
   // HTMLWidget binding's initialize() or factory() function)
   // associated with an element, or null if none.
-  window.HTMLWidgets.getInstance = function (el) {
+  window.HTMLWidgets.getInstance = function(el) {
     return elementData(el, "init_result");
   };
 
@@ -876,7 +818,7 @@
   // instance associated with it, then null is returned.
   //
   // The scope argument is optional, and defaults to window.document.
-  window.HTMLWidgets.find = function (scope, selector) {
+  window.HTMLWidgets.find = function(scope, selector) {
     if (arguments.length == 1) {
       selector = scope;
       scope = document;
@@ -898,7 +840,7 @@
   // instance, the returned array will contain nulls.
   //
   // The scope argument is optional, and defaults to window.document.
-  window.HTMLWidgets.findAll = function (scope, selector) {
+  window.HTMLWidgets.findAll = function(scope, selector) {
     if (arguments.length == 1) {
       selector = scope;
       scope = document;
@@ -924,7 +866,7 @@
 
   // Register the given callback function to be invoked after the
   // next time static widgets are rendered.
-  window.HTMLWidgets.addPostRenderHandler = function (callback) {
+  window.HTMLWidgets.addPostRenderHandler = function(callback) {
     postRenderHandlers.push(callback);
   };
 
@@ -936,20 +878,23 @@
     var result = {
       name: defn.name,
       type: defn.type,
-      initialize: function (el, width, height) {
+      initialize: function(el, width, height) {
         return defn.factory(el, width, height);
       },
-      renderValue: function (el, x, instance) {
+      renderValue: function(el, x, instance) {
         return instance.renderValue(x);
       },
-      resize: function (el, width, height, instance) {
+      resize: function(el, width, height, instance) {
         return instance.resize(width, height);
-      },
+      }
     };
 
-    if (defn.find) result.find = defn.find;
-    if (defn.renderError) result.renderError = defn.renderError;
-    if (defn.clearError) result.clearError = defn.clearError;
+    if (defn.find)
+      result.find = defn.find;
+    if (defn.renderError)
+      result.renderError = defn.renderError;
+    if (defn.clearError)
+      result.clearError = defn.clearError;
 
     return result;
   }
