@@ -341,19 +341,25 @@ addRasterLegend <- function(map, x, layer = 1, ...) {
     color = grDevices::rgb(ct$red/255, ct$green/255, ct$blue/255, ct$alpha/255)
   )
 
+  # Drop values that aren't part of the layer
+  color_info <- base::subset(color_info, value %in% terra::values(x))
+
   lvls <- terra::levels(x)[[layer]]
 
   res <- if (is.data.frame(lvls)) {
     # Use the labels from levels(x), and look up the matching colors in the
     # color table
+
+    # The levels data frame can have varying colnames, just normalize them
     colnames(lvls) <- c("value", "label")
     base::merge(color_info, lvls, by.x = "value", by.y = 1)
   } else {
+    # No level labels provided; use the values as labels
     cbind(color_info, label = color_info$value)
   }
 
-  # Drop values that aren't part of the layer
-  res <- res[res[["value"]] %in% terra::values(x),]
+  # At this point, res is a data frame with `value`, `color`, and `label` cols,
+  # and values/colors not present in the raster layer have been dropped
 
   addLegend(map, colors = res[["color"]], labels = res[["label"]], ...)
 }
