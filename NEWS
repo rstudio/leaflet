@@ -1,6 +1,10 @@
 leaflet 2.1.1.9000
 --------------------------------------------------------------------------------
 
+FEATURES
+* SpatRaster objects with their own RGB or color table data are now rendered
+  using their specified colors. (#808)
+
 BUG FIXES and IMPROVEMENTS
 * Use correct license in OpenStreetMap attribution. (#811)
 
@@ -13,12 +17,13 @@ BUG FIXES and IMPROVEMENTS
 leaflet 2.1.1
 --------------------------------------------------------------------------------
 
+FEATURES
+* Added support for SpatRaster and SpatVector objects from the terra package. (#728)
+
 BUG FIXES and IMPROVEMENTS
 * The default marker icon for `addMarkers` no longer worked, due to the CDN we were relying on apparently being retired. Fixed by pointing to a new CDN. (#782)
 
 * New behavior from tile.openstreetmap.org caused `addTiles` default tileset to break when viewed under non-https protocol on recent versions of Chrome. Fixed by always using the https protocol to connect to openstreetmap. (#786)
-
-* Added support for SpatRaster and SpatVector objects from the terra package. (#728)
 
 leaflet 2.1.0
 --------------------------------------------------------------------------------
