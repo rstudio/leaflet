@@ -24,8 +24,6 @@ pointData.SpatVector <- function(obj) {
 polygonData.SpatVector <- function(obj) {
   check_crs_terra(obj)
 
-  # this is a bit convoluted. I will add a simpler
-  # and more efficient method to terra to replace the below
   xy = data.frame(terra::geom(obj))
   names(xy)[3:4] = c("lng", "lat")
   xy = split(xy[,2:5], xy[,1]) # polygons
@@ -40,6 +38,9 @@ polygonData.SpatVector <- function(obj) {
     })
   })
 
+  # with terra >= 1.5-50 you can do this instead
+  # xy = terra::geom(obj, list=TRUE, xnm="lng", ynm="lat")
+
   structure(
     xy,
     bbox = terra_bbox(obj)
@@ -49,6 +50,21 @@ polygonData.SpatVector <- function(obj) {
 
 
 # helpers -----------------------------------------------------------------
+assure_crs_terra <- function(x) {
+  prj <- crs(x, proj=TRUE)
+  if (is.lonlat(x, perhaps=TRUE, warn=FALSE)) {
+    if (!grepl("+datum=WGS84", prj, fixed = TRUE)) {
+	  x <- project(x, "+proj=longlat +datum=WGS84")
+    }
+	return(x)
+  }
+  # Don't have enough information to check
+  if (is.na(crs) || (crs=="")) {
+    warning("SpatVector layer is not long-lat data", call. = FALSE)	
+    return(x)
+  }
+  project(x, "+proj=longlat +datum=WGS84")
+}
 
 check_crs_terra <- function(x) {
   crs <- crs(x)

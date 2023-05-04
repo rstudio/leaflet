@@ -37,4 +37,11 @@ test_that("rasters", {
 
   expect_maps_equal(r1, r2)
 
+ # test with color map
+  r <- rast(ncols=10, nrows=10, vals=rep_len(10:15, length.out=100), xmin=0, xmax=10^6, ymin=0, ymax=10^6, crs=pmerc)
+  r[5,] <- NA
+  coltab(r) <- c(rep("#FFFFFF", 10), rainbow(6, end=.9))
+  (r3 <- rtest(r))
+
 })
+
