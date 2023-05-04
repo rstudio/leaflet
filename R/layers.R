@@ -454,7 +454,7 @@ addRasterImage_SpatRaster <- function(
 ) {
 
   # terra 1.5-50 has terra::has.RGB()
-  if (x@ptr$rgb) {
+  if (has.RGB(x)) {
     # RGB(A) channels to color table
     x <- terra::colorize(x, "col")
   } else if (terra::nlyr(x) > 1) {
