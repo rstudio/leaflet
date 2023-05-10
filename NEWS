@@ -14,6 +14,8 @@ BUG FIXES and IMPROVEMENTS
 
 - Remove dependencies on rgdal and rgeos. (#837)
 
+- Respect option scrollWheelZoom=FALSE. (#827)
+
 ## leaflet 2.1.2
 
 BUG FIXES and IMPROVEMENTS
