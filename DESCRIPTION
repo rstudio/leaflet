@@ -23,7 +23,7 @@ Authors@R: c(
       person("Robert Kajic", role = c("ctb", "cph"), comment = "leaflet-locationfilter plugin"),
       person("Mapbox", role = c("ctb", "cph"), comment = "leaflet-omnivore plugin"),
       person("Michael Bostock", role = c("ctb", "cph"), comment = "topojson"),
-      person("RStudio", role = c("cph"))
+      person("Posit Software, PBC", role = c("cph", "fnd"))
     )
 Description: Create and customize interactive maps using the 'Leaflet'
     JavaScript library and the 'htmlwidgets' package. These maps can be used
