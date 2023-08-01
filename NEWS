@@ -16,6 +16,8 @@ BUG FIXES and IMPROVEMENTS
 
 - Respect option scrollWheelZoom=FALSE. (#827)
 
+- Fixed #866: Correctly call `terra::has.RGB()` in `addRasterImage()` for a `SpatRaster` object. (#869)
+
 ## leaflet 2.1.2
 
 BUG FIXES and IMPROVEMENTS
