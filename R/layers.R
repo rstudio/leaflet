@@ -325,11 +325,11 @@ addRasterImage <- function(
 addRasterLegend <- function(map, x, layer = 1, ...) {
   stopifnot(inherits(x, "SpatRaster"))
   stopifnot(length(layer) == 1 && layer > 0 && layer <= terra::nlyr(x))
-  
-## might as well do this here and only once. Subsetting would otherwise have been necessary in 
+
+## might as well do this here and only once. Subsetting would otherwise have been necessary in
 ##  color_info <- base::subset(color_info, value %in% terra::values(x))
   x <- x[[layer]]
-  
+
   # Retrieve the color table from the layer. If one doesn't exist, that means
   # the raster was colored some other way, like using colorFactor or something,
   # and the regular addLegend() is designed for those cases.
@@ -348,13 +348,13 @@ addRasterLegend <- function(map, x, layer = 1, ...) {
   lvls <- terra::levels(x)[[1]]
 
   # Drop values that aren't part of the layer
-## unlike "values",  "unique" is memory-safe; it does not load all values 
+## unlike "values",  "unique" is memory-safe; it does not load all values
 ## into memory if the raster is large. So instead of:
 
 #  color_info <- base::subset(color_info, value %in% terra::values(x))
 
 ## remove the levels to get the raw cell values
-  levels(x) <- NULL  
+  levels(x) <- NULL
   color_info <- base::subset(color_info, value %in% terra::unique(x)[[1]])
 
   res <- if (is.data.frame(lvls)) {
