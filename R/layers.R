@@ -463,9 +463,14 @@ addRasterImage_SpatRaster <- function(
   maxBytes = 4 * 1024 * 1024,
   data = getMapData(map)
 ) {
+  if (!is_installed("terra", "1.6-3")) { # for terra::has.RGB()
+    stop(
+      "`addRasterImage()` for SpatRaster objects requires {terra} 1.6-3 or higher",
+      call. = FALSE
+    )
+  }
 
-  # terra 1.5-50 has terra::has.RGB()
-  if (has.RGB(x)) {
+  if (terra::has.RGB(x)) {
     # RGB(A) channels to color table
     x <- terra::colorize(x, "col")
   } else if (terra::nlyr(x) > 1) {
