@@ -357,7 +357,8 @@ addRasterLegend <- function(map, x, layer = 1, ...) {
   #
   # remove the levels to get the raw cell values
   levels(x) <- NULL
-  color_info <- base::subset(color_info, value %in% terra::unique(x)[[1]])
+  value_in_layer <- color_info$value %in% terra::unique(x)[[1]]
+  color_info <- color_info[value_in_layer & !is.na(value_in_layer), ]
 
   res <- if (is.data.frame(lvls)) {
     # Use the labels from levels(x), and look up the matching colors.
