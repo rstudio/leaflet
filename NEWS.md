@@ -75,7 +75,7 @@
 
 - Require viridis >= 0.5.1 to avoid namespace issues with viridisLite (#557)
 - Fixed broken mouse events after using leaflet-search from leaflet.extras within shiny applications (#563)
-- Use leaflet namespace on `providers` in `addMiniMap` to make the function accessible in other packages. Fixes [mtennekes/tmap#231](https://github.com/mtennekes/tmap/issues/231). (#568)
+- Use leaflet namespace on `providers` in `addMiniMap` to make the function accessible in other packages. Fixes [r-tmap/tmap#231](https://github.com/r-tmap/tmap/issues/231). (#568)
 - Require scales >= 1.0.0 to avoid exact color matching issues (#578)
 
 # leaflet 2.0.1
