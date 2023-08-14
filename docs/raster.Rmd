@@ -39,12 +39,18 @@ In order to render the raster object as an image, each cell value must be conver
 ```{r echo=FALSE}
 suppressPackageStartupMessages({
   library(raster)
-  r <- raster("nc/oisst-sst.nc")
+  r <- suppressWarnings(raster("nc/oisst-sst.nc"))
 })
-```{r}
+# ncdf4 emits partial match warnings
+```
+
+```{r eval=FALSE}
 library(raster)
 
 r <- raster("nc/oisst-sst.nc")
+```
+
+```{r}
 pal <- colorNumeric(c("#0C2C84", "#41B6C4", "#FFFFCC"), values(r),
   na.color = "transparent")
 
