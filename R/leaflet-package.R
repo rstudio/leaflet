@@ -20,6 +20,7 @@ NULL
 #' @export JS
 NULL
 
+# Added to the `use_release_issue()` checklist
 release_bullets <- function() {
   c(
     "Update static imports: `staticimports::import()`",
