@@ -1,10 +1,10 @@
 ## leaflet 2.1.2.9000
 
-FEATURES
+### Features
 
 - Added support for SpatRaster and SpatVector objects from the terra package. (#728)
 
-BUG FIXES and IMPROVEMENTS
+### Bug fixes and improvements
 
 - Use correct license in OpenStreetMap attribution. (#811)
 
