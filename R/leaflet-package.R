@@ -1,4 +1,5 @@
 #' @keywords internal
+#' @aliases leaflet-package NULL
 "_PACKAGE"
 
 ## usethis namespace: start

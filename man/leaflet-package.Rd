@@ -2,7 +2,6 @@
 % Please edit documentation in R/leaflet-package.R
 \docType{package}
 \name{leaflet-package}
-\alias{leaflet}
 \alias{leaflet-package}
 \title{leaflet: Create Interactive Web Maps with the JavaScript 'Leaflet' Library}
 \description{
