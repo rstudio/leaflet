@@ -19,3 +19,14 @@ NULL
 #' @export %>%
 #' @export JS
 NULL
+
+release_bullets <- function() {
+  c(
+    "Update static imports: `staticimports::import()`",
+    "`system(\"npm run build\")`",
+    "Rebuild website: `source(\"scripts/docs_update.R\")",
+    'Check Super Zip example: `shiny::runGitHub("rstudio/shiny-examples", subdir = "063-superzip-example")`',
+    "Check licenses if bundled dependencies were updated",
+    '`source("scripts/viztest.R")`',
+  )
+}
