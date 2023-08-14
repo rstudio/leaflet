@@ -27,6 +27,6 @@ release_bullets <- function() {
     "Rebuild website: `source(\"scripts/docs_update.R\")",
     'Check Super Zip example: `shiny::runGitHub("rstudio/shiny-examples", subdir = "063-superzip-example")`',
     "Check licenses if bundled dependencies were updated",
-    '`source("scripts/viztest.R")`',
+    '`source("scripts/viztest.R")`'
   )
 }
