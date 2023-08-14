@@ -3,7 +3,7 @@ Package: leaflet
 Title: Create Interactive Web Maps with the JavaScript 'Leaflet' Library
 Version: 2.2.0
 Authors@R: c(
-    person("Joe", "Cheng", , "joe@rstudio.com", role = c("aut", "cre")),
+    person("Joe", "Cheng", , "joe@posit.co", role = c("aut", "cre")),
     person("Barret", "Schloerke", role = "aut"),
     person("Bhaskar", "Karambelkar", role = "aut"),
     person("Yihui", "Xie", role = "aut"),
@@ -46,7 +46,7 @@ License: GPL-3
 URL: https://rstudio.github.io/leaflet/,
     https://github.com/rstudio/leaflet
 BugReports: https://github.com/rstudio/leaflet/issues
-Depends: 
+Depends:
     R (>= 3.1.0)
 Imports:
     crosstalk,
