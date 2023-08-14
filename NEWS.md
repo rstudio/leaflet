@@ -4,7 +4,7 @@
 
 - Added support for SpatRaster and SpatVector objects from the terra package. (#728)
 
-### Bug fixes and improvements
+## Bug fixes and improvements
 
 - Use correct license in OpenStreetMap attribution. (#811)
 
@@ -18,23 +18,23 @@
 
 - Fixed #866: Correctly call `terra::has.RGB()` in `addRasterImage()` for a `SpatRaster` object. (#869)
 
-## leaflet 2.1.2
+# leaflet 2.1.2
 
-BUG FIXES and IMPROVEMENTS
+## Bug fixes and improvements
 
 - Removed S3 warnings found on R devel (#848)
 
-## leaflet 2.1.1
+# leaflet 2.1.1
 
-BUG FIXES and IMPROVEMENTS
+## Bug fixes and improvements
 
 - The default marker icon for `addMarkers` no longer worked, due to the CDN we were relying on apparently being retired. Fixed by pointing to a new CDN. (#782)
 
 - New behavior from tile.openstreetmap.org caused `addTiles` default tileset to break when viewed under non-https protocol on recent versions of Chrome. Fixed by always using the https protocol to connect to openstreetmap. (#786)
 
-## leaflet 2.1.0
+# leaflet 2.1.0
 
-BUG FIXES and IMPROVEMENTS
+## Bug fixes and improvements
 
 - Enable JS function literals (wrapped in `htmlwidgets::JS()`) to be included in arguments to methods invoked on `leafletProxy` objects. (JS function literals could already be included with methods invoked on `leaflet` objects, so this change just brings `leafletProxy` to parity.) (#420)
 
@@ -42,25 +42,25 @@ BUG FIXES and IMPROVEMENTS
 
 - Allow for _hidden_ but not suspended leaflet maps to queue calls (such as add raster images) until they are rendered. If a new leaflet map is created, all pending calls are removed. (#771)
 
-## leaflet 2.0.4.1
+# leaflet 2.0.4.1
 
-FEATURES
+## Features
 
 - Updated proj4.js to 2.6.2
 
-BUG FIXES and IMPROVEMENTS
+## Bug fixes and improvements
 
 - Minor tweaks to example data and tests, required to stay on CRAN
 
 - Fixes broken URL (#742) and updated examples to run from system files (#576) including updated .Rmd and .html docs.
 
-## leaflet 2.0.3
+# leaflet 2.0.3
 
-BREAKING CHANGES
+## Breaking changes
 
 - `data("providers")` and `data("providers.details")` no longer exist. Please use `leaflet::providers` and `leaflet::providers.details`. (#636)
 
-BUG FIXES and IMPROVEMENTS
+## Bug fixes and improvements
 
 - Integrated data from `leaflet.providers` package. See [leaflet.providers](https://rstudio.github.io/leaflet.providers/) for details. (#636)
 - Fixed [rstudio/crosstalk#58](https://github.com/rstudio/crosstalk/issues/58), which caused Leaflet maps that used Crosstalk shared data in Shiny apps, to be redrawn at incorrect times.
@@ -69,32 +69,32 @@ BUG FIXES and IMPROVEMENTS
 - `sf` objects with `names` attributes in the `st_geometry` now visualise correctly (#595)
 - GeoJSON objects missing `properties` can now be displayed (#622)
 
-## leaflet 2.0.2
+# leaflet 2.0.2
 
-BUG FIXES and IMPROVEMENTS
+## Bug fixes and improvements
 
 - Require viridis >= 0.5.1 to avoid namespace issues with viridisLite (#557)
 - Fixed broken mouse events after using leaflet-search from leaflet.extras within shiny applications (#563)
 - Use leaflet namespace on `providers` in `addMiniMap` to make the function accessible in other packages. Fixes [mtennekes/tmap#231](https://github.com/mtennekes/tmap/issues/231). (#568)
 - Require scales >= 1.0.0 to avoid exact color matching issues (#578)
 
-## leaflet 2.0.1
+# leaflet 2.0.1
 
-FEATURES
+## Features
 
 - Added method `addMapPane` to add custom pane layers to have fine tune control over layer ordering. New feature from within leaflet.js v1.x. (#549)
 - Exposed htmlwidgets sizingPolicy in leaflet() (#548)
 
-BUG FIXES and IMPROVEMENTS
+## Bug fixes and improvements
 
 - Default marker icon locations will now use unpkg.com instead of the leaflet cdn when using https or file protocols. (#544)
 - `.leaflet-map-pane` `z-index` switched to 'auto'. Allows for map panes to appear above the map if they appear later in the dom. (#537)
 - Use correct Leaflet.js scale control remove method. (#547)
 - Start from world view if using flyTo or flyToBounds. (#552)
 
-## leaflet 2.0.0
+# leaflet 2.0.0
 
-BREAKING CHANGES
+## Breaking changes
 
 - Update to latest leaflet.js v1.3.1 (#453, 314616f) Please see https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html for the latest documentation
 
@@ -121,7 +121,7 @@ BREAKING CHANGES
   - Tooltips are now displayed with default Leaflet.js styling
   - In custom javascript extensions, change all `*.bindLabel()` to `*.bindTooltip()`
 
-BUG FIXES AND FEATURES
+## Bug fixes and features
 
 - Relative protocols are used where possible when adding tiles (#526). In RStudio 1.1.x on linux and windows, a known issue of 'https://' routes fail to load, but works within browsers (rstudio/rstudio#2661).
 
@@ -163,7 +163,7 @@ BUG FIXES AND FEATURES
 
 - Added `preferCanvas` argument to `leafletOptions()` (#521)
 
-## leaflet 1.1.0
+# leaflet 1.1.0
 
 - Add support for sf. sf, sfc, and sfg classes are supported with POINT,
   LINESTRING, MULTILINESTRING, POLYGON, and MULTIPOLYGON geometries (note
@@ -202,7 +202,7 @@ BUG FIXES AND FEATURES
 
 - Added a way for the Map instance to be instantiated via a factory.
 
-## leaflet 1.0.2
+# leaflet 1.0.2
 
 - When used with `leafletProxy`, `fitBounds` did not return its input object as
   output, so magrittr chains would break after `fitBounds` was called.
@@ -238,10 +238,10 @@ BUG FIXES AND FEATURES
 - `addScaleBar` and related functions added, for showing Leaflet's built-in
   scale bar in one of the corners of the map. (PR #201. Thanks Kent Johnson!)
 
-## leaflet 1.0.1
+# leaflet 1.0.1
 
 - Fix #242: Compatibility with htmlwidgets 0.6 (thanks byzheng).
 
-## leaflet 1.0.0
+# leaflet 1.0.0
 
 - Initial release
