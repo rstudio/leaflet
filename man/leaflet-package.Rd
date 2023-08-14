@@ -17,11 +17,11 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Joe Cheng \email{joe@rstudio.com}
+\strong{Maintainer}: Joe Cheng \email{joe@posit.co}
 
 Authors:
 \itemize{
-  \item Barret Schloerke
+  \item Barret Schloerke \email{barret@posit.co} (\href{https://orcid.org/0000-0001-9986-114X}{ORCID})
   \item Bhaskar Karambelkar
   \item Yihui Xie
 }
