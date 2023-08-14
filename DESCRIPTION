@@ -4,7 +4,8 @@ Title: Create Interactive Web Maps with the JavaScript 'Leaflet' Library
 Version: 2.2.0
 Authors@R: c(
     person("Joe", "Cheng", , "joe@posit.co", role = c("aut", "cre")),
-    person("Barret", "Schloerke", role = "aut"),
+    person("Barret", "Schloerke", , "barret@posit.co", role = "aut",
+           comment = c(ORCID = "0000-0001-9986-114X")),
     person("Bhaskar", "Karambelkar", role = "aut"),
     person("Yihui", "Xie", role = "aut"),
     person("Hadley", "Wickham", role = "ctb"),
