@@ -1,4 +1,4 @@
-## leaflet 2.1.2.9000
+# leaflet 2.2.0
 
 ### Features
 
