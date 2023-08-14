@@ -331,6 +331,7 @@ addRasterLegend <- function(map, x, layer = 1, ...) {
   # color_info <- base::subset(color_info, value %in% terra::values(x))
   x <- x[[layer]]
 
+
   # Retrieve the color table from the layer. If one doesn't exist, that means
   # the raster was colored some other way, like using colorFactor or something,
   # and the regular addLegend() is designed for those cases.
