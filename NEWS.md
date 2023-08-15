@@ -4,11 +4,11 @@
 
 - Added support for SpatRaster and SpatVector objects from the terra package. (#728)
 
+- `leaflet()` now uses jQuery 3.6.0 provided via the `{jquerylib}`package. As a result of this change, the HTML dependencies for `leaflet()` are included in the `dependencies` item of the htmlwidget object it returns. (#817, #821)
+
 ## Bug fixes and improvements
 
 - Use correct license in OpenStreetMap attribution. (#811)
-
-- Update jQuery to utilize `{jquerylib}`. (#817)
 
 - Use `xfun::base64_uri()` for base64 encoding instead of **markdown** and **base64enc**. (#823)
 
