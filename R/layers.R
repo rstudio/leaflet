@@ -301,7 +301,7 @@ addRasterImage <- function(
 #' @param layer the layer of the raster to target
 #' @param ... additional arguments to pass through to [addLegend()]
 #' @seealso [addRasterImage()]
-#' @examples
+#' @examplesIf interactive()
 #'
 #' library(terra)
 #'
