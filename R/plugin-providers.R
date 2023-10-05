@@ -89,7 +89,19 @@ NULL
 # Active binding added in zzz.R
 "providers.src"
 
+# Active binding added in zzz.R
+"providers.dep"
+
 get_providers_html_dependency <- function() {
+  if (is.null(providers.dep)) {
+    return(create_temp_providers_html_dependency())
+  }
+
+  providers.dep
+}
+
+create_temp_providers_html_dependency <- function() {
+  # for compatibility with older versions of leaflet.providers
   tmpfile <- file.path(tempdir(), paste0("leaflet-providers_", providers.version_num, ".js"))
 
   if (!file.exists(tmpfile)) {
