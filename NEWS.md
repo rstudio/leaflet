@@ -1,5 +1,7 @@
 # leaflet (development version)
 
+* When `addProviderTiles()` is used with `{leaflet.providers}` version 2.0.0 or later, the `leaflet-providers` HTML dependency produced can be correctly cached by knitr. When used with older versions of `{leaflet.providers}`, the HTML dependency uses temp files that break knitr's caching mechanism (thanks @qdread, @jaredlander; #884).
+
 # leaflet 2.2.0
 
 ### Features
