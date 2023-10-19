@@ -631,16 +631,9 @@ df &lt;- sp::SpatialPointsDataFrame(
     ifelse(runif(20) &gt; 0.75, &quot;pirate&quot;, &quot;ship&quot;),
     c(&quot;ship&quot;, &quot;pirate&quot;)
   ))
-)</code></pre>
-<pre><code>## The legacy packages maptools, rgdal, and rgeos, underpinning the sp package,
-## which was just loaded, will retire in October 2023.
-## Please refer to R-spatial evolution reports for details, especially
-## https://r-spatial.org/r/2023/05/15/evolution4.html.
-## It may be desirable to make the sf package available;
-## package maintainers should consider adding sf to Suggests:.
-## The sp package is now running under evolution status 2
-##      (status 2 uses the sf package in place of rgdal)</code></pre>
-<pre class="r"><code>leaflet(df) %&gt;% addTiles() %&gt;%
+)
+
+leaflet(df) %&gt;% addTiles() %&gt;%
   # Select from oceanIcons based on df$type
   addMarkers(icon = ~oceanIcons[type])</code></pre>
 <div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-b182c7e3d7d2f09bcc5e" style="width:100%;height:168px;"></div>
