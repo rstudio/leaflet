@@ -264,7 +264,7 @@ server &lt;- function(input, output, session) {
 
   output$mymap &lt;- renderLeaflet({
     leaflet() %&gt;%
-      addProviderTiles(providers$Stamen.TonerLite,
+      addProviderTiles(providers$Stadia.StamenTonerLite,
         options = providerTileOptions(noWrap = TRUE)
       ) %&gt;%
       addMarkers(data = points())
