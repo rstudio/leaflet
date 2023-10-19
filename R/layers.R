@@ -301,7 +301,7 @@ addRasterImage <- function(
 #' @param layer the layer of the raster to target
 #' @param ... additional arguments to pass through to [addLegend()]
 #' @seealso [addRasterImage()]
-#' @examples
+#' @examplesIf interactive()
 #'
 #' library(terra)
 #'
@@ -325,11 +325,13 @@ addRasterImage <- function(
 addRasterLegend <- function(map, x, layer = 1, ...) {
   stopifnot(inherits(x, "SpatRaster"))
   stopifnot(length(layer) == 1 && layer > 0 && layer <= terra::nlyr(x))
-  
-## might as well do this here and only once. Subsetting would otherwise have been necessary in 
-##  color_info <- base::subset(color_info, value %in% terra::values(x))
+
+  # might as well do this here and only once. Subsetting would otherwise have
+  # been necessary in
+  # color_info <- base::subset(color_info, value %in% terra::values(x))
   x <- x[[layer]]
-  
+
+
   # Retrieve the color table from the layer. If one doesn't exist, that means
   # the raster was colored some other way, like using colorFactor or something,
   # and the regular addLegend() is designed for those cases.
@@ -342,25 +344,24 @@ addRasterLegend <- function(map, x, layer = 1, ...) {
   # Extract the colors in #RRGGBBAA format
   color_info <- data.frame(
     value = ct[[1]],
-    color = grDevices::rgb(ct$red/255, ct$green/255, ct$blue/255, ct$alpha/255)
+    color = grDevices::rgb(ct$red / 255, ct$green / 255, ct$blue / 255, ct$alpha / 255)
   )
 
   lvls <- terra::levels(x)[[1]]
 
-  # Drop values that aren't part of the layer
-## unlike "values",  "unique" is memory-safe; it does not load all values 
-## into memory if the raster is large. So instead of:
-
-#  color_info <- base::subset(color_info, value %in% terra::values(x))
-
-## remove the levels to get the raw cell values
-  levels(x) <- NULL  
-  color_info <- base::subset(color_info, value %in% terra::unique(x)[[1]])
+  # Drop values that aren't part of the layer unlike "values",  "unique" is
+  # memory-safe; it does not load all values into memory if the raster is large.
+  # So instead of:
+  #
+  #  color_info <- base::subset(color_info, value %in% terra::values(x))
+  #
+  # remove the levels to get the raw cell values
+  levels(x) <- NULL
+  value_in_layer <- color_info$value %in% terra::unique(x)[[1]]
+  color_info <- color_info[value_in_layer & !is.na(value_in_layer), ]
 
   res <- if (is.data.frame(lvls)) {
-    # Use the labels from levels(x), and look up the matching colors in the
-    # color table
-
+    # Use the labels from levels(x), and look up the matching colors.
     # The levels data frame can have varying colnames, just normalize them
     colnames(lvls) <- c("value", "label")
     base::merge(color_info, lvls, by.x = "value", by.y = 1)
@@ -463,9 +464,14 @@ addRasterImage_SpatRaster <- function(
   maxBytes = 4 * 1024 * 1024,
   data = getMapData(map)
 ) {
+  if (!is_installed("terra", "1.6-3")) { # for terra::has.RGB()
+    stop(
+      "`addRasterImage()` for SpatRaster objects requires {terra} 1.6-3 or higher",
+      call. = FALSE
+    )
+  }
 
-  # terra 1.5-50 has terra::has.RGB()
-  if (has.RGB(x)) {
+  if (terra::has.RGB(x)) {
     # RGB(A) channels to color table
     x <- terra::colorize(x, "col")
   } else if (terra::nlyr(x) > 1) {

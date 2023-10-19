@@ -15,4 +15,8 @@ leaflet_envir <- environment()
   makeActiveBinding("providers.src", function() {
     leaflet.providers::providers_loaded()$src
   }, env = leaflet_envir)
+
+  makeActiveBinding("providers.dep", function() {
+    leaflet.providers::providers_loaded()$dep
+  }, env = leaflet_envir)
 }

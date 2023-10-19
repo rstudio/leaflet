@@ -21,6 +21,7 @@ for \link[terra:SpatRaster-class]{terra::SpatRaster} objects, with categorical v
 own \link[terra:colors]{color table}.
 }
 \examples{
+\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 
 library(terra)
 
@@ -38,7 +39,7 @@ leaflet() \%>\%
   addTiles() \%>\%
   addRasterImage(rr, opacity = 0.75) \%>\%
   addRasterLegend(rr, opacity = 0.75)
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link[=addRasterImage]{addRasterImage()}}
