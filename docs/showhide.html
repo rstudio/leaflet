@@ -299,8 +299,8 @@ the visibility of groups.</p>
 map &lt;- leaflet(quakes) %&gt;%
   # Base groups
   addTiles(group = &quot;OSM (default)&quot;) %&gt;%
-  addProviderTiles(providers$Stamen.Toner, group = &quot;Toner&quot;) %&gt;%
-  addProviderTiles(providers$Stamen.TonerLite, group = &quot;Toner Lite&quot;) %&gt;%
+  addProviderTiles(providers$Stadia.StamenToner, group = &quot;Toner&quot;) %&gt;%
+  addProviderTiles(providers$Stadia.StamenTonerLite, group = &quot;Toner Lite&quot;) %&gt;%
   # Overlay groups
   addCircles(~long, ~lat, ~10^mag/5, stroke = F, group = &quot;Quakes&quot;) %&gt;%
   addPolygons(data = outline, lng = ~long, lat = ~lat,
@@ -351,7 +351,7 @@ map</code></pre>
       {
         "method": "addProviderTiles",
         "args": [
-          null,
+          "Stadia.StamenToner",
           null,
           "Toner",
           {
@@ -364,7 +364,7 @@ map</code></pre>
       {
         "method": "addProviderTiles",
         "args": [
-          null,
+          "Stadia.StamenTonerLite",
           null,
           "Toner Lite",
           {
@@ -538,7 +538,7 @@ checked by default.</p>
       {
         "method": "addProviderTiles",
         "args": [
-          null,
+          "Stadia.StamenToner",
           null,
           "Toner",
           {
@@ -551,7 +551,7 @@ checked by default.</p>
       {
         "method": "addProviderTiles",
         "args": [
-          null,
+          "Stadia.StamenTonerLite",
           null,
           "Toner Lite",
           {

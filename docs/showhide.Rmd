@@ -45,8 +45,8 @@ outline <- quakes[chull(quakes$long, quakes$lat),]
 map <- leaflet(quakes) %>%
   # Base groups
   addTiles(group = "OSM (default)") %>%
-  addProviderTiles(providers$Stamen.Toner, group = "Toner") %>%
-  addProviderTiles(providers$Stamen.TonerLite, group = "Toner Lite") %>%
+  addProviderTiles(providers$Stadia.StamenToner, group = "Toner") %>%
+  addProviderTiles(providers$Stadia.StamenTonerLite, group = "Toner Lite") %>%
   # Overlay groups
   addCircles(~long, ~lat, ~10^mag/5, stroke = F, group = "Quakes") %>%
   addPolygons(data = outline, lng = ~long, lat = ~lat,

@@ -31,7 +31,7 @@ server <- function(input, output, session) {
 
   output$mymap <- renderLeaflet({
     leaflet() %>%
-      addProviderTiles(providers$Stamen.TonerLite,
+      addProviderTiles(providers$Stadia.StamenTonerLite,
         options = providerTileOptions(noWrap = TRUE)
       ) %>%
       addMarkers(data = points())

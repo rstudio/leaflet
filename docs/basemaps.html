@@ -317,7 +317,7 @@ RStudio) and not have to remember or look up supported tile providers;
 just type <code>providers$</code> and choose from one of the options.
 You can also use <code>names(providers)</code> to view all of the
 options.</p>
-<pre class="r"><code>m %&gt;% addProviderTiles(providers$Stamen.Toner)</code></pre>
+<pre class="r"><code>m %&gt;% addProviderTiles(providers$Stadia.StamenToner)</code></pre>
 <div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-92aa9ec4a26e6d2eb4c3" style="width:100%;height:120px;"></div>
 <script type="application/json" data-for="htmlwidget-92aa9ec4a26e6d2eb4c3">{
   "x": {
@@ -339,7 +339,7 @@ options.</p>
       {
         "method": "addProviderTiles",
         "args": [
-          null,
+          "Stadia.StamenToner",
           null,
           null,
           {
@@ -524,9 +524,9 @@ stack them by adding multiple tile layers. This generally only makes
 sense if the front tiles consist of semi transparent tiles, or have an
 adjusted opacity via the <code>options</code> argument.</p>
 <pre class="r"><code>m %&gt;% addProviderTiles(providers$MtbMap) %&gt;%
-  addProviderTiles(providers$Stamen.TonerLines,
+  addProviderTiles(providers$Stadia.StamenTonerLines,
     options = providerTileOptions(opacity = 0.35)) %&gt;%
-  addProviderTiles(providers$Stamen.TonerLabels)</code></pre>
+  addProviderTiles(providers$Stadia.StamenTonerLabels)</code></pre>
 <div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-2f386608a10ed269577b" style="width:100%;height:168px;"></div>
 <script type="application/json" data-for="htmlwidget-2f386608a10ed269577b">{
   "x": {
@@ -561,7 +561,7 @@ adjusted opacity via the <code>options</code> argument.</p>
       {
         "method": "addProviderTiles",
         "args": [
-          null,
+          "Stadia.StamenTonerLines",
           null,
           null,
           {
@@ -575,7 +575,7 @@ adjusted opacity via the <code>options</code> argument.</p>
       {
         "method": "addProviderTiles",
         "args": [
-          null,
+          "Stadia.StamenTonerLabels",
           null,
           null,
           {

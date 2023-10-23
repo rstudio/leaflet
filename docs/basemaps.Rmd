@@ -22,7 +22,7 @@ Alternatively, many popular free third-party basemaps can be added using the `ad
 As a convenience, leaflet also provides a named list of all the third-party tile providers that are supported by the plugin. This enables you to use auto-completion feature of your favorite R IDE (like RStudio) and not have to remember or look up supported tile providers; just type `providers$` and choose from one of the options. You can also use `names(providers)` to view all of the options.
 
 ```{r fig.height=1.25}
-m %>% addProviderTiles(providers$Stamen.Toner)
+m %>% addProviderTiles(providers$Stadia.StamenToner)
 m %>% addProviderTiles(providers$CartoDB.Positron)
 m %>% addProviderTiles(providers$Esri.NatGeoWorldMap)
 ```
@@ -53,7 +53,7 @@ You aren't restricted to using a single basemap on a map; you can stack them by 
 
 ```{r fig.height=1.75}
 m %>% addProviderTiles(providers$MtbMap) %>%
-  addProviderTiles(providers$Stamen.TonerLines,
+  addProviderTiles(providers$Stadia.StamenTonerLines,
     options = providerTileOptions(opacity = 0.35)) %>%
-  addProviderTiles(providers$Stamen.TonerLabels)
+  addProviderTiles(providers$Stadia.StamenTonerLabels)
 ```
