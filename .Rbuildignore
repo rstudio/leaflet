@@ -6,7 +6,7 @@
 ^inst/htmlwidgets/sources
 \.bower\.json$
 \.bowerrc$
-^docs/
+^docs$
 ^\.eslintrc\.json$
 ^Gruntfile\.js$
 ^javascript$
@@ -24,13 +24,12 @@
 ^inst/htmlwidgets/plugins/Leaflet.markercluster/leaflet.markercluster-src.js$
 ^inst/htmlwidgets/lib/leaflet-measure/leaflet-measure.js$
 ^inst/htmlwidgets/plugins/Proj4Leaflet/proj4.js$
-^revdep/
 ^\.lintr$
-^\.github/
-^man-roxygen/
+^\.github$
+^man-roxygen$
 ^viztest-.*
-^scripts
+^scripts$
 ^cran-comments\.md$
 ^revdep$
-^\.github$
 ^CRAN-SUBMISSION$
+^_dev$
