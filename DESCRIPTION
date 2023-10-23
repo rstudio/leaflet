@@ -54,7 +54,7 @@ Imports:
     htmltools,
     htmlwidgets (>= 1.5.4),
     jquerylib,
-    leaflet.providers (>= 1.13.0.9001),
+    leaflet.providers (>= 2.0.0),
     magrittr,
     methods,
     png,
@@ -79,6 +79,4 @@ Suggests:
 Config/testthat/edition: 3
 Encoding: UTF-8
 LazyData: true
-Remotes:
-    rstudio/leaflet.providers
 RoxygenNote: 7.2.3
