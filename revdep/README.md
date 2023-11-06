@@ -2,7 +2,7 @@
 
 ## New problems (1)
 
-|package         |version |error  |warning |note |
-|:---------------|:-------|:------|:-------|:----|
-|[leaflet.opacity](problems.md#leafletopacity)|0.1.0   |__+1__ |        |1    |
+|package |version |error |warning |note   |
+|:-------|:-------|:-----|:-------|:------|
+|[SSDM](problems.md#ssdm)|0.2.9   |      |        |__+1__ |
 
