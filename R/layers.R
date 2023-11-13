@@ -1180,7 +1180,7 @@ markerOptions <- function(
 #' @param spiderLegPolylineOptions Allows you to specify
 #'   [PolylineOptions](https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#polyline-option)
 #'   to style spider legs. By default, they are
-#'   `{ weight: 1.5, color: "#222", opacity: 0.5 }`.
+#'   `{{ weight: 1.5, color: "#222", opacity: 0.5 }}`.
 #' @param freezeAtZoom Allows you to freeze cluster expansion to a zoom level.
 #'   Can be a zoom level e.g. 10, 12 or "max" or "maxKeepSpiderify".
 #'   See <https://github.com/ghybs/Leaflet.MarkerCluster.Freezable#api-reference>.
