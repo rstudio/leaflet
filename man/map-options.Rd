@@ -155,11 +155,14 @@ spiderfy it so you can see all of its markers}
 \item{removeOutsideVisibleBounds}{clusters and markers too far from the
 viewport are removed from the map for performance}
 
-\item{spiderLegPolylineOptions}{Allows you to specify PolylineOptions (\url{https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#polyline-option}) to style spider legs. By default, they are { weight: 1.5, color: "#222", opacity: 0.5 }}
+\item{spiderLegPolylineOptions}{Allows you to specify
+\href{https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#polyline-option}{PolylineOptions}
+to style spider legs. By default, they are
+\code{\{weight: 1.5, color: "#222", opacity: 0.5 \}}.}
 
 \item{freezeAtZoom}{Allows you to freeze cluster expansion to a zoom level.
-Can be a zoom level e.g. 10, 12 or "max" or "maxKeepSpiderify"
-See \url{https://github.com/ghybs/Leaflet.MarkerCluster.Freezable#api-reference}}
+Can be a zoom level e.g. 10, 12 or "max" or "maxKeepSpiderify".
+See <https://github.com/ghybs/Leaflet.MarkerCluster.Freezable#api-reference>.}
 
 \item{lineCap}{a string that defines
 \href{https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linecap}{shape
