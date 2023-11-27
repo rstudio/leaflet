@@ -50,27 +50,6 @@ polygonData.SpatVector <- function(obj) {
 
 
 # helpers -----------------------------------------------------------------
-assure_crs_terra <- function(x) {
-  stopifnot(is_installed("terra"))
-
-  prj <- terra::crs(x, proj = TRUE)
-
-  if (is.na(prj) || (prj == "")) {
-    # Don't have enough information to check
-    warning("SpatVector layer is not long-lat data", call. = FALSE)
-    return(x)
-  }
-
-  if (terra::is.lonlat(x, perhaps = TRUE, warn = FALSE)) {
-    if (!grepl("+datum=WGS84", prj, fixed = TRUE)) {
-      x <- terra::project(x, "+proj=longlat +datum=WGS84")
-    }
-    return(x)
-  }
-
-  terra::project(x, "+proj=longlat +datum=WGS84")
-}
-
 check_crs_terra <- function(x) {
   stopifnot(is_installed("terra"))
 
