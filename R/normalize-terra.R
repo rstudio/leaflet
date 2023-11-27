@@ -53,7 +53,7 @@ polygonData.SpatVector <- function(obj) {
 assure_crs_terra <- function(x) {
   stopifnot(is_installed("terra"))
 
-  prj <- raster::crs(x, proj = TRUE)
+  prj <- terra::crs(x, proj = TRUE)
 
   if (is.na(prj) || (prj == "")) {
     # Don't have enough information to check
@@ -72,7 +72,9 @@ assure_crs_terra <- function(x) {
 }
 
 check_crs_terra <- function(x) {
-  crs <- crs(x)
+  stopifnot(is_installed("terra"))
+
+  crs <- terra::crs(x)
 
   # Don't have enough information to check
   if (is.na(crs) || (crs==""))
@@ -82,7 +84,7 @@ check_crs_terra <- function(x) {
     warning("SpatVector layer is not long-lat data", call. = FALSE)
   }
 
-  prj <- crs(x, proj=TRUE)
+  prj <- terra::crs(x, proj=TRUE)
   if (!grepl("+datum=WGS84", prj, fixed = TRUE)) {
     warning(
       "SpatVector layer has inconsistent datum (", prj, ").\n",
