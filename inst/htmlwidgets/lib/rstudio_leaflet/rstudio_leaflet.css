@@ -42,6 +42,6 @@ Fix for https://github.com/rstudio/rmarkdown/issues/1949 */
 
 /* Add explicit alignment rule to avoid CSS wider CSS applying to legend content
 Fix for https://github.com/quarto-dev/quarto-cli/issues/7843 */
-.leaflet .legend.leaflet-control {
-  text-align: left;
+.leaflet .legend {
+  text-align: start;
 }
