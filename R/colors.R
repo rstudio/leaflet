@@ -332,7 +332,7 @@ toPaletteFunc.character <- function(pal, alpha, nlevels) {
       colors <- brewer_pal(pal) # Get all colors
     }
   } else if (length(pal) == 1 && pal %in% c("viridis", "magma", "inferno", "plasma")) {
-    colors <- viridis::viridis(n = 256, option = pal)
+    colors <- viridisLite::viridis(n = 256, option = pal)
   } else {
     colors <- pal
   }
