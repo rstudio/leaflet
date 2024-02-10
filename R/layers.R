@@ -271,6 +271,7 @@ addRasterImage <- function(
       project = project,
       method = method,
       maxBytes = maxBytes,
+      options = options,
       data = data
     )
   } else if (inherits(x, "RasterLayer")) {
@@ -285,6 +286,7 @@ addRasterImage <- function(
       project = project,
       method = method,
       maxBytes = maxBytes,
+      options = options,
       data = data
     )
   } else {
@@ -392,6 +394,7 @@ addRasterImage_RasterLayer <- function(
   project = TRUE,
   method = c("auto", "bilinear", "ngb"),
   maxBytes = 4 * 1024 * 1024,
+  options = gridOptions(),
   data = getMapData(map)
 ) {
 
@@ -450,7 +453,7 @@ addRasterImage_RasterLayer <- function(
     list(raster::ymin(bounds), raster::xmax(bounds))
   )
 
-  invokeMethod(map, data, "addRasterImage", uri, latlng, opacity, attribution, layerId, group, options) %>%
+  invokeMethod(map, data, "addRasterImage", uri, latlng, layerId, group, options) %>%
     expandLimits(
       c(raster::ymin(bounds), raster::ymax(bounds)),
       c(raster::xmin(bounds), raster::xmax(bounds))
@@ -468,6 +471,7 @@ addRasterImage_SpatRaster <- function(
   project = TRUE,
   method = c("auto", "bilinear", "ngb"),
   maxBytes = 4 * 1024 * 1024,
+  options = gridOptions(),
   data = getMapData(map)
 ) {
   if (!is_installed("terra", "1.6-3")) { # for terra::has.RGB()
@@ -476,6 +480,9 @@ addRasterImage_SpatRaster <- function(
       call. = FALSE
     )
   }
+
+  options$opacity <- opacity
+  options$attribution <- attribution
 
   if (terra::has.RGB(x)) {
     # RGB(A) channels to color table
@@ -554,7 +561,7 @@ addRasterImage_SpatRaster <- function(
     list(terra::ymin(bounds), terra::xmax(bounds))
   )
 
-  invokeMethod(map, data, "addRasterImage", uri, latlng, opacity, attribution, layerId, group) %>%
+  invokeMethod(map, data, "addRasterImage", uri, latlng, layerId, group, options) %>%
     expandLimits(
       c(terra::ymin(bounds), terra::ymax(bounds)),
       c(terra::xmin(bounds), terra::xmax(bounds))
