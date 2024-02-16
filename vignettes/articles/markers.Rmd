@@ -1,8 +1,7 @@
 ---
-pagetitle: Leaflet for R - Markers
+title: "Markers"
 ---
 
-## Markers
 
 Use markers to call out points on the map. Marker locations are expressed in latitude/longitude coordinates, and can either appear as icons or as circles.
 

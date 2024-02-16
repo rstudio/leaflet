@@ -1,8 +1,13 @@
 ---
-pagetitle: Leaflet for R - The Map Widget
+title: "The Map Widget"
 ---
 
-## The Map Widget
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
 
 The function `leaflet()` returns a Leaflet map widget, which stores a list of objects that can be modified or updated later. Most functions in this package have an argument `map` as their first argument, which makes it easy to use the pipe operator `%>%` in the **magrittr** package, as you have seen from the example in the [Introduction](./).
 

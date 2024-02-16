@@ -11,3 +11,4 @@ revdep/checks.noindex
 revdep/library.noindex
 revdep/data.sqlite
 viztest-*
+inst/doc

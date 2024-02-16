@@ -1,6 +1,7 @@
 ---
-pagetitle: Leaflet for R - More features
+title: "More features"
 ---
+
 
 ## Additional features
 

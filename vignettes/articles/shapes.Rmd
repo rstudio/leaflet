@@ -1,8 +1,6 @@
 ---
-pagetitle: Leaflet for R - Shapes
+title: "Lines and Shapes"
 ---
-
-## Lines and Shapes
 
 Leaflet makes it easy to take spatial lines and shapes from R and add them to maps.
 

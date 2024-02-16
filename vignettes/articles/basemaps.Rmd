@@ -1,6 +1,13 @@
 ---
-pagetitle: Leaflet for R - Using Basemaps
+title: "Using Basemaps"
 ---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
 
 ## Using Basemaps
 

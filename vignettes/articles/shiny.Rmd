@@ -1,8 +1,14 @@
 ---
-pagetitle: Leaflet for R - Using Leaflet with Shiny
+title: "Using Leaflet with Shiny"
 ---
 
-## Using Leaflet with Shiny
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
 
 *Shiny is a web framework for R. To learn more about Shiny, visit [shiny.rstudio.com](http://shiny.rstudio.com/).*
 

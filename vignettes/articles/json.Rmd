@@ -1,6 +1,7 @@
 ---
-pagetitle: Leaflet for R - Working with GeoJSON & TopoJSON
+title: "Working with GeoJSON & TopoJSON"
 ---
+
 
 ## Working with GeoJSON & TopoJSON
 
@@ -70,6 +71,7 @@ The previous example demonstrated the style arguments. Below is a more involved 
 ```{r echo=FALSE,warning=FALSE,message=FALSE}
 library(jsonlite, quietly = TRUE)
 ```
+
 ```{r}
 library(jsonlite)
 

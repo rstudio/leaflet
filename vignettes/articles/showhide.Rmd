@@ -1,6 +1,7 @@
 ---
-pagetitle: Leaflet for R - Show/Hide Layers
+title: "Show/Hide Layers"
 ---
+
 
 ## Show/Hide Layers
 

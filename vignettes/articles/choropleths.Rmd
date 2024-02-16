@@ -1,8 +1,13 @@
 ---
-pagetitle: Leaflet for R - Choropleths
+title: "Choropleths"
 ---
 
-## Choropleths
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
 
 Making choropleths with leaflet is easy. In this example, we'll duplicate the [step-by-step choropleth tutorial](https://leafletjs.com/examples/choropleth/) from the Leaflet.js website.
 

@@ -1,8 +1,14 @@
 ---
-pagetitle: Leaflet for R - Legends
+title: "Legends"
 ---
 
-## Legends
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
 
 The Leaflet package includes convenience functions for creating color legends. In this section, we will build on the example from the [Colors](colors.html) page.
 

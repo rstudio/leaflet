@@ -1,6 +1,13 @@
 ---
-pagetitle: Leaflet for R - Popups and Labels
+title: "Popups and Labels"
 ---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
 
 ## Popups
 
@@ -94,4 +101,4 @@ leaflet() %>% addTiles() %>% setView(-118.456554, 34.09, 13) %>%
 
 #### Labels without markers
 
-You can create labels without the accompanying markers using the `addLabelOnlyMarkers` function.
+You can create labels without the accompanying markers using the `addLabelOnlyMarkers()` function.

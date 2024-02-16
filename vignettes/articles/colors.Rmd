@@ -1,6 +1,13 @@
 ---
-pagetitle: Leaflet for R - Colors
+title: "Add color to a leaflet"
 ---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
 
 ## Colors
 

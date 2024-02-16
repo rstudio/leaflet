@@ -1,6 +1,13 @@
 ---
-pagetitle: Leaflet for R - Extending Leaflet
+title: "Extending Leaflet"
 ---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
 
 ## Extending Leaflet package
 

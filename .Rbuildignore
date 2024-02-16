@@ -33,3 +33,4 @@
 ^revdep$
 ^CRAN-SUBMISSION$
 ^_dev$
+^vignettes/articles$

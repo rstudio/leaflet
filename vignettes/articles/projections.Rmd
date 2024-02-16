@@ -1,8 +1,14 @@
 ---
-pagetitle: Leaflet for R - Using Projections
+title: "Working with projections in Leaflet"
 ---
 
-## Working with projections in Leaflet
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
 
 **Note:** This functionality is for advanced users and may not be supported across all functions (for example, `addRasterImage` currently works only with EPSG:3857 Web Mercator).
 

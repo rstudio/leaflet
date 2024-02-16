@@ -1,8 +1,13 @@
 ---
-pagetitle: Leaflet for R - Raster Images
+title: "Raster Images"
 ---
 
-## Raster Images
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
 
 Two-dimensional `SpatRaster` objects (from the [`terra` package](https://CRAN.R-project.org/package=terra)) or `RasterLayer` objects (from the [`raster` package](https://CRAN.R-project.org/package=raster)) can be turned into images and added to Leaflet maps using the `addRasterImage` function.
 
