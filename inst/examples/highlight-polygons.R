@@ -2,8 +2,7 @@
 #' An example to show how to highlight polygons on hover using `onRender`
 #'
 library(sp)
-library(albersusa)
-library(maptools)
+library(albersusa) # Requires rgdal / rgeos archived.
 library(leaflet)
 
 spdf <- rmapshaper::ms_simplify(usa_composite())

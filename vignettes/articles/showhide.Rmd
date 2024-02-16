@@ -2,6 +2,17 @@
 title: "Show/Hide Layers"
 ---
 
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r,echo=FALSE}
+library(leaflet)
+library(magrittr)
+```
 
 ## Show/Hide Layers
 

@@ -9,6 +9,10 @@ knitr::opts_chunk$set(
 )
 ```
 
+```{r, include = FALSE}
+library(leaflet)
+```
+
 ## Popups
 
 Popups are small boxes containing arbitrary HTML, that point to a specific point on the map.

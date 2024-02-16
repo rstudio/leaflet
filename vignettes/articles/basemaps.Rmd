@@ -18,6 +18,7 @@ Leaflet supports basemaps using [map tiles](https://www.mapbox.com/guides/how-we
 The easiest way to add tiles is by calling `addTiles()` with no arguments; by default, [OpenStreetMap](https://www.openstreetmap.org/) tiles are used.
 
 ```{r fig.height=2.5}
+library(leaflet)
 m <- leaflet() %>% setView(lng = -71.0589, lat = 42.3601, zoom = 12)
 m %>% addTiles()
 ```

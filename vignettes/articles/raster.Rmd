@@ -46,12 +46,13 @@ suppressPackageStartupMessages({
   library(raster)
   r <- suppressWarnings(raster("nc/oisst-sst.nc"))
 })
+library(leaflet)
 # ncdf4 emits partial match warnings
 ```
 
 ```{r eval=FALSE}
 library(raster)
-
+library(leaflet)
 r <- raster("nc/oisst-sst.nc")
 ```
 

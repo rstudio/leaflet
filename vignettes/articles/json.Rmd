@@ -9,7 +9,7 @@ For working with GeoJSON/TopoJSON data you have two options: either read it into
 
 ### Reading as `sp`
 
-The first approach is to use either `rgdal` or `geojsonio` (packages) to read GeoJSON/TopoJSON as `sp` objects. Then, you can use the full functionality of [polygons](shapes.html), [markers](markers.html), [colors](colors.html), [legends](legends.html), etc.
+The first approach is to use either `sf` or `geojsonio` (packages) to read GeoJSON/TopoJSON as `sp` objects. Then, you can use the full functionality of [polygons](shapes.html), [markers](markers.html), [colors](colors.html), [legends](legends.html), etc.
 
 ```{r, include = FALSE}
 library(leaflet)
@@ -19,7 +19,7 @@ library(magrittr)
 ```{r message=FALSE,warning=FALSE}
 # From http://eric.clst.org/Stuff/USGeoJSON and
 # https://en.wikipedia.org/wiki/List_of_United_States_counties_and_county_equivalents
-nycounties <- rgdal::readOGR("https://rstudio.github.io/leaflet/json/nycounties.geojson") 
+nycounties <- sf::read_sf("https://rstudio.github.io/leaflet/json/nycounties.geojson") 
 # Or use the geojsonio equivalent:
 # nycounties <- geojsonio::geojson_read("https://rstudio.github.io/leaflet/json/nycounties.geojson", what = "sp") 
 

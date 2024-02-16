@@ -2,6 +2,18 @@
 title: "Lines and Shapes"
 ---
 
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r,echo=FALSE}
+library(leaflet)
+library(magrittr)
+```
+
 Leaflet makes it easy to take spatial lines and shapes from R and add them to maps.
 
 ### Polygons and Polylines
@@ -14,9 +26,6 @@ Line and polygon data can come from a variety of sources:
 * `map` objects (from the `maps` package's `map()` function); use `map(fill = TRUE)` for polygons, `FALSE` for polylines
 * Two-column numeric matrix; the first column is longitude and the second is latitude. Polygons are separated by rows of `(NA, NA)`. It is not possible to represent multi-polygons nor polygons with holes using this method; use `SpatialPolygons` instead.
 
-```{r echo=FALSE,results='hide',message=FALSE,warning=FALSE}
-library(rgdal, quietly = TRUE)
-```
 ```{r states,message=FALSE,warning=FALSE}
 # From https://www.census.gov/geo/maps-data/data/cbf/cbf_state.html
 states <- sf::st_read("shp/cb_2013_us_state_20m.shp",
@@ -42,8 +51,8 @@ The above example uses the `highlightOptions` parameter to emphasize the current
 
 Very detailed (i.e. large) shape data can present a problem for Leafet, since it is all eventually passed into the browser and rendered as SVG, which is very expressive and convenient but has scalability limits. In these cases, consider using `rmapshaper::ms_simplify`, which does topology-preserving simplification conveniently from R.
 
-```{r message=FALSE,warning=FALSE}
-library(albersusa)
+```{r message=FALSE,warning=FALSE,eval=FALSE}
+library(albersusa) # Requires rgdal, archived.
 
 fullsize <- usa_sf()
 object.size(fullsize)

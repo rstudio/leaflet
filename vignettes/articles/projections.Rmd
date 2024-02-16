@@ -9,6 +9,9 @@ knitr::opts_chunk$set(
 )
 ```
 
+```{r, include = FALSE}
+library(leaflet)
+```
 
 **Note:** This functionality is for advanced users and may not be supported across all functions (for example, `addRasterImage` currently works only with EPSG:3857 Web Mercator).
 
@@ -75,10 +78,9 @@ While tiles must be in the same projection as used in the `leafletCRS` function,
 
 This example uses [EPSG:2163](http://epsg.io/2163) (US National Atlas Equal Area projection). The dataset we use (`usa_sf` from the `albersusa` package, though we're not actually using Albers projection here) has Alaska and Hawaii moved closer to mainland US as well as rotated and resized accordingly.
 
-```{r message=FALSE,warning=FALSE}
+```{r message=FALSE,warning=FALSE,eval=FALSE}
 library(sp)
-library(albersusa)
-
+library(albersusa) # not possible to install due to rgdal archival.
 spdf <- rmapshaper::ms_simplify(usa_sf(), keep = 0.1)
 pal <- colorNumeric("Blues", domain = spdf$pop_2014)
 epsg2163 <- leafletCRS(
