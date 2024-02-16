@@ -13,9 +13,8 @@ on:
 name: Package checks
 
 jobs:
-  ## Website is not pkgdown; Run `source("tools/docs_update.R")` on release!
   # website:
-  #   uses: rstudio/shiny-workflows/.github/workflows/website.yaml@v1
+     uses: rstudio/shiny-workflows/.github/workflows/website.yaml@v1
   routine:
     uses: rstudio/shiny-workflows/.github/workflows/routine.yaml@v1
     with:
