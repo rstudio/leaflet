@@ -42,7 +42,7 @@ leaf <- leaflet(spdf)
 #'
 #' ### Quantiles
 
-qpal <- colorQuantile(rev(viridis::viridis(10)), spdf$POPDENSITY, n = 10)
+qpal <- colorQuantile(rev(viridisLite::viridis(10)), spdf$POPDENSITY, n = 10)
 
 leaf %>%
   addPolygons(weight = 1, color = "#333333", fillOpacity = 1,
@@ -55,7 +55,7 @@ leaf %>%
 #'
 #'
 #' ### Bins
-binpal <- colorBin(rev(viridis::viridis(10)), spdf$POPDENSITY, bins = 10)
+binpal <- colorBin(rev(viridisLite::viridis(10)), spdf$POPDENSITY, bins = 10)
 
 leaf %>%
   addPolygons(weight = 1, color = "#333333", fillOpacity = 1,
@@ -67,7 +67,7 @@ leaf %>%
 #'
 #'
 #' ### Numeric
-numpal <- colorNumeric(rev(viridis::viridis(256)), spdf$POPDENSITY)
+numpal <- colorNumeric(rev(viridisLite::viridis(256)), spdf$POPDENSITY)
 
 leaf %>%
   addPolygons(weight = 1, color = "#333333", fillOpacity = 1,

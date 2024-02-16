@@ -2,6 +2,8 @@
 
 * Fixed #893: Correctly call `terra::crs()` when checking the CRS of a `SpatVector` object in `pointData()` or `polygonData()` (thanks @mkoohafkan, #894).
 
+* Replace viridis dependency by viridisLite (@olivroy, #897)
+
 # leaflet 2.2.1
 
 * When `addProviderTiles()` is used with `{leaflet.providers}` version 2.0.0 or later, the `leaflet-providers` HTML dependency produced can be correctly cached by knitr. When used with older versions of `{leaflet.providers}`, the HTML dependency uses temp files that break knitr's caching mechanism (thanks @qdread, @jaredlander; #884).
