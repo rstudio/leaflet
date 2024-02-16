@@ -34,5 +34,4 @@
 ^CRAN-SUBMISSION$
 ^_dev$
 ^vignettes/articles$
-^_pkgdown\.yml$
 ^pkgdown$
