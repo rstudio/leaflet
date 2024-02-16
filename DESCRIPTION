@@ -63,7 +63,7 @@ Imports:
     scales (>= 1.0.0),
     sp,
     stats,
-    viridis (>= 0.5.1),
+    viridisLite,
     xfun
 Suggests:
     knitr,
