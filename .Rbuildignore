@@ -36,5 +36,3 @@
 ^vignettes/articles$
 ^_pkgdown\.yml$
 ^pkgdown$
-docs_old$
-

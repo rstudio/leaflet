@@ -5,6 +5,7 @@ development:
 
 template:
   package: tidytemplate
+  assets: pkgdown/assets
   bootstrap: 5
   bslib:
     primary: "#199900"
