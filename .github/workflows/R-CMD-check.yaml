@@ -13,7 +13,7 @@ on:
 name: Package checks
 
 jobs:
-  # website:
+  website:
      uses: rstudio/shiny-workflows/.github/workflows/website.yaml@v1
   routine:
     uses: rstudio/shiny-workflows/.github/workflows/routine.yaml@v1
