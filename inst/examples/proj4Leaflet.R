@@ -82,7 +82,7 @@ leaflet(options = leafletOptions(
 
 
 library(sp)
-library(albersusa)
+library(albersusa) # requires rgdal and maptools (archived)
 spdf <- rmapshaper::ms_simplify(usa_composite())
 pal <- colorNumeric(
   palette = "Blues",

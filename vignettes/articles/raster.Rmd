@@ -1,0 +1,67 @@
+---
+title: "Raster Images"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Two-dimensional `SpatRaster` objects (from the [`terra` package](https://CRAN.R-project.org/package=terra)) or `RasterLayer` objects (from the [`raster` package](https://CRAN.R-project.org/package=raster)) can be turned into images and added to Leaflet maps using the `addRasterImage` function.
+
+The `addRasterImage` function works by projecting the `SpatRaster` or `RasterLayer` object to [EPSG:3857](http://spatialreference.org/ref/sr-org/7483/) and encoding each cell to an RGBA color, to produce a PNG image. That image is then embedded in the map widget.
+
+It's important that the raster object is tagged with a proper coordinate reference system. Many raster files contain this information, but some do not. Here is how you'd tag a raster object "`r`" which contains WGS84 data:
+
+```r
+crs(r) <- "+proj=longlat +datum=WGS84"
+```
+
+### Large Raster Warning
+
+Because the `addRasterImage` function embeds the image in the map widget, it will increase the size of the generated HTML proportionally. In order to avoid unacceptable download times and memory usage, `addRasterImage` will error when the PNG is beyond the size indicated by the `maxBytes` argument (defaults to 4 megabytes).
+
+If you have a large raster layer, you can provide a larger number of bytes and see how it goes, or use `terra::resample`, `raster::resample`, or `raster::aggregate` to decrease the number of cells.
+
+### Projection Performance
+
+The `addRasterImage` function projects using `terra::project` or `raster::projectRaster`, which can take a while on all but the smallest rasters. If you have a large raster layer or expect to call `addRasterImage` on the same raster layer many times, you can perform the [EPSG:3857](http://spatialreference.org/ref/sr-org/7483/) projection yourself (either using `leaflet::projectRasterForLeaflet` or using another GIS library or program) and call `addRasterImage` with `project = FALSE`.
+
+Be sure that your pre-projected raster layer is tagged with an accurate extent and CRS, as these values are still needed to place the image in the proper position on the map.
+
+### Coloring
+
+In order to render the raster object as an image, each cell value must be converted to an RGB(A) color. You can specify the color scale using the `colors` argument, which accepts a variety of color specifications:
+
+* The name of a [Color Brewer 2](http://colorbrewer2.org/) palette. If no `colors` argument is provided, then `"Spectral"` is the default.
+* A vector that represents the ordered list of colors to map to the data. Any color specification that is accepted by `grDevices::col2rgb` can be used, including `"#RRGGBB"` and `"#RRGGBBAA"` forms. Example: `colors = c("#E0F3DB", "#A8DDB5", "#43A2CA")`.
+* A color scaling function, like those detailed in the [Colors](colors.html) topic. For example: `colors = colorBin("Greens", domain = NULL, bins = 5, na.color = "transparent")`.
+
+### Example
+
+```{r echo=FALSE}
+suppressPackageStartupMessages({
+  library(raster)
+  r <- suppressWarnings(raster("nc/oisst-sst.nc"))
+})
+library(leaflet)
+# ncdf4 emits partial match warnings
+```
+
+```{r eval=FALSE}
+library(raster)
+library(leaflet)
+r <- raster("nc/oisst-sst.nc")
+```
+
+```{r}
+pal <- colorNumeric(c("#0C2C84", "#41B6C4", "#FFFFCC"), values(r),
+  na.color = "transparent")
+
+leaflet() %>% addTiles() %>%
+  addRasterImage(r, colors = pal, opacity = 0.8) %>%
+  addLegend(pal = pal, values = values(r),
+    title = "Surface temp")
+```

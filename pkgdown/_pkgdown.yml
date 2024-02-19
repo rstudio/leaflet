@@ -1,0 +1,26 @@
+url: https://rstudio.github.io/leaflet/
+
+template:
+  package: tidytemplate
+  assets: pkgdown/assets
+  bootstrap: 5
+  bslib:
+    primary: "#199900"
+    navbar-background: "#f8f8f8"
+  trailing_slash_redirect: true
+
+redirects:
+  - ["basemaps.html", "articles/basemaps.html"]
+  - ["choropleths.html", "articles/choropleths.html"]
+  - ["colors.html", "articles/colors.html"]
+  - ["extending.html", "articles/extending.html"]
+  - ["json.html", "articles/json.html"]
+  - ["markers.html", "articles/markers.html"]
+  - ["morefeatures.html", "articles/morefeatures.html"]
+  - ["popups.html", "articles/popups.html"]
+  - ["projections.html", "articles/projections.html"]
+  - ["raster.html", "articles/raster.html"]
+  - ["shapes.html", "articles/shapes.html"]
+  - ["shiny.html", "articles/shiny.html"]
+  - ["showhide.html", "articles/showhide.html"]
+  - ["map_widget.html", "articles/widget.html"]

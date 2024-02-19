@@ -71,12 +71,15 @@ Suggests:
     purrr,
     R6,
     RJSONIO,
+    rmarkdown,
     s2,
     sf (>= 0.9-6),
     shiny,
     terra,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
+Config/Needs/website: dplyr, geojsonio, ncdf4, tidyverse/tidytemplate
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.1
+VignetteBuilder: knitr

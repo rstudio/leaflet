@@ -1,8 +1,8 @@
 # leaflet (development version)
 
 * Fixed #893: Correctly call `terra::crs()` when checking the CRS of a `SpatVector` object in `pointData()` or `polygonData()` (thanks @mkoohafkan, #894).
-
-* Replace viridis dependency by viridisLite (@olivroy, #897)
+* `{leaflet}` now has a brand new pkgdown site (@olivroy, #902)
+* Replace `{viridis}` dependency by `{viridisLite}` (@olivroy, #897)
 
 * `addRasterImage` now takes `options = gridOptions()`, so that arbitrary Leaflet layer options can be controlled. (#692)
 

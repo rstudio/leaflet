@@ -1,0 +1,73 @@
+---
+title: "Extending Leaflet"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Extending Leaflet package
+
+The Leaflet Javascript library has a plethora of [plugins](leafletjs.com/plugins) available that extend the functionality of the core package. We have incorporated a chosen few in the R package. It may be desirable to use plugins availble outside of what are supported by this pakage.
+
+The way to achieve that is by extending the Leaflet package. By extending we mean writing your own code/package that incorporate your desired leaflet plugins and hook into the leaflet package.
+
+Certain functions have been made available for you to use in your code while extending Leaflet.
+
+#### derivePoints/derivePolygons
+
+These functions can be used to extract point or shape (polygon/line/circle/rectangle) data from a `data.frame` or a spatial object from the `sp` package. It tries to auto determine the latitude/longitude colnames if not specified or use user supplied column mappings.
+
+#### evalFormula
+
+`evalFormula` is used to evaluate a formula on a given data and return the results. e.g. `leaflet(some.data.frame) %>% addMarkers(label=~name)` internally uses `evalFormula` to calculate the correct label values from the data using the `~name` formula.
+
+#### expandLimits
+
+You can call `expandLimits` to make sure that your map's view is  just enough to show every point/shape in your data. This way you don't have to determine the exact bounds for your map.
+
+#### filterNULL
+
+Often when passing a list from R to Javascript it is desirable to remove any null elements, and that's exactly what `filterNULL` does.
+
+#### getMapData
+
+Accesses the data object passed when calling `leaflet()` funtion.
+
+#### invokeMethod
+
+The glue between the R code and Javascript code. Requires a corresponding method on the Javascript side.
+
+### Example
+
+Here is a small example which shows how you can integrate the Bing.com basemap layer [plugin](https://github.com/shramov/leaflet-plugins)
+
+```{r, fig.height=4}
+library(leaflet)
+library(htmltools)
+library(htmlwidgets)
+
+bingPlugin <- htmlDependency(
+  "leaflet.plugins", "2.0.0",
+  src = normalizePath("./js"),
+  script = "Bing.min.js"
+)
+
+registerPlugin <- function(map, plugin) {
+  map$dependencies <- c(map$dependencies, list(plugin))
+  map
+}
+
+leaflet() %>% setView(-122.23, 37.75, zoom = 10) %>%
+  registerPlugin(bingPlugin) %>%
+  onRender("function(el, x) {
+    var imagerySet = 'Aerial';
+    var bing = new L.BingLayer('LfO3DMI9S6GnXD7d0WGs~bq2DRVkmIAzSOFdodzZLvw~Arx8dclDxmZA0Y38tHIJlJfnMbGq5GXeYmrGOUIbS2VLFzRKCK0Yv_bAl6oe-DOc',
+         {type: imagerySet});
+     this.addLayer(bing);
+ }")
+```
+

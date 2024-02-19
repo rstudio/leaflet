@@ -1,0 +1,224 @@
+---
+title: "Choropleths"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Making choropleths with leaflet is easy. In this example, we'll duplicate the [step-by-step choropleth tutorial](https://leafletjs.com/examples/choropleth/) from the Leaflet.js website.
+
+The final result will look like this (scroll to the end to see the completed code):
+
+```{r, include = FALSE}
+library(leaflet)
+library(magrittr)
+```
+
+```{r fig.height = 4.75, echo = FALSE}
+# From http://leafletjs.com/examples/choropleth/us-states.js
+states <- geojsonio::geojson_read("https://rstudio.github.io/leaflet/json/us-states.geojson", what = "sp")
+
+bins <- c(0, 10, 20, 50, 100, 200, 500, 1000, Inf)
+pal <- colorBin("YlOrRd", domain = states$density, bins = bins)
+
+labels <- sprintf(
+  "<strong>%s</strong><br/>%g people / mi<sup>2</sup>",
+  states$name, states$density
+) %>% lapply(htmltools::HTML)
+
+leaflet(states) %>%
+  setView(-96, 37.8, 4) %>%
+  addProviderTiles("MapBox", options = providerTileOptions(
+    id = "mapbox.light",
+    accessToken = Sys.getenv('MAPBOX_ACCESS_TOKEN'))) %>%
+  addPolygons(
+    fillColor = ~pal(density),
+    weight = 2,
+    opacity = 1,
+    color = "white",
+    dashArray = "3",
+    fillOpacity = 0.7,
+    highlightOptions = highlightOptions(
+      weight = 5,
+      color = "#666",
+      dashArray = "",
+      fillOpacity = 0.7,
+      bringToFront = TRUE),
+    label = labels,
+    labelOptions = labelOptions(
+      style = list("font-weight" = "normal", padding = "3px 8px"),
+      textsize = "15px",
+      direction = "auto")) %>%
+  addLegend(pal = pal, values = ~density, opacity = 0.7, title = NULL,
+    position = "bottomright")
+```
+
+### Data source
+
+We'll start by loading the data from JSON. While the Leaflet.js example loads the JSON directly into JavaScript, with the Leaflet R package we instead want to load the data into R.
+
+In this case, we'll use the `geojsonio` package to load the data into `sp` objects, which will let us easily manipulate the geographic features, and their properties, in R.
+
+```{r}
+states <- geojsonio::geojson_read("https://rstudio.github.io/leaflet/json/us-states.geojson", what = "sp")
+class(states)
+names(states)
+```
+
+As you can see, we now have a `SpatialPolygonsDataFrame` with `name` (state name) and `density` (population density in people/mi<sup>2</sup>) columns from the GeoJSON.
+
+### Basic states map
+
+Next, let's make a basic map with just the outline of the states. For our basemap, we'll use the same `"mapbox.light"` MapBox style that the example does; if you don't have a MapBox account, you can just use `addTiles()` in place of the `addProviderTiles` call, or choose a free provider.
+
+```{r}
+m <- leaflet(states) %>%
+  setView(-96, 37.8, 4) %>%
+  addProviderTiles("MapBox", options = providerTileOptions(
+    id = "mapbox.light",
+    accessToken = Sys.getenv('MAPBOX_ACCESS_TOKEN')))
+```
+
+We've saved the basic basemap as a separate variable `m` so we can easily iterate on the `addPolygons` call as we work through the rest of the tutorial.
+
+To add uniform polygons with default styling, just call `addPolygons` with no additional arguments.
+
+```{r}
+m %>% addPolygons()
+```
+
+### Adding some color
+
+Now, let's color the states according to their population density. You have [various options](../colors.html) for mapping data to colors; for this example we'll match the Leaflet.js tutorial by mapping a specific set of bins into RColorBrewer colors.
+
+First, we'll define the bins. This is a numeric vector that defines the boundaries between intervals (`(0,10]`, `(10,20]`, and so on).
+
+Then, we'll call `colorBin` to generate a palette function that maps the RColorBrewer `"YlOrRd"` colors to our bins.
+
+Finally, we'll modify `addPolygons` to use the palette function and the density values to generate a vector of colors for `fillColor`, and also add some other static style properties.
+
+```{r}
+bins <- c(0, 10, 20, 50, 100, 200, 500, 1000, Inf)
+pal <- colorBin("YlOrRd", domain = states$density, bins = bins)
+
+m %>% addPolygons(
+  fillColor = ~pal(density),
+  weight = 2,
+  opacity = 1,
+  color = "white",
+  dashArray = "3",
+  fillOpacity = 0.7)
+```
+
+### Adding interaction
+
+The next thing we'll want is to make the polygons highlight as the mouse passes over them. The `addPolygon` function has a `highlight` argument that makes this simple.
+
+```{r}
+m %>% addPolygons(
+  fillColor = ~pal(density),
+  weight = 2,
+  opacity = 1,
+  color = "white",
+  dashArray = "3",
+  fillOpacity = 0.7,
+  highlightOptions = highlightOptions(
+    weight = 5,
+    color = "#666",
+    dashArray = "",
+    fillOpacity = 0.7,
+    bringToFront = TRUE))
+```
+
+(The Leaflet.js tutorial also adds an event handler that zooms into a state when it's clicked. This isn't currently possible with the Leaflet R package, except with either custom JavaScript or using Shiny, both of which are outside the scope of this example.)
+
+### Custom info
+
+Now let's expose the state names and values to the user.
+
+The Leaflet.js tutorial shows the hovered-over state's information in a custom control. Again, that's possible by adding custom JavaScript or using Shiny, but for this example we'll use the built-in labels feature instead.
+
+We'll generate the labels by handcrafting some HTML, and passing it to `lapply(htmltools::HTML)` so that Leaflet knows to treat each label as HTML instead of as plain text. We'll also set some label options to improve the style of the label element itself.
+
+```{r}
+labels <- sprintf(
+  "<strong>%s</strong><br/>%g people / mi<sup>2</sup>",
+  states$name, states$density
+) %>% lapply(htmltools::HTML)
+
+m <- m %>% addPolygons(
+  fillColor = ~pal(density),
+  weight = 2,
+  opacity = 1,
+  color = "white",
+  dashArray = "3",
+  fillOpacity = 0.7,
+  highlightOptions = highlightOptions(
+    weight = 5,
+    color = "#666",
+    dashArray = "",
+    fillOpacity = 0.7,
+    bringToFront = TRUE),
+  label = labels,
+  labelOptions = labelOptions(
+    style = list("font-weight" = "normal", padding = "3px 8px"),
+    textsize = "15px",
+    direction = "auto"))
+m
+```
+
+This is the final version of our polygon layer, so let's save the result back to the `m` variable.
+
+### Legend
+
+As our final step, let's add a legend. Because we chose to color our map using `colorBin`, the `addLegend` function makes it particularly easy to add a legend with the correct colors and intervals.
+
+```{r}
+m %>% addLegend(pal = pal, values = ~density, opacity = 0.7, title = NULL,
+  position = "bottomright")
+```
+
+### Complete code
+
+```{r results = 'hide'}
+# From http://leafletjs.com/examples/choropleth/us-states.js
+states <- geojsonio::geojson_read("https://rstudio.github.io/leaflet/json/us-states.geojson", what = "sp")
+
+bins <- c(0, 10, 20, 50, 100, 200, 500, 1000, Inf)
+pal <- colorBin("YlOrRd", domain = states$density, bins = bins)
+
+labels <- sprintf(
+  "<strong>%s</strong><br/>%g people / mi<sup>2</sup>",
+  states$name, states$density
+) %>% lapply(htmltools::HTML)
+
+leaflet(states) %>%
+  setView(-96, 37.8, 4) %>%
+  addProviderTiles("MapBox", options = providerTileOptions(
+    id = "mapbox.light",
+    accessToken = Sys.getenv('MAPBOX_ACCESS_TOKEN'))) %>%
+  addPolygons(
+    fillColor = ~pal(density),
+    weight = 2,
+    opacity = 1,
+    color = "white",
+    dashArray = "3",
+    fillOpacity = 0.7,
+    highlightOptions = highlightOptions(
+      weight = 5,
+      color = "#666",
+      dashArray = "",
+      fillOpacity = 0.7,
+      bringToFront = TRUE),
+    label = labels,
+    labelOptions = labelOptions(
+      style = list("font-weight" = "normal", padding = "3px 8px"),
+      textsize = "15px",
+      direction = "auto")) %>%
+  addLegend(pal = pal, values = ~density, opacity = 0.7, title = NULL,
+    position = "bottomright")
+```

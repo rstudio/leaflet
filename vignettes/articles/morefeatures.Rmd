@@ -1,0 +1,206 @@
+---
+title: "More features"
+---
+
+
+## Additional features
+
+- Add-ons
+    - [Leaflet Measure](#leaflet-measure)
+    - [Graticule](#graticule)
+    - [Terminator (day/night indicator)](#terminator-daynight-indicator)
+    - [Minimap](#minimap)
+    - [EasyButton](#easybutton)
+- Advanced Features
+    - [Custom JavaScript with `htmlwidgets::onRender`](#custom-javascript-with-htmlwidgetonrender)
+
+### Add-ons
+
+These are various utility functions that you can use to augment your map with additional elements. Each of the utility function give below supports options of customization, be sure to check the help files for details.
+
+#### Leaflet Measure
+
+You can use `addMeasure()` to add the [leaflet-measure](https://github.com/ljagis/leaflet-measure) plugin to a map.
+
+```{r }
+library(leaflet)
+
+m <- leaflet() %>% addTiles()
+
+m %>%
+  # Central Park
+  fitBounds(-73.9, 40.75, -73.95,40.8) %>%
+  addMeasure()
+```
+
+Use various options to customize the appearance and behavior of the plugin (see `?addMeasure` for details).
+
+```{r }
+m %>%
+  # Berlin, Germany
+  fitBounds(13.76134, 52.675499, 13.0884, 52.33812) %>%
+  addMeasure(
+    position = "bottomleft",
+    primaryLengthUnit = "meters",
+    primaryAreaUnit = "sqmeters",
+    activeColor = "#3D535D",
+    completedColor = "#7D4479")
+```
+
+#### Graticule
+
+Use the `addGraticule` function to add a graticule (grid) to the map (via the [Leaflet.Graticule](https://github.com/turban/Leaflet.Graticule) plugin).
+
+```{r }
+library(leaflet)
+
+m <- leaflet() %>% addTiles() %>% setView(0,0,2)
+
+m %>% addGraticule()
+m %>% addGraticule(interval = 40, style = list(color = "#FF0000", weight = 1))
+```
+
+You can use the `group` argument to make the graticule toggleable.
+
+```{r }
+m %>%
+  addGraticule(group = "Graticule") %>%
+  addLayersControl(overlayGroups = c("Graticule"),
+    options = layersControlOptions(collapsed = FALSE))
+```
+
+#### Terminator (day/night indicator)
+
+```{r}
+library(leaflet)
+
+# Default Resolution
+leaflet() %>% addTiles() %>% addTerminator()
+
+# Custom Resolution + Custom Date and on a toggleable Layer
+leaflet() %>%
+  addTiles() %>%
+  addTerminator(
+    resolution=10,
+    time = "2013-06-20T21:00:00Z",
+    group = "daylight") %>%
+  addLayersControl(
+    overlayGroups = "daylight",
+    options = layersControlOptions(collapsed = FALSE))
+```
+
+#### Minimap
+
+You can use the `addMiniMap()` function to add a minimap to aid in navigation. This is implemented via the [Leaflet-MiniMap](https://github.com/Norkart/Leaflet-MiniMap) plugin.
+
+Note that the minimap only shows map tiles; markers, polygons, and other layers on the main map will not be displayed in the minimap.
+
+```{r }
+library(leaflet)
+l <- leaflet() %>% setView(0,0,3)
+
+l %>%
+  addProviderTiles(providers$Esri.WorldStreetMap) %>%
+  addMiniMap()
+```
+
+You can use a specific basemap for the minimap via the `tiles` parameter. This example also allows the minimap to be hidden by setting `toggleDisplay = TRUE`.
+
+```{r }
+l %>%
+  addProviderTiles(providers$Esri.WorldStreetMap) %>%
+  addMiniMap(
+    tiles = providers$Esri.WorldStreetMap,
+    toggleDisplay = TRUE)
+```
+
+#### EasyButton
+
+Use `addEasyButton()` to add simple buttons (via [Leaflet.EasyButton](https://github.com/CliffCloud/Leaflet.EasyButton)) that trigger custom JavaScript logic.
+
+```{r }
+library(leaflet)
+library(htmltools)
+library(htmlwidgets)
+```
+
+This map adds two buttons: one sets the map zoom level to 1, and the other attempts to locate you.
+
+```{r }
+leaflet() %>% addTiles() %>%
+  addEasyButton(easyButton(
+    icon="fa-globe", title="Zoom to Level 1",
+    onClick=JS("function(btn, map){ map.setZoom(1); }"))) %>%
+  addEasyButton(easyButton(
+    icon="fa-crosshairs", title="Locate Me",
+    onClick=JS("function(btn, map){ map.locate({setView: true}); }")))
+```
+
+The next example demonstrates an easyButton with two distinct states: `frozen-markers` and `unfrozen-markers`, each of which has a distinct icon, title, and click handler.
+
+```{r message=FALSE}
+leaflet() %>% addTiles() %>%
+  addMarkers(data=quakes,
+    clusterOptions = markerClusterOptions(),
+    clusterId = "quakesCluster") %>%
+  addEasyButton(easyButton(
+    states = list(
+      easyButtonState(
+        stateName="unfrozen-markers",
+        icon="ion-toggle",
+        title="Freeze Clusters",
+        onClick = JS("
+          function(btn, map) {
+            var clusterManager =
+              map.layerManager.getLayer('cluster', 'quakesCluster');
+            clusterManager.freezeAtZoom();
+            btn.state('frozen-markers');
+          }")
+      ),
+      easyButtonState(
+        stateName="frozen-markers",
+        icon="ion-toggle-filled",
+        title="UnFreeze Clusters",
+        onClick = JS("
+          function(btn, map) {
+            var clusterManager =
+              map.layerManager.getLayer('cluster', 'quakesCluster');
+            clusterManager.unfreeze();
+            btn.state('unfrozen-markers');
+          }")
+      )
+    )
+  ))
+```
+
+### Advanced Features
+
+#### Custom JavaScript with `htmlwidgets::onRender`
+
+The `htmlwidgets::onRender` function can be used to add custom behavior to the leaflet map using native Javascript. This is a some what advanced use case and requires you to know Javascript. Using `onRender` you can customize your map's behavior using any of the APIs as defined in the Leaflet.js [documentation](https://leafletjs.com/reference.html).
+
+Below is an example where we sync the base layer of the mini-map with the baselayer of the main map, using the 'baselayerchange' event.
+
+```{r, fig.height=4}
+l <- leaflet() %>% setView(0,0,3)
+
+esri <- grep("^Esri", providers, value = TRUE)
+
+for (provider in esri) {
+  l <- l %>% addProviderTiles(provider, group = provider)
+}
+
+l %>%
+  addLayersControl(baseGroups = names(esri),
+    options = layersControlOptions(collapsed = FALSE)) %>%
+  addMiniMap(tiles = esri[[1]], toggleDisplay = TRUE,
+    position = "bottomleft") %>%
+  htmlwidgets::onRender("
+    function(el, x) {
+      var myMap = this;
+      myMap.on('baselayerchange',
+        function (e) {
+          myMap.minimap.changeLayer(L.tileLayer.provider(e.name));
+        })
+    }")
+```
