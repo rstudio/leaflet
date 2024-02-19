@@ -44,7 +44,7 @@ In order to render the raster object as an image, each cell value must be conver
 ```{r echo=FALSE}
 suppressPackageStartupMessages({
   library(raster)
-  r <- suppressWarnings(raster("https://rstudio.github.io/leaflet/nc/oisst-sst.nc"))
+  r <- suppressWarnings(raster("nc/oisst-sst.nc"))
 })
 library(leaflet)
 # ncdf4 emits partial match warnings
