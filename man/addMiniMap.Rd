@@ -2,8 +2,7 @@
 % Please edit documentation in R/plugin-minimap.R
 \name{addMiniMap}
 \alias{addMiniMap}
-\title{Add a minimap to the Map
-\url{https://github.com/Norkart/Leaflet-MiniMap}}
+\title{Add a minimap to the map}
 \usage{
 addMiniMap(
   map,
@@ -31,8 +30,8 @@ addMiniMap(
 \item{map}{a map widget object}
 
 \item{position}{The standard Leaflet.Control position parameter,
-   used like all the other controls.
-Defaults to "bottomright".}
+used like all the other controls.
+Defaults to `"bottomright"`.}
 
 \item{width}{The width of the minimap in pixels. Defaults to 150.}
 
@@ -86,8 +85,7 @@ a Path.Options (\url{https://web.archive.org/web/20220702182250/https://leafletj
 It does not override the MiniMap default map options but extends them.}
 }
 \description{
-Add a minimap to the Map
-\url{https://github.com/Norkart/Leaflet-MiniMap}
+See \url{https://github.com/Norkart/Leaflet-MiniMap}
 }
 \examples{
 leaf <- leaflet() \%>\%

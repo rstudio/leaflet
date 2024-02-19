@@ -3,13 +3,11 @@ title: "Working with GeoJSON & TopoJSON"
 ---
 
 
-## Working with GeoJSON & TopoJSON
-
 For working with GeoJSON/TopoJSON data you have two options: either read it into `sp` objects; or use the `addGeoJSON()` and `addTopoJSON()` functions.
 
-### Reading as `sp`
+# Reading as `sp`
 
-The first approach is to use either `sf` or `geojsonio` (packages) to read GeoJSON/TopoJSON as `sp` objects. Then, you can use the full functionality of [polygons](shapes.html), [markers](markers.html), [colors](colors.html), [legends](legends.html), etc.
+The first approach is to use either `sf` or `geojsonio` (packages) to read GeoJSON/TopoJSON as `sp` objects. Then, you can use the full functionality of [polygons](https://rstudio.github.io/leaflet/articles/shapes.html), [markers](https://rstudio.github.io/leaflet/articles/markers.html), [colors](https://rstudio.github.io/leaflet/articles/colors.html), [legends](https://rstudio.github.io/leaflet/articles/legends.html), etc.
 
 ```{r, include = FALSE}
 library(leaflet)
@@ -34,13 +32,13 @@ leaflet(nycounties) %>%
     labFormat = labelFormat(transform = function(x) round(10^x)))
 ```
 
-This approach is preferred over using `addGeoJSON`/`addTopoJSON`, as it makes it easy to use feature properties in determining map colors, labels, etc., or to modify or add new properties.
+This approach is preferred over using `addGeoJSON()`/`addTopoJSON()`, as it makes it easy to use feature properties in determining map colors, labels, etc., or to modify or add new properties.
 
 The main downside to this approach is that it only supports feature collections where all features are of the same type, whereas in GeoJSON/TopoJSON it's possible—though uncommon—to have a single feature collection that contains, say, both markers and polygons.
 
-### Working with raw GeoJSON/TopoJSON
+# Working with raw GeoJSON/TopoJSON
 
-The `addGeoJSON()` and `addTopoJSON()` functions accept GeoJSON data in either parsed (nested lists) or stringified (single-element character vector) format.
+`addGeoJSON()` and `addTopoJSON()` accept GeoJSON data in either parsed (nested lists) or stringified (single-element character vector) format.
 
 Note that for larger JSON data, using parsed is significantly slower than using stringified, because parsed data must go through a JSON encoding step.
 
@@ -54,11 +52,11 @@ leaflet() %>% setView(lng = -98.583, lat = 39.833, zoom = 3) %>%
   addTopoJSON(topoData, weight = 1, color = "#444444", fill = FALSE)
 ```
 
-#### Styling raw GeoJSON/TopoJSON
+# Styling raw GeoJSON/TopoJSON
 
 You can modify the style of GeoJSON/TopoJSON features in a few ways. (Currently only paths and shapes can be styled; marker styling is not supported.)
 
-One way to apply styles to all of the features is to use the arguments directly on the `addGeoJSON`/`addTopoJSON` functions. Another way is to encode styling information directly in the JSON object/string by putting a `style` object directly underneath the top level JSON object.
+One way to apply styles to all of the features is to use the arguments directly with `addGeoJSON()`/`addTopoJSON()`. Another way is to encode styling information directly in the JSON object/string by putting a `style` object directly underneath the top level JSON object.
 
 You can provide feature-specific styles by annotating each feature's property object with a `style: {...}` object. The feature-specific styles have the highest precedence, then the top-level style object, and finally the style-related arguments passed to the function.
 

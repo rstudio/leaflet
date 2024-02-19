@@ -1,5 +1,5 @@
 ---
-title: "Add color to a leaflet"
+title: "Colors"
 ---
 
 ```{r, include = FALSE}
@@ -9,11 +9,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Colors
-
 An important part of spatial visualization is mapping variables to colors. While R has no shortage of built-in functionality to map values to colors, we found that there was enough friction in the process to warrant introducing some wrapper functions that do a lot of the work for you.
 
-To that end, we've created a family of `color*` convenience functions that can be used to easily generate *palette functions*. Essentially, you call the appropriate color function with 1) the colors you want to use and 2) optionally, the range of inputs (i.e. *domain*) that are expected. The color function returns a palette function that can be passed a vector of input values, and it'll return a vector of colors in `#RRGGBB(AA)` format.
+To that end, we've created a family of `color*()` convenience functions that can be used to easily generate *palette functions*. Essentially, you call the appropriate color function with 1) the colors you want to use and 2) optionally, the range of inputs (i.e. *domain*) that are expected. The color function returns a palette function that can be passed a vector of input values, and it'll return a vector of colors in `#RRGGBB(AA)` format.
 
 ```{r, include = FALSE}
 library(leaflet)
@@ -28,9 +26,9 @@ pal <- colorNumeric(c("red", "green", "blue"), 1:10)
 pal(c(1,6,9))
 ```
 
-There are currently three color functions for dealing with continuous input: `colorNumeric`, `colorBin`, and `colorQuantile`; and one for categorical input, `colorFactor`.
+There are currently three color functions for dealing with continuous input: `colorNumeric()`, `colorBin()`, and `colorQuantile()`; and one for categorical input, `colorFactor()`.
 
-### Common parameters
+# Common parameters
 
 The four color functions all have two required arguments, `palette` and `domain`.
 
@@ -44,7 +42,7 @@ The `palette` argument specifies the colors to map the data to. This argument ca
 
 The `domain` argument tells the color function the range of input values. You can pass `NULL` here to create a palette function that doesn't have a preset range; the range will be inferred from the data each time you invoke the palette function. If you use a palette function multiple times across different data, it's important to provide a non-`NULL` value for `domain` so the scaling between data and colors is consistent.
 
-### Coloring continuous data
+## Coloring continuous data
 
 
 ```{r message=FALSE,warning=FALSE,results='hide'}
@@ -60,9 +58,9 @@ par(mar = c(5,5,0,0), cex = 0.8)
 hist(countries$gdp_md_est, breaks = 20, main = "")
 ```
 
-#### Continuous input, continuous colors (`colorNumeric`)
+### Continuous input, continuous colors (`colorNumeric`)
 
-Let's start by mapping GDP values directly to the `"Blues"` palette from [Color Brewer 2](https://colorbrewer2.org/). We'll use the `colorNumeric` function to create a mapping function. The `"Blues"` palette only contains nine colors, but `colorNumeric` interpolates these colors so we get continuous output.
+Let's start by mapping GDP values directly to the `"Blues"` palette from [Color Brewer 2](https://colorbrewer2.org/). We'll use `colorNumeric()` to create a mapping function. The `"Blues"` palette only contains nine colors, but `colorNumeric()` interpolates these colors so we get continuous output.
 
 ```{r}
 # Create a continuous palette function
@@ -73,7 +71,7 @@ pal <- colorNumeric(
 
 The `palette` parameter is the ordered list of colors you will map colors to. In this case we used a Color Brewer palette, but we could've used `c("white", "navy")` or `c("#FFFFFF", "#000080")` for a similar effect. You can also pass more than two colors, for a diverging palette for example. And for maximum flexibility, you can even pass a function that takes a numeric value over the interval [0,1] and returns a color.
 
-The second parameter, `domain`, indicates the set of input values that we are mapping to these colors. For `colorNumeric`, you can provide either a min/max as in this example, or a set of numbers that `colorNumeric` can call `range()` on.
+The second parameter, `domain`, indicates the set of input values that we are mapping to these colors. For `colorNumeric()`, you can provide either a min/max as in this example, or a set of numbers that `colorNumeric()` can call `range()` on.
 
 The result is `pal`, a function that can accept numeric vectors with values in the range `range(countries$gdp_md_est)` and return colors in `"#RRGGBB"` format.
 
@@ -84,11 +82,11 @@ map %>%
     color = ~pal(gdp_md_est))
 ```
 
-#### Continuous input, discrete colors (`colorBin` and `colorQuantile`)
+### Continuous input, discrete colors (`colorBin` and `colorQuantile`)
 
-`colorBin` maps numeric input data to a fixed number of output colors using binning (slicing the input domain up by value).
+`colorBin()` maps numeric input data to a fixed number of output colors using binning (slicing the input domain up by value).
 
-You can specify either the exact breaks to use, or the desired number of bins. Note that in the latter case, if `pretty=TRUE` (the default) you'll end up with nice round breaks but not necessarily the number of bins you wanted.
+You can specify either the exact breaks to use, or the desired number of bins. Note that in the latter case, if `pretty = TRUE` (the default) you'll end up with nice round breaks but not necessarily the number of bins you wanted.
 
 ```{r}
 binpal <- colorBin("Blues", countries$gdp_md_est, 6, pretty = FALSE)
@@ -98,7 +96,7 @@ map %>%
     color = ~binpal(gdp_md_est))
 ```
 
-`colorQuantile` maps numeric input data to a fixed number of output colors using quantiles (slicing the input domain into subsets with equal numbers of observations).
+`colorQuantile()` maps numeric input data to a fixed number of output colors using quantiles (slicing the input domain into subsets with equal numbers of observations).
 
 ```{r}
 qpal <- colorQuantile("Blues", countries$gdp_md_est, n = 7)
@@ -107,9 +105,9 @@ map %>%
     color = ~qpal(gdp_md_est))
 ```
 
-### Coloring categorical data
+## Coloring categorical data
 
-For categorical data, use the `colorFactor` function. If the `palette` contains the same number of elements as there are factor levels, then the mapping will be 1:1; otherwise, the palette will be interpolated to produce the desired number of colors.
+For categorical data, use `colorFactor()`. If the `palette` contains the same number of elements as there are factor levels, then the mapping will be 1:1; otherwise, the palette will be interpolated to produce the desired number of colors.
 
 You can specify the input domain either by passing a factor or character vector to `domain`, or by providing levels directly using the `levels` parameter (in which case the `domain` will be ignored).
 

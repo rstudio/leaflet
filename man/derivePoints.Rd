@@ -2,11 +2,19 @@
 % Please edit documentation in R/normalize.R
 \name{derivePoints}
 \alias{derivePoints}
-\title{Given a data object and lng/lat arguments (which may be NULL [meaning infer
-from data], formula [which should be evaluated with respect to the data], or
-vector data [which should be used as-is]) return a lng/lat data frame.}
+\alias{derivePolygons}
+\title{Normalize data to a data frame or Spatial object.}
 \usage{
 derivePoints(
+  data,
+  lng = NULL,
+  lat = NULL,
+  missingLng = missing(lng),
+  missingLat = missing(lat),
+  funcName = "f"
+)
+
+derivePolygons(
   data,
   lng = NULL,
   lat = NULL,
@@ -18,9 +26,7 @@ derivePoints(
 \arguments{
 \item{data}{map data}
 
-\item{lng}{longitude}
-
-\item{lat}{latitude}
+\item{lng, lat}{longitude and latitude}
 
 \item{missingLng}{whether lng is missing}
 
@@ -28,8 +34,13 @@ derivePoints(
 
 \item{funcName}{Name of calling function (for logging)}
 }
+\value{
+* `derivePoints()` returns a lng/lat data frame.
+* `derivePolygons()` returns a list with bbox attributes.
+}
 \description{
-Given a data object and lng/lat arguments (which may be NULL [meaning infer
-from data], formula [which should be evaluated with respect to the data], or
+Given a data object and lng/lat arguments (which may be `NULL`)
+[meaning infer from data], formula [which should be evaluated with respect to the data], or
 vector data [which should be used as-is]) return a lng/lat data frame.
 }
+\keyword{internal}

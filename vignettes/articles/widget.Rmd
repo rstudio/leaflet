@@ -11,7 +11,7 @@ knitr::opts_chunk$set(
 
 The function `leaflet()` returns a Leaflet map widget, which stores a list of objects that can be modified or updated later. Most functions in this package have an argument `map` as their first argument, which makes it easy to use the pipe operator `%>%` in the **magrittr** package, as you have seen from the example in `vignette("leaflet")`.
 
-### Initializing Options
+# Initializing Options
 The map widget can be initialized with certain parameters. This is achieved by populating the `options` argument as shown below.
 
 ```{r, include = FALSE}
@@ -25,9 +25,9 @@ library(magrittr)
 leaflet(options = leafletOptions(minZoom = 0, maxZoom = 18))
 ```
 
-The `leafletOptions()` can be passed any option described in the leaflet [reference document](https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#map-option). Using the `leafletOptions()`, you can set a custom [CRS](https://en.wikipedia.org/wiki/Spatial_reference_system) and have your map displayed in a non spherical mercator projection as described in [projections](projections.html).
+The `leafletOptions()` can be passed any option described in the leaflet [reference document](https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#map-option). Using the `leafletOptions()`, you can set a custom [CRS](https://en.wikipedia.org/wiki/Spatial_reference_system) and have your map displayed in a non spherical mercator projection as described in [projections](https://rstudio.github.io/leaflet/articles/projections.html).
 
-### Map Methods
+# Map Methods
 
 You can manipulate the attributes of the map widget using a series of methods. Please see the help page `?setView` for details.
 
@@ -35,7 +35,7 @@ You can manipulate the attributes of the map widget using a series of methods. P
 - `fitBounds()` fits the view into the rectangle `[lng1, lat1]` -- `[lng2, lat2]`;
 - `clearBounds()` clears the bound, so that the view will be automatically determined by the range of latitude/longitude data in the map layers if provided;
 
-### The Data Object
+# The Data Object
 
 Both `leaflet()` and the map layer functions have an optional `data` parameter that is designed to receive spatial data in one of several forms:
 
@@ -101,7 +101,7 @@ leaflet(data = mapStates) %>% addTiles() %>%
 ```
 
 
-### The Formula Interface
+# The Formula Interface
 
 The arguments of all layer functions can take normal R objects, such as a numeric vector for the `lat` argument, or a character vector of colors for the `color` argument. They can also take a one-sided formula, in which case the formula will be evaluated using the `data` argument as the environment. For example, `~ x` means the variable `x` in the data object, and you can write arbitrary expressions on the right-hand side, e.g., `~ sqrt(x + 1)`.
 

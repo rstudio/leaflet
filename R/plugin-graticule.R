@@ -11,11 +11,12 @@ leafletGraticuleDependencies <- function() {
 }
 
 #' Add a Graticule on the map
-#' see \url{https://github.com/turban/Leaflet.Graticule}
+#'
+#' See \url{https://github.com/turban/Leaflet.Graticule}
 #'
 #' @param map a map widget object
 #' @param interval The spacing in map units between horizontal and vertical lines.
-#' @param sphere boolean. Default FALSE
+#' @param sphere boolean. Default `FALSE`
 #' @param style path options for the generated lines. See \url{https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#path-option}
 #' @param layerId the layer id
 #' @param group the name of the group this layer belongs to.

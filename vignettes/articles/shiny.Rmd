@@ -49,15 +49,15 @@ shinyApp(ui, server)
 
 ![Screenshot of a simple Shiny app](images/shiny1.png)
 
-### Modifying Existing Maps with `leafletProxy`
+# Modifying Existing Maps with `leafletProxy`
 
-This works, but reactive inputs and expressions that affect the `renderLeaflet` expression will cause the entire map to be redrawn from scratch and reset the map position and zoom level.
+This works, but reactive inputs and expressions that affect the `renderLeaflet()` expression will cause the entire map to be redrawn from scratch and reset the map position and zoom level.
 
 For some situations that may be acceptable or desirable behavior. But in other situations, you may want finer-grained control over the map, such as changing the color of a single polygon or adding a marker at the point of a click -- without redrawing the entire map.
 
 To modify a map that's already running in the page, you use the `leafletProxy()` function in place of the `leaflet()` call, but otherwise use Leaflet function calls as normal.
 
-Normally you use `leaflet` to create the static aspects of the map, and `leafletProxy` to manage the dynamic elements, like so:
+Normally you use `leaflet` to create the static aspects of the map, and `leafletProxy()` to manage the dynamic elements, like so:
 
 ```{r eval=FALSE}
 library(shiny)
@@ -152,30 +152,30 @@ proxy %>% removeShape(c("B", "F"))
 proxy %>% clearShapes()
 ```
 
-### Understanding Layer IDs
+# Understanding Layer IDs
 
-Layer IDs can be used to replace or remove specific map elements. (**Note:** For managing groups of map elements, see the [Show/Hide Layers](showhide.html) topic.)
+Layer IDs can be used to replace or remove specific map elements. (**Note:** For managing groups of map elements, see the [Show/Hide Layers](https://rstudio.github.io/leaflet/articles/showhide.html) topic.)
 
 When you give an object a layer ID, if a similar object exists with the same ID, it will be removed from the map when the new object is added.
 
 All layer-adding functions take a `layerId` argument. Generally this is a vectorized argument; if adding 50 polygons, you'll need to pass either `NULL` or a 50-element character vector as your `layerId` value. (If you use a single-element character vector as your `layerId`, then all of the 50 polygons will have the same ID, and all but the last polygon will be removed; so don't do that!)
 
-Layer IDs are namespaced by category. Layer IDs only need be unique within their category; a call to `addCircles` will not cause any tile layers to be removed, regardless of layer ID, because circles and tiles are in different categories.
+Layer IDs are namespaced by category. Layer IDs only need be unique within their category; a call to `addCircles()` will not cause any tile layers to be removed, regardless of layer ID, because circles and tiles are in different categories.
 
 Category       | Add functions                                                  | Remove          | Clear
 -------------- | -------------------------------------------------------------- | --------------- | ---------------
-tile           | `addTiles`, `addProviderTiles`                                 | `removeTiles`   | `clearTiles`
-marker         | `addMarkers`, `addCircleMarkers`                               | `removeMarker`  | `clearMarkers`
-shape          | `addPolygons`, `addPolylines`, `addCircles`, `addRectangles`   | `removeShape`   | `clearShapes`
-geojson        | `addGeoJSON`                                                  | `removeGeoJSON` | `clearGeoJSON`
-topojson       | `addTopoJSON`                                                  | `removeTopoJSON` | `clearTopoJSON`
-control        | `addControl`                                                   | `removeControl` | `clearControls`
+tile           | `addTiles()`, `addProviderTiles()`                             | `removeTiles()` | `clearTiles()`
+marker         | `addMarkers()`, `addCircleMarkers()`                           | `removeMarker()`| `clearMarkers()`
+shape          | `addPolygons()`, `addPolylines()`, `addCircles()`, `addRectangles()` | `removeShape()`  | `clearShapes()`
+geojson        | `addGeoJSON()`                                                 | `removeGeoJSON()` | `clearGeoJSON()`
+topojson       | `addTopoJSON()`                                                | `removeTopoJSON()` | `clearTopoJSON()`
+control        | `addControl()`                                                 | `removeControl()` | `clearControls()`
 
-### Inputs/Events
+# Inputs/Events
 
 Leaflet maps and objects send input values (which we'll refer to as "events" in this document) to Shiny as the user interacts with them.
 
-#### Object events
+## Object events
 
 Object event names generally use this pattern:
 
@@ -198,7 +198,7 @@ GeoJSON events also include additional properties:
 * `featureId` - The feature ID, if any
 * `properties` - The feature properties
 
-#### Map events
+## Map events
 
 The map itself also has a few input values/events.
 
@@ -210,7 +210,7 @@ The map itself also has a few input values/events.
 
 <code>input$*MAPID*\_center</code> provides the latitude/longitude of the center of the currently visible map area; the value is a `list()` that has named elements `lat` and `lng`.
 
-### Putting it all together
+# Putting it all together
 
 For an extensive example of Shiny and Leaflet working together, take a look at the [SuperZip Explorer](https://shiny.posit.co/r/gallery/interactive-visualizations/superzip-example/) example app (note the "Get Code" button at the top of the page). (Hint: Try clicking on the bubbles, and also notice that the plots in the sidebar change as you pan and zoom around the map.)
 

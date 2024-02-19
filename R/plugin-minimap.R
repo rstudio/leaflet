@@ -13,13 +13,14 @@ leafletMiniMapDependencies <- function() {
   )
 }
 
-#' Add a minimap to the Map
-#' \url{https://github.com/Norkart/Leaflet-MiniMap}
+#' Add a minimap to the map
+#'
+#' See \url{https://github.com/Norkart/Leaflet-MiniMap}
 #'
 #' @param map a map widget object
 #' @param position The standard Leaflet.Control position parameter,
 #'    used like all the other controls.
-#' Defaults to "bottomright".
+#'    Defaults to `"bottomright"`.
 #' @param width  The width of the minimap in pixels. Defaults to 150.
 #' @param height The height of the minimap in pixels. Defaults to 150.
 #' @param collapsedWidth The width of the toggle marker and the minimap

@@ -9,11 +9,10 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Using Basemaps
 
 Leaflet supports basemaps using [map tiles](https://www.mapbox.com/guides/how-web-maps-work/), popularized by Google Maps and now used by nearly all interactive web maps.
 
-### Default (OpenStreetMap) Tiles
+# Default (OpenStreetMap) Tiles
 
 The easiest way to add tiles is by calling `addTiles()` with no arguments; by default, [OpenStreetMap](https://www.openstreetmap.org/) tiles are used.
 
@@ -23,7 +22,7 @@ m <- leaflet() %>% setView(lng = -71.0589, lat = 42.3601, zoom = 12)
 m %>% addTiles()
 ```
 
-### Third-Party Tiles
+# Third-Party Tiles
 
 Alternatively, many popular free third-party basemaps can be added using the `addProviderTiles()` function, which is implemented using the [leaflet-providers plugin](https://github.com/leaflet-extras/leaflet-providers). See [here](http://leaflet-extras.github.io/leaflet-providers/preview/index.html) for the complete set.
 
@@ -37,11 +36,11 @@ m %>% addProviderTiles(providers$Esri.NatGeoWorldMap)
 
 Note that some tile set providers require you to register; see the [project page](https://github.com/leaflet-extras/leaflet-providers) for more information. You can pass access tokens/keys, and other options, to the tile provider by populating the `options` argument with the `providerTileOptions()` function.
 
-### Custom Tile URL Template
+# Custom Tile URL Template
 
 If you happen to have a custom map tile URL template to use, you can provide it as an argument to `addTiles()`.
 
-### WMS Tiles
+# WMS Tiles
 
 You can use `addWMSTiles()` to add WMS (Web Map Service) tiles. The map below shows the Base Reflectivity (a measure of the intensity of precipitation occurring) using the WMS from the [Iowa Environmental Mesonet ](https://mesonet.agron.iastate.edu/):
 
@@ -55,7 +54,7 @@ leaflet() %>% addTiles() %>% setView(-93.65, 42.0285, zoom = 4) %>%
   )
 ```
 
-### Combining Tile Layers
+# Combining Tile Layers
 
 You aren't restricted to using a single basemap on a map; you can stack them by adding multiple tile layers. This generally only makes sense if the front tiles consist of semi transparent tiles, or have an adjusted opacity via the `options` argument.
 
