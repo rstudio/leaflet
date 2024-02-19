@@ -82,7 +82,7 @@ Only one layers control can be present on a map at a time. If you call `addLayer
 
 You can use the `showGroup` and `hideGroup` functions to show and hide groups from code. This mostly makes sense in a [Shiny context with `leafletProxy`](shiny.html), where perhaps you might toggle group visibility based on input controls in a sidebar.
 
-You can also use `showGroup`/`hideGroup` in conjuction with `addLayersControl` to set which groups are checked by default.
+You can also use `showGroup`/`hideGroup` in conjunction with `addLayersControl` to set which groups are checked by default.
 
 ```{r}
 map %>% hideGroup("Outline")

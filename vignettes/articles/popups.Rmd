@@ -21,7 +21,7 @@ Use the `addPopups()` function to add standalone popup to the map.
 
 ```{r}
 content <- paste(sep = "<br/>",
-  "<b><a href='http://www.samurainoodle.com'>Samurai Noodle</a></b>",
+  "<b><a href='https://www.samurainoodle.com/'>Samurai Noodle</a></b>",
   "606 5th Ave. S",
   "Seattle, WA 98138"
 )

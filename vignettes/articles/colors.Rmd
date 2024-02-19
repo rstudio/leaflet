@@ -62,7 +62,7 @@ hist(countries$gdp_md_est, breaks = 20, main = "")
 
 #### Continuous input, continuous colors (`colorNumeric`)
 
-Let's start by mapping GDP values directly to the `"Blues"` palette from [Color Brewer 2](http://colorbrewer2.org). We'll use the `colorNumeric` function to create a mapping function. The `"Blues"` palette only contains nine colors, but `colorNumeric` interpolates these colors so we get continuous output.
+Let's start by mapping GDP values directly to the `"Blues"` palette from [Color Brewer 2](https://colorbrewer2.org/). We'll use the `colorNumeric` function to create a mapping function. The `"Blues"` palette only contains nine colors, but `colorNumeric` interpolates these colors so we get continuous output.
 
 ```{r}
 # Create a continuous palette function

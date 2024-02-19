@@ -39,7 +39,7 @@ leafletMiniMapDependencies <- function() {
 #' @param zoomAnimation Sets whether the minimap should have an animated zoom.
 #'    (Will cause it to lag a bit after the movement of the main map.)
 #'    Defaults to false.
-#' @param toggleDisplay Sets whether the minimap should have a button to minimise it.
+#' @param toggleDisplay Sets whether the minimap should have a button to minimize it.
 #'    Defaults to false.
 #' @param autoToggleDisplay Sets whether the minimap should hide automatically,
 #'    if the parent map bounds does not fit within the minimap bounds.

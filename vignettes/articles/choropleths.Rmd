@@ -19,7 +19,7 @@ library(magrittr)
 ```
 
 ```{r fig.height = 4.75, echo = FALSE}
-# From http://leafletjs.com/examples/choropleth/us-states.js
+# From https://leafletjs.com/examples/choropleth/us-states.js
 states <- geojsonio::geojson_read("https://rstudio.github.io/leaflet/json/us-states.geojson", what = "sp")
 
 bins <- c(0, 10, 20, 50, 100, 200, 500, 1000, Inf)
@@ -185,7 +185,7 @@ m %>% addLegend(pal = pal, values = ~density, opacity = 0.7, title = NULL,
 ### Complete code
 
 ```{r results = 'hide'}
-# From http://leafletjs.com/examples/choropleth/us-states.js
+# From https://leafletjs.com/examples/choropleth/us-states.js
 states <- geojsonio::geojson_read("https://rstudio.github.io/leaflet/json/us-states.geojson", what = "sp")
 
 bins <- c(0, 10, 20, 50, 100, 200, 500, 1000, Inf)

@@ -22,7 +22,7 @@ Point data for markers can come from a variety of sources:
 - `SpatialPoints` or `SpatialPointsDataFrame` objects (from the `sp` package)
 - `POINT`, `sfc_POINT`, and `sf` objects (from the `sf` package); only `X` and `Y` dimensions will be considered
 - Two-column numeric matrices (first column is longitude, second is latitude)
-- Data frame with latitude and logitude columns. You can explicitly tell the marker function which columns contain the coordinate data (e.g. `addMarkers(lng = ~Longitude, lat = ~Latitude)`), or let the function look for columns named `lat`/`latitude` and `lon`/`lng`/`long`/`longitude` (case insensitive).
+- Data frame with latitude and longitude columns. You can explicitly tell the marker function which columns contain the coordinate data (e.g. `addMarkers(lng = ~Longitude, lat = ~Latitude)`), or let the function look for columns named `lat`/`latitude` and `lon`/`lng`/`long`/`longitude` (case insensitive).
 - Simply provide numeric vectors as `lng` and `lat` arguments
 
 Note that `MULTIPOINT` objects from `sf` are not supported at this time.
@@ -108,10 +108,10 @@ leaflet(df) %>% addTiles() %>%
 
 #### Awesome Icons
 
-Leaflet supports even more customizable markers using the [awesome markers](https://github.com/lvoogdt/Leaflet.awesome-markers) leaflet plugin.
+Leaflet supports even more customizable markers using the [awesome markers](https://github.com/lennardv2/Leaflet.awesome-markers) leaflet plugin.
 
 
-The `addAwesomeMarkers()` function is similar to `addMarkers()` function but additionally allows you to specify custom colors for the markers as well as icons from the [Font Awesome](http://fontawesome.io/icons/), [Bootstrap Glyphicons](https://getbootstrap.com/components/), and [Ion icons](http://ionicons.com/) icon libraries.
+The `addAwesomeMarkers()` function is similar to `addMarkers()` function but additionally allows you to specify custom colors for the markers as well as icons from the [Font Awesome](https://fontawesome.com/icons), [Bootstrap Glyphicons](https://getbootstrap.com/components/), and [Ion icons](https://ionic.io/ionicons) icon libraries.
 
 Similar to the `makeIcon`, `icons`, and `iconList` functions described above, you have `makeAwesomeIcon`, `awesomeIcons` and `awesomeIconList` functions, which enable you to add awesome icons.
 

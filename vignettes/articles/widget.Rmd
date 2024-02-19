@@ -9,7 +9,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-The function `leaflet()` returns a Leaflet map widget, which stores a list of objects that can be modified or updated later. Most functions in this package have an argument `map` as their first argument, which makes it easy to use the pipe operator `%>%` in the **magrittr** package, as you have seen from the example in the [Introduction](./).
+The function `leaflet()` returns a Leaflet map widget, which stores a list of objects that can be modified or updated later. Most functions in this package have an argument `map` as their first argument, which makes it easy to use the pipe operator `%>%` in the **magrittr** package, as you have seen from the example in `vignette("leaflet")`.
 
 ### Initializing Options
 The map widget can be initialized with certain parameters. This is achieved by populating the `options` argument as shown below.
@@ -42,13 +42,13 @@ Both `leaflet()` and the map layer functions have an optional `data` parameter t
 - From base R:
     - lng/lat matrix
     - data frame with lng/lat columns
-- From the [**sp** package](http://cran.rstudio.com/package=sp):
+- From the [**sp** package](https://cran.rstudio.com/package=sp):
     - `SpatialPoints[DataFrame]`
     - `Line`/`Lines`
     - `SpatialLines[DataFrame]`
     - `Polygon`/`Polygons`
     - `SpatialPolygons[DataFrame]`
-- From the [**maps** package](http://cran.rstudio.com/package=maps):
+- From the [**maps** package](https://cran.rstudio.com/package=maps):
     - the data frame from returned from `map()`
 
 The `data` argument is used to derive spatial data for functions that need it; for example, if `data` is a `SpatialPolygonsDataFrame` object, then calling `addPolygons` on that map widget will know to add the polygons from that `SpatialPolygonsDataFrame`.

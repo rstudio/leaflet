@@ -43,7 +43,7 @@ If you happen to have a custom map tile URL template to use, you can provide it 
 
 ### WMS Tiles
 
-You can use `addWMSTiles()` to add WMS (Web Map Service) tiles. The map below shows the Base Reflectivity (a measure of the intensity of precipitation occurring) using the WMS from the [Iowa Environmental Mesonet ](http://mesonet.agron.iastate.edu):
+You can use `addWMSTiles()` to add WMS (Web Map Service) tiles. The map below shows the Base Reflectivity (a measure of the intensity of precipitation occurring) using the WMS from the [Iowa Environmental Mesonet ](https://mesonet.agron.iastate.edu/):
 
 ```{r fig.height=2.5}
 leaflet() %>% addTiles() %>% setView(-93.65, 42.0285, zoom = 4) %>%

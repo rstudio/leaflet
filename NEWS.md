@@ -50,7 +50,7 @@
 
 - Enable JS function literals (wrapped in `htmlwidgets::JS()`) to be included in arguments to methods invoked on `leafletProxy` objects. (JS function literals could already be included with methods invoked on `leaflet` objects, so this change just brings `leafletProxy` to parity.) (#420)
 
-- Add missing CSS rule to show `<img>` in right-pane and left-pane (rstudio/rmarkdown/issues#1949, #770)
+- Add missing CSS rule to show `<img>` in right-pane and left-pane (rstudio/rmarkdown#1949, #770)
 
 - Allow for _hidden_ but not suspended leaflet maps to queue calls (such as add raster images) until they are rendered. If a new leaflet map is created, all pending calls are removed. (#771)
 
@@ -135,7 +135,7 @@
 
 ## Bug fixes and features
 
-- Relative protocols are used where possible when adding tiles (#526). In RStudio 1.1.x on linux and windows, a known issue of 'https://' routes fail to load, but works within browsers (rstudio/rstudio#2661).
+- Relative protocols are used where possible when adding tiles (#526). In RStudio 1.1.x on Linux and Windows, a known issue of 'https://' routes fail to load, but works within browsers (rstudio/rstudio#2661).
 
 - Added more providers for `addProviderTiles()`: "OpenStreetMap.CH", "OpenInfraMap", "OpenInfraMap.Power", "OpenInfraMap.Telecom", "OpenInfraMap.Petroleum", "OpenInfraMap.Water", "OpenPtMap", "OpenRailwayMap", "OpenFireMap", "SafeCast". (4aea447)
 
@@ -219,7 +219,7 @@
 - When used with `leafletProxy`, `fitBounds` did not return its input object as
   output, so magrittr chains would break after `fitBounds` was called.
 
-- Add addMeasure()/removeMeasure() functions to allow users to measure lines and
+- Add `addMeasure()`/`removeMeasure()` functions to allow users to measure lines and
   areas, via the leaflet-measure plugin by @ljagis. (PR #171. Thanks, Kenton
   Russell!)
 

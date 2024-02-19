@@ -61,7 +61,7 @@ You can pass in a LatLng-equivalent object. Defaults to false.}
 (Will cause it to lag a bit after the movement of the main map.)
 Defaults to false.}
 
-\item{toggleDisplay}{Sets whether the minimap should have a button to minimise it.
+\item{toggleDisplay}{Sets whether the minimap should have a button to minimize it.
 Defaults to false.}
 
 \item{autoToggleDisplay}{Sets whether the minimap should hide automatically,

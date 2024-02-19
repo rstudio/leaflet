@@ -11,7 +11,7 @@ knitr::opts_chunk$set(
 
 ## Extending Leaflet package
 
-The Leaflet Javascript library has a plethora of [plugins](leafletjs.com/plugins) available that extend the functionality of the core package. We have incorporated a chosen few in the R package. It may be desirable to use plugins availble outside of what are supported by this pakage.
+The Leaflet Javascript library has a plethora of [plugins](https://leafletjs.com/plugins) available that extend the functionality of the core package. We have incorporated a chosen few in the R package. It may be desirable to use plugins available outside of what are supported by this package.
 
 The way to achieve that is by extending the Leaflet package. By extending we mean writing your own code/package that incorporate your desired leaflet plugins and hook into the leaflet package.
 

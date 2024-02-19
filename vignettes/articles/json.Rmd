@@ -17,7 +17,7 @@ library(magrittr)
 ```
 
 ```{r message=FALSE,warning=FALSE}
-# From http://eric.clst.org/Stuff/USGeoJSON and
+# From https://eric.clst.org/tech/usgeojson/ and
 # https://en.wikipedia.org/wiki/List_of_United_States_counties_and_county_equivalents
 nycounties <- sf::read_sf("https://rstudio.github.io/leaflet/json/nycounties.geojson") 
 # Or use the geojsonio equivalent:

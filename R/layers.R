@@ -1213,7 +1213,7 @@ markerOptions <- function(
 #'   \code{\{weight: 1.5, color: "#222", opacity: 0.5 \}}.
 #' @param freezeAtZoom Allows you to freeze cluster expansion to a zoom level.
 #'   Can be a zoom level e.g. 10, 12 or "max" or "maxKeepSpiderify".
-#'   See <https://github.com/ghybs/Leaflet.MarkerCluster.Freezable#api-reference>.
+#'   See \url{https://github.com/ghybs/Leaflet.MarkerCluster.Freezable#api-reference}.
 #' @describeIn map-options Options for marker clusters
 #' @export
 markerClusterOptions <- function(

@@ -15,7 +15,7 @@ library(leaflet)
 
 **Note:** This functionality is for advanced users and may not be supported across all functions (for example, `addRasterImage` currently works only with EPSG:3857 Web Mercator).
 
-The Leaflet package expects all point, line, and shape data to be specified in latitude and longitude using WGS 84 (a.k.a. EPSG:4326). By default, when displaying this data it projects everything to [EPSG:3857](http://epsg.io/3857) and expects that any map tiles are also displayed in EPSG:3857.
+The Leaflet package expects all point, line, and shape data to be specified in latitude and longitude using WGS 84 (a.k.a. EPSG:4326). By default, when displaying this data it projects everything to [EPSG:3857](https://spatialreference.org/ref/epsg/3857/) and expects that any map tiles are also displayed in EPSG:3857.
 
 For users that need to display data with a different projection, we've integrated the [Proj4Leaflet](https://github.com/kartena/Proj4Leaflet) plugin, which in theory gives Leaflet access to any CRS that is supported by [Proj4js](http://proj4js.org/).
 
@@ -35,7 +35,7 @@ The `crsClass` parameter lets you specify the JavaScript constructor to use to g
 
 The `code` parameter is the CRS identifier, usually an EPSG identifier or similar. (For the most part, this doesn't affect us, and you can treat it like documentation; it's primarily used by Proj4Leaflet for purposes that don't apply to the R package.)
 
-The `proj4def` parameter is either a PROJ.4 or WKT string that defines the CRS. If you don't know the PROJ.4 or WKT string, you can generally find these on [epsg.io](https://epsg.io/) or [spatialreference.org](http://spatialreference.org/).
+The `proj4def` parameter is either a PROJ.4 or WKT string that defines the CRS. If you don't know the PROJ.4 or WKT string, you can generally find these on [epsg.io](https://epsg.io/) or [spatialreference.org](https://spatialreference.org/).
 
 The resulting object can be passed to the `leaflet` function via the parameter `crs = leafletOptions(crs = ...)`.
 
@@ -76,7 +76,7 @@ leaflet() %>%
 
 While tiles must be in the same projection as used in the `leafletCRS` function, you must always use WGS 84 longitude/latitude data for markers, circles, polygons, and lines. Leaflet will automatically project the coordinates when displaying.
 
-This example uses [EPSG:2163](http://epsg.io/2163) (US National Atlas Equal Area projection). The dataset we use (`usa_sf` from the `albersusa` package, though we're not actually using Albers projection here) has Alaska and Hawaii moved closer to mainland US as well as rotated and resized accordingly.
+This example uses [EPSG:2163](https://epsg.io/2163) (US National Atlas Equal Area projection). The dataset we use (`usa_sf` from the `albersusa` package, though we're not actually using Albers projection here) has Alaska and Hawaii moved closer to mainland US as well as rotated and resized accordingly.
 
 ```{r message=FALSE,warning=FALSE,eval=FALSE}
 library(sp)
@@ -98,4 +98,6 @@ leaflet(spdf, options = leafletOptions(crs = epsg2163)) %>%
 
 ### Polar projections
 
-It's possible to use polar projections, though you may encounter even more problems and incompatibilities with other Leaflet.js plugins than when using other types of custom projections. You can refer to [this set of examples](http://rpubs.com/bhaskarvk/leaflet-polarmaps) by Bhaskar Karambelkar to get started.
+It's possible to use polar projections, though you may encounter even more problems and incompatibilities with other Leaflet.js plugins than when using other types of custom projections. 
+
+<!-- You can refer to [this set of examples](http://rpubs.com/bhaskarvk/leaflet-polarmaps) by Bhaskar Karambelkar to get started. -->
