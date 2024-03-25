@@ -170,8 +170,8 @@ functions (e.g. <code>addTiles</code>, <code>addMarkers</code>,
 <span>  <span class="fu"><a href="../reference/map-layers.html">addTiles</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/leaflet-imports.html">%&gt;%</a></span>  <span class="co"># Add default OpenStreetMap map tiles</span></span>
 <span>  <span class="fu"><a href="../reference/map-layers.html">addMarkers</a></span><span class="op">(</span>lng<span class="op">=</span><span class="fl">174.768</span>, lat<span class="op">=</span><span class="op">-</span><span class="fl">36.852</span>, popup<span class="op">=</span><span class="st">"The birthplace of R"</span><span class="op">)</span></span>
 <span><span class="va">m</span>  <span class="co"># Print the map</span></span></code></pre></div>
-<div class="leaflet html-widget html-fill-item" id="htmlwidget-f67390629da5988c8a67" style="width:700px;height:432.632880098888px;"></div>
-<script type="application/json" data-for="htmlwidget-f67390629da5988c8a67">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addMarkers","args":[-36.852,174.768,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},"The birthplace of R",null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[-36.852,-36.852],"lng":[174.768,174.768]}},"evals":[],"jsHooks":[]}</script><p>In case you’re not familiar with the <a href="https://github.com/smbache/magrittr" class="external-link">magrittr</a> pipe operator
+<div class="leaflet html-widget html-fill-item" id="htmlwidget-23adb16c807bebf33e2f" style="width:700px;height:432.632880098888px;"></div>
+<script type="application/json" data-for="htmlwidget-23adb16c807bebf33e2f">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addMarkers","args":[-36.852,174.768,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},"The birthplace of R",null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[-36.852,-36.852],"lng":[174.768,174.768]}},"evals":[],"jsHooks":[]}</script><p>In case you’re not familiar with the <a href="https://github.com/tidyverse/magrittr" class="external-link">magrittr</a> pipe operator
 (<code>%&gt;%</code>), here is the equivalent without using pipes:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/leaflet.html">leaflet</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -182,10 +182,9 @@ functions (e.g. <code>addTiles</code>, <code>addMarkers</code>,
 <div class="section level3">
 <h3 id="next-steps">Next Steps<a class="anchor" aria-label="anchor" href="#next-steps"></a>
 </h3>
-<p>We highly recommend that you proceed to <a href="map_widget.html">The
-Map Widget</a> page before exploring the rest of this site, as it
-describes common idioms we’ll use throughout the examples on the other
-pages.</p>
+<p>We highly recommend that you proceed to <a href="widget.html">The Map
+Widget</a> page before exploring the rest of this site, as it describes
+common idioms we’ll use throughout the examples on the other pages.</p>
 <p>Although we have tried to provide an R-like interface to Leaflet, you
 may want to check out the <a href="https://leafletjs.com/reference.html" class="external-link">API documentation</a> of
 Leaflet occasionally when the meanings of certain parameters are not
