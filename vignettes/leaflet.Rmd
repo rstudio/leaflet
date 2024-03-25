@@ -69,7 +69,7 @@ m <- leaflet() %>%
 m  # Print the map
 ```
 
-In case you're not familiar with the [magrittr](https://github.com/smbache/magrittr) pipe operator (`%>%`), here is the equivalent without using pipes:
+In case you're not familiar with the [magrittr](https://github.com/tidyverse/magrittr) pipe operator (`%>%`), here is the equivalent without using pipes:
 
 ```{r eval=FALSE}
 m <- leaflet()
@@ -80,6 +80,6 @@ m
 
 ### Next Steps
 
-We highly recommend that you proceed to [The Map Widget](map_widget.html) page before exploring the rest of this site, as it describes common idioms we'll use throughout the examples on the other pages.
+We highly recommend that you proceed to [The Map Widget](widget.html) page before exploring the rest of this site, as it describes common idioms we'll use throughout the examples on the other pages.
 
 Although we have tried to provide an R-like interface to Leaflet, you may want to check out the [API documentation](https://leafletjs.com/reference.html) of Leaflet occasionally when the meanings of certain parameters are not clear to you.
