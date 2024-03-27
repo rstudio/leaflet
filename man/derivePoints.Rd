@@ -35,12 +35,14 @@ derivePolygons(
 \item{funcName}{Name of calling function (for logging)}
 }
 \value{
-* `derivePoints()` returns a lng/lat data frame.
-* `derivePolygons()` returns a list with bbox attributes.
+\itemize{
+\item \code{derivePoints()} returns a lng/lat data frame.
+\item \code{derivePolygons()} returns a list with bbox attributes.
+}
 }
 \description{
-Given a data object and lng/lat arguments (which may be `NULL`)
-[meaning infer from data], formula [which should be evaluated with respect to the data], or
-vector data [which should be used as-is]) return a lng/lat data frame.
+Given a data object and lng/lat arguments (which may be \code{NULL})
+\link{meaning infer from data}, formula \link{which should be evaluated with respect to the data}, or
+vector data \link{which should be used as-is}) return a lng/lat data frame.
 }
 \keyword{internal}

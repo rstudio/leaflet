@@ -71,7 +71,8 @@ providerTileOptions <- function(errorTileUrl = "", noWrap = FALSE,
 #'
 #' @name providers
 #' @export providers
-#' @rdname providers
+#' @examples
+#' providers
 NULL
 # Active binding added in zzz.R
 "providers"

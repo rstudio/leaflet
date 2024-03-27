@@ -10,7 +10,7 @@ filterNULL(x)
 \item{x}{A list.}
 }
 \value{
-A list with `NULL` elements filtered out.
+A list with \code{NULL} elements filtered out.
 }
 \description{
 Remove NULL elements from a list

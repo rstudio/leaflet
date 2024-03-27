@@ -51,7 +51,7 @@ popups will "open", relative to the icon anchor}
 }
 \value{
 A list of icon data that can be passed to the \code{icon} argument of
-  \code{\link{addMarkers}()}.
+\code{\link{addMarkers}()}.
 }
 \description{
 An icon can be represented as a list of the form \code{list(iconUrl,

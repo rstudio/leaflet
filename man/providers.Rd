@@ -13,3 +13,6 @@ A list of characters
 \description{
 List of all providers with their variations
 }
+\examples{
+providers
+}

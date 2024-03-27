@@ -96,7 +96,7 @@ defaulting to Leaflet's default CRS size}
 }
 \value{
 A HTML widget object, on which we can add graphics layers using
-  \code{\%>\%} (see examples).
+\code{\%>\%} (see examples).
 }
 \description{
 This function creates a Leaflet map widget using \pkg{htmlwidgets}. The
