@@ -26,7 +26,7 @@ This R package makes it easy to integrate and control Leaflet maps in R.
     * Popups
     * GeoJSON
 * Create maps right from the R console or RStudio
-* Embed maps in [knitr](https://yihui.org/knitr/)/[R Markdown](https://rmarkdown.rstudio.com/) documents and [Shiny](https://shiny.posit.co/) apps
+* Embed maps in [knitr](https://yihui.org/knitr/)/[R Markdown](https://rmarkdown.rstudio.com/)/[Quarto](https://quarto.org) documents, and [Shiny](https://shiny.posit.co/) apps
 * Easily render spatial objects from the `sp` or `sf` packages, or data frames with latitude/longitude columns
 * Use map bounds and mouse events to drive Shiny logic
 * Display maps in non spherical mercator projections
@@ -64,7 +64,7 @@ m <- leaflet() %>%
 m  # Print the map
 ```
 
-In case you're not familiar with the [magrittr](https://github.com/tidyverse/magrittr) pipe operator (`%>%`), here is the equivalent without using pipes:
+In case you're not familiar with the pipe ([magrittr](https://github.com/tidyverse/magrittr) or base) operator (`%>%` / `|>`), here is the equivalent without using pipes:
 
 ```{r eval=FALSE}
 m <- leaflet()

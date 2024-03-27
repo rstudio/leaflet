@@ -33,5 +33,5 @@
 ^revdep$
 ^CRAN-SUBMISSION$
 ^_dev$
-^vignettes$
+^vignettes/articles$
 ^pkgdown$

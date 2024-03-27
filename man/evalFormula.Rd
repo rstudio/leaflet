@@ -2,8 +2,7 @@
 % Please edit documentation in R/layers.R
 \name{evalFormula}
 \alias{evalFormula}
-\title{Evaluate list members that are formulae, using the map data as the environment
-(if provided, otherwise the formula environment)}
+\title{Evaluate list members that are formulae, using the map data as the environment}
 \usage{
 evalFormula(list, data)
 }
@@ -13,6 +12,6 @@ evalFormula(list, data)
 \item{data}{map data}
 }
 \description{
-Evaluate list members that are formulae, using the map data as the environment
-(if provided, otherwise the formula environment)
+Evaluates if provided. Otherwise, the formula environment is evaluated.
 }
+\keyword{internal}

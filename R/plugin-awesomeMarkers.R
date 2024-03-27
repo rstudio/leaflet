@@ -159,13 +159,13 @@ makeAwesomeIcon <- function(
   structure(icon, class = "leaflet_awesome_icon")
 }
 
-#' Create a list of awesome icon data see
-#' \url{https://github.com/lennardv2/Leaflet.awesome-markers}
+#' Create a list of awesome icon data
 #'
 #' An icon can be represented as a list of the form \code{list(icon, library,
 #' ...)}. This function is vectorized over its arguments to create a list of
-#' icon data. Shorter argument values will be re-cycled. \code{NULL} values for
-#' these arguments will be ignored.
+#' icon data. Shorter argument values will be recycled. \code{NULL} values for
+#' these arguments will be ignored. 
+#' @seealso \url{https://github.com/lennardv2/Leaflet.awesome-markers}
 #' @param icon Name of the icon
 #' @param library Which icon library. Default \code{"glyphicon"}, other possible
 #'   values are \code{"fa"} (fontawesome) or \code{"ion"} (ionicons).

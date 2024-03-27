@@ -2,8 +2,7 @@
 % Please edit documentation in R/plugin-simplegraticule.R
 \name{addSimpleGraticule}
 \alias{addSimpleGraticule}
-\title{Add a simple Graticule on the map
-see \url{https://github.com/ablakey/Leaflet.SimpleGraticule}}
+\title{Add a simple Graticule on the map}
 \usage{
 addSimpleGraticule(
   map,
@@ -23,7 +22,7 @@ addSimpleGraticule(
 
 \item{showOriginLabel}{true Whether or not to show '(0,0)' at the origin.}
 
-\item{redraw}{on which map event to redraw the graticule. On move is default but moveend can be smoother.}
+\item{redraw}{on which map event to redraw the graticule. On move is default but `"moveend"` can be smoother.}
 
 \item{hidden}{hide on start}
 
@@ -35,11 +34,13 @@ addSimpleGraticule(
 }
 \description{
 Add a simple Graticule on the map
-see \url{https://github.com/ablakey/Leaflet.SimpleGraticule}
 }
 \examples{
 \donttest{leaflet() \%>\%
   addTiles() \%>\%
   addSimpleGraticule()}
 
+}
+\seealso{
+\url{https://github.com/ablakey/Leaflet.SimpleGraticule}
 }

@@ -2,8 +2,7 @@
 % Please edit documentation in R/layers.R
 \name{expandLimitsBbox}
 \alias{expandLimitsBbox}
-\title{Same as expandLimits, but takes a polygon (that presumably has a bbox attr)
-rather than lat/lng.}
+\title{Notifies the map of polygons of interest on the map}
 \usage{
 expandLimitsBbox(map, poly)
 }
@@ -13,6 +12,6 @@ expandLimitsBbox(map, poly)
 \item{poly}{A spatial object representing a polygon.}
 }
 \description{
-Same as expandLimits, but takes a polygon (that presumably has a bbox attr)
+Same as `expandLimits()`, but takes a polygon (that presumably has a bbox attr)
 rather than lat/lng.
 }

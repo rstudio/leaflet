@@ -7,13 +7,13 @@ l %>% addSimpleGraticule()
 
 #' <br/>
 #' Custom Params
-l %>% addSimpleGraticule(interval = 40, showOriginLabel = F)
+l %>% addSimpleGraticule(interval = 40, showOriginLabel = FALSE)
 
 #' <br/>
 #' Custom Resolution + Custom Date and on a toggleable Layer
 l %>%
   addSimpleGraticule(interval = 40,
-                showOriginLabel = F,
+                showOriginLabel = FALSE,
                 group = "graticule") %>%
   addLayersControl(
     overlayGroups = c("graticule"),

@@ -2,8 +2,7 @@
 % Please edit documentation in R/plugin-awesomeMarkers.R
 \name{awesomeIcons}
 \alias{awesomeIcons}
-\title{Create a list of awesome icon data see
-\url{https://github.com/lennardv2/Leaflet.awesome-markers}}
+\title{Create a list of awesome icon data}
 \usage{
 awesomeIcons(
   icon = "home",
@@ -52,6 +51,9 @@ A list of awesome-icon data that can be passed to the \code{icon}
 \description{
 An icon can be represented as a list of the form \code{list(icon, library,
 ...)}. This function is vectorized over its arguments to create a list of
-icon data. Shorter argument values will be re-cycled. \code{NULL} values for
+icon data. Shorter argument values will be recycled. \code{NULL} values for
 these arguments will be ignored.
+}
+\seealso{
+\url{https://github.com/lennardv2/Leaflet.awesome-markers}
 }

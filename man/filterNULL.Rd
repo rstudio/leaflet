@@ -2,13 +2,17 @@
 % Please edit documentation in R/utils.R
 \name{filterNULL}
 \alias{filterNULL}
-\title{remove NULL elements from a list}
+\title{Remove NULL elements from a list}
 \usage{
 filterNULL(x)
 }
 \arguments{
-\item{x}{A list whose NULL elements will be filtered}
+\item{x}{A list.}
+}
+\value{
+A list with `NULL` elements filtered out.
 }
 \description{
-remove NULL elements from a list
+Remove NULL elements from a list
 }
+\keyword{internal}

@@ -13,13 +13,13 @@ leafletMiniMapDependencies <- function() {
   )
 }
 
-#' Add a minimap to the Map
-#' \url{https://github.com/Norkart/Leaflet-MiniMap}
+#' Add a minimap to the map
 #'
+#' @seealso \url{https://github.com/Norkart/Leaflet-MiniMap}
 #' @param map a map widget object
 #' @param position The standard Leaflet.Control position parameter,
 #'    used like all the other controls.
-#' Defaults to "bottomright".
+#'    Defaults to `"bottomright"`.
 #' @param width  The width of the minimap in pixels. Defaults to 150.
 #' @param height The height of the minimap in pixels. Defaults to 150.
 #' @param collapsedWidth The width of the toggle marker and the minimap
@@ -39,7 +39,7 @@ leafletMiniMapDependencies <- function() {
 #' @param zoomAnimation Sets whether the minimap should have an animated zoom.
 #'    (Will cause it to lag a bit after the movement of the main map.)
 #'    Defaults to false.
-#' @param toggleDisplay Sets whether the minimap should have a button to minimise it.
+#' @param toggleDisplay Sets whether the minimap should have a button to minimize it.
 #'    Defaults to false.
 #' @param autoToggleDisplay Sets whether the minimap should hide automatically,
 #'    if the parent map bounds does not fit within the minimap bounds.

@@ -2,8 +2,7 @@
 % Please edit documentation in R/plugin-graticule.R
 \name{addGraticule}
 \alias{addGraticule}
-\title{Add a Graticule on the map
-see \url{https://github.com/turban/Leaflet.Graticule}}
+\title{Add a Graticule on the map}
 \usage{
 addGraticule(
   map,
@@ -20,7 +19,7 @@ addGraticule(
 
 \item{interval}{The spacing in map units between horizontal and vertical lines.}
 
-\item{sphere}{boolean. Default FALSE}
+\item{sphere}{boolean. Default `FALSE`}
 
 \item{style}{path options for the generated lines. See \url{https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#path-option}}
 
@@ -32,7 +31,6 @@ addGraticule(
 }
 \description{
 Add a Graticule on the map
-see \url{https://github.com/turban/Leaflet.Graticule}
 }
 \examples{
 leaf <- leaflet() \%>\%
@@ -40,4 +38,7 @@ leaf <- leaflet() \%>\%
   addGraticule()
 leaf
 
+}
+\seealso{
+\url{https://github.com/turban/Leaflet.Graticule}
 }

@@ -21,7 +21,7 @@ Use the `addPopups()` function to add standalone popup to the map.
 
 ```{r}
 content <- paste(sep = "<br/>",
-  "<b><a href='http://www.samurainoodle.com'>Samurai Noodle</a></b>",
+  "<b><a href='https://www.samurainoodle.com/'>Samurai Noodle</a></b>",
   "606 5th Ave. S",
   "Seattle, WA 98138"
 )
@@ -79,19 +79,19 @@ leaflet() %>% addTiles() %>% setView(-118.456554, 34.09, 13) %>%
   addMarkers(
     lng = -118.456554, lat = 34.105,
     label = "Default Label",
-    labelOptions = labelOptions(noHide = T)) %>%
+    labelOptions = labelOptions(noHide = TRUE)) %>%
   addMarkers(
     lng = -118.456554, lat = 34.095,
     label = "Label w/o surrounding box",
-    labelOptions = labelOptions(noHide = T, textOnly = TRUE)) %>%
+    labelOptions = labelOptions(noHide = TRUE, textOnly = TRUE)) %>%
   addMarkers(
     lng = -118.456554, lat = 34.085,
     label = "label w/ textsize 15px",
-    labelOptions = labelOptions(noHide = T, textsize = "15px")) %>%
+    labelOptions = labelOptions(noHide = TRUE, textsize = "15px")) %>%
   addMarkers(
     lng = -118.456554, lat = 34.075,
     label = "Label w/ custom CSS style",
-    labelOptions = labelOptions(noHide = T, direction = "bottom",
+    labelOptions = labelOptions(noHide = TRUE, direction = "bottom",
       style = list(
         "color" = "red",
         "font-family" = "serif",

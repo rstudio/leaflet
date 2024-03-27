@@ -12,7 +12,7 @@ leaflet() %>% addTiles() %>%
   addMarkers(
     lng = -118.456554, lat = 34.078039,
     label = "This is a static label",
-    labelOptions = labelOptions(noHide = T))
+    labelOptions = labelOptions(noHide = TRUE))
 #' <br/><br/>
 
 # Circle Marker + Label in all 4 directions.
@@ -24,23 +24,23 @@ leaflet() %>% addTiles() %>%
   addCircleMarkers(
     lng = -118.45990, lat = 34.078079, radius = 5,
     label = "On the Right",
-    labelOptions = labelOptions(noHide = T, direction = "right")
+    labelOptions = labelOptions(noHide = TRUE, direction = "right")
   ) %>%
   addCircleMarkers(
     lng = -118.45280, lat = 34.078079, radius = 5,
     label = "On the left",
-    labelOptions = labelOptions(noHide = T, direction = "left")
+    labelOptions = labelOptions(noHide = TRUE, direction = "left")
   ) %>%
   addCircleMarkers(
     lng = -118.456554, lat = 34.079979, radius = 5,
     label = "On the Top",
-    labelOptions = labelOptions(noHide = T, direction = "top",
+    labelOptions = labelOptions(noHide = TRUE, direction = "top",
                                 offset = c(0, -15))
   ) %>%
   addCircleMarkers(
     lng = -118.456554, lat = 34.076279, radius = 5,
     label = "On the Bottom",
-    labelOptions = labelOptions(noHide = T, direction = "bottom",
+    labelOptions = labelOptions(noHide = TRUE, direction = "bottom",
                                 offset = c(0, 15)))
 #' <br/><br/>
 
@@ -50,19 +50,19 @@ leaflet() %>% addTiles() %>% setView(-118.456554, 34.09, 13) %>%
   addMarkers(
     lng = -118.456554, lat = 34.07,
     label = "Default Label",
-    labelOptions = labelOptions(noHide = T)) %>%
+    labelOptions = labelOptions(noHide = TRUE)) %>%
   addMarkers(
     lng = -118.456554, lat = 34.085,
     label = "Label w/o surrounding box",
-    labelOptions = labelOptions(noHide = T, textOnly = TRUE)) %>%
+    labelOptions = labelOptions(noHide = TRUE, textOnly = TRUE)) %>%
   addMarkers(
     lng = -118.456554, lat = 34.095,
     label = "label w/ textsize 15px",
-    labelOptions = labelOptions(noHide = T, textsize = "15px")) %>%
+    labelOptions = labelOptions(noHide = TRUE, textsize = "15px")) %>%
   addMarkers(
     lng = -118.456554, lat = 34.11,
     label = "Label w/ custom CSS style",
-    labelOptions = labelOptions(noHide = T, textOnly = FALSE,
+    labelOptions = labelOptions(noHide = TRUE, textOnly = FALSE,
                                 style = list(
                                   "color" = "red",
                                   "font-family" = "serif",
@@ -126,7 +126,7 @@ leaflet(cities) %>% addTiles() %>%
   addCircleMarkers(lng = ~Long, lat = ~Lat,
              label = ~City,
              labelOptions = lapply(1:nrow(cities), function(x) {
-               labelOptions(opacity = 1, noHide = T,
+               labelOptions(opacity = 1, noHide = TRUE,
                             direction = "auto", offset = c(20, -15))
              }))
 #' <br/><br/>
@@ -139,7 +139,7 @@ leaflet(cities) %>% addTiles() %>%
                function(x, y) {
                  HTML(sprintf("<em>%s:</em> %s", htmlEscape(x), htmlEscape(y)))
                },
-               cities$City, cities$Pop, SIMPLIFY = F),
+               cities$City, cities$Pop, SIMPLIFY = FALSE),
              labelOptions = lapply(1:nrow(cities), function(x) {
                labelOptions(direction = "auto")
              }))

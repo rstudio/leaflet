@@ -24,7 +24,7 @@ l %>%
                       lng = ~long, lat = ~lat,
                       label = ~as.character(mag),
                       clusterOptions = markerClusterOptions(),
-                      labelOptions = labelOptions(noHide = T,
+                      labelOptions = labelOptions(noHide = TRUE,
                                                   direction = "auto"))
 #' <br/><br/>
 #' Clustering + Layers
@@ -39,8 +39,8 @@ names(quakes.df) %>%
                           label = ~as.character(mag),
                           popup = ~as.character(mag),
                           group = df,
-                          clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = F),
-                          labelOptions = labelOptions(noHide = T,
+                          clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = FALSE),
+                          labelOptions = labelOptions(noHide = TRUE,
                                                        direction = "auto"))
   })
 
