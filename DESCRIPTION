@@ -1,7 +1,7 @@
 Type: Package
 Package: leaflet
 Title: Create Interactive Web Maps with the JavaScript 'Leaflet' Library
-Version: 2.2.1.9000
+Version: 2.2.2
 Authors@R: c(
     person("Joe", "Cheng", , "joe@posit.co", role = c("aut", "cre")),
     person("Barret", "Schloerke", , "barret@posit.co", role = "aut",
@@ -82,4 +82,3 @@ Config/Needs/website: dplyr, geojsonio, ncdf4, tidyverse/tidytemplate
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.1
-VignetteBuilder: knitr

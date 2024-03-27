@@ -1,4 +1,4 @@
-# leaflet (development version)
+# leaflet 2.2.2
 
 * Fixed #893: Correctly call `terra::crs()` when checking the CRS of a `SpatVector` object in `pointData()` or `polygonData()` (thanks @mkoohafkan, #894).
 * `{leaflet}` now has a brand new pkgdown site (@olivroy, #902)

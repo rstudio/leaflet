@@ -1,8 +1,12 @@
 # Revdeps
 
-## New problems (1)
+## Failed to check (5)
 
-|package |version |error |warning |note   |
-|:-------|:-------|:-----|:-------|:------|
-|[SSDM](problems.md#ssdm)|0.2.9   |      |        |__+1__ |
+|package              |version |error |warning |note |
+|:--------------------|:-------|:-----|:-------|:----|
+|inlmisc              |?       |      |        |     |
+|leaflet.multiopacity |?       |      |        |     |
+|leaflet.opacity      |?       |      |        |     |
+|modchart             |?       |      |        |     |
+|palmid               |?       |      |        |     |
 

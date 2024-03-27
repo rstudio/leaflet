@@ -1,10 +1,5 @@
 ---
 title: "Introduction to leaflet"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Introduction to leaflet}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r, include = FALSE}
@@ -16,7 +11,7 @@ knitr::opts_chunk$set(
 
 ## Introduction
 
-[Leaflet](https://leafletjs.com) is one of the most popular open-source JavaScript libraries for interactive maps. It's used by websites ranging from [The New York Times](http://www.nytimes.com/projects/elections/2013/nyc-primary/mayor/map.html) and [The Washington Post](http://www.washingtonpost.com/sf/local/2013/11/09/washington-a-world-apart/) to [GitHub](https://github.com/blog/1528-there-s-a-map-for-that) and [Flickr](https://www.flickr.com/map), as well as GIS specialists like [OpenStreetMap](http://www.openstreetmap.org/), [Mapbox](http://www.mapbox.com/), and [CartoDB](http://cartodb.com/).
+[Leaflet](https://leafletjs.com) is one of the most popular open-source JavaScript libraries for interactive maps. It's used by websites ranging from [The New York Times](https://www.nytimes.com/projects/elections/2013/nyc-primary/mayor/map.html) and [The Washington Post](https://www.washingtonpost.com/sf/local/2013/11/09/washington-a-world-apart/) to [GitHub](https://github.blog/2013-06-13-there-s-a-map-for-that/) and [Flickr](https://www.flickr.com/map), as well as GIS specialists like [OpenStreetMap](https://www.openstreetmap.org/), [Mapbox](https://www.mapbox.com/), and [CartoDB](https://carto.com/).
 
 This R package makes it easy to integrate and control Leaflet maps in R.
 
@@ -31,7 +26,7 @@ This R package makes it easy to integrate and control Leaflet maps in R.
     * Popups
     * GeoJSON
 * Create maps right from the R console or RStudio
-* Embed maps in [knitr](http://yihui.name/knitr/)/[R Markdown](http://rmarkdown.rstudio.com/) documents and [Shiny](http://shiny.rstudio.com/) apps
+* Embed maps in [knitr](https://yihui.org/knitr/)/[R Markdown](https://rmarkdown.rstudio.com/) documents and [Shiny](https://shiny.posit.co/) apps
 * Easily render spatial objects from the `sp` or `sf` packages, or data frames with latitude/longitude columns
 * Use map bounds and mouse events to drive Shiny logic
 * Display maps in non spherical mercator projections
@@ -47,7 +42,7 @@ install.packages("leaflet")
 # devtools::install_github("rstudio/leaflet")
 ```
 
-Once installed, you can use this package at the R console, within [R Markdown](http://rmarkdown.rstudio.com/) documents, and within [Shiny](http://shiny.rstudio.com/) applications.
+Once installed, you can use this package at the R console, within [R Markdown](https://rmarkdown.rstudio.com/) documents, and within [Shiny](https://shiny.posit.co/) applications.
 
 ### Basic Usage
 
@@ -69,7 +64,7 @@ m <- leaflet() %>%
 m  # Print the map
 ```
 
-In case you're not familiar with the [magrittr](https://github.com/smbache/magrittr) pipe operator (`%>%`), here is the equivalent without using pipes:
+In case you're not familiar with the [magrittr](https://github.com/tidyverse/magrittr) pipe operator (`%>%`), here is the equivalent without using pipes:
 
 ```{r eval=FALSE}
 m <- leaflet()
@@ -80,6 +75,6 @@ m
 
 ### Next Steps
 
-We highly recommend that you proceed to [The Map Widget](map_widget.html) page before exploring the rest of this site, as it describes common idioms we'll use throughout the examples on the other pages.
+We highly recommend that you proceed to [The Map Widget](widget.html) page before exploring the rest of this site, as it describes common idioms we'll use throughout the examples on the other pages.
 
 Although we have tried to provide an R-like interface to Leaflet, you may want to check out the [API documentation](https://leafletjs.com/reference.html) of Leaflet occasionally when the meanings of certain parameters are not clear to you.
