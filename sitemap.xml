@@ -136,9 +136,6 @@
     <loc>https://rstudio.github.io/leaflet/reference/derivePoints.html</loc>
   </url>
   <url>
-    <loc>https://rstudio.github.io/leaflet/reference/derivePolygons.html</loc>
-  </url>
-  <url>
     <loc>https://rstudio.github.io/leaflet/reference/dispatch.html</loc>
   </url>
   <url>
@@ -173,9 +170,6 @@
   </url>
   <url>
     <loc>https://rstudio.github.io/leaflet/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/reference/leaflet-imports.html</loc>
   </url>
   <url>
     <loc>https://rstudio.github.io/leaflet/reference/leaflet-package.html</loc>
@@ -218,6 +212,9 @@
   </url>
   <url>
     <loc>https://rstudio.github.io/leaflet/reference/providers.html</loc>
+  </url>
+  <url>
+    <loc>https://rstudio.github.io/leaflet/reference/reexports.html</loc>
   </url>
   <url>
     <loc>https://rstudio.github.io/leaflet/reference/remove.html</loc>

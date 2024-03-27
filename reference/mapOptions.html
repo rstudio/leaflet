@@ -27,21 +27,24 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/basemaps.html">Using Basemaps</a>
-    <a class="dropdown-item" href="../articles/choropleths.html">Choropleths</a>
-    <a class="dropdown-item" href="../articles/colors.html">Add color to a leaflet</a>
-    <a class="dropdown-item" href="../articles/extending.html">Extending Leaflet</a>
-    <a class="dropdown-item" href="../articles/json.html">Working with GeoJSON &amp; TopoJSON</a>
-    <a class="dropdown-item" href="../articles/legends.html">Legends</a>
-    <a class="dropdown-item" href="../articles/markers.html">Markers</a>
-    <a class="dropdown-item" href="../articles/morefeatures.html">More features</a>
-    <a class="dropdown-item" href="../articles/popups.html">Popups and Labels</a>
-    <a class="dropdown-item" href="../articles/projections.html">Working with projections in Leaflet</a>
-    <a class="dropdown-item" href="../articles/raster.html">Raster Images</a>
-    <a class="dropdown-item" href="../articles/shapes.html">Lines and Shapes</a>
-    <a class="dropdown-item" href="../articles/shiny.html">Using Leaflet with Shiny</a>
-    <a class="dropdown-item" href="../articles/showhide.html">Show/Hide Layers</a>
     <a class="dropdown-item" href="../articles/widget.html">The Map Widget</a>
+    <a class="dropdown-item" href="../articles/choropleths.html">Choropleths</a>
+    <a class="dropdown-item" href="../articles/colors.html">Colors</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Customize</h6>
+    <a class="dropdown-item" href="../articles/popups.html">Popups and Labels</a>
+    <a class="dropdown-item" href="../articles/showhide.html">Show/Hide Layers</a>
+    <a class="dropdown-item" href="../articles/markers.html">Add markers to leaflet</a>
+    <a class="dropdown-item" href="../articles/legends.html">Legends</a>
+    <a class="dropdown-item" href="../articles/shapes.html">Lines and Shapes</a>
+    <a class="dropdown-item" href="../articles/basemaps.html">Using Basemaps</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Spatial data</h6>
+    <a class="dropdown-item" href="../articles/json.html">Working with GeoJSON &amp; TopoJSON</a>
+    <a class="dropdown-item" href="../articles/raster.html">Raster Images</a>
+    <a class="dropdown-item" href="../articles/projections.html">Working with projections in Leaflet</a>
+    <div class="dropdown-divider"></div>
+    <a class="dropdown-item" href="../articles/index.html">More articles...</a>
   </div>
 </li>
 <li class="nav-item">
@@ -96,9 +99,9 @@ if <code>"never"</code>, it never re-zooms, not even for the first rendering.</p
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Don't auto-zoom to the objects (can be useful in interactive applications)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="leaflet.html">leaflet</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="leaflet-imports.html">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="map-layers.html">addTiles</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="leaflet-imports.html">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="map-layers.html">addPopups</a></span><span class="op">(</span><span class="fl">174.7690922</span>, <span class="op">-</span><span class="fl">36.8523071</span>, <span class="st">"R was born here!"</span><span class="op">)</span> <span class="op"><a href="leaflet-imports.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span><span class="fu"><a href="leaflet.html">leaflet</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="map-layers.html">addTiles</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="map-layers.html">addPopups</a></span><span class="op">(</span><span class="fl">174.7690922</span>, <span class="op">-</span><span class="fl">36.8523071</span>, <span class="st">"R was born here!"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">mapOptions</span><span class="op">(</span>zoomToLimits <span class="op">=</span> <span class="st">"first"</span><span class="op">)</span></span></span>
 <div id="htmlwidget-052c39e1c1e82010409b" style="width:700px;height:432.632880098888px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-052c39e1c1e82010409b">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}},"zoomToLimits":"first"},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addPopups","args":[-36.8523071,174.7690922,"R was born here!",null,null,{"maxWidth":300,"minWidth":50,"autoPan":true,"keepInView":false,"closeButton":true,"className":""}]}],"limits":{"lat":[-36.8523071,-36.8523071],"lng":[174.7690922,174.7690922]}},"evals":[],"jsHooks":[]}</script></code></pre></div>
@@ -110,7 +113,7 @@ if <code>"never"</code>, it never re-zooms, not even for the first rendering.</p
    </div>
   <footer><div class="container">
   <div class="pkgdown-footer-left">
-  <p></p><p>Developed by Joe Cheng, <a href="http://schloerke.com" class="external-link">Barret Schloerke</a>, Bhaskar Karambelkar, <a href="https://yihui.org/" class="external-link">Yihui Xie</a>, <a href="https://www.posit.co" class="external-link"><img src="https://www.tidyverse.org/posit-logo.svg" alt="Posit" height="16" style="margin-bottom: 3px;"></a>.</p>
+  <p></p><p>Developed by Joe Cheng, <a href="http://schloerke.com" class="external-link">Barret Schloerke</a>, Bhaskar Karambelkar, <a href="https://yihui.org/" class="external-link">Yihui Xie</a>, <a href="https://www.posit.co" class="external-link"><img src="https://www.tidyverse.org/posit-logo.svg" alt="Posit" height="16" style="margin-bottom: 3px;"></a>. The Leaflet JavaScript library is © 2010–2023 <a href="http://agafonkin.com/en" class="external-link">Vladimir Agafonkin</a>, 2010–2011 <a href="http://cloudmade.com/" class="external-link">CloudMade</a>. Maps © <a href="https://openstreetmap.org/copyright" class="external-link">OpenStreetMap</a> contributors unless otherwise noted.</p>
 </div>
 
 <div class="pkgdown-footer-right">

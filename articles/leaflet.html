@@ -46,21 +46,24 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/basemaps.html">Using Basemaps</a>
-    <a class="dropdown-item" href="../articles/choropleths.html">Choropleths</a>
-    <a class="dropdown-item" href="../articles/colors.html">Add color to a leaflet</a>
-    <a class="dropdown-item" href="../articles/extending.html">Extending Leaflet</a>
-    <a class="dropdown-item" href="../articles/json.html">Working with GeoJSON &amp; TopoJSON</a>
-    <a class="dropdown-item" href="../articles/legends.html">Legends</a>
-    <a class="dropdown-item" href="../articles/markers.html">Markers</a>
-    <a class="dropdown-item" href="../articles/morefeatures.html">More features</a>
-    <a class="dropdown-item" href="../articles/popups.html">Popups and Labels</a>
-    <a class="dropdown-item" href="../articles/projections.html">Working with projections in Leaflet</a>
-    <a class="dropdown-item" href="../articles/raster.html">Raster Images</a>
-    <a class="dropdown-item" href="../articles/shapes.html">Lines and Shapes</a>
-    <a class="dropdown-item" href="../articles/shiny.html">Using Leaflet with Shiny</a>
-    <a class="dropdown-item" href="../articles/showhide.html">Show/Hide Layers</a>
     <a class="dropdown-item" href="../articles/widget.html">The Map Widget</a>
+    <a class="dropdown-item" href="../articles/choropleths.html">Choropleths</a>
+    <a class="dropdown-item" href="../articles/colors.html">Colors</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Customize</h6>
+    <a class="dropdown-item" href="../articles/popups.html">Popups and Labels</a>
+    <a class="dropdown-item" href="../articles/showhide.html">Show/Hide Layers</a>
+    <a class="dropdown-item" href="../articles/markers.html">Add markers to leaflet</a>
+    <a class="dropdown-item" href="../articles/legends.html">Legends</a>
+    <a class="dropdown-item" href="../articles/shapes.html">Lines and Shapes</a>
+    <a class="dropdown-item" href="../articles/basemaps.html">Using Basemaps</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Spatial data</h6>
+    <a class="dropdown-item" href="../articles/json.html">Working with GeoJSON &amp; TopoJSON</a>
+    <a class="dropdown-item" href="../articles/raster.html">Raster Images</a>
+    <a class="dropdown-item" href="../articles/projections.html">Working with projections in Leaflet</a>
+    <div class="dropdown-divider"></div>
+    <a class="dropdown-item" href="../articles/index.html">More articles...</a>
   </div>
 </li>
 <li class="nav-item">
@@ -96,7 +99,7 @@
       <img src="" class="logo" alt=""><h1>Introduction to leaflet</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/rstudio/leaflet/blob/HEAD/vignettes/leaflet.Rmd" class="external-link"><code>vignettes/leaflet.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/rstudio/leaflet/blob/HEAD/vignettes/articles/leaflet.Rmd" class="external-link"><code>vignettes/articles/leaflet.Rmd</code></a></small>
       <div class="d-none name"><code>leaflet.Rmd</code></div>
     </div>
 
@@ -130,7 +133,7 @@ R.</p>
 </ul>
 </li>
 <li>Create maps right from the R console or RStudio</li>
-<li>Embed maps in <a href="https://yihui.org/knitr/" class="external-link">knitr</a>/<a href="https://rmarkdown.rstudio.com/" class="external-link">R Markdown</a> documents and <a href="https://shiny.posit.co/" class="external-link">Shiny</a> apps</li>
+<li>Embed maps in <a href="https://yihui.org/knitr/" class="external-link">knitr</a>/<a href="https://rmarkdown.rstudio.com/" class="external-link">R Markdown</a>/<a href="https://quarto.org" class="external-link">Quarto</a> documents, and <a href="https://shiny.posit.co/" class="external-link">Shiny</a> apps</li>
 <li>Easily render spatial objects from the <code>sp</code> or
 <code>sf</code> packages, or data frames with latitude/longitude
 columns</li>
@@ -167,13 +170,14 @@ functions (e.g. <code>addTiles</code>, <code>addMarkers</code>,
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rstudio.github.io/leaflet/">leaflet</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/leaflet.html">leaflet</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/leaflet-imports.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/map-layers.html">addTiles</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/leaflet-imports.html">%&gt;%</a></span>  <span class="co"># Add default OpenStreetMap map tiles</span></span>
+<span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/leaflet.html">leaflet</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/map-layers.html">addTiles</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>  <span class="co"># Add default OpenStreetMap map tiles</span></span>
 <span>  <span class="fu"><a href="../reference/map-layers.html">addMarkers</a></span><span class="op">(</span>lng<span class="op">=</span><span class="fl">174.768</span>, lat<span class="op">=</span><span class="op">-</span><span class="fl">36.852</span>, popup<span class="op">=</span><span class="st">"The birthplace of R"</span><span class="op">)</span></span>
 <span><span class="va">m</span>  <span class="co"># Print the map</span></span></code></pre></div>
-<div class="leaflet html-widget html-fill-item" id="htmlwidget-2a674efd8cef889612eb" style="width:700px;height:432.632880098888px;"></div>
-<script type="application/json" data-for="htmlwidget-2a674efd8cef889612eb">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addMarkers","args":[-36.852,174.768,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},"The birthplace of R",null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[-36.852,-36.852],"lng":[174.768,174.768]}},"evals":[],"jsHooks":[]}</script><p>In case you’re not familiar with the <a href="https://github.com/tidyverse/magrittr" class="external-link">magrittr</a> pipe operator
-(<code>%&gt;%</code>), here is the equivalent without using pipes:</p>
+<div class="leaflet html-widget html-fill-item" id="htmlwidget-da7fe1b2c2c678176f0f" style="width:700px;height:432.632880098888px;"></div>
+<script type="application/json" data-for="htmlwidget-da7fe1b2c2c678176f0f">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addMarkers","args":[-36.852,174.768,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},"The birthplace of R",null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[-36.852,-36.852],"lng":[174.768,174.768]}},"evals":[],"jsHooks":[]}</script><p>In case you’re not familiar with the pipe (<a href="https://github.com/tidyverse/magrittr" class="external-link">magrittr</a> or base)
+operator (<code>%&gt;%</code> / <code>|&gt;</code>), here is the
+equivalent without using pipes:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/leaflet.html">leaflet</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/map-layers.html">addTiles</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span>
@@ -202,7 +206,7 @@ clear to you.</p>
   <footer><div class="container">
   <div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by Joe Cheng, <a href="http://schloerke.com" class="external-link">Barret Schloerke</a>, Bhaskar Karambelkar, <a href="https://yihui.org/" class="external-link">Yihui Xie</a>, <a href="https://www.posit.co" class="external-link"><img src="https://www.tidyverse.org/posit-logo.svg" alt="Posit" height="16" style="margin-bottom: 3px;"></a>.</p>
+<p>Developed by Joe Cheng, <a href="http://schloerke.com" class="external-link">Barret Schloerke</a>, Bhaskar Karambelkar, <a href="https://yihui.org/" class="external-link">Yihui Xie</a>, <a href="https://www.posit.co" class="external-link"><img src="https://www.tidyverse.org/posit-logo.svg" alt="Posit" height="16" style="margin-bottom: 3px;"></a>. The Leaflet JavaScript library is © 2010–2023 <a href="http://agafonkin.com/en" class="external-link">Vladimir Agafonkin</a>, 2010–2011 <a href="http://cloudmade.com/" class="external-link">CloudMade</a>. Maps © <a href="https://openstreetmap.org/copyright" class="external-link">OpenStreetMap</a> contributors unless otherwise noted.</p>
 </div>
 
 <div class="pkgdown-footer-right">

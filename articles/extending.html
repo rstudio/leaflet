@@ -46,21 +46,24 @@
 <li class="active nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/basemaps.html">Using Basemaps</a>
-    <a class="dropdown-item" href="../articles/choropleths.html">Choropleths</a>
-    <a class="dropdown-item" href="../articles/colors.html">Add color to a leaflet</a>
-    <a class="dropdown-item" href="../articles/extending.html">Extending Leaflet</a>
-    <a class="dropdown-item" href="../articles/json.html">Working with GeoJSON &amp; TopoJSON</a>
-    <a class="dropdown-item" href="../articles/legends.html">Legends</a>
-    <a class="dropdown-item" href="../articles/markers.html">Markers</a>
-    <a class="dropdown-item" href="../articles/morefeatures.html">More features</a>
-    <a class="dropdown-item" href="../articles/popups.html">Popups and Labels</a>
-    <a class="dropdown-item" href="../articles/projections.html">Working with projections in Leaflet</a>
-    <a class="dropdown-item" href="../articles/raster.html">Raster Images</a>
-    <a class="dropdown-item" href="../articles/shapes.html">Lines and Shapes</a>
-    <a class="dropdown-item" href="../articles/shiny.html">Using Leaflet with Shiny</a>
-    <a class="dropdown-item" href="../articles/showhide.html">Show/Hide Layers</a>
     <a class="dropdown-item" href="../articles/widget.html">The Map Widget</a>
+    <a class="dropdown-item" href="../articles/choropleths.html">Choropleths</a>
+    <a class="dropdown-item" href="../articles/colors.html">Colors</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Customize</h6>
+    <a class="dropdown-item" href="../articles/popups.html">Popups and Labels</a>
+    <a class="dropdown-item" href="../articles/showhide.html">Show/Hide Layers</a>
+    <a class="dropdown-item" href="../articles/markers.html">Add markers to leaflet</a>
+    <a class="dropdown-item" href="../articles/legends.html">Legends</a>
+    <a class="dropdown-item" href="../articles/shapes.html">Lines and Shapes</a>
+    <a class="dropdown-item" href="../articles/basemaps.html">Using Basemaps</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Spatial data</h6>
+    <a class="dropdown-item" href="../articles/json.html">Working with GeoJSON &amp; TopoJSON</a>
+    <a class="dropdown-item" href="../articles/raster.html">Raster Images</a>
+    <a class="dropdown-item" href="../articles/projections.html">Working with projections in Leaflet</a>
+    <div class="dropdown-divider"></div>
+    <a class="dropdown-item" href="../articles/index.html">More articles...</a>
   </div>
 </li>
 <li class="nav-item">
@@ -102,65 +105,67 @@
 
     
     
-<div class="section level2">
-<h2 id="extending-leaflet-package">Extending Leaflet package<a class="anchor" aria-label="anchor" href="#extending-leaflet-package"></a>
-</h2>
-<p>The Leaflet Javascript library has a plethora of <a href="leafletjs.com/plugins">plugins</a> available that extend the
-functionality of the core package. We have incorporated a chosen few in
-the R package. It may be desirable to use plugins availble outside of
-what are supported by this pakage.</p>
+<p>The Leaflet JavaScript library has a plethora of <a href="https://leafletjs.com/plugins" class="external-link">plugins</a> available that extend
+the functionality of the core package. We have incorporated a chosen few
+in the R package. It may be desirable to use plugins available outside
+of what are supported by this package.</p>
 <p>The way to achieve that is by extending the Leaflet package. By
 extending we mean writing your own code/package that incorporate your
 desired leaflet plugins and hook into the leaflet package.</p>
+<div class="section level2">
+<h2 id="functions-for-extending-leaflet">Functions for extending leaflet<a class="anchor" aria-label="anchor" href="#functions-for-extending-leaflet"></a>
+</h2>
 <p>Certain functions have been made available for you to use in your
 code while extending Leaflet.</p>
-<div class="section level4">
-<h4 id="derivepointsderivepolygons">derivePoints/derivePolygons<a class="anchor" aria-label="anchor" href="#derivepointsderivepolygons"></a>
-</h4>
-<p>These functions can be used to extract point or shape
-(polygon/line/circle/rectangle) data from a <code>data.frame</code> or a
-spatial object from the <code>sp</code> package. It tries to auto
-determine the latitude/longitude colnames if not specified or use user
-supplied column mappings.</p>
+<div class="section level3">
+<h3 id="derivepointsderivepolygons">derivePoints/derivePolygons<a class="anchor" aria-label="anchor" href="#derivepointsderivepolygons"></a>
+</h3>
+<p><code><a href="../reference/derivePoints.html">derivePoints()</a></code> and <code><a href="../reference/derivePoints.html">derivePolygons()</a></code> can be
+used to extract point or shape (polygon/line/circle/rectangle) data from
+a <code>data.frame</code> or a spatial object from the <code>sp</code>
+package. It tries to auto determine the latitude/longitude colnames if
+not specified or use user supplied column mappings.</p>
 </div>
-<div class="section level4">
-<h4 id="evalformula">evalFormula<a class="anchor" aria-label="anchor" href="#evalformula"></a>
-</h4>
-<p><code>evalFormula</code> is used to evaluate a formula on a given
+<div class="section level3">
+<h3 id="evalformula">evalFormula<a class="anchor" aria-label="anchor" href="#evalformula"></a>
+</h3>
+<p><code><a href="../reference/evalFormula.html">evalFormula()</a></code> is used to evaluate a formula on a given
 data and return the results.
 e.g. <code>leaflet(some.data.frame) %&gt;% addMarkers(label=~name)</code>
-internally uses <code>evalFormula</code> to calculate the correct label
-values from the data using the <code>~name</code> formula.</p>
+internally uses <code><a href="../reference/evalFormula.html">evalFormula()</a></code> to calculate the correct
+label values from the data using the <code>~name</code> formula.</p>
 </div>
-<div class="section level4">
-<h4 id="expandlimits">expandLimits<a class="anchor" aria-label="anchor" href="#expandlimits"></a>
-</h4>
-<p>You can call <code>expandLimits</code> to make sure that your map’s
+<div class="section level3">
+<h3 id="expandlimits">expandLimits<a class="anchor" aria-label="anchor" href="#expandlimits"></a>
+</h3>
+<p>You can call <code><a href="../reference/expandLimits.html">expandLimits()</a></code> to make sure that your map’s
 view is just enough to show every point/shape in your data. This way you
 don’t have to determine the exact bounds for your map.</p>
 </div>
-<div class="section level4">
-<h4 id="filternull">filterNULL<a class="anchor" aria-label="anchor" href="#filternull"></a>
-</h4>
+<div class="section level3">
+<h3 id="filternull">filterNULL<a class="anchor" aria-label="anchor" href="#filternull"></a>
+</h3>
 <p>Often when passing a list from R to Javascript it is desirable to
 remove any null elements, and that’s exactly what
-<code>filterNULL</code> does.</p>
-</div>
-<div class="section level4">
-<h4 id="getmapdata">getMapData<a class="anchor" aria-label="anchor" href="#getmapdata"></a>
-</h4>
-<p>Accesses the data object passed when calling <code><a href="../reference/leaflet.html">leaflet()</a></code>
-funtion.</p>
-</div>
-<div class="section level4">
-<h4 id="invokemethod">invokeMethod<a class="anchor" aria-label="anchor" href="#invokemethod"></a>
-</h4>
-<p>The glue between the R code and Javascript code. Requires a
-corresponding method on the Javascript side.</p>
+<code><a href="../reference/filterNULL.html">filterNULL()</a></code> does.</p>
 </div>
 <div class="section level3">
-<h3 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+<h3 id="getmapdata">getMapData<a class="anchor" aria-label="anchor" href="#getmapdata"></a>
 </h3>
+<p><code><a href="../reference/getMapData.html">getMapData()</a></code> accesses the data object passed when
+calling <code><a href="../reference/leaflet.html">leaflet()</a></code> funtion.</p>
+</div>
+<div class="section level3">
+<h3 id="invokemethod">invokeMethod<a class="anchor" aria-label="anchor" href="#invokemethod"></a>
+</h3>
+<p><code><a href="../reference/dispatch.html">invokeMethod()</a></code> is the glue between the R code and
+JavaScript code. Requires a corresponding method on the Javascript
+side.</p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+</h2>
 <p>Here is a small example which shows how you can integrate the
 Bing.com basemap layer <a href="https://github.com/shramov/leaflet-plugins" class="external-link">plugin</a></p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
@@ -179,17 +184,16 @@ Bing.com basemap layer <a href="https://github.com/shramov/leaflet-plugins" clas
 <span>  <span class="va">map</span></span>
 <span><span class="op">}</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/leaflet.html">leaflet</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/leaflet-imports.html">%&gt;%</a></span> <span class="fu"><a href="../reference/map-methods.html">setView</a></span><span class="op">(</span><span class="op">-</span><span class="fl">122.23</span>, <span class="fl">37.75</span>, zoom <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="op"><a href="../reference/leaflet-imports.html">%&gt;%</a></span></span>
-<span>  <span class="fu">registerPlugin</span><span class="op">(</span><span class="va">bingPlugin</span><span class="op">)</span> <span class="op"><a href="../reference/leaflet-imports.html">%&gt;%</a></span></span>
+<span><span class="fu"><a href="../reference/leaflet.html">leaflet</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/map-methods.html">setView</a></span><span class="op">(</span><span class="op">-</span><span class="fl">122.23</span>, <span class="fl">37.75</span>, zoom <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu">registerPlugin</span><span class="op">(</span><span class="va">bingPlugin</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/htmlwidgets/man/onRender.html" class="external-link">onRender</a></span><span class="op">(</span><span class="st">"function(el, x) {</span></span>
 <span><span class="st">    var imagerySet = 'Aerial';</span></span>
 <span><span class="st">    var bing = new L.BingLayer('LfO3DMI9S6GnXD7d0WGs~bq2DRVkmIAzSOFdodzZLvw~Arx8dclDxmZA0Y38tHIJlJfnMbGq5GXeYmrGOUIbS2VLFzRKCK0Yv_bAl6oe-DOc',</span></span>
 <span><span class="st">         {type: imagerySet});</span></span>
 <span><span class="st">     this.addLayer(bing);</span></span>
 <span><span class="st"> }"</span><span class="op">)</span></span></code></pre></div>
-<div class="leaflet html-widget html-fill-item" id="htmlwidget-e58f18fafcebd7ccc400" style="width:700px;height:384px;"></div>
-<script type="application/json" data-for="htmlwidget-e58f18fafcebd7ccc400">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[37.75,-122.23],10,[]]},"evals":[],"jsHooks":{"render":[{"code":"function(el, x, data) {\n  return (function(el, x) {\n    var imagerySet = 'Aerial';\n    var bing = new L.BingLayer('LfO3DMI9S6GnXD7d0WGs~bq2DRVkmIAzSOFdodzZLvw~Arx8dclDxmZA0Y38tHIJlJfnMbGq5GXeYmrGOUIbS2VLFzRKCK0Yv_bAl6oe-DOc',\n         {type: imagerySet});\n     this.addLayer(bing);\n }).call(this.getMap(), el, x, data);\n}","data":null}]}}</script>
-</div>
+<div class="leaflet html-widget html-fill-item" id="htmlwidget-0d88bf31fa66163161d0" style="width:700px;height:384px;"></div>
+<script type="application/json" data-for="htmlwidget-0d88bf31fa66163161d0">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[37.75,-122.23],10,[]]},"evals":[],"jsHooks":{"render":[{"code":"function(el, x, data) {\n  return (function(el, x) {\n    var imagerySet = 'Aerial';\n    var bing = new L.BingLayer('LfO3DMI9S6GnXD7d0WGs~bq2DRVkmIAzSOFdodzZLvw~Arx8dclDxmZA0Y38tHIJlJfnMbGq5GXeYmrGOUIbS2VLFzRKCK0Yv_bAl6oe-DOc',\n         {type: imagerySet});\n     this.addLayer(bing);\n }).call(this.getMap(), el, x, data);\n}","data":null}]}}</script>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
@@ -201,7 +205,7 @@ Bing.com basemap layer <a href="https://github.com/shramov/leaflet-plugins" clas
   <footer><div class="container">
   <div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by Joe Cheng, <a href="http://schloerke.com" class="external-link">Barret Schloerke</a>, Bhaskar Karambelkar, <a href="https://yihui.org/" class="external-link">Yihui Xie</a>, <a href="https://www.posit.co" class="external-link"><img src="https://www.tidyverse.org/posit-logo.svg" alt="Posit" height="16" style="margin-bottom: 3px;"></a>.</p>
+<p>Developed by Joe Cheng, <a href="http://schloerke.com" class="external-link">Barret Schloerke</a>, Bhaskar Karambelkar, <a href="https://yihui.org/" class="external-link">Yihui Xie</a>, <a href="https://www.posit.co" class="external-link"><img src="https://www.tidyverse.org/posit-logo.svg" alt="Posit" height="16" style="margin-bottom: 3px;"></a>. The Leaflet JavaScript library is © 2010–2023 <a href="http://agafonkin.com/en" class="external-link">Vladimir Agafonkin</a>, 2010–2011 <a href="http://cloudmade.com/" class="external-link">CloudMade</a>. Maps © <a href="https://openstreetmap.org/copyright" class="external-link">OpenStreetMap</a> contributors unless otherwise noted.</p>
 </div>
 
 <div class="pkgdown-footer-right">

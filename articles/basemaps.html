@@ -46,21 +46,24 @@
 <li class="active nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/basemaps.html">Using Basemaps</a>
-    <a class="dropdown-item" href="../articles/choropleths.html">Choropleths</a>
-    <a class="dropdown-item" href="../articles/colors.html">Add color to a leaflet</a>
-    <a class="dropdown-item" href="../articles/extending.html">Extending Leaflet</a>
-    <a class="dropdown-item" href="../articles/json.html">Working with GeoJSON &amp; TopoJSON</a>
-    <a class="dropdown-item" href="../articles/legends.html">Legends</a>
-    <a class="dropdown-item" href="../articles/markers.html">Markers</a>
-    <a class="dropdown-item" href="../articles/morefeatures.html">More features</a>
-    <a class="dropdown-item" href="../articles/popups.html">Popups and Labels</a>
-    <a class="dropdown-item" href="../articles/projections.html">Working with projections in Leaflet</a>
-    <a class="dropdown-item" href="../articles/raster.html">Raster Images</a>
-    <a class="dropdown-item" href="../articles/shapes.html">Lines and Shapes</a>
-    <a class="dropdown-item" href="../articles/shiny.html">Using Leaflet with Shiny</a>
-    <a class="dropdown-item" href="../articles/showhide.html">Show/Hide Layers</a>
     <a class="dropdown-item" href="../articles/widget.html">The Map Widget</a>
+    <a class="dropdown-item" href="../articles/choropleths.html">Choropleths</a>
+    <a class="dropdown-item" href="../articles/colors.html">Colors</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Customize</h6>
+    <a class="dropdown-item" href="../articles/popups.html">Popups and Labels</a>
+    <a class="dropdown-item" href="../articles/showhide.html">Show/Hide Layers</a>
+    <a class="dropdown-item" href="../articles/markers.html">Add markers to leaflet</a>
+    <a class="dropdown-item" href="../articles/legends.html">Legends</a>
+    <a class="dropdown-item" href="../articles/shapes.html">Lines and Shapes</a>
+    <a class="dropdown-item" href="../articles/basemaps.html">Using Basemaps</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Spatial data</h6>
+    <a class="dropdown-item" href="../articles/json.html">Working with GeoJSON &amp; TopoJSON</a>
+    <a class="dropdown-item" href="../articles/raster.html">Raster Images</a>
+    <a class="dropdown-item" href="../articles/projections.html">Working with projections in Leaflet</a>
+    <div class="dropdown-divider"></div>
+    <a class="dropdown-item" href="../articles/index.html">More articles...</a>
   </div>
 </li>
 <li class="nav-item">
@@ -102,28 +105,25 @@
 
     
     
-<div class="section level2">
-<h2 id="using-basemaps">Using Basemaps<a class="anchor" aria-label="anchor" href="#using-basemaps"></a>
-</h2>
 <p>Leaflet supports basemaps using <a href="https://www.mapbox.com/guides/how-web-maps-work/" class="external-link">map tiles</a>,
 popularized by Google Maps and now used by nearly all interactive web
 maps.</p>
-<div class="section level3">
-<h3 id="default-openstreetmap-tiles">Default (OpenStreetMap) Tiles<a class="anchor" aria-label="anchor" href="#default-openstreetmap-tiles"></a>
-</h3>
+<div class="section level2">
+<h2 id="default-openstreetmap-tiles">Default (OpenStreetMap) Tiles<a class="anchor" aria-label="anchor" href="#default-openstreetmap-tiles"></a>
+</h2>
 <p>The easiest way to add tiles is by calling <code><a href="../reference/map-layers.html">addTiles()</a></code>
 with no arguments; by default, <a href="https://www.openstreetmap.org/" class="external-link">OpenStreetMap</a> tiles are
 used.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rstudio.github.io/leaflet/">leaflet</a></span><span class="op">)</span></span>
-<span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/leaflet.html">leaflet</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/leaflet-imports.html">%&gt;%</a></span> <span class="fu"><a href="../reference/map-methods.html">setView</a></span><span class="op">(</span>lng <span class="op">=</span> <span class="op">-</span><span class="fl">71.0589</span>, lat <span class="op">=</span> <span class="fl">42.3601</span>, zoom <span class="op">=</span> <span class="fl">12</span><span class="op">)</span></span>
-<span><span class="va">m</span> <span class="op"><a href="../reference/leaflet-imports.html">%&gt;%</a></span> <span class="fu"><a href="../reference/map-layers.html">addTiles</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="leaflet html-widget html-fill-item" id="htmlwidget-ca61b431030d92381a6d" style="width:700px;height:240px;"></div>
-<script type="application/json" data-for="htmlwidget-ca61b431030d92381a6d">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[42.3601,-71.05889999999999],12,[]],"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]}]},"evals":[],"jsHooks":[]}</script>
+<span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/leaflet.html">leaflet</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/map-methods.html">setView</a></span><span class="op">(</span>lng <span class="op">=</span> <span class="op">-</span><span class="fl">71.0589</span>, lat <span class="op">=</span> <span class="fl">42.3601</span>, zoom <span class="op">=</span> <span class="fl">12</span><span class="op">)</span></span>
+<span><span class="va">m</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/map-layers.html">addTiles</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<div class="leaflet html-widget html-fill-item" id="htmlwidget-45ce7310b5d14eb3ebc3" style="width:700px;height:240px;"></div>
+<script type="application/json" data-for="htmlwidget-45ce7310b5d14eb3ebc3">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[42.3601,-71.05889999999999],12,[]],"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]}]},"evals":[],"jsHooks":[]}</script>
 </div>
-<div class="section level3">
-<h3 id="third-party-tiles">Third-Party Tiles<a class="anchor" aria-label="anchor" href="#third-party-tiles"></a>
-</h3>
+<div class="section level2">
+<h2 id="third-party-tiles">Third-Party Tiles<a class="anchor" aria-label="anchor" href="#third-party-tiles"></a>
+</h2>
 <p>Alternatively, many popular free third-party basemaps can be added
 using the <code><a href="../reference/addProviderTiles.html">addProviderTiles()</a></code> function, which is implemented
 using the <a href="https://github.com/leaflet-extras/leaflet-providers" class="external-link">leaflet-providers
@@ -137,59 +137,58 @@ just type <code>providers$</code> and choose from one of the options.
 You can also use <code>names(providers)</code> to view all of the
 options.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">m</span> <span class="op"><a href="../reference/leaflet-imports.html">%&gt;%</a></span> <span class="fu"><a href="../reference/addProviderTiles.html">addProviderTiles</a></span><span class="op">(</span><span class="va">providers</span><span class="op">$</span><span class="va">Stadia.StamenToner</span><span class="op">)</span></span></code></pre></div>
-<div class="leaflet html-widget html-fill-item" id="htmlwidget-e704df69131f4bdc87cb" style="width:700px;height:120px;"></div>
-<script type="application/json" data-for="htmlwidget-e704df69131f4bdc87cb">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[42.3601,-71.05889999999999],12,[]],"calls":[{"method":"addProviderTiles","args":["Stadia.StamenToner",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]}]},"evals":[],"jsHooks":[]}</script><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">m</span> <span class="op"><a href="../reference/leaflet-imports.html">%&gt;%</a></span> <span class="fu"><a href="../reference/addProviderTiles.html">addProviderTiles</a></span><span class="op">(</span><span class="va">providers</span><span class="op">$</span><span class="va">CartoDB.Positron</span><span class="op">)</span></span></code></pre></div>
-<div class="leaflet html-widget html-fill-item" id="htmlwidget-5b92316a22888a543bb0" style="width:700px;height:120px;"></div>
-<script type="application/json" data-for="htmlwidget-5b92316a22888a543bb0">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[42.3601,-71.05889999999999],12,[]],"calls":[{"method":"addProviderTiles","args":["CartoDB.Positron",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]}]},"evals":[],"jsHooks":[]}</script><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">m</span> <span class="op"><a href="../reference/leaflet-imports.html">%&gt;%</a></span> <span class="fu"><a href="../reference/addProviderTiles.html">addProviderTiles</a></span><span class="op">(</span><span class="va">providers</span><span class="op">$</span><span class="va">Esri.NatGeoWorldMap</span><span class="op">)</span></span></code></pre></div>
-<div class="leaflet html-widget html-fill-item" id="htmlwidget-d17b649dd8655154c50b" style="width:700px;height:120px;"></div>
-<script type="application/json" data-for="htmlwidget-d17b649dd8655154c50b">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[42.3601,-71.05889999999999],12,[]],"calls":[{"method":"addProviderTiles","args":["Esri.NatGeoWorldMap",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]}]},"evals":[],"jsHooks":[]}</script><p>Note that some tile set providers require you to register; see the <a href="https://github.com/leaflet-extras/leaflet-providers" class="external-link">project
+<code class="sourceCode R"><span><span class="va">m</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/addProviderTiles.html">addProviderTiles</a></span><span class="op">(</span><span class="va">providers</span><span class="op">$</span><span class="va">Stadia.StamenToner</span><span class="op">)</span></span></code></pre></div>
+<div class="leaflet html-widget html-fill-item" id="htmlwidget-e1de9a15ba8fa525fd58" style="width:700px;height:120px;"></div>
+<script type="application/json" data-for="htmlwidget-e1de9a15ba8fa525fd58">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[42.3601,-71.05889999999999],12,[]],"calls":[{"method":"addProviderTiles","args":["Stadia.StamenToner",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]}]},"evals":[],"jsHooks":[]}</script><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">m</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/addProviderTiles.html">addProviderTiles</a></span><span class="op">(</span><span class="va">providers</span><span class="op">$</span><span class="va">CartoDB.Positron</span><span class="op">)</span></span></code></pre></div>
+<div class="leaflet html-widget html-fill-item" id="htmlwidget-26fddbe93712fadf5c23" style="width:700px;height:120px;"></div>
+<script type="application/json" data-for="htmlwidget-26fddbe93712fadf5c23">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[42.3601,-71.05889999999999],12,[]],"calls":[{"method":"addProviderTiles","args":["CartoDB.Positron",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]}]},"evals":[],"jsHooks":[]}</script><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">m</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/addProviderTiles.html">addProviderTiles</a></span><span class="op">(</span><span class="va">providers</span><span class="op">$</span><span class="va">Esri.NatGeoWorldMap</span><span class="op">)</span></span></code></pre></div>
+<div class="leaflet html-widget html-fill-item" id="htmlwidget-12d395a4297508d68339" style="width:700px;height:120px;"></div>
+<script type="application/json" data-for="htmlwidget-12d395a4297508d68339">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[42.3601,-71.05889999999999],12,[]],"calls":[{"method":"addProviderTiles","args":["Esri.NatGeoWorldMap",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]}]},"evals":[],"jsHooks":[]}</script><p>Note that some tile set providers require you to register; see the <a href="https://github.com/leaflet-extras/leaflet-providers" class="external-link">project
 page</a> for more information. You can pass access tokens/keys, and
 other options, to the tile provider by populating the
 <code>options</code> argument with the
 <code><a href="../reference/addProviderTiles.html">providerTileOptions()</a></code> function.</p>
 </div>
-<div class="section level3">
-<h3 id="custom-tile-url-template">Custom Tile URL Template<a class="anchor" aria-label="anchor" href="#custom-tile-url-template"></a>
-</h3>
+<div class="section level2">
+<h2 id="custom-tile-url-template">Custom Tile URL Template<a class="anchor" aria-label="anchor" href="#custom-tile-url-template"></a>
+</h2>
 <p>If you happen to have a custom map tile URL template to use, you can
 provide it as an argument to <code><a href="../reference/map-layers.html">addTiles()</a></code>.</p>
 </div>
-<div class="section level3">
-<h3 id="wms-tiles">WMS Tiles<a class="anchor" aria-label="anchor" href="#wms-tiles"></a>
-</h3>
+<div class="section level2">
+<h2 id="wms-tiles">WMS Tiles<a class="anchor" aria-label="anchor" href="#wms-tiles"></a>
+</h2>
 <p>You can use <code><a href="../reference/map-layers.html">addWMSTiles()</a></code> to add WMS (Web Map Service)
 tiles. The map below shows the Base Reflectivity (a measure of the
-intensity of precipitation occurring) using the WMS from the <a href="http://mesonet.agron.iastate.edu" class="external-link">Iowa Environmental
+intensity of precipitation occurring) using the WMS from the <a href="https://mesonet.agron.iastate.edu/" class="external-link">Iowa Environmental
 Mesonet</a>:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/leaflet.html">leaflet</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/leaflet-imports.html">%&gt;%</a></span> <span class="fu"><a href="../reference/map-layers.html">addTiles</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/leaflet-imports.html">%&gt;%</a></span> <span class="fu"><a href="../reference/map-methods.html">setView</a></span><span class="op">(</span><span class="op">-</span><span class="fl">93.65</span>, <span class="fl">42.0285</span>, zoom <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op"><a href="../reference/leaflet-imports.html">%&gt;%</a></span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/leaflet.html">leaflet</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/map-layers.html">addTiles</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/map-methods.html">setView</a></span><span class="op">(</span><span class="op">-</span><span class="fl">93.65</span>, <span class="fl">42.0285</span>, zoom <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/map-layers.html">addWMSTiles</a></span><span class="op">(</span></span>
 <span>    <span class="st">"http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi"</span>,</span>
 <span>    layers <span class="op">=</span> <span class="st">"nexrad-n0r-900913"</span>,</span>
 <span>    options <span class="op">=</span> <span class="fu"><a href="../reference/map-options.html">WMSTileOptions</a></span><span class="op">(</span>format <span class="op">=</span> <span class="st">"image/png"</span>, transparent <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>    attribution <span class="op">=</span> <span class="st">"Weather data © 2012 IEM Nexrad"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<div class="leaflet html-widget html-fill-item" id="htmlwidget-4e1c0f5ad436120593ea" style="width:700px;height:240px;"></div>
-<script type="application/json" data-for="htmlwidget-4e1c0f5ad436120593ea">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addWMSTiles","args":["http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi",null,null,{"styles":"","format":"image/png","transparent":true,"version":"1.1.1","attribution":"Weather data © 2012 IEM Nexrad","layers":"nexrad-n0r-900913"}]}],"setView":[[42.0285,-93.65000000000001],4,[]]},"evals":[],"jsHooks":[]}</script>
+<div class="leaflet html-widget html-fill-item" id="htmlwidget-eab9f884f269a1f2c9d0" style="width:700px;height:240px;"></div>
+<script type="application/json" data-for="htmlwidget-eab9f884f269a1f2c9d0">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addWMSTiles","args":["http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi",null,null,{"styles":"","format":"image/png","transparent":true,"version":"1.1.1","attribution":"Weather data © 2012 IEM Nexrad","layers":"nexrad-n0r-900913"}]}],"setView":[[42.0285,-93.65000000000001],4,[]]},"evals":[],"jsHooks":[]}</script>
 </div>
-<div class="section level3">
-<h3 id="combining-tile-layers">Combining Tile Layers<a class="anchor" aria-label="anchor" href="#combining-tile-layers"></a>
-</h3>
+<div class="section level2">
+<h2 id="combining-tile-layers">Combining Tile Layers<a class="anchor" aria-label="anchor" href="#combining-tile-layers"></a>
+</h2>
 <p>You aren’t restricted to using a single basemap on a map; you can
 stack them by adding multiple tile layers. This generally only makes
 sense if the front tiles consist of semi transparent tiles, or have an
 adjusted opacity via the <code>options</code> argument.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">m</span> <span class="op"><a href="../reference/leaflet-imports.html">%&gt;%</a></span> <span class="fu"><a href="../reference/addProviderTiles.html">addProviderTiles</a></span><span class="op">(</span><span class="va">providers</span><span class="op">$</span><span class="va">MtbMap</span><span class="op">)</span> <span class="op"><a href="../reference/leaflet-imports.html">%&gt;%</a></span></span>
+<code class="sourceCode R"><span><span class="va">m</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/addProviderTiles.html">addProviderTiles</a></span><span class="op">(</span><span class="va">providers</span><span class="op">$</span><span class="va">MtbMap</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/addProviderTiles.html">addProviderTiles</a></span><span class="op">(</span><span class="va">providers</span><span class="op">$</span><span class="va">Stadia.StamenTonerLines</span>,</span>
-<span>    options <span class="op">=</span> <span class="fu"><a href="../reference/addProviderTiles.html">providerTileOptions</a></span><span class="op">(</span>opacity <span class="op">=</span> <span class="fl">0.35</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/leaflet-imports.html">%&gt;%</a></span></span>
+<span>    options <span class="op">=</span> <span class="fu"><a href="../reference/addProviderTiles.html">providerTileOptions</a></span><span class="op">(</span>opacity <span class="op">=</span> <span class="fl">0.35</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/addProviderTiles.html">addProviderTiles</a></span><span class="op">(</span><span class="va">providers</span><span class="op">$</span><span class="va">Stadia.StamenTonerLabels</span><span class="op">)</span></span></code></pre></div>
-<div class="leaflet html-widget html-fill-item" id="htmlwidget-f22801a148bada157b48" style="width:700px;height:168px;"></div>
-<script type="application/json" data-for="htmlwidget-f22801a148bada157b48">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[42.3601,-71.05889999999999],12,[]],"calls":[{"method":"addProviderTiles","args":["MtbMap",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addProviderTiles","args":["Stadia.StamenTonerLines",null,null,{"errorTileUrl":"","noWrap":false,"opacity":0.35,"detectRetina":false}]},{"method":"addProviderTiles","args":["Stadia.StamenTonerLabels",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]}]},"evals":[],"jsHooks":[]}</script>
-</div>
+<div class="leaflet html-widget html-fill-item" id="htmlwidget-38824fc0d6cf4db6adc3" style="width:700px;height:168px;"></div>
+<script type="application/json" data-for="htmlwidget-38824fc0d6cf4db6adc3">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[42.3601,-71.05889999999999],12,[]],"calls":[{"method":"addProviderTiles","args":["MtbMap",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addProviderTiles","args":["Stadia.StamenTonerLines",null,null,{"errorTileUrl":"","noWrap":false,"opacity":0.35,"detectRetina":false}]},{"method":"addProviderTiles","args":["Stadia.StamenTonerLabels",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]}]},"evals":[],"jsHooks":[]}</script>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
@@ -201,7 +200,7 @@ adjusted opacity via the <code>options</code> argument.</p>
   <footer><div class="container">
   <div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by Joe Cheng, <a href="http://schloerke.com" class="external-link">Barret Schloerke</a>, Bhaskar Karambelkar, <a href="https://yihui.org/" class="external-link">Yihui Xie</a>, <a href="https://www.posit.co" class="external-link"><img src="https://www.tidyverse.org/posit-logo.svg" alt="Posit" height="16" style="margin-bottom: 3px;"></a>.</p>
+<p>Developed by Joe Cheng, <a href="http://schloerke.com" class="external-link">Barret Schloerke</a>, Bhaskar Karambelkar, <a href="https://yihui.org/" class="external-link">Yihui Xie</a>, <a href="https://www.posit.co" class="external-link"><img src="https://www.tidyverse.org/posit-logo.svg" alt="Posit" height="16" style="margin-bottom: 3px;"></a>. The Leaflet JavaScript library is © 2010–2023 <a href="http://agafonkin.com/en" class="external-link">Vladimir Agafonkin</a>, 2010–2011 <a href="http://cloudmade.com/" class="external-link">CloudMade</a>. Maps © <a href="https://openstreetmap.org/copyright" class="external-link">OpenStreetMap</a> contributors unless otherwise noted.</p>
 </div>
 
 <div class="pkgdown-footer-right">

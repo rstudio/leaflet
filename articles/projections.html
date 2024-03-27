@@ -46,21 +46,24 @@
 <li class="active nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/basemaps.html">Using Basemaps</a>
-    <a class="dropdown-item" href="../articles/choropleths.html">Choropleths</a>
-    <a class="dropdown-item" href="../articles/colors.html">Add color to a leaflet</a>
-    <a class="dropdown-item" href="../articles/extending.html">Extending Leaflet</a>
-    <a class="dropdown-item" href="../articles/json.html">Working with GeoJSON &amp; TopoJSON</a>
-    <a class="dropdown-item" href="../articles/legends.html">Legends</a>
-    <a class="dropdown-item" href="../articles/markers.html">Markers</a>
-    <a class="dropdown-item" href="../articles/morefeatures.html">More features</a>
-    <a class="dropdown-item" href="../articles/popups.html">Popups and Labels</a>
-    <a class="dropdown-item" href="../articles/projections.html">Working with projections in Leaflet</a>
-    <a class="dropdown-item" href="../articles/raster.html">Raster Images</a>
-    <a class="dropdown-item" href="../articles/shapes.html">Lines and Shapes</a>
-    <a class="dropdown-item" href="../articles/shiny.html">Using Leaflet with Shiny</a>
-    <a class="dropdown-item" href="../articles/showhide.html">Show/Hide Layers</a>
     <a class="dropdown-item" href="../articles/widget.html">The Map Widget</a>
+    <a class="dropdown-item" href="../articles/choropleths.html">Choropleths</a>
+    <a class="dropdown-item" href="../articles/colors.html">Colors</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Customize</h6>
+    <a class="dropdown-item" href="../articles/popups.html">Popups and Labels</a>
+    <a class="dropdown-item" href="../articles/showhide.html">Show/Hide Layers</a>
+    <a class="dropdown-item" href="../articles/markers.html">Add markers to leaflet</a>
+    <a class="dropdown-item" href="../articles/legends.html">Legends</a>
+    <a class="dropdown-item" href="../articles/shapes.html">Lines and Shapes</a>
+    <a class="dropdown-item" href="../articles/basemaps.html">Using Basemaps</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Spatial data</h6>
+    <a class="dropdown-item" href="../articles/json.html">Working with GeoJSON &amp; TopoJSON</a>
+    <a class="dropdown-item" href="../articles/raster.html">Raster Images</a>
+    <a class="dropdown-item" href="../articles/projections.html">Working with projections in Leaflet</a>
+    <div class="dropdown-divider"></div>
+    <a class="dropdown-item" href="../articles/index.html">More articles...</a>
   </div>
 </li>
 <li class="nav-item">
@@ -104,23 +107,23 @@
     
 <p><strong>Note:</strong> This functionality is for advanced users and
 may not be supported across all functions (for example,
-<code>addRasterImage</code> currently works only with EPSG:3857 Web
+<code><a href="../reference/addRasterImage.html">addRasterImage()</a></code> currently works only with EPSG:3857 Web
 Mercator).</p>
 <p>The Leaflet package expects all point, line, and shape data to be
 specified in latitude and longitude using WGS 84 (a.k.a. EPSG:4326). By
-default, when displaying this data it projects everything to <a href="http://epsg.io/3857" class="external-link">EPSG:3857</a> and expects that any map tiles
-are also displayed in EPSG:3857.</p>
+default, when displaying this data it projects everything to <a href="https://spatialreference.org/ref/epsg/3857/" class="external-link">EPSG:3857</a> and
+expects that any map tiles are also displayed in EPSG:3857.</p>
 <p>For users that need to display data with a different projection,
 we’ve integrated the <a href="https://github.com/kartena/Proj4Leaflet" class="external-link">Proj4Leaflet</a> plugin,
 which in theory gives Leaflet access to any CRS that is supported by <a href="http://proj4js.org/" class="external-link">Proj4js</a>.</p>
 <p>Note that whatever map tiles you use <em>must</em> be designed to
 work with the CRS of your Leaflet map.</p>
-<div class="section level3">
-<h3 id="defining-a-custom-crs">Defining a custom CRS<a class="anchor" aria-label="anchor" href="#defining-a-custom-crs"></a>
-</h3>
+<div class="section level2">
+<h2 id="defining-a-custom-crs">Defining a custom CRS<a class="anchor" aria-label="anchor" href="#defining-a-custom-crs"></a>
+</h2>
 <p>Once you’ve decided on a custom projection, and have map tiles to
-match it (if necessary), you can use the <code>leafletCRS</code>
-function to create a custom projection.</p>
+match it (if necessary), you can use <code><a href="../reference/leaflet.html">leafletCRS()</a></code> to create
+a custom projection.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">crs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/leaflet.html">leafletCRS</a></span><span class="op">(</span>crsClass <span class="op">=</span> <span class="st">"L.Proj.CRS"</span>, code <span class="op">=</span> <span class="st">"ESRI:102003"</span>,</span>
 <span>  proj4def <span class="op">=</span> <span class="st">"+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs"</span>,</span>
@@ -136,14 +139,14 @@ and you can treat it like documentation; it’s primarily used by
 Proj4Leaflet for purposes that don’t apply to the R package.)</p>
 <p>The <code>proj4def</code> parameter is either a PROJ.4 or WKT string
 that defines the CRS. If you don’t know the PROJ.4 or WKT string, you
-can generally find these on <a href="https://epsg.io/" class="external-link">epsg.io</a> or <a href="http://spatialreference.org/" class="external-link">spatialreference.org</a>.</p>
+can generally find these on <a href="https://epsg.io/" class="external-link">epsg.io</a> or <a href="https://spatialreference.org/" class="external-link">spatialreference.org</a>.</p>
 <p>The resulting object can be passed to the <code>leaflet</code>
 function via the parameter
 <code>crs = leafletOptions(crs = ...)</code>.</p>
 </div>
-<div class="section level3">
-<h3 id="displaying-basemap-tiles-with-custom-projections">Displaying basemap tiles with custom projections<a class="anchor" aria-label="anchor" href="#displaying-basemap-tiles-with-custom-projections"></a>
-</h3>
+<div class="section level2">
+<h2 id="displaying-basemap-tiles-with-custom-projections">Displaying basemap tiles with custom projections<a class="anchor" aria-label="anchor" href="#displaying-basemap-tiles-with-custom-projections"></a>
+</h2>
 <p>This example shows Gothenberg, Sweden in <a href="http://epsg.io/3006" class="external-link">EPSG:3006</a> (SWEREF99 TM) projection.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">epsg3006</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/leaflet.html">leafletCRS</a></span><span class="op">(</span>crsClass <span class="op">=</span> <span class="st">"L.Proj.CRS"</span>, code <span class="op">=</span> <span class="st">"EPSG:3006"</span>,</span>
@@ -155,36 +158,36 @@ function via the parameter
 <span><span class="va">tile_url</span> <span class="op">&lt;-</span> <span class="st">"http://api.geosition.com/tile/osm-bright-3006/{z}/{x}/{y}.png"</span></span>
 <span><span class="va">tile_attrib</span> <span class="op">&lt;-</span> <span class="st">"Map data &amp;copy; &lt;a href='http://www.openstreetmap.org/copyright'&gt;OpenStreetMap contributors&lt;/a&gt;, Imagery &amp;copy; 2013 &lt;a href='http://www.kartena.se/'&gt;Kartena&lt;/a&gt;"</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/leaflet.html">leaflet</a></span><span class="op">(</span>options <span class="op">=</span> <span class="fu"><a href="../reference/leaflet.html">leafletOptions</a></span><span class="op">(</span>worldCopyJump <span class="op">=</span> <span class="cn">F</span>, crs <span class="op">=</span> <span class="va">epsg3006</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/leaflet-imports.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/map-methods.html">setView</a></span><span class="op">(</span><span class="fl">11.965053</span>, <span class="fl">57.70451</span>, <span class="fl">13</span><span class="op">)</span> <span class="op"><a href="../reference/leaflet-imports.html">%&gt;%</a></span></span>
+<span><span class="fu"><a href="../reference/leaflet.html">leaflet</a></span><span class="op">(</span>options <span class="op">=</span> <span class="fu"><a href="../reference/leaflet.html">leafletOptions</a></span><span class="op">(</span>worldCopyJump <span class="op">=</span> <span class="cn">FALSE</span>, crs <span class="op">=</span> <span class="va">epsg3006</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/map-methods.html">setView</a></span><span class="op">(</span><span class="fl">11.965053</span>, <span class="fl">57.70451</span>, <span class="fl">13</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/map-layers.html">addTiles</a></span><span class="op">(</span>urlTemplate <span class="op">=</span> <span class="va">tile_url</span>,</span>
 <span>    attribution <span class="op">=</span> <span class="va">tile_attrib</span>,</span>
-<span>    options <span class="op">=</span> <span class="fu"><a href="../reference/map-options.html">tileOptions</a></span><span class="op">(</span>minZoom <span class="op">=</span> <span class="fl">0</span>, maxZoom <span class="op">=</span> <span class="fl">14</span>, continuousWorld <span class="op">=</span> <span class="cn">T</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/leaflet-imports.html">%&gt;%</a></span></span>
+<span>    options <span class="op">=</span> <span class="fu"><a href="../reference/map-options.html">tileOptions</a></span><span class="op">(</span>minZoom <span class="op">=</span> <span class="fl">0</span>, maxZoom <span class="op">=</span> <span class="fl">14</span>, continuousWorld <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/map-layers.html">addMarkers</a></span><span class="op">(</span><span class="fl">11.965053</span>, <span class="fl">57.70451</span><span class="op">)</span></span></code></pre></div>
-<div class="leaflet html-widget html-fill-item" id="htmlwidget-b7b666c4e76703d14589" style="width:700px;height:432.632880098888px;"></div>
-<script type="application/json" data-for="htmlwidget-b7b666c4e76703d14589">{"x":{"options":{"crs":{"crsClass":"L.Proj.CRS","code":"EPSG:3006","proj4def":"+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs","projectedBounds":null,"options":{"origin":[0,0],"resolutions":[8192,4096,2048,1024,512,256,128,64,32,16,8,4,2,1,0.5]}},"worldCopyJump":false},"setView":[[57.70451,11.965053],13,[]],"calls":[{"method":"addTiles","args":["http://api.geosition.com/tile/osm-bright-3006/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":14,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"continuousWorld":true,"attribution":"Map data &copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap contributors<\/a>, Imagery &copy; 2013 <a href='http://www.kartena.se/'>Kartena<\/a>"}]},{"method":"addMarkers","args":[57.70451,11.965053,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[57.70451,57.70451],"lng":[11.965053,11.965053]}},"evals":[],"jsHooks":[]}</script><p>Again, it’s critical to use basemap tiles that are in the same
-projection that is specified in the <code>leafletCRS</code> function. In
-this case the api.geosition.com server does indeed uses EPSG:3006 for
-its tiles.</p>
+<div class="leaflet html-widget html-fill-item" id="htmlwidget-19e4e4eb0c8aed8c179a" style="width:700px;height:432.632880098888px;"></div>
+<script type="application/json" data-for="htmlwidget-19e4e4eb0c8aed8c179a">{"x":{"options":{"crs":{"crsClass":"L.Proj.CRS","code":"EPSG:3006","proj4def":"+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs","projectedBounds":null,"options":{"origin":[0,0],"resolutions":[8192,4096,2048,1024,512,256,128,64,32,16,8,4,2,1,0.5]}},"worldCopyJump":false},"setView":[[57.70451,11.965053],13,[]],"calls":[{"method":"addTiles","args":["http://api.geosition.com/tile/osm-bright-3006/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":14,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"continuousWorld":true,"attribution":"Map data &copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap contributors<\/a>, Imagery &copy; 2013 <a href='http://www.kartena.se/'>Kartena<\/a>"}]},{"method":"addMarkers","args":[57.70451,11.965053,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[57.70451,57.70451],"lng":[11.965053,11.965053]}},"evals":[],"jsHooks":[]}</script><p>Again, it’s critical to use basemap tiles that are in the same
+projection that is specified in <code><a href="../reference/leaflet.html">leafletCRS()</a></code>. In this case
+the api.geosition.com server does indeed uses EPSG:3006 for its
+tiles.</p>
 <p>We can render a similar map with the default EPSG:3857 projection for
 comparison. If the custom projection worked correctly, the markers
 should appear at the same position.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/leaflet.html">leaflet</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/leaflet-imports.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/map-methods.html">setView</a></span><span class="op">(</span><span class="fl">11.965053</span>, <span class="fl">57.70451</span>, <span class="fl">16</span><span class="op">)</span> <span class="op"><a href="../reference/leaflet-imports.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/map-layers.html">addTiles</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/leaflet-imports.html">%&gt;%</a></span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/leaflet.html">leaflet</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/map-methods.html">setView</a></span><span class="op">(</span><span class="fl">11.965053</span>, <span class="fl">57.70451</span>, <span class="fl">16</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/map-layers.html">addTiles</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/map-layers.html">addMarkers</a></span><span class="op">(</span><span class="fl">11.965053</span>, <span class="fl">57.70451</span><span class="op">)</span></span></code></pre></div>
-<div class="leaflet html-widget html-fill-item" id="htmlwidget-7cc8b716a11a39da4f06" style="width:700px;height:432.632880098888px;"></div>
-<script type="application/json" data-for="htmlwidget-7cc8b716a11a39da4f06">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[57.70451,11.965053],16,[]],"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addMarkers","args":[57.70451,11.965053,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[57.70451,57.70451],"lng":[11.965053,11.965053]}},"evals":[],"jsHooks":[]}</script>
+<div class="leaflet html-widget html-fill-item" id="htmlwidget-b76c32b98336827d5980" style="width:700px;height:432.632880098888px;"></div>
+<script type="application/json" data-for="htmlwidget-b76c32b98336827d5980">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[57.70451,11.965053],16,[]],"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addMarkers","args":[57.70451,11.965053,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[57.70451,57.70451],"lng":[11.965053,11.965053]}},"evals":[],"jsHooks":[]}</script>
 </div>
-<div class="section level3">
-<h3 id="displaying-shapes-with-custom-projections">Displaying shapes with custom projections<a class="anchor" aria-label="anchor" href="#displaying-shapes-with-custom-projections"></a>
-</h3>
-<p>While tiles must be in the same projection as used in the
-<code>leafletCRS</code> function, you must always use WGS 84
-longitude/latitude data for markers, circles, polygons, and lines.
-Leaflet will automatically project the coordinates when displaying.</p>
-<p>This example uses <a href="http://epsg.io/2163" class="external-link">EPSG:2163</a> (US
+<div class="section level2">
+<h2 id="displaying-shapes-with-custom-projections">Displaying shapes with custom projections<a class="anchor" aria-label="anchor" href="#displaying-shapes-with-custom-projections"></a>
+</h2>
+<p>While tiles must be in the same projection as used in
+<code><a href="../reference/leaflet.html">leafletCRS()</a></code>, you must always use WGS 84 longitude/latitude
+data for markers, circles, polygons, and lines. Leaflet will
+automatically project the coordinates when displaying.</p>
+<p>This example uses <a href="https://epsg.io/2163" class="external-link">EPSG:2163</a> (US
 National Atlas Equal Area projection). The dataset we use
 (<code>usa_sf</code> from the <code>albersusa</code> package, though
 we’re not actually using Albers projection here) has Alaska and Hawaii
@@ -201,19 +204,19 @@ accordingly.</p>
 <span>  proj4def <span class="op">=</span> <span class="st">"+proj=laea +lat_0=45 +lon_0=-100 +x_0=0 +y_0=0 +a=6370997 +b=6370997 +units=m +no_defs"</span>,</span>
 <span>  resolutions <span class="op">=</span> <span class="fl">2</span><span class="op">^</span><span class="op">(</span><span class="fl">16</span><span class="op">:</span><span class="fl">7</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/leaflet.html">leaflet</a></span><span class="op">(</span><span class="va">spdf</span>, options <span class="op">=</span> <span class="fu"><a href="../reference/leaflet.html">leafletOptions</a></span><span class="op">(</span>crs <span class="op">=</span> <span class="va">epsg2163</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/leaflet-imports.html">%&gt;%</a></span></span>
+<span><span class="fu"><a href="../reference/leaflet.html">leaflet</a></span><span class="op">(</span><span class="va">spdf</span>, options <span class="op">=</span> <span class="fu"><a href="../reference/leaflet.html">leafletOptions</a></span><span class="op">(</span>crs <span class="op">=</span> <span class="va">epsg2163</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/map-layers.html">addPolygons</a></span><span class="op">(</span>weight <span class="op">=</span> <span class="fl">1</span>, color <span class="op">=</span> <span class="st">"#444444"</span>, opacity <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>    fillColor <span class="op">=</span> <span class="op">~</span><span class="fu">pal</span><span class="op">(</span><span class="va">pop_2014</span><span class="op">)</span>, fillOpacity <span class="op">=</span> <span class="fl">0.7</span>, smoothFactor <span class="op">=</span> <span class="fl">0.5</span>,</span>
 <span>    label <span class="op">=</span> <span class="op">~</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">name</span>, <span class="va">pop_2014</span><span class="op">)</span>,</span>
 <span>    labelOptions <span class="op">=</span> <span class="fu"><a href="../reference/map-options.html">labelOptions</a></span><span class="op">(</span>direction <span class="op">=</span> <span class="st">"auto"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="polar-projections">Polar projections<a class="anchor" aria-label="anchor" href="#polar-projections"></a>
-</h3>
+<div class="section level2">
+<h2 id="polar-projections">Polar projections<a class="anchor" aria-label="anchor" href="#polar-projections"></a>
+</h2>
 <p>It’s possible to use polar projections, though you may encounter even
 more problems and incompatibilities with other Leaflet.js plugins than
-when using other types of custom projections. You can refer to <a href="http://rpubs.com/bhaskarvk/leaflet-polarmaps" class="external-link">this set of
-examples</a> by Bhaskar Karambelkar to get started.</p>
+when using other types of custom projections.</p>
+<!-- You can refer to [this set of examples](http://rpubs.com/bhaskarvk/leaflet-polarmaps) by Bhaskar Karambelkar to get started. -->
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
@@ -225,7 +228,7 @@ examples</a> by Bhaskar Karambelkar to get started.</p>
   <footer><div class="container">
   <div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by Joe Cheng, <a href="http://schloerke.com" class="external-link">Barret Schloerke</a>, Bhaskar Karambelkar, <a href="https://yihui.org/" class="external-link">Yihui Xie</a>, <a href="https://www.posit.co" class="external-link"><img src="https://www.tidyverse.org/posit-logo.svg" alt="Posit" height="16" style="margin-bottom: 3px;"></a>.</p>
+<p>Developed by Joe Cheng, <a href="http://schloerke.com" class="external-link">Barret Schloerke</a>, Bhaskar Karambelkar, <a href="https://yihui.org/" class="external-link">Yihui Xie</a>, <a href="https://www.posit.co" class="external-link"><img src="https://www.tidyverse.org/posit-logo.svg" alt="Posit" height="16" style="margin-bottom: 3px;"></a>. The Leaflet JavaScript library is © 2010–2023 <a href="http://agafonkin.com/en" class="external-link">Vladimir Agafonkin</a>, 2010–2011 <a href="http://cloudmade.com/" class="external-link">CloudMade</a>. Maps © <a href="https://openstreetmap.org/copyright" class="external-link">OpenStreetMap</a> contributors unless otherwise noted.</p>
 </div>
 
 <div class="pkgdown-footer-right">

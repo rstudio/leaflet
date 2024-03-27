@@ -27,21 +27,24 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/basemaps.html">Using Basemaps</a>
-    <a class="dropdown-item" href="../articles/choropleths.html">Choropleths</a>
-    <a class="dropdown-item" href="../articles/colors.html">Add color to a leaflet</a>
-    <a class="dropdown-item" href="../articles/extending.html">Extending Leaflet</a>
-    <a class="dropdown-item" href="../articles/json.html">Working with GeoJSON &amp; TopoJSON</a>
-    <a class="dropdown-item" href="../articles/legends.html">Legends</a>
-    <a class="dropdown-item" href="../articles/markers.html">Markers</a>
-    <a class="dropdown-item" href="../articles/morefeatures.html">More features</a>
-    <a class="dropdown-item" href="../articles/popups.html">Popups and Labels</a>
-    <a class="dropdown-item" href="../articles/projections.html">Working with projections in Leaflet</a>
-    <a class="dropdown-item" href="../articles/raster.html">Raster Images</a>
-    <a class="dropdown-item" href="../articles/shapes.html">Lines and Shapes</a>
-    <a class="dropdown-item" href="../articles/shiny.html">Using Leaflet with Shiny</a>
-    <a class="dropdown-item" href="../articles/showhide.html">Show/Hide Layers</a>
     <a class="dropdown-item" href="../articles/widget.html">The Map Widget</a>
+    <a class="dropdown-item" href="../articles/choropleths.html">Choropleths</a>
+    <a class="dropdown-item" href="../articles/colors.html">Colors</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Customize</h6>
+    <a class="dropdown-item" href="../articles/popups.html">Popups and Labels</a>
+    <a class="dropdown-item" href="../articles/showhide.html">Show/Hide Layers</a>
+    <a class="dropdown-item" href="../articles/markers.html">Add markers to leaflet</a>
+    <a class="dropdown-item" href="../articles/legends.html">Legends</a>
+    <a class="dropdown-item" href="../articles/shapes.html">Lines and Shapes</a>
+    <a class="dropdown-item" href="../articles/basemaps.html">Using Basemaps</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Spatial data</h6>
+    <a class="dropdown-item" href="../articles/json.html">Working with GeoJSON &amp; TopoJSON</a>
+    <a class="dropdown-item" href="../articles/raster.html">Raster Images</a>
+    <a class="dropdown-item" href="../articles/projections.html">Working with projections in Leaflet</a>
+    <div class="dropdown-divider"></div>
+    <a class="dropdown-item" href="../articles/index.html">More articles...</a>
   </div>
 </li>
 <li class="nav-item">
@@ -86,8 +89,7 @@
           
           <code><a href="addGraticule.html">addGraticule()</a></code> 
         </dt>
-        <dd>Add a Graticule on the map
-see <a href="https://github.com/turban/Leaflet.Graticule" class="external-link">https://github.com/turban/Leaflet.Graticule</a></dd>
+        <dd>Add a Graticule on the map</dd>
       </dl><dl><dt>
           
           <code><a href="addLayersControl.html">addLayersControl()</a></code> <code><a href="addLayersControl.html">layersControlOptions()</a></code> <code><a href="addLayersControl.html">removeLayersControl()</a></code> 
@@ -112,8 +114,7 @@ see <a href="https://github.com/turban/Leaflet.Graticule" class="external-link">
           
           <code><a href="addMiniMap.html">addMiniMap()</a></code> 
         </dt>
-        <dd>Add a minimap to the Map
-<a href="https://github.com/Norkart/Leaflet-MiniMap" class="external-link">https://github.com/Norkart/Leaflet-MiniMap</a></dd>
+        <dd>Add a minimap to the map</dd>
       </dl><dl><dt>
           
           <code><a href="addProviderTiles.html">addProviderTiles()</a></code> <code><a href="addProviderTiles.html">providerTileOptions()</a></code> 
@@ -138,8 +139,7 @@ see <a href="https://github.com/turban/Leaflet.Graticule" class="external-link">
           
           <code><a href="addSimpleGraticule.html">addSimpleGraticule()</a></code> 
         </dt>
-        <dd>Add a simple Graticule on the map
-see <a href="https://github.com/ablakey/Leaflet.SimpleGraticule" class="external-link">https://github.com/ablakey/Leaflet.SimpleGraticule</a></dd>
+        <dd>Add a simple Graticule on the map</dd>
       </dl><dl><dt>
           
           <code><a href="addTerminator.html">addTerminator()</a></code> 
@@ -159,8 +159,7 @@ see <a href="https://github.com/ablakey/Leaflet.SimpleGraticule" class="external
           
           <code><a href="awesomeIcons.html">awesomeIcons()</a></code> 
         </dt>
-        <dd>Create a list of awesome icon data see
-<a href="https://github.com/lennardv2/Leaflet.awesome-markers" class="external-link">https://github.com/lennardv2/Leaflet.awesome-markers</a></dd>
+        <dd>Create a list of awesome icon data</dd>
       </dl><dl><dt>
           
           <code><a href="breweries91.html">breweries91</a></code> 
@@ -178,20 +177,6 @@ see <a href="https://github.com/ablakey/Leaflet.SimpleGraticule" class="external
         <dd>Legacy functions</dd>
       </dl><dl><dt>
           
-          <code><a href="derivePoints.html">derivePoints()</a></code> 
-        </dt>
-        <dd>Given a data object and lng/lat arguments (which may be NULL [meaning infer
-from data], formula [which should be evaluated with respect to the data], or
-vector data [which should be used as-is]) return a lng/lat data frame.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="derivePolygons.html">derivePolygons()</a></code> 
-        </dt>
-        <dd>Given a data object and lng/lat arguments (which may be NULL [meaning infer
-from data], formula [which should be evaluated with respect to the data], or
-vector data [which should be used as-is]) return a spatial object</dd>
-      </dl><dl><dt>
-          
           <code><a href="dispatch.html">dispatch()</a></code> <code><a href="dispatch.html">invokeMethod()</a></code> 
         </dt>
         <dd>Extension points for plugins</dd>
@@ -202,12 +187,6 @@ vector data [which should be used as-is]) return a spatial object</dd>
         <dd>Create an easyButton statestate</dd>
       </dl><dl><dt>
           
-          <code><a href="evalFormula.html">evalFormula()</a></code> 
-        </dt>
-        <dd>Evaluate list members that are formulae, using the map data as the environment
-(if provided, otherwise the formula environment)</dd>
-      </dl><dl><dt>
-          
           <code><a href="expandLimits.html">expandLimits()</a></code> 
         </dt>
         <dd>Notifies the map of new latitude/longitude of items of interest on the map</dd>
@@ -215,13 +194,7 @@ vector data [which should be used as-is]) return a spatial object</dd>
           
           <code><a href="expandLimitsBbox.html">expandLimitsBbox()</a></code> 
         </dt>
-        <dd>Same as expandLimits, but takes a polygon (that presumably has a bbox attr)
-rather than lat/lng.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="filterNULL.html">filterNULL()</a></code> 
-        </dt>
-        <dd>remove NULL elements from a list</dd>
+        <dd>Notifies the map of polygons of interest on the map</dd>
       </dl><dl><dt>
           
           <code><a href="gadmCHE.html">gadmCHE</a></code> 
@@ -231,7 +204,7 @@ rather than lat/lng.</dd>
           
           <code><a href="getMapData.html">getMapData()</a></code> 
         </dt>
-        <dd>returns the map's data</dd>
+        <dd>Extract the map's data</dd>
       </dl><dl><dt>
           
           <code><a href="groupOptions.html">groupOptions()</a></code> 
@@ -247,11 +220,6 @@ rather than lat/lng.</dd>
           <code><a href="icons.html">icons()</a></code> 
         </dt>
         <dd>Create a list of icon data</dd>
-      </dl><dl><dt>
-          
-          <code><a href="leaflet-imports.html">JS</a></code> <code><a href="leaflet-imports.html">%&gt;%</a></code> 
-        </dt>
-        <dd>Objects imported from other packages</dd>
       </dl><dl><dt>
           
           <code><a href="leaflet.html">leaflet()</a></code> <code><a href="leaflet.html">leafletOptions()</a></code> <code><a href="leaflet.html">leafletCRS()</a></code> 
@@ -339,7 +307,7 @@ rather than lat/lng.</dd>
    </div>
   <footer><div class="container">
   <div class="pkgdown-footer-left">
-  <p></p><p>Developed by Joe Cheng, <a href="http://schloerke.com" class="external-link">Barret Schloerke</a>, Bhaskar Karambelkar, <a href="https://yihui.org/" class="external-link">Yihui Xie</a>, <a href="https://www.posit.co" class="external-link"><img src="https://www.tidyverse.org/posit-logo.svg" alt="Posit" height="16" style="margin-bottom: 3px;"></a>.</p>
+  <p></p><p>Developed by Joe Cheng, <a href="http://schloerke.com" class="external-link">Barret Schloerke</a>, Bhaskar Karambelkar, <a href="https://yihui.org/" class="external-link">Yihui Xie</a>, <a href="https://www.posit.co" class="external-link"><img src="https://www.tidyverse.org/posit-logo.svg" alt="Posit" height="16" style="margin-bottom: 3px;"></a>. The Leaflet JavaScript library is © 2010–2023 <a href="http://agafonkin.com/en" class="external-link">Vladimir Agafonkin</a>, 2010–2011 <a href="http://cloudmade.com/" class="external-link">CloudMade</a>. Maps © <a href="https://openstreetmap.org/copyright" class="external-link">OpenStreetMap</a> contributors unless otherwise noted.</p>
 </div>
 
 <div class="pkgdown-footer-right">

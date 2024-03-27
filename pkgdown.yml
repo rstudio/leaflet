@@ -7,6 +7,7 @@ articles:
   colors: colors.html
   extending: extending.html
   json: json.html
+  leaflet: leaflet.html
   legends: legends.html
   markers: markers.html
   morefeatures: morefeatures.html
@@ -17,8 +18,7 @@ articles:
   shiny: shiny.html
   showhide: showhide.html
   widget: widget.html
-  leaflet: leaflet.html
-last_built: 2024-03-27T15:16Z
+last_built: 2024-03-27T20:35Z
 urls:
   reference: https://rstudio.github.io/leaflet/reference
   article: https://rstudio.github.io/leaflet/articles

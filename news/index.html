@@ -27,21 +27,24 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/basemaps.html">Using Basemaps</a>
-    <a class="dropdown-item" href="../articles/choropleths.html">Choropleths</a>
-    <a class="dropdown-item" href="../articles/colors.html">Add color to a leaflet</a>
-    <a class="dropdown-item" href="../articles/extending.html">Extending Leaflet</a>
-    <a class="dropdown-item" href="../articles/json.html">Working with GeoJSON &amp; TopoJSON</a>
-    <a class="dropdown-item" href="../articles/legends.html">Legends</a>
-    <a class="dropdown-item" href="../articles/markers.html">Markers</a>
-    <a class="dropdown-item" href="../articles/morefeatures.html">More features</a>
-    <a class="dropdown-item" href="../articles/popups.html">Popups and Labels</a>
-    <a class="dropdown-item" href="../articles/projections.html">Working with projections in Leaflet</a>
-    <a class="dropdown-item" href="../articles/raster.html">Raster Images</a>
-    <a class="dropdown-item" href="../articles/shapes.html">Lines and Shapes</a>
-    <a class="dropdown-item" href="../articles/shiny.html">Using Leaflet with Shiny</a>
-    <a class="dropdown-item" href="../articles/showhide.html">Show/Hide Layers</a>
     <a class="dropdown-item" href="../articles/widget.html">The Map Widget</a>
+    <a class="dropdown-item" href="../articles/choropleths.html">Choropleths</a>
+    <a class="dropdown-item" href="../articles/colors.html">Colors</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Customize</h6>
+    <a class="dropdown-item" href="../articles/popups.html">Popups and Labels</a>
+    <a class="dropdown-item" href="../articles/showhide.html">Show/Hide Layers</a>
+    <a class="dropdown-item" href="../articles/markers.html">Add markers to leaflet</a>
+    <a class="dropdown-item" href="../articles/legends.html">Legends</a>
+    <a class="dropdown-item" href="../articles/shapes.html">Lines and Shapes</a>
+    <a class="dropdown-item" href="../articles/basemaps.html">Using Basemaps</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Spatial data</h6>
+    <a class="dropdown-item" href="../articles/json.html">Working with GeoJSON &amp; TopoJSON</a>
+    <a class="dropdown-item" href="../articles/raster.html">Raster Images</a>
+    <a class="dropdown-item" href="../articles/projections.html">Working with projections in Leaflet</a>
+    <div class="dropdown-divider"></div>
+    <a class="dropdown-item" href="../articles/index.html">More articles...</a>
   </div>
 </li>
 <li class="active nav-item">
@@ -117,7 +120,7 @@
 <div class="section level3">
 <h3 id="bug-fixes-and-improvements-2-1-0">Bug fixes and improvements<a class="anchor" aria-label="anchor" href="#bug-fixes-and-improvements-2-1-0"></a></h3>
 <ul><li><p>Enable JS function literals (wrapped in <code><a href="https://rdrr.io/pkg/htmlwidgets/man/JS.html" class="external-link">htmlwidgets::JS()</a></code>) to be included in arguments to methods invoked on <code>leafletProxy</code> objects. (JS function literals could already be included with methods invoked on <code>leaflet</code> objects, so this change just brings <code>leafletProxy</code> to parity.) (<a href="https://github.com/rstudio/leaflet/issues/420" class="external-link">#420</a>)</p></li>
-<li><p>Add missing CSS rule to show <code>&lt;img&gt;</code> in right-pane and left-pane (rstudio/rmarkdown/issues#1949, <a href="https://github.com/rstudio/leaflet/issues/770" class="external-link">#770</a>)</p></li>
+<li><p>Add missing CSS rule to show <code>&lt;img&gt;</code> in right-pane and left-pane (rstudio/rmarkdown#1949, <a href="https://github.com/rstudio/leaflet/issues/770" class="external-link">#770</a>)</p></li>
 <li><p>Allow for <em>hidden</em> but not suspended leaflet maps to queue calls (such as add raster images) until they are rendered. If a new leaflet map is created, all pending calls are removed. (<a href="https://github.com/rstudio/leaflet/issues/771" class="external-link">#771</a>)</p></li>
 </ul></div>
 </div>
@@ -225,7 +228,7 @@
 </ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-and-features-2-0-0">Bug fixes and features<a class="anchor" aria-label="anchor" href="#bug-fixes-and-features-2-0-0"></a></h3>
-<ul><li><p>Relative protocols are used where possible when adding tiles (<a href="https://github.com/rstudio/leaflet/issues/526" class="external-link">#526</a>). In RStudio 1.1.x on linux and windows, a known issue of ‘<a href="https://" class="external-link uri">https://</a>’ routes fail to load, but works within browsers (rstudio/rstudio#2661).</p></li>
+<ul><li><p>Relative protocols are used where possible when adding tiles (<a href="https://github.com/rstudio/leaflet/issues/526" class="external-link">#526</a>). In RStudio 1.1.x on Linux and Windows, a known issue of ‘<a href="https://" class="external-link uri">https://</a>’ routes fail to load, but works within browsers (rstudio/rstudio#2661).</p></li>
 <li><p>Added more providers for <code><a href="../reference/addProviderTiles.html">addProviderTiles()</a></code>: “OpenStreetMap.CH”, “OpenInfraMap”, “OpenInfraMap.Power”, “OpenInfraMap.Telecom”, “OpenInfraMap.Petroleum”, “OpenInfraMap.Water”, “OpenPtMap”, “OpenRailwayMap”, “OpenFireMap”, “SafeCast”. (4aea447)</p></li>
 <li><p><code>L.multiPolyline</code> was absorbed into <code>L.polyline</code>, which accepts multiple an array of polyline information. <a href="https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#polyline" class="external-link uri">https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#polyline</a>. (<a href="https://github.com/rstudio/leaflet/issues/515" class="external-link">#515</a>)</p></li>
 <li><p>Fix bug where icons where anchored to the top-center, not center-center (2a60751)</p></li>
@@ -265,7 +268,7 @@
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.0.2" id="leaflet-102">leaflet 1.0.2<a class="anchor" aria-label="anchor" href="#leaflet-102"></a></h2>
 <ul><li><p>When used with <code>leafletProxy</code>, <code>fitBounds</code> did not return its input object as output, so magrittr chains would break after <code>fitBounds</code> was called.</p></li>
-<li><p>Add addMeasure()/removeMeasure() functions to allow users to measure lines and areas, via the leaflet-measure plugin by <a href="https://github.com/ljagis" class="external-link">@ljagis</a>. (PR <a href="https://github.com/rstudio/leaflet/issues/171" class="external-link">#171</a>. Thanks, Kenton Russell!)</p></li>
+<li><p>Add <code><a href="../reference/addMeasure.html">addMeasure()</a></code>/<code><a href="../reference/remove.html">removeMeasure()</a></code> functions to allow users to measure lines and areas, via the leaflet-measure plugin by <a href="https://github.com/ljagis" class="external-link">@ljagis</a>. (PR <a href="https://github.com/rstudio/leaflet/issues/171" class="external-link">#171</a>. Thanks, Kenton Russell!)</p></li>
 <li><p>Add <code>input${mapid}_center</code> Shiny event.</p></li>
 <li><p>Add support for labels on most layers, that show either statically or on hover. (PR <a href="https://github.com/rstudio/leaflet/issues/181" class="external-link">#181</a>. Thanks Bhaskar Karambelkar!)</p></li>
 <li><p>Add support for markers with configurable colors and icons, via the Leaflet.awesome-markers plugin by <a href="https://github.com/lvoogdt" class="external-link">@lvoogdt</a>. See <code><a href="../reference/addAwesomeMarkers.html">?addAwesomeMarkers</a></code>. (PR <a href="https://github.com/rstudio/leaflet/issues/184" class="external-link">#184</a>. Great work, Bhaskar!)</p></li>
@@ -290,7 +293,7 @@
    </div>
   <footer><div class="container">
   <div class="pkgdown-footer-left">
-  <p></p><p>Developed by Joe Cheng, <a href="http://schloerke.com" class="external-link">Barret Schloerke</a>, Bhaskar Karambelkar, <a href="https://yihui.org/" class="external-link">Yihui Xie</a>, <a href="https://www.posit.co" class="external-link"><img src="https://www.tidyverse.org/posit-logo.svg" alt="Posit" height="16" style="margin-bottom: 3px;"></a>.</p>
+  <p></p><p>Developed by Joe Cheng, <a href="http://schloerke.com" class="external-link">Barret Schloerke</a>, Bhaskar Karambelkar, <a href="https://yihui.org/" class="external-link">Yihui Xie</a>, <a href="https://www.posit.co" class="external-link"><img src="https://www.tidyverse.org/posit-logo.svg" alt="Posit" height="16" style="margin-bottom: 3px;"></a>. The Leaflet JavaScript library is © 2010–2023 <a href="http://agafonkin.com/en" class="external-link">Vladimir Agafonkin</a>, 2010–2011 <a href="http://cloudmade.com/" class="external-link">CloudMade</a>. Maps © <a href="https://openstreetmap.org/copyright" class="external-link">OpenStreetMap</a> contributors unless otherwise noted.</p>
 </div>
 
 <div class="pkgdown-footer-right">

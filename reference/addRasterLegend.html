@@ -31,21 +31,24 @@ own color table."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/basemaps.html">Using Basemaps</a>
-    <a class="dropdown-item" href="../articles/choropleths.html">Choropleths</a>
-    <a class="dropdown-item" href="../articles/colors.html">Add color to a leaflet</a>
-    <a class="dropdown-item" href="../articles/extending.html">Extending Leaflet</a>
-    <a class="dropdown-item" href="../articles/json.html">Working with GeoJSON &amp; TopoJSON</a>
-    <a class="dropdown-item" href="../articles/legends.html">Legends</a>
-    <a class="dropdown-item" href="../articles/markers.html">Markers</a>
-    <a class="dropdown-item" href="../articles/morefeatures.html">More features</a>
-    <a class="dropdown-item" href="../articles/popups.html">Popups and Labels</a>
-    <a class="dropdown-item" href="../articles/projections.html">Working with projections in Leaflet</a>
-    <a class="dropdown-item" href="../articles/raster.html">Raster Images</a>
-    <a class="dropdown-item" href="../articles/shapes.html">Lines and Shapes</a>
-    <a class="dropdown-item" href="../articles/shiny.html">Using Leaflet with Shiny</a>
-    <a class="dropdown-item" href="../articles/showhide.html">Show/Hide Layers</a>
     <a class="dropdown-item" href="../articles/widget.html">The Map Widget</a>
+    <a class="dropdown-item" href="../articles/choropleths.html">Choropleths</a>
+    <a class="dropdown-item" href="../articles/colors.html">Colors</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Customize</h6>
+    <a class="dropdown-item" href="../articles/popups.html">Popups and Labels</a>
+    <a class="dropdown-item" href="../articles/showhide.html">Show/Hide Layers</a>
+    <a class="dropdown-item" href="../articles/markers.html">Add markers to leaflet</a>
+    <a class="dropdown-item" href="../articles/legends.html">Legends</a>
+    <a class="dropdown-item" href="../articles/shapes.html">Lines and Shapes</a>
+    <a class="dropdown-item" href="../articles/basemaps.html">Using Basemaps</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Spatial data</h6>
+    <a class="dropdown-item" href="../articles/json.html">Working with GeoJSON &amp; TopoJSON</a>
+    <a class="dropdown-item" href="../articles/raster.html">Raster Images</a>
+    <a class="dropdown-item" href="../articles/projections.html">Working with projections in Leaflet</a>
+    <div class="dropdown-divider"></div>
+    <a class="dropdown-item" href="../articles/index.html">More articles...</a>
   </div>
 </li>
 <li class="nav-item">
@@ -113,18 +116,18 @@ own color table.</p>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="st">"/vsicurl/https://geodata.ucdavis.edu/test/pr_nlcd.tif"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="leaflet.html">leaflet</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="leaflet-imports.html">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="map-layers.html">addTiles</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="leaflet-imports.html">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="addRasterImage.html">addRasterImage</a></span><span class="op">(</span><span class="va">r</span>, opacity <span class="op">=</span> <span class="fl">0.75</span><span class="op">)</span> <span class="op"><a href="leaflet-imports.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span><span class="fu"><a href="leaflet.html">leaflet</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="map-layers.html">addTiles</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="addRasterImage.html">addRasterImage</a></span><span class="op">(</span><span class="va">r</span>, opacity <span class="op">=</span> <span class="fl">0.75</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">addRasterLegend</span><span class="op">(</span><span class="va">r</span>, opacity <span class="op">=</span> <span class="fl">0.75</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/frame.html" class="external-link">plot.new</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># pause in interactive mode</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">rr</span> <span class="op">&lt;-</span> <span class="va">r</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/factors.html" class="external-link">levels</a></span><span class="op">(</span><span class="va">rr</span><span class="op">)</span>  <span class="op">&lt;-</span> <span class="cn">NULL</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="leaflet.html">leaflet</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="leaflet-imports.html">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="map-layers.html">addTiles</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="leaflet-imports.html">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="addRasterImage.html">addRasterImage</a></span><span class="op">(</span><span class="va">rr</span>, opacity <span class="op">=</span> <span class="fl">0.75</span><span class="op">)</span> <span class="op"><a href="leaflet-imports.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span><span class="fu"><a href="leaflet.html">leaflet</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="map-layers.html">addTiles</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="addRasterImage.html">addRasterImage</a></span><span class="op">(</span><span class="va">rr</span>, opacity <span class="op">=</span> <span class="fl">0.75</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">addRasterLegend</span><span class="op">(</span><span class="va">rr</span>, opacity <span class="op">=</span> <span class="fl">0.75</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
@@ -136,7 +139,7 @@ own color table.</p>
    </div>
   <footer><div class="container">
   <div class="pkgdown-footer-left">
-  <p></p><p>Developed by Joe Cheng, <a href="http://schloerke.com" class="external-link">Barret Schloerke</a>, Bhaskar Karambelkar, <a href="https://yihui.org/" class="external-link">Yihui Xie</a>, <a href="https://www.posit.co" class="external-link"><img src="https://www.tidyverse.org/posit-logo.svg" alt="Posit" height="16" style="margin-bottom: 3px;"></a>.</p>
+  <p></p><p>Developed by Joe Cheng, <a href="http://schloerke.com" class="external-link">Barret Schloerke</a>, Bhaskar Karambelkar, <a href="https://yihui.org/" class="external-link">Yihui Xie</a>, <a href="https://www.posit.co" class="external-link"><img src="https://www.tidyverse.org/posit-logo.svg" alt="Posit" height="16" style="margin-bottom: 3px;"></a>. The Leaflet JavaScript library is © 2010–2023 <a href="http://agafonkin.com/en" class="external-link">Vladimir Agafonkin</a>, 2010–2011 <a href="http://cloudmade.com/" class="external-link">CloudMade</a>. Maps © <a href="https://openstreetmap.org/copyright" class="external-link">OpenStreetMap</a> contributors unless otherwise noted.</p>
 </div>
 
 <div class="pkgdown-footer-right">

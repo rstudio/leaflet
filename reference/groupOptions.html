@@ -33,21 +33,24 @@ assign a group to zoom levels and use it with addLayersControl."><!-- mathjax --
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/basemaps.html">Using Basemaps</a>
-    <a class="dropdown-item" href="../articles/choropleths.html">Choropleths</a>
-    <a class="dropdown-item" href="../articles/colors.html">Add color to a leaflet</a>
-    <a class="dropdown-item" href="../articles/extending.html">Extending Leaflet</a>
-    <a class="dropdown-item" href="../articles/json.html">Working with GeoJSON &amp; TopoJSON</a>
-    <a class="dropdown-item" href="../articles/legends.html">Legends</a>
-    <a class="dropdown-item" href="../articles/markers.html">Markers</a>
-    <a class="dropdown-item" href="../articles/morefeatures.html">More features</a>
-    <a class="dropdown-item" href="../articles/popups.html">Popups and Labels</a>
-    <a class="dropdown-item" href="../articles/projections.html">Working with projections in Leaflet</a>
-    <a class="dropdown-item" href="../articles/raster.html">Raster Images</a>
-    <a class="dropdown-item" href="../articles/shapes.html">Lines and Shapes</a>
-    <a class="dropdown-item" href="../articles/shiny.html">Using Leaflet with Shiny</a>
-    <a class="dropdown-item" href="../articles/showhide.html">Show/Hide Layers</a>
     <a class="dropdown-item" href="../articles/widget.html">The Map Widget</a>
+    <a class="dropdown-item" href="../articles/choropleths.html">Choropleths</a>
+    <a class="dropdown-item" href="../articles/colors.html">Colors</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Customize</h6>
+    <a class="dropdown-item" href="../articles/popups.html">Popups and Labels</a>
+    <a class="dropdown-item" href="../articles/showhide.html">Show/Hide Layers</a>
+    <a class="dropdown-item" href="../articles/markers.html">Add markers to leaflet</a>
+    <a class="dropdown-item" href="../articles/legends.html">Legends</a>
+    <a class="dropdown-item" href="../articles/shapes.html">Lines and Shapes</a>
+    <a class="dropdown-item" href="../articles/basemaps.html">Using Basemaps</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Spatial data</h6>
+    <a class="dropdown-item" href="../articles/json.html">Working with GeoJSON &amp; TopoJSON</a>
+    <a class="dropdown-item" href="../articles/raster.html">Raster Images</a>
+    <a class="dropdown-item" href="../articles/projections.html">Working with projections in Leaflet</a>
+    <div class="dropdown-divider"></div>
+    <a class="dropdown-item" href="../articles/index.html">More articles...</a>
   </div>
 </li>
 <li class="nav-item">
@@ -106,15 +109,15 @@ visible, or <code>TRUE</code> to display at all zoom levels</p></dd>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">pal</span> <span class="op">&lt;-</span> <span class="fu"><a href="colorNumeric.html">colorQuantile</a></span><span class="op">(</span><span class="st">"YlOrRd"</span>, <span class="va">quakes</span><span class="op">$</span><span class="va">mag</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="leaflet.html">leaflet</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="leaflet-imports.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span><span class="fu"><a href="leaflet.html">leaflet</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="co"># Basic markers</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="map-layers.html">addTiles</a></span><span class="op">(</span>group <span class="op">=</span> <span class="st">"basic"</span><span class="op">)</span> <span class="op"><a href="leaflet-imports.html">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="map-layers.html">addMarkers</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">quakes</span>, group <span class="op">=</span> <span class="st">"basic"</span><span class="op">)</span> <span class="op"><a href="leaflet-imports.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="map-layers.html">addTiles</a></span><span class="op">(</span>group <span class="op">=</span> <span class="st">"basic"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="map-layers.html">addMarkers</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">quakes</span>, group <span class="op">=</span> <span class="st">"basic"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="co"># When zoomed in, we'll show circles at the base of each marker whose</span></span></span>
 <span class="r-in"><span>  <span class="co"># radius and color reflect the magnitude</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="addProviderTiles.html">addProviderTiles</a></span><span class="op">(</span><span class="va">providers</span><span class="op">$</span><span class="va">Stamen.TonerLite</span>, group <span class="op">=</span> <span class="st">"detail"</span><span class="op">)</span> <span class="op"><a href="leaflet-imports.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="addProviderTiles.html">addProviderTiles</a></span><span class="op">(</span><span class="va">providers</span><span class="op">$</span><span class="va">Stamen.TonerLite</span>, group <span class="op">=</span> <span class="st">"detail"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="map-layers.html">addCircleMarkers</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">quakes</span>, group <span class="op">=</span> <span class="st">"detail"</span>, fillOpacity <span class="op">=</span> <span class="fl">0.5</span>,</span></span>
-<span class="r-in"><span>    radius <span class="op">=</span> <span class="op">~</span><span class="va">mag</span> <span class="op">*</span> <span class="fl">5</span>, color <span class="op">=</span> <span class="op">~</span><span class="fu">pal</span><span class="op">(</span><span class="va">mag</span><span class="op">)</span>, stroke <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="leaflet-imports.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>    radius <span class="op">=</span> <span class="op">~</span><span class="va">mag</span> <span class="op">*</span> <span class="fl">5</span>, color <span class="op">=</span> <span class="op">~</span><span class="fu">pal</span><span class="op">(</span><span class="va">mag</span><span class="op">)</span>, stroke <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="co"># Set the detail group to only appear when zoomed in</span></span></span>
 <span class="r-in"><span>  <span class="fu">groupOptions</span><span class="op">(</span><span class="st">"detail"</span>, zoomLevels <span class="op">=</span> <span class="fl">7</span><span class="op">:</span><span class="fl">18</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Assuming "long" and "lat" are longitude and latitude, respectively</span>
@@ -130,7 +133,7 @@ visible, or <code>TRUE</code> to display at all zoom levels</p></dd>
    </div>
   <footer><div class="container">
   <div class="pkgdown-footer-left">
-  <p></p><p>Developed by Joe Cheng, <a href="http://schloerke.com" class="external-link">Barret Schloerke</a>, Bhaskar Karambelkar, <a href="https://yihui.org/" class="external-link">Yihui Xie</a>, <a href="https://www.posit.co" class="external-link"><img src="https://www.tidyverse.org/posit-logo.svg" alt="Posit" height="16" style="margin-bottom: 3px;"></a>.</p>
+  <p></p><p>Developed by Joe Cheng, <a href="http://schloerke.com" class="external-link">Barret Schloerke</a>, Bhaskar Karambelkar, <a href="https://yihui.org/" class="external-link">Yihui Xie</a>, <a href="https://www.posit.co" class="external-link"><img src="https://www.tidyverse.org/posit-logo.svg" alt="Posit" height="16" style="margin-bottom: 3px;"></a>. The Leaflet JavaScript library is © 2010–2023 <a href="http://agafonkin.com/en" class="external-link">Vladimir Agafonkin</a>, 2010–2011 <a href="http://cloudmade.com/" class="external-link">CloudMade</a>. Maps © <a href="https://openstreetmap.org/copyright" class="external-link">OpenStreetMap</a> contributors unless otherwise noted.</p>
 </div>
 
 <div class="pkgdown-footer-right">
