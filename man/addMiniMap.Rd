@@ -85,7 +85,7 @@ a Path.Options (\url{https://web.archive.org/web/20220702182250/https://leafletj
 It does not override the MiniMap default map options but extends them.}
 }
 \description{
-See \url{https://github.com/Norkart/Leaflet-MiniMap}
+Add a minimap to the map
 }
 \examples{
 leaf <- leaflet() \%>\%
@@ -95,5 +95,7 @@ leaf
 
 }
 \seealso{
+\url{https://github.com/Norkart/Leaflet-MiniMap}
+
 \code{\link{providers}}
 }

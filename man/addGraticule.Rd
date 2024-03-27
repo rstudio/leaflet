@@ -30,7 +30,7 @@ addGraticule(
 \item{options}{the path options for the graticule layer}
 }
 \description{
-See \url{https://github.com/turban/Leaflet.Graticule}
+Add a Graticule on the map
 }
 \examples{
 leaf <- leaflet() \%>\%
@@ -38,4 +38,7 @@ leaf <- leaflet() \%>\%
   addGraticule()
 leaf
 
+}
+\seealso{
+\url{https://github.com/turban/Leaflet.Graticule}
 }

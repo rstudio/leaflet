@@ -33,11 +33,14 @@ addSimpleGraticule(
 \item{group}{the name of the group this layer belongs to.}
 }
 \description{
-See \url{https://github.com/ablakey/Leaflet.SimpleGraticule}
+Add a simple Graticule on the map
 }
 \examples{
 \donttest{leaflet() \%>\%
   addTiles() \%>\%
   addSimpleGraticule()}
 
+}
+\seealso{
+\url{https://github.com/ablakey/Leaflet.SimpleGraticule}
 }

@@ -52,5 +52,8 @@ A list of awesome-icon data that can be passed to the \code{icon}
 An icon can be represented as a list of the form \code{list(icon, library,
 ...)}. This function is vectorized over its arguments to create a list of
 icon data. Shorter argument values will be recycled. \code{NULL} values for
-these arguments will be ignored. See \url{https://github.com/lennardv2/Leaflet.awesome-markers}
+these arguments will be ignored.
+}
+\seealso{
+\url{https://github.com/lennardv2/Leaflet.awesome-markers}
 }
