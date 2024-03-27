@@ -28,7 +28,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">leaflet</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.2.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.2.2.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -91,7 +91,7 @@
 <script src="leaflet_files/htmlwidgets-1.6.4/htmlwidgets.js"></script><link href="leaflet_files/leaflet-1.3.1/leaflet.css" rel="stylesheet">
 <script src="leaflet_files/leaflet-1.3.1/leaflet.js"></script><link href="leaflet_files/leafletfix-1.0.0/leafletfix.css" rel="stylesheet">
 <script src="leaflet_files/proj4-2.6.2/proj4.min.js"></script><script src="leaflet_files/Proj4Leaflet-1.0.1/proj4leaflet.js"></script><link href="leaflet_files/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet">
-<script src="leaflet_files/leaflet-binding-2.2.2/leaflet.js"></script><div class="row">
+<script src="leaflet_files/leaflet-binding-2.2.2.9000/leaflet.js"></script><div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1>Introduction to leaflet</h1>
             
@@ -171,8 +171,8 @@ functions (e.g. <code>addTiles</code>, <code>addMarkers</code>,
 <span>  <span class="fu"><a href="../reference/map-layers.html">addTiles</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/leaflet-imports.html">%&gt;%</a></span>  <span class="co"># Add default OpenStreetMap map tiles</span></span>
 <span>  <span class="fu"><a href="../reference/map-layers.html">addMarkers</a></span><span class="op">(</span>lng<span class="op">=</span><span class="fl">174.768</span>, lat<span class="op">=</span><span class="op">-</span><span class="fl">36.852</span>, popup<span class="op">=</span><span class="st">"The birthplace of R"</span><span class="op">)</span></span>
 <span><span class="va">m</span>  <span class="co"># Print the map</span></span></code></pre></div>
-<div class="leaflet html-widget html-fill-item" id="htmlwidget-4dc6d555d624fdd93a19" style="width:700px;height:432.632880098888px;"></div>
-<script type="application/json" data-for="htmlwidget-4dc6d555d624fdd93a19">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addMarkers","args":[-36.852,174.768,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},"The birthplace of R",null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[-36.852,-36.852],"lng":[174.768,174.768]}},"evals":[],"jsHooks":[]}</script><p>In case you’re not familiar with the <a href="https://github.com/tidyverse/magrittr" class="external-link">magrittr</a> pipe operator
+<div class="leaflet html-widget html-fill-item" id="htmlwidget-2a674efd8cef889612eb" style="width:700px;height:432.632880098888px;"></div>
+<script type="application/json" data-for="htmlwidget-2a674efd8cef889612eb">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addMarkers","args":[-36.852,174.768,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},"The birthplace of R",null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[-36.852,-36.852],"lng":[174.768,174.768]}},"evals":[],"jsHooks":[]}</script><p>In case you’re not familiar with the <a href="https://github.com/tidyverse/magrittr" class="external-link">magrittr</a> pipe operator
 (<code>%&gt;%</code>), here is the equivalent without using pipes:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/leaflet.html">leaflet</a></span><span class="op">(</span><span class="op">)</span></span>
