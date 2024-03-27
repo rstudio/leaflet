@@ -19,7 +19,7 @@ map panes can be created by supplying a name and a zIndex to control layer
 ordering. We recommend a \code{zIndex} value between 400 (the default
 overlay pane) and 500 (the default shadow pane). You can then use this pane
 to render overlays (points, lines, polygons) by setting the \code{pane}
-argument in \link{leafletOptions}. This will give you control
+argument in \code{\link[=leafletOptions]{leafletOptions()}}. This will give you control
 over the order of the layers, e.g. points always on top of polygons.
 If two layers are provided to the same pane, overlay will be determined by
 order of adding. See examples below.
