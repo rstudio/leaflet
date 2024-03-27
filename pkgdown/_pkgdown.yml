@@ -9,6 +9,50 @@ template:
     navbar-background: "#f8f8f8"
   trailing_slash_redirect: true
 
+footer:
+  structure:
+    left: [developed_by, copyright]
+  components:
+    copyright: >
+      The Leaflet JavaScript library is © 2010–2023 [Vladimir Agafonkin](http://agafonkin.com/en), 2010–2011 [CloudMade](http://cloudmade.com/).
+      Maps © [OpenStreetMap](https://openstreetmap.org/copyright) contributors unless otherwise noted.
+
+intro:
+- title: Get started
+  contents:
+  - articles/leaflet
+
+articles:
+- title: Get started
+  navbar: ~
+  contents:
+  - articles/widget
+  - articles/choropleths
+  - articles/colors
+
+- title: Customize
+  navbar: Customize
+  contents:
+  - articles/popups
+  - articles/showhide
+  - articles/markers
+  - articles/legends
+  - articles/shapes
+  - articles/basemaps
+- title: Spatial data
+  navbar: Spatial data
+  contents:
+  - articles/json
+  - articles/raster
+  - articles/projections
+
+- title: Other
+  contents:
+  - articles/shiny
+  - articles/morefeatures
+  - articles/extending
+  - articles/leaflet
+
 redirects:
   - ["basemaps.html", "articles/basemaps.html"]
   - ["choropleths.html", "articles/choropleths.html"]

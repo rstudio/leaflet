@@ -33,7 +33,7 @@ leaflet() %>% addTiles() %>%
   addAwesomeMarkers(
     lng = -118.456554, lat = 34.078039,
     label = "This is a static label",
-    labelOptions = labelOptions(noHide = T),
+    labelOptions = labelOptions(noHide = TRUE),
     icon = icon.fa)
 
 
@@ -75,5 +75,5 @@ popIcons <- awesomeIconList(
 leaflet(cities) %>% addProviderTiles(providers$CartoDB.DarkMatter) %>%
   addAwesomeMarkers(lng = ~Long, lat = ~Lat,
              label = ~City,
-             labelOptions = rep(labelOptions(noHide = T), nrow(cities)),
+             labelOptions = rep(labelOptions(noHide = TRUE), nrow(cities)),
              icon = ~popIcons[PopCat] )

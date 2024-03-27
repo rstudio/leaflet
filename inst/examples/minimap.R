@@ -10,7 +10,7 @@ l %>% addTiles() %>% addMiniMap()
 l %>% addProviderTiles(providers$Esri.WorldStreetMap) %>%
   addMiniMap(
              tiles = providers$Esri.WorldStreetMap,
-             toggleDisplay = T)
+             toggleDisplay = TRUE)
 
 #' <br/>
 #' Slightly advanced use case
@@ -31,7 +31,7 @@ m %>%
   ) %>%
   addMiniMap(
              tiles = esri[[1]],
-             toggleDisplay = T) %>%
+             toggleDisplay = TRUE) %>%
   htmlwidgets::onRender("
     function(el, x) {
       var myMap = this;
@@ -103,7 +103,7 @@ m %>%
     options = layersControlOptions(collapsed = FALSE)
   ) %>%
   addMiniMap(tiles = esri[[1]],
-             toggleDisplay = T) %>%
+             toggleDisplay = TRUE) %>%
   htmlwidgets::onRender("
     function(el, t) {
       var myMap = this;

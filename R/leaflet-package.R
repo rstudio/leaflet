@@ -1,12 +1,9 @@
 #' @keywords internal
-#' @aliases leaflet-package NULL
 "_PACKAGE"
 
 ## usethis namespace: start
 #' @importFrom grDevices col2rgb
 #' @importFrom grDevices rgb
-#' @importFrom htmlwidgets JS
-#' @importFrom magrittr %>%
 #' @importFrom methods substituteDirect
 #' @importFrom stats na.omit
 #' @importFrom stats quantile
@@ -16,9 +13,12 @@
 NULL
 
 ## Re-exports
-#' @export %>%
-#' @export JS
-NULL
+#' @importFrom magrittr %>%
+#' @export
+magrittr::`%>%`
+#' @importFrom htmlwidgets JS
+#' @export
+htmlwidgets::JS
 
 # Added to the `use_release_issue()` checklist
 release_bullets <- function() {

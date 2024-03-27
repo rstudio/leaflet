@@ -13,13 +13,13 @@ Making choropleths with leaflet is easy. In this example, we'll duplicate the [s
 
 The final result will look like this (scroll to the end to see the completed code):
 
-```{r, include = FALSE}
+```{r, include = FALSE, message = FALSE}
 library(leaflet)
 library(magrittr)
 ```
 
-```{r fig.height = 4.75, echo = FALSE}
-# From http://leafletjs.com/examples/choropleth/us-states.js
+```{r fig.height = 4.75, echo = FALSE, message = FALSE}
+# From https://leafletjs.com/examples/choropleth/us-states.js
 states <- geojsonio::geojson_read("https://rstudio.github.io/leaflet/json/us-states.geojson", what = "sp")
 
 bins <- c(0, 10, 20, 50, 100, 200, 500, 1000, Inf)
@@ -63,6 +63,7 @@ We'll start by loading the data from JSON. While the Leaflet.js example loads th
 
 In this case, we'll use the `geojsonio` package to load the data into `sp` objects, which will let us easily manipulate the geographic features, and their properties, in R.
 
+<!-- TODO Use sf everywhere? -->
 ```{r}
 states <- geojsonio::geojson_read("https://rstudio.github.io/leaflet/json/us-states.geojson", what = "sp")
 class(states)
@@ -73,7 +74,7 @@ As you can see, we now have a `SpatialPolygonsDataFrame` with `name` (state name
 
 ### Basic states map
 
-Next, let's make a basic map with just the outline of the states. For our basemap, we'll use the same `"mapbox.light"` MapBox style that the example does; if you don't have a MapBox account, you can just use `addTiles()` in place of the `addProviderTiles` call, or choose a free provider.
+Next, let's make a basic map with just the outline of the states. For our basemap, we'll use the same `"mapbox.light"` MapBox style that the example does; if you don't have a MapBox account, you can just use `addTiles()` in place of the `addProviderTiles()` call, or choose a free provider.
 
 ```{r}
 m <- leaflet(states) %>%
@@ -83,9 +84,9 @@ m <- leaflet(states) %>%
     accessToken = Sys.getenv('MAPBOX_ACCESS_TOKEN')))
 ```
 
-We've saved the basic basemap as a separate variable `m` so we can easily iterate on the `addPolygons` call as we work through the rest of the tutorial.
+We've saved the basic basemap as a separate variable `m` so we can easily iterate on the `addPolygons()` call as we work through the rest of the tutorial.
 
-To add uniform polygons with default styling, just call `addPolygons` with no additional arguments.
+To add uniform polygons with default styling, just call `addPolygons()` with no additional arguments.
 
 ```{r}
 m %>% addPolygons()
@@ -93,13 +94,13 @@ m %>% addPolygons()
 
 ### Adding some color
 
-Now, let's color the states according to their population density. You have [various options](../colors.html) for mapping data to colors; for this example we'll match the Leaflet.js tutorial by mapping a specific set of bins into RColorBrewer colors.
+Now, let's color the states according to their population density. You have [various options](https://rstudio.github.io/leaflet/articles/colors.html) for mapping data to colors; for this example we'll match the Leaflet.js tutorial by mapping a specific set of bins into RColorBrewer colors.
 
 First, we'll define the bins. This is a numeric vector that defines the boundaries between intervals (`(0,10]`, `(10,20]`, and so on).
 
-Then, we'll call `colorBin` to generate a palette function that maps the RColorBrewer `"YlOrRd"` colors to our bins.
+Then, we'll call `colorBin()` to generate a palette function that maps the RColorBrewer `"YlOrRd"` colors to our bins.
 
-Finally, we'll modify `addPolygons` to use the palette function and the density values to generate a vector of colors for `fillColor`, and also add some other static style properties.
+Finally, we'll modify `addPolygons()` to use the palette function and the density values to generate a vector of colors for `fillColor`, and also add some other static style properties.
 
 ```{r}
 bins <- c(0, 10, 20, 50, 100, 200, 500, 1000, Inf)
@@ -116,7 +117,7 @@ m %>% addPolygons(
 
 ### Adding interaction
 
-The next thing we'll want is to make the polygons highlight as the mouse passes over them. The `addPolygon` function has a `highlight` argument that makes this simple.
+The next thing we'll want is to make the polygons highlight as the mouse passes over them. The `addPolygon()` function has a `highlight` argument that makes this simple.
 
 ```{r}
 m %>% addPolygons(
@@ -175,7 +176,7 @@ This is the final version of our polygon layer, so let's save the result back to
 
 ### Legend
 
-As our final step, let's add a legend. Because we chose to color our map using `colorBin`, the `addLegend` function makes it particularly easy to add a legend with the correct colors and intervals.
+As our final step, let's add a legend. Because we chose to color our map using `colorBin()`, the `addLegend()` function makes it particularly easy to add a legend with the correct colors and intervals.
 
 ```{r}
 m %>% addLegend(pal = pal, values = ~density, opacity = 0.7, title = NULL,
@@ -185,7 +186,7 @@ m %>% addLegend(pal = pal, values = ~density, opacity = 0.7, title = NULL,
 ### Complete code
 
 ```{r results = 'hide'}
-# From http://leafletjs.com/examples/choropleth/us-states.js
+# From https://leafletjs.com/examples/choropleth/us-states.js
 states <- geojsonio::geojson_read("https://rstudio.github.io/leaflet/json/us-states.geojson", what = "sp")
 
 bins <- c(0, 10, 20, 50, 100, 200, 500, 1000, Inf)

@@ -12,7 +12,7 @@ The UI elements markers and popups are supported via `addMarkers()` and `addPopu
 ```{r}
 leaflet() %>% addTiles() %>%
   addMarkers(174.7690922, -36.8523071, icon = icons(
-    iconUrl = 'http://cran.rstudio.com/Rlogo.jpg',
+    iconUrl = 'https://cran.rstudio.com/Rlogo.jpg',
     iconWidth = 40, iconHeight = 40
   )) %>%
   addPopups(174.7690922, -36.8523071, 'R was born here!')
@@ -22,7 +22,7 @@ leaflet() %>% addTiles() %>%
 
 Currently tile layers are supported via `addTiles()`. By default, the OpenStreetMap tiles are used, and you can certainly use other tiles of your choice.
 
-A live demo of many tile sets is available [here](http://leaflet-extras.github.io/leaflet-providers/preview/index.html). Note that some tile set providers require you to register. See the [project page](https://github.com/leaflet-extras/leaflet-providers) for more information.
+A live demo of many tile sets is available [here](https://leaflet-extras.github.io/leaflet-providers/preview/). Note that some tile set providers require you to register. See the [project page](https://github.com/leaflet-extras/leaflet-providers) for more information.
 
 ```{r}
 leaflet() %>%
@@ -68,7 +68,7 @@ m %>% addPolygons(
 
 # Other Layers
 
-[GeoJSON](http://geojson.org) is a JSON format for encoding geographic data structures such as points, lines, and polygons. The function `addGeoJSON()` allows us to add a GeoJSON layer to the map, and the layer data is normally represented as an R list. For example, the GeoJSON data
+[GeoJSON](https://geojson.org/) is a JSON format for encoding geographic data structures such as points, lines, and polygons. The function `addGeoJSON()` allows us to add a GeoJSON layer to the map, and the layer data is normally represented as an R list. For example, the GeoJSON data
 
 ```javascript
 var MPoint = {

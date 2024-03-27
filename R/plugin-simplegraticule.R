@@ -12,15 +12,15 @@ leafletSimpleGraticuleDependencies <- function() {
 }
 
 #' Add a simple Graticule on the map
-#' see \url{https://github.com/ablakey/Leaflet.SimpleGraticule}
+#'
+#' See \url{https://github.com/ablakey/Leaflet.SimpleGraticule}
 #'
 #' @param map a map widget object
 #' @param interval The spacing in map units between horizontal and vertical lines.
 #' @param showOriginLabel  true Whether or not to show '(0,0)' at the origin.
-#' @param redraw on which map event to redraw the graticule. On move is default but moveend can be smoother.
+#' @param redraw on which map event to redraw the graticule. On move is default but `"moveend"` can be smoother.
 #' @param hidden hide on start
 #' @param zoomIntervals use different intervals in different zoom levels. If not specified, all zoom levels use value in interval option.
-
 #' @param layerId the layer id
 #' @param group the name of the group this layer belongs to.
 #' @examples

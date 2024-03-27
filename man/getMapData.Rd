@@ -2,13 +2,16 @@
 % Please edit documentation in R/leaflet.R
 \name{getMapData}
 \alias{getMapData}
-\title{returns the map's data}
+\title{Extract the map's data}
 \usage{
 getMapData(map)
 }
 \arguments{
 \item{map}{the map}
 }
+\value{
+The map's data
+}
 \description{
-returns the map's data
+Extract the map's data
 }

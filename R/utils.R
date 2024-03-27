@@ -34,9 +34,11 @@ dispatch <- function(map,
     stop("Invalid map parameter")
 }
 
-#' remove NULL elements from a list
-#' @param x A list whose NULL elements will be filtered
+#' Remove NULL elements from a list
+#' @param x A list.
 #' @export
+#' @returns A list with `NULL` elements filtered out.
+#' @keywords internal
 filterNULL <- function(x) {
   if (length(x) == 0 || !is.list(x)) return(x)
   x[!unlist(lapply(x, is.null))]

@@ -1,7 +1,9 @@
 #' Evaluate list members that are formulae, using the map data as the environment
-#' (if provided, otherwise the formula environment)
+#'
+#' Evaluates if provided. Otherwise, the formula environment is evaluated.
 #' @param list with members as formulae
 #' @param data map data
+#' @keywords internal
 #' @export
 evalFormula <- function(list, data) {
   evalAll <- function(x) {
@@ -44,7 +46,9 @@ expandLimits <- function(map, lat, lng) {
   map
 }
 
-#' Same as expandLimits, but takes a polygon (that presumably has a bbox attr)
+#' Notifies the map of polygons of interest on the map
+#'
+#' Same as `expandLimits()`, but takes a polygon (that presumably has a bbox attr)
 #' rather than lat/lng.
 #' @param map map object
 #' @param poly A spatial object representing a polygon.
@@ -1213,7 +1217,7 @@ markerOptions <- function(
 #'   \code{\{weight: 1.5, color: "#222", opacity: 0.5 \}}.
 #' @param freezeAtZoom Allows you to freeze cluster expansion to a zoom level.
 #'   Can be a zoom level e.g. 10, 12 or "max" or "maxKeepSpiderify".
-#'   See <https://github.com/ghybs/Leaflet.MarkerCluster.Freezable#api-reference>.
+#'   See \url{https://github.com/ghybs/Leaflet.MarkerCluster.Freezable#api-reference}.
 #' @describeIn map-options Options for marker clusters
 #' @export
 markerClusterOptions <- function(

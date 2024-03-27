@@ -35,16 +35,22 @@ metaData.data.frame <- function(obj) obj
 metaData.list <- function(obj) obj
 
 
-#' Given a data object and lng/lat arguments (which may be NULL [meaning infer
-#' from data], formula [which should be evaluated with respect to the data], or
+#' Normalize data to a data frame or Spatial object.
+#'
+#' Given a data object and lng/lat arguments (which may be `NULL`)
+#' [meaning infer from data], formula [which should be evaluated with respect to the data], or
 #' vector data [which should be used as-is]) return a lng/lat data frame.
+#'
 #' @param data map data
-#' @param lng longitude
-#' @param lat latitude
+#' @param lng,lat longitude and latitude
 #' @param missingLng whether lng is missing
 #' @param missingLat whether lat is missing
 #' @param funcName Name of calling function (for logging)
+#' @returns
+#' * `derivePoints()` returns a lng/lat data frame.
+#' * `derivePolygons()` returns a list with bbox attributes.
 #' @export
+#' @keywords internal
 derivePoints <- function(data, lng = NULL, lat = NULL,
                          missingLng = missing(lng),
                          missingLat = missing(lat),
@@ -65,15 +71,7 @@ derivePoints <- function(data, lng = NULL, lat = NULL,
   validateCoords(lng, lat, funcName)
 }
 
-#' Given a data object and lng/lat arguments (which may be NULL [meaning infer
-#' from data], formula [which should be evaluated with respect to the data], or
-#' vector data [which should be used as-is]) return a spatial object
-#' @param data map data
-#' @param lng longitude
-#' @param lat latitude
-#' @param missingLng whether lng is missing
-#' @param missingLat whether lat is missing
-#' @param funcName Name of calling function (for logging)
+#' @rdname derivePoints
 #' @export
 derivePolygons <- function(data, lng = NULL, lat = NULL,
                            missingLng = missing(lng),

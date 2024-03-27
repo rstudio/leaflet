@@ -1,6 +1,6 @@
-Please briefly describe your problem and what output you expect. If you have a question, please try using stackoverflow <http://stackoverflow.com> first.
+Please briefly describe your problem and what output you expect. If you have a question, please try using StackOverflow <https://stackoverflow.com> first.
 
-Please include a minimal reprex. The goal of a reprex is to make it as easy as possible for me to recreate your problem so that I can fix it. If you've never heard of a reprex before, start by reading <https://github.com/jennybc/reprex#what-is-a-reprex>, and follow the advice further down the page. Do NOT include session info unless it's explicitly asked for, or you've used `reprex::reprex(..., si = TRUE)` to hide it away.  Make sure to have `webshot` installed to have `reprex` produces images of the leaflet htmlwidgets.
+Please include a minimal reprex. The goal of a reprex is to make it as easy as possible for me to recreate your problem so that I can fix it. If you've never heard of a reprex before, start by reading <https://reprex.tidyverse.org/>, and follow the advice further down the page. Do NOT include session info unless it's explicitly asked for, or you've used `reprex::reprex(..., session_info = TRUE)` to hide it away.  Make sure to have `webshot` installed to have `reprex` produces images of the leaflet htmlwidgets.
 ```r
 # make sure webshot is installed to take pictures of htmlwidgets
 if (!("webshot" %in% installed.packages()[, "Package"])) {
