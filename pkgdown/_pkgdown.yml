@@ -1,5 +1,8 @@
 url: https://rstudio.github.io/leaflet/
 
+development:
+  mode: auto
+
 template:
   package: tidytemplate
   assets: pkgdown/assets
