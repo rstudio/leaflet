@@ -1,6 +1,6 @@
-# Contributing to leaflet
+# Contributing to `{leaflet}`
 
-We welcome contributions to the **leaflet** package!
+We welcome contributions to the `{leaflet}` package!
 
 To submit a contribution:
 

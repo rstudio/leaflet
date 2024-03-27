@@ -13,8 +13,7 @@ leafletSimpleGraticuleDependencies <- function() {
 
 #' Add a simple Graticule on the map
 #'
-#' See \url{https://github.com/ablakey/Leaflet.SimpleGraticule}
-#'
+#' @seealso \url{https://github.com/ablakey/Leaflet.SimpleGraticule}
 #' @param map a map widget object
 #' @param interval The spacing in map units between horizontal and vertical lines.
 #' @param showOriginLabel  true Whether or not to show '(0,0)' at the origin.

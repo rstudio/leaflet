@@ -15,8 +15,7 @@ leafletMiniMapDependencies <- function() {
 
 #' Add a minimap to the map
 #'
-#' See \url{https://github.com/Norkart/Leaflet-MiniMap}
-#'
+#' @seealso \url{https://github.com/Norkart/Leaflet-MiniMap}
 #' @param map a map widget object
 #' @param position The standard Leaflet.Control position parameter,
 #'    used like all the other controls.
