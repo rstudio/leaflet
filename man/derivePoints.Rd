@@ -42,7 +42,7 @@ derivePolygons(
 }
 \description{
 Given a data object and lng/lat arguments (which may be \code{NULL})
-\link{meaning infer from data}, formula \link{which should be evaluated with respect to the data}, or
-vector data \link{which should be used as-is}) return a lng/lat data frame.
+[meaning infer from data], formula [which should be evaluated with respect to the data], or
+vector data [which should be used as-is]) return a lng/lat data frame.
 }
 \keyword{internal}
