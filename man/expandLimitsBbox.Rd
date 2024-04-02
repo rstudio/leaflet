@@ -12,6 +12,6 @@ expandLimitsBbox(map, poly)
 \item{poly}{A spatial object representing a polygon.}
 }
 \description{
-Same as `expandLimits()`, but takes a polygon (that presumably has a bbox attr)
+Same as \code{expandLimits()}, but takes a polygon (that presumably has a bbox attr)
 rather than lat/lng.
 }

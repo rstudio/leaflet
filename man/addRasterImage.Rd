@@ -107,5 +107,5 @@ leaflet() \%>\% addTiles() \%>\%
 }
 \seealso{
 \code{\link{addRasterLegend}} for an easy way to add a legend for a
-  SpatRaster with a color table.
+SpatRaster with a color table.
 }

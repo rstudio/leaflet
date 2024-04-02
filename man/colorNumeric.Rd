@@ -52,15 +52,15 @@ colorFactor(
 
 \item{domain}{The possible values that can be mapped.
 
-  For \code{colorNumeric} and \code{colorBin}, this can be a simple numeric
-  range (e.g. \code{c(0, 100)}); \code{colorQuantile} needs representative
-  numeric data; and \code{colorFactor} needs categorical data.
+For \code{colorNumeric} and \code{colorBin}, this can be a simple numeric
+range (e.g. \code{c(0, 100)}); \code{colorQuantile} needs representative
+numeric data; and \code{colorFactor} needs categorical data.
 
-  If \code{NULL}, then whenever the resulting color function is called, the
-  \code{x} value will represent the domain. This implies that if the function
-  is invoked multiple times, the encoding between values and colors may not
-  be consistent; if consistency is needed, you must provide a non-\code{NULL}
-  domain.}
+If \code{NULL}, then whenever the resulting color function is called, the
+\code{x} value will represent the domain. This implies that if the function
+is invoked multiple times, the encoding between values and colors may not
+be consistent; if consistency is needed, you must provide a non-\code{NULL}
+domain.}
 
 \item{na.color}{The color to return for \code{NA} values. Note that
 \code{na.color = NA} is valid.}
@@ -100,9 +100,9 @@ factor, treat it as already in the correct order}
 }
 \value{
 A function that takes a single parameter \code{x}; when called with a
-  vector of numbers (except for \code{colorFactor}, which expects
-  factors/characters), #RRGGBB color strings are returned (unless
-  \code{alpha = TRUE} in which case #RRGGBBAA may also be possible).
+vector of numbers (except for \code{colorFactor}, which expects
+factors/characters), #RRGGBB color strings are returned (unless
+\code{alpha = TRUE} in which case #RRGGBBAA may also be possible).
 }
 \description{
 Conveniently maps data values (numeric or factor/character) to colors
@@ -113,23 +113,23 @@ according to a given palette, which can be provided in a variety of formats.
 to an interpolated palette.
 
 \code{colorBin} also maps continuous numeric data, but performs
-  binning based on value (see the \code{\link[base]{cut}} function). \code{colorBin}
-  defaults for the \code{\link[base]{cut}} function are \code{include.lowest
+binning based on value (see the \code{\link[base]{cut}} function). \code{colorBin}
+defaults for the \code{\link[base]{cut}} function are \code{include.lowest
   = TRUE} and \code{right = FALSE}.
 
 \code{colorQuantile} similarly bins numeric data, but via the
-  \code{\link[stats]{quantile}} function.
+\code{\link[stats]{quantile}} function.
 
 \code{colorFactor} maps factors to colors. If the palette is
-  discrete and has a different number of colors than the number of factors,
-  interpolation is used.
+discrete and has a different number of colors than the number of factors,
+interpolation is used.
 
 The \code{palette} argument can be any of the following:
 \enumerate{
-  \item{A character vector of RGB or named colors. Examples: \code{palette()}, \code{c("#000000", "#0000FF", "#FFFFFF")}, \code{topo.colors(10)}}
-  \item{The name of an RColorBrewer palette, e.g. \code{"BuPu"} or \code{"Greens"}.}
-  \item{The full name of a viridis palette: \code{"viridis"}, \code{"magma"}, \code{"inferno"}, or \code{"plasma"}.}
-  \item{A function that receives a single value between 0 and 1 and returns a color. Examples: \code{colorRamp(c("#000000", "#FFFFFF"), interpolate = "spline")}.}
+\item{A character vector of RGB or named colors. Examples: \code{palette()}, \code{c("#000000", "#0000FF", "#FFFFFF")}, \code{topo.colors(10)}}
+\item{The name of an RColorBrewer palette, e.g. \code{"BuPu"} or \code{"Greens"}.}
+\item{The full name of a viridis palette: \code{"viridis"}, \code{"magma"}, \code{"inferno"}, or \code{"plasma"}.}
+\item{A function that receives a single value between 0 and 1 and returns a color. Examples: \code{colorRamp(c("#000000", "#FFFFFF"), interpolate = "spline")}.}
 }
 }
 \examples{

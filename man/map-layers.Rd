@@ -330,7 +330,7 @@ options for each label. Default \code{NULL}}
 
 \item{clusterOptions}{if not \code{NULL}, markers will be clustered using
 \href{https://github.com/Leaflet/Leaflet.markercluster}{Leaflet.markercluster};
- you can use \code{\link{markerClusterOptions}()} to specify marker cluster
+you can use \code{\link{markerClusterOptions}()} to specify marker cluster
 options}
 
 \item{clusterId}{the id for the marker cluster layer}
@@ -416,10 +416,10 @@ Add graphics elements and layers to the map widget.
 }}
 \references{
 The Leaflet API documentation:
-  \url{https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html}
+\url{https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html}
 }
 \seealso{
 \code{\link{tileOptions}}, \code{\link{WMSTileOptions}},
-  \code{\link{popupOptions}}, \code{\link{markerOptions}},
-  \code{\link{pathOptions}}
+\code{\link{popupOptions}}, \code{\link{markerOptions}},
+\code{\link{pathOptions}}
 }

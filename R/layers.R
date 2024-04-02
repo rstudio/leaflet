@@ -678,7 +678,7 @@ gridOptions <- function(
 #' Remove one or more features from a map, identified by \code{layerId}; or,
 #' clear all features of the given type or group.
 #'
-#' @note When used with a \code{\link{leaflet}}() map object, these functions
+#' @note When used with a [leaflet][leaflet()] map object, these functions
 #'   don't actually remove the features from the map object, but simply add an
 #'   operation that will cause those features to be removed after they are
 #'   added. In other words, if you add a polygon \code{"foo"} and the call
@@ -692,8 +692,8 @@ gridOptions <- function(
 #'
 #'   WMS tile layers are extensions of tile layers, so they can also be removed
 #'   or cleared via \code{removeTiles()} or \code{clearTiles()}.
-#' @param map a map widget object, possibly created from \code{\link{leaflet}}()
-#'   but more likely from \code{\link{leafletProxy}}()
+#' @param map a map widget object, possibly created from [leaflet()]
+#'   but more likely from [leafletProxy()]
 #' @param layerId character vector; the layer id(s) of the item to remove
 #' @return the new \code{map} object
 #'

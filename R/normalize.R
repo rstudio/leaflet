@@ -38,8 +38,8 @@ metaData.list <- function(obj) obj
 #' Normalize data to a data frame or Spatial object.
 #'
 #' Given a data object and lng/lat arguments (which may be `NULL`)
-#' [meaning infer from data], formula [which should be evaluated with respect to the data], or
-#' vector data [which should be used as-is]) return a lng/lat data frame.
+#' \[meaning infer from data\], formula \[which should be evaluated with respect to the data\], or
+#' vector data \[which should be used as-is\]) return a lng/lat data frame.
 #'
 #' @param data map data
 #' @param lng,lat longitude and latitude

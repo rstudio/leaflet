@@ -21,5 +21,5 @@ adding functions.
 }
 \seealso{
 \code{\link{addLayersControl}} to allow users to show/hide layer
-  groups interactively
+groups interactively
 }

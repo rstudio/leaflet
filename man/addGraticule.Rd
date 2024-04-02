@@ -19,7 +19,7 @@ addGraticule(
 
 \item{interval}{The spacing in map units between horizontal and vertical lines.}
 
-\item{sphere}{boolean. Default `FALSE`}
+\item{sphere}{boolean. Default \code{FALSE}}
 
 \item{style}{path options for the generated lines. See \url{https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#path-option}}
 

@@ -22,7 +22,7 @@ addSimpleGraticule(
 
 \item{showOriginLabel}{true Whether or not to show '(0,0)' at the origin.}
 
-\item{redraw}{on which map event to redraw the graticule. On move is default but `"moveend"` can be smoother.}
+\item{redraw}{on which map event to redraw the graticule. On move is default but \code{"moveend"} can be smoother.}
 
 \item{hidden}{hide on start}
 
