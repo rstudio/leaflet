@@ -41,8 +41,8 @@ color (hex, rgba, etc.) or a named web color.}
 
 \item{fontFamily}{Used when \code{text} option is specified.}
 
-\item{text}{Use this text string instead of an icon.
-argument of \code{\link[=addAwesomeMarkers]{addAwesomeMarkers()}}.}
+\item{text}{Use this text string instead of an icon. Argument of
+\code{\link[=addAwesomeMarkers]{addAwesomeMarkers()}}.}
 }
 \value{
 A list of awesome-icon data that can be passed to the \code{icon}

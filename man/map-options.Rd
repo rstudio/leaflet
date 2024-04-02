@@ -140,7 +140,7 @@ transparency}
 
 \item{interactive}{whether the element emits mouse events}
 
-\item{clickable}{DEPRECATED! Use the \code{interactive} option.}
+\item{clickable}{DEPRECATED! Use the \code{interactive} argument.}
 
 \item{noHide, direction, offset, permanent}{label options; see \url{https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#tooltip-option}}
 

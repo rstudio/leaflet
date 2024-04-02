@@ -197,13 +197,13 @@ epsg3857 <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y
 #' a `RasterLayer` you can use [raster::sampleRegular()] as in
 #' `sampleRegular(x, 100000, asRaster=TRUE)`.
 #'
-#' By default, the `addRasterImage` function will project the raster data
+#' By default, `addRasterImage()` will project the raster data
 #' `x` to the Pseudo-Mercator projection (EPSG:3857). This can be a
 #' time-consuming operation for even moderately sized rasters; although it is much
 #' faster for SpatRasters than for RasterLayers.
 #' If you are repeatedly adding a particular raster to your Leaflet
 #' maps, you can perform the projection ahead of time using
-#' `projectRasterForLeaflet()`, and call `addRasterImage` with
+#' `projectRasterForLeaflet()`, and call `addRasterImage()` with
 #' `project = FALSE`.
 #'
 #' @param map a map widget object
@@ -1175,7 +1175,7 @@ b64EncodePackedIcons <- function(packedIcons) {
 }
 
 #' @param interactive whether the element emits mouse events
-#' @param clickable DEPRECATED! Use the `interactive` option.
+#' @param clickable DEPRECATED! Use the `interactive` argument.
 #' @param
 #'   draggable,keyboard,title,alt,zIndexOffset,riseOnHover,riseOffset
 #'   marker options; see <https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#marker-option>
@@ -1597,8 +1597,8 @@ clearGeoJSON <- function(map) {
 #'   most commonly used for mostly-opaque tile layers.
 #' @param overlayGroups character vector where each element is the name of a
 #'   group. The user can turn each overlay group on or off independently.
-#' @param position position of control: "topleft", "topright", "bottomleft", or
-#'   "bottomright"
+#' @param position position of control: `"topleft"`, `"topright"`,
+#'   `"bottomleft"`, or `"bottomright"`.
 #' @param options a list of additional options, intended to be provided by
 #'   a call to `layersControlOptions()`
 #' @template data-getMapData

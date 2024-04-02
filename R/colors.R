@@ -3,7 +3,7 @@
 #' Conveniently maps data values (numeric or factor/character) to colors
 #' according to a given palette, which can be provided in a variety of formats.
 #'
-#' `colorNumeric` is a simple linear mapping from continuous numeric data
+#' `colorNumeric()` is a simple linear mapping from continuous numeric data
 #' to an interpolated palette.
 #'
 #' @param palette The colors or color function that values will be mapped to
@@ -93,8 +93,8 @@ getBins <- function(domain, x, bins, pretty) {
   }
 }
 
-#' @details `colorBin` also maps continuous numeric data, but performs
-#'   binning based on value (see the [base::cut()] function). `colorBin`
+#' @details `colorBin()` also maps continuous numeric data, but performs
+#'   binning based on value (see the [base::cut()] function). `colorBin()`
 #'   defaults for the [base::cut()] function are `include.lowest
 #'   = TRUE` and `right = FALSE`.
 #' @param bins Either a numeric vector of two or more unique cut points or a
@@ -136,12 +136,10 @@ colorBin <- function(palette, domain, bins = 7, pretty = TRUE,
   })
 }
 
-#' @details `colorQuantile()` similarly bins numeric data, but via the
-#'   [stats::quantile()] function.
+#' @details `colorQuantile()` similarly bins numeric data, but via [stats::quantile()].
 #' @param n Number of equal-size quantiles desired. For more precise control,
-#'   use the `probs` argument instead.
-#' @param probs See [stats::quantile()]. If provided, the `n`
-#'   argument is ignored.
+#'   use `probs` instead.
+#' @param probs See [stats::quantile()]. If provided, `n` is ignored.
 #' @rdname colorNumeric
 #' @export
 colorQuantile <- function(palette, domain, n = 4,

@@ -32,7 +32,7 @@ Creates a map-like object that can be used to customize and control a map
 that has already been rendered. For use in Shiny apps and Shiny docs only.
 }
 \details{
-Normally, you create a Leaflet map using the \code{\link[=leaflet]{leaflet()}} function.
+Normally, you create a Leaflet map using \code{\link[=leaflet]{leaflet()}}.
 This creates an in-memory representation of a map that you can customize
 using functions like \code{\link[=addPolygons]{addPolygons()}} and \code{\link[=setView]{setView()}}.
 Such a map can be printed at the R console, included in an R Markdown
@@ -43,7 +43,7 @@ is rendered to an output. At this point, the in-memory representation of the
 map is long gone, and the user's web browser has already realized the Leaflet
 map instance.
 
-This is where \code{leafletProxy} comes in. It returns an object that can
+This is where \code{leafletProxy()} comes in. It returns an object that can
 stand in for the usual Leaflet map object. The usual map functions like
 \code{\link[=addPolygons]{addPolygons()}} and \code{\link[=setView]{setView()}} can be called, and
 instead of customizing an in-memory representation, these commands will

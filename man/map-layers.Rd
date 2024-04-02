@@ -272,8 +272,8 @@ addTopoJSON(
 \item{html}{the content of the control. May be provided as string or as HTML
 generated with Shiny/htmltools tags}
 
-\item{position}{position of control: "topleft", "topright", "bottomleft", or
-"bottomright"}
+\item{position}{position of control: \code{"topleft"}, \code{"topright"},
+\code{"bottomleft"}, or \code{"bottomright"}.}
 
 \item{layerId}{the layer id}
 

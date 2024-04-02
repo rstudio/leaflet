@@ -164,7 +164,7 @@ makeAwesomeIcon <- function(
 #' An icon can be represented as a list of the form `list(icon, library,
 #' ...)`. This function is vectorized over its arguments to create a list of
 #' icon data. Shorter argument values will be recycled. `NULL` values for
-#' these arguments will be ignored. 
+#' these arguments will be ignored.
 #' @seealso <https://github.com/lennardv2/Leaflet.awesome-markers>
 #' @param icon Name of the icon
 #' @param library Which icon library. Default `"glyphicon"`, other possible
@@ -175,15 +175,14 @@ makeAwesomeIcon <- function(
 #' `"cadetblue"`, `"white"`, `"gray"`, `"lightgray"`, `"black"`
 #' @param iconColor The color to use for the icon itself. Use any CSS-valid
 #'   color (hex, rgba, etc.) or a named web color.
-#' @param spin If `TRUE`, make the icon spin (only works when `library
-#'   = "fa"`)
+#' @param spin If `TRUE`, make the icon spin (only works when `library = "fa"`)
 #' @param extraClasses Additional css classes to include on the icon.
 #' @return A list of awesome-icon data that can be passed to the `icon`
 #' @param squareMarker Whether to use a square marker.
 #' @param iconRotate Rotate the icon by a given angle.
 #' @param fontFamily Used when `text` option is specified.
-#' @param text Use this text string instead of an icon.
-#'   argument of [addAwesomeMarkers()].
+#' @param text Use this text string instead of an icon. Argument of
+#'   [addAwesomeMarkers()].
 #' @export
 awesomeIcons <- function(
   icon = "home",

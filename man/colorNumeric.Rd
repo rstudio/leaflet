@@ -87,10 +87,9 @@ to generate the bins and the breaks may not be "pretty".}
 \item{right}{parameter supplied to cut. See Details}
 
 \item{n}{Number of equal-size quantiles desired. For more precise control,
-use the \code{probs} argument instead.}
+use \code{probs} instead.}
 
-\item{probs}{See \code{\link[stats:quantile]{stats::quantile()}}. If provided, the \code{n}
-argument is ignored.}
+\item{probs}{See \code{\link[stats:quantile]{stats::quantile()}}. If provided, \code{n} is ignored.}
 
 \item{levels}{An alternate way of specifying levels; if specified, domain is
 ignored}
@@ -109,15 +108,14 @@ Conveniently maps data values (numeric or factor/character) to colors
 according to a given palette, which can be provided in a variety of formats.
 }
 \details{
-\code{colorNumeric} is a simple linear mapping from continuous numeric data
+\code{colorNumeric()} is a simple linear mapping from continuous numeric data
 to an interpolated palette.
 
-\code{colorBin} also maps continuous numeric data, but performs
-binning based on value (see the \code{\link[base:cut]{base::cut()}} function). \code{colorBin}
+\code{colorBin()} also maps continuous numeric data, but performs
+binning based on value (see the \code{\link[base:cut]{base::cut()}} function). \code{colorBin()}
 defaults for the \code{\link[base:cut]{base::cut()}} function are \code{include.lowest = TRUE} and \code{right = FALSE}.
 
-\code{colorQuantile()} similarly bins numeric data, but via the
-\code{\link[stats:quantile]{stats::quantile()}} function.
+\code{colorQuantile()} similarly bins numeric data, but via \code{\link[stats:quantile]{stats::quantile()}}.
 
 \code{colorFactor()} maps factors to colors. If the palette is
 discrete and has a different number of colors than the number of factors,

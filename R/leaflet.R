@@ -1,14 +1,13 @@
 #' Leaflet sizing policy
 #'
 #' Sizing policy used withing leaflet htmlwidgets.
-#' All arguments are passed directly to [htmlwidgets::sizingPolicy()]
 #'
 #' @export
 #' @param defaultWidth defaults to `"100%"` of the available width
 #' @param defaultHeight defaults to 400px tall
 #' @param padding defaults to 0px
 #' @param browser.fill defaults to `TRUE`
-#' @param ... all other arguments supplied to [htmlwidgets::sizingPolicy()]
+#' @inheritDotParams htmlwidgets::sizingPolicy
 #' @return An `htmlwidgets::sizingPolicy` object
 leafletSizingPolicy <- function(
   defaultWidth = "100%",
@@ -140,11 +139,13 @@ mapOptions <- function(map, zoomToLimits = c("always", "first", "never")) {
 }
 
 #' Options for Map creation
-#' @param  minZoom Minimum zoom level of the map. Overrides any minZoom set on map layers.
-#' @param  maxZoom Maximum zoom level of the map. This overrides any maxZoom set on map layers.
+#' @param  minZoom Minimum zoom level of the map. Overrides any `minZoom` set on map layers.
+#' @param  maxZoom Maximum zoom level of the map. This overrides any `maxZoom` set on map layers.
 #' @param  crs Coordinate Reference System to use. Don't change this if you're not sure what it means.
 #' @seealso [leafletCRS()] for creating a custom CRS.
-#' @param  worldCopyJump With this option enabled, the map tracks when you pan to another "copy" of the world and seamlessly jumps to the original one so that all overlays like markers and vector layers are still visible.
+#' @param  worldCopyJump With this option enabled, the map tracks when you pan
+#'   to another "copy" of the world and seamlessly jumps to the original
+#'   one so that all overlays like markers and vector layers are still visible.
 #' @param preferCanvas Whether leaflet.js Paths should be rendered on a Canvas renderer.
 #' @param ... other options used for leaflet.js map creation.
 #' @describeIn leaflet Options for map creation

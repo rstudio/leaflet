@@ -57,13 +57,15 @@ objects from the \pkg{sp} package that represent points, lines, or polygons.}
 
 \item{sizingPolicy}{htmlwidgets sizing policy object. Defaults to \code{\link[=leafletSizingPolicy]{leafletSizingPolicy()}}}
 
-\item{minZoom}{Minimum zoom level of the map. Overrides any minZoom set on map layers.}
+\item{minZoom}{Minimum zoom level of the map. Overrides any \code{minZoom} set on map layers.}
 
-\item{maxZoom}{Maximum zoom level of the map. This overrides any maxZoom set on map layers.}
+\item{maxZoom}{Maximum zoom level of the map. This overrides any \code{maxZoom} set on map layers.}
 
 \item{crs}{Coordinate Reference System to use. Don't change this if you're not sure what it means.}
 
-\item{worldCopyJump}{With this option enabled, the map tracks when you pan to another "copy" of the world and seamlessly jumps to the original one so that all overlays like markers and vector layers are still visible.}
+\item{worldCopyJump}{With this option enabled, the map tracks when you pan
+to another "copy" of the world and seamlessly jumps to the original
+one so that all overlays like markers and vector layers are still visible.}
 
 \item{preferCanvas}{Whether leaflet.js Paths should be rendered on a Canvas renderer.}
 

@@ -7,14 +7,11 @@
 
 #' Extension points for plugins
 #'
-#' @param map a map object, as returned from [leaflet()] or
-#'   [leafletProxy()]
+#' @param map a map object, as returned from [leaflet()] or [leafletProxy()]
 #' @param funcName the name of the function that the user called that caused
 #'   this `dispatch` call; for error message purposes
-#' @param leaflet an action to be performed if the map is from
-#'   [leaflet()]
-#' @param leaflet_proxy an action to be performed if the map is from
-#'   [leafletProxy()]
+#' @param leaflet an action to be performed if the map is from [leaflet()]
+#' @param leaflet_proxy an action to be performed if the map is from [leafletProxy()].
 #'
 #' @return `dispatch()` returns the value of `leaflet` or
 #'   `leaflet_proxy()`, or an error. `invokeMethod()` returns the
@@ -44,8 +41,7 @@ filterNULL <- function(x) {
   x[!unlist(lapply(x, is.null))]
 }
 
-#' @param data a data object that will be used when evaluating formulas in
-#'   `...`
+#' @param data a data object that will be used when evaluating formulas in `...`
 #' @param method the name of the JavaScript method to invoke
 #' @param ... unnamed arguments to be passed to the JavaScript method
 #' @rdname dispatch
@@ -83,7 +79,7 @@ invokeMethod <- function(map, data, method, ...) {
 #' Creates a map-like object that can be used to customize and control a map
 #' that has already been rendered. For use in Shiny apps and Shiny docs only.
 #'
-#' Normally, you create a Leaflet map using the [leaflet()] function.
+#' Normally, you create a Leaflet map using [leaflet()].
 #' This creates an in-memory representation of a map that you can customize
 #' using functions like [addPolygons()] and [setView()].
 #' Such a map can be printed at the R console, included in an R Markdown
@@ -94,7 +90,7 @@ invokeMethod <- function(map, data, method, ...) {
 #' map is long gone, and the user's web browser has already realized the Leaflet
 #' map instance.
 #'
-#' This is where `leafletProxy` comes in. It returns an object that can
+#' This is where `leafletProxy()` comes in. It returns an object that can
 #' stand in for the usual Leaflet map object. The usual map functions like
 #' [addPolygons()] and [setView()] can be called, and
 #' instead of customizing an in-memory representation, these commands will

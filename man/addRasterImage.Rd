@@ -83,13 +83,13 @@ as in \code{x = spatSample(x, 100000, method="regular", as.raster=TRUE)}. With
 a \code{RasterLayer} you can use \code{\link[raster:sampleRegular]{raster::sampleRegular()}} as in
 \code{sampleRegular(x, 100000, asRaster=TRUE)}.
 
-By default, the \code{addRasterImage} function will project the raster data
+By default, \code{addRasterImage()} will project the raster data
 \code{x} to the Pseudo-Mercator projection (EPSG:3857). This can be a
 time-consuming operation for even moderately sized rasters; although it is much
 faster for SpatRasters than for RasterLayers.
 If you are repeatedly adding a particular raster to your Leaflet
 maps, you can perform the projection ahead of time using
-\code{projectRasterForLeaflet()}, and call \code{addRasterImage} with
+\code{projectRasterForLeaflet()}, and call \code{addRasterImage()} with
 \code{project = FALSE}.
 }
 \examples{
