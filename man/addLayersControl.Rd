@@ -58,10 +58,10 @@ any number of overlay layers to view.
 \donttest{
 leaflet() \%>\%
   addTiles(group = "OpenStreetMap") \%>\%
-  addProviderTiles("Stamen.Toner", group = "Toner by Stamen") \%>\%
+  addProviderTiles("CartoDB.Voyager", group = "Carto Voyager") \%>\%
   addMarkers(runif(20, -75, -74), runif(20, 41, 42), group = "Markers") \%>\%
   addLayersControl(
-    baseGroups = c("OpenStreetMap", "Toner by Stamen"),
+    baseGroups = c("OpenStreetMap", "Carto Voyager"),
     overlayGroups = c("Markers")
   )
 }

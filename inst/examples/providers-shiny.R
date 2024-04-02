@@ -8,9 +8,9 @@ ui <- fluidPage(
       selectInput(
         "providerName",
         "Tile set",
-        c("Stamen.Toner",
-          "Stamen.TonerLite",
-          "Stamen.Watercolor")
+        c("CartoDB.Positron",
+          "CartoDB.Voyager",
+          "CartoDB.DarkMatter")
         )
     ),
     column(

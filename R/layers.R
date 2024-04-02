@@ -123,7 +123,7 @@ hideGroup <- function(map, group) {
 #'   addMarkers(data = quakes, group = "basic") %>%
 #'   # When zoomed in, we'll show circles at the base of each marker whose
 #'   # radius and color reflect the magnitude
-#'   addProviderTiles(providers$Stamen.TonerLite, group = "detail") %>%
+#'   addProviderTiles(providers$Esri.WorldTopoMap, group = "detail") %>%
 #'   addCircleMarkers(data = quakes, group = "detail", fillOpacity = 0.5,
 #'     radius = ~mag * 5, color = ~pal(mag), stroke = FALSE) %>%
 #'   # Set the detail group to only appear when zoomed in
@@ -1608,10 +1608,10 @@ clearGeoJSON <- function(map) {
 #' \donttest{
 #' leaflet() %>%
 #'   addTiles(group = "OpenStreetMap") %>%
-#'   addProviderTiles("Stamen.Toner", group = "Toner by Stamen") %>%
+#'   addProviderTiles("CartoDB.Voyager", group = "Carto Voyager") %>%
 #'   addMarkers(runif(20, -75, -74), runif(20, 41, 42), group = "Markers") %>%
 #'   addLayersControl(
-#'     baseGroups = c("OpenStreetMap", "Toner by Stamen"),
+#'     baseGroups = c("OpenStreetMap", "Carto Voyager"),
 #'     overlayGroups = c("Markers")
 #'   )
 #' }
