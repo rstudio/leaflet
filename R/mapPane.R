@@ -2,20 +2,20 @@
 #'
 #' @description
 #' map panes can be created by supplying a name and a zIndex to control layer
-#' ordering. We recommend a \code{zIndex} value between 400 (the default
+#' ordering. We recommend a `zIndex` value between 400 (the default
 #' overlay pane) and 500 (the default shadow pane). You can then use this pane
-#' to render overlays (points, lines, polygons) by setting the \code{pane}
+#' to render overlays (points, lines, polygons) by setting the `pane`
 #' argument in [leafletOptions()]. This will give you control
 #' over the order of the layers, e.g. points always on top of polygons.
 #' If two layers are provided to the same pane, overlay will be determined by
 #' order of adding. See examples below.
-#' See \url{https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#map-pane} for details.
+#' See <https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#map-pane> for details.
 #'
 #' If the error "Cannot read property 'appendChild' of undefined" occurs, make
 #' sure the pane being used for used for display has already been added to the map.
 #'
-#' @param map A \code{leaflet} or \code{mapview} object.
-#' @param name The name of the new pane (refer to this in \code{leafletOptions}.
+#' @param map A `leaflet` or `mapview` object.
+#' @param name The name of the new pane (refer to this in `leafletOptions`.
 #' @param zIndex The zIndex of the pane. Panes with higher index are rendered
 #' above panes with lower indices.
 #'

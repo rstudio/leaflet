@@ -22,7 +22,7 @@ setMaxBounds(map, lng1, lat1, lng2, lat2)
 clearBounds(map)
 }
 \arguments{
-\item{map}{a map widget object created from \code{\link{leaflet}()}}
+\item{map}{a map widget object created from \code{\link[=leaflet]{leaflet()}}}
 
 \item{lng}{The longitude of the map center}
 

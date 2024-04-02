@@ -31,8 +31,7 @@ values are \code{"fa"} (fontawesome) or \code{"ion"} (ionicons).}
 \item{iconColor}{The color to use for the icon itself. Use any CSS-valid
 color (hex, rgba, etc.) or a named web color.}
 
-\item{spin}{If \code{TRUE}, make the icon spin (only works when \code{library
-= "fa"})}
+\item{spin}{If \code{TRUE}, make the icon spin (only works when \code{library = "fa"})}
 
 \item{extraClasses}{Additional css classes to include on the icon.}
 
@@ -43,14 +42,13 @@ color (hex, rgba, etc.) or a named web color.}
 \item{fontFamily}{Used when \code{text} option is specified.}
 
 \item{text}{Use this text string instead of an icon.
-argument of \code{\link{addAwesomeMarkers}()}.}
+argument of \code{\link[=addAwesomeMarkers]{addAwesomeMarkers()}}.}
 }
 \value{
 A list of awesome-icon data that can be passed to the \code{icon}
 }
 \description{
-An icon can be represented as a list of the form \code{list(icon, library,
-...)}. This function is vectorized over its arguments to create a list of
+An icon can be represented as a list of the form \code{list(icon, library, ...)}. This function is vectorized over its arguments to create a list of
 icon data. Shorter argument values will be recycled. \code{NULL} values for
 these arguments will be ignored.
 }

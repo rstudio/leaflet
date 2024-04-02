@@ -71,7 +71,7 @@ addIonIcon <- function(map) {
 
 #' Make awesome-icon set
 #'
-#' @param ... icons created from \code{\link{makeAwesomeIcon}()}
+#' @param ... icons created from [makeAwesomeIcon()]
 #' @export
 #' @examples
 #'
@@ -161,29 +161,29 @@ makeAwesomeIcon <- function(
 
 #' Create a list of awesome icon data
 #'
-#' An icon can be represented as a list of the form \code{list(icon, library,
-#' ...)}. This function is vectorized over its arguments to create a list of
-#' icon data. Shorter argument values will be recycled. \code{NULL} values for
+#' An icon can be represented as a list of the form `list(icon, library,
+#' ...)`. This function is vectorized over its arguments to create a list of
+#' icon data. Shorter argument values will be recycled. `NULL` values for
 #' these arguments will be ignored. 
-#' @seealso \url{https://github.com/lennardv2/Leaflet.awesome-markers}
+#' @seealso <https://github.com/lennardv2/Leaflet.awesome-markers>
 #' @param icon Name of the icon
-#' @param library Which icon library. Default \code{"glyphicon"}, other possible
-#'   values are \code{"fa"} (fontawesome) or \code{"ion"} (ionicons).
-#' @param markerColor Possible values are \code{"red"}, \code{"darkred"}, \code{"lightred"}, \code{"orange"},
-#' \code{"beige"}, \code{"green"}, \code{"darkgreen"}, \code{"lightgreen"}, \code{"blue"},
-#' \code{"darkblue"}, \code{"lightblue"}, \code{"purple"}, \code{"darkpurple"}, \code{"pink"},
-#' \code{"cadetblue"}, \code{"white"}, \code{"gray"}, \code{"lightgray"}, \code{"black"}
+#' @param library Which icon library. Default `"glyphicon"`, other possible
+#'   values are `"fa"` (fontawesome) or `"ion"` (ionicons).
+#' @param markerColor Possible values are `"red"`, `"darkred"`, `"lightred"`, `"orange"`,
+#' `"beige"`, `"green"`, `"darkgreen"`, `"lightgreen"`, `"blue"`,
+#' `"darkblue"`, `"lightblue"`, `"purple"`, `"darkpurple"`, `"pink"`,
+#' `"cadetblue"`, `"white"`, `"gray"`, `"lightgray"`, `"black"`
 #' @param iconColor The color to use for the icon itself. Use any CSS-valid
 #'   color (hex, rgba, etc.) or a named web color.
-#' @param spin If \code{TRUE}, make the icon spin (only works when \code{library
-#'   = "fa"})
+#' @param spin If `TRUE`, make the icon spin (only works when `library
+#'   = "fa"`)
 #' @param extraClasses Additional css classes to include on the icon.
-#' @return A list of awesome-icon data that can be passed to the \code{icon}
+#' @return A list of awesome-icon data that can be passed to the `icon`
 #' @param squareMarker Whether to use a square marker.
 #' @param iconRotate Rotate the icon by a given angle.
-#' @param fontFamily Used when \code{text} option is specified.
+#' @param fontFamily Used when `text` option is specified.
 #' @param text Use this text string instead of an icon.
-#'   argument of \code{\link{addAwesomeMarkers}()}.
+#'   argument of [addAwesomeMarkers()].
 #' @export
 awesomeIcons <- function(
   icon = "home",
@@ -220,33 +220,33 @@ verifyIconLibrary <- function(library) {
 #' Add Awesome Markers
 #' @param map the map to add awesome Markers to.
 #' @param lng a numeric vector of longitudes, or a one-sided formula of the form
-#'   \code{~x} where \code{x} is a variable in \code{data}; by default (if not
-#'   explicitly provided), it will be automatically inferred from \code{data} by
-#'   looking for a column named \code{lng}, \code{long}, or \code{longitude}
+#'   `~x` where `x` is a variable in `data`; by default (if not
+#'   explicitly provided), it will be automatically inferred from `data` by
+#'   looking for a column named `lng`, `long`, or `longitude`
 #'   (case-insensitively)
-#' @param lat a vector of latitudes or a formula (similar to the \code{lng}
-#'   argument; the names \code{lat} and \code{latitude} are used when guessing
-#'   the latitude column from \code{data})
+#' @param lat a vector of latitudes or a formula (similar to the `lng`
+#'   argument; the names `lat` and `latitude` are used when guessing
+#'   the latitude column from `data`)
 #' @param popup a character vector of the HTML content for the popups (you are
-#'   recommended to escape the text using \code{\link[htmltools]{htmlEscape}()}
+#'   recommended to escape the text using [htmltools::htmlEscape()]
 #'   for security reasons)
-#' @param popupOptions A Vector of \code{\link{popupOptions}} to provide popups
+#' @param popupOptions A Vector of [popupOptions()] to provide popups
 #' @param layerId the layer id
 #' @param group the name of the group the newly created layers should belong to
-#'   (for \code{\link{clearGroup}} and \code{\link{addLayersControl}} purposes).
+#'   (for [clearGroup()] and [addLayersControl()] purposes).
 #'   Human-friendly group names are permitted--they need not be short,
 #'   identifier-style names. Any number of layers and even different types of
 #'   layers (e.g. markers and polygons) can share the same group name.
 #' @param data the data object from which the argument values are derived; by
-#'   default, it is the \code{data} object provided to \code{leaflet()}
+#'   default, it is the `data` object provided to `leaflet()`
 #'   initially, but can be overridden
 #' @param icon the icon(s) for markers;
 #' @param label a character vector of the HTML content for the labels
-#' @param labelOptions A Vector of \code{\link{labelOptions}} to provide label
-#' options for each label. Default \code{NULL}
-#' @param clusterOptions if not \code{NULL}, markers will be clustered using
-#'   \href{https://github.com/Leaflet/Leaflet.markercluster}{Leaflet.markercluster};
-#'    you can use \code{\link{markerClusterOptions}()} to specify marker cluster
+#' @param labelOptions A Vector of [labelOptions()] to provide label
+#' options for each label. Default `NULL`
+#' @param clusterOptions if not `NULL`, markers will be clustered using
+#'   [Leaflet.markercluster](https://github.com/Leaflet/Leaflet.markercluster);
+#'    you can use [markerClusterOptions()] to specify marker cluster
 #'   options
 #' @param clusterId the id for the marker cluster layer
 #' @param options a list of extra options for tile layers, popups, paths

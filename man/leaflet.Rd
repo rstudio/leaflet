@@ -55,7 +55,7 @@ objects from the \pkg{sp} package that represent points, lines, or polygons.}
 \item{elementId}{Use an explicit element ID for the widget
 (rather than an automatically generated one).}
 
-\item{sizingPolicy}{htmlwidgets sizing policy object. Defaults to \code{\link{leafletSizingPolicy}()}}
+\item{sizingPolicy}{htmlwidgets sizing policy object. Defaults to \code{\link[=leafletSizingPolicy]{leafletSizingPolicy()}}}
 
 \item{minZoom}{Minimum zoom level of the map. Overrides any minZoom set on map layers.}
 
@@ -92,11 +92,11 @@ for zoom levels; specify either scales or resolutions, not both}
 Proj4Leaflet will use this in the getSize method, otherwise
 defaulting to Leaflet's default CRS size}
 
-\item{tileSize}{DEPRECATED! Specify the tilesize in the \code{\link{tileOptions}()} argument.}
+\item{tileSize}{DEPRECATED! Specify the tilesize in the \code{\link[=tileOptions]{tileOptions()}} argument.}
 }
 \value{
 A HTML widget object, on which we can add graphics layers using
-\code{\%>\%} (see examples).
+\verb{\\\%>\\\%} (see examples).
 }
 \description{
 This function creates a Leaflet map widget using \pkg{htmlwidgets}. The
@@ -107,8 +107,7 @@ other applications.
 The \code{data} argument is only needed if you are going to reference
 variables in this object later in map layers. For example, \code{data} can be
 a data frame containing columns \code{latitude} and \code{longtitude}, then
-we may add a circle layer to the map by \code{leaflet(data) \%>\%
-addCircles(lat = ~latitude, lng = ~longtitude)}, where the variables in the
+we may add a circle layer to the map by \verb{leaflet(data) \\\%>\\\% addCircles(lat = ~latitude, lng = ~longtitude)}, where the variables in the
 formulae will be evaluated in the \code{data}.
 }
 \section{Functions}{
@@ -276,7 +275,7 @@ m \%>\% addCircleMarkers(~lng, ~lat, radius = ~size,
 
 }
 \seealso{
-\code{\link{leafletCRS}} for creating a custom CRS.
+\code{\link[=leafletCRS]{leafletCRS()}} for creating a custom CRS.
 
 See \url{https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#map-option} for details and more options.
 }

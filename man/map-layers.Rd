@@ -267,7 +267,7 @@ addTopoJSON(
 )
 }
 \arguments{
-\item{map}{a map widget object created from \code{\link{leaflet}()}}
+\item{map}{a map widget object created from \code{\link[=leaflet]{leaflet()}}}
 
 \item{html}{the content of the control. May be provided as string or as HTML
 generated with Shiny/htmltools tags}
@@ -288,7 +288,7 @@ initially, but can be overridden}
 \item{attribution}{the attribution text of the tile layer (HTML)}
 
 \item{group}{the name of the group the newly created layers should belong to
-(for \code{\link{clearGroup}} and \code{\link{addLayersControl}} purposes).
+(for \code{\link[=clearGroup]{clearGroup()}} and \code{\link[=addLayersControl]{addLayersControl()}} purposes).
 Human-friendly group names are permitted--they need not be short,
 identifier-style names. Any number of layers and even different types of
 layers (e.g. markers and polygons) can share the same group name.}
@@ -311,26 +311,26 @@ argument; the names \code{lat} and \code{latitude} are used when guessing
 the latitude column from \code{data})}
 
 \item{popup}{a character vector of the HTML content for the popups (you are
-recommended to escape the text using \code{\link[htmltools]{htmlEscape}()}
+recommended to escape the text using \code{\link[htmltools:htmlEscape]{htmltools::htmlEscape()}}
 for security reasons)}
 
 \item{icon}{the icon(s) for markers; an icon is represented by an R list of
 the form \code{list(iconUrl = "?", iconSize = c(x, y))}, and you can use
-\code{\link{icons}()} to create multiple icons; note when you use an R list
+\code{\link[=icons]{icons()}} to create multiple icons; note when you use an R list
 that contains images as local files, these local image files will be base64
 encoded into the HTML page so the icon images will still be available even
 when you publish the map elsewhere}
 
-\item{popupOptions}{A Vector of \code{\link{popupOptions}} to provide popups}
+\item{popupOptions}{A Vector of \code{\link[=popupOptions]{popupOptions()}} to provide popups}
 
 \item{label}{a character vector of the HTML content for the labels}
 
-\item{labelOptions}{A Vector of \code{\link{labelOptions}} to provide label
+\item{labelOptions}{A Vector of \code{\link[=labelOptions]{labelOptions()}} to provide label
 options for each label. Default \code{NULL}}
 
 \item{clusterOptions}{if not \code{NULL}, markers will be clustered using
 \href{https://github.com/Leaflet/Leaflet.markercluster}{Leaflet.markercluster};
-you can use \code{\link{markerClusterOptions}()} to specify marker cluster
+you can use \code{\link[=markerClusterOptions]{markerClusterOptions()}} to specify marker cluster
 options}
 
 \item{clusterId}{the id for the marker cluster layer}
@@ -356,8 +356,7 @@ circles)}
 \item{fillOpacity}{fill opacity}
 
 \item{dashArray}{a string that defines the stroke
-\href{https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray}{dash
-pattern}}
+\href{https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray}{dash pattern}}
 
 \item{bringToFront}{Whether the shape should be brought to front on hover.}
 
@@ -419,7 +418,7 @@ The Leaflet API documentation:
 \url{https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html}
 }
 \seealso{
-\code{\link{tileOptions}}, \code{\link{WMSTileOptions}},
-\code{\link{popupOptions}}, \code{\link{markerOptions}},
-\code{\link{pathOptions}}
+\code{\link[=tileOptions]{tileOptions()}}, \code{\link[=WMSTileOptions]{WMSTileOptions()}},
+\code{\link[=popupOptions]{popupOptions()}}, \code{\link[=markerOptions]{markerOptions()}},
+\code{\link[=pathOptions]{pathOptions()}}
 }

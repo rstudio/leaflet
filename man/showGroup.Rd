@@ -20,6 +20,6 @@ created using the \code{group} parameter that is included on most layer
 adding functions.
 }
 \seealso{
-\code{\link{addLayersControl}} to allow users to show/hide layer
+\code{\link[=addLayersControl]{addLayersControl()}} to allow users to show/hide layer
 groups interactively
 }

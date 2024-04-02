@@ -7,7 +7,7 @@
 mapOptions(map, zoomToLimits = c("always", "first", "never"))
 }
 \arguments{
-\item{map}{A map widget object created from \code{\link{leaflet}()}}
+\item{map}{A map widget object created from \code{\link[=leaflet]{leaflet()}}}
 
 \item{zoomToLimits}{Controls whether the map is zooms to the limits of the
 elements on the map. This is useful for interactive applications where the

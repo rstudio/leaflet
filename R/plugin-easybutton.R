@@ -13,7 +13,7 @@ leafletEasyButtonDependencies <- function() {
 
 #' Create an easyButton statestate
 #' @param stateName a unique name for the state
-#' @seealso \code{\link{easyButton}}
+#' @seealso [easyButton()]
 #' @describeIn easyButton state of an easyButton.
 #' @export
 easyButtonState <- function(
@@ -35,7 +35,7 @@ easyButtonState <- function(
 }
 
 #' Creates an easy button.
-#' @seealso \url{https://github.com/CliffCloud/Leaflet.EasyButton}
+#' @seealso <https://github.com/CliffCloud/Leaflet.EasyButton>
 #' @param icon the button icon
 #' @param title text to show on hover
 #' @param onClick the action to take
@@ -71,10 +71,10 @@ easyButton <- function(
 }
 
 #' Add a EasyButton on the map
-#' see \url{https://github.com/CliffCloud/Leaflet.EasyButton}
+#' see <https://github.com/CliffCloud/Leaflet.EasyButton>
 #'
 #' @param map a map widget object
-#' @param button the button object created with \code{\link{easyButton}}
+#' @param button the button object created with [easyButton()]
 #' @examples
 #' leaf <- leaflet() %>%
 #'   addTiles() %>%
@@ -122,10 +122,10 @@ addEasyButton <- function(
 }
 
 #' Add a easyButton bar on the map
-#' see \url{https://github.com/CliffCloud/Leaflet.EasyButton}
+#' see <https://github.com/CliffCloud/Leaflet.EasyButton>
 #'
-#' @param ... a list of buttons created with \code{\link{easyButton}}
-#' @seealso \code{\link{addEasyButton}}
+#' @param ... a list of buttons created with [easyButton()]
+#' @seealso [addEasyButton()]
 #' @examples
 #' leaf <- leaflet() %>%
 #'   addTiles() %>%

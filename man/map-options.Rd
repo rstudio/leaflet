@@ -175,12 +175,10 @@ Can be a zoom level e.g. 10, 12 or "max" or "maxKeepSpiderify".
 See \url{https://github.com/ghybs/Leaflet.MarkerCluster.Freezable#api-reference}.}
 
 \item{lineCap}{a string that defines
-\href{https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linecap}{shape
-to be used at the end} of the stroke}
+\href{https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linecap}{shape to be used at the end} of the stroke}
 
 \item{lineJoin}{a string that defines
-\href{https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linejoin}{shape
-to be used at the corners} of the stroke}
+\href{https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linejoin}{shape to be used at the corners} of the stroke}
 
 \item{pointerEvents}{sets the \code{pointer-events} attribute on the path if
 SVG backend is used}
@@ -210,6 +208,6 @@ rectangles, and circles, etc)
 
 }}
 \seealso{
-\code{\link{leafletCRS}}
+\code{\link[=leafletCRS]{leafletCRS()}}
 to map CRS (don't change this if you're not sure what it means)
 }

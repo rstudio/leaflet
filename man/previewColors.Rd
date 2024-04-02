@@ -7,7 +7,7 @@
 previewColors(pal, values)
 }
 \arguments{
-\item{pal}{A color mapping function, like those returned from \code{\link{colorNumeric}}, et al}
+\item{pal}{A color mapping function, like those returned from \code{\link[=colorNumeric]{colorNumeric()}}, et al}
 
 \item{values}{A set of values to preview colors for}
 }

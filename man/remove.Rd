@@ -95,7 +95,7 @@ from being added in the first place; instead, when the map is rendered, the
 polygon will be added and then removed.
 
 For that reason, these functions aren't that useful with \code{leaflet} map
-objects and are really intended to be used with \code{\link{leafletProxy}}
+objects and are really intended to be used with \code{\link[=leafletProxy]{leafletProxy()}}
 instead.
 
 WMS tile layers are extensions of tile layers, so they can also be removed

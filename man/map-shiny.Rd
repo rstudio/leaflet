@@ -13,7 +13,7 @@ renderLeaflet(expr, env = parent.frame(), quoted = FALSE)
 \item{outputId}{output variable to read from}
 
 \item{width, height}{the width and height of the map (see
-\code{\link[htmlwidgets]{shinyWidgetOutput}})}
+\code{\link[htmlwidgets:htmlwidgets-shiny]{htmlwidgets::shinyWidgetOutput()}})}
 
 \item{expr}{An expression that generates an HTML widget (or a
 \href{https://rstudio.github.io/promises/}{promise} of an HTML widget).}

@@ -1,60 +1,60 @@
 #' Add a color legend to a map
 #'
 #' When a color palette function is used in a map (e.g.
-#' \code{\link{colorNumeric}}), a color legend can be automatically derived from
+#' [colorNumeric()]), a color legend can be automatically derived from
 #' the palette function. You can also manually specify the colors and labels for
 #' the legend.
 #'
-#' The \code{labFormat} argument is a function that takes the argument
-#' \code{type = c("numeric", "bin", "quantile", "factor")}, plus, arguments for
-#' different types of color palettes. For the \code{colorNumeric()} palette,
-#' \code{labFormat} takes a single argument, which is the breaks of the numeric
+#' The `labFormat` argument is a function that takes the argument
+#' `type = c("numeric", "bin", "quantile", "factor")`, plus, arguments for
+#' different types of color palettes. For the `colorNumeric()` palette,
+#' `labFormat` takes a single argument, which is the breaks of the numeric
 #' vector, and returns a character vector of the same length. For
-#' \code{colorBin()}, \code{labFormat} also takes a vector of breaks of length
-#' \code{n} but should return a character vector of length \code{n - 1}, with
-#' the \code{i}-th element representing the interval \code{c(x[i], x[i + 1])}.
-#' For \code{colorQuantile}, \code{labFormat} takes two arguments, the quantiles
-#' and the associated probabilities (each of length \code{n}), and should return
-#' a character vector of length \code{n - 1} (similar to the \code{colorBin()}
-#' palette). For \code{colorFactor()}, \code{labFormat} takes one argument, the
+#' `colorBin()`, `labFormat` also takes a vector of breaks of length
+#' `n` but should return a character vector of length `n - 1`, with
+#' the `i`-th element representing the interval `c(x[i], x[i + 1])`.
+#' For `colorQuantile`, `labFormat` takes two arguments, the quantiles
+#' and the associated probabilities (each of length `n`), and should return
+#' a character vector of length `n - 1` (similar to the `colorBin()`
+#' palette). For `colorFactor()`, `labFormat` takes one argument, the
 #' unique values of the factor, and should return a character vector of the same
 #' length.
 #'
-#' By default, \code{labFormat} is basically \code{format(scientific = FALSE,
-#' big.mark = ",")} for the numeric palette, \code{as.character()} for the
+#' By default, `labFormat` is basically `format(scientific = FALSE,
+#' big.mark = ",")` for the numeric palette, `as.character()` for the
 #' factor palette, and a function to return labels of the form \samp{x[i] - x[i
 #' + 1]} for bin and quantile palettes (in the case of quantile palettes,
-#' \code{x} is the probabilities instead of the values of breaks).
+#' `x` is the probabilities instead of the values of breaks).
 #' @inheritParams setView
 #' @param position the position of the legend
 #' @param pal the color palette function, generated from
-#'   \code{\link{colorNumeric}()}, \code{colorBin()}, \code{colorQuantile()}, or
-#'   \code{colorFactor()}
+#'   [colorNumeric()], `colorBin()`, `colorQuantile()`, or
+#'   `colorFactor()`
 #' @param values the values used to generate colors from the palette function
-#' @param na.label the legend label for \code{NA}s in \code{values}
+#' @param na.label the legend label for `NA`s in `values`
 #' @param bins an approximate number of tick-marks on the color gradient for the
-#'   \code{colorNumeric} palette if it is of length one; you can also provide a
+#'   `colorNumeric` palette if it is of length one; you can also provide a
 #'   numeric vector as the pre-defined breaks (equally spaced)
 #' @param colors a vector of (HTML) colors to be used in the legend if
-#'   \code{pal} is not provided
+#'   `pal` is not provided
 #' @param opacity the opacity of colors
 #' @param labels a vector of text labels in the legend corresponding to
-#'   \code{colors}
-#' @param labFormat a function to format the labels derived from \code{pal} and
-#'   \code{values} (see Details below to know what \code{labelFormat()} returns
-#'   by default; you can either use the helper function \code{labelFormat()}, or
+#'   `colors`
+#' @param labFormat a function to format the labels derived from `pal` and
+#'   `values` (see Details below to know what `labelFormat()` returns
+#'   by default; you can either use the helper function `labelFormat()`, or
 #'   write your own function)
 #' @param title the legend title
 #' @param className extra CSS classes to append to the control, space separated
-#' @param layerId the ID of the legend; subsequent calls to \code{addLegend()}
-#'   or \code{addControl()} with the same \code{layerId} will replace this
-#'   legend. The ID can also be used with \code{removeControl()}.
-#' @param group \code{group} name of a leaflet layer group.
+#' @param layerId the ID of the legend; subsequent calls to `addLegend()`
+#'   or `addControl()` with the same `layerId` will replace this
+#'   legend. The ID can also be used with `removeControl()`.
+#' @param group `group` name of a leaflet layer group.
 #'   Supplying this value will tie the legend to the leaflet layer group
 #'   with this name and will auto add/remove the legend as the
 #'   group is added/removed, for example via `layerControl()`.
-#'   You will need to set the \code{group} when you add a layer
-#'   (e.g. \code{\link{addPolygons}}) and supply the same name here.
+#'   You will need to set the `group` when you add a layer
+#'   (e.g. [addPolygons()]) and supply the same name here.
 #' @template data-getMapData
 #' @example inst/examples/legend.R
 #' @export
@@ -161,7 +161,7 @@ addLegend <- function(
 
 #' @param prefix a prefix of legend labels
 #' @param suffix a suffix of legend labels
-#' @param between a separator between \code{x[i]} and \code{x[i + 1]} in legend
+#' @param between a separator between `x[i]` and `x[i + 1]` in legend
 #'   labels (by default, it is a dash)
 #' @param digits the number of digits of numeric values in labels
 #' @param big.mark the thousand separator

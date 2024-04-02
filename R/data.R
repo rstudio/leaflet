@@ -3,11 +3,11 @@
 #' Intercensal estimates of the resident population for Incorporated Places and
 #' Minor Civil Divisions: April 1, 2000 to July 1, 2010.
 #' @docType data
-#' @format A data frame containing \code{City}, \code{State}, \code{Lat},
-#'   \code{Long}, and population estimates from 2000 to 2010 (columns
-#'   \code{Pop2000} to \code{Pop2010}).
+#' @format A data frame containing `City`, `State`, `Lat`,
+#'   `Long`, and population estimates from 2000 to 2010 (columns
+#'   `Pop2000` to `Pop2010`).
 #' @source The US Census Bureau:
-#'   \url{https://www.census.gov/data/datasets/time-series/demo/popest/intercensal-2000-2010-cities-and-towns.html}
+#'   <https://www.census.gov/data/datasets/time-series/demo/popest/intercensal-2000-2010-cities-and-towns.html>
 #' @noRd
 #' @examples
 #' str(uspop2000)
@@ -31,18 +31,18 @@ if (file.exists("inst/csv/uspop2000.csv")) {
 #' @description Atlantic Ocean storms 2005
 #' @details This dataset contains storm tracks for selected storms
 #' in the Atlantic Ocean basin for the year 2005
-#' @format \code{sp::SpatialLinesDataFrame}
+#' @format `sp::SpatialLinesDataFrame`
 NULL
 
 #' @docType data
 #' @name gadmCHE
 #' @title Administrative borders of Switzerland (level 1)
 #' @description Administrative borders of Switzerland (level 1)
-#' @details This dataset comes from \url{https://gadm.org}.
-#' It was downloaded using \code{\link{getData}}.
-#' @format \code{sp::SpatialPolygonsDataFrame}
+#' @details This dataset comes from <https://gadm.org>.
+#' It was downloaded using [getData()].
+#' @format `sp::SpatialPolygonsDataFrame`
 #' @source
-#' \url{https://gadm.org}
+#' <https://gadm.org>
 NULL
 
 #'
@@ -54,5 +54,5 @@ NULL
 #' subset of a larger database that was compiled by students at the
 #' University of Marburg for a seminar called
 #' "The Geography of Beer, sustainability in the food industry"
-#' @format \code{sp::SpatialPointsDataFrame}
+#' @format `sp::SpatialPointsDataFrame`
 NULL

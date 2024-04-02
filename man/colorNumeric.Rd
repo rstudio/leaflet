@@ -78,10 +78,10 @@ the colors going from green to blue.}
 single number (greater than or equal to 2) giving the number of intervals
 into which the domain values are to be cut.}
 
-\item{pretty}{Whether to use the function \code{\link{pretty}()} to generate
+\item{pretty}{Whether to use the function \code{\link[=pretty]{pretty()}} to generate
 the bins when the argument \code{bins} is a single number. When
 \code{pretty = TRUE}, the actual number of bins may not be the number of
-bins you specified. When \code{pretty = FALSE}, \code{\link{seq}()} is used
+bins you specified. When \code{pretty = FALSE}, \code{\link[=seq]{seq()}} is used
 to generate the bins and the breaks may not be "pretty".}
 
 \item{right}{parameter supplied to cut. See Details}
@@ -89,7 +89,7 @@ to generate the bins and the breaks may not be "pretty".}
 \item{n}{Number of equal-size quantiles desired. For more precise control,
 use the \code{probs} argument instead.}
 
-\item{probs}{See \code{\link[stats]{quantile}}. If provided, the \code{n}
+\item{probs}{See \code{\link[stats:quantile]{stats::quantile()}}. If provided, the \code{n}
 argument is ignored.}
 
 \item{levels}{An alternate way of specifying levels; if specified, domain is
@@ -113,12 +113,11 @@ according to a given palette, which can be provided in a variety of formats.
 to an interpolated palette.
 
 \code{colorBin} also maps continuous numeric data, but performs
-binning based on value (see the \code{\link[base]{cut}} function). \code{colorBin}
-defaults for the \code{\link[base]{cut}} function are \code{include.lowest
-  = TRUE} and \code{right = FALSE}.
+binning based on value (see the \code{\link[base:cut]{base::cut()}} function). \code{colorBin}
+defaults for the \code{\link[base:cut]{base::cut()}} function are \code{include.lowest = TRUE} and \code{right = FALSE}.
 
 \code{colorQuantile} similarly bins numeric data, but via the
-\code{\link[stats]{quantile}} function.
+\code{\link[stats:quantile]{stats::quantile()}} function.
 
 \code{colorFactor} maps factors to colors. If the palette is
 discrete and has a different number of colors than the number of factors,

@@ -15,17 +15,17 @@ dispatch(
 invokeMethod(map, data, method, ...)
 }
 \arguments{
-\item{map}{a map object, as returned from \code{\link{leaflet}} or
-\code{\link{leafletProxy}}}
+\item{map}{a map object, as returned from \code{\link[=leaflet]{leaflet()}} or
+\code{\link[=leafletProxy]{leafletProxy()}}}
 
 \item{funcName}{the name of the function that the user called that caused
 this \code{dispatch} call; for error message purposes}
 
 \item{leaflet}{an action to be performed if the map is from
-\code{\link{leaflet}}}
+\code{\link[=leaflet]{leaflet()}}}
 
 \item{leaflet_proxy}{an action to be performed if the map is from
-\code{\link{leafletProxy}}}
+\code{\link[=leafletProxy]{leafletProxy()}}}
 
 \item{data}{a data object that will be used when evaluating formulas in
 \code{...}}
