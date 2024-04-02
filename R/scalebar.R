@@ -5,10 +5,10 @@
 #' feature to add a scale bar.
 #'
 #' @param map the map to add the scale bar to
-#' @param position position of control: "topleft", "topright", "bottomleft", or
-#'   "bottomright"
+#' @param position position of control: `"topleft"`, `"topright"`, `"bottomleft"`, or
+#'   `"bottomright"`.
 #' @param options a list of additional options, intended to be provided by
-#'   a call to `scaleBarOptions`
+#'   a call to `scaleBarOptions()`
 #'
 #' @examples
 #' \donttest{

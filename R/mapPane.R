@@ -15,7 +15,7 @@
 #' sure the pane being used for used for display has already been added to the map.
 #'
 #' @param map A `leaflet` or `mapview` object.
-#' @param name The name of the new pane (refer to this in `leafletOptions`.
+#' @param name The name of the new pane (refer to this in `leafletOptions()`.
 #' @param zIndex The zIndex of the pane. Panes with higher index are rendered
 #' above panes with lower indices.
 #'

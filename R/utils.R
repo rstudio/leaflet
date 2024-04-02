@@ -16,8 +16,8 @@
 #' @param leaflet_proxy an action to be performed if the map is from
 #'   [leafletProxy()]
 #'
-#' @return `dispatch` returns the value of `leaflet` or
-#'   `leaflet_proxy`, or an error. `invokeMethod` returns the
+#' @return `dispatch()` returns the value of `leaflet` or
+#'   `leaflet_proxy()`, or an error. `invokeMethod()` returns the
 #'   `map` object that was passed in, possibly modified.
 #'
 #' @export

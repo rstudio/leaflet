@@ -9,9 +9,9 @@
 #' @param palette The colors or color function that values will be mapped to
 #' @param domain The possible values that can be mapped.
 #'
-#'   For `colorNumeric` and `colorBin`, this can be a simple numeric
-#'   range (e.g. `c(0, 100)`); `colorQuantile` needs representative
-#'   numeric data; and `colorFactor` needs categorical data.
+#'   For `colorNumeric()` and `colorBin()`, this can be a simple numeric
+#'   range (e.g. `c(0, 100)`); `colorQuantile()` needs representative
+#'   numeric data; and `colorFactor()` needs categorical data.
 #'
 #'   If `NULL`, then whenever the resulting color function is called, the
 #'   `x` value will represent the domain. This implies that if the function
@@ -29,7 +29,7 @@
 #'   the colors going from green to blue.
 #'
 #' @return A function that takes a single parameter `x`; when called with a
-#'   vector of numbers (except for `colorFactor`, which expects
+#'   vector of numbers (except for `colorFactor()`, which expects
 #'   factors/characters), #RRGGBB color strings are returned (unless
 #'   `alpha = TRUE` in which case #RRGGBBAA may also be possible).
 #'
@@ -136,7 +136,7 @@ colorBin <- function(palette, domain, bins = 7, pretty = TRUE,
   })
 }
 
-#' @details `colorQuantile` similarly bins numeric data, but via the
+#' @details `colorQuantile()` similarly bins numeric data, but via the
 #'   [stats::quantile()] function.
 #' @param n Number of equal-size quantiles desired. For more precise control,
 #'   use the `probs` argument instead.
@@ -199,7 +199,7 @@ getLevels <- function(domain, x, lvls, ordered) {
   }
 }
 
-#' @details `colorFactor` maps factors to colors. If the palette is
+#' @details `colorFactor()` maps factors to colors. If the palette is
 #'   discrete and has a different number of colors than the number of factors,
 #'   interpolation is used.
 #' @param levels An alternate way of specifying levels; if specified, domain is

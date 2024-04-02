@@ -13,7 +13,7 @@ leafletSizingPolicy(
 )
 }
 \arguments{
-\item{defaultWidth}{defaults to \code{"100\\\%"} of the available width}
+\item{defaultWidth}{defaults to \code{"100\%"} of the available width}
 
 \item{defaultHeight}{defaults to 400px tall}
 
@@ -21,11 +21,12 @@ leafletSizingPolicy(
 
 \item{browser.fill}{defaults to \code{TRUE}}
 
-\item{...}{all other arguments supplied to \verb{htmlwidgets::[sizingPolicy][htmlwidgets::sizingPolicy]}}
+\item{...}{all other arguments supplied to \code{\link[htmlwidgets:sizingPolicy]{htmlwidgets::sizingPolicy()}}}
 }
 \value{
 An \code{htmlwidgets::sizingPolicy} object
 }
 \description{
-Sizing policy used withing leaflet htmlwidgets.  All arguments are passed directly to \verb{htmlwidgets::[sizingPolicy][htmlwidgets::sizingPolicy]}
+Sizing policy used withing leaflet htmlwidgets.
+All arguments are passed directly to \code{\link[htmlwidgets:sizingPolicy]{htmlwidgets::sizingPolicy()}}
 }

@@ -35,8 +35,8 @@ this \code{dispatch} call; for error message purposes}
 \item{...}{unnamed arguments to be passed to the JavaScript method}
 }
 \value{
-\code{dispatch} returns the value of \code{leaflet} or
-\code{leaflet_proxy}, or an error. \code{invokeMethod} returns the
+\code{dispatch()} returns the value of \code{leaflet} or
+\code{leaflet_proxy()}, or an error. \code{invokeMethod()} returns the
 \code{map} object that was passed in, possibly modified.
 }
 \description{

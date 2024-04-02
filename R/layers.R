@@ -106,8 +106,8 @@ hideGroup <- function(map, group) {
 #'
 #' Change options on layer groups. Currently the only option is to control what
 #' zoom levels a layer group will be displayed at. The `zoomLevels` option
-#' is not compatible with [layers control][addLayersControl]; do not both
-#' assign a group to zoom levels and use it with `addLayersControl`.
+#' is not compatible with [layers control][addLayersControl()]; do not both
+#' assign a group to zoom levels and use it with `addLayersControl()`.
 #'
 #' @param map the map to modify
 #' @param group character vector of one or more group names to set options on
@@ -1249,8 +1249,7 @@ markerClusterOptions <- function(
 #'   circles)
 #' @param fillColor fill color
 #' @param fillOpacity fill opacity
-#' @param dashArray a string that defines the stroke
-#'   [dash
+#' @param dashArray a string that defines the stroke [dash
 #'   pattern](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray)
 #' @describeIn map-layers Add circle markers to the map
 #' @export
@@ -1321,12 +1320,12 @@ removeMarkerFromCluster <- function(map, layerId, clusterId) {
   invokeMethod(map, getMapData(map), "removeMarkerFromCluster", layerId, clusterId)
 }
 
-#' @param lineCap a string that defines
-#'   [shape
-#'    to be used at the end](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linecap) of the stroke
-#' @param lineJoin a string that defines
-#'   [shape
-#'    to be used at the corners](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linejoin) of the stroke
+#' @param lineCap a string that defines [shape to be used
+#'   at the end](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linecap)
+#'   of the stroke.
+#' @param lineJoin a string that defines [shape to be used at the
+#'   corners](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linejoin)
+#'   of the stroke.
 #' @param pointerEvents sets the `pointer-events` attribute on the path if
 #'   SVG backend is used
 #' @describeIn map-options Options for vector layers (polylines, polygons,

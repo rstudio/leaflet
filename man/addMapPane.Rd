@@ -9,7 +9,7 @@ addMapPane(map, name, zIndex)
 \arguments{
 \item{map}{A \code{leaflet} or \code{mapview} object.}
 
-\item{name}{The name of the new pane (refer to this in \code{leafletOptions}.}
+\item{name}{The name of the new pane (refer to this in \code{leafletOptions()}.}
 
 \item{zIndex}{The zIndex of the pane. Panes with higher index are rendered
 above panes with lower indices.}

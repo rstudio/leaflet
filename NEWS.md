@@ -208,7 +208,7 @@
 - Color palette functions now support reversing the order in which colors are
   used, via reverse=TRUE.
 
-- `colorFactor` no longer interpolates qualitative RColorBrewer palettes,
+- `colorFactor()` no longer interpolates qualitative RColorBrewer palettes,
   unless the number of factor levels being mapped exceeds the number of colors
   in the specified RColorBrewer palette. (Issue #300)
 

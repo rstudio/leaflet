@@ -1,13 +1,14 @@
 #' Leaflet sizing policy
 #'
-#' Sizing policy used withing leaflet htmlwidgets.  All arguments are passed directly to `htmlwidgets::[sizingPolicy][htmlwidgets::sizingPolicy]`
+#' Sizing policy used withing leaflet htmlwidgets.
+#' All arguments are passed directly to [htmlwidgets::sizingPolicy()]
 #'
 #' @export
-#' @param defaultWidth defaults to `"100\%"` of the available width
+#' @param defaultWidth defaults to `"100%"` of the available width
 #' @param defaultHeight defaults to 400px tall
 #' @param padding defaults to 0px
 #' @param browser.fill defaults to `TRUE`
-#' @param ... all other arguments supplied to `htmlwidgets::[sizingPolicy][htmlwidgets::sizingPolicy]`
+#' @param ... all other arguments supplied to [htmlwidgets::sizingPolicy()]
 #' @return An `htmlwidgets::sizingPolicy` object
 leafletSizingPolicy <- function(
   defaultWidth = "100%",
@@ -36,9 +37,9 @@ leafletSizingPolicy <- function(
 #' The `data` argument is only needed if you are going to reference
 #' variables in this object later in map layers. For example, `data` can be
 #' a data frame containing columns `latitude` and `longtitude`, then
-#' we may add a circle layer to the map by `leaflet(data) \%>\%
-#' addCircles(lat = ~latitude, lng = ~longtitude)`, where the variables in the
-#' formulae will be evaluated in the `data`.
+#' we may add a circle layer to the map by
+#' `leaflet(data) %>% addCircles(lat = ~latitude, lng = ~longtitude)`,
+#' where the variables in the formulae will be evaluated in the `data`.
 #' @param data a data object. Currently supported objects are matrix, data
 #' frame, spatial data from the \pkg{sf} package,
 #' `SpatVector` from the \pkg{terra} package, and the Spatial*
@@ -52,7 +53,7 @@ leafletSizingPolicy <- function(
 #'   (rather than an automatically generated one).
 #' @param sizingPolicy htmlwidgets sizing policy object. Defaults to [leafletSizingPolicy()]
 #' @return A HTML widget object, on which we can add graphics layers using
-#'   `\%>\%` (see examples).
+#'   `%>%` (see examples).
 #' @example inst/examples/leaflet.R
 #' @export
 leaflet <- function(data = NULL, width = NULL, height = NULL,

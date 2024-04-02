@@ -52,9 +52,9 @@ colorFactor(
 
 \item{domain}{The possible values that can be mapped.
 
-For \code{colorNumeric} and \code{colorBin}, this can be a simple numeric
-range (e.g. \code{c(0, 100)}); \code{colorQuantile} needs representative
-numeric data; and \code{colorFactor} needs categorical data.
+For \code{colorNumeric()} and \code{colorBin()}, this can be a simple numeric
+range (e.g. \code{c(0, 100)}); \code{colorQuantile()} needs representative
+numeric data; and \code{colorFactor()} needs categorical data.
 
 If \code{NULL}, then whenever the resulting color function is called, the
 \code{x} value will represent the domain. This implies that if the function
@@ -100,7 +100,7 @@ factor, treat it as already in the correct order}
 }
 \value{
 A function that takes a single parameter \code{x}; when called with a
-vector of numbers (except for \code{colorFactor}, which expects
+vector of numbers (except for \code{colorFactor()}, which expects
 factors/characters), #RRGGBB color strings are returned (unless
 \code{alpha = TRUE} in which case #RRGGBBAA may also be possible).
 }
@@ -116,10 +116,10 @@ to an interpolated palette.
 binning based on value (see the \code{\link[base:cut]{base::cut()}} function). \code{colorBin}
 defaults for the \code{\link[base:cut]{base::cut()}} function are \code{include.lowest = TRUE} and \code{right = FALSE}.
 
-\code{colorQuantile} similarly bins numeric data, but via the
+\code{colorQuantile()} similarly bins numeric data, but via the
 \code{\link[stats:quantile]{stats::quantile()}} function.
 
-\code{colorFactor} maps factors to colors. If the palette is
+\code{colorFactor()} maps factors to colors. If the palette is
 discrete and has a different number of colors than the number of factors,
 interpolation is used.
 

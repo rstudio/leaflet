@@ -96,7 +96,7 @@ defaulting to Leaflet's default CRS size}
 }
 \value{
 A HTML widget object, on which we can add graphics layers using
-\verb{\\\%>\\\%} (see examples).
+\verb{\%>\%} (see examples).
 }
 \description{
 This function creates a Leaflet map widget using \pkg{htmlwidgets}. The
@@ -107,8 +107,9 @@ other applications.
 The \code{data} argument is only needed if you are going to reference
 variables in this object later in map layers. For example, \code{data} can be
 a data frame containing columns \code{latitude} and \code{longtitude}, then
-we may add a circle layer to the map by \verb{leaflet(data) \\\%>\\\% addCircles(lat = ~latitude, lng = ~longtitude)}, where the variables in the
-formulae will be evaluated in the \code{data}.
+we may add a circle layer to the map by
+\code{leaflet(data) \%>\% addCircles(lat = ~latitude, lng = ~longtitude)},
+where the variables in the formulae will be evaluated in the \code{data}.
 }
 \section{Functions}{
 \itemize{

@@ -13,7 +13,7 @@
 #' `colorBin()`, `labFormat` also takes a vector of breaks of length
 #' `n` but should return a character vector of length `n - 1`, with
 #' the `i`-th element representing the interval `c(x[i], x[i + 1])`.
-#' For `colorQuantile`, `labFormat` takes two arguments, the quantiles
+#' For `colorQuantile()`, `labFormat` takes two arguments, the quantiles
 #' and the associated probabilities (each of length `n`), and should return
 #' a character vector of length `n - 1` (similar to the `colorBin()`
 #' palette). For `colorFactor()`, `labFormat` takes one argument, the

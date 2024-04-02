@@ -109,7 +109,7 @@ vector, and returns a character vector of the same length. For
 \code{colorBin()}, \code{labFormat} also takes a vector of breaks of length
 \code{n} but should return a character vector of length \code{n - 1}, with
 the \code{i}-th element representing the interval \code{c(x[i], x[i + 1])}.
-For \code{colorQuantile}, \code{labFormat} takes two arguments, the quantiles
+For \code{colorQuantile()}, \code{labFormat} takes two arguments, the quantiles
 and the associated probabilities (each of length \code{n}), and should return
 a character vector of length \code{n - 1} (similar to the \code{colorBin()}
 palette). For \code{colorFactor()}, \code{labFormat} takes one argument, the

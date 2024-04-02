@@ -33,7 +33,7 @@ group. The user can turn each overlay group on or off independently.}
 "bottomright"}
 
 \item{options}{a list of additional options, intended to be provided by
-a call to \code{layersControlOptions}}
+a call to \code{layersControlOptions()}}
 
 \item{data}{the data object from which the argument values are derived; by
 default, it is the \code{data} object provided to \code{leaflet()}
