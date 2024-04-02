@@ -55,15 +55,33 @@ outline <- quakes[chull(quakes$long, quakes$lat),]
 map <- leaflet(quakes) %>%
   # Base groups
   addTiles(group = "OSM (default)") %>%
-  addProviderTiles(providers$Stadia.StamenToner, group = "Toner") %>%
-  addProviderTiles(providers$Stadia.StamenTonerLite, group = "Toner Lite") %>%
+  addProviderTiles(providers$CartoDB.Positron, group = "Positron (minimal)") %>%
+  addProviderTiles(providers$Esri.WorldImagery, group = "World Imagery (satellite)") %>%
   # Overlay groups
-  addCircles(~long, ~lat, ~10^mag/5, stroke = FALSE, group = "Quakes") %>%
-  addPolygons(data = outline, lng = ~long, lat = ~lat,
-    fill = FALSE, weight = 2, color = "#FFFFCC", group = "Outline") %>%
+  addCircles(
+    ~ long,
+    ~ lat,
+    ~ 10 ^ mag / 5,
+    stroke = FALSE,
+    group = "Quakes",
+    fillColor = "tomato"
+  ) %>%
+  addPolygons(
+    data = outline,
+    lng = ~ long,
+    lat = ~ lat,
+    fill = FALSE,
+    weight = 2,
+    color = "#FFFFCC",
+    group = "Outline"
+  ) %>%
   # Layers control
   addLayersControl(
-    baseGroups = c("OSM (default)", "Toner", "Toner Lite"),
+    baseGroups = c(
+      "OSM (default)",
+      "Positron (minimal)",
+      "World Imagery (satellite)"
+    ),
     overlayGroups = c("Quakes", "Outline"),
     options = layersControlOptions(collapsed = FALSE)
   )
