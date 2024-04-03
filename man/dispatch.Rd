@@ -15,28 +15,24 @@ dispatch(
 invokeMethod(map, data, method, ...)
 }
 \arguments{
-\item{map}{a map object, as returned from \code{\link{leaflet}} or
-\code{\link{leafletProxy}}}
+\item{map}{a map object, as returned from \code{\link[=leaflet]{leaflet()}} or \code{\link[=leafletProxy]{leafletProxy()}}}
 
 \item{funcName}{the name of the function that the user called that caused
 this \code{dispatch} call; for error message purposes}
 
-\item{leaflet}{an action to be performed if the map is from
-\code{\link{leaflet}}}
+\item{leaflet}{an action to be performed if the map is from \code{\link[=leaflet]{leaflet()}}}
 
-\item{leaflet_proxy}{an action to be performed if the map is from
-\code{\link{leafletProxy}}}
+\item{leaflet_proxy}{an action to be performed if the map is from \code{\link[=leafletProxy]{leafletProxy()}}.}
 
-\item{data}{a data object that will be used when evaluating formulas in
-\code{...}}
+\item{data}{a data object that will be used when evaluating formulas in \code{...}}
 
 \item{method}{the name of the JavaScript method to invoke}
 
 \item{...}{unnamed arguments to be passed to the JavaScript method}
 }
 \value{
-\code{dispatch} returns the value of \code{leaflet} or
-\code{leaflet_proxy}, or an error. \code{invokeMethod} returns the
+\code{dispatch()} returns the value of \code{leaflet} or
+\code{leaflet_proxy()}, or an error. \code{invokeMethod()} returns the
 \code{map} object that was passed in, possibly modified.
 }
 \description{

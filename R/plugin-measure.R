@@ -14,22 +14,22 @@ leafletMeasureDependencies <- function() {
 #' Add a measure control to the map.
 #'
 #' @param map a map widget object
-#' @param position standard \href{https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#control-positions}{Leaflet control position options}.
+#' @param position standard [Leaflet control position options](https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#control-positions).
 #' @param primaryLengthUnit,secondaryLengthUnit units used to display length
 #'           results. secondaryLengthUnit is optional.
-#'           Valid values are \code{"feet"}, \code{"meters"}, \code{"miles"}, and \code{"kilometers"}.
+#'           Valid values are `"feet"`, `"meters"`, `"miles"`, and `"kilometers"`.
 #' @param primaryAreaUnit,secondaryAreaUnit units used to display area results.
 #'           secondaryAreaUnit is optional.  Valid values are
-#'           \code{"acres"}, \code{"hectares"}, \code{"sqmeters"}, and \code{"sqmiles"}.
+#'           `"acres"`, `"hectares"`, `"sqmeters"`, and `"sqmiles"`.
 #' @param activeColor base color to use for map features rendered while
 #'           actively performing a measurement.
 #'           Value should be a color represented as a hexadecimal string.
 #' @param completedColor base color to use for features generated
 #'           from a completed measurement.
 #'           Value should be a color represented as a hexadecimal string.
-#' @param popupOptions \code{list} of options applied to the popup
+#' @param popupOptions `list` of options applied to the popup
 #'           of the resulting measure feature.
-#'           Properties may be any \href{https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#popup-option}{standard Leaflet popup options}.
+#'           Properties may be any [standard Leaflet popup options](https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#popup-option).
 #' @param captureZIndex Z-index of the marker used to capture measure clicks.
 #'           Set this value higher than the z-index of all other map layers to
 #'           disable click events on other layers while a measurement is active.

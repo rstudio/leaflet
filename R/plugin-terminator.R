@@ -12,7 +12,7 @@ leafletTerminatorDependencies <- function() {
 
 #' Add a daylight layer on top of the map
 #'
-#' See \url{https://github.com/joergdietrich/Leaflet.Terminator}
+#' See <https://github.com/joergdietrich/Leaflet.Terminator>
 #'
 #' @param map a map widget object
 #' @param resolution the step size at which the terminator points are computed.

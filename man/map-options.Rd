@@ -140,7 +140,7 @@ transparency}
 
 \item{interactive}{whether the element emits mouse events}
 
-\item{clickable}{DEPRECATED! Use the \code{interactive} option.}
+\item{clickable}{DEPRECATED! Use the \code{interactive} argument.}
 
 \item{noHide, direction, offset, permanent}{label options; see \url{https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#tooltip-option}}
 
@@ -174,13 +174,11 @@ to style spider legs. By default, they are
 Can be a zoom level e.g. 10, 12 or "max" or "maxKeepSpiderify".
 See \url{https://github.com/ghybs/Leaflet.MarkerCluster.Freezable#api-reference}.}
 
-\item{lineCap}{a string that defines
-\href{https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linecap}{shape
-to be used at the end} of the stroke}
+\item{lineCap}{a string that defines \href{https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linecap}{shape to be used at the end}
+of the stroke.}
 
-\item{lineJoin}{a string that defines
-\href{https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linejoin}{shape
-to be used at the corners} of the stroke}
+\item{lineJoin}{a string that defines \href{https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linejoin}{shape to be used at the corners}
+of the stroke.}
 
 \item{pointerEvents}{sets the \code{pointer-events} attribute on the path if
 SVG backend is used}
@@ -210,6 +208,6 @@ rectangles, and circles, etc)
 
 }}
 \seealso{
-\code{\link{leafletCRS}}
+\code{\link[=leafletCRS]{leafletCRS()}}
 to map CRS (don't change this if you're not sure what it means)
 }

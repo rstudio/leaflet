@@ -1,14 +1,14 @@
 #' Leaflet sizing policy
 #'
-#' Sizing policy used withing leaflet htmlwidgets.  All arguments are passed directly to \code{htmlwidgets::\link[htmlwidgets]{sizingPolicy}}
+#' Sizing policy used withing leaflet htmlwidgets.
 #'
 #' @export
-#' @param defaultWidth defaults to \code{"100\%"} of the available width
+#' @param defaultWidth defaults to `"100%"` of the available width
 #' @param defaultHeight defaults to 400px tall
 #' @param padding defaults to 0px
-#' @param browser.fill defaults to \code{TRUE}
-#' @param ... all other arguments supplied to \code{htmlwidgets::\link[htmlwidgets]{sizingPolicy}}
-#' @return An \code{htmlwidgets::sizingPolicy} object
+#' @param browser.fill defaults to `TRUE`
+#' @inheritDotParams htmlwidgets::sizingPolicy
+#' @return An `htmlwidgets::sizingPolicy` object
 leafletSizingPolicy <- function(
   defaultWidth = "100%",
   defaultHeight = 400,
@@ -33,15 +33,15 @@ leafletSizingPolicy <- function(
 #' widget can be rendered on HTML pages generated from R Markdown, Shiny, or
 #' other applications.
 #'
-#' The \code{data} argument is only needed if you are going to reference
-#' variables in this object later in map layers. For example, \code{data} can be
-#' a data frame containing columns \code{latitude} and \code{longtitude}, then
-#' we may add a circle layer to the map by \code{leaflet(data) \%>\%
-#' addCircles(lat = ~latitude, lng = ~longtitude)}, where the variables in the
-#' formulae will be evaluated in the \code{data}.
+#' The `data` argument is only needed if you are going to reference
+#' variables in this object later in map layers. For example, `data` can be
+#' a data frame containing columns `latitude` and `longtitude`, then
+#' we may add a circle layer to the map by
+#' `leaflet(data) %>% addCircles(lat = ~latitude, lng = ~longtitude)`,
+#' where the variables in the formulae will be evaluated in the `data`.
 #' @param data a data object. Currently supported objects are matrix, data
 #' frame, spatial data from the \pkg{sf} package,
-#' \code{SpatVector} from the \pkg{terra} package, and the Spatial*
+#' `SpatVector` from the \pkg{terra} package, and the Spatial*
 #' objects from the \pkg{sp} package that represent points, lines, or polygons.
 #'
 #' @param width the width of the map
@@ -50,9 +50,9 @@ leafletSizingPolicy <- function(
 #' @param options the map options
 #' @param elementId Use an explicit element ID for the widget
 #'   (rather than an automatically generated one).
-#' @param sizingPolicy htmlwidgets sizing policy object. Defaults to \code{\link{leafletSizingPolicy}()}
+#' @param sizingPolicy htmlwidgets sizing policy object. Defaults to [leafletSizingPolicy()]
 #' @return A HTML widget object, on which we can add graphics layers using
-#'   \code{\%>\%} (see examples).
+#'   `%>%` (see examples).
 #' @example inst/examples/leaflet.R
 #' @export
 leaflet <- function(data = NULL, width = NULL, height = NULL,
@@ -113,13 +113,13 @@ getMapData <- function(map) {
 
 #' Set options on a leaflet map object
 #'
-#' @param map A map widget object created from \code{\link{leaflet}()}
+#' @param map A map widget object created from [leaflet()]
 #' @param zoomToLimits Controls whether the map is zooms to the limits of the
 #'   elements on the map. This is useful for interactive applications where the
-#'   map data is updated. If \code{"always"} (the default), the map always
-#'   re-zooms when new data is received; if \code{"first"}, it zooms to the
+#'   map data is updated. If `"always"` (the default), the map always
+#'   re-zooms when new data is received; if `"first"`, it zooms to the
 #'   elements on the first rendering, but does not re-zoom for subsequent data;
-#'   if \code{"never"}, it never re-zooms, not even for the first rendering.
+#'   if `"never"`, it never re-zooms, not even for the first rendering.
 #'
 #' @examples
 #' # Don't auto-zoom to the objects (can be useful in interactive applications)
@@ -139,15 +139,17 @@ mapOptions <- function(map, zoomToLimits = c("always", "first", "never")) {
 }
 
 #' Options for Map creation
-#' @param  minZoom Minimum zoom level of the map. Overrides any minZoom set on map layers.
-#' @param  maxZoom Maximum zoom level of the map. This overrides any maxZoom set on map layers.
+#' @param  minZoom Minimum zoom level of the map. Overrides any `minZoom` set on map layers.
+#' @param  maxZoom Maximum zoom level of the map. This overrides any `maxZoom` set on map layers.
 #' @param  crs Coordinate Reference System to use. Don't change this if you're not sure what it means.
-#' @seealso \code{\link{leafletCRS}} for creating a custom CRS.
-#' @param  worldCopyJump With this option enabled, the map tracks when you pan to another "copy" of the world and seamlessly jumps to the original one so that all overlays like markers and vector layers are still visible.
+#' @seealso [leafletCRS()] for creating a custom CRS.
+#' @param  worldCopyJump With this option enabled, the map tracks when you pan
+#'   to another "copy" of the world and seamlessly jumps to the original
+#'   one so that all overlays like markers and vector layers are still visible.
 #' @param preferCanvas Whether leaflet.js Paths should be rendered on a Canvas renderer.
 #' @param ... other options used for leaflet.js map creation.
 #' @describeIn leaflet Options for map creation
-#' @seealso See \url{https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#map-option} for details and more options.
+#' @seealso See <https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#map-option> for details and more options.
 #' @export
 leafletOptions <- function(
   minZoom = NULL,
@@ -172,7 +174,7 @@ crsClasses <- list("L.CRS.EPSG3857", "L.CRS.EPSG4326", "L.CRS.EPSG3395",
                    "L.CRS.Simple", "L.Proj.CRS", "L.Proj.CRS.TMS")
 
 #' creates a custom CRS
-#' Refer to \url{https://kartena.github.io/Proj4Leaflet/api/} for details.
+#' Refer to <https://kartena.github.io/Proj4Leaflet/api/> for details.
 #' @param crsClass One of L.CRS.EPSG3857, L.CRS.EPSG4326, L.CRS.EPSG3395,
 #' L.CRS.Simple, L.Proj.CRS
 #' @param code CRS identifier
@@ -187,7 +189,7 @@ crsClasses <- list("L.CRS.EPSG3857", "L.CRS.EPSG4326", "L.CRS.EPSG3395",
 #' @param bounds Bounds of the CRS, in projected coordinates; if defined,
 #'    Proj4Leaflet will use this in the getSize method, otherwise
 #'    defaulting to Leaflet's default CRS size
-#' @param tileSize DEPRECATED! Specify the tilesize in the \code{\link{tileOptions}()} argument.
+#' @param tileSize DEPRECATED! Specify the tilesize in the [tileOptions()] argument.
 #' @describeIn leaflet class to create a custom CRS
 #' @export
 leafletCRS <- function(

@@ -33,7 +33,7 @@ providerTileOptions(
 \item{layerId}{the layer id to assign}
 
 \item{group}{the name of the group the newly created layers should belong to
-(for \code{\link{clearGroup}} and \code{\link{addLayersControl}} purposes).
+(for \code{\link[=clearGroup]{clearGroup()}} and \code{\link[=addLayersControl]{addLayersControl()}} purposes).
 Human-friendly group names are permitted--they need not be short,
 identifier-style names.}
 

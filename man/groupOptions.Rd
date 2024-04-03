@@ -18,7 +18,7 @@ visible, or \code{TRUE} to display at all zoom levels}
 Change options on layer groups. Currently the only option is to control what
 zoom levels a layer group will be displayed at. The \code{zoomLevels} option
 is not compatible with \link[=addLayersControl]{layers control}; do not both
-assign a group to zoom levels and use it with \code{addLayersControl}.
+assign a group to zoom levels and use it with \code{addLayersControl()}.
 }
 \examples{
 pal <- colorQuantile("YlOrRd", quakes$mag)

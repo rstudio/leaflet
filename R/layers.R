@@ -82,13 +82,13 @@ clearGroup <- function(map, group) {
 #' Show or hide layer groups
 #'
 #' Hide groups of layers without removing them from the map entirely. Groups are
-#' created using the \code{group} parameter that is included on most layer
+#' created using the `group` parameter that is included on most layer
 #' adding functions.
 #'
 #' @param map the map to modify
 #' @param group character vector of one or more group names to show or hide
 #'
-#' @seealso \code{\link{addLayersControl}} to allow users to show/hide layer
+#' @seealso [addLayersControl()] to allow users to show/hide layer
 #'   groups interactively
 #'
 #' @export
@@ -105,14 +105,14 @@ hideGroup <- function(map, group) {
 #' Set options on layer groups
 #'
 #' Change options on layer groups. Currently the only option is to control what
-#' zoom levels a layer group will be displayed at. The \code{zoomLevels} option
-#' is not compatible with \link[=addLayersControl]{layers control}; do not both
-#' assign a group to zoom levels and use it with \code{addLayersControl}.
+#' zoom levels a layer group will be displayed at. The `zoomLevels` option
+#' is not compatible with [layers control][addLayersControl()]; do not both
+#' assign a group to zoom levels and use it with `addLayersControl()`.
 #'
 #' @param map the map to modify
 #' @param group character vector of one or more group names to set options on
 #' @param zoomLevels numeric vector of zoom levels at which group(s) should be
-#'   visible, or \code{TRUE} to display at all zoom levels
+#'   visible, or `TRUE` to display at all zoom levels
 #'
 #' @examples
 #' pal <- colorQuantile("YlOrRd", quakes$mag)
@@ -146,12 +146,12 @@ groupOptions <- function(map, group, zoomLevels = NULL) {
 #' @param attribution the attribution text of the tile layer (HTML)
 #' @param options a list of extra options for tile layers, popups, paths
 #'   (circles, rectangles, polygons, ...), or other map elements
-#' @return the new \code{map} object
-#' @seealso \code{\link{tileOptions}}, \code{\link{WMSTileOptions}},
-#'   \code{\link{popupOptions}}, \code{\link{markerOptions}},
-#'   \code{\link{pathOptions}}
+#' @return the new `map` object
+#' @seealso [tileOptions()], [WMSTileOptions()],
+#'   [popupOptions()], [markerOptions()],
+#'   [pathOptions()]
 #' @references The Leaflet API documentation:
-#'   \url{https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html}
+#'   <https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html>
 #' @describeIn map-layers Add a tile layer to the map
 #' @export
 addTiles <- function(
@@ -179,61 +179,61 @@ epsg3857 <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y
 
 #' Add a raster image as a layer
 #'
-#' Create an image overlay from a \code{RasterLayer} or a \code{SpatRaster}
-#' object. \emph{This is only suitable for small to medium sized rasters},
+#' Create an image overlay from a `RasterLayer` or a `SpatRaster`
+#' object. *This is only suitable for small to medium sized rasters*,
 #' as the entire image will be embedded into the HTML page (or passed over
 #' the websocket in a Shiny context).
 #'
-#' The \code{maxBytes} parameter serves to prevent you from accidentally
+#' The `maxBytes` parameter serves to prevent you from accidentally
 #' embedding an excessively large amount of data into your htmlwidget. This
 #' value is compared to the size of the final compressed image (after the raster
 #' has been projected, colored, and PNG encoded, but before base64 encoding is
-#' applied). Set \code{maxBytes} to \code{Inf} to disable this check, but be
+#' applied). Set `maxBytes` to `Inf` to disable this check, but be
 #' aware that very large rasters may not only make your map a large download but
 #' also may cause the browser to become slow or unresponsive.
 #'
-#' To reduce the size of a SpatRaster, you can use \code{\link[terra]{spatSample}}
-#' as in \code{x = spatSample(x, 100000, method="regular", as.raster=TRUE)}. With
-#' a \code{RasterLayer} you can use \code{\link[raster]{sampleRegular}} as in
-#' \code{sampleRegular(x, 100000, asRaster=TRUE)}.
+#' To reduce the size of a SpatRaster, you can use [terra::spatSample()]
+#' as in `x = spatSample(x, 100000, method="regular", as.raster=TRUE)`. With
+#' a `RasterLayer` you can use [raster::sampleRegular()] as in
+#' `sampleRegular(x, 100000, asRaster=TRUE)`.
 #'
-#' By default, the \code{addRasterImage} function will project the raster data
-#' \code{x} to the Pseudo-Mercator projection (EPSG:3857). This can be a
+#' By default, `addRasterImage()` will project the raster data
+#' `x` to the Pseudo-Mercator projection (EPSG:3857). This can be a
 #' time-consuming operation for even moderately sized rasters; although it is much
 #' faster for SpatRasters than for RasterLayers.
 #' If you are repeatedly adding a particular raster to your Leaflet
 #' maps, you can perform the projection ahead of time using
-#' \code{projectRasterForLeaflet()}, and call \code{addRasterImage} with
-#' \code{project = FALSE}.
+#' `projectRasterForLeaflet()`, and call `addRasterImage()` with
+#' `project = FALSE`.
 #'
 #' @param map a map widget object
-#' @param x a \code{\link[terra]{SpatRaster}} or a \code{RasterLayer} object--see \code{\link[raster]{raster}}
-#' @param colors the color palette (see \code{\link{colorNumeric}}) or function
+#' @param x a [terra::SpatRaster()] or a `RasterLayer` object--see [raster::raster()]
+#' @param colors the color palette (see [colorNumeric()]) or function
 #'   to use to color the raster values (hint: if providing a function, set
-#'   \code{na.color} to \code{"#00000000"} to make \code{NA} areas transparent).
-#'   The palette is ignored if \code{x} is a SpatRaster with a color table or if
+#'   `na.color` to `"#00000000"` to make `NA` areas transparent).
+#'   The palette is ignored if `x` is a SpatRaster with a color table or if
 #'   it has RGB channels.
 #' @param opacity the base opacity of the raster, expressed from 0 to 1
 #' @param attribution the HTML string to show as the attribution for this layer
 #' @param layerId the layer id
 #' @param group the name of the group this raster image should belong to (see
-#'   the same parameter under \code{\link{addTiles}})
-#' @param project if \code{TRUE}, automatically project \code{x} to the map
-#'   projection expected by Leaflet (\code{EPSG:3857}); if \code{FALSE}, it's
-#'   the caller's responsibility to ensure that \code{x} is already projected,
-#'   and that \code{extent(x)} is expressed in WGS84 latitude/longitude
+#'   the same parameter under [addTiles()])
+#' @param project if `TRUE`, automatically project `x` to the map
+#'   projection expected by Leaflet (`EPSG:3857`); if `FALSE`, it's
+#'   the caller's responsibility to ensure that `x` is already projected,
+#'   and that `extent(x)` is expressed in WGS84 latitude/longitude
 #'   coordinates
 #' @param method the method used for computing values of the new, projected raster image.
-#'   \code{"bilinear"} (the default) is appropriate for continuous data,
-#'   \code{"ngb"} - nearest neighbor - is appropriate for categorical data.
-#'   Ignored if \code{project = FALSE}. See \code{\link{projectRaster}} for details.
+#'   `"bilinear"` (the default) is appropriate for continuous data,
+#'   `"ngb"` - nearest neighbor - is appropriate for categorical data.
+#'   Ignored if `project = FALSE`. See [projectRaster()] for details.
 #' @param maxBytes the maximum number of bytes to allow for the projected image
 #'   (before base64 encoding); defaults to 4MB.
 #' @param options a list of additional options, intended to be provided by
-#'   a call to \code{\link{gridOptions}}
+#'   a call to [gridOptions()]
 #' @template data-getMapData
 #'
-#' @seealso \code{\link{addRasterLegend}} for an easy way to add a legend for a
+#' @seealso [addRasterLegend()] for an easy way to add a legend for a
 #'   SpatRaster with a color table.
 #'
 #' @examples
@@ -623,7 +623,7 @@ clearImages <- function(map) {
 #' @param
 #' minZoom,maxZoom,maxNativeZoom,tileSize,subdomains,errorTileUrl,tms,noWrap,zoomOffset,zoomReverse,zIndex,unloadInvisibleTiles,updateWhenIdle,detectRetina
 #' the tile layer options; see
-#' \url{https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#tilelayer}
+#' <https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#tilelayer>
 #' @param ... extra options passed to underlying Javascript object constructor.
 #' @describeIn map-options Options for tile layers
 #' @export
@@ -675,27 +675,27 @@ gridOptions <- function(
 
 #' Remove elements from a map
 #'
-#' Remove one or more features from a map, identified by \code{layerId}; or,
+#' Remove one or more features from a map, identified by `layerId`; or,
 #' clear all features of the given type or group.
 #'
 #' @note When used with a [leaflet][leaflet()] map object, these functions
 #'   don't actually remove the features from the map object, but simply add an
 #'   operation that will cause those features to be removed after they are
-#'   added. In other words, if you add a polygon \code{"foo"} and the call
-#'   \code{removeShape("foo")}, it's not smart enough to prevent the polygon
+#'   added. In other words, if you add a polygon `"foo"` and the call
+#'   `removeShape("foo")`, it's not smart enough to prevent the polygon
 #'   from being added in the first place; instead, when the map is rendered, the
 #'   polygon will be added and then removed.
 #'
-#'   For that reason, these functions aren't that useful with \code{leaflet} map
-#'   objects and are really intended to be used with \code{\link{leafletProxy}}
+#'   For that reason, these functions aren't that useful with `leaflet` map
+#'   objects and are really intended to be used with [leafletProxy()]
 #'   instead.
 #'
 #'   WMS tile layers are extensions of tile layers, so they can also be removed
-#'   or cleared via \code{removeTiles()} or \code{clearTiles()}.
+#'   or cleared via `removeTiles()` or `clearTiles()`.
 #' @param map a map widget object, possibly created from [leaflet()]
 #'   but more likely from [leafletProxy()]
 #' @param layerId character vector; the layer id(s) of the item to remove
-#' @return the new \code{map} object
+#' @return the new `map` object
 #'
 #' @name remove
 #' @export
@@ -728,13 +728,13 @@ addWMSTiles <- function(
 }
 
 #' @param styles comma-separated list of WMS styles
-#' @param format WMS image format (use \code{"image/png"} for layers with
+#' @param format WMS image format (use `"image/png"` for layers with
 #'   transparency)
-#' @param transparent if \code{TRUE}, the WMS service will return images with
+#' @param transparent if `TRUE`, the WMS service will return images with
 #'   transparency
 #' @param version version of the WMS service to use
 #' @param crs Coordinate Reference System to use for the WMS requests, defaults.
-#' @seealso \code{\link{leafletCRS}}
+#' @seealso [leafletCRS()]
 #'   to map CRS (don't change this if you're not sure what it means)
 #' @describeIn map-options Options for WMS tile layers
 #' @export
@@ -749,20 +749,20 @@ WMSTileOptions <- function(
 }
 
 #' @param lng a numeric vector of longitudes, or a one-sided formula of the form
-#'   \code{~x} where \code{x} is a variable in \code{data}; by default (if not
-#'   explicitly provided), it will be automatically inferred from \code{data} by
-#'   looking for a column named \code{lng}, \code{long}, or \code{longitude}
+#'   `~x` where `x` is a variable in `data`; by default (if not
+#'   explicitly provided), it will be automatically inferred from `data` by
+#'   looking for a column named `lng`, `long`, or `longitude`
 #'   (case-insensitively)
-#' @param lat a vector of latitudes or a formula (similar to the \code{lng}
-#'   argument; the names \code{lat} and \code{latitude} are used when guessing
-#'   the latitude column from \code{data})
+#' @param lat a vector of latitudes or a formula (similar to the `lng`
+#'   argument; the names `lat` and `latitude` are used when guessing
+#'   the latitude column from `data`)
 #' @param popup a character vector of the HTML content for the popups (you are
-#'   recommended to escape the text using \code{\link[htmltools]{htmlEscape}()}
+#'   recommended to escape the text using [htmltools::htmlEscape()]
 #'   for security reasons)
-#' @param popupOptions A Vector of \code{\link{popupOptions}} to provide popups
+#' @param popupOptions A Vector of [popupOptions()] to provide popups
 #' @param layerId the layer id
 #' @param group the name of the group the newly created layers should belong to
-#'   (for \code{\link{clearGroup}} and \code{\link{addLayersControl}} purposes).
+#'   (for [clearGroup()] and [addLayersControl()] purposes).
 #'   Human-friendly group names are permitted--they need not be short,
 #'   identifier-style names. Any number of layers and even different types of
 #'   layers (e.g. markers and polygons) can share the same group name.
@@ -782,7 +782,7 @@ addPopups <- function(
 #' @param className a CSS class name set on an element
 #' @param
 #' maxWidth,minWidth,maxHeight,autoPan,keepInView,closeButton,closeOnClick
-#' popup options; see \url{https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#popup-option}
+#' popup options; see <https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#popup-option>
 #' @describeIn map-options Options for popups
 #' @export
 popupOptions <- function(
@@ -826,7 +826,7 @@ clearPopups <- function(map) {
 #' they are intended to be plaintext.
 #'
 #' @param label A vector or list of plain characters or HTML (marked by
-#'   \code{\link[htmltools]{HTML}}), or a formula that resolves to such a value.
+#'   [htmltools::HTML()]), or a formula that resolves to such a value.
 #' @param data A data frame over which the formula is evaluated.
 #'
 #' @keywords internal
@@ -850,13 +850,13 @@ safeLabel <- function(label, data) {
 
 #' @param
 #' noHide,direction,offset,permanent
-#' label options; see \url{https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#tooltip-option}
-#' @param opacity Tooltip container opacity. Ranges from 0 to 1. Default value is \code{1} (different from leaflet.js \code{0.9}); see \url{https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#tooltip-opacity}
+#' label options; see <https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#tooltip-option>
+#' @param opacity Tooltip container opacity. Ranges from 0 to 1. Default value is `1` (different from leaflet.js `0.9`); see <https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#tooltip-opacity>
 #' @param textsize Change the text size of a single tooltip
 #' @param textOnly Display only the text, no regular surrounding box.
 #' @param style list of css style to be added to the tooltip
-#' @param zoomAnimation deprecated. See \url{https://github.com/Leaflet/Leaflet/blob/master/CHANGELOG.md#api-changes-5}
-#' @param sticky If true, the tooltip will follow the mouse instead of being fixed at the feature center. Default value is \code{TRUE} (different from leaflet.js \code{FALSE}); see \url{https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#tooltip-sticky}
+#' @param zoomAnimation deprecated. See <https://github.com/Leaflet/Leaflet/blob/master/CHANGELOG.md#api-changes-5>
+#' @param sticky If true, the tooltip will follow the mouse instead of being fixed at the feature center. Default value is `TRUE` (different from leaflet.js `FALSE`); see <https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#tooltip-sticky>
 #' @describeIn map-options Options for labels
 #' @export
 labelOptions <- function(
@@ -893,17 +893,17 @@ labelOptions <- function(
 }
 
 #' @param icon the icon(s) for markers; an icon is represented by an R list of
-#'   the form \code{list(iconUrl = "?", iconSize = c(x, y))}, and you can use
-#'   \code{\link{icons}()} to create multiple icons; note when you use an R list
+#'   the form `list(iconUrl = "?", iconSize = c(x, y))`, and you can use
+#'   [icons()] to create multiple icons; note when you use an R list
 #'   that contains images as local files, these local image files will be base64
 #'   encoded into the HTML page so the icon images will still be available even
 #'   when you publish the map elsewhere
 #' @param label a character vector of the HTML content for the labels
-#' @param labelOptions A Vector of \code{\link{labelOptions}} to provide label
-#' options for each label. Default \code{NULL}
-#' @param clusterOptions if not \code{NULL}, markers will be clustered using
-#'   \href{https://github.com/Leaflet/Leaflet.markercluster}{Leaflet.markercluster};
-#'    you can use \code{\link{markerClusterOptions}()} to specify marker cluster
+#' @param labelOptions A Vector of [labelOptions()] to provide label
+#' options for each label. Default `NULL`
+#' @param clusterOptions if not `NULL`, markers will be clustered using
+#'   [Leaflet.markercluster](https://github.com/Leaflet/Leaflet.markercluster);
+#'    you can use [markerClusterOptions()] to specify marker cluster
 #'   options
 #' @param clusterId the id for the marker cluster layer
 #' @describeIn map-layers Add markers to the map
@@ -1021,7 +1021,7 @@ markerClusterDependencies <- function() {
 
 #' Make icon set
 #'
-#' @param ... icons created from \code{\link{makeIcon}()}
+#' @param ... icons created from [makeIcon()]
 #' @export
 #' @examples
 #'
@@ -1104,9 +1104,9 @@ makeIcon <- function(iconUrl = NULL, iconRetinaUrl = NULL, iconWidth = NULL, ico
 
 #' Create a list of icon data
 #'
-#' An icon can be represented as a list of the form \code{list(iconUrl,
-#' iconSize, ...)}. This function is vectorized over its arguments to create a
-#' list of icon data. Shorter argument values will be re-cycled. \code{NULL}
+#' An icon can be represented as a list of the form `list(iconUrl,
+#' iconSize, ...)`. This function is vectorized over its arguments to create a
+#' list of icon data. Shorter argument values will be re-cycled. `NULL`
 #' values for these arguments will be ignored.
 #' @param iconUrl the URL or file path to the icon image
 #' @param iconRetinaUrl the URL or file path to a retina sized version of the
@@ -1114,7 +1114,7 @@ makeIcon <- function(iconUrl = NULL, iconRetinaUrl = NULL, iconWidth = NULL, ico
 #' @param iconWidth,iconHeight size of the icon image in pixels
 #' @param iconAnchorX,iconAnchorY the coordinates of the "tip" of the icon
 #'   (relative to its top left corner, i.e. the top left corner means
-#'   \code{iconAnchorX = 0} and \code{iconAnchorY = 0}), and the icon will be
+#'   `iconAnchorX = 0` and `iconAnchorY = 0`), and the icon will be
 #'   aligned so that this point is at the marker's geographical location
 #' @param shadowUrl the URL or file path to the icon shadow image
 #' @param shadowRetinaUrl the URL or file path to the retina sized version of
@@ -1124,8 +1124,8 @@ makeIcon <- function(iconUrl = NULL, iconRetinaUrl = NULL, iconWidth = NULL, ico
 #' @param popupAnchorX,popupAnchorY the coordinates of the point from which
 #'   popups will "open", relative to the icon anchor
 #' @param className a custom class name to assign to both icon and shadow images
-#' @return A list of icon data that can be passed to the \code{icon} argument of
-#'   \code{\link{addMarkers}()}.
+#' @return A list of icon data that can be passed to the `icon` argument of
+#'   [addMarkers()].
 #' @export
 #' @example inst/examples/icons.R
 icons <- function(
@@ -1175,10 +1175,10 @@ b64EncodePackedIcons <- function(packedIcons) {
 }
 
 #' @param interactive whether the element emits mouse events
-#' @param clickable DEPRECATED! Use the \code{interactive} option.
+#' @param clickable DEPRECATED! Use the `interactive` argument.
 #' @param
 #'   draggable,keyboard,title,alt,zIndexOffset,riseOnHover,riseOffset
-#'   marker options; see \url{https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#marker-option}
+#'   marker options; see <https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#marker-option>
 #' @describeIn map-options Options for markers
 #' @export
 markerOptions <- function(
@@ -1212,12 +1212,12 @@ markerOptions <- function(
 #' @param removeOutsideVisibleBounds clusters and markers too far from the
 #'   viewport are removed from the map for performance
 #' @param spiderLegPolylineOptions Allows you to specify
-#'   \href{https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#polyline-option}{PolylineOptions}
+#'   [PolylineOptions](https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#polyline-option)
 #'   to style spider legs. By default, they are
 #'   \code{\{weight: 1.5, color: "#222", opacity: 0.5 \}}.
 #' @param freezeAtZoom Allows you to freeze cluster expansion to a zoom level.
 #'   Can be a zoom level e.g. 10, 12 or "max" or "maxKeepSpiderify".
-#'   See \url{https://github.com/ghybs/Leaflet.MarkerCluster.Freezable#api-reference}.
+#'   See <https://github.com/ghybs/Leaflet.MarkerCluster.Freezable#api-reference>.
 #' @describeIn map-options Options for marker clusters
 #' @export
 markerClusterOptions <- function(
@@ -1239,7 +1239,7 @@ markerClusterOptions <- function(
 
 #' @param radius a numeric vector of radii for the circles; it can also be a
 #'   one-sided formula, in which case the radius values are derived from the
-#'   \code{data} (units in meters for circles, and pixels for circle markers)
+#'   `data` (units in meters for circles, and pixels for circle markers)
 #' @param stroke whether to draw stroke along the path (e.g. the borders of
 #'   polygons or circles)
 #' @param color stroke color
@@ -1249,9 +1249,8 @@ markerClusterOptions <- function(
 #'   circles)
 #' @param fillColor fill color
 #' @param fillOpacity fill opacity
-#' @param dashArray a string that defines the stroke
-#'   \href{https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray}{dash
-#'   pattern}
+#' @param dashArray a string that defines the stroke [dash
+#'   pattern](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray)
 #' @describeIn map-layers Add circle markers to the map
 #' @export
 addCircleMarkers <- function(
@@ -1321,13 +1320,13 @@ removeMarkerFromCluster <- function(map, layerId, clusterId) {
   invokeMethod(map, getMapData(map), "removeMarkerFromCluster", layerId, clusterId)
 }
 
-#' @param lineCap a string that defines
-#'   \href{https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linecap}{shape
-#'    to be used at the end} of the stroke
-#' @param lineJoin a string that defines
-#'   \href{https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linejoin}{shape
-#'    to be used at the corners} of the stroke
-#' @param pointerEvents sets the \code{pointer-events} attribute on the path if
+#' @param lineCap a string that defines [shape to be used
+#'   at the end](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linecap)
+#'   of the stroke.
+#' @param lineJoin a string that defines [shape to be used at the
+#'   corners](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linejoin)
+#'   of the stroke.
+#' @param pointerEvents sets the `pointer-events` attribute on the path if
 #'   SVG backend is used
 #' @describeIn map-options Options for vector layers (polylines, polygons,
 #'   rectangles, and circles, etc)
@@ -1588,7 +1587,7 @@ clearGeoJSON <- function(map) {
 #' Add UI controls to switch layers on and off
 #'
 #' Uses Leaflet's built-in
-#' \href{https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#control-layers}{layers control}
+#' [layers control](https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#control-layers)
 #' feature to allow users to choose one of several base layers, and to choose
 #' any number of overlay layers to view.
 #'
@@ -1598,10 +1597,10 @@ clearGeoJSON <- function(map) {
 #'   most commonly used for mostly-opaque tile layers.
 #' @param overlayGroups character vector where each element is the name of a
 #'   group. The user can turn each overlay group on or off independently.
-#' @param position position of control: "topleft", "topright", "bottomleft", or
-#'   "bottomright"
+#' @param position position of control: `"topleft"`, `"topright"`,
+#'   `"bottomleft"`, or `"bottomright"`.
 #' @param options a list of additional options, intended to be provided by
-#'   a call to \code{layersControlOptions}
+#'   a call to `layersControlOptions()`
 #' @template data-getMapData
 #'
 #' @examples
@@ -1630,12 +1629,12 @@ addLayersControl <- function(map,
 }
 
 #' @rdname addLayersControl
-#' @param collapsed if \code{TRUE} (the default), the layers control will be
-#'   rendered as an icon that expands when hovered over. Set to \code{FALSE}
+#' @param collapsed if `TRUE` (the default), the layers control will be
+#'   rendered as an icon that expands when hovered over. Set to `FALSE`
 #'   to have the layers control always appear in its expanded state.
-#' @param autoZIndex if \code{TRUE}, the control will automatically maintain
+#' @param autoZIndex if `TRUE`, the control will automatically maintain
 #'   the z-order of its various groups as overlays are switched on and off.
-#' @param ... other options for \code{layersControlOptions()}
+#' @param ... other options for `layersControlOptions()`
 #' @export
 layersControlOptions <- function(collapsed = TRUE, autoZIndex = TRUE, ...) {
   filterNULL(list(collapsed = collapsed, autoZIndex = autoZIndex, ...))

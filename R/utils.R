@@ -7,18 +7,15 @@
 
 #' Extension points for plugins
 #'
-#' @param map a map object, as returned from \code{\link{leaflet}} or
-#'   \code{\link{leafletProxy}}
+#' @param map a map object, as returned from [leaflet()] or [leafletProxy()]
 #' @param funcName the name of the function that the user called that caused
-#'   this \code{dispatch} call; for error message purposes
-#' @param leaflet an action to be performed if the map is from
-#'   \code{\link{leaflet}}
-#' @param leaflet_proxy an action to be performed if the map is from
-#'   \code{\link{leafletProxy}}
+#'   this `dispatch` call; for error message purposes
+#' @param leaflet an action to be performed if the map is from [leaflet()]
+#' @param leaflet_proxy an action to be performed if the map is from [leafletProxy()].
 #'
-#' @return \code{dispatch} returns the value of \code{leaflet} or
-#'   \code{leaflet_proxy}, or an error. \code{invokeMethod} returns the
-#'   \code{map} object that was passed in, possibly modified.
+#' @return `dispatch()` returns the value of `leaflet` or
+#'   `leaflet_proxy()`, or an error. `invokeMethod()` returns the
+#'   `map` object that was passed in, possibly modified.
 #'
 #' @export
 dispatch <- function(map,
@@ -44,8 +41,7 @@ filterNULL <- function(x) {
   x[!unlist(lapply(x, is.null))]
 }
 
-#' @param data a data object that will be used when evaluating formulas in
-#'   \code{...}
+#' @param data a data object that will be used when evaluating formulas in `...`
 #' @param method the name of the JavaScript method to invoke
 #' @param ... unnamed arguments to be passed to the JavaScript method
 #' @rdname dispatch
@@ -83,9 +79,9 @@ invokeMethod <- function(map, data, method, ...) {
 #' Creates a map-like object that can be used to customize and control a map
 #' that has already been rendered. For use in Shiny apps and Shiny docs only.
 #'
-#' Normally, you create a Leaflet map using the \code{\link{leaflet}} function.
+#' Normally, you create a Leaflet map using [leaflet()].
 #' This creates an in-memory representation of a map that you can customize
-#' using functions like \code{\link{addPolygons}} and \code{\link{setView}}.
+#' using functions like [addPolygons()] and [setView()].
 #' Such a map can be printed at the R console, included in an R Markdown
 #' document, or rendered as a Shiny output.
 #'
@@ -94,9 +90,9 @@ invokeMethod <- function(map, data, method, ...) {
 #' map is long gone, and the user's web browser has already realized the Leaflet
 #' map instance.
 #'
-#' This is where \code{leafletProxy} comes in. It returns an object that can
+#' This is where `leafletProxy()` comes in. It returns an object that can
 #' stand in for the usual Leaflet map object. The usual map functions like
-#' \code{\link{addPolygons}} and \code{\link{setView}} can be called, and
+#' [addPolygons()] and [setView()] can be called, and
 #' instead of customizing an in-memory representation, these commands will
 #' execute on the live Leaflet map instance.
 #'
@@ -105,12 +101,12 @@ invokeMethod <- function(map, data, method, ...) {
 #'   automatically)
 #' @param session the Shiny session object to which the map belongs; usually the
 #'   default value will suffice
-#' @param data a data object; see Details under the \code{\link{leaflet}} help
+#' @param data a data object; see Details under the [leaflet()] help
 #'   topic
 #' @param deferUntilFlush indicates whether actions performed against this
 #'   instance should be carried out right away, or whether they should be held
 #'   until after the next time all of the outputs are updated; defaults to
-#'   \code{TRUE}
+#'   `TRUE`
 #'
 #' @examples
 #' library(shiny)
@@ -273,8 +269,8 @@ makeListFun <- function(list) {
 #' @param lat vector with latitude values
 #' @param funcName Name of calling function
 #' @param warn A boolean. Whether to generate a warning message if there are rows with missing/invalid data
-#' @param mode if \code{"point"} then warn about any \code{NA} lng/lat values;
-#'   if \code{"polygon"} then \code{NA} values are expected to be used as
+#' @param mode if `"point"` then warn about any `NA` lng/lat values;
+#'   if `"polygon"` then `NA` values are expected to be used as
 #'   polygon delimiters
 #' @export
 validateCoords <- function(lng, lat, funcName, warn = TRUE,

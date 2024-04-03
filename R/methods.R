@@ -1,13 +1,13 @@
 #' Methods to manipulate the map widget
 #'
 #' A series of methods to manipulate the map.
-#' @param map a map widget object created from \code{\link{leaflet}()}
+#' @param map a map widget object created from [leaflet()]
 #' @param lng The longitude of the map center
 #' @param lat The latitude of the map center
 #' @param zoom the zoom level
 #' @param options a list of zoom/pan options (see
-#'   \url{https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#zoom/pan-options})
-#' @references \url{https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#map-methods-for-modifying-map-state}
+#'   <https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#zoom/pan-options>)
+#' @references <https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#map-methods-for-modifying-map-state>
 #' @return The modified map widget.
 #' @describeIn map-methods Set the view of the map (center and zoom level)
 #' @export

@@ -97,5 +97,5 @@ leaf
 \seealso{
 \url{https://github.com/Norkart/Leaflet-MiniMap}
 
-\code{\link{providers}}
+\code{\link[=providers]{providers()}}
 }

@@ -1,14 +1,14 @@
 #' Add or remove a scale bar
 #'
 #' Uses Leaflet's built-in
-#' \href{https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#control-scale}{scale bar}
+#' [scale bar](https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#control-scale)
 #' feature to add a scale bar.
 #'
 #' @param map the map to add the scale bar to
-#' @param position position of control: "topleft", "topright", "bottomleft", or
-#'   "bottomright"
+#' @param position position of control: `"topleft"`, `"topright"`, `"bottomleft"`, or
+#'   `"bottomright"`.
 #' @param options a list of additional options, intended to be provided by
-#'   a call to \code{scaleBarOptions}
+#'   a call to `scaleBarOptions()`
 #'
 #' @examples
 #' \donttest{
@@ -28,13 +28,13 @@ addScaleBar <- function(map,
 
 #' @rdname addScaleBar
 #' @param maxWidth maximum width of the control in pixels (default 100)
-#' @param metric if \code{TRUE} (the default), show a scale bar in metric units
+#' @param metric if `TRUE` (the default), show a scale bar in metric units
 #' (m/km)
-#' @param imperial if \code{TRUE} (the default), show a scale bar in imperial
+#' @param imperial if `TRUE` (the default), show a scale bar in imperial
 #' units (ft/mi)
-#' @param updateWhenIdle if \code{FALSE} (the default), the scale bar is always
-#' up-to-date (updated on \code{move}). If \code{TRUE}, the control is updated
-#' on \code{moveend}.
+#' @param updateWhenIdle if `FALSE` (the default), the scale bar is always
+#' up-to-date (updated on `move`). If `TRUE`, the control is updated
+#' on `moveend`.
 #' @export
 scaleBarOptions <- function(maxWidth = 100, metric = TRUE, imperial = TRUE,
   updateWhenIdle = TRUE) {

@@ -39,9 +39,9 @@ addEasyButtonBar(map, ..., position = "topleft", id = NULL)
 
 \item{map}{a map widget object}
 
-\item{button}{the button object created with \code{\link{easyButton}}}
+\item{button}{the button object created with \code{\link[=easyButton]{easyButton()}}}
 
-\item{...}{a list of buttons created with \code{\link{easyButton}}}
+\item{...}{a list of buttons created with \code{\link[=easyButton]{easyButton()}}}
 }
 \description{
 Create an easyButton statestate
@@ -85,9 +85,9 @@ leaf
 
 }
 \seealso{
-\code{\link{easyButton}}
+\code{\link[=easyButton]{easyButton()}}
 
 \url{https://github.com/CliffCloud/Leaflet.EasyButton}
 
-\code{\link{addEasyButton}}
+\code{\link[=addEasyButton]{addEasyButton()}}
 }

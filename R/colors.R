@@ -3,35 +3,35 @@
 #' Conveniently maps data values (numeric or factor/character) to colors
 #' according to a given palette, which can be provided in a variety of formats.
 #'
-#' \code{colorNumeric} is a simple linear mapping from continuous numeric data
+#' `colorNumeric()` is a simple linear mapping from continuous numeric data
 #' to an interpolated palette.
 #'
 #' @param palette The colors or color function that values will be mapped to
 #' @param domain The possible values that can be mapped.
 #'
-#'   For \code{colorNumeric} and \code{colorBin}, this can be a simple numeric
-#'   range (e.g. \code{c(0, 100)}); \code{colorQuantile} needs representative
-#'   numeric data; and \code{colorFactor} needs categorical data.
+#'   For `colorNumeric()` and `colorBin()`, this can be a simple numeric
+#'   range (e.g. `c(0, 100)`); `colorQuantile()` needs representative
+#'   numeric data; and `colorFactor()` needs categorical data.
 #'
-#'   If \code{NULL}, then whenever the resulting color function is called, the
-#'   \code{x} value will represent the domain. This implies that if the function
+#'   If `NULL`, then whenever the resulting color function is called, the
+#'   `x` value will represent the domain. This implies that if the function
 #'   is invoked multiple times, the encoding between values and colors may not
-#'   be consistent; if consistency is needed, you must provide a non-\code{NULL}
+#'   be consistent; if consistency is needed, you must provide a non-`NULL`
 #'   domain.
-#' @param na.color The color to return for \code{NA} values. Note that
-#'   \code{na.color = NA} is valid.
+#' @param na.color The color to return for `NA` values. Note that
+#'   `na.color = NA` is valid.
 #' @param alpha Whether alpha channels should be respected or ignored. If
-#'   \code{TRUE} then colors without explicit alpha information will be treated
+#'   `TRUE` then colors without explicit alpha information will be treated
 #'   as fully opaque.
-#' @param reverse Whether the colors (or color function) in \code{palette}
+#' @param reverse Whether the colors (or color function) in `palette`
 #'   should be used in reverse order. For example, if the default order of a
-#'   palette goes from blue to green, then \code{reverse = TRUE} will result in
+#'   palette goes from blue to green, then `reverse = TRUE` will result in
 #'   the colors going from green to blue.
 #'
-#' @return A function that takes a single parameter \code{x}; when called with a
-#'   vector of numbers (except for \code{colorFactor}, which expects
+#' @return A function that takes a single parameter `x`; when called with a
+#'   vector of numbers (except for `colorFactor()`, which expects
 #'   factors/characters), #RRGGBB color strings are returned (unless
-#'   \code{alpha = TRUE} in which case #RRGGBBAA may also be possible).
+#'   `alpha = TRUE` in which case #RRGGBBAA may also be possible).
 #'
 #' @export
 colorNumeric <- function(palette, domain, na.color = "#808080", alpha = FALSE, reverse = FALSE) {
@@ -93,17 +93,17 @@ getBins <- function(domain, x, bins, pretty) {
   }
 }
 
-#' @details \code{colorBin} also maps continuous numeric data, but performs
-#'   binning based on value (see the \code{\link[base]{cut}} function). \code{colorBin}
-#'   defaults for the \code{\link[base]{cut}} function are \code{include.lowest
-#'   = TRUE} and \code{right = FALSE}.
+#' @details `colorBin()` also maps continuous numeric data, but performs
+#'   binning based on value (see the [base::cut()] function). `colorBin()`
+#'   defaults for the [base::cut()] function are `include.lowest
+#'   = TRUE` and `right = FALSE`.
 #' @param bins Either a numeric vector of two or more unique cut points or a
 #'   single number (greater than or equal to 2) giving the number of intervals
 #'   into which the domain values are to be cut.
-#' @param pretty Whether to use the function \code{\link{pretty}()} to generate
-#'   the bins when the argument \code{bins} is a single number. When
-#'   \code{pretty = TRUE}, the actual number of bins may not be the number of
-#'   bins you specified. When \code{pretty = FALSE}, \code{\link{seq}()} is used
+#' @param pretty Whether to use the function [pretty()] to generate
+#'   the bins when the argument `bins` is a single number. When
+#'   `pretty = TRUE`, the actual number of bins may not be the number of
+#'   bins you specified. When `pretty = FALSE`, [seq()] is used
 #'   to generate the bins and the breaks may not be "pretty".
 #' @param right parameter supplied to cut. See Details
 #' @rdname colorNumeric
@@ -136,12 +136,10 @@ colorBin <- function(palette, domain, bins = 7, pretty = TRUE,
   })
 }
 
-#' @details \code{colorQuantile} similarly bins numeric data, but via the
-#'   \code{\link[stats]{quantile}} function.
+#' @details `colorQuantile()` similarly bins numeric data, but via [stats::quantile()].
 #' @param n Number of equal-size quantiles desired. For more precise control,
-#'   use the \code{probs} argument instead.
-#' @param probs See \code{\link[stats]{quantile}}. If provided, the \code{n}
-#'   argument is ignored.
+#'   use `probs` instead.
+#' @param probs See [stats::quantile()]. If provided, `n` is ignored.
 #' @rdname colorNumeric
 #' @export
 colorQuantile <- function(palette, domain, n = 4,
@@ -199,12 +197,12 @@ getLevels <- function(domain, x, lvls, ordered) {
   }
 }
 
-#' @details \code{colorFactor} maps factors to colors. If the palette is
+#' @details `colorFactor()` maps factors to colors. If the palette is
 #'   discrete and has a different number of colors than the number of factors,
 #'   interpolation is used.
 #' @param levels An alternate way of specifying levels; if specified, domain is
 #'   ignored
-#' @param ordered If \code{TRUE} and \code{domain} needs to be coerced to a
+#' @param ordered If `TRUE` and `domain` needs to be coerced to a
 #'   factor, treat it as already in the correct order
 #' @rdname colorNumeric
 #' @export
@@ -249,12 +247,12 @@ colorFactor <- function(palette, domain, levels = NULL, ordered = FALSE,
   })
 }
 
-#' @details The \code{palette} argument can be any of the following:
+#' @details The `palette` argument can be any of the following:
 #' \enumerate{
-#'   \item{A character vector of RGB or named colors. Examples: \code{palette()}, \code{c("#000000", "#0000FF", "#FFFFFF")}, \code{topo.colors(10)}}
-#'   \item{The name of an RColorBrewer palette, e.g. \code{"BuPu"} or \code{"Greens"}.}
-#'   \item{The full name of a viridis palette: \code{"viridis"}, \code{"magma"}, \code{"inferno"}, or \code{"plasma"}.}
-#'   \item{A function that receives a single value between 0 and 1 and returns a color. Examples: \code{colorRamp(c("#000000", "#FFFFFF"), interpolate = "spline")}.}
+#'   \item{A character vector of RGB or named colors. Examples: `palette()`, `c("#000000", "#0000FF", "#FFFFFF")`, `topo.colors(10)`}
+#'   \item{The name of an RColorBrewer palette, e.g. `"BuPu"` or `"Greens"`.}
+#'   \item{The full name of a viridis palette: `"viridis"`, `"magma"`, `"inferno"`, or `"plasma"`.}
+#'   \item{A function that receives a single value between 0 and 1 and returns a color. Examples: `colorRamp(c("#000000", "#FFFFFF"), interpolate = "spline")`.}
 #' }
 #' @examples
 #' pal <- colorBin("Greens", domain = 0:100)
@@ -355,7 +353,7 @@ toPaletteFunc.function <- function(pal, alpha, nlevels) {
 
 #' Color previewing utility
 #'
-#' @param pal A color mapping function, like those returned from \code{\link{colorNumeric}}, et al
+#' @param pal A color mapping function, like those returned from [colorNumeric()], et al
 #' @param values A set of values to preview colors for
 #' @return An HTML-based list of the colors and values
 #' @export

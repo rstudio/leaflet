@@ -33,12 +33,12 @@ labelFormat(
 )
 }
 \arguments{
-\item{map}{a map widget object created from \code{\link{leaflet}()}}
+\item{map}{a map widget object created from \code{\link[=leaflet]{leaflet()}}}
 
 \item{position}{the position of the legend}
 
 \item{pal}{the color palette function, generated from
-\code{\link{colorNumeric}()}, \code{colorBin()}, \code{colorQuantile()}, or
+\code{\link[=colorNumeric]{colorNumeric()}}, \code{colorBin()}, \code{colorQuantile()}, or
 \code{colorFactor()}}
 
 \item{values}{the values used to generate colors from the palette function}
@@ -75,7 +75,7 @@ Supplying this value will tie the legend to the leaflet layer group
 with this name and will auto add/remove the legend as the
 group is added/removed, for example via \code{layerControl()}.
 You will need to set the \code{group} when you add a layer
-(e.g. \code{\link{addPolygons}}) and supply the same name here.}
+(e.g. \code{\link[=addPolygons]{addPolygons()}}) and supply the same name here.}
 
 \item{data}{the data object from which the argument values are derived; by
 default, it is the \code{data} object provided to \code{leaflet()}
@@ -96,7 +96,7 @@ labels (by default, it is a dash)}
 }
 \description{
 When a color palette function is used in a map (e.g.
-\code{\link{colorNumeric}}), a color legend can be automatically derived from
+\code{\link[=colorNumeric]{colorNumeric()}}), a color legend can be automatically derived from
 the palette function. You can also manually specify the colors and labels for
 the legend.
 }
@@ -109,15 +109,14 @@ vector, and returns a character vector of the same length. For
 \code{colorBin()}, \code{labFormat} also takes a vector of breaks of length
 \code{n} but should return a character vector of length \code{n - 1}, with
 the \code{i}-th element representing the interval \code{c(x[i], x[i + 1])}.
-For \code{colorQuantile}, \code{labFormat} takes two arguments, the quantiles
+For \code{colorQuantile()}, \code{labFormat} takes two arguments, the quantiles
 and the associated probabilities (each of length \code{n}), and should return
 a character vector of length \code{n - 1} (similar to the \code{colorBin()}
 palette). For \code{colorFactor()}, \code{labFormat} takes one argument, the
 unique values of the factor, and should return a character vector of the same
 length.
 
-By default, \code{labFormat} is basically \code{format(scientific = FALSE,
-big.mark = ",")} for the numeric palette, \code{as.character()} for the
+By default, \code{labFormat} is basically \code{format(scientific = FALSE, big.mark = ",")} for the numeric palette, \code{as.character()} for the
 factor palette, and a function to return labels of the form \samp{x[i] - x[i
 + 1]} for bin and quantile palettes (in the case of quantile palettes,
 \code{x} is the probabilities instead of the values of breaks).

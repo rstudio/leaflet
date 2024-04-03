@@ -52,9 +52,9 @@ colorFactor(
 
 \item{domain}{The possible values that can be mapped.
 
-For \code{colorNumeric} and \code{colorBin}, this can be a simple numeric
-range (e.g. \code{c(0, 100)}); \code{colorQuantile} needs representative
-numeric data; and \code{colorFactor} needs categorical data.
+For \code{colorNumeric()} and \code{colorBin()}, this can be a simple numeric
+range (e.g. \code{c(0, 100)}); \code{colorQuantile()} needs representative
+numeric data; and \code{colorFactor()} needs categorical data.
 
 If \code{NULL}, then whenever the resulting color function is called, the
 \code{x} value will represent the domain. This implies that if the function
@@ -78,19 +78,18 @@ the colors going from green to blue.}
 single number (greater than or equal to 2) giving the number of intervals
 into which the domain values are to be cut.}
 
-\item{pretty}{Whether to use the function \code{\link{pretty}()} to generate
+\item{pretty}{Whether to use the function \code{\link[=pretty]{pretty()}} to generate
 the bins when the argument \code{bins} is a single number. When
 \code{pretty = TRUE}, the actual number of bins may not be the number of
-bins you specified. When \code{pretty = FALSE}, \code{\link{seq}()} is used
+bins you specified. When \code{pretty = FALSE}, \code{\link[=seq]{seq()}} is used
 to generate the bins and the breaks may not be "pretty".}
 
 \item{right}{parameter supplied to cut. See Details}
 
 \item{n}{Number of equal-size quantiles desired. For more precise control,
-use the \code{probs} argument instead.}
+use \code{probs} instead.}
 
-\item{probs}{See \code{\link[stats]{quantile}}. If provided, the \code{n}
-argument is ignored.}
+\item{probs}{See \code{\link[stats:quantile]{stats::quantile()}}. If provided, \code{n} is ignored.}
 
 \item{levels}{An alternate way of specifying levels; if specified, domain is
 ignored}
@@ -100,7 +99,7 @@ factor, treat it as already in the correct order}
 }
 \value{
 A function that takes a single parameter \code{x}; when called with a
-vector of numbers (except for \code{colorFactor}, which expects
+vector of numbers (except for \code{colorFactor()}, which expects
 factors/characters), #RRGGBB color strings are returned (unless
 \code{alpha = TRUE} in which case #RRGGBBAA may also be possible).
 }
@@ -109,18 +108,16 @@ Conveniently maps data values (numeric or factor/character) to colors
 according to a given palette, which can be provided in a variety of formats.
 }
 \details{
-\code{colorNumeric} is a simple linear mapping from continuous numeric data
+\code{colorNumeric()} is a simple linear mapping from continuous numeric data
 to an interpolated palette.
 
-\code{colorBin} also maps continuous numeric data, but performs
-binning based on value (see the \code{\link[base]{cut}} function). \code{colorBin}
-defaults for the \code{\link[base]{cut}} function are \code{include.lowest
-  = TRUE} and \code{right = FALSE}.
+\code{colorBin()} also maps continuous numeric data, but performs
+binning based on value (see the \code{\link[base:cut]{base::cut()}} function). \code{colorBin()}
+defaults for the \code{\link[base:cut]{base::cut()}} function are \code{include.lowest = TRUE} and \code{right = FALSE}.
 
-\code{colorQuantile} similarly bins numeric data, but via the
-\code{\link[stats]{quantile}} function.
+\code{colorQuantile()} similarly bins numeric data, but via \code{\link[stats:quantile]{stats::quantile()}}.
 
-\code{colorFactor} maps factors to colors. If the palette is
+\code{colorFactor()} maps factors to colors. If the palette is
 discrete and has a different number of colors than the number of factors,
 interpolation is used.
 

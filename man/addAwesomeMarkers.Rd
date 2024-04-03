@@ -37,7 +37,7 @@ the latitude column from \code{data})}
 \item{layerId}{the layer id}
 
 \item{group}{the name of the group the newly created layers should belong to
-(for \code{\link{clearGroup}} and \code{\link{addLayersControl}} purposes).
+(for \code{\link[=clearGroup]{clearGroup()}} and \code{\link[=addLayersControl]{addLayersControl()}} purposes).
 Human-friendly group names are permitted--they need not be short,
 identifier-style names. Any number of layers and even different types of
 layers (e.g. markers and polygons) can share the same group name.}
@@ -45,14 +45,14 @@ layers (e.g. markers and polygons) can share the same group name.}
 \item{icon}{the icon(s) for markers;}
 
 \item{popup}{a character vector of the HTML content for the popups (you are
-recommended to escape the text using \code{\link[htmltools]{htmlEscape}()}
+recommended to escape the text using \code{\link[htmltools:htmlEscape]{htmltools::htmlEscape()}}
 for security reasons)}
 
-\item{popupOptions}{A Vector of \code{\link{popupOptions}} to provide popups}
+\item{popupOptions}{A Vector of \code{\link[=popupOptions]{popupOptions()}} to provide popups}
 
 \item{label}{a character vector of the HTML content for the labels}
 
-\item{labelOptions}{A Vector of \code{\link{labelOptions}} to provide label
+\item{labelOptions}{A Vector of \code{\link[=labelOptions]{labelOptions()}} to provide label
 options for each label. Default \code{NULL}}
 
 \item{options}{a list of extra options for tile layers, popups, paths
@@ -60,7 +60,7 @@ options for each label. Default \code{NULL}}
 
 \item{clusterOptions}{if not \code{NULL}, markers will be clustered using
 \href{https://github.com/Leaflet/Leaflet.markercluster}{Leaflet.markercluster};
-you can use \code{\link{markerClusterOptions}()} to specify marker cluster
+you can use \code{\link[=markerClusterOptions]{markerClusterOptions()}} to specify marker cluster
 options}
 
 \item{clusterId}{the id for the marker cluster layer}

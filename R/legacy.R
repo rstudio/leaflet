@@ -2,7 +2,7 @@
 #'
 #' These functions are provided for backwards compatibility with the first
 #' iteration of the leaflet bindings
-#' (\url{https://github.com/jcheng5/leaflet-shiny}).
+#' (<https://github.com/jcheng5/leaflet-shiny>).
 #'
 #' @param session,outputId Deprecated
 #'

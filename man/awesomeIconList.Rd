@@ -7,7 +7,7 @@
 awesomeIconList(...)
 }
 \arguments{
-\item{...}{icons created from \code{\link{makeAwesomeIcon}()}}
+\item{...}{icons created from \code{\link[=makeAwesomeIcon]{makeAwesomeIcon()}}}
 }
 \description{
 Make awesome-icon set

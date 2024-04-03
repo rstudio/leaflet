@@ -7,7 +7,7 @@
 iconList(...)
 }
 \arguments{
-\item{...}{icons created from \code{\link{makeIcon}()}}
+\item{...}{icons created from \code{\link[=makeIcon]{makeIcon()}}}
 }
 \description{
 Make icon set
