@@ -121,7 +121,7 @@ the latitude column from <code>data</code>)</p></dd>
 
 <dt>group</dt>
 <dd><p>the name of the group the newly created layers should belong to
-(for <code><a href="remove.html">clearGroup</a></code> and <code><a href="addLayersControl.html">addLayersControl</a></code> purposes).
+(for <code><a href="remove.html">clearGroup()</a></code> and <code><a href="addLayersControl.html">addLayersControl()</a></code> purposes).
 Human-friendly group names are permitted--they need not be short,
 identifier-style names. Any number of layers and even different types of
 layers (e.g. markers and polygons) can share the same group name.</p></dd>
@@ -133,12 +133,12 @@ layers (e.g. markers and polygons) can share the same group name.</p></dd>
 
 <dt>popup</dt>
 <dd><p>a character vector of the HTML content for the popups (you are
-recommended to escape the text using <code><a href="https://rstudio.github.io/htmltools/reference/htmlEscape.html" class="external-link">htmlEscape</a>()</code>
+recommended to escape the text using <code><a href="https://rstudio.github.io/htmltools/reference/htmlEscape.html" class="external-link">htmltools::htmlEscape()</a></code>
 for security reasons)</p></dd>
 
 
 <dt>popupOptions</dt>
-<dd><p>A Vector of <code><a href="map-options.html">popupOptions</a></code> to provide popups</p></dd>
+<dd><p>A Vector of <code><a href="map-options.html">popupOptions()</a></code> to provide popups</p></dd>
 
 
 <dt>label</dt>
@@ -146,7 +146,7 @@ for security reasons)</p></dd>
 
 
 <dt>labelOptions</dt>
-<dd><p>A Vector of <code><a href="map-options.html">labelOptions</a></code> to provide label
+<dd><p>A Vector of <code><a href="map-options.html">labelOptions()</a></code> to provide label
 options for each label. Default <code>NULL</code></p></dd>
 
 
@@ -158,7 +158,7 @@ options for each label. Default <code>NULL</code></p></dd>
 <dt>clusterOptions</dt>
 <dd><p>if not <code>NULL</code>, markers will be clustered using
 <a href="https://github.com/Leaflet/Leaflet.markercluster" class="external-link">Leaflet.markercluster</a>;
-you can use <code><a href="map-options.html">markerClusterOptions</a>()</code> to specify marker cluster
+you can use <code><a href="map-options.html">markerClusterOptions()</a></code> to specify marker cluster
 options</p></dd>
 
 

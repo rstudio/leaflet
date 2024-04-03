@@ -90,8 +90,7 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>map</dt>
-<dd><p>a map object, as returned from <code><a href="leaflet.html">leaflet</a></code> or
-<code><a href="leafletProxy.html">leafletProxy</a></code></p></dd>
+<dd><p>a map object, as returned from <code><a href="leaflet.html">leaflet()</a></code> or <code><a href="leafletProxy.html">leafletProxy()</a></code></p></dd>
 
 
 <dt>funcName</dt>
@@ -100,18 +99,15 @@ this <code>dispatch</code> call; for error message purposes</p></dd>
 
 
 <dt>leaflet</dt>
-<dd><p>an action to be performed if the map is from
-<code><a href="leaflet.html">leaflet</a></code></p></dd>
+<dd><p>an action to be performed if the map is from <code><a href="leaflet.html">leaflet()</a></code></p></dd>
 
 
 <dt>leaflet_proxy</dt>
-<dd><p>an action to be performed if the map is from
-<code><a href="leafletProxy.html">leafletProxy</a></code></p></dd>
+<dd><p>an action to be performed if the map is from <code><a href="leafletProxy.html">leafletProxy()</a></code>.</p></dd>
 
 
 <dt>data</dt>
-<dd><p>a data object that will be used when evaluating formulas in
-<code>...</code></p></dd>
+<dd><p>a data object that will be used when evaluating formulas in <code>...</code></p></dd>
 
 
 <dt>method</dt>
@@ -126,8 +122,8 @@ this <code>dispatch</code> call; for error message purposes</p></dd>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p><code>dispatch</code> returns the value of <code>leaflet</code> or
-<code>leaflet_proxy</code>, or an error. <code>invokeMethod</code> returns the
+<p><code>dispatch()</code> returns the value of <code>leaflet</code> or
+<code>leaflet_proxy()</code>, or an error. <code>invokeMethod()</code> returns the
 <code>map</code> object that was passed in, possibly modified.</p>
     </div>
 

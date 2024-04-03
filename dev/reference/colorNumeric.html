@@ -129,9 +129,9 @@ according to a given palette, which can be provided in a variety of formats.</p>
 
 <dt>domain</dt>
 <dd><p>The possible values that can be mapped.</p>
-<p>For <code>colorNumeric</code> and <code>colorBin</code>, this can be a simple numeric
-range (e.g. <code>c(0, 100)</code>); <code>colorQuantile</code> needs representative
-numeric data; and <code>colorFactor</code> needs categorical data.</p>
+<p>For <code>colorNumeric()</code> and <code>colorBin()</code>, this can be a simple numeric
+range (e.g. <code>c(0, 100)</code>); <code>colorQuantile()</code> needs representative
+numeric data; and <code>colorFactor()</code> needs categorical data.</p>
 <p>If <code>NULL</code>, then whenever the resulting color function is called, the
 <code>x</code> value will represent the domain. This implies that if the function
 is invoked multiple times, the encoding between values and colors may not
@@ -164,10 +164,10 @@ into which the domain values are to be cut.</p></dd>
 
 
 <dt>pretty</dt>
-<dd><p>Whether to use the function <code><a href="https://rdrr.io/r/base/pretty.html" class="external-link">pretty</a>()</code> to generate
+<dd><p>Whether to use the function <code><a href="https://rdrr.io/r/base/pretty.html" class="external-link">pretty()</a></code> to generate
 the bins when the argument <code>bins</code> is a single number. When
 <code>pretty = TRUE</code>, the actual number of bins may not be the number of
-bins you specified. When <code>pretty = FALSE</code>, <code><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a>()</code> is used
+bins you specified. When <code>pretty = FALSE</code>, <code><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq()</a></code> is used
 to generate the bins and the breaks may not be "pretty".</p></dd>
 
 
@@ -177,12 +177,11 @@ to generate the bins and the breaks may not be "pretty".</p></dd>
 
 <dt>n</dt>
 <dd><p>Number of equal-size quantiles desired. For more precise control,
-use the <code>probs</code> argument instead.</p></dd>
+use <code>probs</code> instead.</p></dd>
 
 
 <dt>probs</dt>
-<dd><p>See <code><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></code>. If provided, the <code>n</code>
-argument is ignored.</p></dd>
+<dd><p>See <code><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">stats::quantile()</a></code>. If provided, <code>n</code> is ignored.</p></dd>
 
 
 <dt>levels</dt>
@@ -200,21 +199,19 @@ factor, treat it as already in the correct order</p></dd>
     
 
 <p>A function that takes a single parameter <code>x</code>; when called with a
-vector of numbers (except for <code>colorFactor</code>, which expects
+vector of numbers (except for <code>colorFactor()</code>, which expects
 factors/characters), #RRGGBB color strings are returned (unless
 <code>alpha = TRUE</code> in which case #RRGGBBAA may also be possible).</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p><code>colorNumeric</code> is a simple linear mapping from continuous numeric data
+    <p><code>colorNumeric()</code> is a simple linear mapping from continuous numeric data
 to an interpolated palette.</p>
-<p><code>colorBin</code> also maps continuous numeric data, but performs
-binning based on value (see the <code><a href="https://rdrr.io/r/base/cut.html" class="external-link">cut</a></code> function). <code>colorBin</code>
-defaults for the <code><a href="https://rdrr.io/r/base/cut.html" class="external-link">cut</a></code> function are <code>include.lowest
-  = TRUE</code> and <code>right = FALSE</code>.</p>
-<p><code>colorQuantile</code> similarly bins numeric data, but via the
-<code><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></code> function.</p>
-<p><code>colorFactor</code> maps factors to colors. If the palette is
+<p><code>colorBin()</code> also maps continuous numeric data, but performs
+binning based on value (see the <code><a href="https://rdrr.io/r/base/cut.html" class="external-link">base::cut()</a></code> function). <code>colorBin()</code>
+defaults for the <code><a href="https://rdrr.io/r/base/cut.html" class="external-link">base::cut()</a></code> function are <code>include.lowest = TRUE</code> and <code>right = FALSE</code>.</p>
+<p><code>colorQuantile()</code> similarly bins numeric data, but via <code><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">stats::quantile()</a></code>.</p>
+<p><code>colorFactor()</code> maps factors to colors. If the palette is
 discrete and has a different number of colors than the number of factors,
 interpolation is used.</p>
 <p>The <code>palette</code> argument can be any of the following:</p><ol><li><p>A character vector of RGB or named colors. Examples: <code><a href="https://rdrr.io/r/grDevices/palette.html" class="external-link">palette()</a></code>, <code>c("#000000", "#0000FF", "#FFFFFF")</code>, <code>topo.colors(10)</code></p></li>

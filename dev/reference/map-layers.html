@@ -330,7 +330,7 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>map</dt>
-<dd><p>a map widget object created from <code><a href="leaflet.html">leaflet</a>()</code></p></dd>
+<dd><p>a map widget object created from <code><a href="leaflet.html">leaflet()</a></code></p></dd>
 
 
 <dt>html</dt>
@@ -339,8 +339,8 @@ generated with Shiny/htmltools tags</p></dd>
 
 
 <dt>position</dt>
-<dd><p>position of control: "topleft", "topright", "bottomleft", or
-"bottomright"</p></dd>
+<dd><p>position of control: <code>"topleft"</code>, <code>"topright"</code>,
+<code>"bottomleft"</code>, or <code>"bottomright"</code>.</p></dd>
 
 
 <dt>layerId</dt>
@@ -367,7 +367,7 @@ initially, but can be overridden</p></dd>
 
 <dt>group</dt>
 <dd><p>the name of the group the newly created layers should belong to
-(for <code><a href="remove.html">clearGroup</a></code> and <code><a href="addLayersControl.html">addLayersControl</a></code> purposes).
+(for <code><a href="remove.html">clearGroup()</a></code> and <code><a href="addLayersControl.html">addLayersControl()</a></code> purposes).
 Human-friendly group names are permitted--they need not be short,
 identifier-style names. Any number of layers and even different types of
 layers (e.g. markers and polygons) can share the same group name.</p></dd>
@@ -402,21 +402,21 @@ the latitude column from <code>data</code>)</p></dd>
 
 <dt>popup</dt>
 <dd><p>a character vector of the HTML content for the popups (you are
-recommended to escape the text using <code><a href="https://rstudio.github.io/htmltools/reference/htmlEscape.html" class="external-link">htmlEscape</a>()</code>
+recommended to escape the text using <code><a href="https://rstudio.github.io/htmltools/reference/htmlEscape.html" class="external-link">htmltools::htmlEscape()</a></code>
 for security reasons)</p></dd>
 
 
 <dt>icon</dt>
 <dd><p>the icon(s) for markers; an icon is represented by an R list of
 the form <code>list(iconUrl = "?", iconSize = c(x, y))</code>, and you can use
-<code><a href="icons.html">icons</a>()</code> to create multiple icons; note when you use an R list
+<code><a href="icons.html">icons()</a></code> to create multiple icons; note when you use an R list
 that contains images as local files, these local image files will be base64
 encoded into the HTML page so the icon images will still be available even
 when you publish the map elsewhere</p></dd>
 
 
 <dt>popupOptions</dt>
-<dd><p>A Vector of <code><a href="map-options.html">popupOptions</a></code> to provide popups</p></dd>
+<dd><p>A Vector of <code><a href="map-options.html">popupOptions()</a></code> to provide popups</p></dd>
 
 
 <dt>label</dt>
@@ -424,14 +424,14 @@ when you publish the map elsewhere</p></dd>
 
 
 <dt>labelOptions</dt>
-<dd><p>A Vector of <code><a href="map-options.html">labelOptions</a></code> to provide label
+<dd><p>A Vector of <code><a href="map-options.html">labelOptions()</a></code> to provide label
 options for each label. Default <code>NULL</code></p></dd>
 
 
 <dt>clusterOptions</dt>
 <dd><p>if not <code>NULL</code>, markers will be clustered using
 <a href="https://github.com/Leaflet/Leaflet.markercluster" class="external-link">Leaflet.markercluster</a>;
-you can use <code><a href="map-options.html">markerClusterOptions</a>()</code> to specify marker cluster
+you can use <code><a href="map-options.html">markerClusterOptions()</a></code> to specify marker cluster
 options</p></dd>
 
 
@@ -476,9 +476,7 @@ circles)</p></dd>
 
 
 <dt>dashArray</dt>
-<dd><p>a string that defines the stroke
-<a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray" class="external-link">dash
-pattern</a></p></dd>
+<dd><p>a string that defines the stroke <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray" class="external-link">dash pattern</a></p></dd>
 
 
 <dt>bringToFront</dt>
@@ -546,9 +544,9 @@ north-east corners of rectangles</p></dd>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="map-options.html">tileOptions</a></code>, <code><a href="map-options.html">WMSTileOptions</a></code>,
-<code><a href="map-options.html">popupOptions</a></code>, <code><a href="map-options.html">markerOptions</a></code>,
-<code><a href="map-options.html">pathOptions</a></code></p></div>
+    <div class="dont-index"><p><code><a href="map-options.html">tileOptions()</a></code>, <code><a href="map-options.html">WMSTileOptions()</a></code>,
+<code><a href="map-options.html">popupOptions()</a></code>, <code><a href="map-options.html">markerOptions()</a></code>,
+<code><a href="map-options.html">pathOptions()</a></code></p></div>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

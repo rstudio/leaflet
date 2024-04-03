@@ -102,7 +102,7 @@ default value will suffice</p></dd>
 
 
 <dt>data</dt>
-<dd><p>a data object; see Details under the <code><a href="leaflet.html">leaflet</a></code> help
+<dd><p>a data object; see Details under the <code><a href="leaflet.html">leaflet()</a></code> help
 topic</p></dd>
 
 
@@ -115,18 +115,18 @@ until after the next time all of the outputs are updated; defaults to
 </dl></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>Normally, you create a Leaflet map using the <code><a href="leaflet.html">leaflet</a></code> function.
+    <p>Normally, you create a Leaflet map using <code><a href="leaflet.html">leaflet()</a></code>.
 This creates an in-memory representation of a map that you can customize
-using functions like <code><a href="map-layers.html">addPolygons</a></code> and <code><a href="map-methods.html">setView</a></code>.
+using functions like <code><a href="map-layers.html">addPolygons()</a></code> and <code><a href="map-methods.html">setView()</a></code>.
 Such a map can be printed at the R console, included in an R Markdown
 document, or rendered as a Shiny output.</p>
 <p>In the case of Shiny, you may want to further customize a map, even after it
 is rendered to an output. At this point, the in-memory representation of the
 map is long gone, and the user's web browser has already realized the Leaflet
 map instance.</p>
-<p>This is where <code>leafletProxy</code> comes in. It returns an object that can
+<p>This is where <code>leafletProxy()</code> comes in. It returns an object that can
 stand in for the usual Leaflet map object. The usual map functions like
-<code><a href="map-layers.html">addPolygons</a></code> and <code><a href="map-methods.html">setView</a></code> can be called, and
+<code><a href="map-layers.html">addPolygons()</a></code> and <code><a href="map-methods.html">setView()</a></code> can be called, and
 instead of customizing an in-memory representation, these commands will
 execute on the live Leaflet map instance.</p>
     </div>

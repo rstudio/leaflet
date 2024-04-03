@@ -111,11 +111,11 @@ the websocket in a Shiny context).</p>
 
 
 <dt>x</dt>
-<dd><p>a <code><a href="https://rspatial.github.io/terra/reference/SpatRaster-class.html" class="external-link">SpatRaster</a></code> or a <code>RasterLayer</code> object--see <code><a href="https://rdrr.io/pkg/raster/man/raster.html" class="external-link">raster</a></code></p></dd>
+<dd><p>a <code><a href="https://rspatial.github.io/terra/reference/SpatRaster-class.html" class="external-link">terra::SpatRaster()</a></code> or a <code>RasterLayer</code> object--see <code><a href="https://rdrr.io/pkg/raster/man/raster.html" class="external-link">raster::raster()</a></code></p></dd>
 
 
 <dt>colors</dt>
-<dd><p>the color palette (see <code><a href="colorNumeric.html">colorNumeric</a></code>) or function
+<dd><p>the color palette (see <code><a href="colorNumeric.html">colorNumeric()</a></code>) or function
 to use to color the raster values (hint: if providing a function, set
 <code>na.color</code> to <code>"#00000000"</code> to make <code>NA</code> areas transparent).
 The palette is ignored if <code>x</code> is a SpatRaster with a color table or if
@@ -136,7 +136,7 @@ it has RGB channels.</p></dd>
 
 <dt>group</dt>
 <dd><p>the name of the group this raster image should belong to (see
-the same parameter under <code><a href="map-layers.html">addTiles</a></code>)</p></dd>
+the same parameter under <code><a href="map-layers.html">addTiles()</a></code>)</p></dd>
 
 
 <dt>project</dt>
@@ -151,7 +151,7 @@ coordinates</p></dd>
 <dd><p>the method used for computing values of the new, projected raster image.
 <code>"bilinear"</code> (the default) is appropriate for continuous data,
 <code>"ngb"</code> - nearest neighbor - is appropriate for categorical data.
-Ignored if <code>project = FALSE</code>. See <code><a href="https://rdrr.io/pkg/raster/man/projectRaster.html" class="external-link">projectRaster</a></code> for details.</p></dd>
+Ignored if <code>project = FALSE</code>. See <code><a href="https://rdrr.io/pkg/raster/man/projectRaster.html" class="external-link">projectRaster()</a></code> for details.</p></dd>
 
 
 <dt>maxBytes</dt>
@@ -161,7 +161,7 @@ Ignored if <code>project = FALSE</code>. See <code><a href="https://rdrr.io/pkg/
 
 <dt>options</dt>
 <dd><p>a list of additional options, intended to be provided by
-a call to <code><a href="map-options.html">gridOptions</a></code></p></dd>
+a call to <code><a href="map-options.html">gridOptions()</a></code></p></dd>
 
 
 <dt>data</dt>
@@ -179,22 +179,22 @@ has been projected, colored, and PNG encoded, but before base64 encoding is
 applied). Set <code>maxBytes</code> to <code>Inf</code> to disable this check, but be
 aware that very large rasters may not only make your map a large download but
 also may cause the browser to become slow or unresponsive.</p>
-<p>To reduce the size of a SpatRaster, you can use <code><a href="https://rspatial.github.io/terra/reference/sample.html" class="external-link">spatSample</a></code>
+<p>To reduce the size of a SpatRaster, you can use <code><a href="https://rspatial.github.io/terra/reference/sample.html" class="external-link">terra::spatSample()</a></code>
 as in <code>x = spatSample(x, 100000, method="regular", as.raster=TRUE)</code>. With
-a <code>RasterLayer</code> you can use <code><a href="https://rdrr.io/pkg/raster/man/sampleRegular.html" class="external-link">sampleRegular</a></code> as in
+a <code>RasterLayer</code> you can use <code><a href="https://rdrr.io/pkg/raster/man/sampleRegular.html" class="external-link">raster::sampleRegular()</a></code> as in
 <code>sampleRegular(x, 100000, asRaster=TRUE)</code>.</p>
-<p>By default, the <code>addRasterImage</code> function will project the raster data
+<p>By default, <code>addRasterImage()</code> will project the raster data
 <code>x</code> to the Pseudo-Mercator projection (EPSG:3857). This can be a
 time-consuming operation for even moderately sized rasters; although it is much
 faster for SpatRasters than for RasterLayers.
 If you are repeatedly adding a particular raster to your Leaflet
 maps, you can perform the projection ahead of time using
-<code>projectRasterForLeaflet()</code>, and call <code>addRasterImage</code> with
+<code>projectRasterForLeaflet()</code>, and call <code>addRasterImage()</code> with
 <code>project = FALSE</code>.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="addRasterLegend.html">addRasterLegend</a></code> for an easy way to add a legend for a
+    <div class="dont-index"><p><code><a href="addRasterLegend.html">addRasterLegend()</a></code> for an easy way to add a legend for a
 SpatRaster with a color table.</p></div>
     </div>
 
