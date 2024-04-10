@@ -32,9 +32,15 @@ As a convenience, leaflet also provides a named list of all the third-party tile
 m %>% addProviderTiles(providers$CartoDB.Positron)
 m %>% addProviderTiles(providers$Esri.NatGeoWorldMap)
 m %>% addProviderTiles(providers$OpenTopoMap)
+m %>% addProviderTiles(providers$Stadia.StamenToner)
 ```
 
 Note that some tile set providers require you to register; see the [project page](https://github.com/leaflet-extras/leaflet-providers) for more information. You can pass access tokens/keys, and other options, to the tile provider by populating the `options` argument with the `providerTileOptions()` function.
+
+As of October 2023, Stamen map tiles are now hosted by [Stadia Maps](https://stadiamaps.com/).
+Replace all references to `providers$Stamen.____` with `providers$Stadia.Stamen____` to use the new tiles.
+Published maps now [require an account](https://client.stadiamaps.com/signup/); once created, login and register your domain(s) where the maps will be published.
+
 
 # Custom Tile URL Template
 
@@ -59,7 +65,7 @@ leaflet() %>% addTiles() %>% setView(-93.65, 42.0285, zoom = 4) %>%
 You aren't restricted to using a single basemap on a map; you can stack them by adding multiple tile layers. This generally only makes sense if the front tiles consist of semi transparent tiles, or have an adjusted opacity via the `options` argument.
 
 ```{r fig.height=1.75}
-m %>% 
+m %>%
   addProviderTiles(providers$Esri.WorldImagery,
                    options = providerTileOptions(opacity = 0.5)) %>%
   addProviderTiles(providers$CartoDB.VoyagerOnlyLabels)
