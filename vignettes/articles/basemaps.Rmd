@@ -51,7 +51,9 @@ If you happen to have a custom map tile URL template to use, you can provide it 
 You can use `addWMSTiles()` to add WMS (Web Map Service) tiles. The map below shows the Base Reflectivity (a measure of the intensity of precipitation occurring) using the WMS from the [Iowa Environmental Mesonet ](https://mesonet.agron.iastate.edu/):
 
 ```{r fig.height=2.5}
-leaflet() %>% addTiles() %>% setView(-93.65, 42.0285, zoom = 4) %>%
+leaflet() %>%
+  addTiles() %>%
+  setView(-93.65, 42.0285, zoom = 4) %>%
   addWMSTiles(
     "http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi",
     layers = "nexrad-n0r-900913",
@@ -66,7 +68,9 @@ You aren't restricted to using a single basemap on a map; you can stack them by 
 
 ```{r fig.height=1.75}
 m %>%
-  addProviderTiles(providers$Esri.WorldImagery,
-                   options = providerTileOptions(opacity = 0.5)) %>%
+  addProviderTiles(
+    providers$Esri.WorldImagery,
+    options = providerTileOptions(opacity = 0.5)
+  ) %>%
   addProviderTiles(providers$CartoDB.VoyagerOnlyLabels)
 ```
