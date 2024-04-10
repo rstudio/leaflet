@@ -27,8 +27,8 @@ leafletProviderDependencies <- function() {
 #'
 #' @examples
 #' leaflet() %>%
-#'   addProviderTiles("Stamen.Watercolor") %>%
-#'   addProviderTiles("Stamen.TonerHybrid")
+#'   addProviderTiles("Esri.WorldTopoMap") %>%
+#'   addProviderTiles("CartoDB.DarkMatter")
 #'
 #' @export
 addProviderTiles <- function(

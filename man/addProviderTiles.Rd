@@ -52,7 +52,7 @@ Add a tile layer from a known map provider
 }
 \examples{
 leaflet() \%>\%
-  addProviderTiles("Stamen.Watercolor") \%>\%
-  addProviderTiles("Stamen.TonerHybrid")
+  addProviderTiles("Esri.WorldTopoMap") \%>\%
+  addProviderTiles("CartoDB.DarkMatter")
 
 }

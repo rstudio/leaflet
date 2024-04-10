@@ -1,4 +1,3 @@
-
 library(leaflet)
 library(sp)
 #' <br/><br/>
@@ -19,13 +18,16 @@ icons <- awesomeIconList(
   restaurant = makeAwesomeIcon(icon = "cutlery", library = "fa", markerColor = "blue")
 )
 
-leaflet() %>% addTiles() %>%
+leaflet() %>%
+  addTiles() %>%
   setView(10.758276373601069, 59.92448055859924, 13) %>%
-  addAwesomeMarkers(data = spdf,
-             label = ~stringr::str_c(amenity, ": ", name),
-             icon = ~icons[amenity],
-             options = markerOptions(riseOnHover = TRUE, opacity = 0.75),
-             group = "pubs")
+  addAwesomeMarkers(
+    data = spdf,
+    label = ~ stringr::str_c(amenity, ": ", name),
+    icon = ~ icons[amenity],
+    options = markerOptions(riseOnHover = TRUE, opacity = 0.75),
+    group = "pubs"
+  )
 
 
 #' <br/><br/>
@@ -36,8 +38,13 @@ mhSPDF <- geojsonio::geojson_read(url, what = "sp")
 
 cols <- colorFactor(topo.colors(nrow(mhSPDF)), mhSPDF$NAME_2)
 
-leaflet() %>% addProviderTiles(providers$Stamen.TonerLite) %>%
+leaflet() %>%
+  addProviderTiles(providers$CartoDB.Voyager) %>%
   setView(75.7139, 19.7515, 6) %>%
-  addPolygons(data = mhSPDF, opacity = 5,
-              label = ~NAME_2, weight = 1,
-              fillColor = ~cols(NAME_2))
+  addPolygons(
+    data = mhSPDF,
+    opacity = 5,
+    label = ~NAME_2,
+    weight = 1,
+    fillColor = ~ cols(NAME_2)
+  )

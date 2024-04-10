@@ -29,12 +29,18 @@ Alternatively, many popular free third-party basemaps can be added using the `ad
 As a convenience, leaflet also provides a named list of all the third-party tile providers that are supported by the plugin. This enables you to use auto-completion feature of your favorite R IDE (like RStudio) and not have to remember or look up supported tile providers; just type `providers$` and choose from one of the options. You can also use `names(providers)` to view all of the options.
 
 ```{r fig.height=1.25}
-m %>% addProviderTiles(providers$Stadia.StamenToner)
 m %>% addProviderTiles(providers$CartoDB.Positron)
 m %>% addProviderTiles(providers$Esri.NatGeoWorldMap)
+m %>% addProviderTiles(providers$OpenTopoMap)
+m %>% addProviderTiles(providers$Stadia.StamenToner)
 ```
 
 Note that some tile set providers require you to register; see the [project page](https://github.com/leaflet-extras/leaflet-providers) for more information. You can pass access tokens/keys, and other options, to the tile provider by populating the `options` argument with the `providerTileOptions()` function.
+
+As of October 2023, Stamen map tiles are now hosted by [Stadia Maps](https://stadiamaps.com/).
+Replace all references to `providers$Stamen.____` with `providers$Stadia.Stamen____` to use the new tiles.
+Published maps now [require an account](https://client.stadiamaps.com/signup/); once created, login and register your domain(s) where the maps will be published.
+
 
 # Custom Tile URL Template
 
@@ -45,7 +51,9 @@ If you happen to have a custom map tile URL template to use, you can provide it 
 You can use `addWMSTiles()` to add WMS (Web Map Service) tiles. The map below shows the Base Reflectivity (a measure of the intensity of precipitation occurring) using the WMS from the [Iowa Environmental Mesonet ](https://mesonet.agron.iastate.edu/):
 
 ```{r fig.height=2.5}
-leaflet() %>% addTiles() %>% setView(-93.65, 42.0285, zoom = 4) %>%
+leaflet() %>%
+  addTiles() %>%
+  setView(-93.65, 42.0285, zoom = 4) %>%
   addWMSTiles(
     "http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi",
     layers = "nexrad-n0r-900913",
@@ -59,8 +67,10 @@ leaflet() %>% addTiles() %>% setView(-93.65, 42.0285, zoom = 4) %>%
 You aren't restricted to using a single basemap on a map; you can stack them by adding multiple tile layers. This generally only makes sense if the front tiles consist of semi transparent tiles, or have an adjusted opacity via the `options` argument.
 
 ```{r fig.height=1.75}
-m %>% addProviderTiles(providers$MtbMap) %>%
-  addProviderTiles(providers$Stadia.StamenTonerLines,
-    options = providerTileOptions(opacity = 0.35)) %>%
-  addProviderTiles(providers$Stadia.StamenTonerLabels)
+m %>%
+  addProviderTiles(
+    providers$Esri.WorldImagery,
+    options = providerTileOptions(opacity = 0.5)
+  ) %>%
+  addProviderTiles(providers$CartoDB.VoyagerOnlyLabels)
 ```
