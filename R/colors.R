@@ -206,7 +206,7 @@ getLevels <- function(domain, x, lvls, ordered) {
 #'   factor, treat it as already in the correct order
 #' @rdname colorNumeric
 #' @export
-colorFactor <- function(palette, domain, levels = NULL, ordered = FALSE,
+colorFactor <- function(palette, domain, levels = NULL, ordered = TRUE,
   na.color = "#808080", alpha = FALSE, reverse = FALSE) {
 
   # domain usually needs to be explicitly provided (even if NULL) but not if
