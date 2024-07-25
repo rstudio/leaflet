@@ -125,7 +125,7 @@ The \code{palette} argument can be any of the following:
 \enumerate{
 \item{A character vector of RGB or named colors. Examples: \code{palette()}, \code{c("#000000", "#0000FF", "#FFFFFF")}, \code{topo.colors(10)}}
 \item{The name of an RColorBrewer palette, e.g. \code{"BuPu"} or \code{"Greens"}.}
-\item{The full name of a viridis palette: \code{"viridis"}, \code{"magma"}, \code{"inferno"}, or \code{"plasma"}.}
+\item{The full name of a viridis palette: \code{"magma"}, \code{"inferno"}, \code{"plasma"}, \code{"viridis"}, \code{"cividis"}, \code{"rocket"}, \code{"mako"}, or \code{"turbo"}}
 \item{A function that receives a single value between 0 and 1 and returns a color. Examples: \code{colorRamp(c("#000000", "#FFFFFF"), interpolate = "spline")}.}
 }
 }
