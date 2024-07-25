@@ -82,7 +82,7 @@ reference:
   - leafletSizingPolicy
 
 - title: Graphics Elements
-  desc: Adding and removing grpahics
+  desc: Adding and removing graphics
   contents:
   - addTiles
   - tileOptions
@@ -153,7 +153,7 @@ reference:
   - leafletDependencies
 
 - title: Built in datasets
-  desc: Spatail datasets exported by `{leaflet}`
+  desc: Spatial datasets exported by `{leaflet}`
   contents:
   - has_concept("built in datasets")
 
