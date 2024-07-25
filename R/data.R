@@ -6,6 +6,7 @@
 #' @format A data frame containing `City`, `State`, `Lat`,
 #'   `Long`, and population estimates from 2000 to 2010 (columns
 #'   `Pop2000` to `Pop2010`).
+#' @family built in datasets
 #' @source The US Census Bureau:
 #'   <https://www.census.gov/data/datasets/time-series/demo/popest/intercensal-2000-2010-cities-and-towns.html>
 #' @noRd
@@ -32,6 +33,7 @@ if (file.exists("inst/csv/uspop2000.csv")) {
 #' @details This dataset contains storm tracks for selected storms
 #' in the Atlantic Ocean basin for the year 2005
 #' @format `sp::SpatialLinesDataFrame`
+#' @family built in datasets
 NULL
 
 #' @docType data
@@ -41,6 +43,7 @@ NULL
 #' @details This dataset comes from <https://gadm.org>.
 #' It was downloaded using [getData()].
 #' @format `sp::SpatialPolygonsDataFrame`
+#' @family built in datasets
 #' @source
 #' <https://gadm.org>
 NULL
@@ -55,4 +58,5 @@ NULL
 #' University of Marburg for a seminar called
 #' "The Geography of Beer, sustainability in the food industry"
 #' @format `sp::SpatialPointsDataFrame`
+#' @family built in datasets
 NULL

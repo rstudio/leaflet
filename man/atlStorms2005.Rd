@@ -14,3 +14,9 @@ Atlantic Ocean storms 2005
 This dataset contains storm tracks for selected storms
 in the Atlantic Ocean basin for the year 2005
 }
+\seealso{
+Other built in datasets: 
+\code{\link{breweries91}},
+\code{\link{gadmCHE}}
+}
+\concept{built in datasets}
