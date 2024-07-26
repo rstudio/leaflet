@@ -156,7 +156,3 @@ reference:
   desc: Spatial datasets exported by `{leaflet}`
   contents:
   - has_concept("built in datasets")
-
-- title: Deprecated
-  contents:
-  - createLeafletMap
