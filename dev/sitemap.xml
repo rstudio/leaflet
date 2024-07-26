@@ -1,228 +1,78 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/CONTRIBUTING.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/ISSUE_TEMPLATE.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/PULL_REQUEST_TEMPLATE.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/articles/basemaps.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/articles/choropleths.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/articles/colors.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/articles/extending.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/articles/json.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/articles/leaflet.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/articles/legends.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/articles/markers.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/articles/morefeatures.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/articles/popups.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/articles/projections.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/articles/raster.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/articles/shapes.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/articles/shiny.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/articles/showhide.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/articles/widget.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/index.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/aaa-test-viztest.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/addAwesomeMarkers.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/addGraticule.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/addLayersControl.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/addLegend.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/addMapPane.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/addMeasure.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/addMiniMap.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/addProviderTiles.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/addRasterImage.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/addRasterLegend.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/addScaleBar.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/addSimpleGraticule.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/addTerminator.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/atlStorms2005.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/awesomeIconList.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/awesomeIcons.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/breweries91.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/colorNumeric.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/deprecated.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/derivePoints.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/dispatch.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/easyButton.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/evalFormula.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/expandLimits.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/expandLimitsBbox.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/filterNULL.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/gadmCHE.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/getMapData.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/groupOptions.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/iconList.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/icons.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/leaflet-package.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/leaflet.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/leafletDependencies.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/leafletProxy.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/leafletSizingPolicy.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/makeAwesomeIcon.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/makeIcon.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/map-layers.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/map-methods.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/map-options.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/map-shiny.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/mapOptions.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/previewColors.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/providers.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/reexports.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/remove.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/safeLabel.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/showGroup.html</loc>
-  </url>
-  <url>
-    <loc>https://rstudio.github.io/leaflet/dev/reference/validateCoords.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://rstudio.github.io/leaflet/dev/CONTRIBUTING.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/ISSUE_TEMPLATE.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/PULL_REQUEST_TEMPLATE.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/articles/basemaps.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/articles/choropleths.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/articles/colors.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/articles/extending.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/articles/index.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/articles/json.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/articles/leaflet.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/articles/legends.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/articles/markers.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/articles/morefeatures.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/articles/popups.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/articles/projections.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/articles/raster.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/articles/shapes.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/articles/shiny.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/articles/showhide.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/articles/widget.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/authors.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/index.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/news/index.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/aaa-test-viztest.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/addAwesomeMarkers.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/addGraticule.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/addLayersControl.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/addLegend.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/addMapPane.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/addMeasure.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/addMiniMap.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/addProviderTiles.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/addRasterImage.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/addRasterLegend.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/addScaleBar.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/addSimpleGraticule.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/addTerminator.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/atlStorms2005.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/awesomeIconList.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/awesomeIcons.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/breweries91.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/colorNumeric.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/deprecated.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/derivePoints.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/dispatch.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/easyButton.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/evalFormula.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/expandLimits.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/expandLimitsBbox.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/filterNULL.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/gadmCHE.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/getMapData.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/groupOptions.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/iconList.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/icons.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/index.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/leaflet-package.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/leaflet.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/leafletDependencies.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/leafletProxy.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/leafletSizingPolicy.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/makeAwesomeIcon.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/makeIcon.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/map-layers.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/map-methods.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/map-options.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/map-shiny.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/mapOptions.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/previewColors.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/providers.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/reexports.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/remove.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/safeLabel.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/showGroup.html</loc></url>
+<url><loc>https://rstudio.github.io/leaflet/dev/reference/validateCoords.html</loc></url>
 </urlset>
+
