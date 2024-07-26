@@ -35,7 +35,7 @@ The four color functions all have two required arguments, `palette` and `domain`
 The `palette` argument specifies the colors to map the data to. This argument can take one of several forms:
 
 1. The name of a preset palette from the `RColorBrewer` package, e.g. `"RdYlBu"`, `"Accent"`, or `"Greens"`.
-2. The full name of a `viridis` palette: `"viridis"`, `"magma"`, `"inferno"`, or `"plasma"`.
+2. The full name of a `viridis` palette: `"magma"`, `"inferno"`, `"plasma"`, `"viridis"`, `"cividis"`, `"rocket"`, `"mako"`, or `"turbo"`.
 3. A character vector of RGB or named colors, e.g. `palette()`, `c("#000000", "#0000FF", "#FFFFFF")`, `topo.colors(10)`.
 4. A function that receives a single value between 0 and 1 and returns a color, e.g.:
 `colorRamp(c("#000000", "#FFFFFF"), interpolate="spline")`

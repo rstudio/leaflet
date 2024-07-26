@@ -251,7 +251,7 @@ colorFactor <- function(palette, domain, levels = NULL, ordered = FALSE,
 #' \enumerate{
 #'   \item{A character vector of RGB or named colors. Examples: `palette()`, `c("#000000", "#0000FF", "#FFFFFF")`, `topo.colors(10)`}
 #'   \item{The name of an RColorBrewer palette, e.g. `"BuPu"` or `"Greens"`.}
-#'   \item{The full name of a viridis palette: `"viridis"`, `"magma"`, `"inferno"`, or `"plasma"`.}
+#'   \item{The full name of a viridis palette: `"magma"`, `"inferno"`, `"plasma"`, `"viridis"`, `"cividis"`, `"rocket"`, `"mako"`, or `"turbo"`}
 #'   \item{A function that receives a single value between 0 and 1 and returns a color. Examples: `colorRamp(c("#000000", "#FFFFFF"), interpolate = "spline")`.}
 #' }
 #' @examples
@@ -330,7 +330,17 @@ toPaletteFunc.character <- function(pal, alpha, nlevels) {
     } else {
       colors <- brewer_pal(pal) # Get all colors
     }
-  } else if (length(pal) == 1 && pal %in% c("viridis", "magma", "inferno", "plasma")) {
+  } else if (length(pal) == 1 &&
+             pal %in% c(
+               "magma",
+               "inferno",
+               "plasma",
+               "viridis",
+               "cividis",
+               "rocket",
+               "mako",
+               "turbo"
+             )) {
     colors <- viridisLite::viridis(n = 256, option = pal)
   } else {
     colors <- pal
