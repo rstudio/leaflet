@@ -7,6 +7,7 @@
 #' @param session,outputId Deprecated
 #'
 #' @rdname deprecated
+#' @keywords internal
 #' @export
 createLeafletMap <- function(session, outputId) {
 
