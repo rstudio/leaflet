@@ -1,25 +1,24 @@
-pandoc: 3.1.2
-pkgdown: 2.0.7
+pandoc: 3.1.11
+pkgdown: 2.1.0
 pkgdown_sha: ~
 articles:
-  basemaps: basemaps.html
-  choropleths: choropleths.html
-  colors: colors.html
-  extending: extending.html
-  json: json.html
-  leaflet: leaflet.html
-  legends: legends.html
-  markers: markers.html
-  morefeatures: morefeatures.html
-  popups: popups.html
-  projections: projections.html
-  raster: raster.html
-  shapes: shapes.html
-  shiny: shiny.html
-  showhide: showhide.html
-  widget: widget.html
-last_built: 2024-03-27T20:35Z
+  articles/basemaps: basemaps.html
+  articles/choropleths: choropleths.html
+  articles/colors: colors.html
+  articles/extending: extending.html
+  articles/json: json.html
+  articles/leaflet: leaflet.html
+  articles/legends: legends.html
+  articles/markers: markers.html
+  articles/morefeatures: morefeatures.html
+  articles/popups: popups.html
+  articles/projections: projections.html
+  articles/raster: raster.html
+  articles/shapes: shapes.html
+  articles/shiny: shiny.html
+  articles/showhide: showhide.html
+  articles/widget: widget.html
+last_built: 2024-07-26T16:48Z
 urls:
   reference: https://rstudio.github.io/leaflet/reference
   article: https://rstudio.github.io/leaflet/articles
-
