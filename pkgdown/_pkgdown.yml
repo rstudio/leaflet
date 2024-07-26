@@ -42,6 +42,7 @@ articles:
   - articles/legends
   - articles/shapes
   - articles/basemaps
+
 - title: Spatial data
   navbar: Spatial data
   contents:
