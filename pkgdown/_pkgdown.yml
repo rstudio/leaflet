@@ -71,3 +71,88 @@ redirects:
   - ["shiny.html", "articles/shiny.html"]
   - ["showhide.html", "articles/showhide.html"]
   - ["map_widget.html", "articles/widget.html"]
+
+reference:
+- title: The Map Widget
+  desc: The map widget and methods to manipulate it
+  contents:
+  - leaflet
+  - setView
+  - mapOptions
+  - leafletSizingPolicy
+
+- title: Graphics Elements
+  desc: Adding and removing graphics
+  contents:
+  - addTiles
+  - tileOptions
+  - addProviderTiles
+  - providers
+  - addLegend
+  - addRasterImage
+  - addRasterLegend
+
+- title: Layers & Groups
+  desc: Control groups and switch layers on and off
+  contents:
+  - addMapPane
+  - addLayersControl
+  - showGroup
+  - groupOptions
+
+- title: Colors
+  desc: Map variables to colors
+  contents:
+  - colorFactor
+  - previewColors
+
+- title: Icons
+  desc: Use icons in `leaflet::addMarkers()`
+  contents:
+  - icons
+  - makeIcon
+  - iconList
+
+- title: Add-ons
+  desc: Utility functions to add additional functionality to a `{leaflet}` map
+- subtitle: Awesome Markers
+  contents:
+  - addAwesomeMarkers
+  - awesomeIcons
+  - makeAwesomeIcon
+  - awesomeIconList
+- subtitle: Other
+  contents:
+  - addMeasure
+  - addScaleBar
+  - addGraticule
+  - addSimpleGraticule
+  - addTerminator
+  - addMiniMap
+  - addEasyButton
+  - addEasyButtonBar
+
+- title: Shiny
+  desc: Using leaflet in `{shiny}`
+  contents:
+  - leafletOutput
+  - leafletProxy
+  - removeControl
+
+- title: Extending Leaflet
+  desc: Functions for extending leaflet
+  contents:
+  - derivePoints
+  - evalFormula
+  - expandLimits
+  - expandLimitsBbox
+  - filterNULL
+  - getMapData
+  - invokeMethod
+  - validateCoords
+  - leafletDependencies
+
+- title: Built in datasets
+  desc: Spatial datasets exported by `{leaflet}`
+  contents:
+  - has_concept("built in datasets")
