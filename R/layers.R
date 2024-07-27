@@ -624,7 +624,7 @@ clearImages <- function(map) {
 #' minZoom,maxZoom,maxNativeZoom,tileSize,subdomains,errorTileUrl,tms,noWrap,zoomOffset,zoomReverse,zIndex,unloadInvisibleTiles,updateWhenIdle,detectRetina
 #' the tile layer options; see
 #' <https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#tilelayer>
-#' @param ... extra options passed to underlying Javascript object constructor.
+#' @param ... extra options passed to underlying JavaScript object constructor.
 #' @describeIn map-options Options for tile layers
 #' @export
 tileOptions <- function(

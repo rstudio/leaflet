@@ -118,7 +118,7 @@ pathOptions(
 
 \item{opacity}{Tooltip container opacity. Ranges from 0 to 1. Default value is \code{1} (different from leaflet.js \code{0.9}); see \url{https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#tooltip-opacity}}
 
-\item{...}{extra options passed to underlying Javascript object constructor.}
+\item{...}{extra options passed to underlying JavaScript object constructor.}
 
 \item{styles}{comma-separated list of WMS styles}
 

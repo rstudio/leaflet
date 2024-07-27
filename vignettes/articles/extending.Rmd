@@ -31,7 +31,7 @@ You can call `expandLimits()` to make sure that your map's view is  just enough 
 
 ## filterNULL
 
-Often when passing a list from R to Javascript it is desirable to remove any null elements, and that's exactly what `filterNULL()` does.
+Often when passing a list from R to JavaScript it is desirable to remove any null elements, and that's exactly what `filterNULL()` does.
 
 ## getMapData
 
@@ -39,7 +39,7 @@ Often when passing a list from R to Javascript it is desirable to remove any nul
 
 ## invokeMethod
 
-`invokeMethod()` is the glue between the R code and JavaScript code. Requires a corresponding method on the Javascript side.
+`invokeMethod()` is the glue between the R code and JavaScript code. Requires a corresponding method on the JavaScript side.
 
 # Example
 

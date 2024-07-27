@@ -29,7 +29,7 @@ This R package makes it easy to integrate and control Leaflet maps in R.
 * Embed maps in [knitr](https://yihui.org/knitr/)/[R Markdown](https://rmarkdown.rstudio.com/)/[Quarto](https://quarto.org) documents, and [Shiny](https://shiny.posit.co/) apps
 * Easily render spatial objects from the `{sf}` package, or data frames with latitude/longitude columns
 * Use map bounds and mouse events to drive Shiny logic
-* Display maps in non spherical mercator projections
+* Display maps in non spherical Mercator projections
 * Augment map features using chosen plugins from [leaflet plugins repository](https://leafletjs.com/plugins)
 
 ### Installation

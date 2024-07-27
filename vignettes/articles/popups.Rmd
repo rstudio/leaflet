@@ -48,7 +48,7 @@ leaflet(df) %>% addTiles() %>%
   addMarkers(~Long, ~Lat, popup = ~htmlEscape(Name))
 ```
 
-In the preceding example, `htmltools::htmlEscape()` was used to santize any characters in the name that might be interpreted as HTML. While it wasn't necessary for this example (as the restaurant names contained no HTML markup), doing so is important in any situation where the data may come from a file or database, or from the user.
+In the preceding example, `htmltools::htmlEscape()` was used to sanitize any characters in the name that might be interpreted as HTML. While it wasn't necessary for this example (as the restaurant names contained no HTML markup), doing so is important in any situation where the data may come from a file or database, or from the user.
 
 In addition to markers you can also add popups on shapes like lines, circles and other polygons.
 

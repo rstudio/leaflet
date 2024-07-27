@@ -9,7 +9,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-Two-dimensional `SpatRaster` objects (from the [`terra` package](https://CRAN.R-project.org/package=terra)) can be turned into images and added to Leaflet maps using `addRasterImage()`.
+Two-dimensional `SpatRaster` objects (from the [`terra` package](https://CRAN.R-project.org/package=terra)) can be turned into images and added to Leaflet maps using `addRasterImage()`. 
 
 `addRasterImage()` works by projecting the `SpatRaster` or `RasterLayer` object to [EPSG:3857](https://spatialreference.org/ref/epsg/3857/) and encoding each cell to an RGBA color, to produce a PNG image. That image is then embedded in the map widget.
 

@@ -181,7 +181,7 @@ leaflet() %>% addTiles() %>%
 
 ## Custom JavaScript with `htmlwidgets::onRender()`
 
-`htmlwidgets::onRender()` can be used to add custom behavior to the leaflet map using native Javascript. This is a some what advanced use case and requires you to know Javascript. Using `onRender` you can customize your map's behavior using any of the APIs as defined in the Leaflet.js [documentation](https://leafletjs.com/reference.html).
+`htmlwidgets::onRender()` can be used to add custom behavior to the leaflet map using native JavaScript. This is a some what advanced use case and requires you to know JavaScript. Using `onRender` you can customize your map's behavior using any of the APIs as defined in the Leaflet.js [documentation](https://leafletjs.com/reference.html).
 
 Below is an example where we sync the base layer of the mini-map with the baselayer of the main map, using the 'baselayerchange' event.
 
