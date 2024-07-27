@@ -10,7 +10,7 @@
 #' @param domain The possible values that can be mapped.
 #'
 #'   For `colorNumeric()` and `colorBin()`, this can be a simple numeric
-#'   range (e.g. `c(0, 100)`); `colorQuantile()` needs representative
+#'   range (e.g., `c(0, 100)`); `colorQuantile()` needs representative
 #'   numeric data; and `colorFactor()` needs categorical data.
 #'
 #'   If `NULL`, then whenever the resulting color function is called, the
@@ -250,7 +250,7 @@ colorFactor <- function(palette, domain, levels = NULL, ordered = FALSE,
 #' @details The `palette` argument can be any of the following:
 #' \enumerate{
 #'   \item{A character vector of RGB or named colors. Examples: `palette()`, `c("#000000", "#0000FF", "#FFFFFF")`, `topo.colors(10)`}
-#'   \item{The name of an RColorBrewer palette, e.g. `"BuPu"` or `"Greens"`.}
+#'   \item{The name of an RColorBrewer palette, e.g., `"BuPu"` or `"Greens"`.}
 #'   \item{The full name of a viridis palette: `"magma"`, `"inferno"`, `"plasma"`, `"viridis"`, `"cividis"`, `"rocket"`, `"mako"`, or `"turbo"`}
 #'   \item{A function that receives a single value between 0 and 1 and returns a color. Examples: `colorRamp(c("#000000", "#FFFFFF"), interpolate = "spline")`.}
 #' }
@@ -287,8 +287,8 @@ safePaletteFunc <- function(pal, na.color, alpha, nlevels = NULL) {
 }
 
 # nlevels is a positive or negative integer (or integral number) indicating the
-# number of levels to use for a discrete scale (i.e. factor, i.e. qualitative,
-# i.e. categorical); or NULL if it is a continuous scale. A negative value means
+# number of levels to use for a discrete scale (i.e., factor, i.e., qualitative,
+# i.e., categorical); or NULL if it is a continuous scale. A negative value means
 # that the user has asked for a "reversed" palette, so pull from the tail of the
 # color palette rather than from the head.
 #

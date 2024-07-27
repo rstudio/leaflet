@@ -53,7 +53,7 @@ colorFactor(
 \item{domain}{The possible values that can be mapped.
 
 For \code{colorNumeric()} and \code{colorBin()}, this can be a simple numeric
-range (e.g. \code{c(0, 100)}); \code{colorQuantile()} needs representative
+range (e.g., \code{c(0, 100)}); \code{colorQuantile()} needs representative
 numeric data; and \code{colorFactor()} needs categorical data.
 
 If \code{NULL}, then whenever the resulting color function is called, the
@@ -124,7 +124,7 @@ interpolation is used.
 The \code{palette} argument can be any of the following:
 \enumerate{
 \item{A character vector of RGB or named colors. Examples: \code{palette()}, \code{c("#000000", "#0000FF", "#FFFFFF")}, \code{topo.colors(10)}}
-\item{The name of an RColorBrewer palette, e.g. \code{"BuPu"} or \code{"Greens"}.}
+\item{The name of an RColorBrewer palette, e.g., \code{"BuPu"} or \code{"Greens"}.}
 \item{The full name of a viridis palette: \code{"magma"}, \code{"inferno"}, \code{"plasma"}, \code{"viridis"}, \code{"cividis"}, \code{"rocket"}, \code{"mako"}, or \code{"turbo"}}
 \item{A function that receives a single value between 0 and 1 and returns a color. Examples: \code{colorRamp(c("#000000", "#FFFFFF"), interpolate = "spline")}.}
 }

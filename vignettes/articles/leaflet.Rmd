@@ -27,7 +27,7 @@ This R package makes it easy to integrate and control Leaflet maps in R.
     * GeoJSON
 * Create maps right from the R console or RStudio
 * Embed maps in [knitr](https://yihui.org/knitr/)/[R Markdown](https://rmarkdown.rstudio.com/)/[Quarto](https://quarto.org) documents, and [Shiny](https://shiny.posit.co/) apps
-* Easily render spatial objects from the `sp` or `sf` packages, or data frames with latitude/longitude columns
+* Easily render spatial objects from the `{sf}` package, or data frames with latitude/longitude columns
 * Use map bounds and mouse events to drive Shiny logic
 * Display maps in non spherical mercator projections
 * Augment map features using chosen plugins from [leaflet plugins repository](https://leafletjs.com/plugins)
@@ -49,7 +49,7 @@ Once installed, you can use this package at the R console, within [R Markdown](h
 You create a Leaflet map with these basic steps:
 
 1. Create a map widget by calling `leaflet()`.
-2. Add _layers_ (i.e., features) to the map by using layer functions (e.g. `addTiles`, `addMarkers`, `addPolygons`) to modify the map widget.
+2. Add _layers_ (i.e., features) to the map by using layer functions (e.g., `addTiles`, `addMarkers`, `addPolygons`) to modify the map widget.
 3. Repeat step 2 as desired.
 4. Print the map widget to display it.
 

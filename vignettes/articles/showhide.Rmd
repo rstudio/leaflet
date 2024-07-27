@@ -41,7 +41,7 @@ Groups and [Layer IDs](https://rstudio.github.io/leaflet/articles/shiny.html#und
 
 You generally provide one `group` value for the entire `addMarkers()` call, and you can reuse that same `group` value in future `add*()` calls to add to that group's membership (as in the example above).
 
-`layerId` arguments are *always* vectorized: when calling e.g. `addMarkers()` you need to provide one layer ID per marker, and they must all be unique. If you add a circle with a layer ID of `"foo"` and later add a different shape with the same layer ID, the original circle will be removed.
+`layerId` arguments are *always* vectorized: when calling e.g., `addMarkers()` you need to provide one layer ID per marker, and they must all be unique. If you add a circle with a layer ID of `"foo"` and later add a different shape with the same layer ID, the original circle will be removed.
 </div>
 </div>
 

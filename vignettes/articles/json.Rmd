@@ -2,8 +2,7 @@
 title: "Working with GeoJSON & TopoJSON"
 ---
 
-
-For working with GeoJSON/TopoJSON data you have two options: either read it into `sp` objects; or use the `addGeoJSON()` and `addTopoJSON()` functions.
+For working with GeoJSON/TopoJSON data you have two options: either read it into `sf` `data.frame`s; or use the `addGeoJSON()` and `addTopoJSON()` functions.
 
 # Reading as `sp`
 

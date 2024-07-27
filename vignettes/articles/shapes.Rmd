@@ -20,15 +20,13 @@ Leaflet makes it easy to take spatial lines and shapes from R and add them to ma
 
 Line and polygon data can come from a variety of sources:
 
-* `SpatialPolygons`, `SpatialPolygonsDataFrame`, `Polygons`, and `Polygon` objects (from the `sp` package)
-* `SpatialLines`, `SpatialLinesDataFrame`, `Lines`, and `Line` objects (from the `sp` package)
-* `MULTIPOLYGON`, `POLYGON`, `MULTILINESTRING`, and `LINESTRING` objects (from the `sf` package)
-* `map` objects (from the `maps` package's `map()` function); use `map(fill = TRUE)` for polygons, `FALSE` for polylines
-* Two-column numeric matrix; the first column is longitude and the second is latitude. Polygons are separated by rows of `(NA, NA)`. It is not possible to represent multi-polygons nor polygons with holes using this method; use `SpatialPolygons` instead.
+* `MULTIPOLYGON`, `POLYGON`, `MULTILINESTRING`, and `LINESTRING` objects (from the `{sf}` package)
+* `map` objects (from `maps::map()`); use `map(fill = TRUE)` for polygons, `FALSE` for polylines
+* Two-column numeric matrix; the first column is longitude and the second is latitude. Polygons are separated by rows of `(NA, NA)`. It is not possible to represent multi-polygons nor polygons with holes using this method; use `sf::st_polygon()` instead.
 
 ```{r states,message=FALSE,warning=FALSE}
 # From https://www.census.gov/geo/maps-data/data/cbf/cbf_state.html
-states <- sf::st_read("shp/cb_2013_us_state_20m.shp",
+states <- sf::read_sf("shp/cb_2013_us_state_20m.shp",
   layer = "cb_2013_us_state_20m")
 
 neStates <- subset(states, states$STUSPS %in% c(
@@ -49,7 +47,7 @@ The above example uses the `highlightOptions` parameter to emphasize the current
 
 #### Simplifying complex polygons/polylines
 
-Very detailed (i.e. large) shape data can present a problem for Leafet, since it is all eventually passed into the browser and rendered as SVG, which is very expressive and convenient but has scalability limits. In these cases, consider using `rmapshaper::ms_simplify`, which does topology-preserving simplification conveniently from R.
+Very detailed (i.e., large) shape data can present a problem for Leafet, since it is all eventually passed into the browser and rendered as SVG, which is very expressive and convenient but has scalability limits. In these cases, consider using `rmapshaper::ms_simplify()`, which does topology-preserving simplification conveniently from R.
 
 ```{r message=FALSE,warning=FALSE,eval=FALSE}
 library(albersusa) # Requires rgdal, archived.

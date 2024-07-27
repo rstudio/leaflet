@@ -19,11 +19,11 @@ Certain functions have been made available for you to use in your code while ext
 
 ## derivePoints/derivePolygons
 
-`derivePoints()` and `derivePolygons()` can be used to extract point or shape (polygon/line/circle/rectangle) data from a `data.frame` or a spatial object from the `sp` package. It tries to auto determine the latitude/longitude colnames if not specified or use user supplied column mappings.
+`derivePoints()` and `derivePolygons()` can be used to extract point or shape (polygon/line/circle/rectangle) data from a `data.frame` or a spatial object from the `{sf}` package. It tries to auto determine the latitude/longitude colnames if not specified or use user supplied column mappings.
 
 ## evalFormula
 
-`evalFormula()` is used to evaluate a formula on a given data and return the results. e.g. `leaflet(some.data.frame) %>% addMarkers(label=~name)` internally uses `evalFormula()` to calculate the correct label values from the data using the `~name` formula.
+`evalFormula()` is used to evaluate a formula on a given data and return the results. e.g., `leaflet(some.data.frame) %>% addMarkers(label=~name)` internally uses `evalFormula()` to calculate the correct label values from the data using the `~name` formula.
 
 ## expandLimits
 
@@ -35,7 +35,7 @@ Often when passing a list from R to Javascript it is desirable to remove any nul
 
 ## getMapData
 
-`getMapData()` accesses the data object passed when calling `leaflet()` funtion.
+`getMapData()` accesses the data object passed when calling `leaflet()` function.
 
 ## invokeMethod
 

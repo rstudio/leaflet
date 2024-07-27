@@ -6,7 +6,7 @@
 #' overlay pane) and 500 (the default shadow pane). You can then use this pane
 #' to render overlays (points, lines, polygons) by setting the `pane`
 #' argument in [leafletOptions()]. This will give you control
-#' over the order of the layers, e.g. points always on top of polygons.
+#' over the order of the layers, e.g., points always on top of polygons.
 #' If two layers are provided to the same pane, overlay will be determined by
 #' order of adding. See examples below.
 #' See <https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#map-pane> for details.

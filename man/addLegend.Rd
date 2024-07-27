@@ -75,7 +75,7 @@ Supplying this value will tie the legend to the leaflet layer group
 with this name and will auto add/remove the legend as the
 group is added/removed, for example via \code{layerControl()}.
 You will need to set the \code{group} when you add a layer
-(e.g. \code{\link[=addPolygons]{addPolygons()}}) and supply the same name here.}
+(e.g., \code{\link[=addPolygons]{addPolygons()}}) and supply the same name here.}
 
 \item{data}{the data object from which the argument values are derived; by
 default, it is the \code{data} object provided to \code{leaflet()}
@@ -95,7 +95,7 @@ labels (by default, it is a dash)}
 \item{transform}{a function to transform the label value}
 }
 \description{
-When a color palette function is used in a map (e.g.
+When a color palette function is used in a map (e.g.,
 \code{\link[=colorNumeric]{colorNumeric()}}), a color legend can be automatically derived from
 the palette function. You can also manually specify the colors and labels for
 the legend.

@@ -171,7 +171,7 @@ to style spider legs. By default, they are
 \code{\{weight: 1.5, color: "#222", opacity: 0.5 \}}.}
 
 \item{freezeAtZoom}{Allows you to freeze cluster expansion to a zoom level.
-Can be a zoom level e.g. 10, 12 or "max" or "maxKeepSpiderify".
+Can be a zoom level e.g., 10, 12 or "max" or "maxKeepSpiderify".
 See \url{https://github.com/ghybs/Leaflet.MarkerCluster.Freezable#api-reference}.}
 
 \item{lineCap}{a string that defines \href{https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linecap}{shape to be used at the end}

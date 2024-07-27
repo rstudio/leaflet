@@ -291,7 +291,7 @@ initially, but can be overridden}
 (for \code{\link[=clearGroup]{clearGroup()}} and \code{\link[=addLayersControl]{addLayersControl()}} purposes).
 Human-friendly group names are permitted--they need not be short,
 identifier-style names. Any number of layers and even different types of
-layers (e.g. markers and polygons) can share the same group name.}
+layers (e.g., markers and polygons) can share the same group name.}
 
 \item{options}{a list of extra options for tile layers, popups, paths
 (circles, rectangles, polygons, ...), or other map elements}
@@ -339,7 +339,7 @@ options}
 one-sided formula, in which case the radius values are derived from the
 \code{data} (units in meters for circles, and pixels for circle markers)}
 
-\item{stroke}{whether to draw stroke along the path (e.g. the borders of
+\item{stroke}{whether to draw stroke along the path (e.g., the borders of
 polygons or circles)}
 
 \item{color}{stroke color}
@@ -348,7 +348,7 @@ polygons or circles)}
 
 \item{opacity}{stroke opacity (or layer opacity for tile layers)}
 
-\item{fill}{whether to fill the path with color (e.g. filling on polygons or
+\item{fill}{whether to fill the path with color (e.g., filling on polygons or
 circles)}
 
 \item{fillColor}{fill color}

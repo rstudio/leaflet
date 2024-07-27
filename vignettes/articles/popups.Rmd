@@ -48,7 +48,7 @@ leaflet(df) %>% addTiles() %>%
   addMarkers(~Long, ~Lat, popup = ~htmlEscape(Name))
 ```
 
-In the preceding example, `htmltools::htmlEscape` was used to santize any characters in the name that might be interpreted as HTML. While it wasn't necessary for this example (as the restaurant names contained no HTML markup), doing so is important in any situation where the data may come from a file or database, or from the user.
+In the preceding example, `htmltools::htmlEscape()` was used to santize any characters in the name that might be interpreted as HTML. While it wasn't necessary for this example (as the restaurant names contained no HTML markup), doing so is important in any situation where the data may come from a file or database, or from the user.
 
 In addition to markers you can also add popups on shapes like lines, circles and other polygons.
 
@@ -71,7 +71,7 @@ leaflet(df) %>% addTiles() %>%
 
 #### Customizing Marker Labels
 
-You can customize marker labels using the `labelOptions` argument of the `addMarkers` function. The `labelOptions` argument can be populated using the `labelOptions()` function. If `noHide` is false (the default) then the label is displayed only when you hover the mouse over the marker; if `noHide` is set to true then the label is always displayed.
+You can customize marker labels using the `labelOptions` argument of the `addMarkers()` function. The `labelOptions` argument can be populated using the `labelOptions()` function. If `noHide` is false (the default) then the label is displayed only when you hover the mouse over the marker; if `noHide` is set to true then the label is always displayed.
 
 ```{r, fig.height=4}
 # Change Text Size and text Only and also a custom CSS

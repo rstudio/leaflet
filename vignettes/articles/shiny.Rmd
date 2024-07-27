@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 
 The Leaflet package includes powerful and convenient features for integrating with Shiny applications.
 
-Most Shiny output widgets are incorporated into an app by including an output (e.g.  `plotOutput()`) for the widget in the UI definition, and using a render function (e.g. `renderPlot()`) in the server function. Leaflet maps are no different; in the UI you call `leafletOutput()`, and on the server side you assign a `renderLeaflet()` call to the output. Inside the `renderLeaflet()` expression, you return a Leaflet map object.
+Most Shiny output widgets are incorporated into an app by including an output (e.g.,  `plotOutput()`) for the widget in the UI definition, and using a render function (e.g., `renderPlot()`) in the server function. Leaflet maps are no different; in the UI you call `leafletOutput()`, and on the server side you assign a `renderLeaflet()` call to the output. Inside the `renderLeaflet()` expression, you return a Leaflet map object.
 
 ```{r eval=FALSE}
 library(shiny)

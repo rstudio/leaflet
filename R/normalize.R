@@ -198,7 +198,7 @@ checkMatrix <- function(x) {
 # - to_ring
 #
 # Each of the specific sp/sf classes need only implement whichever ONE of those
-# actually makes sense (e.g. to_multipolygon_list.sfc,
+# actually makes sense (e.g., to_multipolygon_list.sfc,
 # to_multipolygon.MULTIPOLYGON, to_polygon.POLYGON, to_ring.LINESTRING). The
 # higher-level polygonData wrappers will simply call to_multipolygon_list(x),
 # and the default implementations of those methods will fall through to the next

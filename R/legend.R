@@ -1,6 +1,6 @@
 #' Add a color legend to a map
 #'
-#' When a color palette function is used in a map (e.g.
+#' When a color palette function is used in a map (e.g.,
 #' [colorNumeric()]), a color legend can be automatically derived from
 #' the palette function. You can also manually specify the colors and labels for
 #' the legend.
@@ -54,7 +54,7 @@
 #'   with this name and will auto add/remove the legend as the
 #'   group is added/removed, for example via `layerControl()`.
 #'   You will need to set the `group` when you add a layer
-#'   (e.g. [addPolygons()]) and supply the same name here.
+#'   (e.g., [addPolygons()]) and supply the same name here.
 #' @template data-getMapData
 #' @example inst/examples/legend.R
 #' @export
