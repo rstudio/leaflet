@@ -2,6 +2,8 @@
 
 * Color palette improvements. All color palette functions now support all `{viridisLite}` palettes ("magma", "inferno", "plasma", "viridis", "cividis", "rocket", "mako", and "turbo").
 
+* `addProviderTiles()` will now error if the chosen `provider` does not match any currently loaded provider (by default, those in `providers`). This behaviour can be toggled off by setting the new `.check` argument to `FALSE` (@jack-davison, #929)
+
 # leaflet 2.2.2
 
 * Fixed #893: Correctly call `terra::crs()` when checking the CRS of a `SpatVector` object in `pointData()` or `polygonData()` (thanks @mkoohafkan, #894).
