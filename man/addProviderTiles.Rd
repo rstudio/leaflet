@@ -40,7 +40,7 @@ group names are permitted--they need not be short, identifier-style names.}
 
 \item{options}{tile options}
 
-\item{...}{named parameters to add to the options}
+\item{...}{For \code{\link[=providerTileOptions]{providerTileOptions()}}, named parameters to add to the options. Not used in \code{\link[=addProviderTiles]{addProviderTiles()}}.}
 
 \item{.check}{Check that the specified \code{provider} matches the available
 currently loaded leaflet providers? Defaults to \code{TRUE}, but can be toggled
