@@ -19,10 +19,13 @@ leafletProviderDependencies <- function() {
 #'   <https://github.com/leaflet-extras/leaflet-providers>)
 #' @param layerId the layer id to assign
 #' @param group the name of the group the newly created layers should belong to
-#'   (for [clearGroup()] and [addLayersControl()] purposes).
-#'   Human-friendly group names are permitted--they need not be short,
-#'   identifier-style names.
+#'   (for [clearGroup()] and [addLayersControl()] purposes). Human-friendly
+#'   group names are permitted--they need not be short, identifier-style names.
 #' @param options tile options
+#' @param ... Not currently used
+#' @param .check Check that the specified `provider` matches the available
+#'   currently loaded leaflet providers? Defaults to `TRUE`, but can be toggled
+#'   to `FALSE` for advanced users.
 #' @return modified map object
 #'
 #' @examples
@@ -36,8 +39,18 @@ addProviderTiles <- function(
   provider,
   layerId = NULL,
   group = NULL,
-  options = providerTileOptions()
+  options = providerTileOptions(),
+  ...,
+  .check = TRUE
 ) {
+  if (.check) {
+    loaded_providers <- leaflet.providers::providers_loaded()
+    provider <- match.arg(
+      arg = provider,
+      choices = unlist(use.names = FALSE, loaded_providers$providers),
+      several.ok = FALSE
+    )
+  }
   map$dependencies <- c(map$dependencies, leafletProviderDependencies())
   invokeMethod(map, getMapData(map), "addProviderTiles",
     provider, layerId, group, options)

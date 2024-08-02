@@ -10,7 +10,9 @@ addProviderTiles(
   provider,
   layerId = NULL,
   group = NULL,
-  options = providerTileOptions()
+  options = providerTileOptions(),
+  ...,
+  .check = TRUE
 )
 
 providerTileOptions(
@@ -33,16 +35,19 @@ providerTileOptions(
 \item{layerId}{the layer id to assign}
 
 \item{group}{the name of the group the newly created layers should belong to
-(for \code{\link[=clearGroup]{clearGroup()}} and \code{\link[=addLayersControl]{addLayersControl()}} purposes).
-Human-friendly group names are permitted--they need not be short,
-identifier-style names.}
+(for \code{\link[=clearGroup]{clearGroup()}} and \code{\link[=addLayersControl]{addLayersControl()}} purposes). Human-friendly
+group names are permitted--they need not be short, identifier-style names.}
 
 \item{options}{tile options}
 
+\item{...}{named parameters to add to the options}
+
+\item{.check}{Check that the specified \code{provider} matches the available
+currently loaded leaflet providers? Defaults to \code{TRUE}, but can be toggled
+to \code{FALSE} for advanced users.}
+
 \item{errorTileUrl, noWrap, opacity, zIndex, updateWhenIdle, detectRetina}{the tile layer options; see
 \url{https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#tilelayer}}
-
-\item{...}{named parameters to add to the options}
 }
 \value{
 modified map object
