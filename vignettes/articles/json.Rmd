@@ -4,9 +4,9 @@ title: "Working with GeoJSON & TopoJSON"
 
 For working with GeoJSON/TopoJSON data you have two options: either read it into `sf` `data.frame`s; or use the `addGeoJSON()` and `addTopoJSON()` functions.
 
-# Reading as `sp`
+# Reading as `{sf}`
 
-The first approach is to use either `sf` or `geojsonio` (packages) to read GeoJSON/TopoJSON as `sp` objects. Then, you can use the full functionality of [polygons](https://rstudio.github.io/leaflet/articles/shapes.html), [markers](https://rstudio.github.io/leaflet/articles/markers.html), [colors](https://rstudio.github.io/leaflet/articles/colors.html), [legends](https://rstudio.github.io/leaflet/articles/legends.html), etc.
+The first approach is to use the `{sf}` packages to read GeoJSON/TopoJSON as `sf` `data.frame`s. Then, you can use the full functionality of [polygons](https://rstudio.github.io/leaflet/articles/shapes.html), [markers](https://rstudio.github.io/leaflet/articles/markers.html), [colors](https://rstudio.github.io/leaflet/articles/colors.html), [legends](https://rstudio.github.io/leaflet/articles/legends.html), etc.
 
 ```{r, include = FALSE}
 library(leaflet)
@@ -17,8 +17,6 @@ library(magrittr)
 # From https://eric.clst.org/tech/usgeojson/ and
 # https://en.wikipedia.org/wiki/List_of_United_States_counties_and_county_equivalents
 nycounties <- sf::read_sf("https://rstudio.github.io/leaflet/json/nycounties.geojson") 
-# Or use the geojsonio equivalent:
-# nycounties <- geojsonio::geojson_read("https://rstudio.github.io/leaflet/json/nycounties.geojson", what = "sp") 
 
 pal <- colorNumeric("viridis", NULL)
 
@@ -63,7 +61,7 @@ See Leaflet's [path](https://leafletjs.com/reference.html#path-options) options 
 
 The previous example demonstrated the style arguments. Below is a more involved example that sets both global styles and per-feature styles directly into the JSON object.
 
-(This approach is not recommended for applying styling in R; instead, use the approach described above where we convert to `sp` first. However, if you have control over the process that generates the GeoJSON in the first place, you might use these techniques to put the styling information directly in the JSON.)
+(This approach is not recommended for applying styling in R; instead, use the approach described above where we convert to `sf` first. However, if you have control over the process that generates the GeoJSON in the first place, you might use these techniques to put the styling information directly in the JSON.)
 
 ```{r echo=FALSE,warning=FALSE,message=FALSE}
 library(jsonlite, quietly = TRUE)

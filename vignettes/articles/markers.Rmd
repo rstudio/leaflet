@@ -89,15 +89,14 @@ oceanIcons <- iconList(
 )
 
 # Some fake data
-df <- sp::SpatialPointsDataFrame(
-  cbind(
-    (runif(20) - .5) * 10 - 90.620130,  # lng
-    (runif(20) - .5) * 3.8 + 25.638077  # lat
+df <- sf::st_as_sf(
+  data.frame(
+    type = factor(ifelse(runif(20) > 0.75, "pirate", "ship"), c("ship", "pirate")),
+    lng = (runif(20) - .5) * 10 - 90.620130,
+    lat = (runif(20) - .5) * 3.8 + 25.638077
   ),
-  data.frame(type = factor(
-    ifelse(runif(20) > 0.75, "pirate", "ship"),
-    c("ship", "pirate")
-  ))
+  coords = c("lng", "lat"),
+  crs = 4326
 )
 
 leaflet(df) %>% addTiles() %>%
