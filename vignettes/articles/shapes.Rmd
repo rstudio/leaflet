@@ -50,9 +50,7 @@ The above example uses the `highlightOptions` parameter to emphasize the current
 Very detailed (i.e., large) shape data can present a problem for Leafet, since it is all eventually passed into the browser and rendered as SVG, which is very expressive and convenient but has scalability limits. In these cases, consider using `rmapshaper::ms_simplify()`, which does topology-preserving simplification conveniently from R.
 
 ```{r message=FALSE,warning=FALSE,eval=FALSE}
-library(albersusa) # Requires rgdal, archived.
-
-fullsize <- usa_sf()
+fullsize <- rnaturalearth::countries110
 object.size(fullsize)
 
 simplified <- rmapshaper::ms_simplify(fullsize)
