@@ -72,6 +72,7 @@ Suggests:
     R6,
     RJSONIO,
     rmarkdown,
+    rnaturalearth,
     s2,
     sf (>= 0.9-6),
     shiny,

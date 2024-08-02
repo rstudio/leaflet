@@ -74,26 +74,45 @@ leaflet() %>%
 
 # Displaying shapes with custom projections
 
-While tiles must be in the same projection as used in `leafletCRS()`, you must always use WGS 84 longitude/latitude data for markers, circles, polygons, and lines. Leaflet will automatically project the coordinates when displaying.
+While tiles must be in the same projection as used in `leafletCRS()`, you must always use WGS 84 longitude/latitude data for markers, circles, polygons, and lines. Leaflet will automatically project the coordinates when displaying. 
 
-This example uses [EPSG:2163](https://epsg.io/2163) (US National Atlas Equal Area projection). The dataset we use (`usa_sf` from the `albersusa` package, though we're not actually using Albers projection here) has Alaska and Hawaii moved closer to mainland US as well as rotated and resized accordingly.
+This example uses data from the `{rnaturalearth}` package and projects it to the [EPSG:9311](https://epsg.io/9311) (US National Atlas Equal Area) coordinate system. Compare the first map, which uses the default CRS, to the second map, which is reprojected.
 
-```{r message=FALSE,warning=FALSE,eval=FALSE}
-library(albersusa) # not possible to install due to rgdal archival.
-spdf <- rmapshaper::ms_simplify(usa_sf(), keep = 0.1)
-pal <- colorNumeric("Blues", domain = spdf$pop_2014)
-epsg2163 <- leafletCRS(
+```{r message=FALSE,warning=FALSE}
+north_america <-
+  rnaturalearth::countries110 |>
+  dplyr::filter(CONTINENT == "North America")
+
+epsg9311 <- leafletCRS(
   crsClass = "L.Proj.CRS",
-  code = "EPSG:2163",
+  code = "EPSG:9311",
   proj4def = "+proj=laea +lat_0=45 +lon_0=-100 +x_0=0 +y_0=0 +a=6370997 +b=6370997 +units=m +no_defs",
-  resolutions = 2^(16:7))
+  resolutions = 2 ^ (16:7)
+)
 
-leaflet(spdf, options = leafletOptions(crs = epsg2163)) %>%
-  addPolygons(weight = 1, color = "#444444", opacity = 1,
-    fillColor = ~pal(pop_2014), fillOpacity = 0.7, smoothFactor = 0.5,
-    label = ~paste(name, pop_2014),
-    labelOptions = labelOptions(direction = "auto"))
+pal <- leaflet::colorNumeric(palette = "viridis", domain = north_america$POP_EST)
+
+plot_na_map <- function(opts = leafletOptions()) {
+  leaflet(north_america, options = opts) %>%
+    addPolygons(
+      weight = 1,
+      color = "#444444",
+      opacity = 1,
+      fillColor = ~ pal(POP_EST),
+      fillOpacity = 0.7,
+      smoothFactor = 0.5,
+      label = ~ paste(SOVEREIGNT, POP_EST),
+      labelOptions = labelOptions(direction = "auto")
+    )
+}
+
+plot_na_map()
 ```
+
+```{r message=FALSE,warning=FALSE}
+plot_na_map(opts = leafletOptions(crs = epsg9311))
+```
+
 
 # Polar projections
 
