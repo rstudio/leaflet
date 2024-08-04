@@ -45,7 +45,11 @@ addProviderTiles <- function(
   if (.check) {
     loaded_providers <- leaflet.providers::providers_loaded()
     if (!provider %in% names(loaded_providers$providers)) {
-      stop("Unknown tile provider '", provider, "; either use a known provider or pass `.check = FALSE` to `addProviderTiles()`')
+      stop(
+        "Unknown tile provider '",
+        provider,
+        "'; either use a known provider or pass `.check = FALSE` to `addProviderTiles()`"
+      )
     }
   }
   map$dependencies <- c(map$dependencies, leafletProviderDependencies())
