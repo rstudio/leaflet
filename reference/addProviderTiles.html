@@ -66,7 +66,8 @@
 <span>  <span class="va">provider</span>,</span>
 <span>  layerId <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  group <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  options <span class="op">=</span> <span class="fu">providerTileOptions</span><span class="op">(</span><span class="op">)</span></span>
+<span>  options <span class="op">=</span> <span class="fu">providerTileOptions</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  check <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">providerTileOptions</span><span class="op">(</span></span>
@@ -100,13 +101,18 @@
 
 <dt id="arg-group">group<a class="anchor" aria-label="anchor" href="#arg-group"></a></dt>
 <dd><p>the name of the group the newly created layers should belong to
-(for <code><a href="remove.html">clearGroup()</a></code> and <code><a href="addLayersControl.html">addLayersControl()</a></code> purposes).
-Human-friendly group names are permitted–they need not be short,
-identifier-style names.</p></dd>
+(for <code><a href="remove.html">clearGroup()</a></code> and <code><a href="addLayersControl.html">addLayersControl()</a></code> purposes). Human-friendly
+group names are permitted–they need not be short, identifier-style names.</p></dd>
 
 
 <dt id="arg-options">options<a class="anchor" aria-label="anchor" href="#arg-options"></a></dt>
 <dd><p>tile options</p></dd>
+
+
+<dt id="arg-check">check<a class="anchor" aria-label="anchor" href="#arg-check"></a></dt>
+<dd><p>Check that the specified <code>provider</code> matches the available
+currently loaded leaflet providers? Defaults to <code>TRUE</code>, but can be toggled
+to <code>FALSE</code> for advanced users.</p></dd>
 
 
 <dt id="arg-errortileurl-nowrap-opacity-zindex-updatewhenidle-detectretina">errorTileUrl, noWrap, opacity, zIndex, updateWhenIdle, detectRetina<a class="anchor" aria-label="anchor" href="#arg-errortileurl-nowrap-opacity-zindex-updatewhenidle-detectretina"></a></dt>
