@@ -17,7 +17,7 @@ addTerminator(
 \item{map}{a map widget object}
 
 \item{resolution}{the step size at which the terminator points are computed.
-The step size is 1 degree/resolution, i.e. higher resolution values have
+The step size is 1 degree/resolution, i.e., higher resolution values have
 smaller step sizes and more points in the polygon. The default value is 2.}
 
 \item{time}{Time}

@@ -31,7 +31,7 @@ icon image}
 \item{iconWidth, iconHeight}{size of the icon image in pixels}
 
 \item{iconAnchorX, iconAnchorY}{the coordinates of the "tip" of the icon
-(relative to its top left corner, i.e. the top left corner means
+(relative to its top left corner, i.e., the top left corner means
 \code{iconAnchorX = 0} and \code{iconAnchorY = 0}), and the icon will be
 aligned so that this point is at the marker's geographical location}
 

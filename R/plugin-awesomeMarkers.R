@@ -235,7 +235,7 @@ verifyIconLibrary <- function(library) {
 #'   (for [clearGroup()] and [addLayersControl()] purposes).
 #'   Human-friendly group names are permitted--they need not be short,
 #'   identifier-style names. Any number of layers and even different types of
-#'   layers (e.g. markers and polygons) can share the same group name.
+#'   layers (e.g., markers and polygons) can share the same group name.
 #' @param data the data object from which the argument values are derived; by
 #'   default, it is the `data` object provided to `leaflet()`
 #'   initially, but can be overridden

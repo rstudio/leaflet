@@ -118,7 +118,7 @@ pathOptions(
 
 \item{opacity}{Tooltip container opacity. Ranges from 0 to 1. Default value is \code{1} (different from leaflet.js \code{0.9}); see \url{https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#tooltip-opacity}}
 
-\item{...}{extra options passed to underlying Javascript object constructor.}
+\item{...}{extra options passed to underlying JavaScript object constructor.}
 
 \item{styles}{comma-separated list of WMS styles}
 
@@ -171,7 +171,7 @@ to style spider legs. By default, they are
 \code{\{weight: 1.5, color: "#222", opacity: 0.5 \}}.}
 
 \item{freezeAtZoom}{Allows you to freeze cluster expansion to a zoom level.
-Can be a zoom level e.g. 10, 12 or "max" or "maxKeepSpiderify".
+Can be a zoom level e.g., 10, 12 or "max" or "maxKeepSpiderify".
 See \url{https://github.com/ghybs/Leaflet.MarkerCluster.Freezable#api-reference}.}
 
 \item{lineCap}{a string that defines \href{https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linecap}{shape to be used at the end}

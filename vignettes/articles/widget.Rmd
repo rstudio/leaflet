@@ -25,7 +25,7 @@ library(magrittr)
 leaflet(options = leafletOptions(minZoom = 0, maxZoom = 18))
 ```
 
-The `leafletOptions()` can be passed any option described in the leaflet [reference document](https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#map-option). Using the `leafletOptions()`, you can set a custom [CRS](https://en.wikipedia.org/wiki/Spatial_reference_system) and have your map displayed in a non spherical mercator projection as described in [projections](https://rstudio.github.io/leaflet/articles/projections.html).
+The `leafletOptions()` can be passed any option described in the leaflet [reference document](https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#map-option). Using the `leafletOptions()`, you can set a custom [CRS](https://en.wikipedia.org/wiki/Spatial_reference_system) and have your map displayed in a non spherical Mercator projection as described in [projections](https://rstudio.github.io/leaflet/articles/projections.html).
 
 # Map Methods
 
@@ -42,18 +42,15 @@ Both `leaflet()` and the map layer functions have an optional `data` parameter t
 - From base R:
     - lng/lat matrix
     - data frame with lng/lat columns
-- From the [**sp** package](https://cran.rstudio.com/package=sp):
-    - `SpatialPoints[DataFrame]`
-    - `Line`/`Lines`
-    - `SpatialLines[DataFrame]`
-    - `Polygon`/`Polygons`
-    - `SpatialPolygons[DataFrame]`
-- From the [**maps** package](https://cran.rstudio.com/package=maps):
+- From the `{maps}` package:
     - the data frame from returned from `map()`
+- Simple features from the `{sf}` package.
 
-The `data` argument is used to derive spatial data for functions that need it; for example, if `data` is a `SpatialPolygonsDataFrame` object, then calling `addPolygons` on that map widget will know to add the polygons from that `SpatialPolygonsDataFrame`.
+`leaflet()` is, additionally, back-compatible with `{sp}` `SpatailDataFrames`, although the use of these is [discouraged](https://r-spatial.org/r/2023/04/10/evolution3.html) for new users.
 
-It is straightforward to derive these variables from **sp** objects since they always represent spatial data in the same way. On the other hand, for a normal matrix or data frame, any numeric column could potentially contain spatial data. So we resort to guessing based on column names:
+The `data` argument is used to derive spatial data for functions that need it; for example, if `data` is a `{sf}` Simple Features data.frame, then calling `addPolygons()` on that map widget will know to add the polygons from the geometry column.
+
+It is straightforward to derive these variables from `{sf}` objects since they always represent spatial data in the same way. On the other hand, for a normal matrix or data frame, any numeric column could potentially contain spatial data. So we resort to guessing based on column names:
 
 - the latitude variable is guessed by looking for columns named `lat` or `latitude` (case-insensitive)
 - the longitude variable is guessed by looking for `lng`, `long`, or `longitude`
@@ -81,25 +78,27 @@ leaflet() %>% addCircles(data = df)
 leaflet() %>% addCircles(data = df, lat = ~ Lat, lng = ~ Long)
 ```
 
-Below are examples of using **sp** and **maps**, respectively:
+Below are examples of using `{sf}` and `{maps}`, respectively:
 
 ```{r message=FALSE}
-library(sp)
-Sr1 = Polygon(cbind(c(2, 4, 4, 1, 2), c(2, 3, 5, 4, 2)))
-Sr2 = Polygon(cbind(c(5, 4, 2, 5), c(2, 3, 2, 2)))
-Sr3 = Polygon(cbind(c(4, 4, 5, 10, 4), c(5, 3, 2, 5, 5)))
-Sr4 = Polygon(cbind(c(5, 6, 6, 5, 5), c(4, 4, 3, 3, 4)), hole = TRUE)
-Srs1 = Polygons(list(Sr1), "s1")
-Srs2 = Polygons(list(Sr2), "s2")
-Srs3 = Polygons(list(Sr4, Sr3), "s3/4")
-SpP = SpatialPolygons(list(Srs1, Srs2, Srs3), 1:3)
-leaflet(height = "300px") %>% addPolygons(data = SpP)
+library(sf)
+polygon1 <- st_polygon(list(cbind(c(2, 4, 4, 1, 2), c(2, 3, 5, 4, 2))))
+polygon2 <- st_polygon(list(cbind(c(5, 4, 2, 5), c(2, 3, 2, 2))))
+polygon3 <- st_polygon(list(cbind(c(4, 4, 5, 10, 4), c(5, 3, 2, 5, 5))))
+polygon4 <- st_polygon(list(cbind(c(5, 6, 6, 5, 5), c(4, 4, 3, 3, 4))))
+multi_polygon <- st_multipolygon(list(
+    list(cbind(c(4, 4, 5, 10, 4), c(5, 3, 2, 5, 5))),
+    list(cbind(c(5, 6, 6, 5, 5), c(4, 4, 3, 3, 4)))
+))
+sf_polygons <- st_sf(geometry = st_sfc(polygon1, polygon2, multi_polygon))
+leaflet(height = "300px") %>% addPolygons(data = sf_polygons)
+
 library(maps)
 mapStates = map("state", fill = TRUE, plot = FALSE)
-leaflet(data = mapStates) %>% addTiles() %>%
+leaflet(data = mapStates) %>%
+  addTiles() %>%
   addPolygons(fillColor = topo.colors(10, alpha = NULL), stroke = FALSE)
 ```
-
 
 # The Formula Interface
 

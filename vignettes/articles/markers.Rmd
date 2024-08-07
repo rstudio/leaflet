@@ -19,13 +19,12 @@ Use markers to call out points on the map. Marker locations are expressed in lat
 
 Point data for markers can come from a variety of sources:
 
-- `SpatialPoints` or `SpatialPointsDataFrame` objects (from the `sp` package)
-- `POINT`, `sfc_POINT`, and `sf` objects (from the `sf` package); only `X` and `Y` dimensions will be considered
+- `POINT`, `sfc_POINT`, and `sf` objects (from the `{sf}` package); only `X` and `Y` dimensions will be considered
 - Two-column numeric matrices (first column is longitude, second is latitude)
-- Data frame with latitude and longitude columns. You can explicitly tell the marker function which columns contain the coordinate data (e.g. `addMarkers(lng = ~Longitude, lat = ~Latitude)`), or let the function look for columns named `lat`/`latitude` and `lon`/`lng`/`long`/`longitude` (case insensitive).
+- Data frame with latitude and longitude columns. You can explicitly tell the marker function which columns contain the coordinate data (e.g., `addMarkers(lng = ~Longitude, lat = ~Latitude)`), or let the function look for columns named `lat`/`latitude` and `lon`/`lng`/`long`/`longitude` (case insensitive).
 - Simply provide numeric vectors as `lng` and `lat` arguments
 
-Note that `MULTIPOINT` objects from `sf` are not supported at this time.
+Note that `MULTIPOINT` objects from `{sf}` are not supported at this time.
 
 # Icon Markers
 
@@ -59,7 +58,7 @@ leaflet(data = quakes[1:4,]) %>% addTiles() %>%
   addMarkers(~long, ~lat, icon = greenLeafIcon)
 ```
 
-If you have several icons to apply that vary only by a couple of parameters (i.e. they share the same size and anchor points but have different URLs), use `icons()` `icons()` performs similarly to `data.frame()`, in that any arguments that are shorter than the number of markers will be recycled to fit.
+If you have several icons to apply that vary only by a couple of parameters (i.e., they share the same size and anchor points but have different URLs), use `icons()` `icons()` performs similarly to `data.frame()`, in that any arguments that are shorter than the number of markers will be recycled to fit.
 
 ```{r fig.height=2}
 quakes1 <- quakes[1:10,]
@@ -85,20 +84,29 @@ Finally, if you have a set of icons that vary in multiple parameters, it may be 
 ```{r fig.height=1.75}
 # Make a list of icons. We'll index into it based on name.
 oceanIcons <- iconList(
-  ship = makeIcon("ferry-18.png", "ferry-18@2x.png", 18, 18),
-  pirate = makeIcon("danger-24.png", "danger-24@2x.png", 24, 24)
+  ship = makeIcon(
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Maki2-ferry-18.svg/480px-Maki2-ferry-18.svg.png",
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Maki2-ferry-18.svg/18px-Maki2-ferry-18.svg.png",
+    18,
+    18
+  ),
+  pirate = makeIcon(
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Maki2-danger-24.svg/240px-Maki2-danger-24.svg.png",
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Maki2-danger-24.svg/24px-Maki2-danger-24.svg.png",
+    24,
+    24
+  )
 )
 
 # Some fake data
-df <- sp::SpatialPointsDataFrame(
-  cbind(
-    (runif(20) - .5) * 10 - 90.620130,  # lng
-    (runif(20) - .5) * 3.8 + 25.638077  # lat
+df <- sf::st_as_sf(
+  data.frame(
+    type = factor(ifelse(runif(20) > 0.75, "pirate", "ship"), c("ship", "pirate")),
+    lng = (runif(20) - .5) * 10 - 90.620130,
+    lat = (runif(20) - .5) * 3.8 + 25.638077
   ),
-  data.frame(type = factor(
-    ifelse(runif(20) > 0.75, "pirate", "ship"),
-    c("ship", "pirate")
-  ))
+  coords = c("lng", "lat"),
+  crs = 4326
 )
 
 leaflet(df) %>% addTiles() %>%
@@ -109,7 +117,6 @@ leaflet(df) %>% addTiles() %>%
 ## Awesome Icons
 
 Leaflet supports even more customizable markers using the [awesome markers](https://github.com/lennardv2/Leaflet.awesome-markers) leaflet plugin.
-
 
 The `addAwesomeMarkers()` function is similar to `addMarkers()` function but additionally allows you to specify custom colors for the markers as well as icons from the [Font Awesome](https://fontawesome.com/icons), [Bootstrap Glyphicons](https://getbootstrap.com/components/), and [Ion icons](https://ionic.io/ionicons) icon libraries.
 
@@ -146,7 +153,7 @@ The `library` argument has to be one of 'ion', 'fa', or 'glyphicon'. The `icon` 
 
 ## Marker Clusters
 
-When there are a large number of markers on a map, you can cluster them using the [Leaflet.markercluster](https://github.com/Leaflet/Leaflet.markercluster) plug-in. To enable this plug-in, you can provide a list of options to the argument `clusterOptions`, e.g.
+When there are a large number of markers on a map, you can cluster them using the [Leaflet.markercluster](https://github.com/Leaflet/Leaflet.markercluster) plug-in. To enable this plug-in, you can provide a list of options to the argument `clusterOptions`, e.g.,
 
 ```{r fig.height=2.5, message=FALSE}
 leaflet(quakes) %>% addTiles() %>% addMarkers(

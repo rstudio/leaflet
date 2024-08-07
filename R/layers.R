@@ -25,7 +25,7 @@ evalFormula <- function(list, data) {
 # least they are the same shape as the Spatial bounding boxes).
 
 #' Notifies the map of new latitude/longitude of items of interest on the map
-# So that we can expand the limits (i.e. bounding box). We will use this as the
+# So that we can expand the limits (i.e., bounding box). We will use this as the
 # initial view if the user doesn't explicitly specify bounds using fitBounds.
 #' @param map map object
 #' @param lat vector of latitudes
@@ -624,7 +624,7 @@ clearImages <- function(map) {
 #' minZoom,maxZoom,maxNativeZoom,tileSize,subdomains,errorTileUrl,tms,noWrap,zoomOffset,zoomReverse,zIndex,unloadInvisibleTiles,updateWhenIdle,detectRetina
 #' the tile layer options; see
 #' <https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#tilelayer>
-#' @param ... extra options passed to underlying Javascript object constructor.
+#' @param ... extra options passed to underlying JavaScript object constructor.
 #' @describeIn map-options Options for tile layers
 #' @export
 tileOptions <- function(
@@ -765,7 +765,7 @@ WMSTileOptions <- function(
 #'   (for [clearGroup()] and [addLayersControl()] purposes).
 #'   Human-friendly group names are permitted--they need not be short,
 #'   identifier-style names. Any number of layers and even different types of
-#'   layers (e.g. markers and polygons) can share the same group name.
+#'   layers (e.g., markers and polygons) can share the same group name.
 #' @template data-getMapData
 #' @describeIn map-layers Add popups to the map
 #' @export
@@ -924,7 +924,7 @@ addMarkers <- function(
 
   if (!is.null(icon)) {
     # If custom icons are specified, we need to 1) deduplicate any URLs/files,
-    # so we can efficiently send e.g. 1000 markers that all use the same 2
+    # so we can efficiently send e.g., 1000 markers that all use the same 2
     # icons; and 2) do base64 encoding on any local icon files (as opposed to
     # URLs [absolute or relative] which will be left alone).
 
@@ -1113,7 +1113,7 @@ makeIcon <- function(iconUrl = NULL, iconRetinaUrl = NULL, iconWidth = NULL, ico
 #'   icon image
 #' @param iconWidth,iconHeight size of the icon image in pixels
 #' @param iconAnchorX,iconAnchorY the coordinates of the "tip" of the icon
-#'   (relative to its top left corner, i.e. the top left corner means
+#'   (relative to its top left corner, i.e., the top left corner means
 #'   `iconAnchorX = 0` and `iconAnchorY = 0`), and the icon will be
 #'   aligned so that this point is at the marker's geographical location
 #' @param shadowUrl the URL or file path to the icon shadow image
@@ -1216,7 +1216,7 @@ markerOptions <- function(
 #'   to style spider legs. By default, they are
 #'   \code{\{weight: 1.5, color: "#222", opacity: 0.5 \}}.
 #' @param freezeAtZoom Allows you to freeze cluster expansion to a zoom level.
-#'   Can be a zoom level e.g. 10, 12 or "max" or "maxKeepSpiderify".
+#'   Can be a zoom level e.g., 10, 12 or "max" or "maxKeepSpiderify".
 #'   See <https://github.com/ghybs/Leaflet.MarkerCluster.Freezable#api-reference>.
 #' @describeIn map-options Options for marker clusters
 #' @export
@@ -1240,12 +1240,12 @@ markerClusterOptions <- function(
 #' @param radius a numeric vector of radii for the circles; it can also be a
 #'   one-sided formula, in which case the radius values are derived from the
 #'   `data` (units in meters for circles, and pixels for circle markers)
-#' @param stroke whether to draw stroke along the path (e.g. the borders of
+#' @param stroke whether to draw stroke along the path (e.g., the borders of
 #'   polygons or circles)
 #' @param color stroke color
 #' @param weight stroke width in pixels
 #' @param opacity stroke opacity (or layer opacity for tile layers)
-#' @param fill whether to fill the path with color (e.g. filling on polygons or
+#' @param fill whether to fill the path with color (e.g., filling on polygons or
 #'   circles)
 #' @param fillColor fill color
 #' @param fillOpacity fill opacity

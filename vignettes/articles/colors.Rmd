@@ -11,7 +11,7 @@ knitr::opts_chunk$set(
 
 An important part of spatial visualization is mapping variables to colors. While R has no shortage of built-in functionality to map values to colors, we found that there was enough friction in the process to warrant introducing some wrapper functions that do a lot of the work for you.
 
-To that end, we've created a family of `color*()` convenience functions that can be used to easily generate *palette functions*. Essentially, you call the appropriate color function with 1) the colors you want to use and 2) optionally, the range of inputs (i.e. *domain*) that are expected. The color function returns a palette function that can be passed a vector of input values, and it'll return a vector of colors in `#RRGGBB(AA)` format.
+To that end, we've created a family of `color*()` convenience functions that can be used to easily generate *palette functions*. Essentially, you call the appropriate color function with 1) the colors you want to use and 2) optionally, the range of inputs (i.e., *domain*) that are expected. The color function returns a palette function that can be passed a vector of input values, and it'll return a vector of colors in `#RRGGBB(AA)` format.
 
 ```{r, include = FALSE}
 library(leaflet)
@@ -34,20 +34,19 @@ The four color functions all have two required arguments, `palette` and `domain`
 
 The `palette` argument specifies the colors to map the data to. This argument can take one of several forms:
 
-1. The name of a preset palette from the `RColorBrewer` package, e.g. `"RdYlBu"`, `"Accent"`, or `"Greens"`.
+1. The name of a preset palette from the `RColorBrewer` package, e.g., `"RdYlBu"`, `"Accent"`, or `"Greens"`.
 2. The full name of a `viridis` palette: `"magma"`, `"inferno"`, `"plasma"`, `"viridis"`, `"cividis"`, `"rocket"`, `"mako"`, or `"turbo"`.
-3. A character vector of RGB or named colors, e.g. `palette()`, `c("#000000", "#0000FF", "#FFFFFF")`, `topo.colors(10)`.
-4. A function that receives a single value between 0 and 1 and returns a color, e.g.:
+3. A character vector of RGB or named colors, e.g., `palette()`, `c("#000000", "#0000FF", "#FFFFFF")`, `topo.colors(10)`.
+4. A function that receives a single value between 0 and 1 and returns a color, e.g.,:
 `colorRamp(c("#000000", "#FFFFFF"), interpolate="spline")`
 
 The `domain` argument tells the color function the range of input values. You can pass `NULL` here to create a palette function that doesn't have a preset range; the range will be inferred from the data each time you invoke the palette function. If you use a palette function multiple times across different data, it's important to provide a non-`NULL` value for `domain` so the scaling between data and colors is consistent.
 
 ## Coloring continuous data
 
-
 ```{r message=FALSE,warning=FALSE,results='hide'}
 # From http://data.okfn.org/data/datasets/geo-boundaries-world-110m
-countries <- sf::st_read("https://rstudio.github.io/leaflet/json/countries.geojson")
+countries <- sf::read_sf("https://rstudio.github.io/leaflet/json/countries.geojson")
 map <- leaflet(countries)
 ```
 
@@ -82,7 +81,7 @@ map %>%
     color = ~pal(gdp_md_est))
 ```
 
-### Continuous input, discrete colors (`colorBin` and `colorQuantile`)
+### Continuous input, discrete colors (`colorBin()` and `colorQuantile()`)
 
 `colorBin()` maps numeric input data to a fixed number of output colors using binning (slicing the input domain up by value).
 
