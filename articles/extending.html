@@ -105,7 +105,7 @@ code while extending Leaflet.</p>
 </h3>
 <p><code><a href="../reference/derivePoints.html">derivePoints()</a></code> and <code><a href="../reference/derivePoints.html">derivePolygons()</a></code> can be
 used to extract point or shape (polygon/line/circle/rectangle) data from
-a <code>data.frame</code> or a spatial object from the <code>sp</code>
+a <code>data.frame</code> or a spatial object from the <a href="https://r-spatial.github.io/sf/" class="external-link">sf</a>
 package. It tries to auto determine the latitude/longitude colnames if
 not specified or use user supplied column mappings.</p>
 </div>
@@ -113,8 +113,8 @@ not specified or use user supplied column mappings.</p>
 <h3 id="evalformula">evalFormula<a class="anchor" aria-label="anchor" href="#evalformula"></a>
 </h3>
 <p><code><a href="../reference/evalFormula.html">evalFormula()</a></code> is used to evaluate a formula on a given
-data and return the results.
-e.g. <code>leaflet(some.data.frame) %&gt;% addMarkers(label=~name)</code>
+data and return the results. e.g.,
+<code>leaflet(some.data.frame) %&gt;% addMarkers(label=~name)</code>
 internally uses <code><a href="../reference/evalFormula.html">evalFormula()</a></code> to calculate the correct
 label values from the data using the <code>~name</code> formula.</p>
 </div>
@@ -128,7 +128,7 @@ don’t have to determine the exact bounds for your map.</p>
 <div class="section level3">
 <h3 id="filternull">filterNULL<a class="anchor" aria-label="anchor" href="#filternull"></a>
 </h3>
-<p>Often when passing a list from R to Javascript it is desirable to
+<p>Often when passing a list from R to JavaScript it is desirable to
 remove any null elements, and that’s exactly what
 <code><a href="../reference/filterNULL.html">filterNULL()</a></code> does.</p>
 </div>
@@ -136,13 +136,13 @@ remove any null elements, and that’s exactly what
 <h3 id="getmapdata">getMapData<a class="anchor" aria-label="anchor" href="#getmapdata"></a>
 </h3>
 <p><code><a href="../reference/getMapData.html">getMapData()</a></code> accesses the data object passed when
-calling <code><a href="../reference/leaflet.html">leaflet()</a></code> funtion.</p>
+calling <code><a href="../reference/leaflet.html">leaflet()</a></code> function.</p>
 </div>
 <div class="section level3">
 <h3 id="invokemethod">invokeMethod<a class="anchor" aria-label="anchor" href="#invokemethod"></a>
 </h3>
 <p><code><a href="../reference/dispatch.html">invokeMethod()</a></code> is the glue between the R code and
-JavaScript code. Requires a corresponding method on the Javascript
+JavaScript code. Requires a corresponding method on the JavaScript
 side.</p>
 </div>
 </div>

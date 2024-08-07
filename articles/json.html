@@ -89,14 +89,14 @@
     
     
 <p>For working with GeoJSON/TopoJSON data you have two options: either
-read it into <code>sp</code> objects; or use the
+read it into <code>sf</code> <code>data.frame</code>s; or use the
 <code><a href="../reference/map-layers.html">addGeoJSON()</a></code> and <code><a href="../reference/map-layers.html">addTopoJSON()</a></code> functions.</p>
 <div class="section level2">
-<h2 id="reading-as-sp">Reading as <code>sp</code><a class="anchor" aria-label="anchor" href="#reading-as-sp"></a>
+<h2 id="reading-as-sf">Reading as <code>{sf}</code><a class="anchor" aria-label="anchor" href="#reading-as-sf"></a>
 </h2>
-<p>The first approach is to use either <code>sf</code> or
-<code>geojsonio</code> (packages) to read GeoJSON/TopoJSON as
-<code>sp</code> objects. Then, you can use the full functionality of <a href="https://rstudio.github.io/leaflet/articles/shapes.html">polygons</a>,
+<p>The first approach is to use the <a href="https://r-spatial.github.io/sf/" class="external-link">sf</a> packages to read
+GeoJSON/TopoJSON as <code>sf</code> <code>data.frame</code>s. Then, you
+can use the full functionality of <a href="https://rstudio.github.io/leaflet/articles/shapes.html">polygons</a>,
 <a href="https://rstudio.github.io/leaflet/articles/markers.html">markers</a>,
 <a href="https://rstudio.github.io/leaflet/articles/colors.html">colors</a>,
 <a href="https://rstudio.github.io/leaflet/articles/legends.html">legends</a>,
@@ -105,8 +105,6 @@ etc.</p>
 <code class="sourceCode R"><span><span class="co"># From https://eric.clst.org/tech/usgeojson/ and</span></span>
 <span><span class="co"># https://en.wikipedia.org/wiki/List_of_United_States_counties_and_county_equivalents</span></span>
 <span><span class="va">nycounties</span> <span class="op">&lt;-</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">read_sf</a></span><span class="op">(</span><span class="st">"https://rstudio.github.io/leaflet/json/nycounties.geojson"</span><span class="op">)</span> </span>
-<span><span class="co"># Or use the geojsonio equivalent:</span></span>
-<span><span class="co"># nycounties &lt;- geojsonio::geojson_read("https://rstudio.github.io/leaflet/json/nycounties.geojson", what = "sp") </span></span>
 <span></span>
 <span><span class="va">pal</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/colorNumeric.html">colorNumeric</a></span><span class="op">(</span><span class="st">"viridis"</span>, <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
@@ -169,7 +167,7 @@ options for available style properties.</p>
 more involved example that sets both global styles and per-feature
 styles directly into the JSON object.</p>
 <p>(This approach is not recommended for applying styling in R; instead,
-use the approach described above where we convert to <code>sp</code>
+use the approach described above where we convert to <code>sf</code>
 first. However, if you have control over the process that generates the
 GeoJSON in the first place, you might use these techniques to put the
 styling information directly in the JSON.)</p>

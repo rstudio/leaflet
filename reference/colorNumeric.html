@@ -116,7 +116,7 @@ according to a given palette, which can be provided in a variety of formats.</p>
 <dt id="arg-domain">domain<a class="anchor" aria-label="anchor" href="#arg-domain"></a></dt>
 <dd><p>The possible values that can be mapped.</p>
 <p>For <code>colorNumeric()</code> and <code>colorBin()</code>, this can be a simple numeric
-range (e.g. <code>c(0, 100)</code>); <code>colorQuantile()</code> needs representative
+range (e.g., <code>c(0, 100)</code>); <code>colorQuantile()</code> needs representative
 numeric data; and <code>colorFactor()</code> needs categorical data.</p>
 <p>If <code>NULL</code>, then whenever the resulting color function is called, the
 <code>x</code> value will represent the domain. This implies that if the function
@@ -199,7 +199,7 @@ defaults for the <code><a href="https://rdrr.io/r/base/cut.html" class="external
 discrete and has a different number of colors than the number of factors,
 interpolation is used.</p>
 <p>The <code>palette</code> argument can be any of the following:</p><ol><li><p>A character vector of RGB or named colors. Examples: <code><a href="https://rdrr.io/r/grDevices/palette.html" class="external-link">palette()</a></code>, <code>c("#000000", "#0000FF", "#FFFFFF")</code>, <code>topo.colors(10)</code></p></li>
-<li><p>The name of an RColorBrewer palette, e.g. <code>"BuPu"</code> or <code>"Greens"</code>.</p></li>
+<li><p>The name of an RColorBrewer palette, e.g., <code>"BuPu"</code> or <code>"Greens"</code>.</p></li>
 <li><p>The full name of a viridis palette: <code>"magma"</code>, <code>"inferno"</code>, <code>"plasma"</code>, <code>"viridis"</code>, <code>"cividis"</code>, <code>"rocket"</code>, <code>"mako"</code>, or <code>"turbo"</code></p></li>
 <li><p>A function that receives a single value between 0 and 1 and returns a color. Examples: <code>colorRamp(c("#000000", "#FFFFFF"), interpolate = "spline")</code>.</p></li>
 </ol></div>

@@ -96,41 +96,25 @@ them to maps.</p>
 <p>Line and polygon data can come from a variety of sources:</p>
 <ul>
 <li>
-<code>SpatialPolygons</code>, <code>SpatialPolygonsDataFrame</code>,
-<code>Polygons</code>, and <code>Polygon</code> objects (from the
-<code>sp</code> package)</li>
-<li>
-<code>SpatialLines</code>, <code>SpatialLinesDataFrame</code>,
-<code>Lines</code>, and <code>Line</code> objects (from the
-<code>sp</code> package)</li>
-<li>
 <code>MULTIPOLYGON</code>, <code>POLYGON</code>,
 <code>MULTILINESTRING</code>, and <code>LINESTRING</code> objects (from
-the <code>sf</code> package)</li>
+the <a href="https://r-spatial.github.io/sf/" class="external-link">sf</a> package)</li>
 <li>
-<code>map</code> objects (from the <code>maps</code> package’s
-<code>map()</code> function); use <code>map(fill = TRUE)</code> for
-polygons, <code>FALSE</code> for polylines</li>
+<code>map</code> objects (from <code><a href="https://rdrr.io/pkg/maps/man/map.html" class="external-link">maps::map()</a></code>); use
+<code>map(fill = TRUE)</code> for polygons, <code>FALSE</code> for
+polylines</li>
 <li>Two-column numeric matrix; the first column is longitude and the
 second is latitude. Polygons are separated by rows of
 <code>(NA, NA)</code>. It is not possible to represent multi-polygons
 nor polygons with holes using this method; use
-<code>SpatialPolygons</code> instead.</li>
+<code><a href="https://r-spatial.github.io/sf/reference/st.html" class="external-link">sf::st_polygon()</a></code> instead.</li>
 </ul>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># From https://www.census.gov/geo/maps-data/data/cbf/cbf_state.html</span></span>
-<span><span class="va">states</span> <span class="op">&lt;-</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">st_read</a></span><span class="op">(</span><span class="st">"shp/cb_2013_us_state_20m.shp"</span>,</span>
+<span><span class="va">states</span> <span class="op">&lt;-</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">read_sf</a></span><span class="op">(</span><span class="st">"shp/cb_2013_us_state_20m.shp"</span>,</span>
 <span>  layer <span class="op">=</span> <span class="st">"cb_2013_us_state_20m"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Reading layer `cb_2013_us_state_20m' from data source </span></span>
-<span><span class="co">#&gt;   `/home/runner/work/leaflet/leaflet/vignettes/articles/shp/cb_2013_us_state_20m.shp' </span></span>
-<span><span class="co">#&gt;   using driver `ESRI Shapefile'</span></span>
-<span><span class="co">#&gt; Simple feature collection with 52 features and 9 fields</span></span>
-<span><span class="co">#&gt; Geometry type: MULTIPOLYGON</span></span>
-<span><span class="co">#&gt; Dimension:     XY</span></span>
-<span><span class="co">#&gt; Bounding box:  xmin: -179.1473 ymin: 17.88481 xmax: 179.7785 ymax: 71.35256</span></span>
-<span><span class="co">#&gt; Geodetic CRS:  NAD83</span></span>
 <span></span>
-<span><span class="va">neStates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">states</span>, <span class="va">states</span><span class="op">$</span><span class="va">STUSPS</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span><span class="va">neStates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">states</span>, <span class="va">states</span><span class="op">$</span><span class="va">STUSPS</span> <span class="op"><a href="https://rspatial.github.io/terra/reference/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>  <span class="st">"CT"</span>,<span class="st">"ME"</span>,<span class="st">"MA"</span>,<span class="st">"NH"</span>,<span class="st">"RI"</span>,<span class="st">"VT"</span>,<span class="st">"NY"</span>,<span class="st">"NJ"</span>,<span class="st">"PA"</span></span>
 <span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -155,16 +139,14 @@ described on this page.</p>
 <div class="section level4">
 <h4 id="simplifying-complex-polygonspolylines">Simplifying complex polygons/polylines<a class="anchor" aria-label="anchor" href="#simplifying-complex-polygonspolylines"></a>
 </h4>
-<p>Very detailed (i.e. large) shape data can present a problem for
+<p>Very detailed (i.e., large) shape data can present a problem for
 Leafet, since it is all eventually passed into the browser and rendered
 as SVG, which is very expressive and convenient but has scalability
 limits. In these cases, consider using
-<code>rmapshaper::ms_simplify</code>, which does topology-preserving
+<code>rmapshaper::ms_simplify()</code>, which does topology-preserving
 simplification conveniently from R.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">albersusa</span><span class="op">)</span> <span class="co"># Requires rgdal, archived.</span></span>
-<span></span>
-<span><span class="va">fullsize</span> <span class="op">&lt;-</span> <span class="fu">usa_sf</span><span class="op">(</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">fullsize</span> <span class="op">&lt;-</span> <span class="fu">rnaturalearth</span><span class="fu">::</span><span class="va"><a href="https://docs.ropensci.org/rnaturalearth/reference/countries.html" class="external-link">countries110</a></span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/object.size.html" class="external-link">object.size</a></span><span class="op">(</span><span class="va">fullsize</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">simplified</span> <span class="op">&lt;-</span> <span class="fu">rmapshaper</span><span class="fu">::</span><span class="fu">ms_simplify</span><span class="op">(</span><span class="va">fullsize</span><span class="op">)</span></span>
