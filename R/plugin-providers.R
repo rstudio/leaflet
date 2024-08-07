@@ -22,7 +22,7 @@ leafletProviderDependencies <- function() {
 #'   (for [clearGroup()] and [addLayersControl()] purposes). Human-friendly
 #'   group names are permitted--they need not be short, identifier-style names.
 #' @param options tile options
-#' @param .check Check that the specified `provider` matches the available
+#' @param check Check that the specified `provider` matches the available
 #'   currently loaded leaflet providers? Defaults to `TRUE`, but can be toggled
 #'   to `FALSE` for advanced users.
 #' @return modified map object
@@ -39,16 +39,15 @@ addProviderTiles <- function(
   layerId = NULL,
   group = NULL,
   options = providerTileOptions(),
-  ...,
-  .check = TRUE
+  check = TRUE
 ) {
-  if (.check) {
+  if (check) {
     loaded_providers <- leaflet.providers::providers_loaded()
     if (!provider %in% names(loaded_providers$providers)) {
       stop(
         "Unknown tile provider '",
         provider,
-        "'; either use a known provider or pass `.check = FALSE` to `addProviderTiles()`"
+        "'; either use a known provider or pass `check = FALSE` to `addProviderTiles()`"
       )
     }
   }
@@ -61,7 +60,7 @@ addProviderTiles <- function(
 #' errorTileUrl,noWrap,opacity,zIndex,updateWhenIdle,detectRetina
 #' the tile layer options; see
 #' <https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#tilelayer>
-#' @param ... For [providerTileOptions()], named parameters to add to the options. Not used in [addProviderTiles()].
+#' @param ... named parameters to add to the options
 #' @rdname addProviderTiles
 #' @export
 providerTileOptions <- function(errorTileUrl = "", noWrap = FALSE,
