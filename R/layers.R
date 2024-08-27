@@ -1000,7 +1000,7 @@ markerClusterDependencies <- function() {
   list(
     htmltools::htmlDependency(
       "leaflet-markercluster",
-      "1.0.5",
+      "1.4.1",
       "htmlwidgets/plugins/Leaflet.markercluster",
       package = "leaflet",
       script = c(
