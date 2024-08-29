@@ -4,7 +4,7 @@ leafletMiniMapDependencies <- function() {
   list(
     htmltools::htmlDependency(
       "leaflet-minimap",
-      "3.3.1",
+      "3.6.1",
       "htmlwidgets/plugins/Leaflet-MiniMap",
       package = "leaflet",
       script = c("Control.MiniMap.min.js", "Minimap-binding.js"),
