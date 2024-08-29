@@ -28,7 +28,7 @@ leafletBindingDependencies <- function() {
     ),
     htmltools::htmlDependency(
       name = "proj4",
-      version = "2.6.2",
+      version = "2.12.0",
       package = "leaflet",
       src = "htmlwidgets/plugins/Proj4Leaflet",
       script = "proj4.min.js",
