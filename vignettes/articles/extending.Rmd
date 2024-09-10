@@ -55,7 +55,7 @@ library(htmlwidgets)
 # if the plugin comes with CSS files.)
 heatPlugin <- htmlDependency(
   "Leaflet.heat",
-  "99.99.99",
+  "0.2.0",
   src = c(href = "http://leaflet.github.io/Leaflet.heat/dist/"),
   script = "leaflet-heat.js"
 )
