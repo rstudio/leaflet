@@ -43,7 +43,7 @@ Often when passing a list from R to JavaScript it is desirable to remove any nul
 
 # Example
 
-Here is a small example which shows how you can integrate heatmap functionality using a [plugin](http://leaflet.github.io/Leaflet.heat/).
+Here is a small example which shows how you can integrate heatmap functionality using a [plugin](https://leaflet.github.io/Leaflet.heat/).
 
 ```{r, fig.height=4}
 library(leaflet)
