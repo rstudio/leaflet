@@ -24,24 +24,6 @@ get_package_version <- function(pkg) {
   }
 }
 
-is_installed <- function(pkg, version = NULL) {
-  installed <- isNamespaceLoaded(pkg) || nzchar(system_file_cached(package = pkg))
-
-  if (is.null(version)) {
-    return(installed)
-  }
-
-  if (!is.character(version) && !inherits(version, "numeric_version")) {
-    # Avoid https://bugs.r-project.org/show_bug.cgi?id=18548
-    alert <- if (identical(Sys.getenv("TESTTHAT"), "true")) stop else warning
-    alert("`version` must be a character string or a `package_version` or `numeric_version` object.")
-
-    version <- numeric_version(sprintf("%0.9g", version))
-  }
-
-  installed && isTRUE(get_package_version(pkg) >= version)
-}
-
 # Borrowed from pkgload::shim_system.file, with some modifications. This behaves
 # like `system.file()`, except that (1) for packages loaded with
 # `devtools::load_all()`, it will return the path to files in the package's

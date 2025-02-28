@@ -329,7 +329,6 @@ addRasterImage <- function(
 #'   addRasterImage(rr, opacity = 0.75) %>%
 #'   addRasterLegend(rr, opacity = 0.75)
 #'
-#' @md
 #' @export
 addRasterLegend <- function(map, x, layer = 1, ...) {
   stopifnot(inherits(x, "SpatRaster"))
@@ -478,12 +477,7 @@ addRasterImage_SpatRaster <- function(
   options = gridOptions(),
   data = getMapData(map)
 ) {
-  if (!is_installed("terra", "1.6-3")) { # for terra::has.RGB()
-    stop(
-      "`addRasterImage()` for SpatRaster objects requires {terra} 1.6-3 or higher",
-      call. = FALSE
-    )
-  }
+  rlang::check_installed("terra (>= 1.6-3)", reason = "to use addRasterImage() for SpatRaster objects.") # for terra::has.RGB()
 
   options$opacity <- opacity
   options$attribution <- attribution

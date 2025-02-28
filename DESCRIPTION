@@ -59,6 +59,7 @@ Imports:
     methods,
     png,
     raster (>= 3.6.3),
+    rlang,
     RColorBrewer,
     scales (>= 1.0.0),
     sp,

@@ -1,5 +1,5 @@
 # @staticimports pkg:staticimports
-#  is_installed system_file get_package_version
+#  system_file get_package_version
 
 # Given a local and/or remote operation and a map, execute one or the other
 # depending on the type of the map object (regular or map proxy). If code was
