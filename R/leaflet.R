@@ -41,8 +41,9 @@ leafletSizingPolicy <- function(
 #' where the variables in the formulae will be evaluated in the `data`.
 #' @param data a data object. Currently supported objects are matrix, data
 #' frame, spatial data from the \pkg{sf} package,
-#' `SpatVector` from the \pkg{terra} package, and the Spatial*
-#' objects from the \pkg{sp} package that represent points, lines, or polygons.
+#' `SpatVector` from the \pkg{terra} package
+#'
+#' sp object are normalized to sf objects.
 #'
 #' @param width the width of the map
 #' @param height the height of the map
@@ -58,11 +59,16 @@ leafletSizingPolicy <- function(
 leaflet <- function(data = NULL, width = NULL, height = NULL,
                    padding = 0, options = leafletOptions(),
                    elementId = NULL, sizingPolicy = leafletSizingPolicy(padding = padding)) {
-
   # Validate the CRS if specified
- if (!is.null(options[["crs"]]) &&
-     !inherits(options[["crs"]], "leaflet_crs")) {
+  if (!is.null(options[["crs"]]) &&
+      !inherits(options[["crs"]], "leaflet_crs")) {
     stop("CRS in mapOptions should be a return value of leafletCRS() function")
+  }
+
+  # If is legacy sp object, transform to sf.
+  is_sp <- tryCatch(identical(attr(class(data), "package"), "sp"), error = function(e) FALSE)
+  if (is_sp) {
+    data <- sf::st_as_sf(data)
   }
 
   map <- htmlwidgets::createWidget(

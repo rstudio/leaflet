@@ -54,9 +54,6 @@ test_that("normalize", {
   (r3 <- pgontest(st_geometry(poldata)[[1]]))
   (r4 <- pgontest(st_geometry(poldata)[[1]][[1]] %>% st_polygon()))
   (r5 <- pgontest(gadmCHE))
-  (r6 <- pgontest(sp::polygons(gadmCHE)))
-  (r7 <- pgontest(sp::polygons(gadmCHE)@polygons[[1]]))
-  (r8 <- pgontest(sp::polygons(gadmCHE)@polygons[[1]]@Polygons[[1]]))
 
   expect_maps_equal(r1, r2)
   expect_maps_equal(r3, r4)
@@ -76,14 +73,10 @@ test_that("normalize", {
   (l4 <- plinetest(st_multilinestring(st_geometry(lindata))))  # XY, MULTILINESTRING, sfg
   (l5 <- plinetest(atlStorms2005))
   (l6 <- plinetest(sp::SpatialLines(atlStorms2005@lines)))
-  (l7 <- plinetest(atlStorms2005@lines[[1]]))
-  (l8 <- plinetest(atlStorms2005@lines[[1]]@Lines[[1]]))
 
   expect_maps_equal(l1, l2)
   expect_maps_equal(l1, l5)
   expect_maps_equal(l1, l6)
-  expect_maps_equal(l3, l7)
-  expect_maps_equal(l3, l8)
 
   ### points ----------------------------------------------------------------
   ptsdata <- st_as_sf(breweries91)
