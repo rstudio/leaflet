@@ -1,5 +1,7 @@
 # leaflet (development version)
 
+* `{leaflet}` no longer install sp by default and attempts to convert object to sf internally before creating a map and warns when it fails conversion (@olivroy, #942).
+
 * Color palette improvements. All color palette functions now support all `{viridisLite}` palettes ("magma", "inferno", "plasma", "viridis", "cividis", "rocket", "mako", and "turbo") (@jack-davison, #924).
 
 * Updated vignettes to replace `{sp}`/`{raster}` usage with `{sf}`/`{terra}` and their corresponding examples. (@jack-davison, #928)
