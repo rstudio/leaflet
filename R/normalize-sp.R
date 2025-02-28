@@ -1,3 +1,14 @@
+# Typically, this will work on Spatial* objects, but will fail with Polygons /Lines etc.
+# https://r-spatial.github.io/sf/reference/st_as_sf.html#ref-examples
+maybe_as_sf <- function(data) {
+  tryCatch(
+    data <- sf::st_as_sf(data),
+    error = function(e) {
+      warning("Couldn't transform the sp object to sf.\nConsider using recreating objects with the sf package", call. = FALSE)
+  })
+  data
+}
+
 # metaData --------------------------------------------------------
 
 #' @export

@@ -68,7 +68,9 @@ leaflet <- function(data = NULL, width = NULL, height = NULL,
   # If is legacy sp object, transform to sf.
   is_sp <- tryCatch(identical(attr(class(data), "package"), "sp"), error = function(e) FALSE)
   if (is_sp) {
-    data <- sf::st_as_sf(data)
+    rlang::check_installed("sp")
+    # transform object to sf if possible
+    data <- maybe_as_sf(data)
   }
 
   map <- htmlwidgets::createWidget(
