@@ -9,28 +9,6 @@ maybe_as_sf <- function(data) {
   data
 }
 
-# metaData --------------------------------------------------------
-
-#' @export
-metaData.SpatialPointsDataFrame <- function(obj) obj@data
-#' @export
-metaData.SpatialLinesDataFrame <- function(obj) obj@data
-#' @export
-metaData.SpatialPolygonsDataFrame <- function(obj) obj@data
-
-# pointData ---------------------------------------------------------------
-
-#' @export
-pointData.SpatialPoints <- function(obj) {
-  sp_coords(obj)
-}
-
-#' @export
-pointData.SpatialPointsDataFrame <- function(obj) {
-  sp_coords(obj)
-}
-
-
 # polygonData -------------------------------------------------------------
 
 polygonData_sp <- function(obj) {
@@ -44,35 +22,11 @@ polygonData_sp <- function(obj) {
 polygonData.Polygon <- polygonData_sp
 #' @export
 polygonData.Polygons <- polygonData_sp
-#' @export
-polygonData.SpatialPolygons <- polygonData_sp
-
-#' @export
-polygonData.SpatialPolygonsDataFrame <- function(obj) {
-  if (length(obj@polygons) > 0) {
-    polygonData(sp::polygons(obj))
-  } else {
-    warning("Empty SpatialPolygonsDataFrame object passed and will be skipped")
-    structure(list(), bbox = obj@bbox)
-  }
-}
 
 #' @export
 polygonData.Line <- polygonData_sp
 #' @export
 polygonData.Lines <- polygonData_sp
-#' @export
-polygonData.SpatialLines <- polygonData_sp
-
-#' @export
-polygonData.SpatialLinesDataFrame <- function(obj) {
-  if (length(obj@lines) > 0) {
-    polygonData(sp::SpatialLines(obj@lines))
-  } else {
-    warning("Empty SpatialLinesDataFrame object passed and will be skipped")
-    structure(list(), bbox = obj@bbox)
-  }
-}
 
 # Helpers -----------------------------------------------------------------
 
@@ -90,11 +44,6 @@ sp_bbox <- function(x) {
   colnames(bbox) <- NULL
   rownames(bbox) <- c("lng", "lat")
   bbox
-}
-
-#' @export
-to_multipolygon_list.SpatialPolygons <- function(x) {
-  lapply(x@polygons, to_multipolygon)
 }
 
 #' @export
@@ -141,11 +90,6 @@ to_multipolygon.Polygons <- function(x) {
 #' @export
 to_ring.Polygon <- function(x) {
   sp_coords(x)
-}
-
-#' @export
-to_multipolygon_list.SpatialLines <- function(x) {
-  lapply(x@lines, to_multipolygon)
 }
 
 #' @export
