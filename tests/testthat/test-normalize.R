@@ -1,6 +1,7 @@
 # derivePoints -------------------------------------------------------------
 
 test_that("can get point data from SpatialPointsDataFrame", {
+  skip_if_not_installed("sp")
   data("meuse", package = "sp", envir = environment())
   sp::coordinates(meuse) <- ~x + y
 
@@ -10,7 +11,7 @@ test_that("can get point data from SpatialPointsDataFrame", {
 })
 
 test_that("derivePolygons works with sf classes", {
-  skip_if_not_installed("sf")
+  skip_if_not_installed("sp")
 
   data("meuse", package = "sp", envir = environment())
   sp::coordinates(meuse) <- ~x + y
@@ -39,6 +40,7 @@ verifyPolygonData <- function(x) {
 }
 
 test_that("derivePolygons normalizes polygon data across sp polygon classes", {
+  skip_if_not_installed("sp")
   data("meuse.riv", package = "sp", envir = environment())
   df <- data.frame(x = 1, row.names = "river")
 
@@ -61,6 +63,7 @@ test_that("derivePolygons normalizes polygon data across sp polygon classes", {
 })
 
 test_that("derivePolygons normalizes polygon data across sp line classes", {
+  skip_if_not_installed("sp")
   data("meuse.riv", package = "sp", envir = environment())
   df <- data.frame(x = 1, row.names = "river")
 
@@ -81,14 +84,11 @@ test_that("derivePolygons normalizes polygon data across sp line classes", {
   slinesdf <- sp::SpatialLinesDataFrame(slines, df)
   expect_equal(derivePolygons(slinesdf), out)
 
-  skip_if_not_installed("sf")
   expect_equal(derivePolygons(sf::st_as_sfc(slines)[[1]]), out)
   expect_equal(derivePolygons(sf::st_as_sfc(slines)), out)
 })
 
 test_that("derivePolygons works with sf classes", {
-  skip_if_not_installed("sf")
-
   nc <- sf::st_read(system.file("shape/nc.shp", package = "sf"), quiet = TRUE)
 
   expect_warning(

@@ -1,4 +1,4 @@
-create_square <- function(width = 2, lng = 0, lat = 0, hole = FALSE, type = Polygon) {
+create_square <- function(width = 2, lng = 0, lat = 0, hole = FALSE, type = sp::Polygon) {
   lngs <- c(lng - width / 2, lng + width / 2, lng + width / 2, lng - width / 2)
   lats <- c(lat + width / 2, lat + width / 2, lat - width / 2, lat - width / 2)
 

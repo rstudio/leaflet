@@ -36,7 +36,7 @@ normalize_multipolygon <- function(df) {
 }
 
 test_that("normalize", {
-  skip_if_not_installed("sf")
+  skip_if_not_installed("sp")
 
   library(sf)
   library(sp)
@@ -54,9 +54,9 @@ test_that("normalize", {
   (r3 <- pgontest(st_geometry(poldata)[[1]]))
   (r4 <- pgontest(st_geometry(poldata)[[1]][[1]] %>% st_polygon()))
   (r5 <- pgontest(gadmCHE))
-  (r6 <- pgontest(polygons(gadmCHE)))
-  (r7 <- pgontest(polygons(gadmCHE)@polygons[[1]]))
-  (r8 <- pgontest(polygons(gadmCHE)@polygons[[1]]@Polygons[[1]]))
+  (r6 <- pgontest(sp::polygons(gadmCHE)))
+  (r7 <- pgontest(sp::polygons(gadmCHE)@polygons[[1]]))
+  (r8 <- pgontest(sp::polygons(gadmCHE)@polygons[[1]]@Polygons[[1]]))
 
   expect_maps_equal(r1, r2)
   expect_maps_equal(r3, r4)
@@ -75,7 +75,7 @@ test_that("normalize", {
   (l3 <- plinetest(st_geometry(lindata)[[1]]))  # XY, LINESTRING, sfg
   (l4 <- plinetest(st_multilinestring(st_geometry(lindata))))  # XY, MULTILINESTRING, sfg
   (l5 <- plinetest(atlStorms2005))
-  (l6 <- plinetest(SpatialLines(atlStorms2005@lines)))
+  (l6 <- plinetest(sp::SpatialLines(atlStorms2005@lines)))
   (l7 <- plinetest(atlStorms2005@lines[[1]]))
   (l8 <- plinetest(atlStorms2005@lines[[1]]@Lines[[1]]))
 
@@ -107,7 +107,7 @@ test_that("normalize", {
 
   ### lines -----------------------------------------------------------------
   polys <-
-    Polygons(list(
+    sp::Polygons(list(
       create_square(),
       create_square(, 5, 5),
       create_square(1, hole = TRUE),
@@ -116,7 +116,7 @@ test_that("normalize", {
     ), "A")
   comment(polys) <- "0 0 1 2 2"
 
-  spolys <- SpatialPolygons(list(
+  spolys <- sp::SpatialPolygons(list(
     polys
   ))
   stspolys <- st_as_sf(spolys)
@@ -142,7 +142,7 @@ test_that("normalize", {
   (l104 <- leaflet(stspolys) %>% addPolylines())
   expect_maps_equal(l103, l104)
 
-  slines <- SpatialLines(list(
+  slines <- sp::SpatialLines(list(
     Lines(list(
       create_square(type = Line),
       create_square(, 5, 5, type = Line),

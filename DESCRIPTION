@@ -62,7 +62,6 @@ Imports:
     rlang,
     RColorBrewer,
     scales (>= 1.0.0),
-    sp,
     sf (>= 0.9-6),
     stats,
     terra,
@@ -76,6 +75,7 @@ Suggests:
     R6,
     RJSONIO,
     rmarkdown,
+    sp,
     s2,
     shiny (>= 1.0.0),
     testthat (>= 3.0.0)
