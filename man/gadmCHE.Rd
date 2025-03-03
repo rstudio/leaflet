@@ -5,7 +5,7 @@
 \alias{gadmCHE}
 \title{Administrative borders of Switzerland (level 1)}
 \format{
-\code{sf} object
+\code{sp::SpatialPolygonsDataFrame}
 }
 \source{
 \url{https://gadm.org}

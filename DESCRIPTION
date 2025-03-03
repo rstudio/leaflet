@@ -48,7 +48,7 @@ URL: https://rstudio.github.io/leaflet/,
     https://github.com/rstudio/leaflet
 BugReports: https://github.com/rstudio/leaflet/issues
 Depends:
-    R (>= 3.5)
+    R (>= 3.1.0)
 Imports:
     crosstalk,
     htmltools,
