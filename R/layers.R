@@ -241,7 +241,7 @@ epsg3857 <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y
 #'
 #' r <- terra::rast(xmin = -2.8, xmax = -2.79, ymin = 54.04, ymax = 54.05, nrows = 30, ncols = 30)
 #' terra::values(r) <- matrix(1:900, nrow(r), ncol(r), byrow = TRUE)
-#' terra::crs(r) <- terra::crs(4326)
+#' terra::crs(r) <- "epsg:4326"
 #'
 #' pal <- colorNumeric("Spectral", domain = c(0, 1000))
 #' leaflet() %>% addTiles() %>%

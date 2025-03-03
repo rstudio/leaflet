@@ -97,7 +97,7 @@ maps, you can perform the projection ahead of time using
 
 r <- terra::rast(xmin = -2.8, xmax = -2.79, ymin = 54.04, ymax = 54.05, nrows = 30, ncols = 30)
 terra::values(r) <- matrix(1:900, nrow(r), ncol(r), byrow = TRUE)
-terra::crs(r) <- terra::crs(4326)
+terra::crs(r) <- "epsg:4326"
 
 pal <- colorNumeric("Spectral", domain = c(0, 1000))
 leaflet() \%>\% addTiles() \%>\%
