@@ -104,9 +104,13 @@ A HTML widget object, on which we can add graphics layers using
 \verb{\%>\%} (see examples).
 }
 \description{
-This function creates a Leaflet map widget using \pkg{htmlwidgets}. The
+\itemize{
+\item \code{leaflet()} creates a Leaflet map widget using \pkg{htmlwidgets}. The
 widget can be rendered on HTML pages generated from R Markdown, Shiny, or
 other applications.
+\item \code{leafletOptions()}: options for map creation
+\item \code{leafletCRS()}: class to create custom CRS.
+}
 }
 \details{
 The \code{data} argument is only needed if you are going to reference
@@ -116,13 +120,6 @@ we may add a circle layer to the map by
 \code{leaflet(data) \%>\% addCircles(lat = ~latitude, lng = ~longitude)},
 where the variables in the formulae will be evaluated in the \code{data}.
 }
-\section{Functions}{
-\itemize{
-\item \code{leafletOptions()}: Options for map creation
-
-\item \code{leafletCRS()}: class to create a custom CRS
-
-}}
 \examples{
 # !formatR
 library(leaflet)
@@ -280,7 +277,5 @@ m \%>\% addCircleMarkers(~lng, ~lat, radius = ~size,
 }
 }
 \seealso{
-\code{\link[=leafletCRS]{leafletCRS()}} for creating a custom CRS.
-
 See \url{https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#map-option} for details and more options.
 }
