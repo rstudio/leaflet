@@ -9,6 +9,7 @@
 #' @importFrom stats quantile
 #' @importFrom utils getFromNamespace
 #' @importFrom utils packageVersion
+#' @importFrom rlang is_installed
 ## usethis namespace: end
 NULL
 

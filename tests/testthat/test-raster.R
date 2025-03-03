@@ -17,7 +17,7 @@ test_that("rasters", {
   library(terra)
   library(raster)
 
-  lux <- rast(system.file("ex/elev.tif", package="terra"))
+  lux <- terra::rast(system.file("ex/elev.tif", package="terra"))
   pmerc <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0 +lon_0=0 +x_0=0 +y_0=0 +k=1 +units=m +nadgrids=@null +wktext +no_defs"
 
   plux <- projectRasterForLeaflet(lux, "bilinear")
@@ -33,12 +33,12 @@ test_that("rasters", {
   }
 
   (r1 <- rtest(plux))
-  (r2 <- rtest(raster(plux)))
+  (r2 <- rtest(raster::raster(plux)))
 
   expect_maps_equal(r1, r2)
 
  # test with color map
-  r <- rast(ncols=10, nrows=10, vals=rep_len(10:15, length.out=100), xmin=0, xmax=10^6, ymin=0, ymax=10^6, crs=pmerc)
+  r <- terra::rast(ncols=10, nrows=10, vals=rep_len(10:15, length.out=100), xmin=0, xmax=10^6, ymin=0, ymax=10^6, crs=pmerc)
   r[5,] <- NA
   coltab(r) <- c(rep("#FFFFFF", 10), rainbow(6, end=.9))
   (r3 <- rtest(r))

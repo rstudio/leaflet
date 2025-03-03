@@ -7,8 +7,8 @@ expect_maps_equal <- function(m1, m2) {
 
 
 test_that("normalize terra", {
-  skip_if_not_installed("terra")
-  skip_if_not_installed("sf")
+  skip_if_not_installed("raster")
+  skip_if_not_installed("sp")
 
   library(terra)
   library(sp)
@@ -52,7 +52,7 @@ test_that("normalize terra", {
 
   ### lines -----------------------------------------------------------------
   polys <-
-    Polygons(list(
+    sp::Polygons(list(
       create_square(),
       create_square(, 5, 5),
       create_square(1, hole = TRUE),
@@ -61,7 +61,7 @@ test_that("normalize terra", {
     ), "A")
   comment(polys) <- "0 0 1 2 2"
 
-  spolys <- SpatialPolygons(list(
+  spolys <- sp::SpatialPolygons(list(
     polys
   ))
   # these "commented" Spatial objects need to go through

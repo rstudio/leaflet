@@ -59,9 +59,10 @@ Imports:
     methods,
     png,
     raster (>= 3.6.3),
+    rlang,
     RColorBrewer,
     scales (>= 1.0.0),
-    sp,
+    sf (>= 0.9-6),
     stats,
     viridisLite,
     xfun
@@ -73,8 +74,8 @@ Suggests:
     RJSONIO,
     rmarkdown,
     s2,
-    sf (>= 0.9-6),
-    shiny,
+    shiny (>= 1.0.0),
+    sp,
     terra,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3

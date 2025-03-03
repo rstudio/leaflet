@@ -1,5 +1,5 @@
 # @staticimports pkg:staticimports
-#  is_installed system_file get_package_version
+#  system_file get_package_version
 
 # Given a local and/or remote operation and a map, execute one or the other
 # depending on the type of the map object (regular or map proxy). If code was
@@ -211,41 +211,35 @@ invokeRemote <- function(map, method, args = list()) {
 
   sess <- map$session
   if (map$deferUntilFlush) {
-    if (is_installed("shiny", "0.12.1.9000")) {
 
-      # See comment on sessionFlushQueue.
+    # See comment on sessionFlushQueue.
 
-      if (is.null(sessionFlushQueue[[sess$token]])) {
-        # If the current session doesn't have an entry in the sessionFlushQueue,
-        # initialize it with a blank list.
-        sessionFlushQueue[[sess$token]] <- list()
+    if (is.null(sessionFlushQueue[[sess$token]])) {
+      # If the current session doesn't have an entry in the sessionFlushQueue,
+      # initialize it with a blank list.
+      sessionFlushQueue[[sess$token]] <- list()
 
-        # If the session ends before the next onFlushed call, remove the entry
-        # for this session from the sessionFlushQueue.
-        endedUnreg <- sess$onSessionEnded(function() {
-          rm(list = sess$token, envir = sessionFlushQueue)
-        })
+      # If the session ends before the next onFlushed call, remove the entry
+      # for this session from the sessionFlushQueue.
+      endedUnreg <- sess$onSessionEnded(function() {
+        rm(list = sess$token, envir = sessionFlushQueue)
+      })
 
-        # On the next flush, pass all the messages to the client, and remove the
-        # entry from sessionFlushQueue.
-        sess$onFlushed(function() {
-          on.exit(rm(list = sess$token, envir = sessionFlushQueue), add = TRUE)
-          endedUnreg()
-          for (msg in sessionFlushQueue[[sess$token]]) {
-            sess$sendCustomMessage("leaflet-calls", msg)
-          }
-        }, once = TRUE) # nolint
-      }
-
-      # Append the current value to the apporpriate sessionFlushQueue entry,
-      # which is now guaranteed to exist.
-      sessionFlushQueue[[sess$token]] <- c(sessionFlushQueue[[sess$token]], list(msg))
-
-    } else {
+      # On the next flush, pass all the messages to the client, and remove the
+      # entry from sessionFlushQueue.
       sess$onFlushed(function() {
-        sess$sendCustomMessage("leaflet-calls", msg)
+        on.exit(rm(list = sess$token, envir = sessionFlushQueue), add = TRUE)
+        endedUnreg()
+        for (msg in sessionFlushQueue[[sess$token]]) {
+          sess$sendCustomMessage("leaflet-calls", msg)
+        }
       }, once = TRUE) # nolint
     }
+
+    # Append the current value to the apporpriate sessionFlushQueue entry,
+    # which is now guaranteed to exist.
+    sessionFlushQueue[[sess$token]] <- c(sessionFlushQueue[[sess$token]], list(msg))
+
   } else {
     sess$sendCustomMessage("leaflet-calls", msg)
   }

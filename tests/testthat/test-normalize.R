@@ -1,6 +1,7 @@
 # derivePoints -------------------------------------------------------------
 
 test_that("can get point data from SpatialPointsDataFrame", {
+  skip_if_not_installed("sp")
   data("meuse", package = "sp", envir = environment())
   sp::coordinates(meuse) <- ~x + y
 
@@ -10,7 +11,7 @@ test_that("can get point data from SpatialPointsDataFrame", {
 })
 
 test_that("derivePolygons works with sf classes", {
-  skip_if_not_installed("sf")
+  skip_if_not_installed("sp")
 
   data("meuse", package = "sp", envir = environment())
   sp::coordinates(meuse) <- ~x + y
@@ -39,11 +40,13 @@ verifyPolygonData <- function(x) {
 }
 
 test_that("derivePolygons normalizes polygon data across sp polygon classes", {
+  skip_if_not_installed("sp")
+  rlang::local_options("rlib_warning_verbosity" = "verbose")
   data("meuse.riv", package = "sp", envir = environment())
   df <- data.frame(x = 1, row.names = "river")
 
   poly <- sp::Polygon(meuse.riv)
-  out <- derivePolygons(poly)
+  expect_warning(out <- derivePolygons(poly), "transform")
   verifyPolygonData(out)
   expect_equal(out[[1]][[1]][[1]]$lng, meuse.riv[, 1])
   expect_equal(out[[1]][[1]][[1]]$lat, meuse.riv[, 2])
@@ -51,7 +54,8 @@ test_that("derivePolygons normalizes polygon data across sp polygon classes", {
   expect_equal(attr(out, "bbox"), sp::bbox(meuse.riv), ignore_attr = TRUE)
 
   polys <- sp::Polygons(list(poly), "river")
-  expect_equal(derivePolygons(polys), out)
+  expect_warning(res <- derivePolygons(polys), "transform")
+  expect_equal(res, out)
 
   spolys <- sp::SpatialPolygons(list(polys))
   expect_equal(derivePolygons(spolys), out)
@@ -61,11 +65,13 @@ test_that("derivePolygons normalizes polygon data across sp polygon classes", {
 })
 
 test_that("derivePolygons normalizes polygon data across sp line classes", {
+  skip_if_not_installed("sp")
+  rlang::local_options("rlib_warning_verbosity" = "verbose")
   data("meuse.riv", package = "sp", envir = environment())
   df <- data.frame(x = 1, row.names = "river")
 
   line <- sp::Line(meuse.riv)
-  out <- derivePolygons(line)
+  expect_warning(out <- derivePolygons(line), "transform")
   verifyPolygonData(out)
   expect_equal(out[[1]][[1]][[1]]$lng, meuse.riv[, 1])
   expect_equal(out[[1]][[1]][[1]]$lat, meuse.riv[, 2])
@@ -73,7 +79,8 @@ test_that("derivePolygons normalizes polygon data across sp line classes", {
   expect_equal(attr(out, "bbox"), sp::bbox(meuse.riv), ignore_attr = TRUE)
 
   lines <- sp::Lines(list(line), "river")
-  expect_equal(derivePolygons(lines), out)
+  expect_warning(res <- derivePolygons(lines), "transform")
+  expect_equal(res, out)
 
   slines <- sp::SpatialLines(list(lines))
   expect_equal(derivePolygons(slines), out)
@@ -81,14 +88,11 @@ test_that("derivePolygons normalizes polygon data across sp line classes", {
   slinesdf <- sp::SpatialLinesDataFrame(slines, df)
   expect_equal(derivePolygons(slinesdf), out)
 
-  skip_if_not_installed("sf")
   expect_equal(derivePolygons(sf::st_as_sfc(slines)[[1]]), out)
   expect_equal(derivePolygons(sf::st_as_sfc(slines)), out)
 })
 
 test_that("derivePolygons works with sf classes", {
-  skip_if_not_installed("sf")
-
   nc <- sf::st_read(system.file("shape/nc.shp", package = "sf"), quiet = TRUE)
 
   expect_warning(

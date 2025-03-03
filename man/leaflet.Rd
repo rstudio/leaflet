@@ -41,8 +41,11 @@ leafletCRS(
 \arguments{
 \item{data}{a data object. Currently supported objects are matrix, data
 frame, spatial data from the \pkg{sf} package,
-\code{SpatVector} from the \pkg{terra} package, and the Spatial*
-objects from the \pkg{sp} package that represent points, lines, or polygons.}
+\code{SpatVector} from the \pkg{terra} package
+
+\pkg{sp} object are normalized to \pkg{sf} objects with \code{\link[sf:st_as_sf]{sf::st_as_sf()}}.
+Conversion may fail for \code{sp::Polygons}, \code{sp::Lines}, \code{sp::Polygon} etc.
+You are encouraged to use the appropriate function to create them. \code{sf::st_polygon()} for example.}
 
 \item{width}{the width of the map}
 
@@ -108,9 +111,9 @@ other applications.
 \details{
 The \code{data} argument is only needed if you are going to reference
 variables in this object later in map layers. For example, \code{data} can be
-a data frame containing columns \code{latitude} and \code{longtitude}, then
+a data frame containing columns \code{latitude} and \code{longitude}, then
 we may add a circle layer to the map by
-\code{leaflet(data) \%>\% addCircles(lat = ~latitude, lng = ~longtitude)},
+\code{leaflet(data) \%>\% addCircles(lat = ~latitude, lng = ~longitude)},
 where the variables in the formulae will be evaluated in the \code{data}.
 }
 \section{Functions}{

@@ -1,4 +1,24 @@
-# metaData --------------------------------------------------------
+# Typically, this will work on Spatial* objects, but will fail with sp::Polygons / sp::Lines etc.
+# https://r-spatial.github.io/sf/reference/st_as_sf.html#ref-examples
+maybe_as_sf <- function(data) {
+  tryCatch(
+    {
+      data <- sf::st_as_sf(data)
+    },
+    error = function(e) {
+      rlang::warn(c(
+        "Couldn't transform the sp object to sf.\nConsider using recreating objects with the sf package.",
+        paste0("Objects of type ", class(data), "may not be handled well by sf.")
+        ),
+        .frequency_id = "sp-sf-conversion-leaflet",
+        .frequency = "once",
+        parent = e
+     )
+  })
+  data
+}
+
+# metaData (no longer used due to conversion to sf) ----------------------------
 
 #' @export
 metaData.SpatialPointsDataFrame <- function(obj) obj@data
@@ -7,7 +27,7 @@ metaData.SpatialLinesDataFrame <- function(obj) obj@data
 #' @export
 metaData.SpatialPolygonsDataFrame <- function(obj) obj@data
 
-# pointData ---------------------------------------------------------------
+# pointData (no longer used due to conversion to sf) -------------------------
 
 #' @export
 pointData.SpatialPoints <- function(obj) {
@@ -33,9 +53,12 @@ polygonData_sp <- function(obj) {
 polygonData.Polygon <- polygonData_sp
 #' @export
 polygonData.Polygons <- polygonData_sp
+
+# No longer used due to conversion to sf
 #' @export
 polygonData.SpatialPolygons <- polygonData_sp
 
+# No longer used due to conversion to sf
 #' @export
 polygonData.SpatialPolygonsDataFrame <- function(obj) {
   if (length(obj@polygons) > 0) {
@@ -50,9 +73,12 @@ polygonData.SpatialPolygonsDataFrame <- function(obj) {
 polygonData.Line <- polygonData_sp
 #' @export
 polygonData.Lines <- polygonData_sp
+
+# No longer used due to conversion to sf
 #' @export
 polygonData.SpatialLines <- polygonData_sp
 
+# No longer used due to conversion to sf
 #' @export
 polygonData.SpatialLinesDataFrame <- function(obj) {
   if (length(obj@lines) > 0) {
@@ -81,6 +107,7 @@ sp_bbox <- function(x) {
   bbox
 }
 
+# No longer used due to conversion to sf
 #' @export
 to_multipolygon_list.SpatialPolygons <- function(x) {
   lapply(x@polygons, to_multipolygon)
@@ -99,14 +126,14 @@ to_multipolygon.Polygons <- function(x) {
       if (any(vapply(pgons@Polygons, methods::slot, logical(1), "hole"))) {
         if (!requireNamespace("sf")) {
           stop("You attempted to use an sp Polygons object that is missing hole ",
-            "information. Leaflet can use the {sf} package to infer hole ",
-            "assignments, but it is not installed. Please install the {sf} ",
-            "package, and try the operation again.")
+               "information. Leaflet can use the {sf} package to infer hole ",
+               "assignments, but it is not installed. Please install the {sf} ",
+               "package, and try the operation again.")
         } else if (packageVersion("sf") < "1.0.10") {
           stop("You attempted to use an sp Polygons object that is missing hole ",
-            "information. Leaflet can use the {sf} package to infer hole ",
-            "assignments, but only with sf v1.0-10 and above. Please upgrade ",
-            "the {sf} package, and try the operation again.")
+               "information. Leaflet can use the {sf} package to infer hole ",
+               "assignments, but only with sf v1.0-10 and above. Please upgrade ",
+               "the {sf} package, and try the operation again.")
         }
         x <- to_multipolygon_list(sf::st_geometry(sf::st_as_sf(sp::SpatialPolygons(list(pgons)))))
         return(x[[1]])
@@ -132,6 +159,7 @@ to_ring.Polygon <- function(x) {
   sp_coords(x)
 }
 
+# No longer used due to conversion to sf
 #' @export
 to_multipolygon_list.SpatialLines <- function(x) {
   lapply(x@lines, to_multipolygon)

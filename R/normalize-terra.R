@@ -51,8 +51,7 @@ polygonData.SpatVector <- function(obj) {
 
 # helpers -----------------------------------------------------------------
 check_crs_terra <- function(x) {
-  stopifnot(is_installed("terra"))
-
+  rlang::check_installed("terra")
   crs <- terra::crs(x)
 
   # Don't have enough information to check

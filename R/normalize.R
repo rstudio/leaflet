@@ -55,6 +55,13 @@ derivePoints <- function(data, lng = NULL, lat = NULL,
                          missingLng = missing(lng),
                          missingLat = missing(lat),
                          funcName = "f") {
+  # If is legacy sp object, transform to sf.
+  is_sp <- tryCatch(identical(attr(class(data), "package"), "sp"), error = function(e) FALSE)
+  if (!is.null(data) && is_sp) {
+    rlang::check_installed("sp")
+    # transform object to sf if possible
+    data <- maybe_as_sf(data)
+  }
   if (missingLng || missingLat) {
     if (is.null(data)) {
       stop("Point data not found; please provide ", funcName,
@@ -80,6 +87,14 @@ derivePolygons <- function(data, lng = NULL, lat = NULL,
   if (missingLng != missingLat) {
     stop(funcName, " must be called with both lng and lat, or with neither.")
   }
+  # If is legacy sp object, transform to sf.
+  is_sp <- tryCatch(identical(attr(class(data), "package"), "sp"), error = function(e) FALSE)
+  if (!is.null(data) && is_sp) {
+    rlang::check_installed("sp")
+    # transform object to sf if possible
+    data <- maybe_as_sf(data)
+  }
+
   if (missingLng) {
     if (is.null(data)) {
       stop("Polygon data not found; please provide ", funcName,
