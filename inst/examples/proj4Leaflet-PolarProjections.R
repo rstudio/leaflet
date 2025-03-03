@@ -103,7 +103,7 @@ resolutions <- c(8192, 4096, 2048, 1024, 512, 256)
 zoom <- 0
 maxZoom <- 5
 
-border <- sf::st_rad(system.file("examples/Seamask_medium_res_polygon.kml", package = "leaflet"))
+border <- sf::st_read(system.file("examples/Seamask_medium_res_polygon.kml", package = "leaflet"))
 points <-  sf::st_read(system.file("examples/Historic_sites_and_monuments_point.kml", package = "leaflet"))
 
 crsAntartica <-  leafletCRS(
