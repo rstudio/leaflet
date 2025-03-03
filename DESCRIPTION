@@ -73,8 +73,8 @@ Suggests:
     R6,
     RJSONIO,
     rmarkdown,
-    sp,
     s2,
+    sp,
     terra,
     shiny (>= 1.0.0),
     testthat (>= 3.0.0)

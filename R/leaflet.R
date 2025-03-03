@@ -35,15 +35,17 @@ leafletSizingPolicy <- function(
 #'
 #' The `data` argument is only needed if you are going to reference
 #' variables in this object later in map layers. For example, `data` can be
-#' a data frame containing columns `latitude` and `longtitude`, then
+#' a data frame containing columns `latitude` and `longitude`, then
 #' we may add a circle layer to the map by
-#' `leaflet(data) %>% addCircles(lat = ~latitude, lng = ~longtitude)`,
+#' `leaflet(data) %>% addCircles(lat = ~latitude, lng = ~longitude)`,
 #' where the variables in the formulae will be evaluated in the `data`.
 #' @param data a data object. Currently supported objects are matrix, data
 #' frame, spatial data from the \pkg{sf} package,
 #' `SpatVector` from the \pkg{terra} package
 #'
-#' sp object are normalized to sf objects.
+#' \pkg{sp} object are normalized to \pkg{sf} objects with [sf::st_as_sf()].
+#' Conversion may fail for `sp::Polygons`, `sp::Lines`, `sp::Polygon` etc.
+#' You are encouraged to use the appropriate function to create them. `sf::st_polygon()` for example.
 #'
 #' @param width the width of the map
 #' @param height the height of the map

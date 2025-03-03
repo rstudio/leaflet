@@ -6,7 +6,7 @@ maybe_as_sf <- function(data) {
       data <- sf::st_as_sf(data)
     },
     error = function(e) {
-      warning("Couldn't transform the sp object to sf.\nConsider using recreating objects with the sf package", call. = FALSE)
+      warning("Couldn't transform the sp object to sf.\nConsider using recreating objects with the sf package.", call. = FALSE)
   })
   data
 }
@@ -20,7 +20,7 @@ metaData.SpatialLinesDataFrame <- function(obj) obj@data
 #' @export
 metaData.SpatialPolygonsDataFrame <- function(obj) obj@data
 
-# pointData (no longer used due to conversion to sf) ---------00----------------
+# pointData (no longer used due to conversion to sf) -------------------------
 
 #' @export
 pointData.SpatialPoints <- function(obj) {

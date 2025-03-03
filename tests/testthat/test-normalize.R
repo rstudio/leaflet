@@ -45,7 +45,7 @@ test_that("derivePolygons normalizes polygon data across sp polygon classes", {
   df <- data.frame(x = 1, row.names = "river")
 
   poly <- sp::Polygon(meuse.riv)
-  out <- derivePolygons(poly)
+  expect_warning(out <- derivePolygons(poly), "transform")
   verifyPolygonData(out)
   expect_equal(out[[1]][[1]][[1]]$lng, meuse.riv[, 1])
   expect_equal(out[[1]][[1]][[1]]$lat, meuse.riv[, 2])
@@ -53,7 +53,8 @@ test_that("derivePolygons normalizes polygon data across sp polygon classes", {
   expect_equal(attr(out, "bbox"), sp::bbox(meuse.riv), ignore_attr = TRUE)
 
   polys <- sp::Polygons(list(poly), "river")
-  expect_equal(derivePolygons(polys), out)
+  expect_warning(res <- derivePolygons(polys), "transform")
+  expect_equal(res, out)
 
   spolys <- sp::SpatialPolygons(list(polys))
   expect_equal(derivePolygons(spolys), out)
@@ -68,7 +69,7 @@ test_that("derivePolygons normalizes polygon data across sp line classes", {
   df <- data.frame(x = 1, row.names = "river")
 
   line <- sp::Line(meuse.riv)
-  out <- derivePolygons(line)
+  expect_warning(out <- derivePolygons(line), "transform")
   verifyPolygonData(out)
   expect_equal(out[[1]][[1]][[1]]$lng, meuse.riv[, 1])
   expect_equal(out[[1]][[1]][[1]]$lat, meuse.riv[, 2])
@@ -76,7 +77,8 @@ test_that("derivePolygons normalizes polygon data across sp line classes", {
   expect_equal(attr(out, "bbox"), sp::bbox(meuse.riv), ignore_attr = TRUE)
 
   lines <- sp::Lines(list(line), "river")
-  expect_equal(derivePolygons(lines), out)
+  expect_warning(res <- derivePolygons(lines), "transform")
+  expect_equal(res, out)
 
   slines <- sp::SpatialLines(list(lines))
   expect_equal(derivePolygons(slines), out)
