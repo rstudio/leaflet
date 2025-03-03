@@ -93,11 +93,11 @@ maps, you can perform the projection ahead of time using
 \code{project = FALSE}.
 }
 \examples{
-\donttest{library(raster)
+\donttest{
 
-r <- raster(xmn = -2.8, xmx = -2.79, ymn = 54.04, ymx = 54.05, nrows = 30, ncols = 30)
-values(r) <- matrix(1:900, nrow(r), ncol(r), byrow = TRUE)
-crs(r) <- CRS("+init=epsg:4326")
+r <- terra::rast(xmin = -2.8, xmax = -2.79, ymin = 54.04, ymax = 54.05, nrows = 30, ncols = 30)
+terra::values(r) <- matrix(1:900, nrow(r), ncol(r), byrow = TRUE)
+terra::crs(r) <- terra::crs(4326)
 
 pal <- colorNumeric("Spectral", domain = c(0, 1000))
 leaflet() \%>\% addTiles() \%>\%

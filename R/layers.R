@@ -237,11 +237,11 @@ epsg3857 <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y
 #'   SpatRaster with a color table.
 #'
 #' @examples
-#' \donttest{library(raster)
+#' \donttest{
 #'
-#' r <- raster(xmn = -2.8, xmx = -2.79, ymn = 54.04, ymx = 54.05, nrows = 30, ncols = 30)
-#' values(r) <- matrix(1:900, nrow(r), ncol(r), byrow = TRUE)
-#' crs(r) <- CRS("+init=epsg:4326")
+#' r <- terra::rast(xmin = -2.8, xmax = -2.79, ymin = 54.04, ymax = 54.05, nrows = 30, ncols = 30)
+#' terra::values(r) <- matrix(1:900, nrow(r), ncol(r), byrow = TRUE)
+#' terra::crs(r) <- terra::crs(4326)
 #'
 #' pal <- colorNumeric("Spectral", domain = c(0, 1000))
 #' leaflet() %>% addTiles() %>%
@@ -477,7 +477,6 @@ addRasterImage_SpatRaster <- function(
   options = gridOptions(),
   data = getMapData(map)
 ) {
-  rlang::check_installed("terra (>= 1.6-3)", reason = "to use addRasterImage() for SpatRaster objects.") # for terra::has.RGB()
 
   options$opacity <- opacity
   options$attribution <- attribution

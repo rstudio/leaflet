@@ -12,7 +12,7 @@ test_that("normalize terra", {
     leaflet(x) %>% addTiles() %>% addPolygons()
   }
 
-  poldata <- vect(gadmCHE)
+  poldata <- terra::vect(gadmCHE)
   crs(poldata) <- "+proj=longlat +datum=WGS84"
 
   (r1 <- pgontest(poldata))
@@ -22,7 +22,7 @@ test_that("normalize terra", {
 
   ### lines -----------------------------------------------------------------
 
-  lindata <- vect(atlStorms2005)
+  lindata <- terra::vect(atlStorms2005)
   crs(lindata) <- "+proj=longlat +datum=WGS84"
 
   plinetest <- function(x) {
