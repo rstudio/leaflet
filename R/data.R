@@ -19,7 +19,7 @@
 if (FALSE) {
 uspop2000 <- NULL
 if (file.exists("inst/csv/uspop2000.csv")) {
-  uspop2000 <- read.csv(
+  uspop2000 <- utils::read.csv(
     text = readLines("inst/csv/uspop2000.csv", encoding = "UTF-8"),
     stringsAsFactors = FALSE
   )
@@ -41,7 +41,7 @@ NULL
 #' @title Administrative borders of Switzerland (level 1)
 #' @description Administrative borders of Switzerland (level 1)
 #' @details This dataset comes from <https://gadm.org>.
-#' It was downloaded using [getData()].
+#' It was downloaded using [raster::getData()].
 #' @format `sp::SpatialPolygonsDataFrame`
 #' @family built in datasets
 #' @source

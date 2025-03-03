@@ -278,7 +278,6 @@ m \%>\% addCircleMarkers(~lng, ~lat, radius = ~size,
   color = ~greens(value), fillOpacity = 0.5)
 
 }
-
 }
 \seealso{
 \code{\link[=leafletCRS]{leafletCRS()}} for creating a custom CRS.
