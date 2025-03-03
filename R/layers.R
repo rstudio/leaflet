@@ -401,7 +401,7 @@ addRasterImage_RasterLayer <- function(
   data = getMapData(map)
 ) {
 
-
+  rlang::check_installed("raster")
   options$opacity <- opacity
   options$attribution <- attribution
 
@@ -425,8 +425,8 @@ addRasterImage_RasterLayer <- function(
 
   bounds <- raster::extent(
     raster::projectExtent(
-      raster::projectExtent(x, crs = sp::CRS(epsg3857)),
-      crs = sp::CRS(epsg4326)
+      raster::projectExtent(x, crs = raster::crs(epsg3857)),
+      crs = raster::crs(epsg4326)
     )
   )
 
@@ -581,10 +581,11 @@ projectRasterForLeaflet <- function(x, method) {
       method=method
     )
   } else {
+    rlang::check_installed("raster")
     raster_is_factor <- raster::is.factor(x);
     projected <- raster::projectRaster(
       x,
-      raster::projectExtent(x, crs = sp::CRS(epsg3857)),
+      raster::projectExtent(x, crs = raster::crs(epsg3857)),
       method = method
     )
     # if data is factor data, make the result factors as well.
