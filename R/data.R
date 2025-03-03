@@ -17,13 +17,13 @@
 #' plot(Lat ~ Long, data = uspop2000, cex = sqrt(p), asp = 1, col = rgb(1, 0, 0, .3))
 
 if (FALSE) {
-uspop2000 <- NULL
-if (file.exists("inst/csv/uspop2000.csv")) {
-  uspop2000 <- utils::read.csv(
-    text = readLines("inst/csv/uspop2000.csv", encoding = "UTF-8"),
-    stringsAsFactors = FALSE
-  )
-}
+  uspop2000 <- NULL
+  if (file.exists("inst/csv/uspop2000.csv")) {
+    uspop2000 <- utils::read.csv(
+      text = readLines("inst/csv/uspop2000.csv", encoding = "UTF-8"),
+      stringsAsFactors = FALSE
+    )
+  }
 }
 
 #' @docType data
@@ -32,7 +32,7 @@ if (file.exists("inst/csv/uspop2000.csv")) {
 #' @description Atlantic Ocean storms 2005
 #' @details This dataset contains storm tracks for selected storms
 #' in the Atlantic Ocean basin for the year 2005
-#' @format `sp::SpatialLinesDataFrame`
+#' @format `sf` object
 #' @family built in datasets
 NULL
 
@@ -42,7 +42,7 @@ NULL
 #' @description Administrative borders of Switzerland (level 1)
 #' @details This dataset comes from <https://gadm.org>.
 #' It was downloaded using [raster::getData()].
-#' @format `sp::SpatialPolygonsDataFrame`
+#' @format `sf` object
 #' @family built in datasets
 #' @source
 #' <https://gadm.org>
@@ -57,6 +57,6 @@ NULL
 #' subset of a larger database that was compiled by students at the
 #' University of Marburg for a seminar called
 #' "The Geography of Beer, sustainability in the food industry"
-#' @format `sp::SpatialPointsDataFrame`
+#' @format `sf` object
 #' @family built in datasets
 NULL
