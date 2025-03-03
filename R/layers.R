@@ -226,7 +226,7 @@ epsg3857 <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y
 #' @param method the method used for computing values of the new, projected raster image.
 #'   `"bilinear"` (the default) is appropriate for continuous data,
 #'   `"ngb"` - nearest neighbor - is appropriate for categorical data.
-#'   Ignored if `project = FALSE`. See [projectRaster()] for details.
+#'   Ignored if `project = FALSE`. See [terra::project()] for details.
 #' @param maxBytes the maximum number of bytes to allow for the projected image
 #'   (before base64 encoding); defaults to 4MB.
 #' @param options a list of additional options, intended to be provided by
