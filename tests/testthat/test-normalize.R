@@ -41,6 +41,7 @@ verifyPolygonData <- function(x) {
 
 test_that("derivePolygons normalizes polygon data across sp polygon classes", {
   skip_if_not_installed("sp")
+  rlang::local_options("rlib_warning_verbosity" = "verbose")
   data("meuse.riv", package = "sp", envir = environment())
   df <- data.frame(x = 1, row.names = "river")
 
@@ -65,6 +66,7 @@ test_that("derivePolygons normalizes polygon data across sp polygon classes", {
 
 test_that("derivePolygons normalizes polygon data across sp line classes", {
   skip_if_not_installed("sp")
+  rlang::local_options("rlib_warning_verbosity" = "verbose")
   data("meuse.riv", package = "sp", envir = environment())
   df <- data.frame(x = 1, row.names = "river")
 
