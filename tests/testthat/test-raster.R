@@ -12,7 +12,7 @@ normalize_zero_values <- function(str) {
 }
 
 test_that("rasters", {
-  skip_if_not_installed("raster")
+  skip_if_not_installed("terra")
 
   library(terra)
   library(raster)

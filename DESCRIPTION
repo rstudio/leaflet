@@ -64,19 +64,18 @@ Imports:
     scales (>= 1.0.0),
     sf (>= 0.9-6),
     stats,
-    terra,
     viridisLite,
     xfun
 Suggests:
     knitr,
     maps,
-    raster,
     purrr,
     R6,
     RJSONIO,
     rmarkdown,
     sp,
     s2,
+    terra,
     shiny (>= 1.0.0),
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
