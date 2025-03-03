@@ -48,26 +48,19 @@ test_that("normalize sp", {
     leaflet(x) %>% addTiles() %>% addPolygons()
   }
 
-  poldata <- st_as_sf(gadmCHE)
+  poldata <- gadmCHE
 
   (r1 <- pgontest(poldata))
   (r2 <- pgontest(st_geometry(poldata)))
   (r3 <- pgontest(st_geometry(poldata)[[1]]))
   (r4 <- pgontest(st_geometry(poldata)[[1]][[1]] %>% st_polygon()))
-  # Successful conversion of gadmCHE to sf.
-  (r5 <- pgontest(gadmCHE))
-  (r6 <- pgontest(sp::polygons(gadmCHE)))
-  # Fails to convert legacy object (leaflet needs to normalize)
-  expect_warning(r7 <- pgontest(sp::polygons(gadmCHE)@polygons[[1]]), "transform")
-  expect_warning(r8 <- pgontest(sp::polygons(gadmCHE)@polygons[[1]]@Polygons[[1]]), "transform")
 
   expect_maps_equal(r1, r2)
   expect_maps_equal(r3, r4)
-  expect_maps_equal(r1, r5)
 
   ### lines -----------------------------------------------------------------
 
-  lindata <- st_as_sf(atlStorms2005)
+  lindata <- atlStorms2005
 
   plinetest <- function(x) {
     leaflet(x) %>% addTiles() %>% addPolylines()
@@ -77,21 +70,11 @@ test_that("normalize sp", {
   (l2 <- plinetest(st_geometry(lindata)))  # sfc_LINESTRING, sfc
   (l3 <- plinetest(st_geometry(lindata)[[1]]))  # XY, LINESTRING, sfg
   (l4 <- plinetest(st_multilinestring(st_geometry(lindata))))  # XY, MULTILINESTRING, sfg
-  (l5 <- plinetest(atlStorms2005))
-  # Successful conversion to sf under the hood
-  (l6 <- plinetest(sp::SpatialLines(atlStorms2005@lines)))
-  # Failure to convert legacy object to sf.
-  expect_warning(l7 <- plinetest(atlStorms2005@lines[[1]]), "transform")
-  expect_warning(l8 <- plinetest(atlStorms2005@lines[[1]]@Lines[[1]]), "transform")
 
   expect_maps_equal(l1, l2)
-  expect_maps_equal(l1, l5)
-  expect_maps_equal(l1, l6)
-  expect_maps_equal(l3, l7)
-  expect_maps_equal(l3, l8)
 
   ### points ----------------------------------------------------------------
-  ptsdata <- st_as_sf(breweries91)
+  ptsdata <- breweries91
   class(ptsdata)  # sf, data.frame
   class(st_geometry(ptsdata))  # sfc_POINT, sfc
   class(st_geometry(ptsdata)[[1]])  # XY, POINT, sfg
