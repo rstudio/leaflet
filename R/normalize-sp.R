@@ -6,7 +6,14 @@ maybe_as_sf <- function(data) {
       data <- sf::st_as_sf(data)
     },
     error = function(e) {
-      warning("Couldn't transform the sp object to sf.\nConsider using recreating objects with the sf package.", call. = FALSE)
+      rlang::warn(c(
+        "Couldn't transform the sp object to sf.\nConsider using recreating objects with the sf package.",
+        paste0("Objects of type ", class(data), "may not be handled well by sf.")
+        ),
+        .frequency_id = "sp-sf-conversion-leaflet",
+        .frequency = "once",
+        parent = e
+     )
   })
   data
 }

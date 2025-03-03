@@ -36,6 +36,7 @@ normalize_multipolygon <- function(df) {
 }
 
 test_that("normalize sp", {
+  rlang::local_options("rlib_warning_verbosity" = "verbose")
   skip_if_not_installed("sp")
 
   library(sf)
