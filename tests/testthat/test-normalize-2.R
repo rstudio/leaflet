@@ -1,10 +1,3 @@
-
-expect_maps_equal <- function(m1, m2) {
-  attr(m1$x, "leafletData") <- NULL
-  attr(m2$x, "leafletData") <- NULL
-  expect_equal(m1, m2, ignore_function_env = TRUE, ignore_formula_env = TRUE)
-}
-
 normalize_multipolygon <- function(df) {
   # A multipolygon is a nested list of lng/lat data frames. Each data frame
   # represents a single polygon (may be an island or a hole), that is, a series

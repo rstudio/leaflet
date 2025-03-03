@@ -1,11 +1,3 @@
-
-expect_maps_equal <- function(m1, m2) {
-  attr(m1$x, "leafletData") <- NULL
-  attr(m2$x, "leafletData") <- NULL
-  expect_equal(m1, m2, ignore_function_env = TRUE, ignore_formula_env = TRUE)
-}
-
-
 test_that("normalize terra", {
   skip_if_not_installed("raster")
   skip_if_not_installed("sp")

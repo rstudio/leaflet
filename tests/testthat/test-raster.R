@@ -1,10 +1,3 @@
-
-expect_maps_equal <- function(m1, m2) {
-  attr(m1$x, "leafletData") <- NULL
-  attr(m2$x, "leafletData") <- NULL
-  expect_equal(m1, m2, ignore_function_env = TRUE, ignore_formula_env = TRUE)
-}
-
 # Some proj4string values differ only by one having whole numbers represented as
 # x while others have x.0. So, strip each trailing .0 value.
 normalize_zero_values <- function(str) {
@@ -37,7 +30,7 @@ test_that("rasters", {
 
   expect_maps_equal(r1, r2)
 
- # test with color map
+  # test with color map
   r <- terra::rast(ncols=10, nrows=10, vals=rep_len(10:15, length.out=100), xmin=0, xmax=10^6, ymin=0, ymax=10^6, crs=pmerc)
   r[5,] <- NA
   coltab(r) <- c(rep("#FFFFFF", 10), rainbow(6, end=.9))
