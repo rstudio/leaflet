@@ -74,9 +74,9 @@ Suggests:
     RJSONIO,
     rmarkdown,
     s2,
+    shiny (>= 1.0.0),
     sp,
     terra,
-    shiny (>= 1.0.0),
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Config/Needs/website: dplyr, ncdf4, rnaturalearth, tidyverse/tidytemplate
