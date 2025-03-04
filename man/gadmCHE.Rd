@@ -5,7 +5,7 @@
 \alias{gadmCHE}
 \title{Administrative borders of Switzerland (level 1)}
 \format{
-\code{sp::SpatialPolygonsDataFrame}
+\code{sf} object
 }
 \source{
 \url{https://gadm.org}
@@ -15,7 +15,7 @@ Administrative borders of Switzerland (level 1)
 }
 \details{
 This dataset comes from \url{https://gadm.org}.
-It was downloaded using \code{\link[=getData]{getData()}}.
+It was downloaded using \code{\link[raster:getData]{raster::getData()}}.
 }
 \seealso{
 Other built in datasets: 

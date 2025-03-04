@@ -12,3 +12,6 @@ gadmCHE$VARNAME_1 <- iconv(gadmCHE$VARNAME_1, "UTF-8", "ASCII//TRANSLIT")
 usethis::use_data(gadmCHE, overwrite = TRUE)
 
 print(tools::showNonASCIIfile("data/gadmCHE.rda"))
+
+# Convert to sf object
+gadmCHE <- sf::st_as_sf(gadmCHE)
