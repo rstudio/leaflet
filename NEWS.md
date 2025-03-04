@@ -1,6 +1,8 @@
 # leaflet (development version)
 
-* `{leaflet}` no longer install sp by default and attempts to convert object to sf internally before creating a map and warns when it fails conversion (@olivroy, #942).
+* `{leaflet}` no longer installs `{raster}` `{terra}` by default (@olivroy, #943). If you are using leaflet interactively, you will receive a prompt to install it.
+
+* `{leaflet}` no longer installs `{sp}` by default and attempts to convert object to `{sf}` internally before creating a map and warns when it fails conversion (@olivroy, #942).
 
 * The `breweries91`, `atlStorms2005`, and `gadmCHE` datasets are now `{sf}` objects (@olivroy, #944).
 
@@ -9,8 +11,6 @@
 * Color palette improvements. All color palette functions now support all `{viridisLite}` palettes ("magma", "inferno", "plasma", "viridis", "cividis", "rocket", "mako", and "turbo") (@jack-davison, #924).
 
 * Updated vignettes to replace `{sp}`/`{raster}` usage with `{sf}`/`{terra}` and their corresponding examples. (@jack-davison, #928)
-
-* Updated vignettes to replace `{sp}`/`{raster}` usage with `{sf}`/`{terra} and their corresponding examples. (@jack-davison, #928)
 
 * `addProviderTiles()` will now error if the chosen `provider` does not match any currently loaded provider (by default, those in `providers`). This behaviour can be toggled off by setting the new `check` argument to `FALSE` (@jack-davison, #929)
 

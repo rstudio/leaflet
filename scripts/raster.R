@@ -24,7 +24,6 @@ plot(r - invn)
 r <- raster(xmn = -60, xmx = -25, ymn = 70, ymx = 81, nrows = 30, ncols = 30)
 set.seed(0)
 values(r) <- matrix(sample(1:5, 900, replace = TRUE), nrow(r), ncol(r), byrow = TRUE)
-# crs(r) <- CRS("+init=epsg:4326")
 l <- function(method = "auto") {
   leaflet() %>%
     addTiles() %>%

@@ -29,10 +29,14 @@ leafletSizingPolicy <- function(
 
 #' Create a Leaflet map widget
 #'
-#' This function creates a Leaflet map widget using \pkg{htmlwidgets}. The
+#' @description
+#' * `leaflet()` creates a Leaflet map widget using \pkg{htmlwidgets}. The
 #' widget can be rendered on HTML pages generated from R Markdown, Shiny, or
 #' other applications.
+#' * `leafletOptions()`: options for map creation
+#' * `leafletCRS()`: class to create custom CRS.
 #'
+#' @details
 #' The `data` argument is only needed if you are going to reference
 #' variables in this object later in map layers. For example, `data` can be
 #' a data frame containing columns `latitude` and `longitude`, then
@@ -152,13 +156,12 @@ mapOptions <- function(map, zoomToLimits = c("always", "first", "never")) {
 #' @param  minZoom Minimum zoom level of the map. Overrides any `minZoom` set on map layers.
 #' @param  maxZoom Maximum zoom level of the map. This overrides any `maxZoom` set on map layers.
 #' @param  crs Coordinate Reference System to use. Don't change this if you're not sure what it means.
-#' @seealso [leafletCRS()] for creating a custom CRS.
 #' @param  worldCopyJump With this option enabled, the map tracks when you pan
 #'   to another "copy" of the world and seamlessly jumps to the original
 #'   one so that all overlays like markers and vector layers are still visible.
 #' @param preferCanvas Whether leaflet.js Paths should be rendered on a Canvas renderer.
 #' @param ... other options used for leaflet.js map creation.
-#' @describeIn leaflet Options for map creation
+#' @rdname leaflet
 #' @seealso See <https://web.archive.org/web/20220702182250/https://leafletjs.com/reference-1.3.4.html#map-option> for details and more options.
 #' @export
 leafletOptions <- function(
@@ -200,7 +203,7 @@ crsClasses <- list("L.CRS.EPSG3857", "L.CRS.EPSG4326", "L.CRS.EPSG3395",
 #'    Proj4Leaflet will use this in the getSize method, otherwise
 #'    defaulting to Leaflet's default CRS size
 #' @param tileSize DEPRECATED! Specify the tilesize in the [tileOptions()] argument.
-#' @describeIn leaflet class to create a custom CRS
+#' @rdname leaflet
 #' @export
 leafletCRS <- function(
   crsClass = "L.CRS.EPSG3857",

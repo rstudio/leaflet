@@ -1,3 +1,4 @@
+# obsolete
 library(leaflet)
 library(sp)
 library(maps)
