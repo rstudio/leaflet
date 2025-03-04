@@ -19,6 +19,3 @@ jobs:
     uses: rstudio/shiny-workflows/.github/workflows/routine.yaml@v1
   R-CMD-check:
     uses: rstudio/shiny-workflows/.github/workflows/R-CMD-check.yaml@v1
-    with:
-      minimum-r-version: "3.5.0"
-      ubuntu: "ubuntu-22.04"
