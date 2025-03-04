@@ -43,31 +43,48 @@ Often when passing a list from R to JavaScript it is desirable to remove any nul
 
 # Example
 
-Here is a small example which shows how you can integrate the Bing.com basemap layer [plugin](https://github.com/shramov/leaflet-plugins)
+Here is a small example which shows how you can integrate heatmap functionality using a [plugin](https://leaflet.github.io/Leaflet.heat/). 
+
+There are four key steps to add this plugin to a Leaflet map in R:
+
+1. Define a function that takes a `htmltools::htmlDependency()` object and adds it to the map. This ensures that however or whenever the map gets rendered, the plugin will be loaded into the browser.
+
+2. Actually create the `htmltools::htmlDependency()`. This function tells the browser our plugin name, version, and where to find the script. There's also a stylesheet argument if the plugin comes with CSS files.
+
+3. Use our `registerPlugin()` function to register the plugin dependency with the `leaflet()` object. As the first argument of our function is `map`, this can be achieved as part of a pipeline.
+
+4. We need to tell `Leaflet` what to actually *do* with our new plugin using `htmlwidgets::onRender()`. This adds additional rendering logic to this specific widget, written in JavaScript. Note that, in the below example, `this` refers to the `Leaflet` (JS) map object itself.
 
 ```{r, fig.height=4}
 library(leaflet)
 library(htmltools)
 library(htmlwidgets)
 
-bingPlugin <- htmlDependency(
-  "leaflet.plugins", "2.0.0",
-  src = normalizePath("./js"),
-  script = "Bing.min.js"
-)
-
+# function to register plugin
 registerPlugin <- function(map, plugin) {
   map$dependencies <- c(map$dependencies, list(plugin))
   map
 }
 
-leaflet() %>% setView(-122.23, 37.75, zoom = 10) %>%
-  registerPlugin(bingPlugin) %>%
-  onRender("function(el, x) {
-    var imagerySet = 'Aerial';
-    var bing = new L.BingLayer('LfO3DMI9S6GnXD7d0WGs~bq2DRVkmIAzSOFdodzZLvw~Arx8dclDxmZA0Y38tHIJlJfnMbGq5GXeYmrGOUIbS2VLFzRKCK0Yv_bAl6oe-DOc',
-         {type: imagerySet});
-     this.addLayer(bing);
- }")
+# define plugin as a HTML dependency
+heatPlugin <- htmlDependency(
+  "Leaflet.heat",
+  "0.2.0",
+  src = c(href = "http://leaflet.github.io/Leaflet.heat/dist/"),
+  script = "leaflet-heat.js"
+)
+
+# initialise leaflet map in R
+leaflet() %>%
+  addTiles() %>%
+  fitBounds(min(quakes$long), min(quakes$lat), max(quakes$long), max(quakes$lat)) %>%
+  # Register heatmap plugin on this map instance
+  registerPlugin(heatPlugin) %>%
+  # Add custom JS logic
+  onRender("function(el, x, data) {
+    data = HTMLWidgets.dataframeToD3(data);
+    data = data.map(function(val) { return [val.lat, val.long, val.mag*100]; });
+    L.heatLayer(data, {radius: 25}).addTo(this);
+  }", data = quakes[c("lat", "long", "mag")])
 ```
 
