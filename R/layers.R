@@ -131,10 +131,10 @@ hideGroup <- function(map, group) {
 #'
 #' @export
 groupOptions <- function(map, group, zoomLevels = NULL) {
- if (is.null(zoomLevels)) # Default to TRUE if nothing specified.
+  if (is.null(zoomLevels)) # Default to TRUE if nothing specified.
     zoomLevels <- TRUE
   invokeMethod(map, getMapData(map), "setGroupOptions", group,
-    list(zoomLevels = zoomLevels)
+               list(zoomLevels = zoomLevels)
   )
 }
 
@@ -155,13 +155,13 @@ groupOptions <- function(map, group, zoomLevels = NULL) {
 #' @describeIn map-layers Add a tile layer to the map
 #' @export
 addTiles <- function(
-  map,
-  urlTemplate = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-  attribution = NULL,
-  layerId = NULL,
-  group = NULL,
-  options = tileOptions(),
-  data = getMapData(map)
+    map,
+    urlTemplate = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    attribution = NULL,
+    layerId = NULL,
+    group = NULL,
+    options = tileOptions(),
+    data = getMapData(map)
 ) {
   options$attribution <- attribution
   if (missing(urlTemplate) && is.null(options$attribution))
@@ -170,7 +170,7 @@ addTiles <- function(
       "<a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL</a>"
     )
   invokeMethod(map, data, "addTiles", urlTemplate, layerId, group,
-    options)
+               options)
 }
 
 epsg4326 <- "+proj=longlat +datum=WGS84 +no_defs"
@@ -236,7 +236,7 @@ epsg3857 <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y
 #' @seealso [addRasterLegend()] for an easy way to add a legend for a
 #'   SpatRaster with a color table.
 #'
-#' @examples
+#' @examplesIf rlang::is_installed("terra")
 #' \donttest{
 #'
 #' r <- terra::rast(xmin = -2.8, xmax = -2.79, ymin = 54.04, ymax = 54.05, nrows = 30, ncols = 30)
@@ -250,18 +250,18 @@ epsg3857 <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y
 #' }
 #' @export
 addRasterImage <- function(
-  map,
-  x,
-  colors = if (is.factor(x)[1]) "Set1" else "Spectral",
-  opacity = 1,
-  attribution = NULL,
-  layerId = NULL,
-  group = NULL,
-  project = TRUE,
-  method = c("auto", "bilinear", "ngb"),
-  maxBytes = 4 * 1024 * 1024,
-  options = gridOptions(),
-  data = getMapData(map)
+    map,
+    x,
+    colors = if (is.factor(x)[1]) "Set1" else "Spectral",
+    opacity = 1,
+    attribution = NULL,
+    layerId = NULL,
+    group = NULL,
+    project = TRUE,
+    method = c("auto", "bilinear", "ngb"),
+    maxBytes = 4 * 1024 * 1024,
+    options = gridOptions(),
+    data = getMapData(map)
 ) {
   if (inherits(x, "SpatRaster")) {
     addRasterImage_SpatRaster(
@@ -310,7 +310,7 @@ addRasterImage <- function(
 #' @param layer the layer of the raster to target
 #' @param ... additional arguments to pass through to [addLegend()]
 #' @seealso [addRasterImage()]
-#' @examplesIf interactive()
+#' @examplesIf interactive() && rlang::is_installed("terra")
 #'
 #' library(terra)
 #'
@@ -332,6 +332,7 @@ addRasterImage <- function(
 #' @export
 addRasterLegend <- function(map, x, layer = 1, ...) {
   stopifnot(inherits(x, "SpatRaster"))
+  rlang::check_installed("terra (>= 1.6-3)")
   stopifnot(length(layer) == 1 && layer > 0 && layer <= terra::nlyr(x))
 
   # might as well do this here and only once. Subsetting would otherwise have
@@ -387,18 +388,18 @@ addRasterLegend <- function(map, x, layer = 1, ...) {
 
 
 addRasterImage_RasterLayer <- function(
-  map,
-  x,
-  colors = if (is.factor(x)[1]) "Set1" else "Spectral",
-  opacity = 1,
-  attribution = NULL,
-  layerId = NULL,
-  group = NULL,
-  project = TRUE,
-  method = c("auto", "bilinear", "ngb"),
-  maxBytes = 4 * 1024 * 1024,
-  options = gridOptions(),
-  data = getMapData(map)
+    map,
+    x,
+    colors = if (is.factor(x)[1]) "Set1" else "Spectral",
+    opacity = 1,
+    attribution = NULL,
+    layerId = NULL,
+    group = NULL,
+    project = TRUE,
+    method = c("auto", "bilinear", "ngb"),
+    maxBytes = 4 * 1024 * 1024,
+    options = gridOptions(),
+    data = getMapData(map)
 ) {
 
   rlang::check_installed("raster")
@@ -464,20 +465,20 @@ addRasterImage_RasterLayer <- function(
 }
 
 addRasterImage_SpatRaster <- function(
-  map,
-  x,
-  colors = if (terra::is.factor(x)[1]) "Set1" else "Spectral",
-  opacity = 1,
-  attribution = NULL,
-  layerId = NULL,
-  group = NULL,
-  project = TRUE,
-  method = c("auto", "bilinear", "ngb"),
-  maxBytes = 4 * 1024 * 1024,
-  options = gridOptions(),
-  data = getMapData(map)
+    map,
+    x,
+    colors = if (terra::is.factor(x)[1]) "Set1" else "Spectral",
+    opacity = 1,
+    attribution = NULL,
+    layerId = NULL,
+    group = NULL,
+    project = TRUE,
+    method = c("auto", "bilinear", "ngb"),
+    maxBytes = 4 * 1024 * 1024,
+    options = gridOptions(),
+    data = getMapData(map)
 ) {
-
+  rlang::check_installed("terra (>= 1.6-3)")
   options$opacity <- opacity
   options$attribution <- attribution
 
@@ -512,12 +513,12 @@ addRasterImage_SpatRaster <- function(
         epsg3857),
       epsg4326)
   )
-## can't the above be simplified to this?
-#  bounds <- terra::ext(
-#    terra::project(
-#        terra::as.points(terra::ext(x), crs=terra::crs(x)),
-#        epsg4326)
-#  )
+  ## can't the above be simplified to this?
+  #  bounds <- terra::ext(
+  #    terra::project(
+  #        terra::as.points(terra::ext(x), crs=terra::crs(x)),
+  #        epsg4326)
+  #  )
 
   if (project) {
     # if we should project the data
@@ -571,6 +572,7 @@ addRasterImage_SpatRaster <- function(
 #' @export
 projectRasterForLeaflet <- function(x, method) {
   if (inherits(x, "SpatRaster")) {
+    rlang::check_installed("terra (>= 1.6-3)")
     if (method=="ngb") {
       method = "near"
     }

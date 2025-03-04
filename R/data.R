@@ -42,7 +42,6 @@ NULL
 #' @description Administrative borders of Switzerland (level 1)
 #' @details This dataset comes from <https://gadm.org>.
 #' It was downloaded using [raster::getData()].
-#' @format `sp::SpatialPolygonsDataFrame`
 #' @format `sf` object
 #' @family built in datasets
 #' @source

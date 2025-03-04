@@ -1,6 +1,6 @@
 # leaflet (development version)
 
-* `{leaflet}` no longer installs `{raster}`by default and uses terra (@olivroy, #943).
+* `{leaflet}` no longer installs `{raster}` `{terra}` by default (@olivroy, #943). If you are using leaflet interactively, you will receive a prompt to install it.
 
 * `{leaflet}` no longer installs `{sp}` by default and attempts to convert object to `{sf}` internally before creating a map and warns when it fails conversion (@olivroy, #942).
 
