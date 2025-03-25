@@ -1349,8 +1349,11 @@ var _mipmapper2 = _interopRequireDefault(_mipmapper);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 var methods = {};
 exports["default"] = methods;
+console.log("=== LEAFLET METHODS.JS LOADED ===");
 
 function mouseHandler(mapId, layerId, group, eventName, extraInfo) {
   return function (e) {
@@ -1464,25 +1467,135 @@ methods.addWMSTiles = function (baseUrl, layerId, group, options) {
 //   {data: ["a", "b", "c"], index: [0, 1, 0, 2]}
 // returns:
 //   ["a", "b", "a", "c"]
+// function unpackStrings(iconset) {
+//   if (!iconset) {
+//     return iconset;
+//   }
+//   if (typeof iconset.index === "undefined") {
+//     return iconset;
+//   }
+//   iconset.data = asArray(iconset.data);
+//   iconset.index = asArray(iconset.index);
+//   return $.map(iconset.index, function (e, i) {
+//     return iconset.data[e];
+//   });
+// }
 
-
-function unpackStrings(iconset) {
-  if (!iconset) {
-    return iconset;
-  }
-
-  if (typeof iconset.index === "undefined") {
-    return iconset;
-  }
-
-  iconset.data = (0, _util.asArray)(iconset.data);
-  iconset.index = (0, _util.asArray)(iconset.index);
-  return _jquery2["default"].map(iconset.index, function (e, i) {
-    return iconset.data[e];
-  });
-}
 
 function addMarkers(map, df, group, clusterOptions, clusterId, markerFunc) {
+  console.log("===== HELPER addMarkers CALLED =====");
+  console.log("With cluster options:", clusterOptions);
+  console.log("With crosstalk:", !!df.get(0, "ctGroup")); // Define updateClusterMarkers at the root of the function
+
+  function updateClusterMarkers(filtered, ctGroup, clusterGroup, ctKeyColumn) {
+    // For safety, check required parameters
+    if (!filtered || !filtered.value) {
+      return;
+    }
+
+    if (!clusterGroup) {
+      return;
+    } // Get all markers from the cluster
+
+
+    var allLayers = [];
+
+    try {
+      if (clusterGroup.clusterLayerStore && clusterGroup.clusterLayerStore.layers) {
+        allLayers = Object.values(clusterGroup.clusterLayerStore.layers);
+      } else if (clusterGroup._featureGroup) {
+        allLayers = clusterGroup._featureGroup.getLayers();
+      } else if (clusterGroup.getLayers) {
+        allLayers = clusterGroup.getLayers();
+      }
+    } catch (e) {
+      return;
+    }
+
+    console.log("Found ".concat(allLayers.length, " markers to filter")); // Convert filter values to strings for consistent comparison
+
+    var filterValues = Array.isArray(filtered.value) ? filtered.value.map(function (v) {
+      return String(v);
+    }) : [];
+    console.log("Filter has ".concat(filterValues.length, " values")); // Store the original cluster options to reuse them
+
+    var options = Object.assign({}, clusterOptions); // Create a fresh cluster
+
+    var newClusterGroup = _leaflet2["default"].markerClusterGroup.layerSupport(options);
+
+    if (options.freezeAtZoom) {
+      var freezeAtZoom = options.freezeAtZoom;
+      newClusterGroup.freezeAtZoom(freezeAtZoom);
+    }
+
+    newClusterGroup.clusterLayerStore = new _clusterLayerStore2["default"](newClusterGroup); // Flag to track if we should show all markers (when filter is cleared or no matches)
+
+    var showAllMarkers = filterValues.length === 0; // First, process the rows based on filter
+
+    var rowsToShow = [];
+
+    for (var i = 0; i < df.nrow(); i++) {
+      var ctKey = String(df.get(i, ctKeyColumn));
+      var shouldShow = showAllMarkers || filterValues.includes(ctKey);
+
+      if (shouldShow) {
+        rowsToShow.push(i);
+      }
+    }
+
+    console.log("Found ".concat(rowsToShow.length, " matching rows in dataframe")); // Process rows that should be shown
+
+    for (var _i = 0, _rowsToShow = rowsToShow; _i < _rowsToShow.length; _i++) {
+      var _i2 = _rowsToShow[_i];
+
+      if (_jquery2["default"].isNumeric(df.get(_i2, "lat")) && _jquery2["default"].isNumeric(df.get(_i2, "lng"))) {
+        // Create a fresh marker - safer than trying to reuse existing ones
+        var marker = markerFunc(df, _i2);
+        var thisId = df.get(_i2, "layerId"); // Add popup content if in the dataframe
+
+        var popup = df.get(_i2, "popup");
+        var popupOptions = df.get(_i2, "popupOptions");
+
+        if (popup !== null) {
+          if (popupOptions !== null) {
+            marker.bindPopup(popup, popupOptions);
+          } else {
+            marker.bindPopup(popup);
+          }
+        } // Add label/tooltip if in the dataframe
+
+
+        var label = df.get(_i2, "label");
+        var labelOptions = df.get(_i2, "labelOptions");
+
+        if (label !== null) {
+          if (labelOptions !== null) {
+            if (labelOptions.permanent) {
+              marker.bindTooltip(label, labelOptions).openTooltip();
+            } else {
+              marker.bindTooltip(label, labelOptions);
+            }
+          } else {
+            marker.bindTooltip(label);
+          }
+        } // Add to cluster with appropriate ID
+
+
+        newClusterGroup.clusterLayerStore.add(marker, thisId);
+      }
+    } // Replace the old cluster group with the new one
+
+
+    map.removeLayer(clusterGroup);
+    map.addLayer(newClusterGroup); // Update the layer manager reference to the new cluster group
+
+    map.layerManager.removeLayer("cluster", clusterId);
+    map.layerManager.addLayer(newClusterGroup, "cluster", clusterId, group); // Update the PARENT'S reference to the cluster group
+    // This is the critical part - we need to update the original variable
+
+    return newClusterGroup;
+  }
+
   (function () {
     var _this3 = this;
 
@@ -1554,6 +1667,47 @@ function addMarkers(map, df, group, clusterOptions, clusterId, markerFunc) {
 
     for (var i = 0; i < df.nrow(); i++) {
       _loop2(i);
+    } // Set up crosstalk filtering for clusters
+
+
+    if (cluster && df.get(0, "ctGroup")) {
+      var ctGroup = df.get(0, "ctGroup");
+      var ctKeyColumn = "ctKey";
+      console.log("Setting up crosstalk for cluster group:", ctGroup);
+
+      try {
+        // Check if global crosstalk is available
+        if (window.crosstalk || global.crosstalk) {
+          var crosstalkObj = window.crosstalk || global.crosstalk; // Create a proper filter handle instead of using group().on()
+
+          var filterHandle = new crosstalkObj.FilterHandle(ctGroup); // Subscribe to filter changes using the handle
+
+          filterHandle.on("change", function (e) {
+            console.log("Filter change event received:", e);
+            var newClusterGroup = updateClusterMarkers(e, ctGroup, clusterGroup, ctKeyColumn);
+
+            if (newClusterGroup) {
+              clusterGroup = newClusterGroup;
+            }
+          }); // Initial setup
+
+          console.log("Setting up initial filter state");
+
+          if (filterHandle.filteredKeys) {
+            var newClusterGroup = updateClusterMarkers({
+              value: filterHandle.filteredKeys
+            }, ctGroup, clusterGroup, ctKeyColumn);
+
+            if (newClusterGroup) {
+              clusterGroup = newClusterGroup;
+            }
+          }
+        } else {
+          console.warn("Crosstalk library not found");
+        }
+      } catch (e) {
+        console.error("Error setting up crosstalk filtering:", e);
+      }
     }
 
     if (cluster) {
@@ -1562,64 +1716,108 @@ function addMarkers(map, df, group, clusterOptions, clusterId, markerFunc) {
   }).call(map);
 }
 
-methods.addGenericMarkers = addMarkers;
+methods.addGenericMarkers = addMarkers; // Add these utility functions that are missing
 
-methods.addMarkers = function (lat, lng, icon, layerId, group, options, popup, popupOptions, clusterOptions, clusterId, label, labelOptions, crosstalkOptions) {
-  var icondf;
-  var getIcon;
-
-  if (icon) {
-    // Unpack icons
-    icon.iconUrl = unpackStrings(icon.iconUrl);
-    icon.iconRetinaUrl = unpackStrings(icon.iconRetinaUrl);
-    icon.shadowUrl = unpackStrings(icon.shadowUrl);
-    icon.shadowRetinaUrl = unpackStrings(icon.shadowRetinaUrl); // This cbinds the icon URLs and any other icon options; they're all
-    // present on the icon object.
-
-    icondf = new _dataframe2["default"]().cbind(icon); // Constructs an icon from a specified row of the icon dataframe.
-
-    getIcon = function getIcon(i) {
-      var opts = icondf.get(i);
-
-      if (!opts.iconUrl) {
-        return new _leaflet2["default"].Icon.Default();
-      } // Composite options (like points or sizes) are passed from R with each
-      // individual component as its own option. We need to combine them now
-      // into their composite form.
+function recycleIcon(iconset) {
+  if (!iconset) {
+    return iconset;
+  } // If the icon set is a single icon, wrap it in an array
 
 
-      if (opts.iconWidth) {
-        opts.iconSize = [opts.iconWidth, opts.iconHeight];
-      }
-
-      if (opts.shadowWidth) {
-        opts.shadowSize = [opts.shadowWidth, opts.shadowHeight];
-      }
-
-      if (opts.iconAnchorX) {
-        opts.iconAnchor = [opts.iconAnchorX, opts.iconAnchorY];
-      }
-
-      if (opts.shadowAnchorX) {
-        opts.shadowAnchor = [opts.shadowAnchorX, opts.shadowAnchorY];
-      }
-
-      if (opts.popupAnchorX) {
-        opts.popupAnchor = [opts.popupAnchorX, opts.popupAnchorY];
-      }
-
-      return new _leaflet2["default"].Icon(opts);
-    };
+  if (_typeof(iconset) === "object" && !_jquery2["default"].isArray(iconset)) {
+    iconset = [iconset];
   }
 
-  if (!(_jquery2["default"].isEmptyObject(lat) || _jquery2["default"].isEmptyObject(lng)) || _jquery2["default"].isNumeric(lat) && _jquery2["default"].isNumeric(lng)) {
-    var df = new _dataframe2["default"]().col("lat", lat).col("lng", lng).col("layerId", layerId).col("group", group).col("popup", popup).col("popupOptions", popupOptions).col("label", label).col("labelOptions", labelOptions).cbind(options).cbind(crosstalkOptions || {});
-    if (icon) icondf.effectiveLength = df.nrow();
-    addMarkers(this, df, group, clusterOptions, clusterId, function (df, i) {
-      var options = df.get(i);
-      if (icon) options.icon = getIcon(i);
-      return _leaflet2["default"].marker([df.get(i, "lat"), df.get(i, "lng")], options);
-    });
+  return iconset;
+}
+
+function createIcon(icon) {
+  return _leaflet2["default"].icon(icon);
+} // Now fix the addMarkers function
+
+
+methods.addMarkers = function (lat, lng, icon, layerId, group, options, popup, popupOptions, clusterOptions, clusterId, label, labelOptions, crosstalkOptions) {
+  console.log("==== MARKER FUNCTION CALLED ====");
+  console.log("Has crosstalk options:", !!crosstalkOptions);
+  console.log("Has cluster options:", !!clusterOptions);
+  console.log("marker lat/lng count:", lat.length);
+  if (icon) icon = recycleIcon(icon);
+  var iconData = {};
+
+  for (var i = 0; i < icon.length; i++) {
+    // This works because the icons are just stored as named lists before
+    // we pass them on to Leaflet
+    iconData[i] = _leaflet2["default"].marker([lat[i], lng[i]], _jquery2["default"].extend({
+      icon: createIcon(icon[i]),
+      key: layerId ? layerId[i] : null,
+      group: group,
+      label: label ? label[i] : null,
+      labelOptions: labelOptions,
+      options: options
+    }, options)).bindPopup(popup ? popup[i] : null, popupOptions);
+  }
+
+  var markers = new _leaflet2["default"].LayerGroup().addLayers(iconData);
+  var markerClusterGroup = null;
+
+  if (clusterOptions !== null) {
+    markerClusterGroup = _leaflet2["default"].markerClusterGroup(clusterOptions);
+    markerClusterGroup.addLayer(markers);
+  } // Define the update function at the root of the function body
+
+
+  function updateClusters(filtered) {
+    if (!clusterOptions) return;
+    console.log("updateClusters called with filtered:", filtered);
+    console.log("ctKey values:", crosstalkOptions.ctKey); // For each marker, show/hide based on filter state
+
+    for (var _i3 = 0; _i3 < lat.length; _i3++) {
+      var marker = markers.getLayers()[_i3];
+
+      var selected = filtered.value.includes(crosstalkOptions.ctKey[_i3]);
+      console.log("Marker ".concat(_i3, ", key=").concat(crosstalkOptions.ctKey[_i3], ", selected=").concat(selected));
+
+      if (selected) {
+        console.log("Showing marker ".concat(_i3));
+        if (marker.clusterShow) marker.clusterShow();
+      } else {
+        console.log("Hiding marker ".concat(_i3));
+        if (marker.clusterHide) marker.clusterHide();
+      }
+    } // Refresh the clusters
+
+
+    if (markerClusterGroup) {
+      console.log("Refreshing clusters");
+      markerClusterGroup.refreshClusters();
+    }
+  } // Handle crosstalk filtering
+
+
+  if (crosstalkOptions) {
+    console.log("Setting up crosstalk with options:", crosstalkOptions);
+    console.log("Using global.crosstalk:", _typeof(global.crosstalk));
+    var filterHandle = new global.crosstalk.FilterHandle(crosstalkOptions.ctGroup);
+    console.log("Created crosstalk filter handle"); // Subscribe to filter changes
+
+    filterHandle.on("change", function (e) {
+      console.log("filterChange event received:", e);
+      updateClusters(e);
+    }); // Initial setup
+
+    console.log("Setting up initial state with:", filterHandle.filteredKeys);
+
+    if (filterHandle.filteredKeys) {
+      updateClusters({
+        value: filterHandle.filteredKeys
+      });
+    }
+  }
+
+  if (clusterOptions !== null) {
+    return this.layerManager.addLayer(markerClusterGroup, "cluster", clusterId, group);
+  } else {
+    return this.layerManager.addLayer(markers, "marker", layerId, group);
   }
 };
 
@@ -2030,11 +2228,11 @@ methods.addLegend = function (options) {
 
       var tickOffset = singleBinHeight / singleBinPct * options.extra.p_1;
       gradSpan = (0, _jquery2["default"])("<span/>").css({
-        "background": "linear-gradient(" + colors + ")",
-        "opacity": options.opacity,
-        "height": totalHeight + "px",
-        "width": "18px",
-        "display": "block",
+        background: "linear-gradient(" + colors + ")",
+        opacity: options.opacity,
+        height: totalHeight + "px",
+        width: "18px",
+        display: "block",
         "margin-top": vMargin + "px"
       });
       var leftDiv = (0, _jquery2["default"])("<div/>").css("float", "left"),
@@ -2221,14 +2419,14 @@ function setupShowHideGroupsOnZoom(map) {
       if (visible) {
         map.addLayer(layer);
         map.fire("groupadd", {
-          "name": group,
-          "layer": layer
+          name: group,
+          layer: layer
         });
       } else {
         map.removeLayer(layer);
         map.fire("groupremove", {
-          "name": group,
-          "layer": layer
+          name: group,
+          layer: layer
         });
       }
     }
