@@ -175,7 +175,7 @@ function addMarkers(map, df, group, clusterOptions, clusterId, markerFunc) {
   // Define updateClusterMarkers at the root of the function
   function updateClusterMarkers(filtered, ctGroup, clusterGroup, ctKeyColumn) {
     // For safety, check required parameters
-    if (!filtered || !filtered.value) {
+    if (!filtered) {
       return;
     }
     
@@ -183,28 +183,17 @@ function addMarkers(map, df, group, clusterOptions, clusterId, markerFunc) {
       return;
     }
     
-    // Get all markers from the cluster
-    let allLayers = [];
-    try {
-      if (clusterGroup.clusterLayerStore && clusterGroup.clusterLayerStore.layers) {
-        allLayers = Object.values(clusterGroup.clusterLayerStore.layers);
-      } else if (clusterGroup._featureGroup) {
-        allLayers = clusterGroup._featureGroup.getLayers();
-      } else if (clusterGroup.getLayers) {
-        allLayers = clusterGroup.getLayers();
-      }
-    } catch (e) {
-      return;
-    }
-    
-    console.log(`Found ${allLayers.length} markers to filter`);
-    
-    // Convert filter values to strings for consistent comparison
-    const filterValues = Array.isArray(filtered.value) 
+    // Handle both null/undefined and empty array cases for filter values
+    const filterValues = filtered.value && Array.isArray(filtered.value) 
       ? filtered.value.map(v => String(v)) 
       : [];
+      
+    console.log(`Filter values (${filterValues.length}):`, filterValues);
     
-    console.log(`Filter has ${filterValues.length} values`);
+    // Flag to track if we should show all markers (when filter is cleared)
+    const showAllMarkers = !filterValues.length;
+    
+    console.log(`Showing all markers: ${showAllMarkers}`);
     
     // Store the original cluster options to reuse them
     const options = Object.assign({}, clusterOptions);
@@ -217,13 +206,11 @@ function addMarkers(map, df, group, clusterOptions, clusterId, markerFunc) {
     }
     newClusterGroup.clusterLayerStore = new ClusterLayerStore(newClusterGroup);
     
-    // Flag to track if we should show all markers (when filter is cleared or no matches)
-    const showAllMarkers = filterValues.length === 0;
-    
-    // First, process the rows based on filter
+    // If showing all markers, use all rows; otherwise filter
     const rowsToShow = [];
     for (let i = 0; i < df.nrow(); i++) {
-      const ctKey = String(df.get(i, ctKeyColumn));
+      // When showing all markers OR marker key is in filter values
+      const ctKey = String(df.get(i, ctKeyColumn) || "");
       const shouldShow = showAllMarkers || filterValues.includes(ctKey);
       
       if (shouldShow) {
@@ -231,7 +218,7 @@ function addMarkers(map, df, group, clusterOptions, clusterId, markerFunc) {
       }
     }
     
-    console.log(`Found ${rowsToShow.length} matching rows in dataframe`);
+    console.log(`Adding ${rowsToShow.length} markers to map out of ${df.nrow()} total`);
     
     // Process rows that should be shown
     for (let i of rowsToShow) {
@@ -279,8 +266,6 @@ function addMarkers(map, df, group, clusterOptions, clusterId, markerFunc) {
     map.layerManager.removeLayer("cluster", clusterId);
     map.layerManager.addLayer(newClusterGroup, "cluster", clusterId, group);
     
-    // Update the PARENT'S reference to the cluster group
-    // This is the critical part - we need to update the original variable
     return newClusterGroup;
   }
 
