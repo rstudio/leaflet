@@ -13,3 +13,4 @@ revdep/data.sqlite
 viztest-*
 inst/doc
 docs
+CLAUDE.md
