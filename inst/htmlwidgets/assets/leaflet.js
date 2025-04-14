@@ -1503,7 +1503,12 @@ function addMarkers(map, df, group, clusterOptions, clusterId, markerFunc) {
     }) : [];
     console.log("Filter values (".concat(filterValues.length, "):"), filterValues); // Flag to track if we should show all markers (when filter is cleared)
 
-    var showAllMarkers = !filterValues.length;
+    // if (filterValues.length === 0) {
+    //   return;
+    // }
+
+    var showAllMarkers = false;
+
     console.log("Showing all markers: ".concat(showAllMarkers)); // Store the original cluster options to reuse them
 
     var options = Object.assign({}, clusterOptions); // Create a fresh cluster
