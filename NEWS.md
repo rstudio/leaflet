@@ -1,3 +1,8 @@
+# (PR ENTRY) Added Crosstalk Compatibility with cluster markers 
+
+* Previously when crosstalk filters were applied to a leaflet map, the cluster markers would not update
+according to the crosstalk filters.
+
 # leaflet (development version)
 
 * `{leaflet}` no longer install sp by default and attempts to convert object to sf internally before creating a map and warns when it fails conversion (@olivroy, #942).
