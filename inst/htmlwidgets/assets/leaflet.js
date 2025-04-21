@@ -1883,9 +1883,9 @@ methods.addCircleMarkers = function (lat, lng, radius, layerId, group, options, 
   }
 };
 /*
-* @param lat Array of arrays of latitude coordinates for polylines
-* @param lng Array of arrays of longitude coordinates for polylines
-*/
+ * @param lat Array of arrays of latitude coordinates for polylines
+ * @param lng Array of arrays of longitude coordinates for polylines
+ */
 
 
 methods.addPolylines = function (polygons, layerId, group, options, popup, popupOptions, label, labelOptions, highlightOptions) {
@@ -1947,9 +1947,9 @@ methods.addRectangles = function (lat1, lng1, lat2, lng2, layerId, group, option
   });
 };
 /*
-* @param lat Array of arrays of latitude coordinates for polygons
-* @param lng Array of arrays of longitude coordinates for polygons
-*/
+ * @param lat Array of arrays of latitude coordinates for polygons
+ * @param lng Array of arrays of longitude coordinates for polygons
+ */
 
 
 methods.addPolygons = function (polygons, layerId, group, options, popup, popupOptions, label, labelOptions, highlightOptions) {
