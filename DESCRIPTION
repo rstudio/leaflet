@@ -58,8 +58,8 @@ Imports:
     magrittr,
     methods,
     png,
-    rlang,
     RColorBrewer,
+    rlang,
     scales (>= 1.0.0),
     sf (>= 0.9-6),
     stats,
@@ -78,9 +78,10 @@ Suggests:
     sp,
     terra (>= 1.6-3),
     testthat (>= 3.0.0)
+Config/Needs/website:dplyr, ncdf4, rnaturalearth, tidyverse/tidytemplate,
+    terra
 Config/testthat/edition: 3
-Config/Needs/website: dplyr, ncdf4, rnaturalearth, tidyverse/tidytemplate
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.3.2
 Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
