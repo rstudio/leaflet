@@ -11,6 +11,7 @@ knitr::opts_chunk$set(
 
 ```{r, include = FALSE}
 library(leaflet)
+library(sf)
 ```
 
 **Note:** This functionality is for advanced users and may not be supported across all functions (for example, `addRasterImage()` currently works only with EPSG:3857 Web Mercator).
@@ -81,7 +82,7 @@ This example uses data from the `{rnaturalearth}` package and projects it to the
 ```{r message=FALSE,warning=FALSE}
 north_america <-
   rnaturalearth::countries110 |>
-  dplyr::filter(CONTINENT == "North America")
+  dplyr::filter(.data$CONTINENT == "North America")
 
 epsg9311 <- leafletCRS(
   crsClass = "L.Proj.CRS",
