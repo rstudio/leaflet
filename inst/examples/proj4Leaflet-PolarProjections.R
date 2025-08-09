@@ -124,7 +124,10 @@ leaflet(options = leafletOptions(
   addCircleMarkers(data = points, label = ~Name) %>%
   addTiles(urlTemplate = antarticaTilesURL,
            layerId = "antartica_tiles",
-           attribution = "<a href='https://earthdata.nasa.gov/gibs'> NASA EOSDIS GIBS</a>&nbsp;&nbsp;&nbsp; <a href='https://github.com/nasa-gibs/web-examples/blob/release/leaflet/js/antarctic-epsg3031.js'> View Source </a>",
+           attribution = paste(
+             "<a href='https://earthdata.nasa.gov/gibs' target='_blank'> NASA EOSDIS GIBS</a>&nbsp;&nbsp;&nbsp;",
+             "<a href='https://github.com/nasa-gibs/web-examples/blob/release/leaflet/js/antarctic-epsg3031.js'  target='_blank'> View Source </a>"
+             ),
            options = tileOptions(
              tileSize = 512,
              subdomains = "abc",
