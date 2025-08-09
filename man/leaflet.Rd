@@ -251,8 +251,8 @@ m \%>\% setView(-122.36075812146, 47.6759920119894, zoom = 13) \%>\% addGeoJSON(
 # use the Dark Matter layer from CartoDB
 leaflet() \%>\% addTiles("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png",
   attribution = paste(
-    "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap</a> contributors",
-    "&copy; <a href=\"https://cartodb.com/attributions\">CartoDB</a>"
+    "&copy; <a href=\"https://openstreetmap.org\" target=\"_blank\">OpenStreetMap</a> contributors",
+    "&copy; <a href=\"https://cartodb.com/attributions\" target=\"_blank\">CartoDB</a>"
   )
 ) \%>\% setView(-122.36, 47.67, zoom = 10)
 
