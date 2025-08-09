@@ -1,5 +1,7 @@
 # leaflet (development version)
 
+* Attribution links for OpenStreetMap, OpenDataCommons, CartoDB, NASA, Kadaster, Kartena will now open in a new tab (using the HTML <a> `target` attribute)
+
 * `{leaflet}` no longer install sp by default and attempts to convert object to sf internally before creating a map and warns when it fails conversion (@olivroy, #942).
 
 * The `breweries91`, `atlStorms2005`, and `gadmCHE` datasets are now `{sf}` objects (@olivroy, #944).
