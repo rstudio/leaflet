@@ -6,7 +6,7 @@ shinyUI(fluidPage(
   leafletMap(
     "map", "100%", 400,
     initialTileLayer = "//{s}.tiles.mapbox.com/v3/jcheng.map-5ebohr46/{z}/{x}/{y}.png",
-    initialTileLayerAttribution = HTML("Maps by <a href=\"http://www.mapbox.com/\">Mapbox</a>"),
+    initialTileLayerAttribution = HTML("Maps by <a href=\"http://www.mapbox.com/\" target=\"_blank\">Mapbox</a>"),
     options = list(
       center = c(37.45, -93.85),
       zoom = 4,
