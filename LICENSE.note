@@ -1,9 +1,9 @@
-The leaflet package as a whole is distributed under GPL-3 (GNU GENERAL PUBLIC
-LICENSE version 3).
+The leaflet package as a whole is distributed under the MIT License (see the
+top-level LICENSE file).
 
-The leaflet package includes other open source software components. The following
-is a list of these components (full copies of the license agreements used by
-these components are included below):
+The leaflet package bundles certain third-party open source software
+components. The following is a list of these components (full copies of their
+license agreements are included below):
 
 - Leaflet (JavaScript library), https://github.com/Leaflet/Leaflet
 - leaflet-measure, https://github.com/ljagis/leaflet-measure
