@@ -59,8 +59,8 @@ Imports:
     methods,
     png,
     raster (>= 3.6.3),
-    rlang,
     RColorBrewer,
+    rlang,
     scales (>= 1.0.0),
     sf (>= 0.9-6),
     stats,
@@ -78,9 +78,9 @@ Suggests:
     sp,
     terra,
     testthat (>= 3.0.0)
-Config/testthat/edition: 3
 Config/Needs/website: dplyr, ncdf4, rnaturalearth, tidyverse/tidytemplate
+Config/testthat/edition: 3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.3.2
 Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
