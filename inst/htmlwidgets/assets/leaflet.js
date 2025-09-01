@@ -1483,6 +1483,100 @@ function unpackStrings(iconset) {
 }
 
 function addMarkers(map, df, group, clusterOptions, clusterId, markerFunc) {
+  function updateClusterMarkers(filtered, ctGroup, clusterGroup, ctKeyColumn) {
+    // For safety, check required parameters
+    if (!filtered) {
+      return;
+    }
+
+    if (!clusterGroup) {
+      return;
+    } // Handle both null/undefined and empty array cases for filter values
+
+
+    let filterValues = filtered.value && Array.isArray(filtered.value) ? filtered.value.map(function (v) {
+      return String(v);
+    }) : [];
+
+    let showAllMarkers = false;
+    if (filterValues.length === 0) {
+      showAllMarkers = true;
+    }
+
+
+    let options = Object.assign({}, clusterOptions); // Create a fresh cluster
+
+    let newClusterGroup = _leaflet2["default"].markerClusterGroup.layerSupport(options);
+
+    if (options.freezeAtZoom) {
+      let freezeAtZoom = options.freezeAtZoom;
+      newClusterGroup.freezeAtZoom(freezeAtZoom);
+    }
+
+    newClusterGroup.clusterLayerStore = new _clusterLayerStore2["default"](newClusterGroup); // If showing all markers, use all rows; otherwise filter
+
+    let rowsToShow = [];
+
+    for (let i = 0; i < df.nrow(); i++) {
+      // When showing all markers OR marker key is in filter values
+      let ctKey = String(df.get(i, ctKeyColumn) || "");
+      let shouldShow = showAllMarkers || filterValues.includes(ctKey);
+
+      if (shouldShow) {
+        rowsToShow.push(i);
+      }
+    }
+
+
+    for (let _i = 0, _rowsToShow = rowsToShow; _i < _rowsToShow.length; _i++) {
+      let _i2 = _rowsToShow[_i];
+
+      if (_jquery2["default"].isNumeric(df.get(_i2, "lat")) && _jquery2["default"].isNumeric(df.get(_i2, "lng"))) {
+        // Create a fresh marker - safer than trying to reuse existing ones
+        let marker = markerFunc(df, _i2);
+        let thisId = df.get(_i2, "layerId"); // Add popup content if in the dataframe
+
+        let popup = df.get(_i2, "popup");
+        let popupOptions = df.get(_i2, "popupOptions");
+
+        if (popup !== null) {
+          if (popupOptions !== null) {
+            marker.bindPopup(popup, popupOptions);
+          } else {
+            marker.bindPopup(popup);
+          }
+        } // Add label/tooltip if in the dataframe
+
+
+        let label = df.get(_i2, "label");
+        let labelOptions = df.get(_i2, "labelOptions");
+
+        if (label !== null) {
+          if (labelOptions !== null) {
+            if (labelOptions.permanent) {
+              marker.bindTooltip(label, labelOptions).openTooltip();
+            } else {
+              marker.bindTooltip(label, labelOptions);
+            }
+          } else {
+            marker.bindTooltip(label);
+          }
+        } // Add to cluster with appropriate ID
+
+
+        newClusterGroup.clusterLayerStore.add(marker, thisId);
+      }
+    } // Replace the old cluster group with the new one
+
+
+    map.removeLayer(clusterGroup);
+    map.addLayer(newClusterGroup); // Update the layer manager reference to the new cluster group
+
+    map.layerManager.removeLayer("cluster", clusterId);
+    map.layerManager.addLayer(newClusterGroup, "cluster", clusterId, group);
+    return newClusterGroup;
+  }
+
   (function () {
     var _this3 = this;
 
@@ -1554,6 +1648,37 @@ function addMarkers(map, df, group, clusterOptions, clusterId, markerFunc) {
 
     for (var i = 0; i < df.nrow(); i++) {
       _loop2(i);
+    }
+
+    if (cluster && df.get(0, "ctGroup")) {
+      let ctGroup = df.get(0, "ctGroup");
+      let ctKeyColumn = "ctKey";
+
+      // Check if global crosstalk is available
+      if (window.crosstalk || global.crosstalk) {
+        let crosstalkObj = window.crosstalk || global.crosstalk; // Create a proper filter handle instead of using group().on()
+
+        let filterHandle = new crosstalkObj.FilterHandle(ctGroup); // Subscribe to filter changes using the handle
+
+        filterHandle.on("change", function (e) {
+          let newClusterGroup = updateClusterMarkers(e, ctGroup, clusterGroup, ctKeyColumn);
+
+          if (newClusterGroup) {
+            clusterGroup = newClusterGroup;
+          }
+        }); // Initial setup
+
+
+        if (filterHandle.filteredKeys) {
+          let newClusterGroup = updateClusterMarkers({
+            value: filterHandle.filteredKeys
+          }, ctGroup, clusterGroup, ctKeyColumn);
+
+          if (newClusterGroup) {
+            clusterGroup = newClusterGroup;
+          }
+        }
+      }
     }
 
     if (cluster) {

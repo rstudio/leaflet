@@ -1,5 +1,7 @@
 # leaflet (development version)
 
+* `{leaflet}` cluster markers now filter according to `{crosstalk}` filters.
+
 * `{leaflet}` no longer install sp by default and attempts to convert object to sf internally before creating a map and warns when it fails conversion (@olivroy, #942).
 
 * The `breweries91`, `atlStorms2005`, and `gadmCHE` datasets are now `{sf}` objects (@olivroy, #944).
