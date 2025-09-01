@@ -3,11 +3,13 @@ Package: leaflet
 Title: Create Interactive Web Maps with the JavaScript 'Leaflet' Library
 Version: 2.2.3
 Authors@R: c(
-    person("Joe", "Cheng", , "joe@posit.co", role = c("aut", "cre")),
+    person("Joe", "Cheng", , "joe@posit.co", role = "aut"),
     person("Barret", "Schloerke", , "barret@posit.co", role = "aut",
            comment = c(ORCID = "0000-0001-9986-114X")),
     person("Bhaskar", "Karambelkar", role = "aut"),
     person("Yihui", "Xie", role = "aut"),
+    person("Garrick", "Aden-Buie", , "garrick@adenbuie.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-7111-0077")),
     person("Hadley", "Wickham", role = "ctb"),
     person("Kenton", "Russell", role = "ctb"),
     person("Kent", "Johnson", role = "ctb"),
