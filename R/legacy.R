@@ -100,8 +100,8 @@ leafletMap <- function(
 
   if (missing(initialTileLayer) && is.null(initialTileLayerAttribution))
     initialTileLayerAttribution <- paste(
-      "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap</a>",
-      "contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>"
+      "&copy; <a href=\"https://openstreetmap.org\" target=\"_blank\">OpenStreetMap</a>",
+      "contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\" target=\"_blank\">CC-BY-SA</a>"
     )
 
   shiny::addResourcePath("leaflet-legacy", system_file("legacy/www", package = "leaflet"))

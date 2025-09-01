@@ -30,7 +30,7 @@ leaflet(
       )) %>%
   addTiles(
     urlTemplate = "https://api.geosition.com/tile/osm-bright-3006/{z}/{x}/{y}.png",
-    attribution = "Map data &copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap contributors</a>, Imagery &copy; 2013 <a href=\"http://www.kartena.se/\">Kartena</a>",
+    attribution = "Map data &copy; <a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\">OpenStreetMap contributors</a>, Imagery &copy; 2013 <a href=\"http://www.kartena.se/\" target=\"_blank\">Kartena</a>",
     options = tileOptions(minZoom = 0, maxZoom = 14)) %>%
   setView(11.965, 57.704, 13)
 

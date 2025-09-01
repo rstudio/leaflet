@@ -38,7 +38,7 @@ leaflet(options = leafletOptions(
   addTiles("http://geodata.nationaalgeoregister.nl/tms/1.0.0/brtachtergrondkaart/{z}/{x}/{y}.png",
            options = tileOptions(tms = TRUE,
                                  errorTileUrl = "http://www.webmapper.net/theme/img/missing-tile.png"),
-           attribution = "Map data: <a href=\"http://www.kadaster.nl\">Kadaster</a>") %>%
+           attribution = "Map data: <a href=\"http://www.kadaster.nl\" target=\"_blank\">Kadaster</a>") %>%
   addCircleMarkers(data = meuse.4326, popup = popupTable(meuse))
 
 
