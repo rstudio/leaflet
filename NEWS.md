@@ -1,4 +1,4 @@
-# leaflet (development version)
+# leaflet 2.2.3
 
 * `{leaflet}` no longer install sp by default and attempts to convert object to sf internally before creating a map and warns when it fails conversion (@olivroy, #942).
 
