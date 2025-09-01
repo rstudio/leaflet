@@ -184,6 +184,7 @@ L.Control.EasyButton = L.Control.extend({
     // don't let double clicks and mousedown get to the map
     L.DomEvent.addListener(this.button, 'dblclick', L.DomEvent.stop);
     L.DomEvent.addListener(this.button, 'mousedown', L.DomEvent.stop);
+    L.DomEvent.addListener(this.button, 'mouseup', L.DomEvent.stop);
 
     // take care of normal clicks
     L.DomEvent.addListener(this.button,'click', function(e){
@@ -216,6 +217,11 @@ L.Control.EasyButton = L.Control.extend({
 
 
   state: function(newState){
+
+    // when called with no args, it's a getter
+    if (arguments.length === 0) {
+      return this._currentState.stateName;
+    }
 
     // activate by name
     if(typeof newState == 'string'){

@@ -13,7 +13,7 @@ leafletBindingDependencies <- function() {
     jquerylib::jquery_core(3),
     htmltools::htmlDependency(
       name = "leaflet",
-      version = "1.3.1",
+      version = "1.9.4",
       package = "leaflet",
       src = "htmlwidgets/lib/leaflet",
       script = "leaflet.js",
@@ -28,7 +28,7 @@ leafletBindingDependencies <- function() {
     ),
     htmltools::htmlDependency(
       name = "proj4",
-      version = "2.6.2",
+      version = "2.12.0",
       package = "leaflet",
       src = "htmlwidgets/plugins/Proj4Leaflet",
       script = "proj4.min.js",

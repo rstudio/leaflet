@@ -1,5 +1,14 @@
 # leaflet (development version)
 
+* updated leaflet.js to 1.9.4 (#923)
+
+* updated plugins:
+  * proj4js to 2.12.0 (#941)
+  * Leaflet.markercluster to 1.4.1
+  * Leaflet.MarkerCluster.LayerSupport to 2.0.1
+  * Leaflet-Minimap to 3.6.1
+  * Leaflet.Easybutton to 2.4.0
+
 * `{leaflet}` no longer install sp by default and attempts to convert object to sf internally before creating a map and warns when it fails conversion (@olivroy, #942).
 
 * The `breweries91`, `atlStorms2005`, and `gadmCHE` datasets are now `{sf}` objects (@olivroy, #944).

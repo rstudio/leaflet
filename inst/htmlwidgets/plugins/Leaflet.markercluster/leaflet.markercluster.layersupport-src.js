@@ -1,7 +1,7 @@
 /**
- * Leaflet.MarkerCluster.LayerSupport 1.0.5+87f3848
+ * Leaflet.MarkerCluster.LayerSupport 2.0.1+649b3a9
  * Sub-plugin for Leaflet.markercluster plugin (MCG in short); brings compatibility with L.Control.Layers and other Leaflet plugins.
- * (c) 2015-2017 Boris Seang
+ * (c) 2015-2018 Boris Seang
  * License MIT
  */
 (function (root, factory) {
@@ -24,7 +24,7 @@ L.MarkerClusterGroup.LayerSupport = L.MarkerClusterGroup.extend({
 
 	options: {
 		// Buffer single addLayer and removeLayer requests for efficiency.
-		singleAddRemoveBufferDuration: 100 // in ms.
+		singleAddRemoveBufferDuration: 0 // in ms.
 	},
 
 	initialize: function (options) {
@@ -351,6 +351,10 @@ L.MarkerClusterGroup.LayerSupport = L.MarkerClusterGroup.extend({
 			layerGroup._originalAddLayer || layerGroup.addLayer;
 		layerGroup._originalRemoveLayer =
 			layerGroup._originalRemoveLayer || layerGroup.removeLayer;
+		layerGroup._originalOnAdd =
+				layerGroup._originalOnAdd || layerGroup.onAdd;
+		layerGroup._originalOnRemove =
+				layerGroup._originalOnRemove || layerGroup.onRemove;
 		L.extend(layerGroup, _proxyLayerGroup);
 	},
 
@@ -366,6 +370,8 @@ L.MarkerClusterGroup.LayerSupport = L.MarkerClusterGroup.extend({
 		delete layerGroup._proxyMcgLayerSupportGroup;
 		layerGroup.addLayer = layerGroup._originalAddLayer;
 		layerGroup.removeLayer = layerGroup._originalRemoveLayer;
+		layerGroup.onAdd = layerGroup._originalOnAdd;
+		layerGroup.onRemove = layerGroup._originalOnRemove;
 
 		var id = L.stamp(layerGroup);
 		delete this._proxyLayerGroups[id];
