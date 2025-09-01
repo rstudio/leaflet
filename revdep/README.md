@@ -1,12 +1,8 @@
 # Revdeps
 
-## Failed to check (5)
+## New problems (1)
 
-|package              |version |error |warning |note |
-|:--------------------|:-------|:-----|:-------|:----|
-|inlmisc              |?       |      |        |     |
-|leaflet.multiopacity |?       |      |        |     |
-|leaflet.opacity      |?       |      |        |     |
-|modchart             |?       |      |        |     |
-|palmid               |?       |      |        |     |
+|package |version |error  |warning |note |
+|:-------|:-------|:------|:-------|:----|
+|[mapview](problems.md#mapview)|2.11.3  |__+1__ |        |     |
 
