@@ -1,6 +1,8 @@
 # leaflet 2.2.3
 
-* `{leaflet}` no longer install sp by default and attempts to convert object to sf internally before creating a map and warns when it fails conversion (@olivroy, #942).
+* `{leaflet}` is now licensed under the MIT license (was GPL-2) (#958).
+
+* `{leaflet}` no longer install `{sp}` by default and attempts to convert object to sf internally before creating a map and warns when it fails conversion (@olivroy, #942).
 
 * The `breweries91`, `atlStorms2005`, and `gadmCHE` datasets are now `{sf}` objects (@olivroy, #944).
 
@@ -10,7 +12,7 @@
 
 * Updated vignettes to replace `{sp}`/`{raster}` usage with `{sf}`/`{terra}` and their corresponding examples. (@jack-davison, #928)
 
-* Updated vignettes to replace `{sp}`/`{raster}` usage with `{sf}`/`{terra} and their corresponding examples. (@jack-davison, #928)
+* Updated vignettes to replace `{sp}`/`{raster}` usage with `{sf}`/`{terra}` and their corresponding examples. (@jack-davison, #928)
 
 * `addProviderTiles()` will now error if the chosen `provider` does not match any currently loaded provider (by default, those in `providers`). This behaviour can be toggled off by setting the new `check` argument to `FALSE` (@jack-davison, #929)
 
