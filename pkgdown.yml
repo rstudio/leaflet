@@ -18,7 +18,7 @@ articles:
   articles/shiny: shiny.html
   articles/showhide: showhide.html
   articles/widget: widget.html
-last_built: 2025-09-04T11:45Z
+last_built: 2025-09-04T11:48Z
 urls:
   reference: https://rstudio.github.io/leaflet/reference
   article: https://rstudio.github.io/leaflet/articles
