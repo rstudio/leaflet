@@ -38,3 +38,4 @@ Run `revdepcheck::cloud_details(, "mapview")` for more info
       Calls: <Anonymous> ... eval -> mapview -> standardGeneric -> eval -> eval -> as
       Execution halted
     ```
+
