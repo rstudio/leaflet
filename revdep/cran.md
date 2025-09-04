@@ -1,7 +1,15 @@
 ## revdepcheck results
 
-We checked 167 reverse dependencies (162 from CRAN + 5 from Bioconductor), comparing R CMD check results across CRAN and dev versions of this package.
+We checked 195 reverse dependencies, comparing R CMD check results across CRAN and dev versions of this package.
 
- * We saw 0 new problems
+ * We saw 1 new problems
  * We failed to check 0 packages
+
+Issues with CRAN packages are summarised below.
+
+### New problems
+(This reports the first line of each new failure)
+
+* mapview
+  checking tests ... ERROR
 
