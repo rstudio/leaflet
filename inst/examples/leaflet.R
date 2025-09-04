@@ -152,4 +152,3 @@ m %>% addCircleMarkers(~lng, ~lat, radius = ~size,
   color = ~greens(value), fillOpacity = 0.5)
 
 }
-

@@ -14,4 +14,8 @@ create_square <- function(width = 2, lng = 0, lat = 0, hole = FALSE, type = sp::
   }
 }
 
-
+expect_maps_equal <- function(m1, m2) {
+  attr(m1$x, "leafletData") <- NULL
+  attr(m2$x, "leafletData") <- NULL
+  expect_equal(m1, m2, ignore_function_env = TRUE, ignore_formula_env = TRUE)
+}

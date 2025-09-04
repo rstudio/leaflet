@@ -1,5 +1,7 @@
 # leaflet (development version)
 
+* `{leaflet}` no longer installs `{raster}` `{terra}` by default (@olivroy, #943). If you are using leaflet interactively, you will receive a prompt to install it.
+
 # leaflet 2.2.3
 
 * `{leaflet}` is now licensed under the MIT license (was GPL-2) (#958).
@@ -11,8 +13,6 @@
 * `{leaflet}` now requires R 3.5 and above (@olivroy, #944).
 
 * Color palette improvements. All color palette functions now support all `{viridisLite}` palettes ("magma", "inferno", "plasma", "viridis", "cividis", "rocket", "mako", and "turbo") (@jack-davison, #924).
-
-* Updated vignettes to replace `{sp}`/`{raster}` usage with `{sf}`/`{terra}` and their corresponding examples. (@jack-davison, #928)
 
 * Updated vignettes to replace `{sp}`/`{raster}` usage with `{sf}`/`{terra}` and their corresponding examples. (@jack-davison, #928)
 

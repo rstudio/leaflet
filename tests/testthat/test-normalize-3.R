@@ -1,13 +1,6 @@
-
-expect_maps_equal <- function(m1, m2) {
-  attr(m1$x, "leafletData") <- NULL
-  attr(m2$x, "leafletData") <- NULL
-  expect_equal(m1, m2, ignore_function_env = TRUE, ignore_formula_env = TRUE)
-}
-
-
 test_that("normalize terra", {
   skip_if_not_installed("raster")
+  skip_if_not_installed("terra")
   skip_if_not_installed("sp")
 
   library(terra)
@@ -20,7 +13,7 @@ test_that("normalize terra", {
     leaflet(x) %>% addTiles() %>% addPolygons()
   }
 
-  poldata <- vect(gadmCHE)
+  poldata <- terra::vect(gadmCHE)
   crs(poldata) <- "+proj=longlat +datum=WGS84"
 
   (r1 <- pgontest(poldata))
@@ -30,7 +23,7 @@ test_that("normalize terra", {
 
   ### lines -----------------------------------------------------------------
 
-  lindata <- vect(atlStorms2005)
+  lindata <- terra::vect(atlStorms2005)
   crs(lindata) <- "+proj=longlat +datum=WGS84"
 
   plinetest <- function(x) {
@@ -43,7 +36,7 @@ test_that("normalize terra", {
   expect_maps_equal(l1, l2)
 
   ### points ----------------------------------------------------------------
-  ptsdata <- vect(breweries91)
+  ptsdata <- terra::vect(breweries91)
   crs(ptsdata) <- "+proj=longlat +datum=WGS84"
 
   (p1 <- leaflet() %>% addTiles() %>% addCircleMarkers(data = ptsdata))
@@ -66,7 +59,7 @@ test_that("normalize terra", {
   ))
   # these "commented" Spatial objects need to go through
   # sf for terra to understand them properly
-  vpolys = vect(sf::st_as_sf(spolys ))
+  vpolys = terra::vect(sf::st_as_sf(spolys ))
   (l101 <- leaflet(spolys) %>% addPolygons())
   (l102 <- leaflet(vpolys) %>% addPolygons())
   expect_maps_equal(l101, l102)
@@ -74,8 +67,8 @@ test_that("normalize terra", {
   (l104 <- leaflet(vpolys) %>% addPolylines())
   expect_maps_equal(l103, l104)
 
-  slines <- SpatialLines(list(
-    Lines(list(
+  slines <- sp::SpatialLines(list(
+    sp::Lines(list(
       create_square(type = Line),
       create_square(, 5, 5, type = Line),
       create_square(1, hole = TRUE, type = Line),
@@ -83,7 +76,7 @@ test_that("normalize terra", {
       create_square(0.4, 4.25, 4.25, hole = TRUE, type = Line)
     ), "A")
   ))
-  vslines <- vect(slines)
+  vslines <- terra::vect(slines)
   (l105 <- leaflet(slines) %>% addPolylines())
   (l106 <- leaflet(vslines) %>% addPolylines())
   expect_maps_equal(l105, l106)

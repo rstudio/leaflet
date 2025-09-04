@@ -51,7 +51,7 @@ coordinates}
 \item{method}{the method used for computing values of the new, projected raster image.
 \code{"bilinear"} (the default) is appropriate for continuous data,
 \code{"ngb"} - nearest neighbor - is appropriate for categorical data.
-Ignored if \code{project = FALSE}. See \code{\link[raster:projectRaster]{raster::projectRaster()}} for details.}
+Ignored if \code{project = FALSE}. See \code{\link[terra:project]{terra::project()}} for details.}
 
 \item{maxBytes}{the maximum number of bytes to allow for the projected image
 (before base64 encoding); defaults to 4MB.}
@@ -93,17 +93,19 @@ maps, you can perform the projection ahead of time using
 \code{project = FALSE}.
 }
 \examples{
-\donttest{library(raster)
+\dontshow{if (rlang::is_installed("terra")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\donttest{
 
-r <- raster(xmn = -2.8, xmx = -2.79, ymn = 54.04, ymx = 54.05, nrows = 30, ncols = 30)
-values(r) <- matrix(1:900, nrow(r), ncol(r), byrow = TRUE)
-crs(r) <- CRS("+init=epsg:4326")
+r <- terra::rast(xmin = -2.8, xmax = -2.79, ymin = 54.04, ymax = 54.05, nrows = 30, ncols = 30)
+terra::values(r) <- matrix(1:900, nrow(r), ncol(r), byrow = TRUE)
+terra::crs(r) <- "epsg:4326"
 
 pal <- colorNumeric("Spectral", domain = c(0, 1000))
 leaflet() \%>\% addTiles() \%>\%
   addRasterImage(r, colors = pal, opacity = 0.8) \%>\%
   addLegend(pal = pal, values = c(0, 1000))
 }
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link[=addRasterLegend]{addRasterLegend()}} for an easy way to add a legend for a
