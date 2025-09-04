@@ -264,18 +264,18 @@ epsg3857 <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y
 #' }
 #' @export
 addRasterImage <- function(
-    map,
-    x,
-    colors = if (is.factor(x)[1]) "Set1" else "Spectral",
-    opacity = 1,
-    attribution = NULL,
-    layerId = NULL,
-    group = NULL,
-    project = TRUE,
-    method = c("auto", "bilinear", "ngb"),
-    maxBytes = 4 * 1024 * 1024,
-    options = gridOptions(),
-    data = getMapData(map)
+  map,
+  x,
+  colors = if (is.factor(x)[1]) "Set1" else "Spectral",
+  opacity = 1,
+  attribution = NULL,
+  layerId = NULL,
+  group = NULL,
+  project = TRUE,
+  method = c("auto", "bilinear", "ngb"),
+  maxBytes = 4 * 1024 * 1024,
+  options = gridOptions(),
+  data = getMapData(map)
 ) {
   if (inherits(x, "SpatRaster")) {
     addRasterImage_SpatRaster(
@@ -407,18 +407,18 @@ addRasterLegend <- function(map, x, layer = 1, ...) {
 
 
 addRasterImage_RasterLayer <- function(
-    map,
-    x,
-    colors = if (is.factor(x)[1]) "Set1" else "Spectral",
-    opacity = 1,
-    attribution = NULL,
-    layerId = NULL,
-    group = NULL,
-    project = TRUE,
-    method = c("auto", "bilinear", "ngb"),
-    maxBytes = 4 * 1024 * 1024,
-    options = gridOptions(),
-    data = getMapData(map)
+  map,
+  x,
+  colors = if (is.factor(x)[1]) "Set1" else "Spectral",
+  opacity = 1,
+  attribution = NULL,
+  layerId = NULL,
+  group = NULL,
+  project = TRUE,
+  method = c("auto", "bilinear", "ngb"),
+  maxBytes = 4 * 1024 * 1024,
+  options = gridOptions(),
+  data = getMapData(map)
 ) {
   rlang::check_installed("raster")
 
@@ -509,18 +509,18 @@ addRasterImage_RasterLayer <- function(
 }
 
 addRasterImage_SpatRaster <- function(
-    map,
-    x,
-    colors = if (terra::is.factor(x)[1]) "Set1" else "Spectral",
-    opacity = 1,
-    attribution = NULL,
-    layerId = NULL,
-    group = NULL,
-    project = TRUE,
-    method = c("auto", "bilinear", "ngb"),
-    maxBytes = 4 * 1024 * 1024,
-    options = gridOptions(),
-    data = getMapData(map)
+  map,
+  x,
+  colors = if (terra::is.factor(x)[1]) "Set1" else "Spectral",
+  opacity = 1,
+  attribution = NULL,
+  layerId = NULL,
+  group = NULL,
+  project = TRUE,
+  method = c("auto", "bilinear", "ngb"),
+  maxBytes = 4 * 1024 * 1024,
+  options = gridOptions(),
+  data = getMapData(map)
 ) {
   rlang::check_installed(
     "terra (>= 1.6-3)",
