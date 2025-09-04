@@ -169,13 +169,13 @@ groupOptions <- function(map, group, zoomLevels = NULL) {
 #' @describeIn map-layers Add a tile layer to the map
 #' @export
 addTiles <- function(
-    map,
-    urlTemplate = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-    attribution = NULL,
-    layerId = NULL,
-    group = NULL,
-    options = tileOptions(),
-    data = getMapData(map)
+  map,
+  urlTemplate = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+  attribution = NULL,
+  layerId = NULL,
+  group = NULL,
+  options = tileOptions(),
+  data = getMapData(map)
 ) {
   options$attribution <- attribution
   if (missing(urlTemplate) && is.null(options$attribution)) {
