@@ -1,15 +1,10 @@
 ## Comments
 
-This is a small release to use the latest version of {leaflet.providers}.
-
-Please let us know if we can provide any more information.
+This is a small maintenance release, primarily to avoid a NOTE in R CMD check.
 
 ## revdepcheck results
 
-We checked 163 reverse dependencies, comparing R CMD check results across CRAN and dev versions of this package.
+We checked 195 reverse dependencies, comparing R CMD check results across CRAN and dev versions of this package.
 
- * We saw 0 new problems
+ * We saw 1 new problem with `mapview`, which we believe is unrelated to changes in this release.
  * We failed to check 0 packages
-
-Issues with CRAN packages are summarised below.
-

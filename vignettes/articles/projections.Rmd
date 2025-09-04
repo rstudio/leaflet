@@ -75,7 +75,7 @@ leaflet() %>%
 
 # Displaying shapes with custom projections
 
-While tiles must be in the same projection as used in `leafletCRS()`, you must always use WGS 84 longitude/latitude data for markers, circles, polygons, and lines. Leaflet will automatically project the coordinates when displaying. 
+While tiles must be in the same projection as used in `leafletCRS()`, you must always use WGS 84 longitude/latitude data for markers, circles, polygons, and lines. Leaflet will automatically project the coordinates when displaying.
 
 This example uses data from the `{rnaturalearth}` package and projects it to the [EPSG:9311](https://epsg.io/9311) (US National Atlas Equal Area) coordinate system. Compare the first map, which uses the default CRS, to the second map, which is reprojected.
 
@@ -117,6 +117,6 @@ plot_na_map(opts = leafletOptions(crs = epsg9311))
 
 # Polar projections
 
-It's possible to use polar projections, though you may encounter even more problems and incompatibilities with other Leaflet.js plugins than when using other types of custom projections. 
+It's possible to use polar projections, though you may encounter even more problems and incompatibilities with other Leaflet.js plugins than when using other types of custom projections.
 
 <!-- You can refer to [this set of examples](http://rpubs.com/bhaskarvk/leaflet-polarmaps) by Bhaskar Karambelkar to get started. -->

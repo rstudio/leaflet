@@ -35,3 +35,4 @@
 ^_dev$
 ^vignettes/articles$
 ^pkgdown$
+^LICENSE\.md$

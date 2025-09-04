@@ -1,13 +1,15 @@
 Type: Package
 Package: leaflet
 Title: Create Interactive Web Maps with the JavaScript 'Leaflet' Library
-Version: 2.2.2.9000
+Version: 2.2.3.9000
 Authors@R: c(
-    person("Joe", "Cheng", , "joe@posit.co", role = c("aut", "cre")),
+    person("Joe", "Cheng", , "joe@posit.co", role = "aut"),
     person("Barret", "Schloerke", , "barret@posit.co", role = "aut",
            comment = c(ORCID = "0000-0001-9986-114X")),
     person("Bhaskar", "Karambelkar", role = "aut"),
     person("Yihui", "Xie", role = "aut"),
+    person("Garrick", "Aden-Buie", , "garrick@posit.co", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-7111-0077")),
     person("Hadley", "Wickham", role = "ctb"),
     person("Kenton", "Russell", role = "ctb"),
     person("Kent", "Johnson", role = "ctb"),
@@ -43,7 +45,7 @@ Description: Create and customize interactive maps using the 'Leaflet'
     JavaScript library and the 'htmlwidgets' package. These maps can be
     used directly from the R console, from 'RStudio', in Shiny
     applications and R Markdown documents.
-License: GPL-3
+License: MIT + file LICENSE
 URL: https://rstudio.github.io/leaflet/,
     https://github.com/rstudio/leaflet
 BugReports: https://github.com/rstudio/leaflet/issues
@@ -78,10 +80,9 @@ Suggests:
     sp,
     terra (>= 1.6-3),
     testthat (>= 3.0.0)
-Config/Needs/website: dplyr, ncdf4, rnaturalearth, tidyverse/tidytemplate,
-    terra
+Config/Needs/website: dplyr, ncdf4, rnaturalearth, tidyverse/tidytemplate
 Config/testthat/edition: 3
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3

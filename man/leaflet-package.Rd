@@ -17,10 +17,11 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Joe Cheng \email{joe@posit.co}
+\strong{Maintainer}: Garrick Aden-Buie \email{garrick@posit.co} (\href{https://orcid.org/0000-0002-7111-0077}{ORCID})
 
 Authors:
 \itemize{
+  \item Joe Cheng \email{joe@posit.co}
   \item Barret Schloerke \email{barret@posit.co} (\href{https://orcid.org/0000-0001-9986-114X}{ORCID})
   \item Bhaskar Karambelkar
   \item Yihui Xie

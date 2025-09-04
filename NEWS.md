@@ -2,7 +2,11 @@
 
 * `{leaflet}` no longer installs `{raster}` `{terra}` by default (@olivroy, #943). If you are using leaflet interactively, you will receive a prompt to install it.
 
-* `{leaflet}` no longer installs `{sp}` by default and attempts to convert object to `{sf}` internally before creating a map and warns when it fails conversion (@olivroy, #942).
+# leaflet 2.2.3
+
+* `{leaflet}` is now licensed under the MIT license (was GPL-2) (#958).
+
+* `{leaflet}` no longer install `{sp}` by default and attempts to convert object to sf internally before creating a map and warns when it fails conversion (@olivroy, #942).
 
 * The `breweries91`, `atlStorms2005`, and `gadmCHE` datasets are now `{sf}` objects (@olivroy, #944).
 
