@@ -12,3 +12,4 @@ Issues with CRAN packages are summarised below.
 
 * mapview
   checking tests ... ERROR
+
