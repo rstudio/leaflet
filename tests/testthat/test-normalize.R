@@ -220,3 +220,19 @@ test_that("derivePoints handles sf object with Z dimension", {
   expect_equal(result$lng, c(1, 4))
   expect_equal(result$lat, c(2, 5))
 })
+
+test_that("derivePolygons handles sfc with Z dimension", {
+  # Test with sfc_LINESTRING directly (like in the issue example)
+  s1 <- sf::st_linestring(matrix(c(0, 1, 0, 1, 5, 6), ncol = 3))
+  sfc <- sf::st_sfc(s1)
+  
+  # Should work without error
+  result <- derivePolygons(sfc)
+  verifyPolygonData(result)
+  
+  # Check that we get 2D coordinates (lng, lat only)
+  coords <- result[[1]][[1]][[1]]
+  expect_named(coords, c("lng", "lat"))
+  expect_equal(coords$lng, c(0, 1))
+  expect_equal(coords$lat, c(0, 1))
+})
