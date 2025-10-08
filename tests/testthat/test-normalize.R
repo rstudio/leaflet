@@ -146,3 +146,77 @@ test_that("fails if not lat/long columns present", {
     "Couldn't infer longitude/latitude columns"
   )
 })
+
+# ZM dimensions -----------------------------------------------------------
+
+test_that("derivePolygons handles sf LINESTRING with Z dimension", {
+  # Create a LINESTRING with Z dimension
+  s1 <- sf::st_linestring(matrix(c(0, 1, 0, 1, 5, 6), ncol = 3))
+  
+  # Should work without error
+  result <- derivePolygons(s1)
+  verifyPolygonData(result)
+  
+  # Check that we get 2D coordinates (lng, lat only)
+  coords <- result[[1]][[1]][[1]]
+  expect_named(coords, c("lng", "lat"))
+  expect_equal(coords$lng, c(0, 1))
+  expect_equal(coords$lat, c(0, 1))
+})
+
+test_that("derivePolygons handles sf LINESTRING with ZM dimensions", {
+  # Create a LINESTRING with ZM dimensions
+  s2 <- sf::st_linestring(matrix(c(0, 1, 0, 1, 5, 6, 2, 3), ncol = 4), dim = "XYZM")
+  
+  # Should work without error
+  result <- derivePolygons(s2)
+  verifyPolygonData(result)
+  
+  # Check that we get 2D coordinates (lng, lat only)
+  coords <- result[[1]][[1]][[1]]
+  expect_named(coords, c("lng", "lat"))
+  expect_equal(coords$lng, c(0, 1))
+  expect_equal(coords$lat, c(0, 1))
+})
+
+test_that("derivePolygons handles sf object with Z dimension", {
+  # Create a simple feature collection with Z dimension
+  s1 <- sf::st_linestring(matrix(c(0, 1, 0, 1, 5, 6), ncol = 3))
+  sfc <- sf::st_sfc(s1)
+  sf_obj <- sf::st_sf(id = 1, geometry = sfc)
+  
+  # Should work without error
+  result <- derivePolygons(sf_obj)
+  verifyPolygonData(result)
+  
+  # Check that we get 2D coordinates (lng, lat only)
+  coords <- result[[1]][[1]][[1]]
+  expect_named(coords, c("lng", "lat"))
+  expect_equal(coords$lng, c(0, 1))
+  expect_equal(coords$lat, c(0, 1))
+})
+
+test_that("derivePoints handles sf POINT with Z dimension", {
+  # Create a POINT with Z dimension
+  p1 <- sf::st_point(c(1, 2, 3))
+  
+  # Should work without error
+  result <- derivePoints(p1)
+  expect_named(result, c("lng", "lat"))
+  expect_equal(result$lng, 1)
+  expect_equal(result$lat, 2)
+})
+
+test_that("derivePoints handles sf object with Z dimension", {
+  # Create a simple feature collection with Z dimension
+  p1 <- sf::st_point(c(1, 2, 3))
+  p2 <- sf::st_point(c(4, 5, 6))
+  sfc <- sf::st_sfc(p1, p2)
+  sf_obj <- sf::st_sf(id = 1:2, geometry = sfc)
+  
+  # Should work without error
+  result <- derivePoints(sf_obj)
+  expect_named(result, c("lng", "lat"))
+  expect_equal(result$lng, c(1, 4))
+  expect_equal(result$lat, c(2, 5))
+})

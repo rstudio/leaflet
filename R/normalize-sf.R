@@ -9,6 +9,8 @@ metaData.sf <- function(obj) {
 sanitize_sf <- function(obj) {
   sanitized_sf <- sf::st_geometry(obj)
   attr(sanitized_sf, "names") <- NULL
+  # Remove Z and M dimensions if present
+  sanitized_sf <- sf::st_zm(sanitized_sf)
   sanitized_sf
 }
 
