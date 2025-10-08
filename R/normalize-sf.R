@@ -28,6 +28,9 @@ pointData.sfc_POINT <- function(obj) {
   }
 
   check_crs(obj)
+  
+  # Remove Z and M dimensions if present
+  obj <- sf::st_zm(obj)
 
   structure(
     sf_coords(do.call("rbind", obj)),
@@ -38,6 +41,9 @@ pointData.sfc_POINT <- function(obj) {
 #' @export
 pointData.POINT <- function(obj) {
   check_crs(obj)
+  
+  # Remove Z and M dimensions if present
+  obj <- sf::st_zm(obj)
 
   bbox <- sf_bbox(obj)
 
@@ -81,6 +87,9 @@ polygonData.sf <- function(obj) {
 #' @export
 polygonData.sfc <- function(obj) {
   check_crs(obj)
+  
+  # Remove Z and M dimensions if present
+  obj <- sf::st_zm(obj)
 
   structure(
     to_multipolygon_list(obj),
@@ -90,6 +99,9 @@ polygonData.sfc <- function(obj) {
 
 #' @export
 polygonData.sfg <- function(obj) {
+  # Remove Z and M dimensions if present
+  obj <- sf::st_zm(obj)
+  
   structure(
     to_multipolygon_list(obj),
     bbox = sf_bbox(obj)
