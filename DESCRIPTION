@@ -60,7 +60,6 @@ Imports:
     magrittr,
     methods,
     png,
-    raster (>= 3.6.3),
     RColorBrewer,
     rlang,
     scales (>= 1.0.0),
@@ -73,12 +72,13 @@ Suggests:
     maps,
     purrr,
     R6,
+    raster (>= 3.6-3),
     RJSONIO,
     rmarkdown,
     s2,
     shiny (>= 1.0.0),
     sp,
-    terra,
+    terra (>= 1.6-3),
     testthat (>= 3.0.0)
 Config/Needs/website: dplyr, ncdf4, rnaturalearth, tidyverse/tidytemplate
 Config/testthat/edition: 3

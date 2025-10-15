@@ -1,5 +1,7 @@
 # leaflet (development version)
 
+* `{leaflet}` no longer installs `{raster}` `{terra}` by default (@olivroy, #943). If you are using leaflet interactively, you will receive a prompt to install it.
+
 # leaflet 2.2.3
 
 * `{leaflet}` is now licensed under the MIT license (was GPL-2) (#958).

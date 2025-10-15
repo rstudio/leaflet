@@ -21,7 +21,7 @@ for \link[terra:SpatRaster-class]{terra::SpatRaster} objects, with categorical v
 own \link[terra:colors]{color table}.
 }
 \examples{
-\dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
+\dontshow{if (interactive() && rlang::is_installed("terra")) withAutoprint(\{ # examplesIf}
 
 library(terra)
 
