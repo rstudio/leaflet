@@ -11,6 +11,42 @@ leafletProviderDependencies <- function() {
   )
 }
 
+# Returns TRUE if the named provider uses vector tiles (type: 'vector' in the
+# provider definition). Reads the type field from providers.details, which is
+# populated by leaflet.providers when it parses leaflet-providers.js.
+is_vector_provider <- function(provider) {
+  provider_name <- strsplit(provider, "\\.")[[1]][1]
+  details <- tryCatch(
+    leaflet.providers::providers_loaded()$providers_details,
+    error = function(e) NULL
+  )
+  if (!is.null(details) && provider_name %in% names(details)) {
+    isTRUE(details[[provider_name]]$type == "vector")
+  } else {
+    FALSE
+  }
+}
+
+# HTML dependencies for maplibre-gl and its Leaflet adapter, required when
+# rendering vector tile providers. Loaded from the unpkg CDN.
+maplibreGLDependencies <- function() {
+  list(
+    htmltools::htmlDependency(
+      "maplibre-gl",
+      "5.0.0",
+      src = c(href = "https://unpkg.com/maplibre-gl@5/dist"),
+      script = "maplibre-gl.js",
+      stylesheet = "maplibre-gl.css"
+    ),
+    htmltools::htmlDependency(
+      "maplibre-gl-leaflet",
+      "0.0.20",
+      src = c(href = "https://unpkg.com/@maplibre/maplibre-gl-leaflet"),
+      script = "leaflet-maplibre-gl.js"
+    )
+  )
+}
+
 #' Add a tile layer from a known map provider
 #'
 #' @param map the map to add the tile layer to
@@ -27,10 +63,21 @@ leafletProviderDependencies <- function() {
 #'   to `FALSE` for advanced users.
 #' @return modified map object
 #'
+#' @details
+#' Providers that use vector tiles (e.g. `OpenFreeMap`) require
+#' [maplibre-gl](https://maplibre.org/maplibre-gl-js/) and
+#' [maplibre-gl-leaflet](https://github.com/maplibre/maplibre-gl-leaflet).
+#' These are loaded automatically from the unpkg CDN when a vector provider is
+#' detected. No extra setup is required.
+#'
 #' @examples
 #' leaflet() %>%
 #'   addProviderTiles("Esri.WorldTopoMap") %>%
 #'   addProviderTiles("CartoDB.DarkMatter")
+#'
+#' # Vector tile provider (requires maplibre-gl, loaded automatically)
+#' leaflet() %>%
+#'   addProviderTiles("OpenFreeMap.Liberty")
 #'
 #' @export
 addProviderTiles <- function(
@@ -51,7 +98,11 @@ addProviderTiles <- function(
       )
     }
   }
-  map$dependencies <- c(map$dependencies, leafletProviderDependencies())
+  deps <- leafletProviderDependencies()
+  if (is_vector_provider(provider)) {
+    deps <- c(deps, maplibreGLDependencies())
+  }
+  map$dependencies <- c(map$dependencies, deps)
   invokeMethod(map, getMapData(map), "addProviderTiles",
     provider, layerId, group, options)
 }
